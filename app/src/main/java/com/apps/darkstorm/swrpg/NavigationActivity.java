@@ -2,8 +2,13 @@ package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -17,10 +22,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
+
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiceFragment.OnDiceInteractionListener,
-        GuideMain.OnGuideInteractionListener{
-
+        GuideMain.OnGuideInteractionListener, GoogleApiClient.OnConnectionFailedListener {
+    GoogleApiClient gac = null;
+    boolean completeFail = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
@@ -28,6 +39,35 @@ public class NavigationActivity extends AppCompatActivity
             setTheme(R.style.LightSide);
         }
         super.onCreate(savedInstanceState);
+
+        if (pref.getBoolean(getString(R.string.cloud_key),false)) {
+            gac = new GoogleApiClient.Builder(this).addApi(Drive.API).addScope(Drive.SCOPE_FILE)
+                    .enableAutoManage(this, this).build();
+            gac.connect();
+            AsyncTask<Void,Void,Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    if (!gac.isConnected()){
+                        while(!completeFail){
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            if (gac.isConnected()){
+                                new InitialConnect(NavigationActivity.this,gac);
+                                break;
+                            }
+                        }
+                    }else{
+                        new InitialConnect(NavigationActivity.this,gac);
+                    }
+                    return null;
+                }
+            };
+            tmpLoop.execute();
+        }
+
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,6 +134,9 @@ public class NavigationActivity extends AppCompatActivity
                     .replace(R.id.content_navigation,GuideMain.newInstance()).commit();
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
+            Bundle b = new Bundle();
+            b.putParcelable("gac", (Parcelable) gac);
+            intent.replaceExtras(b);
             startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -105,4 +148,29 @@ public class NavigationActivity extends AppCompatActivity
     public void onDiceInteraction() {}
     @Override
     public void onGuideInteraction() {}
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(this, 55);
+            } catch (IntentSender.SendIntentException e) {
+                completeFail = true;
+            }
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+            completeFail = true;
+        }
+    }
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        switch (requestCode) {
+            case 55:
+                if (resultCode == RESULT_OK) {
+                    gac.connect();
+                }else{
+                    completeFail = true;
+                }
+                break;
+        }
+    }
 }

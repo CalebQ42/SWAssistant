@@ -22,12 +22,20 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.io.File;
 
 public class Settings extends AppCompatActivity {
 
+    GoogleApiClient gac;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle b = this.getIntent().getExtras();
+        if (b != null){
+            gac = b.getParcelable("gac");
+        }
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (pref.getBoolean(getString(R.string.light_side_key),false)){
             setTheme(R.style.LightSide);
