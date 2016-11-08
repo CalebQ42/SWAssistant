@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:layout_gravity="center_vertical|center_horizontal">
+
+    <TextView
+        android:text="@string/out_of_ammo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon_no_ammo"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:text="@string/not_loaded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon_not_loaded"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:text="@string/miss_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon_miss"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/weapon_damage_main"
+        android:visibility="gone">
+
+        <TextView
+            android:text="@string/damage_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView73"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_damage_val"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="normal|bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/weapon_advantage_main"
+        android:visibility="gone">
+
+        <TextView
+            android:text="@string/advantage_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView75"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_advantage_val"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="normal|bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/weapon_threat_main"
+        android:visibility="gone">
+
+        <TextView
+            android:text="@string/threat_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView78"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_threat_val"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="normal|bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/weapon_triumph_main"
+        android:visibility="gone">
+
+        <TextView
+            android:text="@string/triumph_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView80"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_triumph_val"
+            android:textAlignment="center"
+            android:textStyle="normal|bold"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/weapon_despair_main"
+        android:visibility="gone">
+
+        <TextView
+            android:text="@string/despair_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView82"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_despair_val"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="normal|bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/weapon_char_topper"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="@string/specials_text"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView74"
+                android:layout_weight="2"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:text="@string/advantage_needed_text"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView71"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:layout_width="25dp"
+                android:textAlignment="center"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:textStyle="normal|bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/background_light"></LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon_char_scroll"
+        android:visibility="gone"
+        android:maxHeight="100dp">
+
+    </ScrollView>
+
+</LinearLayout>

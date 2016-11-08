@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.apps.darkstorm.swrpg.Settings"
+    tools:showIn="@layout/activity_settings">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <Switch
+            android:text="@string/dice_on_launch_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dice_switch"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#99ffffff"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"></LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/save_layout"
+            android:background="?attr/selectableItemBackground">
+
+            <TextView
+                android:text="@string/save_location_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:textColor="?android:attr/colorForeground"
+                android:textSize="18sp" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/save_text"
+                android:textColor="?android:attr/textColorTertiary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#99ffffff"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"></LinearLayout>
+
+        <Switch
+            android:text="@string/cloud_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cloud_switch"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#99ffffff"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"></LinearLayout>
+
+        <Switch
+            android:text="@string/light_side_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/light_switch"
+            android:textSize="18sp" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ability_dice">Ability Dice:</string>
+    <string name="proficiency_dice">Proficiency Dice:</string>
+    <string name="difficulty_dice">Difficulty Dice:</string>
+    <string name="challenge_dice">Challenge Dice:</string>
+    <string name="boost_dice">Boost Dice:</string>
+    <string name="setback_dice">Setback Dice:</string>
+    <string name="force_dice">Force Dice:</string>
+
+    <string name="roll_text">Roll</string>
+    <string name="dice_text">Dice</string>
+    <string name="clear_text">Clear</string>
+    <string name="instant_dice_text">Instant Dice:</string>
+
+    <string name="dhun_text">d100:</string>
+    <string name="dten_text">d10:</string>
+
+    <string name="no_res_text">No Results</string>
+    <string name="success_text">Success</string>
+    <string name="fail_text">Failure</string>
+    <string name="advantage_text">Advantage</string>
+    <string name="threat_text">Threat</string>
+    <string name="triumph_text">Triumph</string>
+    <string name="despair_text">Despair</string>
+    <string name="light_side_points_text">Light Side Points</string>
+    <string name="dark_side_points_text">Dark Side Points</string>
+</resources>

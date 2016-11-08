@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/profiles_navigation_group" >
+        <menu >
+            <item android:title="@string/character_navigation_item"
+                android:icon="@drawable/ic_people"
+                android:id="@+id/nav_characters" />
+            <item android:title="@string/ship_navigation_item"
+                android:id="@+id/nav_ships"
+                android:icon="@drawable/ic_ship" />
+        </menu>
+    </item>
+    <item android:title="@string/other_navigation_group">
+        <menu>
+            <item android:title="@string/dice_navigation_item"
+                android:icon="@drawable/ic_die_icon"
+                android:id="@+id/nav_dice" />
+            <item android:title="@string/guide_navigation_item"
+                android:icon="@drawable/ic_book"
+                android:id="@+id/nav_guide" />
+            <item android:title="@string/settings_navigation_item"
+                android:icon="@drawable/ic_settings"
+                android:id="@+id/nav_settings" />
+        </menu>
+    </item>
+</menu>

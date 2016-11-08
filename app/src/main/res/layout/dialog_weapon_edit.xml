@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:layout_marginBottom="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="5dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarStyle="insideInset"
+        android:layout_height="310dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:text="@string/name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView29"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords|textPersonName"
+                android:text="Name"
+                android:ems="10"
+                android:id="@+id/weapon_edit_name"
+                android:textAlignment="center" />
+
+            <TextView
+                android:text="@string/damage_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView34"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/weapon_edit_damage"
+                android:textAlignment="center" />
+
+            <TextView
+                android:text="@string/critical_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView35"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/weapon_edit_critical"
+                android:textAlignment="center" />
+
+            <TextView
+                android:text="@string/hard_points_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView39"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/weapon_edit_hp"
+                android:textAlignment="center" />
+
+            <TextView
+                android:text="@string/weapon_state_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_weapon_state" />
+
+            <TextView
+                android:text="@string/range_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView43"
+                android:textSize="18sp"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_range_spinner" />
+
+            <TextView
+                android:text="@string/skill_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView44"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_skill_spinner" />
+
+            <TextView
+                android:text="@string/skill_characteristic_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView46"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_skill_char_spinner" />
+
+            <TextView
+                android:text="@string/specials_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView48"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/weapon_edit_special_layout">
+
+            </LinearLayout>
+
+            <Button
+                android:text="@string/add_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_special_add"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_gravity="right" />
+
+            <Switch
+                android:text="@string/add_brawn_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_add_brawn"
+                android:textAlignment="viewStart"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
+
+            <Switch
+                android:text="@string/loaded_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_loaded"
+                android:textAlignment="viewStart"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
+
+            <Switch
+                android:text="@string/slug_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weapon_edit_slug"
+                android:textAlignment="viewStart"
+                android:textSize="16sp"
+                android:textAllCaps="false" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/weapon_edit_ammo_layout"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView49"
+                    android:text="@string/ammo_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:text="-"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weapon_edit_ammo_minus"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+
+                    <TextView
+                        android:text="0"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weapon_edit_ammo_val"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:text="+"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weapon_edit_ammo_plus"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+
+        <Button
+            android:text="@string/save_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_edit_save"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+
+        <Button
+            android:text="@string/delete_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_edit_delete"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:visibility="gone" />
+
+        <Button
+            android:text="@android:string/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapon_edit_cancel"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+    </LinearLayout>
+
+</LinearLayout>
