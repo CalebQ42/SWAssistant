@@ -1,7 +1,6 @@
 package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
@@ -24,6 +23,7 @@ public class DiceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
     int ability, proficiency, difficulty, challenge, boost, setback, force;
     @Override
@@ -31,7 +31,7 @@ public class DiceFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_dice, container, false);
         FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
-        fab.setVisibility(View.VISIBLE);
+        fab.show();
         fab.setImageResource(R.drawable.ic_die_icon);
         ((TextView)top.findViewById(R.id.ability_num)).setText(String.valueOf(ability));
         ((TextView)top.findViewById(R.id.proficiency_num)).setText(String.valueOf(proficiency));
@@ -175,13 +175,6 @@ public class DiceFragment extends Fragment {
         return top;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onDiceInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -200,7 +193,6 @@ public class DiceFragment extends Fragment {
     }
 
     public interface OnDiceInteractionListener {
-        // TODO: Update argument type and name
-        void onDiceInteraction(Uri uri);
+        void onDiceInteraction();
     }
 }

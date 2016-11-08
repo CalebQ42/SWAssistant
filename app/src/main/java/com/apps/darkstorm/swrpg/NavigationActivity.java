@@ -1,10 +1,8 @@
 package com.apps.darkstorm.swrpg;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,7 +18,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DiceFragment.OnDiceInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DiceFragment.OnDiceInteractionListener,
+        GuideMain.OnGuideInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +88,10 @@ public class NavigationActivity extends AppCompatActivity
                             android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("toDice")
                     .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
         }else if(id == R.id.nav_guide){
+            getFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
+                            android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("toGuide")
+                    .replace(R.id.content_navigation,GuideMain.newInstance()).commit();
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
             startActivity(intent);
@@ -99,5 +102,7 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDiceInteraction(Uri uri) {}
+    public void onDiceInteraction() {}
+    @Override
+    public void onGuideInteraction() {}
 }
