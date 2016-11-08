@@ -1,5 +1,8 @@
 # SWrpg
 
+[Play Store](https://play.google.com/store/apps/details?id=com.apps.darkstorm.swrpg)  
+[Play Store Donate](https://play.google.com/store/apps/details?id=com.apps.darkstorm.swrpg.donate)
+
 Currently working on a complete rewrite.
 
 An app to keep character data and roll dice. Compatible with Edge of the Empire, Age of Rebellion, and Force and Destiny.
