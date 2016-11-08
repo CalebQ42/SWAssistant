@@ -102,7 +102,7 @@ public class Character {
                     do{
                         if (!saving) {
                             saving = true;
-                            if (!Character.this.equals(tmpChar)) {
+                            if (!equals(tmpChar)) {
                                 Character.this.save(Character.this.getFileLocation(main));
                                 if (fold != null && gac.isConnected())
                                     cloudSave(gac,getFileId(gac,fold),false);
@@ -118,7 +118,7 @@ public class Character {
                     }while (editing);
                     if (!saving) {
                         saving = true;
-                        if (!Character.this.equals(tmpChar)) {
+                        if (!equals(tmpChar)) {
                             Character.this.save(Character.this.getFileLocation(main));
                             if (fold != null && gac.isConnected())
                                 cloudSave(gac,getFileId(gac,fold),false);
@@ -141,7 +141,7 @@ public class Character {
                     do{
                         if (!saving) {
                             saving = true;
-                            if (!Character.this.equals(tmpChar)) {
+                            if (!equals(tmpChar)) {
                                 Character.this.save(Character.this.getFileLocation(main));
                                 tmpChar = Character.this.clone();
                             }
@@ -155,7 +155,7 @@ public class Character {
                     }while (editing);
                     if (!saving) {
                         saving = true;
-                        if (!Character.this.equals(tmpChar)) {
+                        if (!equals(tmpChar)) {
                             Character.this.save(Character.this.getFileLocation(main));
                         }
                         saving = false;
@@ -251,11 +251,7 @@ public class Character {
         }
     }
     public void reLoad(GoogleApiClient gac,DriveId fil){
-        DriveFile file = fil.asDriveFile();
-        DriveContents cont = file.open(gac, DriveFile.MODE_READ_ONLY, new DriveFile.
-                DownloadProgressListener() {@Override public void onProgress(long l, long l1) {}})
-                .await().getDriveContents();
-        DriveSaveLoad sl = new DriveSaveLoad(cont);
+        DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] vals = sl.load(gac);
         switch (vals.length){
             //later versions go here and fallthrough
@@ -318,7 +314,7 @@ public class Character {
         }
         SharedPreferences pref = main.getSharedPreferences("prefs",Context.MODE_PRIVATE);
         String def = location.getAbsolutePath();
-        String loc = pref.getString(main.getString(R.string.location_key),def);
+        String loc = pref.getString(main.getString(R.string.local_location_key),def);
         location = new File(loc);
         if (!location.exists()){
             if (!location.mkdir()){
@@ -718,24 +714,40 @@ public class Character {
         }
     }
     public boolean equals(Character chara){
-        if (chara.name != name ||
-                chara.ID != ID||
-                Arrays.equals(chara.charVals,charVals)||
-                chara.skills.equals(skills)||
-                chara.species.equals(species)||
-                chara.career.equals(career)||
-                chara.specializations.equals(specializations)||
-                chara.talents.equals(talents)||
-                chara.inv.equals(inv)||
-                chara.weapons.equals(weapons)||
-                chara.forcePowers.equals(forcePowers)||
-                chara.motivation.equals(motivation)||
-                chara.critInjuries.equals(critInjuries)||
-                Arrays.equals(emotionalStr,chara.emotionalStr)||
-                Arrays.equals(chara.emotionalWeak,emotionalWeak)||
-                chara.duty.equals(duty)||
-                chara.obligation.equals(obligation)||
-                )
-        return true;
+        return chara.name.equals(name) ||
+                chara.ID == ID ||
+                Arrays.equals(chara.charVals, charVals) ||
+                chara.skills.equals(skills) ||
+                chara.species.equals(species) ||
+                chara.career.equals(career) ||
+                chara.specializations.equals(specializations) ||
+                chara.talents.equals(talents) ||
+                chara.inv.equals(inv) ||
+                chara.weapons.equals(weapons) ||
+                chara.forcePowers.equals(forcePowers) ||
+                chara.motivation.equals(motivation) ||
+                chara.critInjuries.equals(critInjuries) ||
+                Arrays.equals(emotionalStr, chara.emotionalStr) ||
+                Arrays.equals(chara.emotionalWeak, emotionalWeak) ||
+                chara.duty.equals(duty) ||
+                chara.obligation.equals(obligation) ||
+                woundThresh == chara.woundThresh ||
+                woundCur == chara.woundCur ||
+                strainThresh == chara.strainThresh ||
+                strainCur == chara.strainCur ||
+                xpCur == chara.xpCur ||
+                xpTot == chara.xpTot ||
+                defMelee == chara.defMelee ||
+                defRanged == chara.defRanged ||
+                soak == chara.soak ||
+                force == chara.force ||
+                credits == chara.credits ||
+                morality == chara.morality ||
+                conflict == chara.conflict ||
+                desc.equals(chara.desc) ||
+                Arrays.equals(showCard, chara.showCard) ||
+                darkSide == chara.darkSide ||
+                age == chara.age ||
+                nts.equals(chara.nts);
     }
 }

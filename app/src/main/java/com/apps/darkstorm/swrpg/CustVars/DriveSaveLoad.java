@@ -65,53 +65,25 @@ public class DriveSaveLoad {
             }
         }
     }
-    public Object[] load(final GoogleApiClient gac,boolean async){
-        final ArrayList<Object> loadItems = new ArrayList<>();
-        if (async){
-            AsyncTask<Void,Void,Void> load = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        DriveFile file = id.asDriveFile();
-                        DriveApi.DriveContentsResult contRes =
-                                file.open(gac, DriveFile.MODE_READ_ONLY,
-                                        new DriveFile.DownloadProgressListener() {
-                                            public void onProgress(long l, long l1) {
-                                            }
-                                        }).await();
-                        DriveContents cont = contRes.getDriveContents();
-                        InputStream contI = cont.getInputStream();
-                        ObjectInputStream in = new ObjectInputStream(contI);
-                        ArrayList<Object> tmp = (ArrayList<Object>)in.readObject();
-                        loadItems.addAll(tmp);
-                        in.close();
-                        contI.close();
-                    }catch(IOException | ClassNotFoundException e){
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-            };
-            load.execute();
-        }else{
-            try {
-                DriveFile file = id.asDriveFile();
-                DriveApi.DriveContentsResult contRes =
-                        file.open(gac, DriveFile.MODE_READ_ONLY,
-                                new DriveFile.DownloadProgressListener() {
-                                    public void onProgress(long l, long l1) {
-                                    }
-                                }).await();
-                DriveContents cont = contRes.getDriveContents();
-                InputStream contI = cont.getInputStream();
-                ObjectInputStream in = new ObjectInputStream(contI);
-                ArrayList<Object> tmp = (ArrayList<Object>)in.readObject();
-                loadItems.addAll(tmp);
-                in.close();
-                contI.close();
-            }catch(IOException | ClassNotFoundException e){
-                e.printStackTrace();
-            }
+    public Object[] load(final GoogleApiClient gac){
+        ArrayList<Object> loadItems = new ArrayList<>();
+        try {
+            DriveFile file = id.asDriveFile();
+            DriveApi.DriveContentsResult contRes =
+                    file.open(gac, DriveFile.MODE_READ_ONLY,
+                            new DriveFile.DownloadProgressListener() {
+                                public void onProgress(long l, long l1) {
+                                }
+                            }).await();
+            DriveContents cont = contRes.getDriveContents();
+            InputStream contI = cont.getInputStream();
+            ObjectInputStream in = new ObjectInputStream(contI);
+            ArrayList<Object> tmp = (ArrayList<Object>)in.readObject();
+            loadItems.addAll(tmp);
+            in.close();
+            contI.close();
+        }catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
         }
         return loadItems.toArray();
     }
