@@ -55,4 +55,6 @@
     <string name="cunning_text">Cunning:</string>
     <string name="willpower_text">Willpower:</string>
     <string name="presence_text">Presence:</string>
+
+    <string name="character_delete">Are you sure you want to delete this character?</string>
 </resources>

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Message;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.apps.darkstorm.swrpg.CharacterList;
 import com.apps.darkstorm.swrpg.CustVars.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.CustVars.SaveLoad;
 import com.apps.darkstorm.swrpg.R;
@@ -95,9 +97,10 @@ public class Character {
     public void startEditing(final Context main, final GoogleApiClient gac, final DriveId fold){
         if (!editing) {
             editing = true;
-            AsyncTask<Void,Void,Void> tmp = new AsyncTask<Void, Void, Void>() {
+            AsyncTask<Void,Void,Void> blablah = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
+                    System.out.println("Editing");
                     Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
@@ -128,7 +131,7 @@ public class Character {
                     return null;
                 }
             };
-            tmp.execute();
+            blablah.execute();
         }
     }
     public void startEditing(final Context main){
@@ -713,41 +716,45 @@ public class Character {
             sl.save(gac,async);
         }
     }
-    public boolean equals(Character chara){
-        return chara.name.equals(name) ||
-                chara.ID == ID ||
-                Arrays.equals(chara.charVals, charVals) ||
-                chara.skills.equals(skills) ||
-                chara.species.equals(species) ||
-                chara.career.equals(career) ||
-                chara.specializations.equals(specializations) ||
-                chara.talents.equals(talents) ||
-                chara.inv.equals(inv) ||
-                chara.weapons.equals(weapons) ||
-                chara.forcePowers.equals(forcePowers) ||
-                chara.motivation.equals(motivation) ||
-                chara.critInjuries.equals(critInjuries) ||
-                Arrays.equals(emotionalStr, chara.emotionalStr) ||
-                Arrays.equals(chara.emotionalWeak, emotionalWeak) ||
-                chara.duty.equals(duty) ||
-                chara.obligation.equals(obligation) ||
-                woundThresh == chara.woundThresh ||
-                woundCur == chara.woundCur ||
-                strainThresh == chara.strainThresh ||
-                strainCur == chara.strainCur ||
-                xpCur == chara.xpCur ||
-                xpTot == chara.xpTot ||
-                defMelee == chara.defMelee ||
-                defRanged == chara.defRanged ||
-                soak == chara.soak ||
-                force == chara.force ||
-                credits == chara.credits ||
-                morality == chara.morality ||
-                conflict == chara.conflict ||
-                desc.equals(chara.desc) ||
-                Arrays.equals(showCard, chara.showCard) ||
-                darkSide == chara.darkSide ||
-                age == chara.age ||
-                nts.equals(chara.nts);
+    public boolean equalsChar(Character chara){
+        try {
+            return chara.name.equals(name) ||
+                    chara.ID == ID ||
+                    Arrays.equals(chara.charVals, charVals) ||
+                    chara.skills.equals(skills) ||
+                    chara.species.equals(species) ||
+                    chara.career.equals(career) ||
+                    chara.specializations.equals(specializations) ||
+                    chara.talents.equals(talents) ||
+                    chara.inv.equals(inv) ||
+                    chara.weapons.equals(weapons) ||
+                    chara.forcePowers.equals(forcePowers) ||
+                    chara.motivation.equals(motivation) ||
+                    chara.critInjuries.equals(critInjuries) ||
+                    Arrays.equals(emotionalStr, chara.emotionalStr) ||
+                    Arrays.equals(chara.emotionalWeak, emotionalWeak) ||
+                    chara.duty.equals(duty) ||
+                    chara.obligation.equals(obligation) ||
+                    woundThresh == chara.woundThresh ||
+                    woundCur == chara.woundCur ||
+                    strainThresh == chara.strainThresh ||
+                    strainCur == chara.strainCur ||
+                    xpCur == chara.xpCur ||
+                    xpTot == chara.xpTot ||
+                    defMelee == chara.defMelee ||
+                    defRanged == chara.defRanged ||
+                    soak == chara.soak ||
+                    force == chara.force ||
+                    credits == chara.credits ||
+                    morality == chara.morality ||
+                    conflict == chara.conflict ||
+                    desc.equals(chara.desc) ||
+                    Arrays.equals(showCard, chara.showCard) ||
+                    darkSide == chara.darkSide ||
+                    age == chara.age ||
+                    nts.equals(chara.nts);
+        }catch(java.lang.NullPointerException ignored){
+            return false;
+        }
     }
 }

@@ -46,8 +46,6 @@ public class NoteCard {
         main.getTheme().resolveAttribute(R.attr.selectableItemBackgroundBorderless, outVal, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             tmpl.setForeground(main.getDrawable(outVal.resourceId));
-        else
-            tmpl.setBackgroundResource(outVal.resourceId);
         tmpl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

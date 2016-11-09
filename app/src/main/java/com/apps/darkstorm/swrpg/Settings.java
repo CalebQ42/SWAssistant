@@ -34,12 +34,10 @@ import java.io.File;
 
 public class Settings extends AppCompatActivity{
 
-    GoogleApiClient gac;
     boolean completeFail = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gac = ((SWrpg)getApplicationContext()).getGac();
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (pref.getBoolean(getString(R.string.light_side_key),false)){
             setTheme(R.style.LightSide);

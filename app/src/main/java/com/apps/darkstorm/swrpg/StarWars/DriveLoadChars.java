@@ -3,6 +3,7 @@ package com.apps.darkstorm.swrpg.StarWars;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.apps.darkstorm.swrpg.InitialConnect;
 import com.apps.darkstorm.swrpg.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
@@ -13,10 +14,14 @@ import com.google.android.gms.drive.Metadata;
 import java.util.ArrayList;
 
 public class DriveLoadChars {
-    ArrayList<Character> chars;
-    ArrayList<Long> lastMod;
+    public ArrayList<Character> chars = new ArrayList<>();
+    public ArrayList<Long> lastMod = new ArrayList<>();
     public DriveLoadChars(Context main, GoogleApiClient gac){
         SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        String tmpId = pref.getString(main.getString(R.string.swchars_id_key),"");
+        if (tmpId.equals("")){
+            new InitialConnect(main,gac);
+        }
         DriveId foldId = DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key),""));
         DriveFolder charsFold = foldId.asDriveFolder();
         DriveApi.MetadataBufferResult metbufres = charsFold.listChildren(gac).await();

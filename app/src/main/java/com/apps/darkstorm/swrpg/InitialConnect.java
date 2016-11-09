@@ -30,5 +30,6 @@ public class InitialConnect {
             charsFold = foldRes.getDriveFolder().getDriveId();
         }
         pref.edit().putString(main.getString(R.string.swchars_id_key),charsFold.encodeToString()).apply();
+        metBuf.release();
     }
 }

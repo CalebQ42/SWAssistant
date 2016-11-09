@@ -31,7 +31,7 @@ public class DriveSaveLoad {
                     try {
                         DriveFile file = id.asDriveFile();
                         DriveApi.DriveContentsResult contRes =
-                                file.open(gac, DriveFile.MODE_READ_WRITE,
+                                file.open(gac, DriveFile.MODE_WRITE_ONLY,
                                         new DriveFile.DownloadProgressListener() {public void onProgress(long l, long l1) {}}).await();
                         DriveContents cont = contRes.getDriveContents();
                         OutputStream contO = cont.getOutputStream();
@@ -39,7 +39,7 @@ public class DriveSaveLoad {
                         out.writeObject(saveItems);
                         out.close();
                         contO.close();
-                        cont.commit(gac,null).await();
+                        cont.commit(gac,null);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -51,7 +51,7 @@ public class DriveSaveLoad {
             try {
                 DriveFile file = id.asDriveFile();
                 DriveApi.DriveContentsResult contRes =
-                        file.open(gac, DriveFile.MODE_READ_WRITE,
+                        file.open(gac, DriveFile.MODE_WRITE_ONLY,
                                 new DriveFile.DownloadProgressListener() {public void onProgress(long l, long l1) {}}).await();
                 DriveContents cont = contRes.getDriveContents();
                 OutputStream contO = cont.getOutputStream();

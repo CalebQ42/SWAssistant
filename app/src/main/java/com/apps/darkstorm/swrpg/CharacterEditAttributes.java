@@ -2,6 +2,7 @@ package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,8 @@ public class CharacterEditAttributes extends Fragment {
         final View top = inflater.inflate(R.layout.fragment_character_edit_attributes, container, false);
         chara.showHideCards(top);
         new SetupCharAttr().setup(top,chara);
+        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.universeFab);
+        fab.hide();
         return top;
     }
     @Override

@@ -1,16 +1,19 @@
 package com.apps.darkstorm.swrpg;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,11 +30,11 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
-import java.io.Serializable;
-
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiceFragment.OnDiceInteractionListener,
-        GuideMain.OnGuideInteractionListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+        GuideMain.OnGuideInteractionListener, CharacterList.OnListInteractionListener, CharacterEditMain.OnFragmentInteractionListener,
+        CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
     GoogleApiClient gac;
     boolean completeFail = false;
     @Override
@@ -52,26 +55,12 @@ public class NavigationActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-        gac = ((SWrpg)getApplicationContext()).gac;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        if (pref.getBoolean(getString(R.string.dice_key),false)){
-            getFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                            android.R.animator.fade_in,android.R.animator.fade_out)
-                    .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
-        }
-    }
-
-    public void onStart(){
-        super.onStart();
-        final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.cloud_key),false)) {
+        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
             if (gac == null)
                 gac = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
@@ -80,30 +69,86 @@ public class NavigationActivity extends AppCompatActivity
                         .addOnConnectionFailedListener(this)
                         .build();
             gac.connect();
-            AsyncTask<Void,Void,Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
+            AsyncTask<Void, Void, Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    if (!gac.isConnected()){
-                        while(!completeFail){
+                    if (!gac.isConnected()) {
+                        while (!completeFail) {
                             try {
                                 Thread.sleep(300);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                             System.out.println("Checking Connect");
-                            if (gac.isConnected()){
+                            if (gac.isConnected()) {
                                 System.out.println("Init Connect");
-                                new InitialConnect(NavigationActivity.this,gac);
+                                new InitialConnect(NavigationActivity.this, gac);
                                 break;
                             }
                         }
-                    }else{
-                        new InitialConnect(NavigationActivity.this,gac);
+                    } else {
+                        new InitialConnect(NavigationActivity.this, gac);
                     }
                     return null;
                 }
             };
             tmpLoop.execute();
+        }
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        if (pref.getBoolean(getString(R.string.dice_key),false)){
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                            android.R.anim.fade_in,android.R.anim.fade_out)
+                    .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
+        }else{
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                            android.R.anim.fade_in,android.R.anim.fade_out)
+                    .replace(R.id.content_navigation,CharacterList.newInstance(gac)).commit();
+        }
+    }
+
+    public void onStart(){
+        super.onStart();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
+        }else {
+            final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+            if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                if (gac == null)
+                    gac = new GoogleApiClient.Builder(this)
+                            .addApi(Drive.API)
+                            .addScope(Drive.SCOPE_FILE)
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .build();
+                gac.connect();
+                AsyncTask<Void, Void, Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        if (!gac.isConnected()) {
+                            while (!completeFail) {
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Checking Connect");
+                                if (gac.isConnected()) {
+                                    System.out.println("Init Connect");
+                                    new InitialConnect(NavigationActivity.this, gac);
+                                    break;
+                                }
+                            }
+                        } else {
+                            new InitialConnect(NavigationActivity.this, gac);
+                        }
+                        return null;
+                    }
+                };
+                tmpLoop.execute();
+            }
         }
     }
 
@@ -131,19 +176,24 @@ public class NavigationActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.universeFab);
         int id = item.getItemId();
         if (id == R.id.nav_characters){
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                            android.R.anim.fade_in,android.R.anim.fade_out)
+                    .replace(R.id.content_navigation,CharacterList.newInstance(gac)).addToBackStack("toCharacters").commit();
         }else if (id == R.id.nav_ships){
             Toast.makeText(this,R.string.ship_coming_soon_text,Toast.LENGTH_LONG).show();
         }else if(id == R.id.nav_dice){
-            getFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                            android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("toDice")
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                            android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("toDice")
                     .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
         }else if(id == R.id.nav_guide){
-            getFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                            android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("toGuide")
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                            android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("toGuide")
                     .replace(R.id.content_navigation,GuideMain.newInstance()).commit();
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
@@ -194,4 +244,58 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int i) {}
+
+    @Override
+    public void onFragmentInteraction() {
+
+    }
+
+    @Override
+    public void onListInteraction() {
+
+    }
+
+    @Override
+    public void onNoteInteraction() {
+
+    }
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        if (requestCode == 50 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+            if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                if (gac == null)
+                    gac = new GoogleApiClient.Builder(this)
+                            .addApi(Drive.API)
+                            .addScope(Drive.SCOPE_FILE)
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .build();
+                gac.connect();
+                AsyncTask<Void, Void, Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        if (!gac.isConnected()) {
+                            while (!completeFail) {
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Checking Connect");
+                                if (gac.isConnected()) {
+                                    System.out.println("Init Connect");
+                                    new InitialConnect(NavigationActivity.this, gac);
+                                    break;
+                                }
+                            }
+                        } else {
+                            new InitialConnect(NavigationActivity.this, gac);
+                        }
+                        return null;
+                    }
+                };
+                tmpLoop.execute();
+            }
+        }
+    }
 }

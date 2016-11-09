@@ -16,7 +16,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name="SWrpg"
         android:theme="@style/DarkSide">
         <activity
             android:name=".NavigationActivity"

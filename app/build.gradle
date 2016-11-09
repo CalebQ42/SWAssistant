@@ -28,7 +28,7 @@ android {
     }
     productFlavors {
         freeConfig {
-            versionName '2.5.2'
+            versionName '2.7'
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
@@ -42,7 +42,7 @@ android {
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
             versionCode 18
-            versionName '2.5.2'
+            versionName '2.7'
             signingConfig signingConfigs.config
         }
     }

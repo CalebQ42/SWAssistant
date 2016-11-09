@@ -10,8 +10,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class LoadChars {
-    ArrayList<Character> chars;
-    ArrayList<Long> lastMod;
+    public ArrayList<Character> chars;
+    public ArrayList<Long> lastMod;
     public LoadChars(Context main){
         chars = new ArrayList<>();
         lastMod = new ArrayList<>();
@@ -43,12 +43,14 @@ public class LoadChars {
             }
         }
         File[] files = location.listFiles();
-        for(File fi:files){
-            if (fi.isFile() && fi.getName().endsWith(".char")){
-                Character tmp = new Character();
-                tmp.reLoad(fi.getAbsolutePath());
-                chars.add(tmp);
-                lastMod.add(fi.lastModified());
+        if (files != null) {
+            for (File fi : files) {
+                if (fi.isFile() && fi.getName().endsWith(".char")) {
+                    Character tmp = new Character();
+                    tmp.reLoad(fi.getAbsolutePath());
+                    chars.add(tmp);
+                    lastMod.add(fi.lastModified());
+                }
             }
         }
     }
