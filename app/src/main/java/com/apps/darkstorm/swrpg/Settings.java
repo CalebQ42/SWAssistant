@@ -5,15 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,11 +21,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
 
 import java.io.File;
 
@@ -129,6 +121,10 @@ public class Settings extends AppCompatActivity{
                 }else{
                     Toast.makeText(Settings.this,R.string.dark_side_toast,Toast.LENGTH_LONG).show();
                 }
+                TaskStackBuilder.create(Settings.this)
+                        .addNextIntent(new Intent(Settings.this, NavigationActivity.class))
+                        .addNextIntent(Settings.this.getIntent())
+                        .startActivities();
             }
         });
         Switch cloud = (Switch)findViewById(R.id.cloud_switch);

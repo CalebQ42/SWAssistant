@@ -1,21 +1,16 @@
 package com.apps.darkstorm.swrpg;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -69,30 +65,6 @@ public class NavigationActivity extends AppCompatActivity
                         .addOnConnectionFailedListener(this)
                         .build();
             gac.connect();
-            AsyncTask<Void, Void, Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    if (!gac.isConnected()) {
-                        while (!completeFail) {
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            System.out.println("Checking Connect");
-                            if (gac.isConnected()) {
-                                System.out.println("Init Connect");
-                                new InitialConnect(NavigationActivity.this, gac);
-                                break;
-                            }
-                        }
-                    } else {
-                        new InitialConnect(NavigationActivity.this, gac);
-                    }
-                    return null;
-                }
-            };
-            tmpLoop.execute();
         }
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -110,10 +82,6 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     public void onStart(){
-        super.onStart();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
-        }else {
             final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
             if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                 if (gac == null)
@@ -124,32 +92,8 @@ public class NavigationActivity extends AppCompatActivity
                             .addOnConnectionFailedListener(this)
                             .build();
                 gac.connect();
-                AsyncTask<Void, Void, Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        if (!gac.isConnected()) {
-                            while (!completeFail) {
-                                try {
-                                    Thread.sleep(300);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                System.out.println("Checking Connect");
-                                if (gac.isConnected()) {
-                                    System.out.println("Init Connect");
-                                    new InitialConnect(NavigationActivity.this, gac);
-                                    break;
-                                }
-                            }
-                        } else {
-                            new InitialConnect(NavigationActivity.this, gac);
-                        }
-                        return null;
-                    }
-                };
-                tmpLoop.execute();
             }
-        }
+        super.onStart();
     }
 
     @Override
@@ -239,7 +183,14 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        System.out.println("Connected");
+        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                new InitialConnect(NavigationActivity.this, gac);
+                return null;
+            }
+        };
+        async.execute();
     }
 
     @Override
@@ -260,42 +211,6 @@ public class NavigationActivity extends AppCompatActivity
 
     }
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
-        if (requestCode == 50 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
-            if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                if (gac == null)
-                    gac = new GoogleApiClient.Builder(this)
-                            .addApi(Drive.API)
-                            .addScope(Drive.SCOPE_FILE)
-                            .addConnectionCallbacks(this)
-                            .addOnConnectionFailedListener(this)
-                            .build();
-                gac.connect();
-                AsyncTask<Void, Void, Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        if (!gac.isConnected()) {
-                            while (!completeFail) {
-                                try {
-                                    Thread.sleep(300);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                System.out.println("Checking Connect");
-                                if (gac.isConnected()) {
-                                    System.out.println("Init Connect");
-                                    new InitialConnect(NavigationActivity.this, gac);
-                                    break;
-                                }
-                            }
-                        } else {
-                            new InitialConnect(NavigationActivity.this, gac);
-                        }
-                        return null;
-                    }
-                };
-                tmpLoop.execute();
-            }
-        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

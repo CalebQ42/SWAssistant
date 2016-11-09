@@ -10,6 +10,6 @@
 
     <string name="not_allowed_text">Not Allowed</string>
 
-    <string name="light_side_toast">Restart the app to feel the serenity of the light side</string>
-    <string name="dark_side_toast">Restart the app to feel the power of the dark side</string>
+    <string name="light_side_toast">Feel the serenity of the light side</string>
+    <string name="dark_side_toast">Feel the power of the dark side</string>
 </resources>
