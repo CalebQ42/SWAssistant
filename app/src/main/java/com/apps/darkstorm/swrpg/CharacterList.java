@@ -128,8 +128,8 @@ public class CharacterList extends Fragment {
                     mainHandle.sendMessage(snack);
                     if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                         int timeout = 0;
-                        if (gac == null || !gac.isConnected() &&gac.isConnecting()) {
-                            while (gac == null || !gac.isConnected() || gac.isConnecting() || timeout >=10) {
+                        if (gac == null || !gac.isConnected() && gac.isConnecting()) {
+                            while ((gac == null || !gac.isConnected() || gac.isConnecting()) && timeout < 33) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {
@@ -138,8 +138,11 @@ public class CharacterList extends Fragment {
                                 timeout++;
                             }
                         }
-                        DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                        dlc.saveToFile(CharacterList.this.getContext(), false);
+                        System.out.println(timeout);
+                        if (timeout < 33) {
+                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
+                            dlc.saveToFile(CharacterList.this.getContext(), false);
+                        }
                     }
                     LoadChars lc = new LoadChars(CharacterList.this.getContext());
                     Message tmp = mainHandle.obtainMessage();

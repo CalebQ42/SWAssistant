@@ -28,12 +28,12 @@ android {
     }
     productFlavors {
         freeConfig {
-            versionName '3.0'
+            versionName '3.0.1'
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 19
+            versionCode 20
             signingConfig signingConfigs.config
         }
         paidConfig {
@@ -41,8 +41,8 @@ android {
             applicationId 'com.apps.darkstorm.swrpg.donate'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 19
-            versionName '3.0'
+            versionCode 20
+            versionName '3.0.1'
             signingConfig signingConfigs.config
         }
     }
