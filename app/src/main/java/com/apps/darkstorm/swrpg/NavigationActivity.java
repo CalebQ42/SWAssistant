@@ -27,10 +27,12 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
+import java.io.Serializable;
+
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiceFragment.OnDiceInteractionListener,
-        GuideMain.OnGuideInteractionListener, GoogleApiClient.OnConnectionFailedListener {
-    GoogleApiClient gac = null;
+        GuideMain.OnGuideInteractionListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+    GoogleApiClient gac;
     boolean completeFail = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,35 +41,6 @@ public class NavigationActivity extends AppCompatActivity
             setTheme(R.style.LightSide);
         }
         super.onCreate(savedInstanceState);
-
-        if (pref.getBoolean(getString(R.string.cloud_key),false)) {
-            gac = new GoogleApiClient.Builder(this).addApi(Drive.API).addScope(Drive.SCOPE_FILE)
-                    .enableAutoManage(this, this).build();
-            gac.connect();
-            AsyncTask<Void,Void,Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    if (!gac.isConnected()){
-                        while(!completeFail){
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            if (gac.isConnected()){
-                                new InitialConnect(NavigationActivity.this,gac);
-                                break;
-                            }
-                        }
-                    }else{
-                        new InitialConnect(NavigationActivity.this,gac);
-                    }
-                    return null;
-                }
-            };
-            tmpLoop.execute();
-        }
-
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,6 +52,7 @@ public class NavigationActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+        gac = ((SWrpg)getApplicationContext()).gac;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -91,6 +65,45 @@ public class NavigationActivity extends AppCompatActivity
                     .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
                             android.R.animator.fade_in,android.R.animator.fade_out)
                     .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
+        }
+    }
+
+    public void onStart(){
+        super.onStart();
+        final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+        if (pref.getBoolean(getString(R.string.cloud_key),false)) {
+            if (gac == null)
+                gac = new GoogleApiClient.Builder(this)
+                        .addApi(Drive.API)
+                        .addScope(Drive.SCOPE_FILE)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .build();
+            gac.connect();
+            AsyncTask<Void,Void,Void> tmpLoop = new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    if (!gac.isConnected()){
+                        while(!completeFail){
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            System.out.println("Checking Connect");
+                            if (gac.isConnected()){
+                                System.out.println("Init Connect");
+                                new InitialConnect(NavigationActivity.this,gac);
+                                break;
+                            }
+                        }
+                    }else{
+                        new InitialConnect(NavigationActivity.this,gac);
+                    }
+                    return null;
+                }
+            };
+            tmpLoop.execute();
         }
     }
 
@@ -134,9 +147,6 @@ public class NavigationActivity extends AppCompatActivity
                     .replace(R.id.content_navigation,GuideMain.newInstance()).commit();
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
-            Bundle b = new Bundle();
-            b.putParcelable("gac", (Parcelable) gac);
-            intent.replaceExtras(b);
             startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -153,24 +163,35 @@ public class NavigationActivity extends AppCompatActivity
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
             try {
-                connectionResult.startResolutionForResult(this, 55);
+                connectionResult.startResolutionForResult(this, 1);
             } catch (IntentSender.SendIntentException e) {
                 completeFail = true;
             }
         } else {
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+            System.out.println("Complete fail");
             completeFail = true;
         }
     }
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         switch (requestCode) {
-            case 55:
+            case 1:
                 if (resultCode == RESULT_OK) {
+                    System.out.println("ok");
                     gac.connect();
                 }else{
+                    System.out.println("here");
                     completeFail = true;
                 }
                 break;
         }
     }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        System.out.println("Connected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {}
 }

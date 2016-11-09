@@ -4,10 +4,13 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -22,20 +25,21 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 
 import java.io.File;
 
-public class Settings extends AppCompatActivity {
+public class Settings extends AppCompatActivity{
 
     GoogleApiClient gac;
+    boolean completeFail = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Bundle b = this.getIntent().getExtras();
-        if (b != null){
-            gac = b.getParcelable("gac");
-        }
+        gac = ((SWrpg)getApplicationContext()).getGac();
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (pref.getBoolean(getString(R.string.light_side_key),false)){
             setTheme(R.style.LightSide);
@@ -127,6 +131,14 @@ public class Settings extends AppCompatActivity {
                 }else{
                     Toast.makeText(Settings.this,R.string.dark_side_toast,Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+        Switch cloud = (Switch)findViewById(R.id.cloud_switch);
+        cloud.setChecked(pref.getBoolean(getString(R.string.cloud_key),false));
+        cloud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                pref.edit().putBoolean(getString(R.string.cloud_key),b).apply();
             }
         });
     }
