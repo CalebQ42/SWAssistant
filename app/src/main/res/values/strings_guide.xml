@@ -2,8 +2,8 @@
 <resources>
     <string name="dice_pool_title">Building a Dice Pool:</string>
     <string name="dice_pool_main">2 Numbers:\nskill rank, skill base characteristic rank</string>
-    <string name="dice_pool_ability">= Lesser number</string>
-    <string name="dice_pool_proficiency">= Greater number - Lesser number</string>
+    <string name="dice_pool_ability">= Greater number - Lesser number</string>
+    <string name="dice_pool_proficiency">= Lesser number</string>
     <string name="dice_pool_difficulty">= Difficulty</string>
     <string name="dice_pool_boost">= Number of advantages</string>
     <string name="dice_pool_setback">= Number of disadvantages</string>
