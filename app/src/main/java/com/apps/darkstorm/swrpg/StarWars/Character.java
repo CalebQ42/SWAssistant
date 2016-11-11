@@ -66,7 +66,7 @@ public class Character {
     public int credits;
     public int morality,conflict;
     public String desc = "";
-    boolean[] showCard = new boolean[16];
+    private boolean[] showCard = new boolean[16];
     public boolean darkSide;
     public int age;
     public Notes nts = new Notes();
@@ -98,6 +98,8 @@ public class Character {
             AsyncTask<Void,Void,Void> blablah = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
+                    Character.this.save(Character.this.getFileLocation(main));
+                    cloudSave(gac,getFileId(gac,fold),false);
                     Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
@@ -137,6 +139,7 @@ public class Character {
             Thread tmp = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    Character.this.save(Character.this.getFileLocation(main));
                     Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
@@ -169,7 +172,7 @@ public class Character {
     public void stopEditing(){
         editing = false;
     }
-    public void save(String filename){
+    void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
         sl.addSave(ID);
         sl.addSave(name);
@@ -208,7 +211,7 @@ public class Character {
         sl.addSave(nts.serialObject());
         sl.save();
     }
-    public void reLoad(String filename){
+    void reLoad(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] vals = sl.load();
         switch (vals.length){
@@ -251,7 +254,7 @@ public class Character {
                 nts.loadFromObject(vals[34]);
         }
     }
-    public void reLoad(GoogleApiClient gac,DriveId fil){
+    void reLoad(GoogleApiClient gac,DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] vals = sl.load(gac);
         switch (vals.length){
@@ -344,6 +347,7 @@ public class Character {
         }
         return fi;
     }
+    @SuppressWarnings("CloneDoesntCallSuperClone")
     public Character clone(){
         Character tmp = new Character();
         tmp.ID = ID;
@@ -672,7 +676,7 @@ public class Character {
             top.findViewById(R.id.desc_main).setVisibility(View.GONE);
         }
     }
-    public void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
+    void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
         if (fil != null) {
             DriveSaveLoad sl = new DriveSaveLoad(fil);
             sl.addSave(ID);

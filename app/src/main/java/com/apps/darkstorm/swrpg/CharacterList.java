@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -60,11 +61,13 @@ public class CharacterList extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int max = -1;
+                ArrayList<Integer> has = new ArrayList<>();
                 for (Character chara:chars){
-                    if (chara.ID>max){
-                        max = chara.ID;
-                    }
+                    has.add(chara.ID);
+                }
+                int max = 0;
+                while(has.contains(max)){
+                    max++;
                 }
                 getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
                         android.R.anim.fade_in,android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max+1,gac))
@@ -108,6 +111,55 @@ public class CharacterList extends Fragment {
                         snack.dismiss();
                     }
                     fab.setEnabled(true);
+                }else if(in.arg1 == -1){
+                    Snackbar fail = Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG);
+                    fail.setAction(R.string.retry, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            async = new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected Void doInBackground(Void... voids) {
+                                    final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
+                                    Message snack = mainHandle.obtainMessage();
+                                    snack.arg1 = 100;
+                                    mainHandle.sendMessage(snack);
+                                    if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                                        int timeout = 0;
+                                        if (gac == null || (!gac.isConnected() && gac.isConnecting())) {
+                                            while ((gac == null || !gac.isConnected()) && timeout < 33) {
+                                                try {
+                                                    Thread.sleep(300);
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                timeout++;
+                                            }
+                                            if (timeout < 33) {
+                                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
+                                                dlc.saveToFile(CharacterList.this.getContext(),gac);
+                                                System.out.println("Loaded");
+                                            }else{
+                                                Message timed = mainHandle.obtainMessage();
+                                                timed.arg1 = -1;
+                                                mainHandle.sendMessage(timed);
+                                            }
+                                        }else if(gac != null && gac.isConnected()){
+                                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
+                                            dlc.saveToFile(CharacterList.this.getContext(),gac);
+                                            System.out.println("Loaded");
+                                        }
+                                    }
+                                    LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                                    Message tmp = mainHandle.obtainMessage();
+                                    tmp.obj = lc.chars;
+                                    mainHandle.sendMessage(tmp);
+                                    return null;
+                                }
+                            };
+                            async.execute();
+                        }
+                    });
+                    fail.show();
                 }
             }
         };
@@ -119,18 +171,17 @@ public class CharacterList extends Fragment {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
         }else {
-            final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
-            final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
             async = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
+                    final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
                     Message snack = mainHandle.obtainMessage();
                     snack.arg1 = 100;
                     mainHandle.sendMessage(snack);
                     if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                         int timeout = 0;
-                        if (gac == null || !gac.isConnected() && gac.isConnecting()) {
-                            while ((gac == null || !gac.isConnected() || gac.isConnecting()) && timeout < 33) {
+                        if (gac == null || (!gac.isConnected() && gac.isConnecting())) {
+                            while ((gac == null || !gac.isConnected()) && timeout < 33) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {
@@ -138,15 +189,22 @@ public class CharacterList extends Fragment {
                                 }
                                 timeout++;
                             }
-                        }
-                        if (timeout < 33) {
+                            if (timeout < 33) {
+                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
+                                dlc.saveToFile(CharacterList.this.getContext(),gac);
+                                System.out.println("Loaded");
+                            }else{
+                                Message timed = mainHandle.obtainMessage();
+                                timed.arg1 = -1;
+                                mainHandle.sendMessage(timed);
+                            }
+                        }else if(gac != null && gac.isConnected()){
                             DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                            dlc.saveToFile(CharacterList.this.getContext());
-                            System.out.println(dlc.chars.size());
+                            dlc.saveToFile(CharacterList.this.getContext(),gac);
+                            System.out.println("Loaded");
                         }
                     }
                     LoadChars lc = new LoadChars(CharacterList.this.getContext());
-                    System.out.println(lc.chars.size());
                     Message tmp = mainHandle.obtainMessage();
                     tmp.obj = lc.chars;
                     mainHandle.sendMessage(tmp);
@@ -178,16 +236,19 @@ public class CharacterList extends Fragment {
         void onListInteraction();
     }
 
-    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
         if (requestCode == 50 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
             async = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
+                    Message snack = mainHandle.obtainMessage();
+                    snack.arg1 = 100;
+                    mainHandle.sendMessage(snack);
                     if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                         int timeout = 0;
-                        if (gac == null || !gac.isConnected() &&gac.isConnecting()) {
-                            while (gac == null || !gac.isConnected() || gac.isConnecting() || timeout >=10) {
+                        if (gac == null || !gac.isConnected() && gac.isConnecting()) {
+                            while ((gac == null || !gac.isConnected() || gac.isConnecting()) && timeout < 33) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {
@@ -196,10 +257,14 @@ public class CharacterList extends Fragment {
                                 timeout++;
                             }
                         }
-                        DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                        dlc.saveToFile(CharacterList.this.getContext());
+                        if (timeout < 33) {
+                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
+                            dlc.saveToFile(CharacterList.this.getContext(),gac);
+                            System.out.println(dlc.chars.size());
+                        }
                     }
                     LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                    System.out.println(lc.chars.size());
                     Message tmp = mainHandle.obtainMessage();
                     tmp.obj = lc.chars;
                     mainHandle.sendMessage(tmp);

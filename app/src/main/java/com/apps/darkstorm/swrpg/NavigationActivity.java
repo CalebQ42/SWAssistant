@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
@@ -120,7 +121,7 @@ public class NavigationActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.universeFab);
         int id = item.getItemId();
         if (id == R.id.nav_characters){
@@ -163,7 +164,8 @@ public class NavigationActivity extends AppCompatActivity
                 completeFail = true;
             }
         } else {
-            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+            GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
+            gaa.getErrorDialog(this, connectionResult.getErrorCode(), 0).show();
             System.out.println("Complete fail");
             completeFail = true;
         }
@@ -204,7 +206,7 @@ public class NavigationActivity extends AppCompatActivity
     public void onNoteInteraction() {
 
     }
-    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
