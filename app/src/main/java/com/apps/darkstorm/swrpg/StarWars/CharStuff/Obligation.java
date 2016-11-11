@@ -20,4 +20,10 @@ public class Obligation{
                 val = (int)tmp[1];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Obligation))
+            return false;
+        Obligation in = (Obligation)obj;
+        return in.name.equals(name) && in.val == val;
+    }
 }

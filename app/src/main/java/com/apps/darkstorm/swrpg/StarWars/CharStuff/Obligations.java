@@ -53,4 +53,16 @@ public class Obligations{
         }
         o = out.toArray(o);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Obligations))
+            return false;
+        Obligations in = (Obligations)obj;
+        if(in.o.length != o.length)
+            return false;
+        for (int i = 0;i<o.length;i++){
+            if (!in.o[i].equals(o[i]))
+                return false;
+        }
+        return true;
+    }
 }

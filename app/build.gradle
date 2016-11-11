@@ -10,11 +10,11 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.apps.darkstorm.swrpg"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName '2.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,12 +28,12 @@ android {
     }
     productFlavors {
         freeConfig {
-            versionName '3.0.2'
+            versionName '3.0.3'
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 21
+            versionCode 22
             signingConfig signingConfigs.config
         }
         paidConfig {
@@ -41,8 +41,8 @@ android {
             applicationId 'com.apps.darkstorm.swrpg.donate'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 21
-            versionName '3.0.2'
+            versionCode 22
+            versionName '3.0.3'
             signingConfig signingConfigs.config
         }
     }

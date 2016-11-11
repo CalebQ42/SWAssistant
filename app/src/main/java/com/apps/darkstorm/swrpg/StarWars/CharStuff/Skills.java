@@ -53,4 +53,16 @@ public class Skills{
         }
         sk = out.toArray(sk);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Skills))
+            return false;
+        Skills in = (Skills)obj;
+        if(in.sk.length != sk.length)
+            return false;
+        for (int i = 0;i<sk.length;i++){
+            if (!in.sk[i].equals(sk[i]))
+                return false;
+        }
+        return true;
+    }
 }

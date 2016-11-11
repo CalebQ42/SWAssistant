@@ -53,4 +53,16 @@ public class ForcePowers{
         }
         fp = out.toArray(fp);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof ForcePowers))
+            return false;
+        ForcePowers in = (ForcePowers)obj;
+        if(in.fp.length != fp.length)
+            return false;
+        for (int i = 0;i<fp.length;i++){
+            if (!in.fp[i].equals(fp[i]))
+                return false;
+        }
+        return true;
+    }
 }

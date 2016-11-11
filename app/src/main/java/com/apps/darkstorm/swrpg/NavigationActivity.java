@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -82,17 +83,17 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     public void onStart(){
-            final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
-            if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                if (gac == null)
-                    gac = new GoogleApiClient.Builder(this)
-                            .addApi(Drive.API)
-                            .addScope(Drive.SCOPE_FILE)
-                            .addConnectionCallbacks(this)
-                            .addOnConnectionFailedListener(this)
-                            .build();
-                gac.connect();
-            }
+        final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+            if (gac == null)
+                gac = new GoogleApiClient.Builder(this)
+                        .addApi(Drive.API)
+                        .addScope(Drive.SCOPE_FILE)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .build();
+            gac.connect();
+        }
         super.onStart();
     }
 
@@ -123,22 +124,46 @@ public class NavigationActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.universeFab);
         int id = item.getItemId();
         if (id == R.id.nav_characters){
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                            android.R.anim.fade_in,android.R.anim.fade_out)
-                    .replace(R.id.content_navigation,CharacterList.newInstance(gac)).addToBackStack("toCharacters").commit();
+            Fragment frag = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+            if (frag instanceof CharacterList) {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.content_navigation, CharacterList.newInstance(gac)).addToBackStack("toCharacters").commit();
+            }
         }else if (id == R.id.nav_ships){
             Toast.makeText(this,R.string.ship_coming_soon_text,Toast.LENGTH_LONG).show();
         }else if(id == R.id.nav_dice){
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                            android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("toDice")
-                    .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
+            Fragment frag = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+            if (frag instanceof DiceFragment) {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.content_navigation, DiceFragment.newInstance()).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toDice")
+                        .replace(R.id.content_navigation, DiceFragment.newInstance()).commit();
+            }
         }else if(id == R.id.nav_guide){
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                            android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("toGuide")
-                    .replace(R.id.content_navigation,GuideMain.newInstance()).commit();
+            Fragment frag = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+            if (frag instanceof GuideMain) {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.content_navigation, GuideMain.newInstance()).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toGuide")
+                        .replace(R.id.content_navigation, GuideMain.newInstance()).commit();
+            }
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
             startActivity(intent);
@@ -183,14 +208,7 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                new InitialConnect(NavigationActivity.this, gac);
-                return null;
-            }
-        };
-        async.execute();
+        System.out.println("Connected");
     }
 
     @Override

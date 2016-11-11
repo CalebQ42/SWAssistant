@@ -53,4 +53,16 @@ public class Dutys{
         }
         d = out.toArray(d);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Dutys))
+            return false;
+        Dutys in = (Dutys)obj;
+        if(in.d.length != d.length)
+            return false;
+        for (int i = 0;i<d.length;i++){
+            if (!in.d[i].equals(d[i]))
+                return false;
+        }
+        return true;
+    }
 }

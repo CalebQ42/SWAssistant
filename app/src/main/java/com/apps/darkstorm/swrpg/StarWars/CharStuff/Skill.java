@@ -43,4 +43,10 @@ public class Skill{
                 career = (boolean)tmp[3];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Skill))
+            return false;
+        Skill in = (Skill)obj;
+        return in.name.equals(name) && in.val == val && in.baseChar == baseChar && in.career == career;
+    }
 }

@@ -20,4 +20,10 @@ public class Duty{
                 val = (int)tmp[1];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Duty))
+            return false;
+        Duty in = (Duty)obj;
+        return in.name.equals(name) && in.val == val;
+    }
 }

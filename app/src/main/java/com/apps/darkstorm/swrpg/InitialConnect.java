@@ -20,9 +20,9 @@ public class InitialConnect {
         MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
         DriveId charsFold = null;
         for (Metadata met:metBuf){
+            System.out.println(met.getTitle());
             if (met.isFolder() && met.getTitle().equals("SWChars")){
                 charsFold = met.getDriveId();
-                break;
             }
         }
         if (charsFold == null){

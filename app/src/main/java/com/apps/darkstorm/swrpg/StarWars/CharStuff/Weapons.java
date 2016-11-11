@@ -64,4 +64,16 @@ public class Weapons{
         }
         w = out.toArray(w);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Weapons))
+            return false;
+        Weapons in = (Weapons)obj;
+        if(in.w.length != w.length)
+            return false;
+        for (int i = 0;i<w.length;i++){
+            if (!in.w[i].equals(w[i]))
+                return false;
+        }
+        return true;
+    }
 }

@@ -19,4 +19,10 @@ public class Note{
                 note = (String)tmp[1];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Note))
+            return false;
+        Note in = (Note)obj;
+        return in.title.equals(title) && in.note.equals(note);
+    }
 }

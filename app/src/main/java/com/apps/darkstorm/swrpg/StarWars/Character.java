@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Message;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.apps.darkstorm.swrpg.CharacterList;
 import com.apps.darkstorm.swrpg.CustVars.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.CustVars.SaveLoad;
 import com.apps.darkstorm.swrpg.R;
@@ -25,7 +23,6 @@ import com.apps.darkstorm.swrpg.StarWars.CharStuff.Talents;
 import com.apps.darkstorm.swrpg.StarWars.CharStuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
@@ -34,6 +31,7 @@ import com.google.android.gms.drive.MetadataChangeSet;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Character {
     //
@@ -42,18 +40,18 @@ public class Character {
     //  V      0-34       V
     //
     public int ID;
-    public String name;
+    public String name = "";
     //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
     public int[] charVals = new int[6];
     public Skills skills = new Skills();
-    public String species;
-    public String career;
+    public String species = "";
+    public String career = "";
     public Specializations specializations = new Specializations();
     public Talents talents = new Talents();
     public Inventory inv = new Inventory();
     public Weapons weapons = new Weapons();
     public ForcePowers forcePowers = new ForcePowers();
-    public String motivation;
+    public String motivation = "";
     public CriticalInjuries critInjuries = new CriticalInjuries();
     public String[] emotionalStr = new String[1];
     public String[] emotionalWeak = new String[1];
@@ -67,7 +65,7 @@ public class Character {
     public int force;
     public int credits;
     public int morality,conflict;
-    public String desc;
+    public String desc = "";
     boolean[] showCard = new boolean[16];
     public boolean darkSide;
     public int age;
@@ -100,18 +98,18 @@ public class Character {
             AsyncTask<Void,Void,Void> blablah = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    System.out.println("Editing");
                     Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
-                            saving = true;
-                            if (!equals(tmpChar)) {
+                            if (!Character.this.equals(tmpChar)) {
+                                saving = true;
+                                System.out.println("saving...");
                                 Character.this.save(Character.this.getFileLocation(main));
                                 if (fold != null && gac.isConnected())
                                     cloudSave(gac,getFileId(gac,fold),false);
                                 tmpChar = Character.this.clone();
+                                saving = false;
                             }
-                            saving = false;
                         }
                         try {
                             Thread.sleep(300);
@@ -120,13 +118,13 @@ public class Character {
                         }
                     }while (editing);
                     if (!saving) {
-                        saving = true;
-                        if (!equals(tmpChar)) {
+                        if (!Character.this.equals(tmpChar)) {
+                            saving = true;
                             Character.this.save(Character.this.getFileLocation(main));
                             if (fold != null && gac.isConnected())
                                 cloudSave(gac,getFileId(gac,fold),false);
+                            saving = false;
                         }
-                        saving = false;
                     }
                     return null;
                 }
@@ -143,12 +141,13 @@ public class Character {
                     Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
-                            saving = true;
-                            if (!equals(tmpChar)) {
+                            if (!Character.this.equals(tmpChar)) {
+                                saving = true;
+                                System.out.println("saving...");
                                 Character.this.save(Character.this.getFileLocation(main));
                                 tmpChar = Character.this.clone();
+                                saving = false;
                             }
-                            saving = false;
                         }
                         try {
                             Thread.sleep(300);
@@ -157,11 +156,11 @@ public class Character {
                         }
                     }while (editing);
                     if (!saving) {
-                        saving = true;
-                        if (!equals(tmpChar)) {
+                        if (!Character.this.equals(tmpChar)) {
+                            saving = true;
                             Character.this.save(Character.this.getFileLocation(main));
+                            saving = false;
                         }
-                        saving = false;
                     }
                 }
             });
@@ -347,12 +346,8 @@ public class Character {
         return fi;
     }
     public Character clone(){
-        Character tmp;
-        try {
-            tmp = (Character)super.clone();
-        }catch (CloneNotSupportedException e){
-            tmp = new Character(ID);
-        }
+        Character tmp = new Character();
+        tmp.ID = ID;
         tmp.name = name;
         tmp.charVals = charVals.clone();
         tmp.skills = skills;
@@ -364,6 +359,10 @@ public class Character {
         tmp.weapons = weapons;
         tmp.forcePowers = forcePowers;
         tmp.motivation = motivation;
+        if (tmp.motivation == null)
+            tmp.motivation = "";
+        if (motivation == null)
+            motivation = "";
         tmp.critInjuries = critInjuries;
         tmp.emotionalStr = emotionalStr.clone();
         tmp.emotionalWeak = emotionalWeak.clone();
@@ -716,45 +715,20 @@ public class Character {
             sl.save(gac,async);
         }
     }
-    public boolean equalsChar(Character chara){
-        try {
-            return chara.name.equals(name) ||
-                    chara.ID == ID ||
-                    Arrays.equals(chara.charVals, charVals) ||
-                    chara.skills.equals(skills) ||
-                    chara.species.equals(species) ||
-                    chara.career.equals(career) ||
-                    chara.specializations.equals(specializations) ||
-                    chara.talents.equals(talents) ||
-                    chara.inv.equals(inv) ||
-                    chara.weapons.equals(weapons) ||
-                    chara.forcePowers.equals(forcePowers) ||
-                    chara.motivation.equals(motivation) ||
-                    chara.critInjuries.equals(critInjuries) ||
-                    Arrays.equals(emotionalStr, chara.emotionalStr) ||
-                    Arrays.equals(chara.emotionalWeak, emotionalWeak) ||
-                    chara.duty.equals(duty) ||
-                    chara.obligation.equals(obligation) ||
-                    woundThresh == chara.woundThresh ||
-                    woundCur == chara.woundCur ||
-                    strainThresh == chara.strainThresh ||
-                    strainCur == chara.strainCur ||
-                    xpCur == chara.xpCur ||
-                    xpTot == chara.xpTot ||
-                    defMelee == chara.defMelee ||
-                    defRanged == chara.defRanged ||
-                    soak == chara.soak ||
-                    force == chara.force ||
-                    credits == chara.credits ||
-                    morality == chara.morality ||
-                    conflict == chara.conflict ||
-                    desc.equals(chara.desc) ||
-                    Arrays.equals(showCard, chara.showCard) ||
-                    darkSide == chara.darkSide ||
-                    age == chara.age ||
-                    nts.equals(chara.nts);
-        }catch(java.lang.NullPointerException ignored){
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Character))
             return false;
-        }
+        Character chara = (Character)obj;
+        return chara.name.equals(name) && chara.ID == ID && Arrays.equals(chara.charVals, charVals) &&
+                chara.skills.equals(skills) && chara.species.equals(species) && chara.career.equals(career) &&
+                chara.specializations.equals(specializations) && chara.talents.equals(talents) && chara.inv.equals(inv) &&
+                chara.weapons.equals(weapons) && chara.forcePowers.equals(forcePowers) && chara.motivation.equals(motivation) &&
+                chara.critInjuries.equals(critInjuries) && Arrays.equals(emotionalStr, chara.emotionalStr) &&
+                Arrays.equals(chara.emotionalWeak, emotionalWeak) && chara.duty.equals(duty) && chara.obligation.equals(obligation) &&
+                woundThresh == chara.woundThresh && woundCur == chara.woundCur && strainThresh == chara.strainThresh &&
+                strainCur == chara.strainCur && xpCur == chara.xpCur && xpTot == chara.xpTot && defMelee == chara.defMelee &&
+                defRanged == chara.defRanged && soak == chara.soak && force == chara.force && credits == chara.credits &&
+                morality == chara.morality && conflict == chara.conflict && Objects.equals(chara.desc, desc) &&
+                Arrays.equals(showCard, chara.showCard) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts);
     }
 }

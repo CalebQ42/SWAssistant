@@ -43,4 +43,16 @@ public class Specializations {
     public void loadFromObject(Object o){
         specs = (String[])o;
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Specializations))
+            return false;
+        Specializations in = (Specializations)obj;
+        if(in.specs.length != specs.length)
+            return false;
+        for (int i = 0;i<specs.length;i++){
+            if (!in.specs[i].equals(specs[i]))
+                return false;
+        }
+        return true;
+    }
 }

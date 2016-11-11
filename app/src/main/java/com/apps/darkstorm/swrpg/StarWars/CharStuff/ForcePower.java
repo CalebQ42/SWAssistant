@@ -19,4 +19,10 @@ public class ForcePower{
                 desc = (String)tmp[1];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof ForcePower))
+            return false;
+        ForcePower in = (ForcePower)obj;
+        return in.name.equals(name) && in.desc.equals(desc);
+    }
 }

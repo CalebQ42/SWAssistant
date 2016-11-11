@@ -17,23 +17,22 @@ public class DriveLoadChars {
     public ArrayList<Character> chars = new ArrayList<>();
     public ArrayList<Long> lastMod = new ArrayList<>();
     public DriveLoadChars(Context main, GoogleApiClient gac){
-        SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        String tmpId = pref.getString(main.getString(R.string.swchars_id_key),"");
-        if (tmpId.equals("")){
-            new InitialConnect(main,gac);
-        }
-        DriveId foldId = DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key),""));
-        DriveFolder charsFold = foldId.asDriveFolder();
-        DriveApi.MetadataBufferResult metbufres = charsFold.listChildren(gac).await();
-        for (Metadata met:metbufres.getMetadataBuffer()){
-            if (!met.isFolder() && met.getFileExtension().equals("char")){
-                Character tmp = new Character();
-                tmp.reLoad(gac,met.getDriveId());
-                chars.add(tmp);
-                lastMod.add(met.getModifiedDate().getTime());
+        if (main != null) {
+            new InitialConnect(main, gac);
+            SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            DriveId foldId = DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""));
+            DriveFolder charsFold = foldId.asDriveFolder();
+            DriveApi.MetadataBufferResult metbufres = charsFold.listChildren(gac).await();
+            for (Metadata met : metbufres.getMetadataBuffer()) {
+                if (!met.isFolder() && met.getFileExtension().equals("char")) {
+                    Character tmp = new Character();
+                    tmp.reLoad(gac, met.getDriveId());
+                    chars.add(tmp);
+                    lastMod.add(met.getModifiedDate().getTime());
+                }
             }
+            metbufres.release();
         }
-        metbufres.release();
     }
     public void saveToFile(Context main, boolean simple){
         if (!simple){

@@ -23,4 +23,12 @@ public class CriticalInjury{
                 severity = (int)tmp[2];
         }
     }
+    public boolean equals(Object obj){
+        if (obj instanceof CriticalInjury){
+            CriticalInjury in = (CriticalInjury)obj;
+            return in.name.equals(name) && in.desc.equals(desc) && in.severity == severity;
+        }else{
+            return false;
+        }
+    }
 }

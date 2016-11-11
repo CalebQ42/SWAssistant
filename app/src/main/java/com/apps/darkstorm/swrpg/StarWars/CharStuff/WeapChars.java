@@ -63,4 +63,16 @@ public class WeapChars{
         }
         wc = out.toArray(wc);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof WeapChars))
+            return false;
+        WeapChars in = (WeapChars)obj;
+        if(in.wc.length != wc.length)
+            return false;
+        for (int i = 0;i<wc.length;i++){
+            if (!in.wc[i].equals(wc[i]))
+                return false;
+        }
+        return true;
+    }
 }

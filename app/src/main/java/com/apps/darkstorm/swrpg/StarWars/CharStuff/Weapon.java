@@ -95,4 +95,12 @@ public class Weapon{
                 ammo = (int)tmp[12];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Weapon))
+            return false;
+        Weapon in = (Weapon)obj;
+        return in.name.equals(name) && in.dmg == dmg && in.crit == crit && in.hp == hp && in.range == range && in.skill == skill
+                && in.skillBase == skillBase && in.chars.equals(chars) && in.addBrawn == addBrawn && in.loaded == loaded && in.slug == slug
+                && in.itemState == itemState && in.ammo == ammo;
+    }
 }

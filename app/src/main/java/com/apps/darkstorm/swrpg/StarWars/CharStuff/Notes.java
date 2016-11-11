@@ -53,4 +53,16 @@ public class Notes{
         }
         ns = out.toArray(ns);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Notes))
+            return false;
+        Notes in = (Notes)obj;
+        if(in.ns.length != ns.length)
+            return false;
+        for (int i = 0;i<ns.length;i++){
+            if (!in.ns[i].equals(ns[i]))
+                return false;
+        }
+        return true;
+    }
 }

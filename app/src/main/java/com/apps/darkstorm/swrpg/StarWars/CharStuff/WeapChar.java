@@ -36,4 +36,10 @@ public class WeapChar{
                 adv = (int)tmp[2];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof WeapChar))
+            return false;
+        WeapChar in = (WeapChar)obj;
+        return in.name.equals(name) && in.val == val && in.adv == adv;
+    }
 }

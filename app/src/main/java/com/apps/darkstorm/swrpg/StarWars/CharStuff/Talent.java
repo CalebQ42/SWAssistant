@@ -23,4 +23,10 @@ public class Talent{
                 val = (int)tmp[2];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Talent))
+            return false;
+        Talent in = (Talent)obj;
+        return in.name.equals(name) && in.desc.equals(desc) && in.val == val;
+    }
 }

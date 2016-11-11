@@ -138,10 +138,10 @@ public class CharacterList extends Fragment {
                                 timeout++;
                             }
                         }
-                        System.out.println(timeout);
                         if (timeout < 33) {
                             DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
                             dlc.saveToFile(CharacterList.this.getContext(), false);
+                            System.out.println(dlc.chars.size());
                         }
                     }
                     LoadChars lc = new LoadChars(CharacterList.this.getContext());

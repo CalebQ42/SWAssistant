@@ -23,4 +23,10 @@ public class Item{
                 count = (int)tmp[2];
         }
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Item))
+            return false;
+        Item in = (Item)obj;
+        return in.name.equals(name) && in.desc.equals(desc) && in.count == count;
+    }
 }

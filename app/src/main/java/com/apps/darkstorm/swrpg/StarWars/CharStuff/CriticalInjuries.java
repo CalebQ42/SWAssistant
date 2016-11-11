@@ -54,4 +54,19 @@ public class CriticalInjuries{
         }
         critInj = out.toArray(critInj);
     }
+    public boolean equals(Object obj){
+        if (obj instanceof CriticalInjuries){
+            CriticalInjuries in = (CriticalInjuries)obj;
+            if (in.critInj.length!=critInj.length){
+                return false;
+            }
+            for (int i = 0;i<critInj.length;i++){
+                if (!critInj[i].equals(in.critInj[i]))
+                    return false;
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

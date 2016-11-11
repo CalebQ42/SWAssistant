@@ -53,4 +53,16 @@ public class Inventory{
         }
         inv = out.toArray(inv);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Inventory))
+            return false;
+        Inventory in = (Inventory)obj;
+        if(in.inv.length != inv.length)
+            return false;
+        for (int i = 0;i<inv.length;i++){
+            if (!in.inv[i].equals(inv[i]))
+                return false;
+        }
+        return true;
+    }
 }

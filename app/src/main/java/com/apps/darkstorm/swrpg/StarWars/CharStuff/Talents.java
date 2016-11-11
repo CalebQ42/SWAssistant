@@ -64,4 +64,16 @@ public class Talents{
         }
         tal = out.toArray(tal);
     }
+    public boolean equals(Object obj){
+        if (!(obj instanceof Talents))
+            return false;
+        Talents in = (Talents)obj;
+        if(in.tal.length != tal.length)
+            return false;
+        for (int i = 0;i<tal.length;i++){
+            if (!in.tal[i].equals(tal[i]))
+                return false;
+        }
+        return true;
+    }
 }
