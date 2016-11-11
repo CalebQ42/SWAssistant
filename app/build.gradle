@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+//noinspection GroovyMissingReturnStatement
 android {
     signingConfigs {
         config {
@@ -28,12 +29,12 @@ android {
     }
     productFlavors {
         freeConfig {
-            versionName '3.0.6'
+            versionName '3.0.7'
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 25
+            versionCode 26
             signingConfig signingConfigs.config
         }
         paidConfig {
@@ -41,8 +42,8 @@ android {
             applicationId 'com.apps.darkstorm.swrpg.donate'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 25
-            versionName '3.0.6'
+            versionCode 26
+            versionName '3.0.7'
             signingConfig signingConfigs.config
         }
     }

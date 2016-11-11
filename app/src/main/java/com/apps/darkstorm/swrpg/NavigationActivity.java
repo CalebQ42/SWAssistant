@@ -34,7 +34,6 @@ public class NavigationActivity extends AppCompatActivity
         CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
     GoogleApiClient gac;
-    boolean completeFail = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
@@ -86,13 +85,18 @@ public class NavigationActivity extends AppCompatActivity
     public void onStart(){
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-            if (gac == null)
+            if (gac == null) {
                 gac = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
                         .addScope(Drive.SCOPE_FILE)
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .build();
+                if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
+                }
+            }
             gac.connect();
         }
         super.onStart();
@@ -160,25 +164,19 @@ public class NavigationActivity extends AppCompatActivity
         if (connectionResult.hasResolution()) {
             try {
                 connectionResult.startResolutionForResult(this, 1);
-            } catch (IntentSender.SendIntentException e) {
-                completeFail = true;
-            }
+            } catch (IntentSender.SendIntentException ignored) {}
         } else {
             GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
             gaa.getErrorDialog(this, connectionResult.getErrorCode(), 0).show();
-            System.out.println("Complete fail");
-            completeFail = true;
         }
     }
+
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
                     System.out.println("ok");
                     gac.connect();
-                }else{
-                    System.out.println("here");
-                    completeFail = true;
                 }
                 break;
         }
