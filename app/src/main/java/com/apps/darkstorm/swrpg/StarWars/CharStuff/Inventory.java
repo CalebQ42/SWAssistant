@@ -65,4 +65,9 @@ public class Inventory{
         }
         return true;
     }
+    public Inventory clone(){
+        Inventory out = new Inventory();
+        out.inv = inv.clone();
+        return out;
+    }
 }

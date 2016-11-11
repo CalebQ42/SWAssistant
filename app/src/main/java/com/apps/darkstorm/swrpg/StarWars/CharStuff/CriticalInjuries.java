@@ -69,4 +69,9 @@ public class CriticalInjuries{
             return false;
         }
     }
+    public CriticalInjuries clone(){
+        CriticalInjuries out = new CriticalInjuries();
+        out.critInj = critInj.clone();
+        return out;
+    }
 }

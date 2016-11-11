@@ -65,4 +65,9 @@ public class Notes{
         }
         return true;
     }
+    public Notes clone(){
+        Notes out = new Notes();
+        out.ns = ns.clone();
+        return out;
+    }
 }

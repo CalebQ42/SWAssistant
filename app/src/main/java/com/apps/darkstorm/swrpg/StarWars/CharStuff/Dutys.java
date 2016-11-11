@@ -65,4 +65,9 @@ public class Dutys{
         }
         return true;
     }
+    public Dutys clone(){
+        Dutys out = new Dutys();
+        out.d = d.clone();
+        return out;
+    }
 }

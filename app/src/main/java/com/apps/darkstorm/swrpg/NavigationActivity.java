@@ -124,46 +124,22 @@ public class NavigationActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.universeFab);
         int id = item.getItemId();
         if (id == R.id.nav_characters){
-            Fragment frag = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
-            if (frag instanceof CharacterList) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                                android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
-            }else{
-                getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out)
                         .replace(R.id.content_navigation, CharacterList.newInstance(gac)).addToBackStack("toCharacters").commit();
-            }
         }else if (id == R.id.nav_ships){
             Toast.makeText(this,R.string.ship_coming_soon_text,Toast.LENGTH_LONG).show();
         }else if(id == R.id.nav_dice){
-            Fragment frag = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
-            if (frag instanceof DiceFragment) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                                android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.content_navigation, DiceFragment.newInstance()).commit();
-            }else{
-                getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toDice")
                         .replace(R.id.content_navigation, DiceFragment.newInstance()).commit();
-            }
         }else if(id == R.id.nav_guide){
-            Fragment frag = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
-            if (frag instanceof GuideMain) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                                android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.content_navigation, GuideMain.newInstance()).commit();
-            }else{
-                getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toGuide")
                         .replace(R.id.content_navigation, GuideMain.newInstance()).commit();
-            }
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
             startActivity(intent);

@@ -39,7 +39,7 @@ public class DriveSaveLoad {
                         out.writeObject(saveItems);
                         out.close();
                         contO.close();
-                        cont.commit(gac,null);
+                        cont.commit(gac,null).await();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -59,7 +59,7 @@ public class DriveSaveLoad {
                 out.writeObject(saveItems);
                 out.close();
                 contO.close();
-                cont.commit(gac,null);
+                cont.commit(gac,null).await();
             } catch (IOException e) {
                 e.printStackTrace();
             }

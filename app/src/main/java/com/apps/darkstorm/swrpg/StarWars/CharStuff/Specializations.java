@@ -55,4 +55,9 @@ public class Specializations {
         }
         return true;
     }
+    public Specializations clone(){
+        Specializations out = new Specializations();
+        out.specs = specs.clone();
+        return out;
+    }
 }

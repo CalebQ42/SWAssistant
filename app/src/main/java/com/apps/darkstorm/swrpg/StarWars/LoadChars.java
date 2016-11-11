@@ -8,10 +8,11 @@ import com.apps.darkstorm.swrpg.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class LoadChars {
     public ArrayList<Character> chars;
-    public ArrayList<Long> lastMod;
+    public ArrayList<Date> lastMod;
     public LoadChars(Context main){
         chars = new ArrayList<>();
         lastMod = new ArrayList<>();
@@ -49,7 +50,7 @@ public class LoadChars {
                     Character tmp = new Character();
                     tmp.reLoad(fi.getAbsolutePath());
                     chars.add(tmp);
-                    lastMod.add(fi.lastModified());
+                    lastMod.add(new Date(fi.lastModified()));
                 }
             }
         }

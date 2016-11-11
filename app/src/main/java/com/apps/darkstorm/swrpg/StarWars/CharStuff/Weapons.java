@@ -76,4 +76,9 @@ public class Weapons{
         }
         return true;
     }
+    public Weapons clone(){
+        Weapons out = new Weapons();
+        out.w = w.clone();
+        return out;
+    }
 }

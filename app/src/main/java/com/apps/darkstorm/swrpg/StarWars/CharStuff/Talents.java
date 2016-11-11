@@ -76,4 +76,9 @@ public class Talents{
         }
         return true;
     }
+    public Talents clone(){
+        Talents out = new Talents();
+        out.tal = tal.clone();
+        return out;
+    }
 }

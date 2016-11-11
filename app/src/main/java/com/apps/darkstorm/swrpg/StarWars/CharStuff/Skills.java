@@ -65,4 +65,9 @@ public class Skills{
         }
         return true;
     }
+    public Skills clone(){
+        Skills out = new Skills();
+        out.sk = sk.clone();
+        return out;
+    }
 }

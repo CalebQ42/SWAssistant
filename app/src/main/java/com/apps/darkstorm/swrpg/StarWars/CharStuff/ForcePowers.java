@@ -65,4 +65,9 @@ public class ForcePowers{
         }
         return true;
     }
+    public ForcePowers clone(){
+        ForcePowers out = new ForcePowers();
+        out.fp = fp.clone();
+        return out;
+    }
 }

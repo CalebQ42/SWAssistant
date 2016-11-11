@@ -105,8 +105,7 @@ public class Character {
                                 saving = true;
                                 System.out.println("saving...");
                                 Character.this.save(Character.this.getFileLocation(main));
-                                if (fold != null && gac.isConnected())
-                                    cloudSave(gac,getFileId(gac,fold),false);
+                                cloudSave(gac,getFileId(gac,fold),false);
                                 tmpChar = Character.this.clone();
                                 saving = false;
                             }
@@ -350,24 +349,24 @@ public class Character {
         tmp.ID = ID;
         tmp.name = name;
         tmp.charVals = charVals.clone();
-        tmp.skills = skills;
+        tmp.skills = skills.clone();
         tmp.species = species;
         tmp.career = career;
-        tmp.specializations = specializations;
-        tmp.talents = talents;
-        tmp.inv = inv;
-        tmp.weapons = weapons;
-        tmp.forcePowers = forcePowers;
+        tmp.specializations = specializations.clone();
+        tmp.talents = talents.clone();
+        tmp.inv = inv.clone();
+        tmp.weapons = weapons.clone();
+        tmp.forcePowers = forcePowers.clone();
         tmp.motivation = motivation;
         if (tmp.motivation == null)
             tmp.motivation = "";
         if (motivation == null)
             motivation = "";
-        tmp.critInjuries = critInjuries;
+        tmp.critInjuries = critInjuries.clone();
         tmp.emotionalStr = emotionalStr.clone();
         tmp.emotionalWeak = emotionalWeak.clone();
-        tmp.duty = duty;
-        tmp.obligation = obligation;
+        tmp.duty = duty.clone();
+        tmp.obligation = obligation.clone();
         tmp.woundThresh = woundThresh;
         tmp.woundCur = woundCur;
         tmp.strainThresh = strainThresh;
@@ -382,10 +381,10 @@ public class Character {
         tmp.morality = morality;
         tmp.conflict = conflict;
         tmp.desc = desc;
-        tmp.showCard = showCard;
+        tmp.showCard = showCard.clone();
         tmp.darkSide = darkSide;
         tmp.age = age;
-        tmp.nts = nts;
+        tmp.nts = nts.clone();
         return tmp;
     }
     public void resolveConflict(){
@@ -675,7 +674,6 @@ public class Character {
     }
     public void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
         if (fil != null) {
-            DriveFile file = fil.asDriveFile();
             DriveSaveLoad sl = new DriveSaveLoad(fil);
             sl.addSave(ID);
             sl.addSave(name);

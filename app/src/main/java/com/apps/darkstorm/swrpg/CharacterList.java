@@ -81,6 +81,7 @@ public class CharacterList extends Fragment {
                     for (int i = 0; i < chars.size(); i++) {
                         if (chars.get(i).ID == tmp.ID) {
                             ((LinearLayout) top.findViewById(R.id.mainLay)).removeViewAt(i);
+                            System.out.println(i);
                             break;
                         }
                     }
@@ -140,11 +141,12 @@ public class CharacterList extends Fragment {
                         }
                         if (timeout < 33) {
                             DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                            dlc.saveToFile(CharacterList.this.getContext(), false);
+                            dlc.saveToFile(CharacterList.this.getContext());
                             System.out.println(dlc.chars.size());
                         }
                     }
                     LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                    System.out.println(lc.chars.size());
                     Message tmp = mainHandle.obtainMessage();
                     tmp.obj = lc.chars;
                     mainHandle.sendMessage(tmp);
@@ -195,7 +197,7 @@ public class CharacterList extends Fragment {
                             }
                         }
                         DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                        dlc.saveToFile(CharacterList.this.getContext(), false);
+                        dlc.saveToFile(CharacterList.this.getContext());
                     }
                     LoadChars lc = new LoadChars(CharacterList.this.getContext());
                     Message tmp = mainHandle.obtainMessage();

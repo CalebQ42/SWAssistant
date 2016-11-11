@@ -65,4 +65,9 @@ public class Obligations{
         }
         return true;
     }
+    public Obligations clone(){
+        Obligations out = new Obligations();
+        out.o = o.clone();
+        return out;
+    }
 }
