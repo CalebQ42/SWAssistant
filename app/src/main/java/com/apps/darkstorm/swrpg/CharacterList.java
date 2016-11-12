@@ -47,6 +47,7 @@ public class CharacterList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     Handler mainHandle;
@@ -102,7 +103,7 @@ public class CharacterList extends Fragment {
                     ((LinearLayout)top.findViewById(R.id.mainLay)).removeAllViews();
                     for (Character chara:chars){
                         ((LinearLayout)top.findViewById(R.id.mainLay)).addView(new CharacterCard()
-                                .getCard(CharacterList.this,chara,mainHandle,gac));
+                                .getCard(CharacterList.this,chara,mainHandle,gac,false));
                     }
                     Message snack = mainHandle.obtainMessage();
                     snack.arg1 = -100;

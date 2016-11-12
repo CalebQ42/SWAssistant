@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="@string/gm_navigation_item"
+        android:id="@+id/nav_gm"
+        android:icon="@drawable/ic_contacts" />
     <item android:title="@string/profiles_navigation_group" >
         <menu >
             <item android:title="@string/character_navigation_item"

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.apps.darkstorm.swrpg.CharacterList">
+    tools:context="com.apps.darkstorm.swrpg.GMFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -11,12 +11,9 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:id="@+id/mainLay"
-            android:animateLayoutChanges="true"></LinearLayout>
+            android:orientation="vertical"
+            android:id="@+id/character_list" />
     </ScrollView>
-
 </FrameLayout>

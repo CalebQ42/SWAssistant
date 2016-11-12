@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gm_navigation_item">GM Mode</string>
+
     <string name="character_navigation_item">Characters</string>
     <string name="ship_navigation_item">Ships</string>
     <string name="dice_navigation_item">Dice</string>

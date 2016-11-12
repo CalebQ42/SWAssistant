@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,7 +31,7 @@ public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiceFragment.OnDiceInteractionListener,
         GuideMain.OnGuideInteractionListener, CharacterList.OnListInteractionListener, CharacterEditMain.OnFragmentInteractionListener,
         CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
-        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, GMFragment.OnGMInteractionListener {
     GoogleApiClient gac;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +170,16 @@ public class NavigationActivity extends AppCompatActivity
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
             startActivity(intent);
+        }else if(id == R.id.nav_gm){
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof GMFragment) {
+                Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+                getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toGuide")
+                        .replace(R.id.content_navigation, GMFragment.newInstance(gac)).commit();
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -211,21 +222,26 @@ public class NavigationActivity extends AppCompatActivity
     @Override
     public void onConnectionSuspended(int i) {}
 
-    @Override
-    public void onFragmentInteraction() {
-
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof GMFragment) {
+            Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+            getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
+        }
     }
 
     @Override
-    public void onListInteraction() {
-
-    }
+    public void onFragmentInteraction() {}
 
     @Override
-    public void onNoteInteraction() {
+    public void onListInteraction() {}
 
-    }
+    @Override
+    public void onNoteInteraction() {}
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    @Override
+    public void OnGMInteraction() {}
 }
