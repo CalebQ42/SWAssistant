@@ -26,8 +26,6 @@ import java.io.File;
 
 public class Settings extends AppCompatActivity{
 
-    boolean completeFail = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);

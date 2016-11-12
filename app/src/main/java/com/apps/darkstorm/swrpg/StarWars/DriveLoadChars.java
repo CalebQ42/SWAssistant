@@ -20,7 +20,7 @@ public class DriveLoadChars {
     private ArrayList<Date> lastMod = new ArrayList<>();
     public DriveLoadChars(Context main, GoogleApiClient gac){
         if (main != null && gac.isConnected()) {
-            new InitialConnect(main, gac);
+            InitialConnect.connect(main,gac);
             SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
             DriveId foldId = DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""));
             DriveFolder charsFold = foldId.asDriveFolder();
@@ -70,7 +70,8 @@ public class DriveLoadChars {
                         lc.chars.get(i).cloudSave(gac, lc.chars.get(i).getFileId(gac,
                                 DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""))), false);
                     } else {
-                        new File(lc.chars.get(i).getFileLocation(main)).delete();
+                        File tmp = new File(lc.chars.get(i).getFileLocation(main));
+                        tmp.delete();
                     }
                 }
             }
