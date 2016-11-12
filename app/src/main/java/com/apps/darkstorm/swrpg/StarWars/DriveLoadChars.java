@@ -2,7 +2,6 @@ package com.apps.darkstorm.swrpg.StarWars;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Environment;
 
 import com.apps.darkstorm.swrpg.InitialConnect;
 import com.apps.darkstorm.swrpg.R;

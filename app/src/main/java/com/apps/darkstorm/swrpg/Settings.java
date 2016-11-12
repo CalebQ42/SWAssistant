@@ -142,7 +142,7 @@ public class Settings extends AppCompatActivity{
             }
         });
         sync.setChecked(pref.getBoolean(getString(R.string.sync_key),true));
-        if (pref.getBoolean(getString(R.string.cloud_key),true))
+        if (pref.getBoolean(getString(R.string.cloud_key),false))
             sync.setVisibility(View.VISIBLE);
         else
             sync.setVisibility(View.GONE);

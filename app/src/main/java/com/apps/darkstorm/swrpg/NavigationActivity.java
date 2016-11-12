@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
@@ -82,7 +80,7 @@ public class NavigationActivity extends AppCompatActivity
         }
     }
 
-    public void onStart(){
+    public void onResume(){
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
             if (gac == null) {
@@ -107,7 +105,7 @@ public class NavigationActivity extends AppCompatActivity
                 System.out.println("Restarting");
             }
         }
-        super.onStart();
+        super.onResume();
     }
 
     @Override
