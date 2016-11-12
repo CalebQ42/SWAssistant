@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,7 +26,13 @@ import com.apps.darkstorm.swrpg.StarWars.DriveLoadChars;
 import com.apps.darkstorm.swrpg.StarWars.LoadChars;
 import com.apps.darkstorm.swrpg.UI.CharacterCard;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class CharacterList extends Fragment {
@@ -56,23 +64,30 @@ public class CharacterList extends Fragment {
         final View top = inflater.inflate(R.layout.fragment_character_list, container, false);
         chars = new ArrayList<>();
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
+        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         fab.show();
         fab.setImageResource(R.drawable.ic_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<Integer> has = new ArrayList<>();
-                for (Character chara:chars){
-                    has.add(chara.ID);
+                if (pref.getBoolean(getString(R.string.cloud_key),false) && pref.getBoolean(getString(R.string.sync_key),true) &&
+                        (gac == null || !gac.isConnected())){
+                    Snackbar snackbar = Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }else {
+                    ArrayList<Integer> has = new ArrayList<>();
+                    for (Character chara : chars) {
+                        has.add(chara.ID);
+                    }
+                    int max = 0;
+                    while (has.contains(max)) {
+                        max++;
+                    }
+                    getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max + 1, gac))
+                            .addToBackStack("Creating a new Character").commit();
+                    fab.hide();
                 }
-                int max = 0;
-                while(has.contains(max)){
-                    max++;
-                }
-                getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                        android.R.anim.fade_in,android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max+1,gac))
-                        .addToBackStack("Creating a new Character").commit();
-                fab.hide();
             }
         });
         mainHandle = new Handler(Looper.getMainLooper()){
@@ -103,6 +118,7 @@ public class CharacterList extends Fragment {
                     mainHandle.sendMessage(snack);
                 }
                 if(in.arg1 == 100){
+                    ((LinearLayout)top.findViewById(R.id.mainLay)).removeAllViews();
                     snack = Snackbar.make(top,R.string.loading_snack,Snackbar.LENGTH_INDEFINITE);
                     snack.show();
                     fab.setEnabled(false);
@@ -119,7 +135,6 @@ public class CharacterList extends Fragment {
                             async = new AsyncTask<Void, Void, Void>() {
                                 @Override
                                 protected Void doInBackground(Void... voids) {
-                                    final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
                                     Message snack = mainHandle.obtainMessage();
                                     snack.arg1 = 100;
                                     mainHandle.sendMessage(snack);
@@ -160,6 +175,9 @@ public class CharacterList extends Fragment {
                         }
                     });
                     fail.show();
+                }else if (in.arg1 == 20){
+                    Snackbar fail = Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG);
+                    fail.show();
                 }
             }
         };
@@ -181,7 +199,7 @@ public class CharacterList extends Fragment {
                     if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                         int timeout = 0;
                         if (gac == null || (!gac.isConnected() && gac.isConnecting())) {
-                            while ((gac == null || !gac.isConnected()) && timeout < 33) {
+                            while (gac == null || (!gac.isConnected() && gac.isConnecting()) && timeout < 33) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {

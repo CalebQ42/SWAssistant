@@ -20,18 +20,20 @@ public class DriveLoadChars {
     public ArrayList<Character> chars = new ArrayList<>();
     private ArrayList<Date> lastMod = new ArrayList<>();
     public DriveLoadChars(Context main, GoogleApiClient gac){
-        if (main != null) {
+        if (main != null && gac.isConnected()) {
             new InitialConnect(main, gac);
             SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
             DriveId foldId = DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""));
             DriveFolder charsFold = foldId.asDriveFolder();
             DriveApi.MetadataBufferResult metbufres = charsFold.listChildren(gac).await();
             for (Metadata met : metbufres.getMetadataBuffer()) {
-                if (!met.isFolder() && met.getFileExtension().equals("char") && !met.isTrashed()) {
-                    Character tmp = new Character();
-                    tmp.reLoad(gac, met.getDriveId());
-                    chars.add(tmp);
-                    lastMod.add(met.getModifiedDate());
+                if (met.getFileExtension() != null) {
+                    if (!met.isFolder() && met.getFileExtension().equals("char") && !met.isTrashed()) {
+                        Character tmp = new Character();
+                        tmp.reLoad(gac, met.getDriveId());
+                        chars.add(tmp);
+                        lastMod.add(met.getModifiedDate());
+                    }
                 }
             }
             metbufres.release();
@@ -64,9 +66,13 @@ public class DriveLoadChars {
         }
         if (has.size() != lc.chars.size()){
             for (int i = 0;i<lc.chars.size();i++){
-                if (!has.contains(lc.chars.get(i).ID)){
-                    lc.chars.get(i).cloudSave(gac,lc.chars.get(i).getFileId(gac,
-                            DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""))),false);
+                if (!has.contains(lc.chars.get(i).ID)) {
+                    if (!pref.getBoolean(main.getString(R.string.sync_key), true)) {
+                        lc.chars.get(i).cloudSave(gac, lc.chars.get(i).getFileId(gac,
+                                DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""))), false);
+                    } else {
+                        new File(lc.chars.get(i).getFileLocation(main)).delete();
+                    }
                 }
             }
         }

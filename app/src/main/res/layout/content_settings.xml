@@ -68,6 +68,17 @@
             android:id="@+id/cloud_switch"
             android:textSize="18sp" />
 
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sync_switch"
+            android:text="@string/sync_text"
+            android:layout_marginStart="10dp"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:fontFamily="sans-serif-medium"
+            android:visibility="visible" />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

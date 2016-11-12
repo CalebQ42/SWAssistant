@@ -95,9 +95,17 @@ public class NavigationActivity extends AppCompatActivity
                 if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
+                    System.out.println("Restarting");
                 }
             }
             gac.connect();
+        }else{
+            gac = null;
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
+                System.out.println("Restarting");
+            }
         }
         super.onStart();
     }
@@ -129,22 +137,37 @@ public class NavigationActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.universeFab);
         int id = item.getItemId();
         if (id == R.id.nav_characters){
-            getSupportFragmentManager().beginTransaction()
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList) {
+                Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+                getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out)
                         .replace(R.id.content_navigation, CharacterList.newInstance(gac)).addToBackStack("toCharacters").commit();
+            }
         }else if (id == R.id.nav_ships){
             Toast.makeText(this,R.string.ship_coming_soon_text,Toast.LENGTH_LONG).show();
         }else if(id == R.id.nav_dice){
-            getSupportFragmentManager().beginTransaction()
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof DiceFragment) {
+                Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+                getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toDice")
                         .replace(R.id.content_navigation, DiceFragment.newInstance()).commit();
+            }
         }else if(id == R.id.nav_guide){
-            getSupportFragmentManager().beginTransaction()
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof GuideMain) {
+                Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+                getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toGuide")
                         .replace(R.id.content_navigation, GuideMain.newInstance()).commit();
+            }
         }else if(id == R.id.nav_settings){
             Intent intent = new Intent(this,Settings.class);
             startActivity(intent);

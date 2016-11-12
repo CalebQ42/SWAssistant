@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -70,40 +71,47 @@ public class CharacterCard {
         top.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                AlertDialog.Builder build = new AlertDialog.Builder(frag.getContext());
-                build.setMessage(R.string.character_delete);
-                build.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Message mess = handle.obtainMessage();
-                        mess.obj = chara;
-                        handle.sendMessage(mess);
-                        File charFile = new File(chara.getFileLocation(frag.getContext()));
-                        charFile.delete();
-                        final SharedPreferences pref = frag.getActivity().getSharedPreferences(
-                                frag.getString(R.string.preference_key), Context.MODE_PRIVATE);
-                        if (pref.getBoolean(frag.getString(R.string.cloud_key),false)){
-                            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
-                                @Override
-                                protected Void doInBackground(Void... voids) {
-                                    DriveId tmp = chara.getFileId(gac,
-                                            DriveId.decodeFromString(pref.getString(frag.getString(R.string.swchars_id_key),"")));
-                                    tmp.asDriveResource().delete(gac);
-                                    return null;
-                                }
-                            };
-                            async.execute();
+                final SharedPreferences pref = frag.getActivity().getSharedPreferences(
+                        frag.getString(R.string.preference_key), Context.MODE_PRIVATE);
+                if (pref.getBoolean(frag.getString(R.string.cloud_key),false) &&
+                        pref.getBoolean(frag.getString(R.string.sync_key),true) && (gac == null || !gac.isConnected())){
+                    Message mess = handle.obtainMessage();
+                    mess.arg1 = 20;
+                    handle.sendMessage(mess);
+                }else {
+                    AlertDialog.Builder build = new AlertDialog.Builder(frag.getContext());
+                    build.setMessage(R.string.character_delete);
+                    build.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Message mess = handle.obtainMessage();
+                            mess.obj = chara;
+                            handle.sendMessage(mess);
+                            File charFile = new File(chara.getFileLocation(frag.getContext()));
+                            charFile.delete();
+                            if (pref.getBoolean(frag.getString(R.string.cloud_key), false)) {
+                                AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... voids) {
+                                        DriveId tmp = chara.getFileId(gac,
+                                                DriveId.decodeFromString(pref.getString(frag.getString(R.string.swchars_id_key), "")));
+                                        tmp.asDriveResource().delete(gac);
+                                        return null;
+                                    }
+                                };
+                                async.execute();
+                            }
+                            dialogInterface.cancel();
                         }
-                        dialogInterface.cancel();
-                    }
-                });
-                build.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                build.show();
+                    });
+                    build.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    build.show();
+                }
                 return true;
             }
         });

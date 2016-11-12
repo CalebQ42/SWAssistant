@@ -128,11 +128,37 @@ public class Settings extends AppCompatActivity{
             }
         });
         Switch cloud = (Switch)findViewById(R.id.cloud_switch);
+        final Switch sync = (Switch)findViewById(R.id.sync_switch);
         cloud.setChecked(pref.getBoolean(getString(R.string.cloud_key),false));
         cloud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 pref.edit().putBoolean(getString(R.string.cloud_key),b).apply();
+                if (b){
+                    sync.setVisibility(View.VISIBLE);
+                }else{
+                    sync.setVisibility(View.GONE);
+                }
+            }
+        });
+        sync.setChecked(pref.getBoolean(getString(R.string.sync_key),true));
+        if (pref.getBoolean(getString(R.string.cloud_key),true))
+            sync.setVisibility(View.VISIBLE);
+        else
+            sync.setVisibility(View.GONE);
+        sync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                pref.edit().putBoolean(getString(R.string.sync_key),b).apply();
+            }
+        });
+        sync.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Dialog dia = new Dialog(Settings.this);
+                dia.setContentView(R.layout.dialog_sync_info);
+                dia.show();
+                return true;
             }
         });
     }

@@ -30,6 +30,13 @@ public class DiceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_dice, container, false);
+        ability = 0;
+        proficiency = 0;
+        difficulty = 0;
+        challenge = 0;
+        boost = 0;
+        setback = 0;
+        force = 0;
         FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
         fab.show();
         fab.setImageResource(R.drawable.ic_die_icon);
