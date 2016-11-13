@@ -14,6 +14,8 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,7 @@ public class GMFragment extends Fragment {
     Handler mainHandle;
     Snackbar snack;
     View top;
+    Character tmp = null;
 
     public GMFragment() {}
 
@@ -47,9 +50,17 @@ public class GMFragment extends Fragment {
         return fragment;
     }
 
+    public static GMFragment newInstance(GoogleApiClient gac, Character tmp) {
+        GMFragment fragment = new GMFragment();
+        fragment.gac = gac;
+        fragment.tmp = tmp;
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(false);
     }
 
     @Override
@@ -58,14 +69,16 @@ public class GMFragment extends Fragment {
         final View top = inflater.inflate(R.layout.fragment_gm, container, false);
         this.top = top;
         final LinearLayout chars = (LinearLayout)top.findViewById(R.id.character_list);
-        if (top.findViewById(R.id.fragment_holder) != null){
+        if (top.findViewById(R.id.fragment_holder).getVisibility() != View.GONE){
             big = true;
+        }else{
+            big = false;
         }
         mainHandle = new Handler(Looper.getMainLooper()){
             public void handleMessage(Message in){
                 if (in.obj instanceof Character){
                     if (!big){
-                        getFragmentManager().beginTransaction().replace(R.id.content_navigation,CharacterEditMain.newInstance((Character)in.obj,gac))
+                        getFragmentManager().beginTransaction().replace(R.id.content_navigation,CharacterEditMain.newInstance((Character)in.obj,gac, true))
                                 .addToBackStack("GMEdit").commit();
                     }else{
                         getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance((Character)in.obj,gac)).commit();
@@ -79,7 +92,7 @@ public class GMFragment extends Fragment {
                 }
                 if(in.arg1 == 100){
                     chars.removeAllViews();
-                    snack = Snackbar.make(chars,R.string.loading_snack,Snackbar.LENGTH_INDEFINITE);
+                    snack = Snackbar.make(top,R.string.loading_snack,Snackbar.LENGTH_INDEFINITE);
                     snack.show();
                 }else if(in.arg1 == -100){
                     if (snack != null && snack.isShownOrQueued()){
@@ -88,13 +101,18 @@ public class GMFragment extends Fragment {
                 }
             }
         };
+        if (big && tmp != null){
+            getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance(tmp,gac)).commit();
+        }
         return top;
     }
 
     public void onStart(){
         super.onStart();
-        if (top.findViewById(R.id.fragment_holder) != null){
+        if (top.findViewById(R.id.fragment_holder).getVisibility() != View.GONE){
             big = true;
+        }else{
+            big = false;
         }
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
@@ -102,35 +120,37 @@ public class GMFragment extends Fragment {
             async = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-                    Message snack = mainHandle.obtainMessage();
-                    snack.arg1 = 100;
-                    mainHandle.sendMessage(snack);
-                    if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                        int timeout = 0;
-                        while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                    try {
+                        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+                        Message snack = mainHandle.obtainMessage();
+                        snack.arg1 = 100;
+                        mainHandle.sendMessage(snack);
+                        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                            int timeout = 0;
+                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                timeout++;
                             }
-                            timeout++;
+                            if (timeout < 33) {
+                                DriveLoadChars dlc = new DriveLoadChars(GMFragment.this.getContext(), gac);
+                                dlc.saveToFile(GMFragment.this.getContext(), gac);
+                                System.out.println("Loaded");
+                            } else {
+                                Message timed = mainHandle.obtainMessage();
+                                timed.arg1 = -1;
+                                mainHandle.sendMessage(timed);
+                            }
                         }
-                        if (timeout < 33) {
-                            DriveLoadChars dlc = new DriveLoadChars(GMFragment.this.getContext(), gac);
-                            dlc.saveToFile(GMFragment.this.getContext(),gac);
-                            System.out.println("Loaded");
-                        }else{
-                            Message timed = mainHandle.obtainMessage();
-                            timed.arg1 = -1;
-                            mainHandle.sendMessage(timed);
-                        }
-                    }
-                    LoadChars lc = new LoadChars(GMFragment.this.getContext());
-                    Message tmp = mainHandle.obtainMessage();
-                    tmp.obj = lc.chars;
-                    tmp.arg1 = -100;
-                    mainHandle.sendMessage(tmp);
+                        LoadChars lc = new LoadChars(GMFragment.this.getContext());
+                        Message tmp = mainHandle.obtainMessage();
+                        tmp.obj = lc.chars;
+                        tmp.arg1 = -100;
+                        mainHandle.sendMessage(tmp);
+                    }catch(IllegalStateException ignored){}
                     async = null;
                     return null;
                 }
@@ -152,6 +172,11 @@ public class GMFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        if (top.findViewById(R.id.fragment_holder).getVisibility() != View.GONE){
+            big = true;
+        }else{
+            big = false;
+        }
         super.onDetach();
         mListener = null;
     }

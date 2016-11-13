@@ -20,6 +20,7 @@ public class CharacterEditMain extends Fragment {
     private OnFragmentInteractionListener mListener;
     Character chara;
     GoogleApiClient gac;
+    boolean gm = false;
 
     public CharacterEditMain() {}
 
@@ -27,6 +28,14 @@ public class CharacterEditMain extends Fragment {
         CharacterEditMain fragment = new CharacterEditMain();
         fragment.chara = character;
         fragment.gac = gac;
+        return fragment;
+    }
+
+    public static CharacterEditMain newInstance(Character character, GoogleApiClient gac,boolean gm) {
+        CharacterEditMain fragment = new CharacterEditMain();
+        fragment.chara = character;
+        fragment.gac = gac;
+        fragment.gm = gm;
         return fragment;
     }
 

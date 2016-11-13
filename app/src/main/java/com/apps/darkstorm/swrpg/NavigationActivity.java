@@ -228,6 +228,12 @@ public class NavigationActivity extends AppCompatActivity
             Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
             getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
         }
+        if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterEditMain){
+            CharacterEditMain tmp = (CharacterEditMain)getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+            if (tmp.gm){
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_navigation, GMFragment.newInstance(gac,tmp.chara)).addToBackStack(null).commit();
+            }
+        }
     }
 
     @Override
@@ -238,6 +244,7 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onNoteInteraction() {}
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

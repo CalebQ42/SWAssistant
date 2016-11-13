@@ -39,39 +39,41 @@ public class DriveLoadChars {
         }
     }
     public void saveToFile(Context main, GoogleApiClient gac){
-        LoadChars lc = new LoadChars(main);
-        SharedPreferences pref = main.getSharedPreferences("prefs",Context.MODE_PRIVATE);
-        ArrayList<Integer> has = new ArrayList<>();
-        for (int i = 0;i<chars.size();i++){
-            boolean resolved = false;
-            for (int j = 0;j<lc.chars.size();j++){
-                if (chars.get(i).ID == lc.chars.get(j).ID){
-                    has.add(chars.get(i).ID);
-                    resolved = true;
-                    if (lastMod.get(i).before(lc.lastMod.get(j))){
-                        lc.chars.get(j).cloudSave(gac,lc.chars.get(j).getFileId(gac,
-                                DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""))),false);
-                    }else if (lastMod.get(i).after(lc.lastMod.get(j))){
-                        chars.get(i).save(chars.get(i).getFileLocation(main));
-                    }else if (!chars.get(i).equals(chars.get(j))){
-                        chars.get(i).save(chars.get(i).getFileLocation(main));
+        if (main != null) {
+            LoadChars lc = new LoadChars(main);
+            SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            ArrayList<Integer> has = new ArrayList<>();
+            for (int i = 0; i < chars.size(); i++) {
+                boolean resolved = false;
+                for (int j = 0; j < lc.chars.size(); j++) {
+                    if (chars.get(i).ID == lc.chars.get(j).ID) {
+                        has.add(chars.get(i).ID);
+                        resolved = true;
+                        if (lastMod.get(i).before(lc.lastMod.get(j))) {
+                            lc.chars.get(j).cloudSave(gac, lc.chars.get(j).getFileId(gac,
+                                    DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""))), false);
+                        } else if (lastMod.get(i).after(lc.lastMod.get(j))) {
+                            chars.get(i).save(chars.get(i).getFileLocation(main));
+                        } else if (!chars.get(i).equals(chars.get(j))) {
+                            chars.get(i).save(chars.get(i).getFileLocation(main));
+                        }
+                        break;
                     }
-                    break;
+                }
+                if (!resolved) {
+                    chars.get(i).save(chars.get(i).getFileLocation(main));
                 }
             }
-            if (!resolved){
-                chars.get(i).save(chars.get(i).getFileLocation(main));
-            }
-        }
-        if (has.size() != lc.chars.size()){
-            for (int i = 0;i<lc.chars.size();i++){
-                if (!has.contains(lc.chars.get(i).ID)) {
-                    if (!pref.getBoolean(main.getString(R.string.sync_key), true)) {
-                        lc.chars.get(i).cloudSave(gac, lc.chars.get(i).getFileId(gac,
-                                DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""))), false);
-                    } else {
-                        File tmp = new File(lc.chars.get(i).getFileLocation(main));
-                        tmp.delete();
+            if (has.size() != lc.chars.size()) {
+                for (int i = 0; i < lc.chars.size(); i++) {
+                    if (!has.contains(lc.chars.get(i).ID)) {
+                        if (!pref.getBoolean(main.getString(R.string.sync_key), true)) {
+                            lc.chars.get(i).cloudSave(gac, lc.chars.get(i).getFileId(gac,
+                                    DriveId.decodeFromString(pref.getString(main.getString(R.string.swchars_id_key), ""))), false);
+                        } else {
+                            File tmp = new File(lc.chars.get(i).getFileLocation(main));
+                            tmp.delete();
+                        }
                     }
                 }
             }

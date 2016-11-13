@@ -16,4 +16,13 @@
             android:orientation="vertical"
             android:id="@+id/character_list" />
     </ScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/fragment_holder">
+
+    </FrameLayout>
+
 </FrameLayout>

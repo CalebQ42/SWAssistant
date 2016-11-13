@@ -244,7 +244,7 @@ public class CharacterList extends Fragment {
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
-        if (requestCode == 50 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length == 1 && requestCode == 50 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
             async = new AsyncTask<Void, Void, Void>() {
                 @Override
@@ -255,28 +255,22 @@ public class CharacterList extends Fragment {
                     mainHandle.sendMessage(snack);
                     if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                         int timeout = 0;
-                        if (gac == null || (!gac.isConnected() && gac.isConnecting())) {
-                            while ((gac == null || !gac.isConnected()) && timeout < 33) {
-                                try {
-                                    Thread.sleep(300);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                timeout++;
+                        while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                            if (timeout < 33) {
-                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                                dlc.saveToFile(CharacterList.this.getContext(),gac);
-                                System.out.println("Loaded");
-                            }else{
-                                Message timed = mainHandle.obtainMessage();
-                                timed.arg1 = -1;
-                                mainHandle.sendMessage(timed);
-                            }
-                        }else if(gac != null && gac.isConnected()){
+                            timeout++;
+                        }
+                        if (timeout < 33) {
                             DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
                             dlc.saveToFile(CharacterList.this.getContext(),gac);
                             System.out.println("Loaded");
+                        }else{
+                            Message timed = mainHandle.obtainMessage();
+                            timed.arg1 = -1;
+                            mainHandle.sendMessage(timed);
                         }
                     }
                     LoadChars lc = new LoadChars(CharacterList.this.getContext());
