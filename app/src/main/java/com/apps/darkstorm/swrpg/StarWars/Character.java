@@ -102,14 +102,14 @@ public class Character {
                     Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
+                            saving = true;
                             if (!Character.this.equals(tmpChar)) {
-                                saving = true;
                                 System.out.println("saving...");
                                 Character.this.save(Character.this.getFileLocation(main));
                                 cloudSave(gac,getFileId(gac,fold),false);
                                 tmpChar = Character.this.clone();
-                                saving = false;
                             }
+                            saving = false;
                         }
                         try {
                             Thread.sleep(300);
@@ -118,13 +118,12 @@ public class Character {
                         }
                     }while (editing);
                     if (!saving) {
+                        saving = true;
                         if (!Character.this.equals(tmpChar)) {
-                            saving = true;
                             Character.this.save(Character.this.getFileLocation(main));
-                            if (fold != null && gac.isConnected())
-                                cloudSave(gac,getFileId(gac,fold),false);
-                            saving = false;
+                            cloudSave(gac,getFileId(gac,fold),false);
                         }
+                        saving = false;
                     }
                     return null;
                 }
@@ -142,13 +141,13 @@ public class Character {
                     Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
+                            saving = true;
                             if (!Character.this.equals(tmpChar)) {
-                                saving = true;
                                 System.out.println("saving...");
                                 Character.this.save(Character.this.getFileLocation(main));
                                 tmpChar = Character.this.clone();
-                                saving = false;
                             }
+                            saving = false;
                         }
                         try {
                             Thread.sleep(300);
@@ -157,11 +156,11 @@ public class Character {
                         }
                     }while (editing);
                     if (!saving) {
+                        saving = true;
                         if (!Character.this.equals(tmpChar)) {
-                            saving = true;
                             Character.this.save(Character.this.getFileLocation(main));
-                            saving = false;
                         }
+                        saving = false;
                     }
                 }
             });
@@ -216,7 +215,12 @@ public class Character {
         switch (vals.length){
             //later versions go here and fallthrough
             case 35:
-                ID = (int)vals[0];
+                String title = filename.substring(filename.lastIndexOf("/")+1);
+                System.out.println("Load Title File: " + title);
+                if (title.substring(0,title.indexOf(".")).equals(""))
+                    ID = (int)vals[0];
+                else
+                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
                 name = (String)vals[1];
                 charVals = (int[])vals[2];
                 skills.loadFromObject(vals[3]);
@@ -259,7 +263,12 @@ public class Character {
         switch (vals.length){
             //later versions go here and fallthrough
             case 35:
-                ID = (int)vals[0];
+                String title = fil.asDriveFile().getMetadata(gac).await().getMetadata().getTitle();
+                System.out.println("Load Title: " + title);
+                if (title.substring(0,title.indexOf(".")).equals(""))
+                    ID = (int)vals[0];
+                else
+                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
                 name = (String)vals[1];
                 charVals = (int[])vals[2];
                 skills.loadFromObject(vals[3]);
@@ -329,18 +338,16 @@ public class Character {
     public DriveId getFileId(GoogleApiClient gac,DriveId fold){
         String name = Integer.toString(ID) + ".char";
         DriveFolder folder = fold.asDriveFolder();
-        Boolean create = true;
         DriveId fi = null;
         DriveApi.MetadataBufferResult res = folder.listChildren(gac).await();
         for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isFolder() && met.getTitle().equals(name)){
-                create = false;
+            if (!met.isFolder() && met.getTitle().equals(name) && !met.isTrashed()){
                 fi = met.getDriveId();
                 break;
             }
         }
         res.release();
-        if (create){
+        if (fi == null){
             fi = folder.createFile(gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
                     .getDriveFile().getDriveId();
         }

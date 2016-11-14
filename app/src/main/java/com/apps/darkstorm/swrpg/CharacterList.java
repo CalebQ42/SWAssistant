@@ -101,9 +101,11 @@ public class CharacterList extends Fragment {
                     ArrayList<Character> charsNew = (ArrayList<Character>)in.obj;
                     chars = charsNew;
                     ((LinearLayout)top.findViewById(R.id.mainLay)).removeAllViews();
-                    for (Character chara:chars){
-                        ((LinearLayout)top.findViewById(R.id.mainLay)).addView(new CharacterCard()
-                                .getCard(CharacterList.this,chara,mainHandle,gac,false));
+                    if (CharacterList.this.getContext() != null) {
+                        for (Character chara : chars) {
+                            ((LinearLayout) top.findViewById(R.id.mainLay)).addView(new CharacterCard()
+                                    .getCard(CharacterList.this, chara, mainHandle, gac, false));
+                        }
                     }
                     Message snack = mainHandle.obtainMessage();
                     snack.arg1 = -100;
@@ -127,14 +129,14 @@ public class CharacterList extends Fragment {
                             async = new AsyncTask<Void, Void, Void>() {
                                 @Override
                                 protected Void doInBackground(Void... voids) {
-                                    final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-                                    Message snack = mainHandle.obtainMessage();
-                                    snack.arg1 = 100;
-                                    mainHandle.sendMessage(snack);
-                                    if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                                        int timeout = 0;
-                                        if (gac == null || !gac.isConnected()) {
-                                            while ((gac == null || !gac.hasConnectedApi(Drive.API)) && timeout < 33) {
+                                    try {
+                                        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+                                        Message snack = mainHandle.obtainMessage();
+                                        snack.arg1 = 100;
+                                        mainHandle.sendMessage(snack);
+                                        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                                            int timeout = 0;
+                                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
                                                 try {
                                                     Thread.sleep(300);
                                                 } catch (InterruptedException e) {
@@ -144,23 +146,19 @@ public class CharacterList extends Fragment {
                                             }
                                             if (timeout < 33) {
                                                 DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                                                dlc.saveToFile(CharacterList.this.getContext(),gac);
+                                                dlc.saveToFile(CharacterList.this.getContext(), gac);
                                                 System.out.println("Loaded");
-                                            }else{
+                                            } else {
                                                 Message timed = mainHandle.obtainMessage();
                                                 timed.arg1 = -1;
                                                 mainHandle.sendMessage(timed);
                                             }
-                                        }else if(gac != null && gac.isConnected()){
-                                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                                            dlc.saveToFile(CharacterList.this.getContext(),gac);
-                                            System.out.println("Loaded auto");
                                         }
-                                    }
-                                    LoadChars lc = new LoadChars(CharacterList.this.getContext());
-                                    Message tmp = mainHandle.obtainMessage();
-                                    tmp.obj = lc.chars;
-                                    mainHandle.sendMessage(tmp);
+                                        LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                                        Message tmp = mainHandle.obtainMessage();
+                                        tmp.obj = lc.chars;
+                                        mainHandle.sendMessage(tmp);
+                                    }catch(IllegalStateException ignored){}
                                     async = null;
                                     return null;
                                 }
@@ -186,34 +184,36 @@ public class CharacterList extends Fragment {
             async = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-                    Message snack = mainHandle.obtainMessage();
-                    snack.arg1 = 100;
-                    mainHandle.sendMessage(snack);
-                    if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                        int timeout = 0;
-                        while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                    try {
+                        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+                        Message snack = mainHandle.obtainMessage();
+                        snack.arg1 = 100;
+                        mainHandle.sendMessage(snack);
+                        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                            int timeout = 0;
+                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                timeout++;
                             }
-                            timeout++;
+                            if (timeout < 33) {
+                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
+                                dlc.saveToFile(CharacterList.this.getContext(), gac);
+                                System.out.println("Loaded");
+                            } else {
+                                Message timed = mainHandle.obtainMessage();
+                                timed.arg1 = -1;
+                                mainHandle.sendMessage(timed);
+                            }
                         }
-                        if (timeout < 33) {
-                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                            dlc.saveToFile(CharacterList.this.getContext(),gac);
-                            System.out.println("Loaded");
-                        }else{
-                            Message timed = mainHandle.obtainMessage();
-                            timed.arg1 = -1;
-                            mainHandle.sendMessage(timed);
-                        }
-                    }
-                    LoadChars lc = new LoadChars(CharacterList.this.getContext());
-                    Message tmp = mainHandle.obtainMessage();
-                    tmp.obj = lc.chars;
-                    mainHandle.sendMessage(tmp);
+                        LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                        Message tmp = mainHandle.obtainMessage();
+                        tmp.obj = lc.chars;
+                        mainHandle.sendMessage(tmp);
+                    }catch(IllegalStateException ignored){}
                     async = null;
                     return null;
                 }
@@ -249,34 +249,36 @@ public class CharacterList extends Fragment {
             async = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-                    Message snack = mainHandle.obtainMessage();
-                    snack.arg1 = 100;
-                    mainHandle.sendMessage(snack);
-                    if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                        int timeout = 0;
-                        while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                    try {
+                        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+                        Message snack = mainHandle.obtainMessage();
+                        snack.arg1 = 100;
+                        mainHandle.sendMessage(snack);
+                        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                            int timeout = 0;
+                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                timeout++;
                             }
-                            timeout++;
+                            if (timeout < 33) {
+                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
+                                dlc.saveToFile(CharacterList.this.getContext(), gac);
+                                System.out.println("Loaded");
+                            } else {
+                                Message timed = mainHandle.obtainMessage();
+                                timed.arg1 = -1;
+                                mainHandle.sendMessage(timed);
+                            }
                         }
-                        if (timeout < 33) {
-                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                            dlc.saveToFile(CharacterList.this.getContext(),gac);
-                            System.out.println("Loaded");
-                        }else{
-                            Message timed = mainHandle.obtainMessage();
-                            timed.arg1 = -1;
-                            mainHandle.sendMessage(timed);
-                        }
-                    }
-                    LoadChars lc = new LoadChars(CharacterList.this.getContext());
-                    Message tmp = mainHandle.obtainMessage();
-                    tmp.obj = lc.chars;
-                    mainHandle.sendMessage(tmp);
+                        LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                        Message tmp = mainHandle.obtainMessage();
+                        tmp.obj = lc.chars;
+                        mainHandle.sendMessage(tmp);
+                    }catch(IllegalStateException ignored){}
                     async = null;
                     return null;
                 }
