@@ -13,4 +13,6 @@
     <string name="loading_snack">Loading Characters…</string>
     <string name="cloud_fail">Can\'t connect to Google Drive</string>
     <string name="retry">Retry</string>
+
+    <string name="swipe_refresh">Swipe down to refresh character list</string>
 </resources>
