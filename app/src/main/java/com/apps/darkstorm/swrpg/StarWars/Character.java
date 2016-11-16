@@ -97,14 +97,13 @@ public class Character {
             AsyncTask<Void,Void,Void> blablah = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
+                    Character tmpChar = Character.this.clone();
                     Character.this.save(Character.this.getFileLocation(main));
                     cloudSave(gac,getFileId(gac,fold),false);
-                    Character tmpChar = Character.this.clone();
                     do{
                         if (!saving) {
                             saving = true;
                             if (!Character.this.equals(tmpChar)) {
-                                System.out.println("saving...");
                                 Character.this.save(Character.this.getFileLocation(main));
                                 cloudSave(gac,getFileId(gac,fold),false);
                                 tmpChar = Character.this.clone();
@@ -137,8 +136,8 @@ public class Character {
             Thread tmp = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Character.this.save(Character.this.getFileLocation(main));
                     Character tmpChar = Character.this.clone();
+                    Character.this.save(Character.this.getFileLocation(main));
                     do{
                         if (!saving) {
                             saving = true;
@@ -216,7 +215,6 @@ public class Character {
             //later versions go here and fallthrough
             case 35:
                 String title = filename.substring(filename.lastIndexOf("/")+1);
-                System.out.println("Load Title File: " + title);
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)vals[0];
                 else
@@ -264,7 +262,6 @@ public class Character {
             //later versions go here and fallthrough
             case 35:
                 String title = fil.asDriveFile().getMetadata(gac).await().getMetadata().getTitle();
-                System.out.println("Load Title: " + title);
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)vals[0];
                 else
