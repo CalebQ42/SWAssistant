@@ -1,4 +1,4 @@
-package com.apps.darkstorm.swrpg.UI;
+package com.apps.darkstorm.swrpg.UI.Char;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

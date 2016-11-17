@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,20 +12,17 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.apps.darkstorm.swrpg.StarWars.Character;
 import com.apps.darkstorm.swrpg.StarWars.DriveLoadChars;
 import com.apps.darkstorm.swrpg.StarWars.LoadChars;
-import com.apps.darkstorm.swrpg.UI.CharacterCard;
+import com.apps.darkstorm.swrpg.UI.Char.CharacterCard;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
-
-import com.apps.darkstorm.swrpg.StarWars.Character;
 
 import java.util.ArrayList;
 

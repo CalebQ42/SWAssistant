@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.apps.darkstorm.swrpg.StarWars.Character;
-import com.apps.darkstorm.swrpg.UI.SetupCharAttr;
+import com.apps.darkstorm.swrpg.UI.Char.SetupCharAttr;
 
 public class CharacterEditAttributes extends Fragment {
     private OnCharEditInteractionListener mListener;

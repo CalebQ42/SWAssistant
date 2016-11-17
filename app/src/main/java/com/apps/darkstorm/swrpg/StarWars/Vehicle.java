@@ -25,7 +25,7 @@ public class Vehicle {
     //
     //  |  Version 1  |
     //  |             |
-    //  V     0-18
+    //  V     0-19    V
     //
     public int ID;
     public String name = "";
@@ -47,6 +47,7 @@ public class Vehicle {
     public CriticalInjuries crits = new CriticalInjuries();
     private boolean[] showCards = new boolean[0];
     public String desc = "";
+    public String model = "";
     //
     //  ^                 ^
     //  |  Version 1 End  |
@@ -108,6 +109,7 @@ public class Vehicle {
         tmp.crits = crits.clone();
         tmp.showCards = showCards.clone();
         tmp.desc = desc;
+        tmp.model = model;
         return tmp;
     }
     public void startEditing(final Context main, final GoogleApiClient gac, final DriveId fold){
@@ -202,6 +204,7 @@ public class Vehicle {
         sl.addSave(crits.serialObject());
         sl.addSave(showCards);
         sl.addSave(desc);
+        sl.addSave(model);
         sl.save();
     }
     void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
@@ -226,6 +229,7 @@ public class Vehicle {
             sl.addSave(crits.serialObject());
             sl.addSave(showCards);
             sl.addSave(desc);
+            sl.addSave(model);
             sl.save(gac,async);
         }
     }
@@ -233,7 +237,8 @@ public class Vehicle {
         SaveLoad sl = new SaveLoad(filename);
         Object[] val = sl.load();
         switch (val.length){
-            case 19:
+            case 20:
+                model = (String)val[19];
                 desc = (String)val[18];
                 showCards = (boolean[])val[17];
                 crits.loadFromObject(val[16]);
@@ -263,7 +268,8 @@ public class Vehicle {
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] val = sl.load(gac);
         switch (val.length){
-            case 19:
+            case 20:
+                model = (String)val[19];
                 desc = (String)val[18];
                 showCards = (boolean[])val[17];
                 crits.loadFromObject(val[16]);
@@ -351,6 +357,6 @@ public class Vehicle {
                 && in.armor == armor && Arrays.equals(in.defense,defense) && totalDefense == in.totalDefense && in.hullTramaCur == hullTramaCur
                 && in.hullTramaThresh == hullTramaThresh && in.sysStressCur == sysStressCur && in.sysStressThresh == sysStressThresh
                 && in.encumCapacity == encumCapacity && in.passengerCapacity == passengerCapacity && in.hp == hp && in.weapons.equals(weapons)
-                && in.crits.equals(crits) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc);
+                && in.crits.equals(crits) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model);
     }
 }

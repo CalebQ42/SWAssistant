@@ -1,4 +1,4 @@
-package com.apps.darkstorm.swrpg.UI;
+package com.apps.darkstorm.swrpg.UI.Char;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,10 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.StarWars.CharStuff.Duty;
 import com.apps.darkstorm.swrpg.StarWars.Character;
 
-public class SpecializationLayout {
-    public LinearLayout SpecializationLayout(final Context main,final LinearLayout specLay,final Character chara,final String spec){
+public class DutyLayout {
+    public LinearLayout DutyLayout(final Context main, final LinearLayout dutyLay, final Character chara, final Duty d){
         LinearLayout top = new LinearLayout(main);
         LinearLayout.LayoutParams toplp =
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -30,39 +31,45 @@ public class SpecializationLayout {
         else
             top.setBackgroundResource(outVal.resourceId);
         final TextView name = new TextView(main);
-        LinearLayout.LayoutParams namelp =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams namelp = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         name.setLayoutParams(namelp);
         name.setTextSize(16);
         name.setTypeface(null, Typeface.BOLD);
+        name.setText(d.name);
         name.setGravity(Gravity.CENTER_HORIZONTAL);
-        name.setText(spec);
         top.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 final Dialog dia = new Dialog(main);
-                dia.setContentView(R.layout.dialog_simple_edit);
-                ((TextView)dia.findViewById(R.id.edit_name)).setText(main.getResources().getString(R.string.spec_text));
-                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
-                val.setText(spec);
-                dia.findViewById(R.id.edit_delete).setVisibility(View.VISIBLE);
-                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                dia.setContentView(R.layout.dialog_dutobli);
+                ((TextView)dia.findViewById(R.id.dutobli_name)).setText(main.getResources().getString(R.string.duty_text));
+                final EditText duty = (EditText)dia.findViewById(R.id.dutobli_edit);
+                duty.setText(d.name);
+                final EditText val = (EditText)dia.findViewById(R.id.dutobli_val);
+                val.setText(String.valueOf(d.val));
+                dia.findViewById(R.id.dutobli_delete).setVisibility(View.VISIBLE);
+                dia.findViewById(R.id.dutobli_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        chara.specializations.add(val.getText().toString());
-                        name.setText(val.getText().toString());
+                        d.name = duty.getText().toString();
+                        if (!val.getText().toString().equals(""))
+                            d.val = Integer.parseInt(val.getText().toString());
+                        else
+                            d.val = 0;
+                        name.setText(d.name);
                         dia.cancel();
                     }
                 });
-                dia.findViewById(R.id.edit_delete).setOnClickListener(new View.OnClickListener() {
+                dia.findViewById(R.id.dutobli_delete).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int tmp = chara.specializations.remove(spec);
-                        specLay.removeViewAt(tmp);
+                        int tmp = chara.duty.remove(d);
+                        dutyLay.removeViewAt(tmp);
                         dia.cancel();
                     }
                 });
-                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                dia.findViewById(R.id.dutobli_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dia.cancel();

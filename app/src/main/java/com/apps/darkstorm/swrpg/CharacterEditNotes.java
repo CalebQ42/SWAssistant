@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.apps.darkstorm.swrpg.StarWars.Character;
-import com.apps.darkstorm.swrpg.UI.NoteCard;
+import com.apps.darkstorm.swrpg.UI.Char.NoteCard;
 
 
 public class CharacterEditNotes extends Fragment {

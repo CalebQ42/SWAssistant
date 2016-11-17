@@ -1,4 +1,4 @@
-package com.apps.darkstorm.swrpg.UI;
+package com.apps.darkstorm.swrpg.UI.Char;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -26,6 +26,10 @@ import com.apps.darkstorm.swrpg.StarWars.CharStuff.Talent;
 import com.apps.darkstorm.swrpg.StarWars.CharStuff.WeapChar;
 import com.apps.darkstorm.swrpg.StarWars.CharStuff.Weapon;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.UI.CritInjLayout;
+import com.apps.darkstorm.swrpg.UI.ItemLayout;
+import com.apps.darkstorm.swrpg.UI.WeapCharLayout;
+import com.apps.darkstorm.swrpg.UI.WeaponLayout;
 
 public class SetupCharAttr {
     private int ability,proficiency,difficulty,challenge,boost,setback,force;
