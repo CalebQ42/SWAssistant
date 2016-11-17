@@ -33,6 +33,7 @@ public class VehicleEdit extends Fragment {
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_vehicle_edit, container, false);
         SetupVehicEdit.setup(top,vh);
+        vh.showHideCards(top);
         return top;
     }
 

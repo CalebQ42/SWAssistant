@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="model_text">Model:</string>
+    <string name="speed_text">Speed:</string>
+    <string name="silhouette_text">Silhouette:</string>
+    <string name="armor_text">Armor:</string>
+    <string name="handling_text">Handling:</string>
 </resources>

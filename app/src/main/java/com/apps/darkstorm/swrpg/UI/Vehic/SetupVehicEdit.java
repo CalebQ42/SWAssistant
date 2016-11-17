@@ -41,7 +41,157 @@ public class SetupVehicEdit {
         });
         //</editor-fold>
         //<editor-fold desc="basic_info">
-
+        final TextView model = (TextView)top.findViewById(R.id.model_text);
+        model.setText(vh.model);
+        top.findViewById(R.id.model_layout).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_simple_edit);
+                final EditText val = (EditText)top.findViewById(R.id.edit_val);
+                val.setText(vh.model);
+                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        vh.model = val.getText().toString();
+                        model.setText(vh.model);
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+                return true;
+            }
+        });
+        final TextView speed = (TextView)top.findViewById(R.id.speed_text);
+        speed.setText(String.valueOf(vh.speed));
+        top.findViewById(R.id.speed_layout).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_simple_edit);
+                final EditText val = (EditText)top.findViewById(R.id.edit_val);
+                val.setText(vh.speed);
+                val.setInputType(InputType.TYPE_CLASS_NUMBER);
+                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (val.getText().toString().equals(""))
+                            vh.speed = 0;
+                        else
+                            vh.speed = Integer.parseInt(val.getText().toString());
+                        speed.setText(vh.speed);
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+                return true;
+            }
+        });
+        final TextView silhouette = (TextView)top.findViewById(R.id.silhouette_text);
+        silhouette.setText(String.valueOf(vh.silhouette));
+        top.findViewById(R.id.silhouette_layout).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_simple_edit);
+                final EditText val = (EditText)top.findViewById(R.id.edit_val);
+                val.setText(vh.silhouette);
+                val.setInputType(InputType.TYPE_CLASS_NUMBER);
+                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (val.getText().toString().equals(""))
+                            vh.silhouette = 0;
+                        else
+                            vh.silhouette = Integer.parseInt(val.getText().toString());
+                        silhouette.setText(vh.silhouette);
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+                return true;
+            }
+        });
+        final TextView handling = (TextView)top.findViewById(R.id.handling_text);
+        handling.setText(String.valueOf(vh.handling));
+        top.findViewById(R.id.handling_layout).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_simple_edit);
+                final EditText val = (EditText)top.findViewById(R.id.edit_val);
+                val.setText(vh.handling);
+                val.setInputType(InputType.TYPE_CLASS_NUMBER);
+                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (val.getText().toString().equals(""))
+                            vh.handling = 0;
+                        else
+                            vh.handling = Integer.parseInt(val.getText().toString());
+                        handling.setText(vh.handling);
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+                return true;
+            }
+        });
+        final TextView armor = (TextView)top.findViewById(R.id.armor_text);
+        armor.setText(String.valueOf(vh.armor));
+        top.findViewById(R.id.armor_layout).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_simple_edit);
+                final EditText val = (EditText)top.findViewById(R.id.edit_val);
+                val.setText(vh.armor);
+                val.setInputType(InputType.TYPE_CLASS_NUMBER);
+                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (val.getText().toString().equals(""))
+                            vh.armor = 0;
+                        else
+                            vh.armor = Integer.parseInt(val.getText().toString());
+                        armor.setText(vh.armor);
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+                return true;
+            }
+        });
         //</editor-fold>
         //<editor-fold desc="">
         //</editor-fold>

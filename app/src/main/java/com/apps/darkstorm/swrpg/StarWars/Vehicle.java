@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.apps.darkstorm.swrpg.CustVars.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.CustVars.SaveLoad;
@@ -86,7 +88,20 @@ public class Vehicle {
     }
     //TBI
     public void showHideCards(final View top){
-        //TBI
+        ((Switch)top.findViewById(R.id.basic_info_switch)).setChecked(showCards[0]);
+        if (showCards[0])
+            top.findViewById(R.id.basic_info_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.basic_info_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.basic_info_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b)
+                    top.findViewById(R.id.basic_info_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.basic_info_layout).setVisibility(View.GONE);
+            }
+        });
     }
     public Vehicle clone(){
         Vehicle tmp = new Vehicle();

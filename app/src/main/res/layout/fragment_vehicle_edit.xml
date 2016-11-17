@@ -70,7 +70,140 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/basic_info_layout"></LinearLayout>
+                        android:id="@+id/basic_info_layout">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/model_layout"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <TextView
+                                android:text="@string/model_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textView115"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:text="TextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/model_text"
+                                android:textSize="16sp"
+                                android:textAlignment="center" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:id="@+id/silhouette_layout"
+                                android:foreground="?attr/selectableItemBackground">
+
+                                <TextView
+                                    android:text="@string/silhouette_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView117"
+                                    android:textAlignment="center" />
+
+                                <TextView
+                                    android:text="TextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/silhouette_text"
+                                    android:textSize="16sp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:id="@+id/speed_layout"
+                                android:foreground="?attr/selectableItemBackground">
+
+                                <TextView
+                                    android:text="@string/speed_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView119"
+                                    android:textAlignment="center" />
+
+                                <TextView
+                                    android:text="TextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/speed_text"
+                                    android:textSize="16sp"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:id="@+id/armor_layout"
+                                android:foreground="?attr/selectableItemBackground">
+
+                                <TextView
+                                    android:text="@string/armor_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView121"
+                                    android:textAlignment="center" />
+
+                                <TextView
+                                    android:text="TextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/armor_text"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:id="@+id/handling_layout"
+                                android:foreground="?attr/selectableItemBackground">
+
+                                <TextView
+                                    android:text="@string/handling_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView123"
+                                    android:textAlignment="center" />
+
+                                <TextView
+                                    android:text="TextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/handling_text"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
