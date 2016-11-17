@@ -85,7 +85,8 @@ public class Weapon{
             case 14:
                 firingArc = (String)tmp[13];
             case 13:
-                firingArc = "";
+                if (firingArc == null)
+                    firingArc = "";
                 name = (String)tmp[0];
                 dmg = (int)tmp[1];
                 crit = (int)tmp[2];
