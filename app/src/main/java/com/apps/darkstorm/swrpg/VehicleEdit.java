@@ -3,6 +3,7 @@ package com.apps.darkstorm.swrpg;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,8 +46,12 @@ public class VehicleEdit extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_vehicle_edit, container, false);
+        final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
+        fab.hide();
         SetupVehicEdit.setup(top,vh);
         vh.showHideCards(top);
+        top.setFocusableInTouchMode(true);
+        top.requestFocus();
         return top;
     }
 
@@ -66,7 +71,7 @@ public class VehicleEdit extends Fragment {
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         if (pref.getBoolean(getString(R.string.cloud_key),false) && gac != null){
             vh.startEditing(getContext(),gac,
-                    DriveId.decodeFromString(pref.getString(getString(R.string.swchars_id_key),"")));
+                    DriveId.decodeFromString(pref.getString(getString(R.string.ships_id_key),"")));
         }else{
             vh.startEditing(getContext());
         }

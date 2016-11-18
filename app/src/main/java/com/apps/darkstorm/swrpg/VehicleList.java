@@ -50,12 +50,15 @@ public class VehicleList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_vehicle_list, container, false);
+        top.setFocusableInTouchMode(true);
+        top.requestFocus();
         final SwipeRefreshLayout refresh = (SwipeRefreshLayout)top.findViewById(R.id.swipe_refresh);
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
         final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
@@ -88,12 +91,11 @@ public class VehicleList extends Fragment {
             public void handleMessage(Message in){
                 if (in.obj instanceof ArrayList){
                     ArrayList<Vehicle> inList = (ArrayList<Vehicle>)in.obj;
-                    if (!inList.equals(vhs)){
-                        vhs = inList;
-                        ((LinearLayout)top.findViewById(R.id.main_list)).removeAllViews();
-                        for (int i = 0;i<vhs.size();i++){
-                            ((LinearLayout)top.findViewById(R.id.main_list)).addView(VehicleCard.card(VehicleList.this,vhs.get(i),mainHandle,gac));
-                        }
+                    System.out.println("Something " + String.valueOf(inList.size()));
+                    vhs = inList;
+                    ((LinearLayout)top.findViewById(R.id.main_list)).removeAllViews();
+                    for (int i = 0;i<vhs.size();i++){
+                        ((LinearLayout)top.findViewById(R.id.main_list)).addView(VehicleCard.card(VehicleList.this,vhs.get(i),mainHandle,gac));
                     }
                     Message snack = mainHandle.obtainMessage();
                     snack.arg1 = -100;
@@ -108,7 +110,7 @@ public class VehicleList extends Fragment {
                 }
                 if(in.arg1 == 100){
                     refresh.setRefreshing(true);
-                    ((LinearLayout)top.findViewById(R.id.mainLay)).removeAllViews();
+                    ((LinearLayout)top.findViewById(R.id.main_list)).removeAllViews();
 //                    snack = Snackbar.make(top,R.string.loading_snack,Snackbar.LENGTH_INDEFINITE);
 //                    snack.show();
                     fab.setEnabled(false);
@@ -144,7 +146,6 @@ public class VehicleList extends Fragment {
                                             if (timeout < 33) {
                                                 DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
                                                 dlc.saveToFile(VehicleList.this.getContext(), gac);
-                                                System.out.println("Loaded");
                                             } else {
                                                 Message timed = mainHandle.obtainMessage();
                                                 timed.arg1 = -1;
@@ -194,7 +195,6 @@ public class VehicleList extends Fragment {
                                 if (timeout < 33) {
                                     DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
                                     dlc.saveToFile(VehicleList.this.getContext(), gac);
-                                    System.out.println("Loaded");
                                 } else {
                                     Message timed = mainHandle.obtainMessage();
                                     timed.arg1 = -1;
@@ -234,7 +234,6 @@ public class VehicleList extends Fragment {
                         if (timeout < 33) {
                             DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
                             dlc.saveToFile(VehicleList.this.getContext(), gac);
-                            System.out.println("Loaded");
                         } else {
                             Message timed = mainHandle.obtainMessage();
                             timed.arg1 = -1;
@@ -302,7 +301,6 @@ public class VehicleList extends Fragment {
                             if (timeout < 33) {
                                 DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
                                 dlc.saveToFile(VehicleList.this.getContext(), gac);
-                                System.out.println("Loaded");
                             } else {
                                 Message timed = mainHandle.obtainMessage();
                                 timed.arg1 = -1;

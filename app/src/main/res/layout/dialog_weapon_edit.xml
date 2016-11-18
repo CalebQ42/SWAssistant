@@ -106,7 +106,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:ems="10"
-                    android:id="@+id/weapon_edit_arc" />
+                    android:id="@+id/weapon_edit_arc"
+                    android:textAlignment="center" />
 
             </LinearLayout>
 

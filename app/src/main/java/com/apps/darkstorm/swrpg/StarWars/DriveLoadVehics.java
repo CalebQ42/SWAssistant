@@ -32,6 +32,7 @@ public class DriveLoadVehics {
                         tmp.reLoad(gac, met.getDriveId());
                         vehics.add(tmp);
                         lastMod.add(met.getModifiedDate());
+                        System.out.println(met.getTitle());
                     }
                 }
             }

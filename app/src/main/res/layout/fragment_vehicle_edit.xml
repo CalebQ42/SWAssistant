@@ -2,19 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.apps.darkstorm.swrpg.VehicleEdit">
+    tools:context="com.apps.darkstorm.swrpg.VehicleEdit"
+    android:animateLayoutChanges="true">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="5dp" >
+            android:padding="5dp"
+            android:animateLayoutChanges="true">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -835,7 +838,7 @@
                     android:layout_margin="5dp">
 
                     <Switch
-                        android:text="Switch"
+                        android:text="@string/desc_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/desc_switch"
@@ -851,6 +854,7 @@
                         android:textSize="16sp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

@@ -56,6 +56,7 @@ public class LoadVehics {
                     if (fi.isFile() && fi.getName().endsWith(".vhcl")) {
                         Vehicle tmp = new Vehicle();
                         tmp.reLoad(fi.getAbsolutePath());
+                        System.out.println(fi.getName());
                         vehics.add(tmp);
                         lastMod.add(new Date(fi.lastModified()));
                     }

@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.apps.darkstorm.swrpg.StarWars.Character;
 import com.apps.darkstorm.swrpg.StarWars.DriveLoadChars;
@@ -60,7 +59,6 @@ public class CharacterList extends Fragment {
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_character_list, container, false);
         chars = new ArrayList<>();
-        Toast.makeText(getContext(),R.string.swipe_refresh,Toast.LENGTH_SHORT).show();
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
         final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         fab.show();
@@ -93,7 +91,7 @@ public class CharacterList extends Fragment {
             public void handleMessage(Message in){
                 fab.setEnabled(true);
                 System.out.println("Handling");
-                if (in.obj instanceof com.apps.darkstorm.swrpg.StarWars.Character) {
+                if (in.obj instanceof Character) {
                     Character tmp = (Character)in.obj;
                     for (int i = 0; i < chars.size(); i++) {
                         if (chars.get(i).ID == tmp.ID) {

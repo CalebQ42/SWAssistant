@@ -63,11 +63,15 @@ public class Vehicle {
     public Vehicle(){
         defense[1] = -1;
         defense[2] = -1;
+        for (int i = 0;i<showCards.length;i++)
+            showCards[i] = true;
     }
     public Vehicle(int ID){
         this.ID = ID;
         defense[1] = -1;
         defense[2] = -1;
+        for (int i = 0;i<showCards.length;i++)
+            showCards[i] = true;
     }
     public void setSilhouette(int sil){
         silhouette = sil;
@@ -86,7 +90,6 @@ public class Vehicle {
     public void stopEditing(){
         editing=false;
     }
-    //TBI
     public void showHideCards(final View top){
         ((Switch)top.findViewById(R.id.basic_info_switch)).setChecked(showCards[0]);
         if (showCards[0])
@@ -205,6 +208,7 @@ public class Vehicle {
     }
     public void startEditing(final Context main, final GoogleApiClient gac, final DriveId fold){
         if (!editing){
+            editing = true;
             AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
@@ -215,6 +219,7 @@ public class Vehicle {
                         if (!saving) {
                             saving = true;
                             if (!Vehicle.this.equals(old)) {
+                                System.out.println("save");
                                 Vehicle.this.cloudSave(gac, getFileId(gac, fold), false);
                                 Vehicle.this.save(getFileLocation(main));
                                 old = Vehicle.this.clone();
@@ -241,8 +246,10 @@ public class Vehicle {
             async.execute();
         }
     }
-    public void startEditing(final Context main){if (!editing){
-        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+    public void startEditing(final Context main){
+        if (!editing){
+            editing = true;
+            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 Vehicle old = Vehicle.this.clone();
@@ -288,6 +295,7 @@ public class Vehicle {
         sl.addSave(hullTraumaCur);
         sl.addSave(hullTraumaThresh);
         sl.addSave(sysStressCur);
+        sl.addSave(sysStressThresh);
         sl.addSave(encumCapacity);
         sl.addSave(passengerCapacity);
         sl.addSave(hp);
@@ -327,6 +335,7 @@ public class Vehicle {
     public void reLoad(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] val = sl.load();
+        System.out.println("Loading...");
         switch (val.length){
             case 20:
                 model = (String)val[19];

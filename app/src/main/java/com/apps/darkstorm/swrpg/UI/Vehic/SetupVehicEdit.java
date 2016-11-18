@@ -62,7 +62,7 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.model_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(vh.model);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -90,8 +90,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.speed_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.speed);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.speed));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -100,7 +100,7 @@ public class SetupVehicEdit {
                             vh.speed = 0;
                         else
                             vh.speed = Integer.parseInt(val.getText().toString());
-                        speed.setText(vh.speed);
+                        speed.setText(String.valueOf(vh.speed));
                         dia.cancel();
                     }
                 });
@@ -122,8 +122,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.silhouette_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.silhouette);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.silhouette));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -133,7 +133,7 @@ public class SetupVehicEdit {
                             vh.setSilhouette(0);
                         else
                             vh.setSilhouette(Integer.parseInt(val.getText().toString()));
-                        silhouette.setText(vh.silhouette);
+                        silhouette.setText(String.valueOf(vh.silhouette));
                         if ((oldSilhouette >4) != (vh.silhouette>4)){
                             if (vh.silhouette>4) {
                                 ((TextView) top.findViewById(R.id.port_defense_text)).setText(String.valueOf(vh.defense[1]));
@@ -164,8 +164,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.handling_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.handling);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.handling));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -174,7 +174,7 @@ public class SetupVehicEdit {
                             vh.handling = 0;
                         else
                             vh.handling = Integer.parseInt(val.getText().toString());
-                        handling.setText(vh.handling);
+                        handling.setText(String.valueOf(vh.handling));
                         dia.cancel();
                     }
                 });
@@ -196,8 +196,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.armor_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.armor);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.armor));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -206,7 +206,7 @@ public class SetupVehicEdit {
                             vh.armor = 0;
                         else
                             vh.armor = Integer.parseInt(val.getText().toString());
-                        armor.setText(vh.armor);
+                        armor.setText(String.valueOf(vh.armor));
                         dia.cancel();
                     }
                 });
@@ -228,8 +228,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.hard_points_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.hp);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.hp));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -238,7 +238,7 @@ public class SetupVehicEdit {
                             vh.hp = 0;
                         else
                             vh.hp = Integer.parseInt(val.getText().toString());
-                        hp.setText(vh.hp);
+                        hp.setText(String.valueOf(vh.hp));
                         dia.cancel();
                     }
                 });
@@ -260,8 +260,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.passenger_capacity_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.passengerCapacity);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.passengerCapacity));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -270,7 +270,7 @@ public class SetupVehicEdit {
                             vh.passengerCapacity = 0;
                         else
                             vh.passengerCapacity = Integer.parseInt(val.getText().toString());
-                        passengerCapacity.setText(vh.passengerCapacity);
+                        passengerCapacity.setText(String.valueOf(vh.passengerCapacity));
                         dia.cancel();
                     }
                 });
@@ -292,8 +292,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.encumbrance_capacity_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.encumCapacity);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.encumCapacity));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -302,7 +302,7 @@ public class SetupVehicEdit {
                             vh.encumCapacity = 0;
                         else
                             vh.encumCapacity = Integer.parseInt(val.getText().toString());
-                        encumbranceCapacity.setText(vh.encumCapacity);
+                        encumbranceCapacity.setText(String.valueOf(vh.encumCapacity));
                         dia.cancel();
                     }
                 });
@@ -337,8 +337,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.total_defense_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.totalDefense);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.totalDefense));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -347,7 +347,7 @@ public class SetupVehicEdit {
                             vh.totalDefense = 0;
                         else
                             vh.totalDefense = Integer.parseInt(val.getText().toString());
-                        totalDefense.setText(vh.totalDefense);
+                        totalDefense.setText(String.valueOf(vh.totalDefense));
                         if (vh.silhouette > 4){
                             if (vh.defense[0]+vh.defense[1]+vh.defense[2]+vh.defense[3] != vh.totalDefense)
                                 top.findViewById(R.id.defense_warning).setVisibility(View.VISIBLE);
@@ -417,7 +417,10 @@ public class SetupVehicEdit {
             }
         });
         final TextView portDefense = (TextView)top.findViewById(R.id.port_defense_text);
-        portDefense.setText(String.valueOf(vh.defense[1]));
+        if (vh.defense[1] != -1)
+            portDefense.setText(String.valueOf(vh.defense[1]));
+        else
+            portDefense.setText("-");
         top.findViewById(R.id.port_defense_minus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -461,7 +464,10 @@ public class SetupVehicEdit {
             }
         });
         final TextView starboardDefense = (TextView)top.findViewById(R.id.starboard_defense_text);
-        starboardDefense.setText(String.valueOf(vh.defense[2]));
+        if (vh.defense[2] != -1)
+            starboardDefense.setText(String.valueOf(vh.defense[2]));
+        else
+            starboardDefense.setText("-");
         top.findViewById(R.id.starboard_defense_minus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -583,8 +589,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.hull_trauma_thresh_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.hullTraumaThresh);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.hullTraumaThresh));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -643,8 +649,8 @@ public class SetupVehicEdit {
                 final Dialog dia = new Dialog(top.getContext());
                 dia.setContentView(R.layout.dialog_simple_edit);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.sys_stress_thresh_text);
-                final EditText val = (EditText)top.findViewById(R.id.edit_val);
-                val.setText(vh.sysStressThresh);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setText(String.valueOf(vh.sysStressThresh));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -691,6 +697,9 @@ public class SetupVehicEdit {
                 crit.setText(String.valueOf(tmp.crit));
                 final EditText hp = (EditText)dia.findViewById(R.id.weapon_edit_hp);
                 hp.setText(String.valueOf(tmp.hp));
+                final EditText arc = (EditText)dia.findViewById(R.id.weapon_edit_arc);
+                arc.setText(tmp.firingArc);
+                dia.findViewById(R.id.weapon_edit_arc_layout).setVisibility(View.VISIBLE);
                 final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
                 ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);
                 state.setAdapter(stateAdap);
@@ -763,6 +772,7 @@ public class SetupVehicEdit {
                 });
                 final Switch addBrawn = (Switch)dia.findViewById(R.id.weapon_edit_add_brawn);
                 addBrawn.setChecked(tmp.addBrawn);
+                addBrawn.setVisibility(View.GONE);
                 final Switch loaded = (Switch)dia.findViewById(R.id.weapon_edit_loaded);
                 loaded.setChecked(tmp.loaded);
                 final Switch slug = (Switch)dia.findViewById(R.id.weapon_edit_slug);
@@ -824,6 +834,7 @@ public class SetupVehicEdit {
                         tmp.addBrawn = addBrawn.isChecked();
                         tmp.loaded = loaded.isChecked();
                         tmp.slug = slug.isChecked();
+                        tmp.firingArc = arc.getText().toString();
                         vh.weapons.add(tmp);
                         ((LinearLayout)top.findViewById(R.id.weapon_list_layout)).addView(new WeaponLayout()
                                 .WeaponLayout(main,((LinearLayout)top.findViewById(R.id.weapon_list_layout)),vh,vh.weapons.get(vh.weapons.size()-1)));

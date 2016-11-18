@@ -38,6 +38,7 @@ public class InitialConnect {
         metBuf = metBufRes.getMetadataBuffer();
         DriveId shipsFold = null;
         for (Metadata met:metBuf){
+            System.out.println(met.getTitle());
             if (met.isFolder() && met.getTitle().equals("SWShips") && !met.isTrashed()){
                 shipsFold = met.getDriveId();
                 break;

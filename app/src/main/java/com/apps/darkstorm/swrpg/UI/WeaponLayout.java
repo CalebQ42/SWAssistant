@@ -660,6 +660,9 @@ public class WeaponLayout {
                 crit.setText(String.valueOf(tmp.crit));
                 final EditText hp = (EditText)dia.findViewById(R.id.weapon_edit_hp);
                 hp.setText(String.valueOf(tmp.hp));
+                final EditText arc = (EditText)dia.findViewById(R.id.weapon_edit_arc);
+                arc.setText(tmp.firingArc);
+                dia.findViewById(R.id.weapon_edit_arc_layout).setVisibility(View.VISIBLE);
                 final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
                 ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);
                 state.setAdapter(stateAdap);
@@ -732,6 +735,7 @@ public class WeaponLayout {
                 });
                 final Switch addBrawn = (Switch)dia.findViewById(R.id.weapon_edit_add_brawn);
                 addBrawn.setChecked(tmp.addBrawn);
+                addBrawn.setVisibility(View.GONE);
                 final Switch loaded = (Switch)dia.findViewById(R.id.weapon_edit_loaded);
                 loaded.setChecked(tmp.loaded);
                 final Switch slug = (Switch)dia.findViewById(R.id.weapon_edit_slug);
@@ -794,6 +798,7 @@ public class WeaponLayout {
                         w.loaded = loaded.isChecked();
                         w.slug = slug.isChecked();
                         w.ammo = tmp.ammo;
+                        w.firingArc = arc.getText().toString();
                         name.setText(w.name);
                         dia.cancel();
                     }

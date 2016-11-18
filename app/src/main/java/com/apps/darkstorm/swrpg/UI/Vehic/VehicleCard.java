@@ -25,6 +25,7 @@ import java.io.File;
 
 public class VehicleCard {
     public static CardView card(final Fragment frag, final Vehicle vh, final Handler handle, final GoogleApiClient gac){
+        System.out.println("Card: "+ vh.name);
         CardView top = new CardView(frag.getContext());
         CardView.LayoutParams topLp =
                 new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT,CardView.LayoutParams.WRAP_CONTENT);
