@@ -5,4 +5,21 @@
     <string name="silhouette_text">Silhouette:</string>
     <string name="armor_text">Armor:</string>
     <string name="handling_text">Handling:</string>
+    <string name="total_defense_text">Total Defense (For angling):</string>
+    <string name="fore_text">Fore:</string>
+    <string name="port_text">Port:</string>
+    <string name="starboard_text">Starboard:</string>
+    <string name="aft_text">Aft:</string>
+    <string name="defense_warning">WARNING: You may have set one of your defense zones wrong!</string>
+    <string name="damage_text">Damage:</string>
+    <string name="hull_trauma_text">Hull Trauma:</string>
+    <string name="sys_stress_text">System Stress:</string>
+    <string name="hull_trauma_thresh_text">Hull Trauma Threshold:</string>
+    <string name="sys_stress_thresh_text">System Stress Threshold:</string>
+    <string name="capacity_text">Capacity:</string>
+    <string name="passenger_text">Passenger:</string>
+    <string name="passenger_capacity_text">Passenger Capacity:</string>
+    <string name="encumbrance_text">Encumbrance:</string>
+    <string name="encumbrance_capacity_text">Encumbrance Capacity:</string>
+    <string name="arc_text">Weapon Arc:</string>
 </resources>

@@ -38,8 +38,8 @@ public class Vehicle {
     //0-Fore,1-Port,2-Starboard,3-Aft;
     public int[] defense = new int[4];
     public int totalDefense;
-    public int hullTramaThresh;
-    public int hullTramaCur;
+    public int hullTraumaThresh;
+    public int hullTraumaCur;
     public int sysStressThresh;
     public int sysStressCur;
     public int encumCapacity;
@@ -47,7 +47,7 @@ public class Vehicle {
     public int hp;
     public Weapons weapons = new Weapons();
     public CriticalInjuries crits = new CriticalInjuries();
-    private boolean[] showCards = new boolean[0];
+    private boolean[] showCards = new boolean[7];
     public String desc = "";
     public String model = "";
     //
@@ -96,10 +96,41 @@ public class Vehicle {
         ((Switch)top.findViewById(R.id.basic_info_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[0] = b;
                 if (b)
                     top.findViewById(R.id.basic_info_layout).setVisibility(View.VISIBLE);
                 else
                     top.findViewById(R.id.basic_info_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.defense_switch)).setChecked(showCards[1]);
+        if (showCards[1])
+            top.findViewById(R.id.defense_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.defense_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.defense_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[1] = b;
+                if (b)
+                    top.findViewById(R.id.defense_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.defense_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.damage_switch)).setChecked(showCards[2]);
+        if (showCards[2])
+            top.findViewById(R.id.damage_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.damage_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[2] = b;
+                if (b)
+                    top.findViewById(R.id.damage_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
             }
         });
     }
@@ -113,8 +144,8 @@ public class Vehicle {
         tmp.armor = armor;
         tmp.defense = defense.clone();
         tmp.totalDefense = totalDefense;
-        tmp.hullTramaCur = hullTramaCur;
-        tmp.hullTramaThresh = hullTramaThresh;
+        tmp.hullTraumaCur = hullTraumaCur;
+        tmp.hullTraumaThresh = hullTraumaThresh;
         tmp.sysStressCur = sysStressCur;
         tmp.sysStressThresh = sysStressThresh;
         tmp.encumCapacity = encumCapacity;
@@ -209,8 +240,8 @@ public class Vehicle {
         sl.addSave(armor);
         sl.addSave(defense);
         sl.addSave(totalDefense);
-        sl.addSave(hullTramaCur);
-        sl.addSave(hullTramaThresh);
+        sl.addSave(hullTraumaCur);
+        sl.addSave(hullTraumaThresh);
         sl.addSave(sysStressCur);
         sl.addSave(encumCapacity);
         sl.addSave(passengerCapacity);
@@ -233,8 +264,8 @@ public class Vehicle {
             sl.addSave(armor);
             sl.addSave(defense);
             sl.addSave(totalDefense);
-            sl.addSave(hullTramaCur);
-            sl.addSave(hullTramaThresh);
+            sl.addSave(hullTraumaCur);
+            sl.addSave(hullTraumaThresh);
             sl.addSave(sysStressCur);
             sl.addSave(sysStressThresh);
             sl.addSave(encumCapacity);
@@ -263,8 +294,8 @@ public class Vehicle {
                 encumCapacity = (int)val[12];
                 sysStressThresh = (int)val[11];
                 sysStressCur = (int)val[10];
-                hullTramaThresh = (int)val[9];
-                hullTramaCur = (int)val[8];
+                hullTraumaThresh = (int)val[9];
+                hullTraumaCur = (int)val[8];
                 totalDefense = (int)val[7];
                 defense = (int[])val[6];
                 armor = (int)val[5];
@@ -294,8 +325,8 @@ public class Vehicle {
                 encumCapacity = (int)val[12];
                 sysStressThresh = (int)val[11];
                 sysStressCur = (int)val[10];
-                hullTramaThresh = (int)val[9];
-                hullTramaCur = (int)val[8];
+                hullTraumaThresh = (int)val[9];
+                hullTraumaCur = (int)val[8];
                 totalDefense = (int)val[7];
                 defense = (int[])val[6];
                 armor = (int)val[5];
@@ -369,8 +400,8 @@ public class Vehicle {
             return false;
         Vehicle in = (Vehicle)obj;
         return in.ID == ID && in.name.equals(name) && in.silhouette == silhouette && in.speed == speed && in.handling == handling
-                && in.armor == armor && Arrays.equals(in.defense,defense) && totalDefense == in.totalDefense && in.hullTramaCur == hullTramaCur
-                && in.hullTramaThresh == hullTramaThresh && in.sysStressCur == sysStressCur && in.sysStressThresh == sysStressThresh
+                && in.armor == armor && Arrays.equals(in.defense,defense) && totalDefense == in.totalDefense && in.hullTraumaCur == hullTraumaCur
+                && in.hullTraumaThresh == hullTraumaThresh && in.sysStressCur == sysStressCur && in.sysStressThresh == sysStressThresh
                 && in.encumCapacity == encumCapacity && in.passengerCapacity == passengerCapacity && in.hp == hp && in.weapons.equals(weapons)
                 && in.crits.equals(crits) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model);
     }
