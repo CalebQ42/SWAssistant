@@ -14,9 +14,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.CriticalInjury;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.WeapChar;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Weapon;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.CriticalInjury;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.WeapChar;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Weapon;
 import com.apps.darkstorm.swrpg.StarWars.Vehicle;
 import com.apps.darkstorm.swrpg.UI.CritInjLayout;
 import com.apps.darkstorm.swrpg.UI.WeapCharLayout;

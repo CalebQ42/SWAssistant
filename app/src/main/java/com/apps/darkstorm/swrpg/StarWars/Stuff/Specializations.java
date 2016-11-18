@@ -1,4 +1,4 @@
-package com.apps.darkstorm.swrpg.StarWars.CharStuff;
+package com.apps.darkstorm.swrpg.StarWars.Stuff;
 
 import java.util.Arrays;
 

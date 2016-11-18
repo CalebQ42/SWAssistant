@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Note;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Note;
 
 public class NoteCard {
     public View NoteCard(final View top,final Context main, final LinearLayout noteLay,final LinearLayout noteEdit,

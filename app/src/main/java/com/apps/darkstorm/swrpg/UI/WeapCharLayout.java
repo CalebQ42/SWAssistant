@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.WeapChar;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Weapon;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.WeapChar;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Weapon;
 
 public class WeapCharLayout {
     public LinearLayout WeapCharLayout(final Context main, final LinearLayout charLayout, final Weapon weap, final WeapChar wc){

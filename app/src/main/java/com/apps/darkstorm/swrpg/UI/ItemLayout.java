@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Item;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Item;
 
 public class ItemLayout {
     public LinearLayout ItemLayout(final Context main, final LinearLayout invLay, final Character chara, final Item it){

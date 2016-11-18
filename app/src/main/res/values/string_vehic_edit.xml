@@ -22,4 +22,6 @@
     <string name="encumbrance_text">Encumbrance:</string>
     <string name="encumbrance_capacity_text">Encumbrance Capacity:</string>
     <string name="arc_text">Weapon Arc:</string>
+
+    <string name="vehicle_delete">Are you sure you want to delete this vehicle?</string>
 </resources>

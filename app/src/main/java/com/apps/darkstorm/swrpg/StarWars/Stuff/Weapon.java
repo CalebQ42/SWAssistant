@@ -1,11 +1,11 @@
-package com.apps.darkstorm.swrpg.StarWars.CharStuff;
+package com.apps.darkstorm.swrpg.StarWars.Stuff;
 
 import java.util.ArrayList;
 
 public class Weapon{
     //<editor-fold desc="Vars v1">
     //Version 1 0-12
-    public String name;
+    public String name = "";
     public int dmg;
     public int crit;
     public int hp;
@@ -20,7 +20,7 @@ public class Weapon{
     public int itemState;
     public int ammo;
     //Version 2 13
-    public String firingArc;
+    public String firingArc = "";
     //</editor-fold>
     public void copyFrom(Weapon w){
         name = w.name;
@@ -85,8 +85,6 @@ public class Weapon{
             case 14:
                 firingArc = (String)tmp[13];
             case 13:
-                if (firingArc == null)
-                    firingArc = "";
                 name = (String)tmp[0];
                 dmg = (int)tmp[1];
                 crit = (int)tmp[2];

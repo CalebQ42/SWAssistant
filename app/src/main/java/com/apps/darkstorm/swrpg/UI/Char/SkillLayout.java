@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.Dice.DiceRoll;
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Skill;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Skill;
 
 public class SkillLayout {
     private int ability, proficiency,difficulty,challenge,boost,setback,force;

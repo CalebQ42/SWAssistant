@@ -1,29 +1,32 @@
-package com.apps.darkstorm.swrpg.StarWars.CharStuff;
+package com.apps.darkstorm.swrpg.StarWars.Stuff;
 
 import java.util.ArrayList;
 
-public class Duty{
-    //Version 1 0-1;
+public class Item{
+    //Version 1 0-2
     public String name;
-    public int val;
+    public String desc;
+    public int count;
     public Object serialObject(){
         ArrayList<Object> tmp = new ArrayList<>();
         tmp.add(name);
-        tmp.add(val);
+        tmp.add(desc);
+        tmp.add(count);
         return tmp.toArray();
     }
     public void loadFromObject(Object obj){
         Object[] tmp = (Object[])obj;
         switch (tmp.length){
-            case 2:
+            case 3:
                 name = (String)tmp[0];
-                val = (int)tmp[1];
+                desc = (String)tmp[1];
+                count = (int)tmp[2];
         }
     }
     public boolean equals(Object obj){
-        if (!(obj instanceof Duty))
+        if (!(obj instanceof Item))
             return false;
-        Duty in = (Duty)obj;
-        return in.name.equals(name) && in.val == val;
+        Item in = (Item)obj;
+        return in.name.equals(name) && in.desc.equals(desc) && in.count == count;
     }
 }

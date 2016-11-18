@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Talent;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Talent;
 
 public class TalentLayout {
     public LinearLayout TalentLayout(final Context main, final LinearLayout talentLay, final Character chara, final Talent t){

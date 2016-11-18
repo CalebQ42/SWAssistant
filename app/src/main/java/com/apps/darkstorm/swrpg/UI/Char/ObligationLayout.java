@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Obligation;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Obligation;
 
 public class ObligationLayout {
     public LinearLayout ObligationLayout(final Context main, final LinearLayout obligationLay, final Character chara, final Obligation o) {

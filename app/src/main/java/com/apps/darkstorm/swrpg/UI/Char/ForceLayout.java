@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.ForcePower;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.ForcePower;
 
 public class ForceLayout {
     public LinearLayout ForceLayout(final Context main, final LinearLayout forceLay, final Character chara,final ForcePower fp){

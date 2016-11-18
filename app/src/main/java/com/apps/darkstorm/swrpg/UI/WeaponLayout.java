@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.apps.darkstorm.swrpg.Dice.DiceResults;
 import com.apps.darkstorm.swrpg.Dice.DiceRoll;
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.WeapChar;
-import com.apps.darkstorm.swrpg.StarWars.CharStuff.Weapon;
 import com.apps.darkstorm.swrpg.StarWars.Character;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.WeapChar;
+import com.apps.darkstorm.swrpg.StarWars.Stuff.Weapon;
 import com.apps.darkstorm.swrpg.StarWars.Vehicle;
 
 public class WeaponLayout {

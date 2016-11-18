@@ -20,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -31,7 +30,8 @@ public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiceFragment.OnDiceInteractionListener,
         GuideMain.OnGuideInteractionListener, CharacterList.OnListInteractionListener, CharacterEditMain.OnFragmentInteractionListener,
         CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
-        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, GMFragment.OnGMInteractionListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, GMFragment.OnGMInteractionListener,
+        VehicleList.OnVehicleListInteractionListener, VehicleEdit.OnVehicleEditInteractionListener {
     GoogleApiClient gac;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,9 @@ public class NavigationActivity extends AppCompatActivity
                 if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
-                    System.out.println("Restarting");
+                }else if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList){
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_navigation, VehicleList.newInstance(gac)).commit();
                 }
             }
             gac.connect();
@@ -103,7 +105,9 @@ public class NavigationActivity extends AppCompatActivity
             if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
-                System.out.println("Restarting");
+            }else if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_navigation, VehicleList.newInstance(gac)).commit();
             }
         }
         super.onResume();
@@ -146,7 +150,15 @@ public class NavigationActivity extends AppCompatActivity
                         .replace(R.id.content_navigation, CharacterList.newInstance(gac)).addToBackStack("toCharacters").commit();
             }
         }else if (id == R.id.nav_ships){
-            Toast.makeText(this,R.string.ship_coming_soon_text,Toast.LENGTH_LONG).show();
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList) {
+                Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
+                getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toDice")
+                        .replace(R.id.content_navigation, VehicleList.newInstance(gac)).commit();
+            }
         }else if(id == R.id.nav_dice){
             if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof DiceFragment) {
                 Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
@@ -251,4 +263,10 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void OnGMInteraction() {}
+
+    @Override
+    public void onVehicleListInteraction() {}
+
+    @Override
+    public void onVehicleEditInteraction() {}
 }

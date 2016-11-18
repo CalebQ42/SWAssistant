@@ -25,7 +25,6 @@ import java.io.File;
 
 public class CharacterCard {
     public CardView getCard(final Fragment frag, final Character chara, final Handler handle, final GoogleApiClient gac, final boolean gm){
-        System.out.println("Hello");
         CardView top = new CardView(frag.getContext());
         CardView.LayoutParams topLp =
                 new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT,CardView.LayoutParams.WRAP_CONTENT);

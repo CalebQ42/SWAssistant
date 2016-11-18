@@ -1,9 +1,9 @@
-package com.apps.darkstorm.swrpg.StarWars.CharStuff;
+package com.apps.darkstorm.swrpg.StarWars.Stuff;
 
 import java.util.ArrayList;
 
-public class Obligation{
-    //Version 1 0-1
+public class Duty{
+    //Version 1 0-1;
     public String name;
     public int val;
     public Object serialObject(){
@@ -21,9 +21,9 @@ public class Obligation{
         }
     }
     public boolean equals(Object obj){
-        if (!(obj instanceof Obligation))
+        if (!(obj instanceof Duty))
             return false;
-        Obligation in = (Obligation)obj;
+        Duty in = (Duty)obj;
         return in.name.equals(name) && in.val == val;
     }
 }
