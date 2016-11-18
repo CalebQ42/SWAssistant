@@ -3,7 +3,7 @@
     <string name="gm_navigation_item">GM Mode</string>
 
     <string name="character_navigation_item">Characters</string>
-    <string name="ship_navigation_item">Ships</string>
+    <string name="ship_navigation_item">Vehicles</string>
     <string name="dice_navigation_item">Dice</string>
     <string name="guide_navigation_item">Guide</string>
     <string name="settings_navigation_item">Settings</string>
