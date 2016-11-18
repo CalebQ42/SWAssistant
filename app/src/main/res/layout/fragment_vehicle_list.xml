@@ -17,7 +17,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/main_list"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:animateLayoutChanges="true" />
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

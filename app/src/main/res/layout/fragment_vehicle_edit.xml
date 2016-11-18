@@ -24,13 +24,15 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:id="@+id/name_card"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                android:animateLayoutChanges="true">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:text="@string/name_text"
@@ -61,7 +63,8 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:animateLayoutChanges="true">
 
                     <Switch
                         android:text="@string/basic_info_text"
@@ -321,7 +324,8 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:animateLayoutChanges="true">
 
                     <Switch
                         android:text="@string/defense_text"
@@ -594,7 +598,8 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:animateLayoutChanges="true">
 
                     <Switch
                         android:text="@string/damage_text"
@@ -741,7 +746,8 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:animateLayoutChanges="true">
 
                     <Switch
                         android:text="@string/weapons_text"
@@ -789,7 +795,8 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:animateLayoutChanges="true">
 
                     <Switch
                         android:text="@string/crit_inj_text"
@@ -835,7 +842,8 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_margin="5dp"
+                    android:animateLayoutChanges="true">
 
                     <Switch
                         android:text="@string/desc_text"
