@@ -1,13 +1,26 @@
 package com.apps.darkstorm.swrpg.UI.Vehic;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.StarWars.CharStuff.CriticalInjury;
+import com.apps.darkstorm.swrpg.StarWars.CharStuff.WeapChar;
+import com.apps.darkstorm.swrpg.StarWars.CharStuff.Weapon;
 import com.apps.darkstorm.swrpg.StarWars.Vehicle;
+import com.apps.darkstorm.swrpg.UI.CritInjLayout;
+import com.apps.darkstorm.swrpg.UI.WeapCharLayout;
+import com.apps.darkstorm.swrpg.UI.WeaponLayout;
 
 public class SetupVehicEdit {
     public static void setup(final View top, final Vehicle vh){
@@ -658,11 +671,245 @@ public class SetupVehicEdit {
             }
         });
         //</editor-fold>
-        //<editor-fold desc="">
+        //<editor-fold desc="Weapon_card">
+        for (int i = 0;i<vh.weapons.size();i++){
+            ((LinearLayout)top.findViewById(R.id.weapon_list_layout)).addView(new WeaponLayout().WeaponLayout(top.getContext(),
+                    ((LinearLayout)top.findViewById(R.id.weapon_list_layout)),vh,vh.weapons.get(i)));
+        }
+        top.findViewById(R.id.weapon_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Context main = top.getContext();
+                final Weapon tmp = new Weapon();
+                final Dialog dia = new Dialog(main);
+                dia.setContentView(R.layout.dialog_weapon_edit);
+                final EditText nameVal = (EditText)dia.findViewById(R.id.weapon_edit_name);
+                nameVal.setText(tmp.name);
+                final EditText dmg = (EditText)dia.findViewById(R.id.weapon_edit_damage);
+                dmg.setText(String.valueOf(tmp.dmg));
+                final EditText crit = (EditText)dia.findViewById(R.id.weapon_edit_critical);
+                crit.setText(String.valueOf(tmp.crit));
+                final EditText hp = (EditText)dia.findViewById(R.id.weapon_edit_hp);
+                hp.setText(String.valueOf(tmp.hp));
+                final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
+                ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);
+                state.setAdapter(stateAdap);
+                state.setSelection(tmp.itemState);
+                final Spinner range = (Spinner)dia.findViewById(R.id.weapon_edit_range_spinner);
+                ArrayAdapter<CharSequence> rangeAdap = ArrayAdapter.createFromResource(main,R.array.range_bands,R.layout.spinner_base);
+                range.setAdapter(rangeAdap);
+                range.setSelection(tmp.range);
+                final Spinner skill = (Spinner)dia.findViewById(R.id.weapon_edit_skill_spinner);
+                ArrayAdapter<CharSequence> skillAdap = ArrayAdapter.createFromResource(main,R.array.weapon_skills,R.layout.spinner_base);
+                skill.setAdapter(skillAdap);
+                skill.setSelection(tmp.skill);
+                final Spinner skillChar = (Spinner)dia.findViewById(R.id.weapon_edit_skill_char_spinner);
+                ArrayAdapter<CharSequence> charAdap = ArrayAdapter.createFromResource(main,R.array.base_characteristics,R.layout.spinner_base);
+                skillChar.setAdapter(charAdap);
+                skillChar.setSelection(tmp.skillBase);
+                skill.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        skill.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                skillChar.setSelection(main.getResources().getIntArray(R.array.weapon_skill_bases)[position]);
+                            }
+                            public void onNothingSelected(AdapterView<?> parent) {}
+                        });
+                    }
+                });
+                final LinearLayout spec = (LinearLayout)dia.findViewById(R.id.weapon_edit_special_layout);
+                for (int i = 0;i<tmp.chars.size();i++)
+                    spec.addView(new WeapCharLayout().WeapCharLayout(main,spec,tmp,tmp.chars.get(i)));
+                dia.findViewById(R.id.weapon_edit_special_add).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final WeapChar wr = new WeapChar();
+                        final Dialog dia = new Dialog(main);
+                        dia.setContentView(R.layout.dialog_weapon_char);
+                        final EditText name = (EditText)dia.findViewById(R.id.weapon_char_name);
+                        name.setText(wr.name);
+                        final EditText val = (EditText)dia.findViewById(R.id.weapon_char_value);
+                        val.setText(String.valueOf(wr.val));
+                        final EditText adv = (EditText)dia.findViewById(R.id.weapon_char_adv);
+                        adv.setText(String.valueOf(wr.adv));
+                        dia.findViewById(R.id.weapon_char_save).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                wr.name = name.getText().toString();
+                                if (!val.getText().toString().equals("")){
+                                    wr.val = Integer.parseInt(val.getText().toString());
+                                }else{
+                                    wr.val = 0;
+                                }
+                                if (!adv.getText().toString().equals("")){
+                                    wr.adv = Integer.parseInt(adv.getText().toString());
+                                }else{
+                                    wr.adv = 0;
+                                }
+                                tmp.chars.add(wr);
+                                spec.addView(new WeapCharLayout().WeapCharLayout(main,spec,tmp,tmp.chars.get(tmp.chars.size()-1)));
+                                dia.cancel();
+                            }
+                        });
+                        dia.findViewById(R.id.weapon_char_cancel).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dia.cancel();
+                            }
+                        });
+                        dia.show();
+                    }
+                });
+                final Switch addBrawn = (Switch)dia.findViewById(R.id.weapon_edit_add_brawn);
+                addBrawn.setChecked(tmp.addBrawn);
+                final Switch loaded = (Switch)dia.findViewById(R.id.weapon_edit_loaded);
+                loaded.setChecked(tmp.loaded);
+                final Switch slug = (Switch)dia.findViewById(R.id.weapon_edit_slug);
+                slug.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked){
+                            dia.findViewById(R.id.weapon_edit_ammo_layout).setVisibility(View.VISIBLE);
+                        }else{
+                            dia.findViewById(R.id.weapon_edit_ammo_layout).setVisibility(View.GONE);
+                        }
+                    }
+                });
+                slug.setChecked(tmp.slug);
+                if (tmp.slug){
+                    dia.findViewById(R.id.weapon_edit_ammo_layout).setVisibility(View.VISIBLE);
+                }else{
+                    dia.findViewById(R.id.weapon_edit_ammo_layout).setVisibility(View.GONE);
+                }
+                final TextView ammo = (TextView)dia.findViewById(R.id.weapon_edit_ammo_val);
+                ammo.setText(String.valueOf(tmp.ammo));
+                dia.findViewById(R.id.weapon_edit_ammo_minus).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tmp.ammo>0)
+                            tmp.ammo--;
+                        ammo.setText(String.valueOf(tmp.ammo));
+                    }
+                });
+                dia.findViewById(R.id.weapon_edit_ammo_plus).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tmp.ammo++;
+                        ammo.setText(String.valueOf(tmp.ammo));
+                    }
+                });
+                dia.findViewById(R.id.weapon_edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tmp.name = nameVal.getText().toString();
+                        if (!dmg.getText().toString().equals("")){
+                            tmp.dmg = Integer.parseInt(dmg.getText().toString());
+                        }else{
+                            tmp.dmg = 0;
+                        }
+                        if (!crit.getText().toString().equals(""))
+                            tmp.crit = Integer.parseInt(crit.getText().toString());
+                        else
+                            tmp.crit = 0;
+                        if (!hp.getText().toString().equals("")){
+                            tmp.hp = Integer.parseInt(hp.getText().toString());
+                        }else
+                            tmp.hp = 0;
+                        tmp.itemState = state.getSelectedItemPosition();
+                        tmp.range = range.getSelectedItemPosition();
+                        tmp.skill = skill.getSelectedItemPosition();
+                        tmp.skillBase = skillChar.getSelectedItemPosition();
+                        tmp.chars = tmp.chars.clone();
+                        tmp.addBrawn = addBrawn.isChecked();
+                        tmp.loaded = loaded.isChecked();
+                        tmp.slug = slug.isChecked();
+                        vh.weapons.add(tmp);
+                        ((LinearLayout)top.findViewById(R.id.weapon_list_layout)).addView(new WeaponLayout()
+                                .WeaponLayout(main,((LinearLayout)top.findViewById(R.id.weapon_list_layout)),vh,vh.weapons.get(vh.weapons.size()-1)));
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.weapon_edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+            }
+        });
         //</editor-fold>
-        //<editor-fold desc="">
+        //<editor-fold desc="crit_inj_card">
+        final LinearLayout critLay = (LinearLayout) top.findViewById(R.id.crit_inj_list_layout);
+        for (int i = 0;i<vh.crits.size();i++)
+            critLay.addView(new CritInjLayout().CritInjLayout(top.getContext(),critLay,vh,vh.crits.get(i)));
+        top.findViewById(R.id.crit_inj_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CriticalInjury tmp = new CriticalInjury();
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_critical_injury_edit);
+                final EditText name = (EditText)dia.findViewById(R.id.crit_name);
+                name.setText(tmp.name);
+                final EditText desc = (EditText)dia.findViewById(R.id.crit_desc);
+                desc.setText(tmp.desc);
+                final Spinner sev = (Spinner)dia.findViewById(R.id.crit_severity);
+                ArrayAdapter<CharSequence> sevAdap = ArrayAdapter.createFromResource(top.getContext(),R.array.crit_injury_severities,R.layout.spinner_base);
+                sev.setAdapter(sevAdap);
+                sev.setSelection(tmp.severity);
+                dia.findViewById(R.id.crit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tmp.name = name.getText().toString();
+                        tmp.desc = desc.getText().toString();
+                        tmp.severity = sev.getSelectedItemPosition();
+                        vh.crits.add(tmp);
+                        critLay.addView(new CritInjLayout().CritInjLayout(top.getContext(),critLay,vh,
+                                vh.crits.get(vh.crits.size()-1)));
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.crit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+            }
+        });
         //</editor-fold>
-        //<editor-fold desc="">
+        //<editor-fold desc="desc_card">
+        ((TextView)top.findViewById(R.id.desc_main)).setText(vh.desc);
+        top.findViewById(R.id.desc_card).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_simple_edit);
+                ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.description_text);
+                final EditText desc = (EditText)dia.findViewById(R.id.edit_val);
+                desc.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                desc.setText(vh.desc);
+                desc.setSingleLine(false);
+                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vh.desc = desc.getText().toString();
+                        ((TextView)top.findViewById(R.id.desc_main)).setText(vh.desc);
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+                return true;
+            }
+        });
         //</editor-fold>
     }
 }

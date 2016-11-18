@@ -51,7 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:id="@+id/basic_info">
+                android:id="@+id/basic_info"
+                android:animateLayoutChanges="true">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -71,7 +72,8 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/basic_info_layout">
+                        android:id="@+id/basic_info_layout"
+                        android:animateLayoutChanges="true">
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -208,7 +210,8 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/hp_layout">
+                            android:id="@+id/hp_layout"
+                            android:foreground="?attr/selectableItemBackground">
 
                             <TextView
                                 android:text="@string/hard_points_text"
@@ -252,7 +255,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:id="@+id/passenger_capacity_layout">
+                                android:id="@+id/passenger_capacity_layout"
+                                android:foreground="?attr/selectableItemBackground">
 
                                 <TextView
                                     android:text="@string/passenger_text"
@@ -277,7 +281,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:id="@+id/encumbrance_capacity_layout">
+                                android:id="@+id/encumbrance_capacity_layout"
+                                android:foreground="?attr/selectableItemBackground">
 
                                 <TextView
                                     android:text="@string/encumbrance_text"
@@ -306,7 +311,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:id="@+id/defense_card">
+                android:id="@+id/defense_card"
+                android:animateLayoutChanges="true">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -326,7 +332,8 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/defense_layout">
+                        android:id="@+id/defense_layout"
+                        android:animateLayoutChanges="true">
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -577,7 +584,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-                android:id="@+id/damage_card">
+                android:id="@+id/damage_card"
+                android:animateLayoutChanges="true">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -598,7 +606,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
-                        android:id="@+id/damage_layout">
+                        android:id="@+id/damage_layout"
+                        android:animateLayoutChanges="true">
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -721,37 +730,126 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp">
+                android:layout_margin="4dp"
+                android:id="@+id/weapon_card"
+                android:animateLayoutChanges="true">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"></LinearLayout>
+                    android:layout_margin="5dp">
+
+                    <Switch
+                        android:text="@string/weapons_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weapon_switch"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/weapon_layout"
+                        android:animateLayoutChanges="true">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/weapon_list_layout"
+                            android:animateLayoutChanges="true"></LinearLayout>
+
+                        <Button
+                            android:text="@string/add_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/weapon_add"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_gravity="right" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp">
+                android:layout_margin="4dp"
+                android:id="@+id/crit_inj_card"
+                android:animateLayoutChanges="true">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"></LinearLayout>
+                    android:layout_margin="5dp">
+
+                    <Switch
+                        android:text="@string/crit_inj_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/crit_inj_switch"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/crit_inj_layout"
+                        android:animateLayoutChanges="true">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/crit_inj_list_layout"
+                            android:animateLayoutChanges="true"></LinearLayout>
+
+                        <Button
+                            android:text="@string/add_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/crit_inj_add"
+                            android:layout_gravity="right"
+                            style="@style/Widget.AppCompat.Button.Borderless" />
+                    </LinearLayout>
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp">
+                android:layout_margin="4dp"
+                android:id="@+id/desc_card"
+                android:animateLayoutChanges="true">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="5dp"></LinearLayout>
+                    android:layout_margin="5dp">
+
+                    <Switch
+                        android:text="Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/desc_switch"
+                        android:textSize="18sp"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/desc_main"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+                </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>

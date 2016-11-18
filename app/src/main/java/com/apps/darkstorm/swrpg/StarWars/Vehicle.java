@@ -47,7 +47,7 @@ public class Vehicle {
     public int hp;
     public Weapons weapons = new Weapons();
     public CriticalInjuries crits = new CriticalInjuries();
-    private boolean[] showCards = new boolean[7];
+    private boolean[] showCards = new boolean[6];
     public String desc = "";
     public String model = "";
     //
@@ -131,6 +131,51 @@ public class Vehicle {
                     top.findViewById(R.id.damage_layout).setVisibility(View.VISIBLE);
                 else
                     top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.weapon_switch)).setChecked(showCards[3]);
+        if (showCards[3])
+            top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.weapon_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[3] = b;
+                if (b)
+                    top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.crit_inj_switch)).setChecked(showCards[4]);
+        if (showCards[4])
+            top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.crit_inj_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[4] = b;
+                if (b)
+                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.desc_switch)).setChecked(showCards[5]);
+        if (showCards[5])
+            top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.desc_main).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.desc_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[5] = b;
+                if (b)
+                    top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.desc_main).setVisibility(View.GONE);
             }
         });
     }
