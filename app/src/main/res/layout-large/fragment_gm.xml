@@ -6,7 +6,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:id="@+id/char_list_scroll">
 
         <LinearLayout
             android:layout_width="match_parent"
