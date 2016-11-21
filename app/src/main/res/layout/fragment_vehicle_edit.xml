@@ -5,8 +5,6 @@
     tools:context="com.apps.darkstorm.swrpg.VehicleEdit"
     android:animateLayoutChanges="true">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -125,12 +123,13 @@
                                     android:textAlignment="center" />
 
                                 <TextView
-                                    android:text="TextView"
+                                    android:text="0"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/silhouette_text"
-                                    android:textSize="16sp"
-                                    android:textAlignment="center" />
+                                    android:textSize="24sp"
+                                    android:textAlignment="center"
+                                    android:textStyle="normal|bold" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -149,12 +148,13 @@
                                     android:textAlignment="center" />
 
                                 <TextView
-                                    android:text="TextView"
+                                    android:text="0"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/speed_text"
-                                    android:textSize="16sp"
-                                    android:textAlignment="center" />
+                                    android:textSize="24sp"
+                                    android:textAlignment="center"
+                                    android:textStyle="normal|bold" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -179,12 +179,13 @@
                                     android:textAlignment="center" />
 
                                 <TextView
-                                    android:text="TextView"
+                                    android:text="0"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/armor_text"
                                     android:textAlignment="center"
-                                    android:textSize="16sp" />
+                                    android:textSize="24sp"
+                                    android:textStyle="normal|bold" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -203,12 +204,13 @@
                                     android:textAlignment="center" />
 
                                 <TextView
-                                    android:text="TextView"
+                                    android:text="0"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/handling_text"
                                     android:textAlignment="center"
-                                    android:textSize="16sp" />
+                                    android:textSize="24sp"
+                                    android:textStyle="normal|bold" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -227,12 +229,13 @@
                                 android:textAlignment="center" />
 
                             <TextView
-                                android:text="TextView"
+                                android:text="0"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/hp_text"
                                 android:textAlignment="center"
-                                android:textSize="16sp" />
+                                android:textSize="24sp"
+                                android:textStyle="normal|bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -273,13 +276,14 @@
                                     android:textAlignment="center" />
 
                                 <TextView
-                                    android:text="TextView"
+                                    android:text="0"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/passenger_capacity_text"
                                     android:layout_weight="1"
                                     android:textAlignment="center"
-                                    android:textSize="16sp" />
+                                    android:textSize="24sp"
+                                    android:textStyle="normal|bold" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -299,13 +303,14 @@
                                     android:textAlignment="center" />
 
                                 <TextView
-                                    android:text="TextView"
+                                    android:text="0"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/encumbrance_capacity_text"
                                     android:layout_weight="1"
                                     android:textAlignment="center"
-                                    android:textSize="16sp" />
+                                    android:textSize="24sp"
+                                    android:textStyle="normal|bold" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -358,12 +363,13 @@
                                 android:textAlignment="center" />
 
                             <TextView
-                                android:text="TextView"
+                                android:text="0"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/total_defense_text"
                                 android:textAlignment="center"
-                                android:textSize="16sp" />
+                                android:textSize="24sp"
+                                android:textStyle="normal|bold" />
                         </LinearLayout>
 
                         <LinearLayout

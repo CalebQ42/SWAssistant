@@ -64,20 +64,16 @@ public class GMFragment extends Fragment {
         final View top = inflater.inflate(R.layout.fragment_gm, container, false);
         this.top = top;
         final LinearLayout chars = (LinearLayout)top.findViewById(R.id.character_list);
-        if (top.findViewById(R.id.fragment_holder).getVisibility() != View.GONE){
-            big = true;
-        }else{
-            big = false;
-        }
+        big = !(top.findViewById(R.id.fragment_holder).getVisibility() == View.GONE ||
+                top.findViewById(R.id.char_list_scroll).getVisibility() == View.GONE);
         mainHandle = new Handler(Looper.getMainLooper()){
             public void handleMessage(Message in){
                 if (in.obj instanceof Character){
-                    if (!big){
+                    if (!big)
                         getFragmentManager().beginTransaction().replace(R.id.content_navigation,CharacterEditMain.newInstance((Character)in.obj,gac, true))
                                 .addToBackStack("GMEdit").commit();
-                    }else{
+                    else
                         getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance((Character)in.obj,gac)).commit();
-                    }
                 }else if(in.obj instanceof ArrayList){
                     chars.removeAllViews();
                     ArrayList<Character> tmp = (ArrayList<Character>)in.obj;
@@ -87,7 +83,8 @@ public class GMFragment extends Fragment {
                 }
                 if(in.arg1 == 100){
                     chars.removeAllViews();
-                    snack = Snackbar.make(top,R.string.loading_snack,Snackbar.LENGTH_INDEFINITE);
+                    if (top.getContext()!= null)
+                        snack = Snackbar.make(top,R.string.loading_snack,Snackbar.LENGTH_INDEFINITE);
                     snack.show();
                 }else if(in.arg1 == -100){
                     if (snack != null && snack.isShownOrQueued()){
