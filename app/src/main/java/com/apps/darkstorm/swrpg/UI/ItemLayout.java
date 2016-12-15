@@ -16,7 +16,7 @@ import com.apps.darkstorm.swrpg.StarWars.Character;
 import com.apps.darkstorm.swrpg.StarWars.Stuff.Item;
 
 public class ItemLayout {
-    public LinearLayout ItemLayout(final Context main, final LinearLayout invLay, final Character chara, final Item it){
+    public LinearLayout ItemLayout(final View toppest,final Context main, final LinearLayout invLay, final Character chara, final Item it){
         LinearLayout top = new LinearLayout(main);
         LinearLayout.LayoutParams toplp =
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -49,6 +49,8 @@ public class ItemLayout {
                 desc.setText(it.desc);
                 final EditText num = (EditText)dia.findViewById(R.id.item_num);
                 num.setText(String.valueOf(it.count));
+                final EditText encum = (EditText)dia.findViewById(R.id.encum_num);
+                encum.setText(String.valueOf(it.encum));
                 dia.findViewById(R.id.item_delete).setVisibility(View.VISIBLE);
                 dia.findViewById(R.id.item_save).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -59,7 +61,15 @@ public class ItemLayout {
                             it.count = Integer.parseInt(num.getText().toString());
                         else
                             it.count = 0;
+                        if (!encum.getText().toString().equals(""))
+                            it.encum = Integer.parseInt(encum.getText().toString());
+                        else
+                            it.encum = 0;
                         name.setText(it.name);
+                        if (chara.isOverEncum())
+                            toppest.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+                        else
+                            toppest.findViewById(R.id.encum_warning).setVisibility(View.GONE);
                         dia.cancel();
                     }
                 });

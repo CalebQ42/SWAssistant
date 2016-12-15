@@ -21,6 +21,8 @@ public class Weapon{
     public int ammo;
     //Version 2 13
     public String firingArc = "";
+    //Version 3 14
+    public int encum;
     //</editor-fold>
     public void copyFrom(Weapon w){
         name = w.name;
@@ -37,6 +39,7 @@ public class Weapon{
         itemState = w.itemState;
         ammo = w.ammo;
         firingArc = w.firingArc;
+        encum = w.encum;
     }
     public Weapon clone(){
         Weapon tmp;
@@ -59,6 +62,7 @@ public class Weapon{
         tmp.itemState = itemState;
         tmp.ammo = ammo;
         tmp.firingArc = firingArc;
+        tmp.encum = encum;
         return tmp;
     }
     public Object serialObject(){
@@ -77,11 +81,14 @@ public class Weapon{
         tmp.add(itemState);
         tmp.add(ammo);
         tmp.add(firingArc);
+        tmp.add(encum);
         return tmp.toArray();
     }
     public void loadFromObject(Object obj){
         Object[] tmp = (Object[])obj;
         switch (tmp.length){
+            case 15:
+                encum = (int)tmp[14];
             case 14:
                 firingArc = (String)tmp[13];
             case 13:
@@ -108,6 +115,6 @@ public class Weapon{
         Weapon in = (Weapon)obj;
         return in.name.equals(name) && in.dmg == dmg && in.crit == crit && in.hp == hp && in.range == range && in.skill == skill
                 && in.skillBase == skillBase && in.chars.equals(chars) && in.addBrawn == addBrawn && in.loaded == loaded && in.slug == slug
-                && in.itemState == itemState && in.ammo == ammo && in.firingArc.equals(firingArc);
+                && in.itemState == itemState && in.ammo == ammo && in.firingArc.equals(firingArc) && in.encum == encum;
     }
 }

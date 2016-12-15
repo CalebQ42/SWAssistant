@@ -81,4 +81,10 @@ public class Weapons{
         out.w = w.clone();
         return out;
     }
+    public int totalEncum(){
+        int total = 0;
+        for (Weapon we:w)
+            total += we.encum;
+        return total;
+    }
 }

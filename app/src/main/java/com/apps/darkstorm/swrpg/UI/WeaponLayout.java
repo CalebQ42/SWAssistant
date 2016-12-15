@@ -28,7 +28,7 @@ import com.apps.darkstorm.swrpg.StarWars.Vehicle;
 
 public class WeaponLayout {
     int ability,proficiency,difficulty,challenge,boost,setback,force;
-    public LinearLayout WeaponLayout(final Context main,final LinearLayout weapLay,final Character chara,final Weapon w){
+    public LinearLayout WeaponLayout(final View toppest,final Context main,final LinearLayout weapLay,final Character chara,final Weapon w){
         LinearLayout top = new LinearLayout(main);
         LinearLayout.LayoutParams toplp =
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -272,6 +272,8 @@ public class WeaponLayout {
                 crit.setText(String.valueOf(tmp.crit));
                 final EditText hp = (EditText)dia.findViewById(R.id.weapon_edit_hp);
                 hp.setText(String.valueOf(tmp.hp));
+                final EditText encum = (EditText)dia.findViewById(R.id.weapon_edit_encum);
+                encum.setText(String.valueOf(tmp.encum));
                 final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
                 ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);
                 state.setAdapter(stateAdap);
@@ -397,6 +399,10 @@ public class WeaponLayout {
                             w.hp = Integer.parseInt(hp.getText().toString());
                         }else
                             w.hp = 0;
+                        if (!encum.getText().toString().equals(""))
+                            w.encum = Integer.parseInt(encum.getText().toString());
+                        else
+                            w.encum = 0;
                         w.itemState = state.getSelectedItemPosition();
                         w.range = range.getSelectedItemPosition();
                         w.skill = skill.getSelectedItemPosition();
@@ -407,6 +413,10 @@ public class WeaponLayout {
                         w.slug = slug.isChecked();
                         w.ammo = tmp.ammo;
                         name.setText(w.name);
+                        if (chara.isOverEncum())
+                            toppest.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+                        else
+                            toppest.findViewById(R.id.encum_warning).setVisibility(View.GONE);
                         dia.cancel();
                     }
                 });
@@ -663,6 +673,8 @@ public class WeaponLayout {
                 final EditText arc = (EditText)dia.findViewById(R.id.weapon_edit_arc);
                 arc.setText(tmp.firingArc);
                 dia.findViewById(R.id.weapon_edit_arc_layout).setVisibility(View.VISIBLE);
+                dia.findViewById(R.id.weapon_edit_encum).setVisibility(View.GONE);
+                dia.findViewById(R.id.encum_text).setVisibility(View.GONE);
                 final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
                 ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);
                 state.setAdapter(stateAdap);

@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,17 +65,70 @@ public class GMFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_gm, container, false);
         this.top = top;
+        top.setFocusableInTouchMode(true);
+        top.requestFocus();
         final LinearLayout chars = (LinearLayout)top.findViewById(R.id.character_list);
         big = !(top.findViewById(R.id.fragment_holder).getVisibility() == View.GONE ||
                 top.findViewById(R.id.char_list_scroll).getVisibility() == View.GONE);
         mainHandle = new Handler(Looper.getMainLooper()){
             public void handleMessage(Message in){
                 if (in.obj instanceof Character){
-                    if (!big)
-                        getFragmentManager().beginTransaction().replace(R.id.content_navigation,CharacterEditMain.newInstance((Character)in.obj,gac, true))
-                                .addToBackStack("GMEdit").commit();
-                    else
-                        getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance((Character)in.obj,gac)).commit();
+                    big = !(top.findViewById(R.id.fragment_holder).getVisibility() == View.GONE ||
+                            top.findViewById(R.id.char_list_scroll).getVisibility() == View.GONE);
+                    getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance((Character)in.obj,gac)).commit();
+                    if (!big){
+                        top.findViewById(R.id.fragment_holder).setAlpha(0.0f);
+                        top.findViewById(R.id.fragment_holder).setVisibility(View.VISIBLE);
+                        top.findViewById(R.id.char_list_scroll).animate().alpha(0.0f).setListener(new Animator.AnimatorListener() {
+                            public void onAnimationStart(Animator animation) {
+                                top.findViewById(R.id.fragment_holder).animate().alpha(1.0f).start();
+                            }
+                            public void onAnimationEnd(Animator animation) {
+                                top.findViewById(R.id.char_list_scroll).setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).start();
+                        top.setOnKeyListener(new View.OnKeyListener() {
+                            @Override
+                            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                                if (keyCode == KeyEvent.KEYCODE_BACK){
+                                    if (top.findViewById(R.id.char_list_scroll).getVisibility() == View.VISIBLE)
+                                        return false;
+                                    top.findViewById(R.id.char_list_scroll).setAlpha(0.0f);
+                                    top.findViewById(R.id.char_list_scroll).setVisibility(View.VISIBLE);
+                                    top.findViewById(R.id.fragment_holder).animate().alpha(0.0f).setListener(new Animator.AnimatorListener() {
+                                        public void onAnimationStart(Animator animation) {
+                                            top.findViewById(R.id.char_list_scroll).animate().alpha(1.0f).start();
+                                        }
+                                        public void onAnimationEnd(Animator animation) {
+                                            top.findViewById(R.id.fragment_holder).setVisibility(View.GONE);
+                                        }
+
+                                        @Override
+                                        public void onAnimationCancel(Animator animation) {
+
+                                        }
+
+                                        @Override
+                                        public void onAnimationRepeat(Animator animation) {
+
+                                        }
+                                    }).start();
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+                    }
                 }else if(in.obj instanceof ArrayList){
                     chars.removeAllViews();
                     ArrayList<Character> tmp = (ArrayList<Character>)in.obj;

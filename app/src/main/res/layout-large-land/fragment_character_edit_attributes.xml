@@ -1613,6 +1613,45 @@
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/encum_layout"
+                                    android:foreground="?attr/selectableItemBackground"
+                                    android:layout_gravity="center_horizontal">
+
+                                    <TextView
+                                        android:text="@string/encumbrance_capacity_text"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/textView127"
+                                        android:layout_weight="1"
+                                        android:textAlignment="textEnd"
+                                        android:textSize="16sp"
+                                        android:layout_marginRight="5dp" />
+
+                                    <TextView
+                                        android:text="0"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/encum_val"
+                                        android:layout_weight="1"
+                                        android:textStyle="normal|bold"
+                                        android:textAlignment="textStart"
+                                        android:textSize="16sp" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:text="@string/encum_warning"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/encum_warning"
+                                    android:textAlignment="center"
+                                    android:textSize="18sp"
+                                    android:textColor="@android:color/holo_red_light"
+                                    android:visibility="gone" />
+
+                                <LinearLayout
                                     android:orientation="vertical"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"

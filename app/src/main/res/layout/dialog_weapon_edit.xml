@@ -86,6 +86,22 @@
                 android:id="@+id/weapon_edit_hp"
                 android:textAlignment="center" />
 
+            <TextView
+                android:text="@string/encum_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/encum_text"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/weapon_edit_encum"
+                android:textAlignment="center" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"

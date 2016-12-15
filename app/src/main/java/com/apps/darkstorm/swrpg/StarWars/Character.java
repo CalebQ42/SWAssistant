@@ -70,6 +70,10 @@ public class Character {
     public int age;
     public Notes nts = new Notes();
     //
+    // Character V2 Start (35)
+    //
+    public int encumCapacity;
+    //
     //  ^                 ^
     //  |  Character End  |
     //  |                 |
@@ -206,6 +210,7 @@ public class Character {
         sl.addSave(darkSide);
         sl.addSave(age);
         sl.addSave(nts.serialObject());
+        sl.addSave(encumCapacity);
         sl.save();
     }
     void reLoad(String filename){
@@ -213,6 +218,8 @@ public class Character {
         Object[] vals = sl.load();
         switch (vals.length){
             //later versions go here and fallthrough
+            case 36:
+                encumCapacity = (int)vals[35];
             case 35:
                 String title = filename.substring(filename.lastIndexOf("/")+1);
                 if (title.substring(0,title.indexOf(".")).equals(""))
@@ -260,6 +267,8 @@ public class Character {
         Object[] vals = sl.load(gac);
         switch (vals.length){
             //later versions go here and fallthrough
+            case 36:
+                encumCapacity = (int)vals[35];
             case 35:
                 String title = fil.asDriveFile().getMetadata(gac).await().getMetadata().getTitle();
                 if (title.substring(0,title.indexOf(".")).equals(""))
@@ -392,6 +401,7 @@ public class Character {
         tmp.darkSide = darkSide;
         tmp.age = age;
         tmp.nts = nts.clone();
+        tmp.encumCapacity = encumCapacity;
         return tmp;
     }
     public void resolveConflict(){
@@ -717,6 +727,7 @@ public class Character {
             sl.addSave(darkSide);
             sl.addSave(age);
             sl.addSave(nts.serialObject());
+            sl.addSave(encumCapacity);
             sl.save(gac,async);
         }
     }
@@ -734,6 +745,10 @@ public class Character {
                 strainCur == chara.strainCur && xpCur == chara.xpCur && xpTot == chara.xpTot && defMelee == chara.defMelee &&
                 defRanged == chara.defRanged && soak == chara.soak && force == chara.force && credits == chara.credits &&
                 morality == chara.morality && conflict == chara.conflict && Objects.equals(chara.desc, desc) &&
-                Arrays.equals(showCard, chara.showCard) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts);
+                Arrays.equals(showCard, chara.showCard) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts) &&
+                encumCapacity == chara.encumCapacity;
+    }
+    public boolean isOverEncum(){
+        return (encumCapacity < inv.totalEncum() + weapons.totalEncum());
     }
 }

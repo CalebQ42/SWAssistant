@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -233,20 +232,6 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int i) {}
-
-    public void onConfigurationChanged(Configuration newConfig){
-        super.onConfigurationChanged(newConfig);
-        if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof GMFragment) {
-            Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
-            getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
-        }
-        if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterEditMain){
-            CharacterEditMain tmp = (CharacterEditMain)getSupportFragmentManager().findFragmentById(R.id.content_navigation);
-            if (tmp.gm){
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_navigation, GMFragment.newInstance(gac,tmp.chara)).addToBackStack(null).commit();
-            }
-        }
-    }
 
     @Override
     public void onFragmentInteraction() {}

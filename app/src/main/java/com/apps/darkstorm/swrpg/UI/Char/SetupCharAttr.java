@@ -1579,7 +1579,7 @@ public class SetupCharAttr {
         //<editor-fold desc="weapons_card">
         for (int i = 0;i<chara.weapons.size();i++)
             ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
-                    .WeaponLayout(top.getContext(),((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(i)));
+                    .WeaponLayout(top,top.getContext(),((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(i)));
         top.findViewById(R.id.weapons_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1595,6 +1595,8 @@ public class SetupCharAttr {
                 crit.setText(String.valueOf(tmp.crit));
                 final EditText hp = (EditText)dia.findViewById(R.id.weapon_edit_hp);
                 hp.setText(String.valueOf(tmp.hp));
+                final EditText encum = (EditText)dia.findViewById(R.id.weapon_edit_encum);
+                encum.setText(String.valueOf(tmp.encum));
                 final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
                 ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);
                 state.setAdapter(stateAdap);
@@ -1653,6 +1655,10 @@ public class SetupCharAttr {
                                 }
                                 tmp.chars.add(wr);
                                 spec.addView(new WeapCharLayout().WeapCharLayout(main,spec,tmp,tmp.chars.get(tmp.chars.size()-1)));
+                                if (chara.isOverEncum())
+                                    top.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+                                else
+                                    top.findViewById(R.id.encum_warning).setVisibility(View.GONE);
                                 dia.cancel();
                             }
                         });
@@ -1720,6 +1726,10 @@ public class SetupCharAttr {
                             tmp.hp = Integer.parseInt(hp.getText().toString());
                         }else
                             tmp.hp = 0;
+                        if (!encum.getText().toString().equals(""))
+                            tmp.encum = Integer.parseInt(encum.getText().toString());
+                        else
+                            tmp.encum = 0;
                         tmp.itemState = state.getSelectedItemPosition();
                         tmp.range = range.getSelectedItemPosition();
                         tmp.skill = skill.getSelectedItemPosition();
@@ -1730,7 +1740,7 @@ public class SetupCharAttr {
                         tmp.slug = slug.isChecked();
                         chara.weapons.add(tmp);
                         ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
-                                .WeaponLayout(main,((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(chara.weapons.size()-1)));
+                                .WeaponLayout(top,main,((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(chara.weapons.size()-1)));
                         dia.cancel();
                     }
                 });
@@ -2073,9 +2083,50 @@ public class SetupCharAttr {
                 return true;
             }
         });
+        final TextView encum = (TextView)top.findViewById(R.id.encum_val);
+        encum.setText(String.valueOf(chara.encumCapacity));
+        top.findViewById(R.id.encum_layout).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                final Dialog dia = new Dialog(top.getContext());
+                dia.setContentView(R.layout.dialog_simple_edit);
+                ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.encumbrance_capacity_text);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
+                val.setInputType(InputType.TYPE_CLASS_NUMBER);
+                val.setText(String.valueOf(chara.encumCapacity));
+                dia.findViewById(R.id.edit_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!val.getText().toString().equals("")){
+                            chara.encumCapacity = Integer.parseInt(val.getText().toString());
+                        }else{
+                            chara.encumCapacity = 0;
+                        }
+                        encum.setText(String.valueOf(chara.encumCapacity));
+                        if (chara.isOverEncum())
+                            top.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+                        else
+                            top.findViewById(R.id.encum_warning).setVisibility(View.GONE);
+                        dia.cancel();
+                    }
+                });
+                dia.findViewById(R.id.edit_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dia.cancel();
+                    }
+                });
+                dia.show();
+                return true;
+            }
+        });
+        if (chara.isOverEncum())
+            top.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.encum_warning).setVisibility(View.GONE);
         final LinearLayout invLay = (LinearLayout)top.findViewById(R.id.inventory_layout);
         for (int i = 0;i<chara.inv.size();i++)
-            invLay.addView(new ItemLayout().ItemLayout(top.getContext(),invLay,chara,chara.inv.get(i)));
+            invLay.addView(new ItemLayout().ItemLayout(top,top.getContext(),invLay,chara,chara.inv.get(i)));
         top.findViewById(R.id.inventory_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2088,6 +2139,7 @@ public class SetupCharAttr {
                 desc.setText(tmp.desc);
                 final EditText num = (EditText)dia.findViewById(R.id.item_num);
                 num.setText(String.valueOf(tmp.count));
+                final EditText encum = (EditText)dia.findViewById(R.id.encum_num);
                 dia.findViewById(R.id.item_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -2097,8 +2149,16 @@ public class SetupCharAttr {
                             tmp.count = Integer.parseInt(num.getText().toString());
                         else
                             tmp.count = 0;
+                        if (!encum.getText().toString().equals(""))
+                            tmp.encum = Integer.parseInt(encum.getText().toString());
+                        else
+                            tmp.encum = 0;
                         chara.inv.add(tmp);
-                        invLay.addView(new ItemLayout().ItemLayout(top.getContext(),invLay,chara,chara.inv.get(chara.inv.size()-1)));
+                        invLay.addView(new ItemLayout().ItemLayout(top,top.getContext(),invLay,chara,chara.inv.get(chara.inv.size()-1)));
+                        if (chara.isOverEncum())
+                            top.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+                        else
+                            top.findViewById(R.id.encum_warning).setVisibility(View.GONE);
                         dia.cancel();
                     }
                 });

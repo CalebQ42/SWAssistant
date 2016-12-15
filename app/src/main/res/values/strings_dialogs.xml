@@ -29,4 +29,5 @@
     <string name="loaded_text">Loaded</string>
     <string name="slug_text">Slugthrower (needs ammo)</string>
     <string name="ammo_text">Ammo:</string>
+    <string name="encum_text">Encumbrance:</string>
 </resources>

@@ -699,6 +699,8 @@ public class SetupVehicEdit {
                 hp.setText(String.valueOf(tmp.hp));
                 final EditText arc = (EditText)dia.findViewById(R.id.weapon_edit_arc);
                 arc.setText(tmp.firingArc);
+                dia.findViewById(R.id.weapon_edit_encum).setVisibility(View.GONE);
+                dia.findViewById(R.id.encum_text).setVisibility(View.GONE);
                 dia.findViewById(R.id.weapon_edit_arc_layout).setVisibility(View.VISIBLE);
                 final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
                 ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);

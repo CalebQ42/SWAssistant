@@ -70,4 +70,10 @@ public class Inventory{
         out.inv = inv.clone();
         return out;
     }
+    public int totalEncum(){
+        int total =0;
+        for (Item it:inv)
+            total += it.encum;
+        return total;
+    }
 }

@@ -1,14 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.apps.darkstorm.swrpg.GMFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="2"
         android:id="@+id/char_list_scroll">
 
         <LinearLayout
@@ -19,12 +16,19 @@
             android:padding="5dp" />
     </ScrollView>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="#99999999"></LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:layout_weight="1"
         android:id="@+id/fragment_holder">
 
     </FrameLayout>
 
-</FrameLayout>
+</LinearLayout>

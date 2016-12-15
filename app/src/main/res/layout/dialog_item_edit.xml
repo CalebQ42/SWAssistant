@@ -60,6 +60,22 @@
         android:id="@+id/item_num"
         android:textAlignment="center" />
 
+    <TextView
+        android:text="@string/encum_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView126"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/encum_num"
+        android:textAlignment="center" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
