@@ -32,25 +32,16 @@ public class GMFragment extends Fragment {
     private OnGMInteractionListener mListener;
 
     GoogleApiClient gac = null;
-    boolean big = false;
     AsyncTask<Void,Void,Void> async;
     Handler mainHandle;
     Snackbar snack;
     View top;
-    Character tmp = null;
 
     public GMFragment() {}
 
     public static GMFragment newInstance(GoogleApiClient gac) {
         GMFragment fragment = new GMFragment();
         fragment.gac = gac;
-        return fragment;
-    }
-
-    public static GMFragment newInstance(GoogleApiClient gac, Character tmp) {
-        GMFragment fragment = new GMFragment();
-        fragment.gac = gac;
-        fragment.tmp = tmp;
         return fragment;
     }
 
@@ -68,67 +59,10 @@ public class GMFragment extends Fragment {
         top.setFocusableInTouchMode(true);
         top.requestFocus();
         final LinearLayout chars = (LinearLayout)top.findViewById(R.id.character_list);
-        big = !(top.findViewById(R.id.fragment_holder).getVisibility() == View.GONE ||
-                top.findViewById(R.id.char_list_scroll).getVisibility() == View.GONE);
         mainHandle = new Handler(Looper.getMainLooper()){
             public void handleMessage(Message in){
                 if (in.obj instanceof Character){
-                    big = !(top.findViewById(R.id.fragment_holder).getVisibility() == View.GONE ||
-                            top.findViewById(R.id.char_list_scroll).getVisibility() == View.GONE);
                     getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance((Character)in.obj,gac)).commit();
-                    if (!big){
-                        top.findViewById(R.id.fragment_holder).setAlpha(0.0f);
-                        top.findViewById(R.id.fragment_holder).setVisibility(View.VISIBLE);
-                        top.findViewById(R.id.char_list_scroll).animate().alpha(0.0f).setListener(new Animator.AnimatorListener() {
-                            public void onAnimationStart(Animator animation) {
-                                top.findViewById(R.id.fragment_holder).animate().alpha(1.0f).start();
-                            }
-                            public void onAnimationEnd(Animator animation) {
-                                top.findViewById(R.id.char_list_scroll).setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animation) {
-
-                            }
-                        }).start();
-                        top.setOnKeyListener(new View.OnKeyListener() {
-                            @Override
-                            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                                if (keyCode == KeyEvent.KEYCODE_BACK){
-                                    if (top.findViewById(R.id.char_list_scroll).getVisibility() == View.VISIBLE)
-                                        return false;
-                                    top.findViewById(R.id.char_list_scroll).setAlpha(0.0f);
-                                    top.findViewById(R.id.char_list_scroll).setVisibility(View.VISIBLE);
-                                    top.findViewById(R.id.fragment_holder).animate().alpha(0.0f).setListener(new Animator.AnimatorListener() {
-                                        public void onAnimationStart(Animator animation) {
-                                            top.findViewById(R.id.char_list_scroll).animate().alpha(1.0f).start();
-                                        }
-                                        public void onAnimationEnd(Animator animation) {
-                                            top.findViewById(R.id.fragment_holder).setVisibility(View.GONE);
-                                        }
-
-                                        @Override
-                                        public void onAnimationCancel(Animator animation) {
-
-                                        }
-
-                                        @Override
-                                        public void onAnimationRepeat(Animator animation) {
-
-                                        }
-                                    }).start();
-                                    return true;
-                                }
-                                return false;
-                            }
-                        });
-                    }
                 }else if(in.obj instanceof ArrayList){
                     chars.removeAllViews();
                     ArrayList<Character> tmp = (ArrayList<Character>)in.obj;
@@ -148,19 +82,11 @@ public class GMFragment extends Fragment {
                 }
             }
         };
-        if (big && tmp != null){
-            getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance(tmp,gac)).commit();
-        }
         return top;
     }
 
     public void onStart(){
         super.onStart();
-        if (top.findViewById(R.id.fragment_holder).getVisibility() != View.GONE){
-            big = true;
-        }else{
-            big = false;
-        }
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
         }else {
@@ -219,11 +145,6 @@ public class GMFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        if (top.findViewById(R.id.fragment_holder).getVisibility() != View.GONE){
-            big = true;
-        }else{
-            big = false;
-        }
         super.onDetach();
         mListener = null;
     }

@@ -227,7 +227,7 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        System.out.println("Connected");
+        InitialConnect.connect(this,gac);
     }
 
     @Override

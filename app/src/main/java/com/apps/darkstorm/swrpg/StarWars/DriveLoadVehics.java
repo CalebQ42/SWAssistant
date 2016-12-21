@@ -10,6 +10,7 @@ import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.query.Query;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,11 +21,10 @@ public class DriveLoadVehics {
     private ArrayList<Date> lastMod = new ArrayList<>();
     public DriveLoadVehics(Context main, GoogleApiClient gac){
         if (main != null && gac.isConnected()) {
-            InitialConnect.connect(main,gac);
             SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
             DriveId foldId = DriveId.decodeFromString(pref.getString(main.getString(R.string.ships_id_key), ""));
             DriveFolder charsFold = foldId.asDriveFolder();
-            DriveApi.MetadataBufferResult metbufres = charsFold.listChildren(gac).await();
+            DriveApi.MetadataBufferResult metbufres = charsFold.queryChildren(gac,new Query.Builder().build()).await();
             for (Metadata met : metbufres.getMetadataBuffer()) {
                 if (met.getFileExtension() != null) {
                     if (!met.isFolder() && met.getFileExtension().equals("vhcl") && !met.isTrashed()) {
