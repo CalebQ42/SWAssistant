@@ -1,5 +1,6 @@
 package com.apps.darkstorm.swrpg.StarWars;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.widget.Switch;
 import com.apps.darkstorm.swrpg.CustVars.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.CustVars.SaveLoad;
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.StarWars.Stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.StarWars.Stuff.Dutys;
 import com.apps.darkstorm.swrpg.StarWars.Stuff.ForcePowers;
@@ -27,6 +29,9 @@ import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
 import java.util.Arrays;
@@ -95,7 +100,7 @@ public class Character {
             showCard[i] = true;
         }
     }
-    public void startEditing(final Context main, final GoogleApiClient gac, final DriveId fold){
+    public void startEditing(final Activity main, final DriveId fold){
         if (!editing) {
             editing = true;
             AsyncTask<Void,Void,Void> blablah = new AsyncTask<Void, Void, Void>() {
@@ -103,13 +108,15 @@ public class Character {
                 protected Void doInBackground(Void... voids) {
                     Character tmpChar = Character.this.clone();
                     Character.this.save(Character.this.getFileLocation(main));
-                    cloudSave(gac,getFileId(gac,fold),false);
+                    cloudSave(((SWrpg)main.getApplication()).gac,getFileId(((SWrpg)main.getApplication()).gac,
+                            fold),false);
                     do{
                         if (!saving) {
                             saving = true;
                             if (!Character.this.equals(tmpChar)) {
                                 Character.this.save(Character.this.getFileLocation(main));
-                                cloudSave(gac,getFileId(gac,fold),false);
+                                cloudSave(((SWrpg)main.getApplication()).gac,
+                                        getFileId(((SWrpg)main.getApplication()).gac,fold),false);
                                 tmpChar = Character.this.clone();
                             }
                             saving = false;
@@ -124,7 +131,8 @@ public class Character {
                         saving = true;
                         if (!Character.this.equals(tmpChar)) {
                             Character.this.save(Character.this.getFileLocation(main));
-                            cloudSave(gac,getFileId(gac,fold),false);
+                            cloudSave(((SWrpg)main.getApplication()).gac,getFileId(
+                                    ((SWrpg)main.getApplication()).gac,fold),false);
                         }
                         saving = false;
                     }
@@ -134,7 +142,7 @@ public class Character {
             blablah.execute();
         }
     }
-    public void startEditing(final Context main){
+    public void startEditing(final Activity main){
         if (!editing) {
             editing = true;
             Thread tmp = new Thread(new Runnable() {
@@ -311,7 +319,7 @@ public class Character {
                 nts.loadFromObject(vals[34]);
         }
     }
-    public String getFileLocation(Context main){
+    public String getFileLocation(Activity main){
         File location;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
             File tmp = Environment.getExternalStorageDirectory();
@@ -345,9 +353,10 @@ public class Character {
         String name = Integer.toString(ID) + ".char";
         DriveFolder folder = fold.asDriveFolder();
         DriveId fi = null;
-        DriveApi.MetadataBufferResult res = folder.listChildren(gac).await();
+        DriveApi.MetadataBufferResult res = folder.queryChildren(gac,new Query.Builder().addFilter(
+                Filters.eq(SearchableField.TITLE,name)).build()).await();
         for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isFolder() && met.getTitle().equals(name) && !met.isTrashed()){
+            if (!met.isTrashed()){
                 fi = met.getDriveId();
                 break;
             }

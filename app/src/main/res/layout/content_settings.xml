@@ -30,6 +30,21 @@
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"></LinearLayout>
 
+        <Switch
+            android:text="@string/color_dice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dice_color_switch"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#99999999"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"></LinearLayout>
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

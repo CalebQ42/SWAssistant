@@ -1,5 +1,6 @@
 package com.apps.darkstorm.swrpg.StarWars;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.widget.Switch;
 import com.apps.darkstorm.swrpg.CustVars.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.CustVars.SaveLoad;
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.StarWars.Stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.StarWars.Stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,6 +21,9 @@ import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
 import java.util.Arrays;
@@ -206,21 +211,23 @@ public class Vehicle {
         tmp.model = model;
         return tmp;
     }
-    public void startEditing(final Context main, final GoogleApiClient gac, final DriveId fold){
+    public void startEditing(final Activity main, final DriveId fold){
         if (!editing){
             editing = true;
             AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     Vehicle old = Vehicle.this.clone();
-                    Vehicle.this.cloudSave(gac,getFileId(gac,fold),false);
+                    Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,getFileId(
+                            ((SWrpg)main.getApplication()).gac,fold),false);
                     Vehicle.this.save(getFileLocation(main));
                     do{
                         if (!saving) {
                             saving = true;
                             if (!Vehicle.this.equals(old)) {
                                 System.out.println("save");
-                                Vehicle.this.cloudSave(gac, getFileId(gac, fold), false);
+                                Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,
+                                        getFileId(((SWrpg)main.getApplication()).gac, fold), false);
                                 Vehicle.this.save(getFileLocation(main));
                                 old = Vehicle.this.clone();
                             }
@@ -235,7 +242,8 @@ public class Vehicle {
                     if (!saving) {
                         saving = true;
                         if (!Vehicle.this.equals(old)) {
-                            Vehicle.this.cloudSave(gac, getFileId(gac, fold), false);
+                            Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,
+                                    getFileId(((SWrpg)main.getApplication()).gac, fold), false);
                             Vehicle.this.save(getFileLocation(main));
                         }
                         saving = false;
@@ -246,7 +254,7 @@ public class Vehicle {
             async.execute();
         }
     }
-    public void startEditing(final Context main){
+    public void startEditing(final Activity main){
         if (!editing){
             editing = true;
             AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
@@ -395,7 +403,7 @@ public class Vehicle {
                     ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
         }
     }
-    public String getFileLocation(Context main){
+    public String getFileLocation(Activity main){
         File location;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
             File tmp = Environment.getExternalStorageDirectory();
@@ -435,7 +443,8 @@ public class Vehicle {
         String name = Integer.toString(ID) + ".vhcl";
         DriveFolder folder = fold.asDriveFolder();
         DriveId fi = null;
-        DriveApi.MetadataBufferResult res = folder.listChildren(gac).await();
+        DriveApi.MetadataBufferResult res = folder.queryChildren(gac,new Query.Builder().addFilter(
+                Filters.eq(SearchableField.TITLE,name)).build()).await();
         for (Metadata met:res.getMetadataBuffer()){
             if (!met.isFolder() && met.getTitle().equals(name) && !met.isTrashed()){
                 fi = met.getDriveId();

@@ -108,6 +108,14 @@ public class Settings extends AppCompatActivity{
                 pref.edit().putBoolean(getString(R.string.dice_key),b).apply();
             }
         });
+        Switch color = (Switch)findViewById(R.id.dice_color_switch);
+        color.setChecked(pref.getBoolean(getString(R.string.color_dice_key),true));
+        color.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
+                pref.edit().putBoolean(getString(R.string.color_dice_key),b).apply();
+            }
+        });
         Switch light = (Switch)findViewById(R.id.light_switch);
         light.setChecked(pref.getBoolean(getString(R.string.light_side_key),false));
         light.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

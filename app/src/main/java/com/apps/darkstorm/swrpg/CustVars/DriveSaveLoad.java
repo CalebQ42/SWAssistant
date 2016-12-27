@@ -46,7 +46,7 @@ public class DriveSaveLoad {
                     return null;
                 }
             };
-            sav.execute();
+            sav.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else{
             try {
                 DriveFile file = id.asDriveFile();

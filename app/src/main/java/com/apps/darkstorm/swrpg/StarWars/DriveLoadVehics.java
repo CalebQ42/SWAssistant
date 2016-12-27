@@ -1,10 +1,12 @@
 package com.apps.darkstorm.swrpg.StarWars;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.apps.darkstorm.swrpg.InitialConnect;
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.SWrpg;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveFolder;
@@ -19,17 +21,17 @@ import java.util.Date;
 public class DriveLoadVehics {
     public ArrayList<Vehicle> vehics = new ArrayList<>();
     private ArrayList<Date> lastMod = new ArrayList<>();
-    public DriveLoadVehics(Context main, GoogleApiClient gac){
-        if (main != null && gac.isConnected()) {
+    public DriveLoadVehics(Activity main){
+        if (((SWrpg)main.getApplication()).gac.isConnected() && ((SWrpg)main.getApplication()).initConnect) {
             SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
             DriveId foldId = DriveId.decodeFromString(pref.getString(main.getString(R.string.ships_id_key), ""));
             DriveFolder charsFold = foldId.asDriveFolder();
-            DriveApi.MetadataBufferResult metbufres = charsFold.queryChildren(gac,new Query.Builder().build()).await();
+            DriveApi.MetadataBufferResult metbufres = charsFold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().build()).await();
             for (Metadata met : metbufres.getMetadataBuffer()) {
                 if (met.getFileExtension() != null) {
                     if (!met.isFolder() && met.getFileExtension().equals("vhcl") && !met.isTrashed()) {
                         Vehicle tmp = new Vehicle();
-                        tmp.reLoad(gac, met.getDriveId());
+                        tmp.reLoad(((SWrpg)main.getApplication()).gac, met.getDriveId());
                         vehics.add(tmp);
                         lastMod.add(met.getModifiedDate());
                         System.out.println(met.getTitle());
@@ -39,7 +41,7 @@ public class DriveLoadVehics {
             metbufres.release();
         }
     }
-    public void saveToFile(Context main, GoogleApiClient gac){
+    public void saveToFile(Activity main){
         if (main != null) {
             LoadVehics lc = new LoadVehics(main);
             SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -51,7 +53,8 @@ public class DriveLoadVehics {
                         has.add(vehics.get(i).ID);
                         resolved = true;
                         if (lastMod.get(i).before(lc.lastMod.get(j))) {
-                            lc.vehics.get(j).cloudSave(gac, lc.vehics.get(j).getFileId(gac,
+                            lc.vehics.get(j).cloudSave(((SWrpg)main.getApplication()).gac,
+                                    lc.vehics.get(j).getFileId(((SWrpg)main.getApplication()).gac,
                                     DriveId.decodeFromString(pref.getString(main.getString(R.string.ships_id_key), ""))), false);
                         } else if (lastMod.get(i).after(lc.lastMod.get(j))) {
                             vehics.get(i).save(vehics.get(i).getFileLocation(main));
@@ -69,7 +72,8 @@ public class DriveLoadVehics {
                 for (int i = 0; i < lc.vehics.size(); i++) {
                     if (!has.contains(lc.vehics.get(i).ID)) {
                         if (!pref.getBoolean(main.getString(R.string.sync_key), true)) {
-                            lc.vehics.get(i).cloudSave(gac, lc.vehics.get(i).getFileId(gac,
+                            lc.vehics.get(i).cloudSave(((SWrpg)main.getApplication()).gac,
+                                    lc.vehics.get(i).getFileId(((SWrpg)main.getApplication()).gac,
                                     DriveId.decodeFromString(pref.getString(main.getString(R.string.ships_id_key), ""))), false);
                         } else {
                             File tmp = new File(lc.vehics.get(i).getFileLocation(main));

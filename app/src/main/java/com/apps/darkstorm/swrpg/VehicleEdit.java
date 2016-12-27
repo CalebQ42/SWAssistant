@@ -18,21 +18,18 @@ public class VehicleEdit extends Fragment {
     private OnVehicleEditInteractionListener mListener;
 
     Vehicle vh;
-    GoogleApiClient gac = null;
 
     public VehicleEdit() {}
 
-    public static VehicleEdit newInstance(Vehicle vh, GoogleApiClient gac) {
+    public static VehicleEdit newInstance(Vehicle vh) {
         VehicleEdit fragment = new VehicleEdit();
         fragment.vh = vh;
-        fragment.gac = gac;
         return fragment;
     }
 
-    public static VehicleEdit newInstance(int ID, GoogleApiClient gac) {
+    public static VehicleEdit newInstance(int ID) {
         VehicleEdit fragment = new VehicleEdit();
         fragment.vh = new Vehicle(ID);
-        fragment.gac = gac;
         return fragment;
     }
 
@@ -69,11 +66,11 @@ public class VehicleEdit extends Fragment {
     public void onStart(){
         super.onStart();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.cloud_key),false) && gac != null){
-            vh.startEditing(getContext(),gac,
+        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
+            vh.startEditing(getActivity(),
                     DriveId.decodeFromString(pref.getString(getString(R.string.ships_id_key),"")));
         }else{
-            vh.startEditing(getContext());
+            vh.startEditing(getActivity());
         }
     }
 

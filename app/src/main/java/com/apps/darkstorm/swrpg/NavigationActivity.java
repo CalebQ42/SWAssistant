@@ -31,7 +31,6 @@ public class NavigationActivity extends AppCompatActivity
         CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, GMFragment.OnGMInteractionListener,
         VehicleList.OnVehicleListInteractionListener, VehicleEdit.OnVehicleEditInteractionListener {
-    GoogleApiClient gac;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
@@ -56,14 +55,14 @@ public class NavigationActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-            if (gac == null)
-                gac = new GoogleApiClient.Builder(this)
+            if (((SWrpg)getApplication()).gac == null)
+                ((SWrpg)getApplication()).gac = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
                         .addScope(Drive.SCOPE_FILE)
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .build();
-            gac.connect();
+            ((SWrpg)getApplication()).gac.connect();
         }
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -76,15 +75,15 @@ public class NavigationActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
                             android.R.anim.fade_in,android.R.anim.fade_out)
-                    .replace(R.id.content_navigation,CharacterList.newInstance(gac)).commit();
+                    .replace(R.id.content_navigation,CharacterList.newInstance()).commit();
         }
     }
 
     public void onResume(){
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-            if (gac == null) {
-                gac = new GoogleApiClient.Builder(this)
+            if (((SWrpg)getApplication()).gac == null) {
+                ((SWrpg)getApplication()).gac = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
                         .addScope(Drive.SCOPE_FILE)
                         .addConnectionCallbacks(this)
@@ -92,21 +91,21 @@ public class NavigationActivity extends AppCompatActivity
                         .build();
                 if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
+                            .replace(R.id.content_navigation, CharacterList.newInstance()).commit();
                 }else if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList){
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content_navigation, VehicleList.newInstance(gac)).commit();
+                            .replace(R.id.content_navigation, VehicleList.newInstance()).commit();
                 }
             }
-            gac.connect();
+            ((SWrpg)getApplication()).gac.connect();
         }else{
-            gac = null;
+            ((SWrpg)getApplication()).gac = null;
             if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_navigation, CharacterList.newInstance(gac)).commit();
+                        .replace(R.id.content_navigation, CharacterList.newInstance()).commit();
             }else if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList){
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_navigation, VehicleList.newInstance(gac)).commit();
+                        .replace(R.id.content_navigation, VehicleList.newInstance()).commit();
             }
         }
         super.onResume();
@@ -146,7 +145,7 @@ public class NavigationActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.content_navigation, CharacterList.newInstance(gac)).addToBackStack("toCharacters").commit();
+                        .replace(R.id.content_navigation, CharacterList.newInstance()).addToBackStack("toCharacters").commit();
             }
         }else if (id == R.id.nav_ships){
             if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList) {
@@ -156,7 +155,7 @@ public class NavigationActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toDice")
-                        .replace(R.id.content_navigation, VehicleList.newInstance(gac)).commit();
+                        .replace(R.id.content_navigation, VehicleList.newInstance()).commit();
             }
         }else if(id == R.id.nav_dice){
             if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof DiceFragment) {
@@ -189,7 +188,7 @@ public class NavigationActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("toGuide")
-                        .replace(R.id.content_navigation, GMFragment.newInstance(gac)).commit();
+                        .replace(R.id.content_navigation, GMFragment.newInstance()).commit();
             }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -219,7 +218,7 @@ public class NavigationActivity extends AppCompatActivity
             case 1:
                 if (resultCode == RESULT_OK) {
                     System.out.println("ok");
-                    gac.connect();
+                    ((SWrpg)getApplication()).gac.connect();
                 }
                 break;
         }
@@ -227,7 +226,8 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        InitialConnect.connect(this,gac);
+        System.out.println("gac Connected");
+        InitialConnect.connect(this);
     }
 
     @Override

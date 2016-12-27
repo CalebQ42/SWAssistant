@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.StarWars.Vehicle;
 import com.apps.darkstorm.swrpg.VehicleEdit;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,7 +25,7 @@ import com.google.android.gms.drive.DriveId;
 import java.io.File;
 
 public class VehicleCard {
-    public static CardView card(final Fragment frag, final Vehicle vh, final Handler handle, final GoogleApiClient gac){
+    public static CardView card(final Fragment frag, final Vehicle vh, final Handler handle){
         System.out.println("Card: "+ vh.name);
         CardView top = new CardView(frag.getContext());
         CardView.LayoutParams topLp =
@@ -62,7 +63,7 @@ public class VehicleCard {
             @Override
             public void onClick(View view) {
                 frag.getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                        android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, VehicleEdit.newInstance(vh, gac))
+                        android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, VehicleEdit.newInstance(vh))
                         .addToBackStack("Editing " + vh.name).commit();
             }
         });
@@ -72,7 +73,8 @@ public class VehicleCard {
                 final SharedPreferences pref = frag.getActivity().getSharedPreferences(
                         frag.getString(R.string.preference_key), Context.MODE_PRIVATE);
                 if (pref.getBoolean(frag.getString(R.string.cloud_key), false) &&
-                        pref.getBoolean(frag.getString(R.string.sync_key), true) && (gac == null || !gac.isConnected())) {
+                        pref.getBoolean(frag.getString(R.string.sync_key), true) && (((SWrpg)frag.getActivity().getApplication()).gac == null ||
+                        !((SWrpg)frag.getActivity().getApplication()).gac.isConnected())) {
                     Message mess = handle.obtainMessage();
                     mess.arg1 = 20;
                     handle.sendMessage(mess);
@@ -85,15 +87,15 @@ public class VehicleCard {
                             Message mess = handle.obtainMessage();
                             mess.obj = vh;
                             handle.sendMessage(mess);
-                            File charFile = new File(vh.getFileLocation(frag.getContext()));
+                            File charFile = new File(vh.getFileLocation(frag.getActivity()));
                             charFile.delete();
                             if (pref.getBoolean(frag.getString(R.string.cloud_key), false)) {
                                 AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
                                     @Override
                                     protected Void doInBackground(Void... voids) {
-                                        DriveId tmp = vh.getFileId(gac,
+                                        DriveId tmp = vh.getFileId(((SWrpg)frag.getActivity().getApplication()).gac,
                                                 DriveId.decodeFromString(pref.getString(frag.getString(R.string.ships_id_key), "")));
-                                        tmp.asDriveResource().delete(gac);
+                                        tmp.asDriveResource().delete(((SWrpg)frag.getActivity().getApplication()).gac);
                                         return null;
                                     }
                                 };

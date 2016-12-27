@@ -31,7 +31,6 @@ import java.util.ArrayList;
 public class GMFragment extends Fragment {
     private OnGMInteractionListener mListener;
 
-    GoogleApiClient gac = null;
     AsyncTask<Void,Void,Void> async;
     Handler mainHandle;
     Snackbar snack;
@@ -39,9 +38,8 @@ public class GMFragment extends Fragment {
 
     public GMFragment() {}
 
-    public static GMFragment newInstance(GoogleApiClient gac) {
+    public static GMFragment newInstance() {
         GMFragment fragment = new GMFragment();
-        fragment.gac = gac;
         return fragment;
     }
 
@@ -62,12 +60,12 @@ public class GMFragment extends Fragment {
         mainHandle = new Handler(Looper.getMainLooper()){
             public void handleMessage(Message in){
                 if (in.obj instanceof Character){
-                    getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance((Character)in.obj,gac)).commit();
+                    getChildFragmentManager().beginTransaction().replace(R.id.fragment_holder,CharacterEditMain.newInstance((Character)in.obj)).commit();
                 }else if(in.obj instanceof ArrayList){
                     chars.removeAllViews();
                     ArrayList<Character> tmp = (ArrayList<Character>)in.obj;
                     for (Character chara:tmp){
-                        chars.addView(new CharacterCard().getCard(GMFragment.this,chara,mainHandle,gac,true));
+                        chars.addView(new CharacterCard().getCard(GMFragment.this,chara,mainHandle,true));
                     }
                 }
                 if(in.arg1 == 100){
@@ -100,7 +98,10 @@ public class GMFragment extends Fragment {
                         mainHandle.sendMessage(snack);
                         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                             int timeout = 0;
-                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                            while ((((SWrpg)getActivity().getApplication()).gac == null ||
+                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33 ||
+                                    !((SWrpg)getActivity().getApplication()).initConnect) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {
@@ -109,8 +110,8 @@ public class GMFragment extends Fragment {
                                 timeout++;
                             }
                             if (timeout < 33) {
-                                DriveLoadChars dlc = new DriveLoadChars(GMFragment.this.getContext(), gac);
-                                dlc.saveToFile(GMFragment.this.getContext(), gac);
+                                DriveLoadChars dlc = new DriveLoadChars(GMFragment.this.getActivity());
+                                dlc.saveToFile(GMFragment.this.getActivity());
                                 System.out.println("Loaded");
                             } else {
                                 Message timed = mainHandle.obtainMessage();
@@ -118,7 +119,7 @@ public class GMFragment extends Fragment {
                                 mainHandle.sendMessage(timed);
                             }
                         }
-                        LoadChars lc = new LoadChars(GMFragment.this.getContext());
+                        LoadChars lc = new LoadChars(GMFragment.this.getActivity());
                         Message tmp = mainHandle.obtainMessage();
                         tmp.obj = lc.chars;
                         tmp.arg1 = -100;
@@ -128,7 +129,7 @@ public class GMFragment extends Fragment {
                     return null;
                 }
             };
-            async.execute();
+            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 

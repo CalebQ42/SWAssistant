@@ -32,7 +32,6 @@ import java.util.ArrayList;
 public class VehicleList extends Fragment {
 
     ArrayList<Vehicle> vhs;
-    GoogleApiClient gac = null;
     Handler mainHandle;
     AsyncTask<Void,Void,Void> async;
 
@@ -40,10 +39,9 @@ public class VehicleList extends Fragment {
 
     public VehicleList() {}
 
-    public static VehicleList newInstance(GoogleApiClient gac) {
+    public static VehicleList newInstance() {
         VehicleList fragment = new VehicleList();
         fragment.vhs = new ArrayList<>();
-        fragment.gac = gac;
         return fragment;
     }
 
@@ -68,7 +66,7 @@ public class VehicleList extends Fragment {
             @Override
             public void onClick(View view) {
                 if (pref.getBoolean(getString(R.string.cloud_key),false) && pref.getBoolean(getString(R.string.sync_key),true) &&
-                        (gac == null || !gac.isConnected())){
+                        (((SWrpg)getActivity().getApplication()).gac == null || !((SWrpg)getActivity().getApplication()).gac.isConnected())){
                     Snackbar snackbar = Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }else {
@@ -81,7 +79,7 @@ public class VehicleList extends Fragment {
                         max++;
                     }
                     getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, VehicleEdit.newInstance(max, gac))
+                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, VehicleEdit.newInstance(max))
                             .addToBackStack("Creating a new Character").commit();
                     fab.hide();
                 }
@@ -95,7 +93,7 @@ public class VehicleList extends Fragment {
                     vhs = inList;
                     ((LinearLayout)top.findViewById(R.id.main_list)).removeAllViews();
                     for (int i = 0;i<vhs.size();i++){
-                        ((LinearLayout)top.findViewById(R.id.main_list)).addView(VehicleCard.card(VehicleList.this,vhs.get(i),mainHandle,gac));
+                        ((LinearLayout)top.findViewById(R.id.main_list)).addView(VehicleCard.card(VehicleList.this,vhs.get(i),mainHandle));
                     }
                     Message snack = mainHandle.obtainMessage();
                     snack.arg1 = -100;
@@ -135,7 +133,10 @@ public class VehicleList extends Fragment {
                                         mainHandle.sendMessage(snack);
                                         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                                             int timeout = 0;
-                                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                                            while ((((SWrpg)getActivity().getApplication()).gac == null||
+                                                    !((SWrpg)getActivity().getApplication()).initConnect ||
+                                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
                                                 try {
                                                     Thread.sleep(300);
                                                 } catch (InterruptedException e) {
@@ -144,15 +145,15 @@ public class VehicleList extends Fragment {
                                                 timeout++;
                                             }
                                             if (timeout < 33) {
-                                                DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
-                                                dlc.saveToFile(VehicleList.this.getContext(), gac);
+                                                DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getActivity());
+                                                dlc.saveToFile(VehicleList.this.getActivity());
                                             } else {
                                                 Message timed = mainHandle.obtainMessage();
                                                 timed.arg1 = -1;
                                                 mainHandle.sendMessage(timed);
                                             }
                                         }
-                                        LoadVehics lc = new LoadVehics(VehicleList.this.getContext());
+                                        LoadVehics lc = new LoadVehics(VehicleList.this.getActivity());
                                         Message tmp = mainHandle.obtainMessage();
                                         tmp.obj = lc.vehics;
                                         mainHandle.sendMessage(tmp);
@@ -161,7 +162,7 @@ public class VehicleList extends Fragment {
                                     return null;
                                 }
                             };
-                            async.execute();
+                            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
                     });
                     fail.show();
@@ -184,7 +185,10 @@ public class VehicleList extends Fragment {
                             mainHandle.sendMessage(snack);
                             if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                                 int timeout = 0;
-                                while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                                while ((((SWrpg)getActivity().getApplication()).gac == null||
+                                        !((SWrpg)getActivity().getApplication()).initConnect ||
+                                        !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                        ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
                                     try {
                                         Thread.sleep(300);
                                     } catch (InterruptedException e) {
@@ -193,15 +197,15 @@ public class VehicleList extends Fragment {
                                     timeout++;
                                 }
                                 if (timeout < 33) {
-                                    DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
-                                    dlc.saveToFile(VehicleList.this.getContext(), gac);
+                                    DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getActivity());
+                                    dlc.saveToFile(VehicleList.this.getActivity());
                                 } else {
                                     Message timed = mainHandle.obtainMessage();
                                     timed.arg1 = -1;
                                     mainHandle.sendMessage(timed);
                                 }
                             }
-                            LoadVehics lc = new LoadVehics(VehicleList.this.getContext());
+                            LoadVehics lc = new LoadVehics(VehicleList.this.getActivity());
                             Message tmp = mainHandle.obtainMessage();
                             tmp.obj = lc.vehics;
                             mainHandle.sendMessage(tmp);
@@ -210,7 +214,7 @@ public class VehicleList extends Fragment {
                         return null;
                     }
                 };
-                async.execute();
+                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
         async = new AsyncTask<Void, Void, Void>() {
@@ -223,7 +227,10 @@ public class VehicleList extends Fragment {
                     mainHandle.sendMessage(snack);
                     if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                         int timeout = 0;
-                        while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                        while ((((SWrpg)getActivity().getApplication()).gac == null||
+                                !((SWrpg)getActivity().getApplication()).initConnect ||
+                                !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
                             try {
                                 Thread.sleep(300);
                             } catch (InterruptedException e) {
@@ -232,15 +239,15 @@ public class VehicleList extends Fragment {
                             timeout++;
                         }
                         if (timeout < 33) {
-                            DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
-                            dlc.saveToFile(VehicleList.this.getContext(), gac);
+                            DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getActivity());
+                            dlc.saveToFile(VehicleList.this.getActivity());
                         } else {
                             Message timed = mainHandle.obtainMessage();
                             timed.arg1 = -1;
                             mainHandle.sendMessage(timed);
                         }
                     }
-                    LoadVehics lc = new LoadVehics(VehicleList.this.getContext());
+                    LoadVehics lc = new LoadVehics(VehicleList.this.getActivity());
                     Message tmp = mainHandle.obtainMessage();
                     tmp.obj = lc.vehics;
                     mainHandle.sendMessage(tmp);
@@ -249,7 +256,7 @@ public class VehicleList extends Fragment {
                 return null;
             }
         };
-        async.execute();
+        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return top;
     }
 
@@ -290,7 +297,10 @@ public class VehicleList extends Fragment {
                         mainHandle.sendMessage(snack);
                         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                             int timeout = 0;
-                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                            while ((((SWrpg)getActivity().getApplication()).gac == null||
+                                    !((SWrpg)getActivity().getApplication()).initConnect ||
+                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {
@@ -299,15 +309,15 @@ public class VehicleList extends Fragment {
                                 timeout++;
                             }
                             if (timeout < 33) {
-                                DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getContext(), gac);
-                                dlc.saveToFile(VehicleList.this.getContext(), gac);
+                                DriveLoadVehics dlc = new DriveLoadVehics(VehicleList.this.getActivity());
+                                dlc.saveToFile(VehicleList.this.getActivity());
                             } else {
                                 Message timed = mainHandle.obtainMessage();
                                 timed.arg1 = -1;
                                 mainHandle.sendMessage(timed);
                             }
                         }
-                        LoadVehics lc = new LoadVehics(VehicleList.this.getContext());
+                        LoadVehics lc = new LoadVehics(VehicleList.this.getActivity());
                         Message tmp = mainHandle.obtainMessage();
                         tmp.obj = lc.vehics;
                         mainHandle.sendMessage(tmp);
@@ -316,7 +326,7 @@ public class VehicleList extends Fragment {
                     return null;
                 }
             };
-            async.execute();
+            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 

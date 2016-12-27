@@ -1,5 +1,6 @@
 package com.apps.darkstorm.swrpg.StarWars;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -13,7 +14,7 @@ import java.util.Date;
 public class LoadChars {
     public ArrayList<Character> chars;
     public ArrayList<Date> lastMod;
-    public LoadChars(Context main){
+    public LoadChars(Activity main){
         if (main!= null) {
             chars = new ArrayList<>();
             lastMod = new ArrayList<>();

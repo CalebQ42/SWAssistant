@@ -19,31 +19,19 @@ import com.google.android.gms.drive.DriveId;
 public class CharacterEditMain extends Fragment {
     private OnFragmentInteractionListener mListener;
     Character chara;
-    GoogleApiClient gac;
-    boolean gm = false;
 
     public CharacterEditMain() {}
 
-    public static CharacterEditMain newInstance(Character character, GoogleApiClient gac) {
+    public static CharacterEditMain newInstance(Character character) {
         CharacterEditMain fragment = new CharacterEditMain();
         fragment.chara = character;
-        fragment.gac = gac;
         return fragment;
     }
 
-    public static CharacterEditMain newInstance(Character character, GoogleApiClient gac,boolean gm) {
-        CharacterEditMain fragment = new CharacterEditMain();
-        fragment.chara = character;
-        fragment.gac = gac;
-        fragment.gm = gm;
-        return fragment;
-    }
-
-    public static CharacterEditMain newInstance(int Id, GoogleApiClient gac){
+    public static CharacterEditMain newInstance(int Id){
         CharacterEditMain fragment = new CharacterEditMain();
         Character tmp = new Character(Id);
         fragment.chara = tmp;
-        fragment.gac = gac;
         return fragment;
     }
 
@@ -134,11 +122,11 @@ public class CharacterEditMain extends Fragment {
     public void onStart(){
         super.onStart();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.cloud_key),false) && gac != null){
-            chara.startEditing(getContext(),gac,
+        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
+            chara.startEditing(getActivity(),
                     DriveId.decodeFromString(pref.getString(getString(R.string.swchars_id_key),"")));
         }else{
-            chara.startEditing(getContext());
+            chara.startEditing(getActivity());
         }
     }
 

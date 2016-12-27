@@ -1,5 +1,6 @@
 package com.apps.darkstorm.swrpg.StarWars;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -13,7 +14,7 @@ import java.util.Date;
 public class LoadVehics {
     public ArrayList<Vehicle> vehics;
     public ArrayList<Date> lastMod;
-    public LoadVehics(Context main){
+    public LoadVehics(Activity main){
         if (main!= null) {
             vehics = new ArrayList<>();
             lastMod = new ArrayList<>();

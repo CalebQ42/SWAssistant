@@ -33,16 +33,14 @@ import java.util.ArrayList;
 public class CharacterList extends Fragment {
     private OnListInteractionListener mListener;
 
-    GoogleApiClient gac = null;
     ArrayList<Character> chars;
     AsyncTask<Void,Void,Void> async;
     Snackbar snack;
 
     public CharacterList() {}
 
-    public static CharacterList newInstance(GoogleApiClient gac) {
+    public static CharacterList newInstance() {
         CharacterList frag = new CharacterList();
-        frag.gac = gac;
         return frag;
     }
 
@@ -67,7 +65,8 @@ public class CharacterList extends Fragment {
             @Override
             public void onClick(View view) {
                 if (pref.getBoolean(getString(R.string.cloud_key),false) && pref.getBoolean(getString(R.string.sync_key),true) &&
-                        (gac == null || !gac.isConnected())){
+                        (((SWrpg)getActivity().getApplication()).gac == null ||
+                                !((SWrpg)getActivity().getApplication()).gac.isConnected())){
                     Snackbar snackbar = Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }else {
@@ -80,7 +79,7 @@ public class CharacterList extends Fragment {
                         max++;
                     }
                     getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max, gac))
+                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max))
                             .addToBackStack("Creating a new Character").commit();
                     fab.hide();
                 }
@@ -107,7 +106,7 @@ public class CharacterList extends Fragment {
                     if (CharacterList.this.getContext() != null) {
                         for (Character chara : chars) {
                             ((LinearLayout) top.findViewById(R.id.mainLay)).addView(new CharacterCard()
-                                    .getCard(CharacterList.this, chara, mainHandle, gac, false));
+                                    .getCard(CharacterList.this, chara, mainHandle, false));
                         }
                     }
                     Message snack = mainHandle.obtainMessage();
@@ -141,7 +140,10 @@ public class CharacterList extends Fragment {
                                         mainHandle.sendMessage(snack);
                                         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                                             int timeout = 0;
-                                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                                            while ((((SWrpg)getActivity().getApplication()).gac == null ||
+                                                    !((SWrpg)getActivity().getApplication()).initConnect ||
+                                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
                                                 try {
                                                     Thread.sleep(300);
                                                 } catch (InterruptedException e) {
@@ -150,8 +152,8 @@ public class CharacterList extends Fragment {
                                                 timeout++;
                                             }
                                             if (timeout < 33) {
-                                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                                                dlc.saveToFile(CharacterList.this.getContext(), gac);
+                                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
+                                                dlc.saveToFile(CharacterList.this.getActivity());
                                                 System.out.println("Loaded");
                                             } else {
                                                 Message timed = mainHandle.obtainMessage();
@@ -159,7 +161,7 @@ public class CharacterList extends Fragment {
                                                 mainHandle.sendMessage(timed);
                                             }
                                         }
-                                        LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                                        LoadChars lc = new LoadChars(CharacterList.this.getActivity());
                                         Message tmp = mainHandle.obtainMessage();
                                         tmp.obj = lc.chars;
                                         mainHandle.sendMessage(tmp);
@@ -168,7 +170,7 @@ public class CharacterList extends Fragment {
                                     return null;
                                 }
                             };
-                            async.execute();
+                            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
                     });
                     fail.show();
@@ -196,7 +198,10 @@ public class CharacterList extends Fragment {
                         mainHandle.sendMessage(snack);
                         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                             int timeout = 0;
-                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                            while ((((SWrpg)getActivity().getApplication()).gac == null ||
+                                    !((SWrpg)getActivity().getApplication()).initConnect ||
+                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {
@@ -205,8 +210,8 @@ public class CharacterList extends Fragment {
                                 timeout++;
                             }
                             if (timeout < 33) {
-                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                                dlc.saveToFile(CharacterList.this.getContext(), gac);
+                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
+                                dlc.saveToFile(CharacterList.this.getActivity());
                                 System.out.println("Loaded");
                             } else {
                                 Message timed = mainHandle.obtainMessage();
@@ -214,7 +219,7 @@ public class CharacterList extends Fragment {
                                 mainHandle.sendMessage(timed);
                             }
                         }
-                        LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                        LoadChars lc = new LoadChars(CharacterList.this.getActivity());
                         Message tmp = mainHandle.obtainMessage();
                         tmp.obj = lc.chars;
                         mainHandle.sendMessage(tmp);
@@ -223,7 +228,7 @@ public class CharacterList extends Fragment {
                     return null;
                 }
             };
-                async.execute();
+                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
         async = new AsyncTask<Void, Void, Void>() {
@@ -236,7 +241,7 @@ public class CharacterList extends Fragment {
                     mainHandle.sendMessage(snack);
                     if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                         int timeout = 0;
-                        while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                        while (!((SWrpg)getActivity().getApplication()).initConnect && timeout < 33) {
                             try {
                                 Thread.sleep(300);
                             } catch (InterruptedException e) {
@@ -245,16 +250,15 @@ public class CharacterList extends Fragment {
                             timeout++;
                         }
                         if (timeout < 33) {
-                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                            dlc.saveToFile(CharacterList.this.getContext(), gac);
-                            System.out.println("Loaded");
+                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
+                            dlc.saveToFile(CharacterList.this.getActivity());
                         } else {
                             Message timed = mainHandle.obtainMessage();
                             timed.arg1 = -1;
                             mainHandle.sendMessage(timed);
                         }
                     }
-                    LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                    LoadChars lc = new LoadChars(CharacterList.this.getActivity());
                     Message tmp = mainHandle.obtainMessage();
                     tmp.obj = lc.chars;
                     mainHandle.sendMessage(tmp);
@@ -263,7 +267,7 @@ public class CharacterList extends Fragment {
                 return null;
             }
         };
-        async.execute();
+        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         return top;
     }
 
@@ -308,7 +312,10 @@ public class CharacterList extends Fragment {
                         mainHandle.sendMessage(snack);
                         if (pref.getBoolean(getString(R.string.cloud_key), false)) {
                             int timeout = 0;
-                            while ((gac == null || !gac.hasConnectedApi(Drive.API) || gac.isConnecting()) && timeout < 33) {
+                            while ((((SWrpg)getActivity().getApplication()).gac == null ||
+                                    !((SWrpg)getActivity().getApplication()).initConnect ||
+                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
                                 try {
                                     Thread.sleep(300);
                                 } catch (InterruptedException e) {
@@ -317,8 +324,8 @@ public class CharacterList extends Fragment {
                                 timeout++;
                             }
                             if (timeout < 33) {
-                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getContext(), gac);
-                                dlc.saveToFile(CharacterList.this.getContext(), gac);
+                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
+                                dlc.saveToFile(CharacterList.this.getActivity());
                                 System.out.println("Loaded");
                             } else {
                                 Message timed = mainHandle.obtainMessage();
@@ -326,7 +333,7 @@ public class CharacterList extends Fragment {
                                 mainHandle.sendMessage(timed);
                             }
                         }
-                        LoadChars lc = new LoadChars(CharacterList.this.getContext());
+                        LoadChars lc = new LoadChars(CharacterList.this.getActivity());
                         Message tmp = mainHandle.obtainMessage();
                         tmp.obj = lc.chars;
                         mainHandle.sendMessage(tmp);
@@ -335,7 +342,7 @@ public class CharacterList extends Fragment {
                     return null;
                 }
             };
-            async.execute();
+            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 }

@@ -11,4 +11,6 @@
     <string name="local_location_key">saveLocation</string>
     <string name="dice_key">getDiceOnLaunch</string>
     <string name="light_side_key">lightSideKey</string>
+
+    <string name="color_dice_key">colorDiceKey</string>
 </resources>

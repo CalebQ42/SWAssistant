@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.CharacterEditMain;
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.StarWars.Character;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
@@ -24,7 +25,7 @@ import com.google.android.gms.drive.DriveId;
 import java.io.File;
 
 public class CharacterCard {
-    public CardView getCard(final Fragment frag, final Character chara, final Handler handle, final GoogleApiClient gac, final boolean gm){
+    public CardView getCard(final Fragment frag, final Character chara, final Handler handle, final boolean gm){
         CardView top = new CardView(frag.getContext());
         CardView.LayoutParams topLp =
                 new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT,CardView.LayoutParams.WRAP_CONTENT);
@@ -62,7 +63,7 @@ public class CharacterCard {
             public void onClick(View view) {
                 if (!gm) {
                     frag.getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(chara, gac))
+                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(chara))
                             .addToBackStack("Editing " + chara.name).commit();
                 }else{
                     Message mess = handle.obtainMessage();
@@ -78,7 +79,8 @@ public class CharacterCard {
                     final SharedPreferences pref = frag.getActivity().getSharedPreferences(
                             frag.getString(R.string.preference_key), Context.MODE_PRIVATE);
                     if (pref.getBoolean(frag.getString(R.string.cloud_key), false) &&
-                            pref.getBoolean(frag.getString(R.string.sync_key), true) && (gac == null || !gac.isConnected())) {
+                            pref.getBoolean(frag.getString(R.string.sync_key), true) && (((SWrpg)frag.getActivity().getApplication()).gac == null ||
+                            !((SWrpg)frag.getActivity().getApplication()).gac.isConnected())) {
                         Message mess = handle.obtainMessage();
                         mess.arg1 = 20;
                         handle.sendMessage(mess);
@@ -91,15 +93,15 @@ public class CharacterCard {
                                 Message mess = handle.obtainMessage();
                                 mess.obj = chara;
                                 handle.sendMessage(mess);
-                                File charFile = new File(chara.getFileLocation(frag.getContext()));
+                                File charFile = new File(chara.getFileLocation(frag.getActivity()));
                                 charFile.delete();
                                 if (pref.getBoolean(frag.getString(R.string.cloud_key), false)) {
                                     AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
                                         @Override
                                         protected Void doInBackground(Void... voids) {
-                                            DriveId tmp = chara.getFileId(gac,
+                                            DriveId tmp = chara.getFileId(((SWrpg)frag.getActivity().getApplication()).gac,
                                                     DriveId.decodeFromString(pref.getString(frag.getString(R.string.swchars_id_key), "")));
-                                            tmp.asDriveResource().delete(gac);
+                                            tmp.asDriveResource().delete(((SWrpg)frag.getActivity().getApplication()).gac);
                                             return null;
                                         }
                                     };

@@ -48,18 +48,6 @@ public class CharacterEditNotes extends Fragment {
                     ((LinearLayout)top.findViewById(R.id.notes_main)),((LinearLayout)top.findViewById(R.id.notes_edit)),
                     chara,chara.nts.get(i),fab));
         }
-        top.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    System.out.println("StartingNotes!");
-                    chara.startEditing(top.getContext());
-                }else{
-                    System.out.println("HelloNotes!");
-                    chara.stopEditing();
-                }
-            }
-        });
         return top;
     }
     public void onButtonPressed(Uri uri) {
