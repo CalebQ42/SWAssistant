@@ -317,6 +317,7 @@ public class Vehicle {
     void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
         if(fil != null){
             DriveSaveLoad sl = new DriveSaveLoad(fil);
+            sl.setMime("swrpg/vhcl");
             sl.addSave(ID);
             sl.addSave(name);
             sl.addSave(silhouette);

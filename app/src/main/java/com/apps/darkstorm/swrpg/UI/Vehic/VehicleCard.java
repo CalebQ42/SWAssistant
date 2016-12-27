@@ -19,7 +19,6 @@ import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.StarWars.Vehicle;
 import com.apps.darkstorm.swrpg.VehicleEdit;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
 
 import java.io.File;

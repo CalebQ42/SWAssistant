@@ -28,7 +28,7 @@ public class DriveLoadChars {
                     ,new Query.Builder().build()).await();
             for (Metadata met : metbufres.getMetadataBuffer()) {
                 if (met.getFileExtension() != null) {
-                    if (!met.isFolder() && met.getFileExtension().equals("char") && !met.isTrashed()) {
+                    if ((!met.isFolder() && met.getFileExtension().equals("char")) && !met.isTrashed()) {
                         Character tmp = new Character();
                         tmp.reLoad(((SWrpg)main.getApplication()).gac, met.getDriveId());
                         chars.add(tmp);

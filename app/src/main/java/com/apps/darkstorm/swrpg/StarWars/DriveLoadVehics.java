@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.apps.darkstorm.swrpg.InitialConnect;
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
@@ -29,7 +27,7 @@ public class DriveLoadVehics {
             DriveApi.MetadataBufferResult metbufres = charsFold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().build()).await();
             for (Metadata met : metbufres.getMetadataBuffer()) {
                 if (met.getFileExtension() != null) {
-                    if (!met.isFolder() && met.getFileExtension().equals("vhcl") && !met.isTrashed()) {
+                    if ((!met.isFolder() && met.getFileExtension().equals("vhcl")) && !met.isTrashed()) {
                         Vehicle tmp = new Vehicle();
                         tmp.reLoad(((SWrpg)main.getApplication()).gac, met.getDriveId());
                         vehics.add(tmp);

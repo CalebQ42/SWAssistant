@@ -24,7 +24,6 @@ import com.apps.darkstorm.swrpg.StarWars.DriveLoadVehics;
 import com.apps.darkstorm.swrpg.StarWars.LoadVehics;
 import com.apps.darkstorm.swrpg.StarWars.Vehicle;
 import com.apps.darkstorm.swrpg.UI.Vehic.VehicleCard;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
 import java.util.ArrayList;

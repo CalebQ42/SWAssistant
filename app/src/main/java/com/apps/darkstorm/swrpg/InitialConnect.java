@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveFolder;
@@ -22,7 +21,11 @@ public class InitialConnect {
         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                System.out.println("Connecting Start");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 DriveFolder root = Drive.DriveApi.getRootFolder(((SWrpg)main.getApplication()).gac);
                 DriveApi.MetadataBufferResult metBufRes = root.queryChildren(((SWrpg)main.getApplication()).gac,
@@ -65,7 +68,6 @@ public class InitialConnect {
                 }
                 pref.edit().putString(main.getString(R.string.ships_id_key),shipsFold.encodeToString()).apply();
                 ((SWrpg)main.getApplication()).initConnect = true;
-                System.out.println("Connected Finished");
                 return null;
             }
         };

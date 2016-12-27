@@ -25,7 +25,6 @@ import com.apps.darkstorm.swrpg.StarWars.Character;
 import com.apps.darkstorm.swrpg.StarWars.DriveLoadChars;
 import com.apps.darkstorm.swrpg.StarWars.LoadChars;
 import com.apps.darkstorm.swrpg.UI.Char.CharacterCard;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
 import java.util.ArrayList;

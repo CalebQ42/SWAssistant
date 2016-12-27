@@ -701,6 +701,7 @@ public class Character {
     void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
         if (fil != null) {
             DriveSaveLoad sl = new DriveSaveLoad(fil);
+            sl.setMime("swrpg/char");
             sl.addSave(ID);
             sl.addSave(name);
             sl.addSave(charVals);

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.apps.darkstorm.swrpg.StarWars.Character;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
 
 public class CharacterEditMain extends Fragment {

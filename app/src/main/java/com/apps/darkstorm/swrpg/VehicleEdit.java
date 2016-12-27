@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.apps.darkstorm.swrpg.StarWars.Vehicle;
 import com.apps.darkstorm.swrpg.UI.Vehic.SetupVehicEdit;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
 
 public class VehicleEdit extends Fragment {

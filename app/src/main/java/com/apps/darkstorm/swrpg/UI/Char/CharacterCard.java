@@ -19,7 +19,6 @@ import com.apps.darkstorm.swrpg.CharacterEditMain;
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.StarWars.Character;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
 
 import java.io.File;
