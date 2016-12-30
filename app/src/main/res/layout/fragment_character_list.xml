@@ -7,25 +7,25 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/swipe_refresh"></android.support.v4.widget.SwipeRefreshLayout>
+        android:id="@+id/swipe_refresh">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:id="@+id/top_lay"
-            android:animateLayoutChanges="true">
-
+            android:layout_height="match_parent">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/mainLay"></LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:id="@+id/top_lay"
+                android:animateLayoutChanges="true">
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/mainLay"></LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>
