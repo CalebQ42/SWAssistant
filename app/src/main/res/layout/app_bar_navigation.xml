@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_navigation" />
+        <include layout="@layout/content_navigation" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/universeFab"

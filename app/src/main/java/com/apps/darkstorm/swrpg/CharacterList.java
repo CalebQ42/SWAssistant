@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,9 @@ import com.apps.darkstorm.swrpg.StarWars.Character;
 import com.apps.darkstorm.swrpg.StarWars.DriveLoadChars;
 import com.apps.darkstorm.swrpg.StarWars.LoadChars;
 import com.apps.darkstorm.swrpg.UI.Char.CharacterCard;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.drive.Drive;
 
 import java.util.ArrayList;
@@ -267,6 +271,24 @@ public class CharacterList extends Fragment {
             }
         };
         async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE)
+                .getBoolean(getString(R.string.ads_key),true)) {
+            AdView ads = new AdView(getContext());
+            ads.setAdSize(AdSize.BANNER);
+            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            adLayout.weight = 0;
+            adLayout.topMargin = (int)(5*getResources().getDisplayMetrics().density);
+            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+            ads.setLayoutParams(adLayout);
+            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                ads.setAdUnitId(getString(R.string.free_banner_ad_id));
+            else
+                ads.setAdUnitId(getString(R.string.paid_banner_ad_id));
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
+            topLinLay.addView(ads,0);
+        }
         return top;
     }
 

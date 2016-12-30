@@ -133,6 +133,18 @@ public class Settings extends AppCompatActivity{
                         .startActivities();
             }
         });
+        Switch ads = (Switch)findViewById(R.id.ads_switch);
+        ads.setChecked(pref.getBoolean(getString(R.string.ads_key),true));
+        ads.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
+                pref.edit().putBoolean(getString(R.string.ads_key),b).apply();
+                if (b)
+                    Toast.makeText(Settings.this,R.string.ads_on_toast,Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(Settings.this,R.string.ads_off_toast,Toast.LENGTH_SHORT).show();
+            }
+        });
         Switch cloud = (Switch)findViewById(R.id.cloud_switch);
         final Switch sync = (Switch)findViewById(R.id.sync_switch);
         cloud.setChecked(pref.getBoolean(getString(R.string.cloud_key),false));

@@ -21,20 +21,30 @@ public class InitialConnect {
         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 DriveFolder root = Drive.DriveApi.getRootFolder(((SWrpg)main.getApplication()).gac);
-                DriveApi.MetadataBufferResult metBufRes = root.queryChildren(((SWrpg)main.getApplication()).gac,
-                        new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE,"SWChars"))
-                        .addFilter(Filters.eq(SearchableField.MIME_TYPE,DriveFolder.MIME_TYPE)).build()).await();
-                MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
+                MetadataBuffer metBuf;
+                DriveApi.MetadataBufferResult metBufRes;
+                int countdown = 0;
+                do {
+                    metBufRes = root.queryChildren(((SWrpg) main.getApplication()).gac,
+                            new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, "SWChars"))
+                                    .addFilter(Filters.eq(SearchableField.MIME_TYPE, DriveFolder.MIME_TYPE)).build()).await();
+                    metBuf = metBufRes.getMetadataBuffer();
+                    countdown++;
+                    if (metBuf.getCount() == 0 && countdown < 5){
+                        metBufRes.release();
+                        metBuf.release();
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }while(metBuf.getCount() == 0 && countdown <5);
                 DriveId charsFold = null;
                 for (Metadata met:metBuf){
-                    if (met.isFolder() && met.getTitle().equals("SWChars") && !met.isTrashed()){
+                    if (met.getTitle().equals("SWChars") && !met.isTrashed()){
                         charsFold = met.getDriveId();
                         break;
                     }

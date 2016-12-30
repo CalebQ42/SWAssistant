@@ -7,9 +7,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public class GuideMain extends Fragment {
     private OnGuideInteractionListener mListener;
@@ -85,6 +91,23 @@ public class GuideMain extends Fragment {
             }
         };
         pager.setAdapter(adap);
+        if (getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE)
+                .getBoolean(getString(R.string.ads_key),true)) {
+            AdView ads = new AdView(getContext());
+            ads.setAdSize(AdSize.BANNER);
+            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            adLayout.weight = 0;
+            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+            ads.setLayoutParams(adLayout);
+            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                ads.setAdUnitId(getString(R.string.free_banner_ad_id));
+            else
+                ads.setAdUnitId(getString(R.string.paid_banner_ad_id));
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
+            topLinLay.addView(ads,topLinLay.getChildCount());
+        }
         return top;
     }
 

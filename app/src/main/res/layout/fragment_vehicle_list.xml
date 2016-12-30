@@ -16,9 +16,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:id="@+id/main_list"
+                android:id="@+id/top_lay"
                 android:padding="5dp"
-                android:animateLayoutChanges="true" />
+                android:animateLayoutChanges="true" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/main_list"></LinearLayout>
+            </LinearLayout>
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

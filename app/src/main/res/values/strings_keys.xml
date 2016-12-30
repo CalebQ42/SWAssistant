@@ -11,6 +11,11 @@
     <string name="local_location_key">saveLocation</string>
     <string name="dice_key">getDiceOnLaunch</string>
     <string name="light_side_key">lightSideKey</string>
+    <string name="ads_key">adsOn</string>
 
     <string name="color_dice_key">colorDiceKey</string>
+
+    <!--AdKeys-->
+    <string name="free_banner_ad_id">ca-app-pub-2493790455010177/5957657444</string>
+    <string name="paid_banner_ad_id">ca-app-pub-2493790455010177/5120052649</string>
 </resources>

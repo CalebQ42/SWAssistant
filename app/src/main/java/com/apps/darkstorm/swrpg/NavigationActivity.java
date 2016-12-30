@@ -68,13 +68,9 @@ public class NavigationActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         if (pref.getBoolean(getString(R.string.dice_key),false)){
             getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                            android.R.anim.fade_in,android.R.anim.fade_out)
                     .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
         }else{
             getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                            android.R.anim.fade_in,android.R.anim.fade_out)
                     .replace(R.id.content_navigation,CharacterList.newInstance()).commit();
         }
     }
@@ -217,7 +213,6 @@ public class NavigationActivity extends AppCompatActivity
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
-                    System.out.println("ok");
                     ((SWrpg)getApplication()).gac.connect();
                 }
                 break;
@@ -226,7 +221,6 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        System.out.println("gac Connected");
         InitialConnect.connect(this);
     }
 
