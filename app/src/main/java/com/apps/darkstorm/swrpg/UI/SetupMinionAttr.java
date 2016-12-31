@@ -155,7 +155,7 @@ public class SetupMinionAttr {
                 woundVal.setText(String.valueOf(minion.getWound()));
             }
         });
-        ((TextView)top.findViewById(R.id.wound_ind_text)).setText(String.valueOf(minion.soak));
+        ((TextView)top.findViewById(R.id.wound_ind_text)).setText(String.valueOf(minion.getWoundInd()));
         top.findViewById(R.id.wound_ind_layout).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -181,6 +181,7 @@ public class SetupMinionAttr {
                             minion.setWound(minion.woundThresh);
                             woundVal.setText(String.valueOf(minion.getWound()));
                         }
+                        ((TextView)top.findViewById(R.id.wound_ind_text)).setText(String.valueOf(minion.getWoundInd()));
                         dia.cancel();
                     }
                 });

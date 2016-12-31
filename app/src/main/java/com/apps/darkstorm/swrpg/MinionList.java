@@ -35,13 +35,16 @@ public class MinionList extends Fragment {
 
     ArrayList<Minion> minions;
     AsyncTask<Void,Void,Void> async;
-    Snackbar snack;
+    Handler topHandle;
+    boolean gm = false;
 
     public MinionList() {
     }
 
-    public static MinionList newInstance() {
+    public static MinionList newInstance(Handler top,boolean gm) {
         MinionList fragment = new MinionList();
+        fragment.topHandle = top;
+        fragment.gm = gm;
         return fragment;
     }
 
@@ -51,26 +54,6 @@ public class MinionList extends Fragment {
     }
 
     Handler mainHandle;
-
-    public void fabAction(FloatingActionButton fab){
-        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (!(pref.getBoolean(getString(R.string.cloud_key),false) && pref.getBoolean(getString(R.string.sync_key),true) &&
-                (((SWrpg)getActivity().getApplication()).gac == null ||
-                        !((SWrpg)getActivity().getApplication()).gac.isConnected()))){
-            ArrayList<Integer> has = new ArrayList<>();
-            for (Minion minion : minions) {
-                has.add(minion.ID);
-            }
-            int max = 0;
-            while (has.contains(max)) {
-                max++;
-            }
-            getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                    android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, MinionEditMain.newInstance(max))
-                    .addToBackStack("Creating a new Character").commit();
-            fab.hide();
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,12 +66,12 @@ public class MinionList extends Fragment {
         mainHandle = new Handler(Looper.getMainLooper()){
             public void handleMessage(Message in){
                 fab.setEnabled(true);
-                System.out.println("Handling");
                 if (in.obj instanceof Minion) {
                     Minion tmp = (Minion)in.obj;
                     for (int i = 0; i < minions.size(); i++) {
                         if (minions.get(i).ID == tmp.ID) {
                             ((LinearLayout) top.findViewById(R.id.mainLay)).removeViewAt(i);
+                            minions.remove(i);
                             break;
                         }
                     }
@@ -99,7 +82,7 @@ public class MinionList extends Fragment {
                     if (MinionList.this.getContext() != null) {
                         for (Minion minion : minions) {
                             ((LinearLayout) top.findViewById(R.id.mainLay)).addView(new MinionCard()
-                                    .getCard(MinionList.this, minion, mainHandle, false));
+                                    .getCard(MinionList.this, minion, mainHandle, false,topHandle));
                         }
                     }
                     Message snack = mainHandle.obtainMessage();
@@ -257,7 +240,7 @@ public class MinionList extends Fragment {
         };
         async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if (getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE)
-                .getBoolean(getString(R.string.ads_key),true)) {
+                .getBoolean(getString(R.string.ads_key),true) && !gm) {
             AdView ads = new AdView(getContext());
             ads.setAdSize(AdSize.BANNER);
             LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);

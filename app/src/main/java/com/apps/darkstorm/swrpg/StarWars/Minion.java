@@ -33,14 +33,14 @@ import java.util.Arrays;
 public class Minion {
     //Version 1 0-15
     public int ID;
-    public String name;
+    public String name = "";
     //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
     public int[] charVals = new int[6];
     public Skills skills = new Skills();
     public Talents talents = new Talents();
     public Inventory inv = new Inventory();
     public Weapons weapons = new Weapons();
-    private int woundThreshInd;
+    private int woundThreshInd = 1;
     public int woundThresh;
     private int woundCur;
     public int defMelee,defRanged;
@@ -290,8 +290,11 @@ public class Minion {
 
     public void setWound(int wound){
         woundCur = wound;
-        if ((woundCur/woundThreshInd)<minNum && minNum != 0){
-            setMinNum(minNum-1);
+        if (((woundCur/woundThreshInd)<minNum-1 || (woundCur/woundThreshInd == minNum-1 && woundCur%woundThreshInd == 0) )&& minNum != 0){
+            int num = woundCur/woundThreshInd;
+            if (woundCur%woundThreshInd>0)
+                num++;
+            setMinNum(num);
         }else if (woundCur/woundThreshInd > minNum ||
                 (woundCur/woundThreshInd == minNum && woundCur%woundThreshInd > 0)){
             int num = woundCur/woundThreshInd;
@@ -306,6 +309,7 @@ public class Minion {
     public void setMinNum(int num){
         minNum = num;
         woundThresh = woundThreshInd*minNum;
+        woundCur = woundThresh;
         for (int i = 0;i<skills.size();i++)
             skills.get(i).val = minNum -1;
     }
@@ -313,11 +317,11 @@ public class Minion {
         return minNum;
     }
     public void setWoundInd(int wound){
+        if (wound <= 0)
+            wound = 1;
         woundThreshInd = wound;
         woundThresh = minNum*woundThreshInd;
-        if (woundCur>woundThresh){
-            woundCur = woundThresh;
-        }
+        woundCur = woundThresh;
     }
     public int getWoundInd(){
         return woundThreshInd;

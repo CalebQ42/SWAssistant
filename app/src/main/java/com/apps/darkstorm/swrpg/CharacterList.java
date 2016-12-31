@@ -38,12 +38,15 @@ public class CharacterList extends Fragment {
 
     ArrayList<Character> chars;
     AsyncTask<Void,Void,Void> async;
-    Snackbar snack;
+    Handler topHandle;
+    boolean gm = false;
 
     public CharacterList() {}
 
-    public static CharacterList newInstance() {
+    public static CharacterList newInstance(Handler top, boolean gm) {
         CharacterList frag = new CharacterList();
+        frag.topHandle = top;
+        frag.gm = gm;
         return frag;
     }
 
@@ -54,26 +57,6 @@ public class CharacterList extends Fragment {
     }
 
     Handler mainHandle;
-
-    public void fabAction(FloatingActionButton fab){
-        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (!(pref.getBoolean(getString(R.string.cloud_key),false) && pref.getBoolean(getString(R.string.sync_key),true) &&
-                (((SWrpg)getActivity().getApplication()).gac == null ||
-                        !((SWrpg)getActivity().getApplication()).gac.isConnected()))){
-            ArrayList<Integer> has = new ArrayList<>();
-            for (Character chara : chars) {
-                has.add(chara.ID);
-            }
-            int max = 0;
-            while (has.contains(max)) {
-                max++;
-            }
-            getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                    android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max))
-                    .addToBackStack("Creating a new Character").commit();
-            fab.hide();
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,13 +69,12 @@ public class CharacterList extends Fragment {
         mainHandle = new Handler(Looper.getMainLooper()){
             public void handleMessage(Message in){
                 fab.setEnabled(true);
-                System.out.println("Handling");
                 if (in.obj instanceof Character) {
                     Character tmp = (Character)in.obj;
                     for (int i = 0; i < chars.size(); i++) {
                         if (chars.get(i).ID == tmp.ID) {
                             ((LinearLayout) top.findViewById(R.id.mainLay)).removeViewAt(i);
-                            System.out.println(i);
+                            chars.remove(i);
                             break;
                         }
                     }
@@ -103,7 +85,7 @@ public class CharacterList extends Fragment {
                     if (CharacterList.this.getContext() != null) {
                         for (Character chara : chars) {
                             ((LinearLayout) top.findViewById(R.id.mainLay)).addView(new CharacterCard()
-                                    .getCard(CharacterList.this, chara, mainHandle, false));
+                                    .getCard(CharacterList.this, chara, mainHandle, false,topHandle));
                         }
                     }
                     Message snack = mainHandle.obtainMessage();
@@ -261,7 +243,7 @@ public class CharacterList extends Fragment {
         };
         async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if (getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE)
-                .getBoolean(getString(R.string.ads_key),true)) {
+                .getBoolean(getString(R.string.ads_key),true) && !gm) {
             AdView ads = new AdView(getContext());
             ads.setAdSize(AdSize.BANNER);
             LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);

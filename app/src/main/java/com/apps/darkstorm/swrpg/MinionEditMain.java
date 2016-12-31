@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.apps.darkstorm.swrpg.UI.SetupMinionAttr;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.drive.DriveId;
 
 public class MinionEditMain extends Fragment {
 
@@ -66,7 +68,35 @@ public class MinionEditMain extends Fragment {
             LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
             topLinLay.addView(ads,0);
         }
+        top.setFocusableInTouchMode(true);
+        top.requestFocus();
         return top;
+    }
+
+    public void onStart(){
+        super.onStart();
+        SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
+        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
+            minion.startEditing(getActivity(),
+                    DriveId.decodeFromString(pref.getString(getString(R.string.swchars_id_key),"")));
+        }else{
+            minion.startEditing(getActivity());
+        }
+    }
+
+    public void onPause(){
+        super.onPause();
+        minion.stopEditing();
+    }
+
+    public void onStop(){
+        super.onStop();
+        minion.stopEditing();
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        minion.stopEditing();
     }
 
     @Override

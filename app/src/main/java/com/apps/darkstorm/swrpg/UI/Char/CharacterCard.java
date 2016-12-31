@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.apps.darkstorm.swrpg.CharacterEditMain;
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.StarWars.Character;
@@ -24,7 +23,7 @@ import com.google.android.gms.drive.DriveId;
 import java.io.File;
 
 public class CharacterCard {
-    public CardView getCard(final Fragment frag, final Character chara, final Handler handle, final boolean gm){
+    public CardView getCard(final Fragment frag, final Character chara, final Handler handle, final boolean gm, final Handler topHandle){
         CardView top = new CardView(frag.getContext());
         CardView.LayoutParams topLp =
                 new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT,CardView.LayoutParams.WRAP_CONTENT);
@@ -61,9 +60,9 @@ public class CharacterCard {
             @Override
             public void onClick(View view) {
                 if (!gm) {
-                    frag.getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                            android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(chara))
-                            .addToBackStack("Editing " + chara.name).commit();
+                    Message up = topHandle.obtainMessage();
+                    up.obj = chara;
+                    topHandle.sendMessage(up);
                 }else{
                     Message mess = handle.obtainMessage();
                     mess.obj = chara;

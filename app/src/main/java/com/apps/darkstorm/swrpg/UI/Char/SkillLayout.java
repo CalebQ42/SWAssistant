@@ -316,7 +316,8 @@ public class SkillLayout {
         namelp.weight = 1;
         name.setLayoutParams(namelp);
         name.setTextSize(16);
-        name.setText(s.getNameString());
+        name.setText(s.name);
+        name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         name.setTypeface(null,Typeface.BOLD);
         TypedValue outVal = new TypedValue();
         main.getTheme().resolveAttribute(R.attr.selectableItemBackgroundBorderless,outVal,true);
@@ -329,11 +330,12 @@ public class SkillLayout {
             public boolean onLongClick(View v) {
                 final Dialog dia = new Dialog(main);
                 dia.setContentView(R.layout.dialog_skill_edit);
-                ((Switch)dia.findViewById(R.id.skill_career_switch)).setChecked(s.career);
+                ((Switch)dia.findViewById(R.id.skill_career_switch)).setVisibility(View.GONE);
                 final EditText valDia = (EditText)dia.findViewById(R.id.skill_value);
                 valDia.setText(String.valueOf(s.val));
                 final String[] skills = main.getResources().getStringArray(R.array.skills_list);
                 final int[] skillChar = main.getResources().getIntArray(R.array.skill_characteristic);
+                dia.findViewById(R.id.skill_minion_hide).setVisibility(View.GONE);
                 final Spinner skillsSpinner = (Spinner)dia.findViewById(R.id.skill_spinner);
                 ArrayAdapter<CharSequence> skillAdapter = ArrayAdapter.createFromResource(main,R.array.skills_list,R.layout.spinner_base);
                 skillsSpinner.setAdapter(skillAdapter);

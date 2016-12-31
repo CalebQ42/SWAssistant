@@ -1250,8 +1250,7 @@ public class WeaponLayout {
                 crit.setText(String.valueOf(tmp.crit));
                 final EditText hp = (EditText)dia.findViewById(R.id.weapon_edit_hp);
                 hp.setText(String.valueOf(tmp.hp));
-                final EditText encum = (EditText)dia.findViewById(R.id.weapon_edit_encum);
-                encum.setText(String.valueOf(tmp.encum));
+                dia.findViewById(R.id.minion_hide).setVisibility(View.GONE);
                 final Spinner state = (Spinner)dia.findViewById(R.id.weapon_edit_weapon_state);
                 ArrayAdapter<CharSequence> stateAdap = ArrayAdapter.createFromResource(main,R.array.gear_damage_levels,R.layout.spinner_base);
                 state.setAdapter(stateAdap);
@@ -1377,10 +1376,6 @@ public class WeaponLayout {
                             w.hp = Integer.parseInt(hp.getText().toString());
                         }else
                             w.hp = 0;
-                        if (!encum.getText().toString().equals(""))
-                            w.encum = Integer.parseInt(encum.getText().toString());
-                        else
-                            w.encum = 0;
                         w.itemState = state.getSelectedItemPosition();
                         w.range = range.getSelectedItemPosition();
                         w.skill = skill.getSelectedItemPosition();
