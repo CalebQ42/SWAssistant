@@ -181,6 +181,36 @@ public class Character {
     public void stopEditing(){
         editing = false;
     }
+    public String getFileLocation(Activity main){
+        File location;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+            File tmp = Environment.getExternalStorageDirectory();
+            location = new File(tmp.getAbsolutePath() + "/SWChars");
+            if (!location.exists()){
+                if (!location.mkdir()){
+                    return "";
+                }
+            }
+        }else{
+            File tmp = main.getFilesDir();
+            location = new File(tmp.getAbsolutePath() + "/SWChars");
+            if (!location.exists()){
+                if (!location.mkdir()){
+                    return "";
+                }
+            }
+        }
+        SharedPreferences pref = main.getSharedPreferences("prefs",Context.MODE_PRIVATE);
+        String def = location.getAbsolutePath();
+        String loc = pref.getString(main.getString(R.string.local_location_key),def);
+        location = new File(loc);
+        if (!location.exists()){
+            if (!location.mkdir()){
+                return "";
+            }
+        }
+        return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
+    }
     void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
         sl.addSave(ID);
@@ -270,6 +300,68 @@ public class Character {
                 nts.loadFromObject(vals[34]);
         }
     }
+    public DriveId getFileId(GoogleApiClient gac,DriveId fold){
+        String name = Integer.toString(ID) + ".char";
+        DriveFolder folder = fold.asDriveFolder();
+        DriveId fi = null;
+        DriveApi.MetadataBufferResult res = folder.queryChildren(gac,new Query.Builder().addFilter(
+                Filters.eq(SearchableField.TITLE,name)).build()).await();
+        for (Metadata met:res.getMetadataBuffer()){
+            if (!met.isTrashed()){
+                fi = met.getDriveId();
+                break;
+            }
+        }
+        res.release();
+        if (fi == null){
+            fi = folder.createFile(gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+                    .getDriveFile().getDriveId();
+        }
+        return fi;
+    }
+    void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
+        if (fil != null) {
+            DriveSaveLoad sl = new DriveSaveLoad(fil);
+            sl.setMime("swrpg/char");
+            sl.addSave(ID);
+            sl.addSave(name);
+            sl.addSave(charVals);
+            sl.addSave(skills.serialObject());
+            sl.addSave(species);
+            sl.addSave(career);
+            sl.addSave(specializations.serialObject());
+            sl.addSave(talents.serialObject());
+            sl.addSave(inv.serialObject());
+            sl.addSave(weapons.serialObject());
+            sl.addSave(forcePowers.serialObject());
+            sl.addSave(motivation);
+            sl.addSave(critInjuries.serialObject());
+            sl.addSave(emotionalStr);
+            sl.addSave(emotionalWeak);
+            sl.addSave(duty.serialObject());
+            sl.addSave(obligation.serialObject());
+            sl.addSave(woundThresh);
+            sl.addSave(woundCur);
+            sl.addSave(strainThresh);
+            sl.addSave(strainCur);
+            sl.addSave(xpTot);
+            sl.addSave(xpCur);
+            sl.addSave(defMelee);
+            sl.addSave(defRanged);
+            sl.addSave(soak);
+            sl.addSave(force);
+            sl.addSave(credits);
+            sl.addSave(morality);
+            sl.addSave(conflict);
+            sl.addSave(desc);
+            sl.addSave(showCard);
+            sl.addSave(darkSide);
+            sl.addSave(age);
+            sl.addSave(nts.serialObject());
+            sl.addSave(encumCapacity);
+            sl.save(gac,async);
+        }
+    }
     void reLoad(GoogleApiClient gac,DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] vals = sl.load(gac);
@@ -318,55 +410,6 @@ public class Character {
                 age = (int)vals[33];
                 nts.loadFromObject(vals[34]);
         }
-    }
-    public String getFileLocation(Activity main){
-        File location;
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-            File tmp = Environment.getExternalStorageDirectory();
-            location = new File(tmp.getAbsolutePath() + "/SWChars");
-            if (!location.exists()){
-                if (!location.mkdir()){
-                    return "";
-                }
-            }
-        }else{
-            File tmp = main.getFilesDir();
-            location = new File(tmp.getAbsolutePath() + "/SWChars");
-            if (!location.exists()){
-                if (!location.mkdir()){
-                    return "";
-                }
-            }
-        }
-        SharedPreferences pref = main.getSharedPreferences("prefs",Context.MODE_PRIVATE);
-        String def = location.getAbsolutePath();
-        String loc = pref.getString(main.getString(R.string.local_location_key),def);
-        location = new File(loc);
-        if (!location.exists()){
-            if (!location.mkdir()){
-                return "";
-            }
-        }
-        return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
-    }
-    public DriveId getFileId(GoogleApiClient gac,DriveId fold){
-        String name = Integer.toString(ID) + ".char";
-        DriveFolder folder = fold.asDriveFolder();
-        DriveId fi = null;
-        DriveApi.MetadataBufferResult res = folder.queryChildren(gac,new Query.Builder().addFilter(
-                Filters.eq(SearchableField.TITLE,name)).build()).await();
-        for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isTrashed()){
-                fi = met.getDriveId();
-                break;
-            }
-        }
-        res.release();
-        if (fi == null){
-            fi = folder.createFile(gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
-                    .getDriveFile().getDriveId();
-        }
-        return fi;
     }
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Character clone(){
@@ -696,49 +739,6 @@ public class Character {
             top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
         }else{
             top.findViewById(R.id.desc_main).setVisibility(View.GONE);
-        }
-    }
-    void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
-        if (fil != null) {
-            DriveSaveLoad sl = new DriveSaveLoad(fil);
-            sl.setMime("swrpg/char");
-            sl.addSave(ID);
-            sl.addSave(name);
-            sl.addSave(charVals);
-            sl.addSave(skills.serialObject());
-            sl.addSave(species);
-            sl.addSave(career);
-            sl.addSave(specializations.serialObject());
-            sl.addSave(talents.serialObject());
-            sl.addSave(inv.serialObject());
-            sl.addSave(weapons.serialObject());
-            sl.addSave(forcePowers.serialObject());
-            sl.addSave(motivation);
-            sl.addSave(critInjuries.serialObject());
-            sl.addSave(emotionalStr);
-            sl.addSave(emotionalWeak);
-            sl.addSave(duty.serialObject());
-            sl.addSave(obligation.serialObject());
-            sl.addSave(woundThresh);
-            sl.addSave(woundCur);
-            sl.addSave(strainThresh);
-            sl.addSave(strainCur);
-            sl.addSave(xpTot);
-            sl.addSave(xpCur);
-            sl.addSave(defMelee);
-            sl.addSave(defRanged);
-            sl.addSave(soak);
-            sl.addSave(force);
-            sl.addSave(credits);
-            sl.addSave(morality);
-            sl.addSave(conflict);
-            sl.addSave(desc);
-            sl.addSave(showCard);
-            sl.addSave(darkSide);
-            sl.addSave(age);
-            sl.addSave(nts.serialObject());
-            sl.addSave(encumCapacity);
-            sl.save(gac,async);
         }
     }
     public boolean equals(Object obj) {
