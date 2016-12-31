@@ -54,22 +54,29 @@
         android:layout_height="wrap_content"
         android:id="@+id/skill_characteristic_spinner" />
 
-    <TextView
-        android:text="@string/value_text"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView25"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:layout_height="match_parent"
+        android:id="@+id/skill_minion_hide">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:ems="10"
-        android:id="@+id/skill_value"
-        android:textAlignment="center"
-        android:inputType="number" />
+        <TextView
+            android:text="@string/value_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView25"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:ems="10"
+            android:id="@+id/skill_value"
+            android:textAlignment="center"
+            android:inputType="number" />
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

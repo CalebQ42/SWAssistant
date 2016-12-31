@@ -30,7 +30,8 @@ public class NavigationActivity extends AppCompatActivity
         GuideMain.OnGuideInteractionListener, CharacterList.OnListInteractionListener, CharacterEditMain.OnFragmentInteractionListener,
         CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, GMFragment.OnGMInteractionListener,
-        VehicleList.OnVehicleListInteractionListener, VehicleEdit.OnVehicleEditInteractionListener {
+        VehicleList.OnVehicleListInteractionListener, VehicleEdit.OnVehicleEditInteractionListener, MinCharList.OnMinCharInteractionListener,
+        MinionList.OnMinionListInteractionListener,MinionEditMain.OnMinionEditInteractionListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final SharedPreferences pref = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
@@ -71,7 +72,7 @@ public class NavigationActivity extends AppCompatActivity
                     .replace(R.id.content_navigation,DiceFragment.newInstance()).commit();
         }else{
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_navigation,CharacterList.newInstance()).commit();
+                    .replace(R.id.content_navigation,MinCharList.newInstance()).commit();
         }
     }
 
@@ -85,9 +86,9 @@ public class NavigationActivity extends AppCompatActivity
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
                         .build();
-                if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
+                if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof MinCharList){
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content_navigation, CharacterList.newInstance()).commit();
+                            .replace(R.id.content_navigation, MinCharList.newInstance()).commit();
                 }else if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList){
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.content_navigation, VehicleList.newInstance()).commit();
@@ -96,9 +97,9 @@ public class NavigationActivity extends AppCompatActivity
             ((SWrpg)getApplication()).gac.connect();
         }else{
             ((SWrpg)getApplication()).gac = null;
-            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList){
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof MinCharList){
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_navigation, CharacterList.newInstance()).commit();
+                        .replace(R.id.content_navigation, MinCharList.newInstance()).commit();
             }else if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList){
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_navigation, VehicleList.newInstance()).commit();
@@ -134,14 +135,14 @@ public class NavigationActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.universeFab);
         int id = item.getItemId();
         if (id == R.id.nav_characters){
-            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof CharacterList) {
+            if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof MinCharList) {
                 Fragment tmp = getSupportFragmentManager().findFragmentById(R.id.content_navigation);
                 getSupportFragmentManager().beginTransaction().detach(tmp).attach(tmp).commit();
             }else{
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.content_navigation, CharacterList.newInstance()).addToBackStack("toCharacters").commit();
+                        .replace(R.id.content_navigation, MinCharList.newInstance()).addToBackStack("toCharacters").commit();
             }
         }else if (id == R.id.nav_ships){
             if (getSupportFragmentManager().findFragmentById(R.id.content_navigation) instanceof VehicleList) {
@@ -248,4 +249,19 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onVehicleEditInteraction() {}
+
+    @Override
+    public void onMinCharInteraction() {
+
+    }
+
+    @Override
+    public void OnMinionEditInteractionListener() {
+
+    }
+
+    @Override
+    public void onMinionListInteraction() {
+
+    }
 }

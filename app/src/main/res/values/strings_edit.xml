@@ -58,4 +58,6 @@
     <string name="presence_text">Presence:</string>
 
     <string name="character_delete">Are you sure you want to delete this character?</string>
+
+    <string name="minion_delete">Are you sure you want to delete this minion?</string>
 </resources>

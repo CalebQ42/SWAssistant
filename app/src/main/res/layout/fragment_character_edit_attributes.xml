@@ -5,8 +5,6 @@
     tools:context="com.apps.darkstorm.swrpg.CharacterEditAttributes"
     android:animateLayoutChanges="true">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,16 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true">
-
-            <!--<com.google.android.gms.ads.AdView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:id="@+id/adView"-->
-                <!--ads:adSize="BANNER"-->
-                <!--android:layout_weight="0"-->
-                <!--ads:adUnitId="@string/banner_ad_unit_id"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:layout_marginTop="5dp" />-->
 
             <LinearLayout
                 android:orientation="vertical"

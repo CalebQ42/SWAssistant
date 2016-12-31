@@ -1,19 +1,15 @@
 package com.apps.darkstorm.swrpg;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -22,10 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.apps.darkstorm.swrpg.StarWars.Character;
-import com.apps.darkstorm.swrpg.StarWars.DriveLoadChars;
-import com.apps.darkstorm.swrpg.StarWars.LoadChars;
-import com.apps.darkstorm.swrpg.UI.Char.CharacterCard;
+import com.apps.darkstorm.swrpg.StarWars.DriveLoadMinions;
+import com.apps.darkstorm.swrpg.StarWars.LoadMinions;
+import com.apps.darkstorm.swrpg.StarWars.Minion;
+import com.apps.darkstorm.swrpg.UI.MinionCard;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -33,24 +29,25 @@ import com.google.android.gms.drive.Drive;
 
 import java.util.ArrayList;
 
-public class CharacterList extends Fragment {
-    private OnListInteractionListener mListener;
+public class MinionList extends Fragment {
 
-    ArrayList<Character> chars;
+    private OnMinionListInteractionListener mListener;
+
+    ArrayList<Minion> minions;
     AsyncTask<Void,Void,Void> async;
     Snackbar snack;
 
-    public CharacterList() {}
+    public MinionList() {
+    }
 
-    public static CharacterList newInstance() {
-        CharacterList frag = new CharacterList();
-        return frag;
+    public static MinionList newInstance() {
+        MinionList fragment = new MinionList();
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     Handler mainHandle;
@@ -61,15 +58,15 @@ public class CharacterList extends Fragment {
                 (((SWrpg)getActivity().getApplication()).gac == null ||
                         !((SWrpg)getActivity().getApplication()).gac.isConnected()))){
             ArrayList<Integer> has = new ArrayList<>();
-            for (Character chara : chars) {
-                has.add(chara.ID);
+            for (Minion minion : minions) {
+                has.add(minion.ID);
             }
             int max = 0;
             while (has.contains(max)) {
                 max++;
             }
             getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                    android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max))
+                    android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, MinionEditMain.newInstance(max))
                     .addToBackStack("Creating a new Character").commit();
             fab.hide();
         }
@@ -78,8 +75,8 @@ public class CharacterList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_character_list, container, false);
-        chars = new ArrayList<>();
+        final View top = inflater.inflate(R.layout.fragment_minion_list, container, false);
+        minions = new ArrayList<>();
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
         final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         final SwipeRefreshLayout refresh = (SwipeRefreshLayout)top.findViewById(R.id.swipe_refresh);
@@ -87,23 +84,22 @@ public class CharacterList extends Fragment {
             public void handleMessage(Message in){
                 fab.setEnabled(true);
                 System.out.println("Handling");
-                if (in.obj instanceof Character) {
-                    Character tmp = (Character)in.obj;
-                    for (int i = 0; i < chars.size(); i++) {
-                        if (chars.get(i).ID == tmp.ID) {
+                if (in.obj instanceof Minion) {
+                    Minion tmp = (Minion)in.obj;
+                    for (int i = 0; i < minions.size(); i++) {
+                        if (minions.get(i).ID == tmp.ID) {
                             ((LinearLayout) top.findViewById(R.id.mainLay)).removeViewAt(i);
-                            System.out.println(i);
                             break;
                         }
                     }
                 }else if(in.obj instanceof ArrayList){
-                    ArrayList<Character> charsNew = (ArrayList<Character>)in.obj;
-                    chars = charsNew;
+                    ArrayList<Minion> charsNew = (ArrayList<Minion>)in.obj;
+                    minions = charsNew;
                     ((LinearLayout)top.findViewById(R.id.mainLay)).removeAllViews();
-                    if (CharacterList.this.getContext() != null) {
-                        for (Character chara : chars) {
-                            ((LinearLayout) top.findViewById(R.id.mainLay)).addView(new CharacterCard()
-                                    .getCard(CharacterList.this, chara, mainHandle, false));
+                    if (MinionList.this.getContext() != null) {
+                        for (Minion minion : minions) {
+                            ((LinearLayout) top.findViewById(R.id.mainLay)).addView(new MinionCard()
+                                    .getCard(MinionList.this, minion, mainHandle, false));
                         }
                     }
                     Message snack = mainHandle.obtainMessage();
@@ -144,8 +140,8 @@ public class CharacterList extends Fragment {
                                                 timeout++;
                                             }
                                             if (timeout < 33) {
-                                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
-                                                dlc.saveToFile(CharacterList.this.getActivity());
+                                                DriveLoadMinions dlc = new DriveLoadMinions(MinionList.this.getActivity());
+                                                dlc.saveToFile(MinionList.this.getActivity());
                                                 System.out.println("Loaded");
                                             } else {
                                                 Message timed = mainHandle.obtainMessage();
@@ -153,9 +149,9 @@ public class CharacterList extends Fragment {
                                                 mainHandle.sendMessage(timed);
                                             }
                                         }
-                                        LoadChars lc = new LoadChars(CharacterList.this.getActivity());
+                                        LoadMinions lc = new LoadMinions(MinionList.this.getActivity());
                                         Message tmp = mainHandle.obtainMessage();
-                                        tmp.obj = lc.chars;
+                                        tmp.obj = lc.minions;
                                         mainHandle.sendMessage(tmp);
                                     }catch(IllegalStateException ignored){}
                                     async = null;
@@ -181,45 +177,45 @@ public class CharacterList extends Fragment {
             @Override
             public void onRefresh() {
                 async = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
-                        Message snack = mainHandle.obtainMessage();
-                        snack.arg1 = 100;
-                        mainHandle.sendMessage(snack);
-                        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                            int timeout = 0;
-                            while ((((SWrpg)getActivity().getApplication()).gac == null ||
-                                    !((SWrpg)getActivity().getApplication()).initConnect ||
-                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
-                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
-                                try {
-                                    Thread.sleep(300);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        try {
+                            final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+                            Message snack = mainHandle.obtainMessage();
+                            snack.arg1 = 100;
+                            mainHandle.sendMessage(snack);
+                            if (pref.getBoolean(getString(R.string.cloud_key), false)) {
+                                int timeout = 0;
+                                while ((((SWrpg)getActivity().getApplication()).gac == null ||
+                                        !((SWrpg)getActivity().getApplication()).initConnect ||
+                                        !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
+                                        ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
+                                    try {
+                                        Thread.sleep(300);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    timeout++;
                                 }
-                                timeout++;
+                                if (timeout < 33) {
+                                    DriveLoadMinions dlc = new DriveLoadMinions(MinionList.this.getActivity());
+                                    dlc.saveToFile(MinionList.this.getActivity());
+                                    System.out.println("Loaded");
+                                } else {
+                                    Message timed = mainHandle.obtainMessage();
+                                    timed.arg1 = -1;
+                                    mainHandle.sendMessage(timed);
+                                }
                             }
-                            if (timeout < 33) {
-                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
-                                dlc.saveToFile(CharacterList.this.getActivity());
-                                System.out.println("Loaded");
-                            } else {
-                                Message timed = mainHandle.obtainMessage();
-                                timed.arg1 = -1;
-                                mainHandle.sendMessage(timed);
-                            }
-                        }
-                        LoadChars lc = new LoadChars(CharacterList.this.getActivity());
-                        Message tmp = mainHandle.obtainMessage();
-                        tmp.obj = lc.chars;
-                        mainHandle.sendMessage(tmp);
-                    }catch(IllegalStateException ignored){}
-                    async = null;
-                    return null;
-                }
-            };
+                            LoadMinions lc = new LoadMinions(MinionList.this.getActivity());
+                            Message tmp = mainHandle.obtainMessage();
+                            tmp.obj = lc.minions;
+                            mainHandle.sendMessage(tmp);
+                        }catch(IllegalStateException ignored){}
+                        async = null;
+                        return null;
+                    }
+                };
                 async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
@@ -242,17 +238,17 @@ public class CharacterList extends Fragment {
                             timeout++;
                         }
                         if (timeout < 33) {
-                            DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
-                            dlc.saveToFile(CharacterList.this.getActivity());
+                            DriveLoadMinions dlc = new DriveLoadMinions(MinionList.this.getActivity());
+                            dlc.saveToFile(MinionList.this.getActivity());
                         } else {
                             Message timed = mainHandle.obtainMessage();
                             timed.arg1 = -1;
                             mainHandle.sendMessage(timed);
                         }
                     }
-                    LoadChars lc = new LoadChars(CharacterList.this.getActivity());
+                    LoadMinions lc = new LoadMinions(MinionList.this.getActivity());
                     Message tmp = mainHandle.obtainMessage();
-                    tmp.obj = lc.chars;
+                    tmp.obj = lc.minions;
                     mainHandle.sendMessage(tmp);
                 }catch(IllegalStateException ignored){}
                 async = null;
@@ -281,18 +277,11 @@ public class CharacterList extends Fragment {
         return top;
     }
 
-    public void onStart(){
-        super.onStart();
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListInteractionListener) {
-            mListener = (OnListInteractionListener) context;
+        if (context instanceof OnMinionListInteractionListener) {
+            mListener = (OnMinionListInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -305,54 +294,7 @@ public class CharacterList extends Fragment {
         mListener = null;
     }
 
-    public interface OnListInteractionListener {
-        void onListInteraction();
-    }
-
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
-        if (grantResults.length == 1 && requestCode == 50 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-            async = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
-                        Message snack = mainHandle.obtainMessage();
-                        snack.arg1 = 100;
-                        mainHandle.sendMessage(snack);
-                        if (pref.getBoolean(getString(R.string.cloud_key), false)) {
-                            int timeout = 0;
-                            while ((((SWrpg)getActivity().getApplication()).gac == null ||
-                                    !((SWrpg)getActivity().getApplication()).initConnect ||
-                                    !((SWrpg)getActivity().getApplication()).gac.hasConnectedApi(Drive.API) ||
-                                    ((SWrpg)getActivity().getApplication()).gac.isConnecting()) && timeout < 33) {
-                                try {
-                                    Thread.sleep(300);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                timeout++;
-                            }
-                            if (timeout < 33) {
-                                DriveLoadChars dlc = new DriveLoadChars(CharacterList.this.getActivity());
-                                dlc.saveToFile(CharacterList.this.getActivity());
-                                System.out.println("Loaded");
-                            } else {
-                                Message timed = mainHandle.obtainMessage();
-                                timed.arg1 = -1;
-                                mainHandle.sendMessage(timed);
-                            }
-                        }
-                        LoadChars lc = new LoadChars(CharacterList.this.getActivity());
-                        Message tmp = mainHandle.obtainMessage();
-                        tmp.obj = lc.chars;
-                        mainHandle.sendMessage(tmp);
-                    }catch(IllegalStateException ignored){}
-                    async = null;
-                    return null;
-                }
-            };
-            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
+    public interface OnMinionListInteractionListener {
+        void onMinionListInteraction();
     }
 }

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.apps.darkstorm.swrpg.CustVars.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.CustVars.SaveLoad;
@@ -38,27 +40,27 @@ public class Minion {
     public Talents talents = new Talents();
     public Inventory inv = new Inventory();
     public Weapons weapons = new Weapons();
-    public int woundThreshInd;
+    private int woundThreshInd;
     public int woundThresh;
     private int woundCur;
     public int defMelee,defRanged;
     public int soak;
     private int minNum;
     public String desc = "";
-    private boolean[] showCards = new boolean[8];
+    private boolean[] showCard = new boolean[9];
 
 
     private boolean editing = false;
     private boolean saving = false;
 
     public Minion(){
-        for (int i = 0;i<showCards.length;i++)
-            showCards[i] = true;
+        for (int i = 0; i< showCard.length; i++)
+            showCard[i] = true;
     }
     public Minion(int ID){
         this.ID = ID;
-        for (int i = 0;i<showCards.length;i++)
-            showCards[i] = true;
+        for (int i = 0; i< showCard.length; i++)
+            showCard[i] = true;
     }
     public void startEditing(final Activity main, final DriveId fold){
         if (!editing) {
@@ -188,7 +190,7 @@ public class Minion {
         sl.addSave(soak);
         sl.addSave(minNum);
         sl.addSave(desc);
-        sl.addSave(showCards);
+        sl.addSave(showCard);
         sl.save();
     }
     void reLoad(String filename){
@@ -196,7 +198,7 @@ public class Minion {
         Object[] obj = sl.load();
         switch(obj.length){
             case 16:
-                showCards = (boolean[])obj[15];
+                showCard = (boolean[])obj[15];
                 desc = (String)obj[14];
                 minNum = (int)obj[13];
                 soak = (int)obj[12];
@@ -254,7 +256,7 @@ public class Minion {
             sl.addSave(soak);
             sl.addSave(minNum);
             sl.addSave(desc);
-            sl.addSave(showCards);
+            sl.addSave(showCard);
             sl.save(gac, async);
         }
     }
@@ -263,7 +265,7 @@ public class Minion {
         Object[] obj = sl.load(gac);
         switch(obj.length){
             case 16:
-                showCards = (boolean[])obj[15];
+                showCard = (boolean[])obj[15];
                 desc = (String)obj[14];
                 minNum = (int)obj[13];
                 soak = (int)obj[12];
@@ -298,12 +300,29 @@ public class Minion {
             setMinNum(num);
         }
     }
+    public int getWound(){
+        return woundCur;
+    }
     public void setMinNum(int num){
         minNum = num;
         woundThresh = woundThreshInd*minNum;
         for (int i = 0;i<skills.size();i++)
             skills.get(i).val = minNum -1;
     }
+    public int getMinNum(){
+        return minNum;
+    }
+    public void setWoundInd(int wound){
+        woundThreshInd = wound;
+        woundThresh = minNum*woundThreshInd;
+        if (woundCur>woundThresh){
+            woundCur = woundThresh;
+        }
+    }
+    public int getWoundInd(){
+        return woundThreshInd;
+    }
+
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Minion clone(){
         Minion min = new Minion();
@@ -320,10 +339,164 @@ public class Minion {
         min.defRanged = defRanged;
         min.soak = soak;
         min.desc = desc;
-        min.showCards = showCards.clone();
+        min.showCard = showCard.clone();
         return min;
     }
-    public void showHideCards(final View top){}
+    public void showHideCards(final View top){
+        ((Switch)top.findViewById(R.id.min_num_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.min_num_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.min_num_main).setVisibility(View.GONE);
+                }
+                showCard[0] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.min_num_show)).setChecked(showCard[0]);
+        if (showCard[0]) {
+            top.findViewById(R.id.min_num_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.min_num_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.wound_strain_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.wound_strain_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.wound_strain_main).setVisibility(View.GONE);
+                }
+                showCard[1] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.wound_strain_show)).setChecked(showCard[1]);
+        if (showCard[1]) {
+            top.findViewById(R.id.wound_strain_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.wound_strain_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.characteristics_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.characteristics_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.characteristics_main).setVisibility(View.GONE);
+                }
+                showCard[2] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.characteristics_show)).setChecked(showCard[2]);
+        if (showCard[2]) {
+            top.findViewById(R.id.characteristics_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.characteristics_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.skill_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.skill_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.skill_main).setVisibility(View.GONE);
+                }
+                showCard[3] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.skill_show)).setChecked(showCard[3]);
+        if (showCard[3]) {
+            top.findViewById(R.id.skill_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.skill_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.defense_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.defense_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.defense_main).setVisibility(View.GONE);
+                }
+                showCard[4] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.defense_show)).setChecked(showCard[4]);
+        if (showCard[4]) {
+            top.findViewById(R.id.defense_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.defense_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.weapons_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.weapons_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.weapons_main).setVisibility(View.GONE);
+                }
+                showCard[5] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.weapons_show)).setChecked(showCard[5]);
+        if (showCard[5]) {
+            top.findViewById(R.id.weapons_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.weapons_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.inventory_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.inventory_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.inventory_main).setVisibility(View.GONE);
+                }
+                showCard[6] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.inventory_show)).setChecked(showCard[6]);
+        if (showCard[6]) {
+            top.findViewById(R.id.inventory_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.inventory_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.desc_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.desc_main).setVisibility(View.GONE);
+                }
+                showCard[7] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.desc_show)).setChecked(showCard[7]);
+        if (showCard[7]) {
+            top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.desc_main).setVisibility(View.GONE);
+        }
+        ((Switch)top.findViewById(R.id.talents_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    top.findViewById(R.id.talents_main).setVisibility(View.VISIBLE);
+                }else{
+                    top.findViewById(R.id.talents_main).setVisibility(View.GONE);
+                }
+                showCard[8] = isChecked;
+            }
+        });
+        ((Switch)top.findViewById(R.id.talents_show)).setChecked(showCard[8]);
+        if (showCard[8]) {
+            top.findViewById(R.id.talents_main).setVisibility(View.VISIBLE);
+        }else{
+            top.findViewById(R.id.talents_main).setVisibility(View.GONE);
+        }
+    }
     public boolean equals(Object obj){
         if (!(obj instanceof Minion))
             return false;
@@ -332,6 +505,6 @@ public class Minion {
                 tmp.skills.equals(skills) && tmp.talents.equals(talents) && tmp.inv.equals(inv) &&
                 tmp.weapons.equals(weapons) && tmp.woundThresh == woundThresh && tmp.woundCur == woundCur &&
                 tmp.defMelee == defMelee && tmp.defRanged == defRanged && tmp.soak == soak && tmp.desc.equals(desc) &&
-                Arrays.equals(tmp.showCards,showCards) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum;
+                Arrays.equals(tmp.showCard, showCard) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum;
     }
 }
