@@ -310,8 +310,13 @@ public class Minion {
         minNum = num;
         woundThresh = woundThreshInd*minNum;
         woundCur = woundThresh;
-        for (int i = 0;i<skills.size();i++)
-            skills.get(i).val = minNum -1;
+        if (minNum<=6) {
+            for (int i = 0; i < skills.size(); i++)
+                skills.get(i).val = minNum - 1;
+        }else{
+            for (int i = 0;i<skills.size();i++)
+                skills.get(i).val = 5;
+        }
     }
     public int getMinNum(){
         return minNum;

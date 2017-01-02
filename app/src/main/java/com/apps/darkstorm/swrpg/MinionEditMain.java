@@ -84,6 +84,17 @@ public class MinionEditMain extends Fragment {
         }
     }
 
+    public void onResume(){
+        super.onResume();
+        SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
+        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
+            minion.startEditing(getActivity(),
+                    DriveId.decodeFromString(pref.getString(getString(R.string.swchars_id_key),"")));
+        }else{
+            minion.startEditing(getActivity());
+        }
+    }
+
     public void onPause(){
         super.onPause();
         minion.stopEditing();
