@@ -193,7 +193,7 @@ public class Minion {
         sl.addSave(showCard);
         sl.save();
     }
-    void reLoad(String filename){
+    public void reLoad(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] obj = sl.load();
         switch(obj.length){
@@ -260,7 +260,7 @@ public class Minion {
             sl.save(gac, async);
         }
     }
-    void reLoad(GoogleApiClient gac,DriveId fil){
+    public void reLoad(GoogleApiClient gac,DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] obj = sl.load(gac);
         switch(obj.length){

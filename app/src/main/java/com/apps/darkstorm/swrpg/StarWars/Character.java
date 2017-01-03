@@ -251,7 +251,7 @@ public class Character {
         sl.addSave(encumCapacity);
         sl.save();
     }
-    void reLoad(String filename){
+    public void reLoad(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] vals = sl.load();
         switch (vals.length){
@@ -362,7 +362,7 @@ public class Character {
             sl.save(gac,async);
         }
     }
-    void reLoad(GoogleApiClient gac,DriveId fil){
+    public void reLoad(GoogleApiClient gac,DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] vals = sl.load(gac);
         switch (vals.length){

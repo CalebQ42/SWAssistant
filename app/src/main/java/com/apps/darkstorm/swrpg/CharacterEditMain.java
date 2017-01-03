@@ -118,17 +118,6 @@ public class CharacterEditMain extends Fragment {
         }
     }
 
-    public void onStart(){
-        super.onStart();
-        SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
-            chara.startEditing(getActivity(),
-                    DriveId.decodeFromString(pref.getString(getString(R.string.swchars_id_key),"")));
-        }else{
-            chara.startEditing(getActivity());
-        }
-    }
-
     public void onResume(){
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
@@ -142,16 +131,6 @@ public class CharacterEditMain extends Fragment {
 
     public void onPause(){
         super.onPause();
-        chara.stopEditing();
-    }
-
-    public void onStop(){
-        super.onStop();
-        chara.stopEditing();
-    }
-
-    public void onDestroy(){
-        super.onDestroy();
         chara.stopEditing();
     }
 

@@ -66,11 +66,13 @@ public class MinCharList extends Fragment {
                 }else {
                     if (in.obj instanceof Character) {
                         Character chara = (Character) in.obj;
+                        chara.reLoad(chara.getFileLocation(MinCharList.this.getActivity()));
                         getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(chara))
                                 .addToBackStack("Editing " + chara.name).commit();
                     } else if (in.obj instanceof Minion) {
                         Minion minion = (Minion) in.obj;
+                        minion.reLoad(minion.getFileLocation(MinCharList.this.getActivity()));
                         getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                                 android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, MinionEditMain.newInstance(minion))
                                 .addToBackStack("Editing " + minion.name).commit();
