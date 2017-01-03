@@ -145,6 +145,7 @@ public class Settings extends AppCompatActivity{
                     Toast.makeText(Settings.this,R.string.ads_off_toast,Toast.LENGTH_SHORT).show();
             }
         });
+        ads.setEnabled(false);
         Switch cloud = (Switch)findViewById(R.id.cloud_switch);
         final Switch sync = (Switch)findViewById(R.id.sync_switch);
         cloud.setChecked(pref.getBoolean(getString(R.string.cloud_key),false));

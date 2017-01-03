@@ -40,21 +40,21 @@ public class DiceFragment extends Fragment {
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         if (getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE)
                 .getBoolean(getString(R.string.ads_key),true)) {
-            AdView ads = new AdView(getContext());
-            ads.setAdSize(AdSize.BANNER);
-            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            adLayout.weight = 0;
-            adLayout.topMargin = (int)(5*getResources().getDisplayMetrics().density);
-            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
-            ads.setLayoutParams(adLayout);
-            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
-                ads.setAdUnitId(getString(R.string.free_banner_ad_id));
-            else
-                ads.setAdUnitId(getString(R.string.paid_banner_ad_id));
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
-            ads.loadAd(adRequest);
-            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
-            topLinLay.addView(ads,0);
+//            AdView ads = new AdView(getContext());
+//            ads.setAdSize(AdSize.BANNER);
+//            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+//            adLayout.weight = 0;
+//            adLayout.topMargin = (int)(5*getResources().getDisplayMetrics().density);
+//            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+//            ads.setLayoutParams(adLayout);
+//            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+//                ads.setAdUnitId(getString(R.string.free_banner_ad_id));
+//            else
+//                ads.setAdUnitId(getString(R.string.paid_banner_ad_id));
+//            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+//            ads.loadAd(adRequest);
+//            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
+//            topLinLay.addView(ads,0);
         }
         if (pref.getBoolean(getString(R.string.color_dice_key),true)){
             top.findViewById(R.id.ability_card).setBackgroundColor(getResources().getColor(R.color.ability_card));

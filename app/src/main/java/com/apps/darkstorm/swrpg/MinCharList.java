@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.apps.darkstorm.swrpg.StarWars.Character;
 import com.apps.darkstorm.swrpg.StarWars.Minion;
@@ -120,36 +121,44 @@ public class MinCharList extends Fragment {
                     if (!(pref.getBoolean(getString(R.string.cloud_key),false) && pref.getBoolean(getString(R.string.sync_key),true) &&
                             (((SWrpg)getActivity().getApplication()).gac == null ||
                                     !((SWrpg)getActivity().getApplication()).gac.isConnected()))){
-                        ArrayList<Integer> has = new ArrayList<>();
-                        for (Character chara : charList.chars) {
-                            has.add(chara.ID);
+                        if (charList.chars != null) {
+                            ArrayList<Integer> has = new ArrayList<>();
+                            for (Character chara : charList.chars) {
+                                has.add(chara.ID);
+                            }
+                            int max = 0;
+                            while (has.contains(max)) {
+                                max++;
+                            }
+                            getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                    android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max))
+                                    .addToBackStack("Creating a new Character").commit();
+                            fab.hide();
+                        }else{
+                            Toast.makeText(getContext(),"Please wait until loading is finished",Toast.LENGTH_SHORT).show();
                         }
-                        int max = 0;
-                        while (has.contains(max)) {
-                            max++;
-                        }
-                        getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                                android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, CharacterEditMain.newInstance(max))
-                                .addToBackStack("Creating a new Character").commit();
-                        fab.hide();
                     }
                 }else{
                     final SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
                     if (!(pref.getBoolean(getString(R.string.cloud_key),false) && pref.getBoolean(getString(R.string.sync_key),true) &&
                             (((SWrpg)getActivity().getApplication()).gac == null ||
                                     !((SWrpg)getActivity().getApplication()).gac.isConnected()))){
-                        ArrayList<Integer> has = new ArrayList<>();
-                        for (Minion minion : minList.minions) {
-                            has.add(minion.ID);
+                        if (minList.minions != null) {
+                            ArrayList<Integer> has = new ArrayList<>();
+                            for (Minion minion : minList.minions) {
+                                has.add(minion.ID);
+                            }
+                            int max = 0;
+                            while (has.contains(max)) {
+                                max++;
+                            }
+                            getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                    android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, MinionEditMain.newInstance(max))
+                                    .addToBackStack("Creating a new Minion").commit();
+                            fab.hide();
+                        }else{
+                            Toast.makeText(getContext(),"Please wait until loading is finished",Toast.LENGTH_SHORT).show();
                         }
-                        int max = 0;
-                        while (has.contains(max)) {
-                            max++;
-                        }
-                        getFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                                android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.content_navigation, MinionEditMain.newInstance(max))
-                                .addToBackStack("Creating a new Minion").commit();
-                        fab.hide();
                     }
                 }
             }
