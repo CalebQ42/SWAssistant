@@ -19,7 +19,7 @@ import com.apps.darkstorm.swrpg.ui.CritInjLayout;
 
 public class CriticalInjuriesCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_critical_injuries,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_critical_injuries,root,false);
         final LinearLayout critLay = (LinearLayout)top.findViewById(R.id.critical_injuries_layout);
         for (int i = 0;i<chara.critInjuries.size();i++)
             critLay.addView(new CritInjLayout().CritInjLayout(main,critLay,chara,chara.critInjuries.get(i)));

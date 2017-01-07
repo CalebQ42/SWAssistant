@@ -16,7 +16,7 @@ import com.apps.darkstorm.swrpg.sw.Character;
 
 public class EmotionsCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_emotions,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_emotions,root,false);
         final TextView morality = (TextView)top.findViewById(R.id.morality_text);
         morality.setText(String.valueOf(chara.morality));
         final TextView conflict = (TextView)top.findViewById(R.id.conflict_text);

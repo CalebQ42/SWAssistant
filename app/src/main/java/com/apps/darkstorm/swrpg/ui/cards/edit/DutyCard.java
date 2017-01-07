@@ -16,7 +16,7 @@ import com.apps.darkstorm.swrpg.ui.character.DutyLayout;
 
 public class DutyCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_duty,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_duty,root,false);
         final LinearLayout dutyLay = (LinearLayout)top.findViewById(R.id.duty_layout);
         for (int i = 0;i<chara.duty.size();i++)
             dutyLay.addView(new DutyLayout().DutyLayout(main,dutyLay,chara,chara.duty.get(i)));

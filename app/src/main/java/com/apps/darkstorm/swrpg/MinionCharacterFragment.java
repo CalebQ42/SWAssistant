@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
 
 public class MinionCharacterFragment extends Fragment {
@@ -78,6 +79,9 @@ public class MinionCharacterFragment extends Fragment {
                 }
             }
         };
+        pager.setAdapter(adap);
+        top.requestFocus();
+        top.setFocusableInTouchMode(true);
         return top;
     }
 

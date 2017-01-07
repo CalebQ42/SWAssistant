@@ -17,7 +17,7 @@ import com.apps.darkstorm.swrpg.ui.character.TalentLayout;
 
 public class TalentsCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_talents,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_talents,root,false);
         for (int i =0;i<chara.talents.size();i++)
             ((LinearLayout)top.findViewById(R.id.talents_layout)).addView
                     (new TalentLayout().TalentLayout(main,((LinearLayout)

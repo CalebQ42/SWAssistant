@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical|center_horizontal"
-    android:layout_margin="@dimen/dialog_padding">
+    android:padding="@dimen/dialog_padding">
 
     <Switch
         android:text="@string/career_skill_text"

@@ -48,7 +48,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (app.prefs.getBoolean(getString(R.string.dice_key),false)){
-            getFragmentManager().beginTransaction().replace(R.id.content_main,DiceFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,DiceFragment.newInstance()).commit();
+        }else{
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,MinionCharacterFragment.newInstance()).commit();
         }
     }
 
@@ -74,28 +76,28 @@ public class MainActivity extends AppCompatActivity
                         .addToBackStack("").commit();
                 break;
             case (R.id.vehicles):
-                getFragmentManager().beginTransaction().replace(R.id.content_main,VehicleList.newInstance())
-                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                                android.R.animator.fade_in,android.R.animator.fade_out)
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,VehicleList.newInstance())
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out)
                         .addToBackStack("").commit();
                 break;
             case (R.id.gm_mode):
                 break;
             case (R.id.dice):
-                getFragmentManager().beginTransaction().replace(R.id.content_main,DiceFragment.newInstance())
-                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                                android.R.animator.fade_in,android.R.animator.fade_out)
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,DiceFragment.newInstance())
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out)
                         .addToBackStack("").commit();
                 break;
             case (R.id.guide):
-                getFragmentManager().beginTransaction().replace(R.id.content_main,GuideMain.newInstance())
-                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                                android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,GuideMain.newInstance())
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
                 break;
             case (R.id.settings):
-                getFragmentManager().beginTransaction().replace(R.id.content_main,SettingsFragment.newInstance())
-                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                                android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,SettingsFragment.newInstance())
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
                 break;
         }
 
@@ -179,10 +181,10 @@ public class MainActivity extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                             app.prefs.edit().putBoolean(getString(R.string.dice_key),true).apply();
-                            getFragmentManager().beginTransaction()
+                            getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.content_main,DiceFragment.newInstance())
-                                    .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                                    android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                                    .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                    android.R.anim.fade_in,android.R.anim.fade_out).commit();
                         }
                     });
                     build.show();

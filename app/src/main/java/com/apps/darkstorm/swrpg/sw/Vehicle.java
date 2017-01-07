@@ -140,42 +140,42 @@ public class Vehicle {
                     top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
             }
         });
-        ((Switch)top.findViewById(R.id.weapon_switch)).setChecked(showCards[3]);
+        ((Switch)top.findViewById(R.id.weapons_show)).setChecked(showCards[3]);
         if (showCards[3])
-            top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
+            top.findViewById(R.id.weapons_main).setVisibility(View.VISIBLE);
         else
-            top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
-        ((Switch)top.findViewById(R.id.weapon_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            top.findViewById(R.id.weapons_main).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.weapons_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 showCards[3] = b;
                 if (b)
-                    top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
+                    top.findViewById(R.id.weapons_main).setVisibility(View.VISIBLE);
                 else
-                    top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
+                    top.findViewById(R.id.weapons_main).setVisibility(View.GONE);
             }
         });
-        ((Switch)top.findViewById(R.id.crit_inj_switch)).setChecked(showCards[4]);
+        ((Switch)top.findViewById(R.id.critical_injuries_show)).setChecked(showCards[4]);
         if (showCards[4])
-            top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
+            top.findViewById(R.id.critical_injuries_main).setVisibility(View.VISIBLE);
         else
-            top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
-        ((Switch)top.findViewById(R.id.crit_inj_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            top.findViewById(R.id.critical_injuries_main).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.critical_injuries_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 showCards[4] = b;
                 if (b)
-                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
+                    top.findViewById(R.id.critical_injuries_main).setVisibility(View.VISIBLE);
                 else
-                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
+                    top.findViewById(R.id.critical_injuries_main).setVisibility(View.GONE);
             }
         });
-        ((Switch)top.findViewById(R.id.desc_switch)).setChecked(showCards[5]);
+        ((Switch)top.findViewById(R.id.desc_show)).setChecked(showCards[5]);
         if (showCards[5])
             top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
         else
             top.findViewById(R.id.desc_main).setVisibility(View.GONE);
-        ((Switch)top.findViewById(R.id.desc_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ((Switch)top.findViewById(R.id.desc_show)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 showCards[5] = b;

@@ -1,6 +1,5 @@
 package com.apps.darkstorm.swrpg;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -8,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -79,10 +79,10 @@ public class VehicleList extends Fragment {
                             vehicles.remove(ind);
                         }
                     }else{
-                        getActivity().getFragmentManager().beginTransaction().replace(R.id.content_main,
+                        getFragmentManager().beginTransaction().replace(R.id.content_main,
                                 VehicleEdit.newInstance((Vehicle)msg.obj))
-                                .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
-                                android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("").commit();
+                                .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
                     }
                 }
             }

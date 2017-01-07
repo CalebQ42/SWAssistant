@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
 
 public class MinionCard {
     public static View getCard(final Activity main, ViewGroup root, final Minion minion, final Handler handle){
-        View top = main.getLayoutInflater().inflate(R.layout.card_minion_vehicle_note,root);
+        View top = main.getLayoutInflater().inflate(R.layout.card_minion_vehicle_note,root,false);
         ((TextView)top.findViewById(R.id.name_text)).setText(minion.name);
         top.setOnClickListener(new View.OnClickListener() {
             @Override

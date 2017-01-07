@@ -17,7 +17,7 @@ import com.apps.darkstorm.swrpg.ui.character.ForceLayout;
 
 public class ForcePowerCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_force_powers,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_force_powers,root,false);
         final TextView rat = (TextView)top.findViewById(R.id.force_rating_text);
         rat.setText(String.valueOf(chara.force));
         top.findViewById(R.id.force_rating_layout).setOnLongClickListener(new View.OnLongClickListener() {

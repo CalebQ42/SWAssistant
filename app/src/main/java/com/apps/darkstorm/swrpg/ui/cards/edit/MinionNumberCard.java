@@ -14,7 +14,7 @@ import com.apps.darkstorm.swrpg.sw.Minion;
 
 public class MinionNumberCard {
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_minion_number,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_minion_number,root,false);
         final TextView woundVal = (TextView)top.findViewById(R.id.wound_text);
         final TextView minNum = (TextView)top.findViewById(R.id.min_num_text);
         minNum.setText(String.valueOf(minion.getMinNum()));

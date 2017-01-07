@@ -14,7 +14,7 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class VehicleInfoCard {
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_vehicle_info,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_vehicle_info,root,false);
         final TextView model = (TextView)top.findViewById(R.id.model_text);
         model.setText(vh.model);
         top.findViewById(R.id.model_layout).setOnLongClickListener(new View.OnLongClickListener() {

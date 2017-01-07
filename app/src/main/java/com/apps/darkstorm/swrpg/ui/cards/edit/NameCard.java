@@ -16,9 +16,9 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class NameCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.card_character,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_name,root,false);
         ((TextView)top.findViewById(R.id.name_text)).setText(chara.name);
-        top.findViewById(R.id.name_card).setOnLongClickListener(new View.OnLongClickListener(){
+        top.setOnLongClickListener(new View.OnLongClickListener(){
             public boolean onLongClick(View v){
                 AlertDialog.Builder build = new AlertDialog.Builder(main);
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);

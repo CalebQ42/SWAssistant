@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class VehicleCard {
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vehic, final Handler handle){
-        View top = main.getLayoutInflater().inflate(R.layout.card_minion_vehicle_note,root);
+        View top = main.getLayoutInflater().inflate(R.layout.card_minion_vehicle_note,root,false);
         ((TextView)top.findViewById(R.id.name_text)).setText(vehic.name);
         top.setOnClickListener(new View.OnClickListener() {
             @Override

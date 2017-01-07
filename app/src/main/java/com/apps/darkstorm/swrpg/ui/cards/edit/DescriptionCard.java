@@ -16,7 +16,7 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class DescriptionCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_description,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_description,root,false);
         ((TextView)top.findViewById(R.id.desc_main)).setText(chara.desc);
         top.findViewById(R.id.desc_card).setOnLongClickListener(new View.OnLongClickListener() {
             @Override

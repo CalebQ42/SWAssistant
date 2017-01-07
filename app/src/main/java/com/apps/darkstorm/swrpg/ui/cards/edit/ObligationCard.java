@@ -16,7 +16,8 @@ import com.apps.darkstorm.swrpg.ui.character.ObligationLayout;
 
 public class ObligationCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_obligation,root);final LinearLayout obligationLay = (LinearLayout)top.findViewById(R.id.obligation_layout);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_obligation,root,false);
+        final LinearLayout obligationLay = (LinearLayout)top.findViewById(R.id.obligation_layout);
         for (int i = 0;i<chara.obligation.size();i++)
             obligationLay.addView(new ObligationLayout().ObligationLayout(main,obligationLay,chara,
                     chara.obligation.get(i)));

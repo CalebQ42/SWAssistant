@@ -14,7 +14,7 @@ import com.apps.darkstorm.swrpg.sw.Character;
 
 public class CharacterCard {
     public static View getCard(final Activity main, ViewGroup root,final Character chara,final Handler handle){
-        View top = main.getLayoutInflater().inflate(R.layout.card_character,root);
+        View top = main.getLayoutInflater().inflate(R.layout.card_character,root,false);
         ((TextView)top.findViewById(R.id.name_text)).setText(chara.name);
         if (chara.career.equals(""))
             top.findViewById(R.id.career_text).setVisibility(View.GONE);

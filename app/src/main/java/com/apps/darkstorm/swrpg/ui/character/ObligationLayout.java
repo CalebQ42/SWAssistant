@@ -50,7 +50,6 @@ public class ObligationLayout {
                 obligation.setText(o.name);
                 final EditText val = (EditText) dia.findViewById(R.id.dutobli_val);
                 val.setText(String.valueOf(o.val));
-                dia.findViewById(R.id.dutobli_delete).setVisibility(View.VISIBLE);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

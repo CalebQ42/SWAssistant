@@ -16,7 +16,7 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class DefenseCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_defense_character,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_defense_character,root,false);
         final TextView defMelee = (TextView)top.findViewById(R.id.melee_defense_text);
         defMelee.setText(String.valueOf(chara.defMelee));
         top.findViewById(R.id.melee_defense_layout).setOnLongClickListener(new View.OnLongClickListener() {

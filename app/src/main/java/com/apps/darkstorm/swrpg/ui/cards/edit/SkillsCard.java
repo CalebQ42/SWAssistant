@@ -20,7 +20,7 @@ import com.apps.darkstorm.swrpg.ui.character.SkillLayout;
 
 public class SkillsCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_skills,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_skills,root,false);
         for (int i = 0;i<chara.skills.size();i++){
             ((LinearLayout)top.findViewById(R.id.skill_layout)).addView(new SkillLayout()
                     .SkillLayout(main,((LinearLayout)top.findViewById(R.id.skill_layout)),chara,

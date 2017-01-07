@@ -14,7 +14,7 @@ import com.apps.darkstorm.swrpg.sw.Character;
 
 public class SpeciesCareerCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_species_career,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_species_career,root,false);
         ((TextView)top.findViewById(R.id.species_text)).setText(chara.species);
         ((TextView)top.findViewById(R.id.career_text)).setText(chara.career);
         TextView motivation = (TextView)top.findViewById(R.id.motivation_text);

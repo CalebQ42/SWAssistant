@@ -17,7 +17,7 @@ import com.apps.darkstorm.swrpg.sw.Minion;
 
 public class CharacteristicsCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_characteristics,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_characteristics,root,false);
         final TextView brawnText = (TextView)top.findViewById(R.id.brawn_text);
         brawnText.setText(String.valueOf(chara.charVals[0]));
         top.findViewById(R.id.brawn_layout).setOnLongClickListener(new View.OnLongClickListener() {

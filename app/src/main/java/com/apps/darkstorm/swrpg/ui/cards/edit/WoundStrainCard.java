@@ -15,7 +15,7 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class WoundStrainCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_wound_strain_character,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_wound_strain_character,root,false);
         ((TextView)top.findViewById(R.id.soak_text)).setText(String.valueOf(chara.soak));
         top.findViewById(R.id.soak_layout).setOnLongClickListener(new View.OnLongClickListener() {
             @Override

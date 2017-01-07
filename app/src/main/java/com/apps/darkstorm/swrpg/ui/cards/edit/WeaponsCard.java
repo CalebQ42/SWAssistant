@@ -2,8 +2,6 @@ package com.apps.darkstorm.swrpg.ui.cards.edit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,7 @@ import com.apps.darkstorm.swrpg.ui.WeaponLayout;
 
 public class WeaponsCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root,false);
         for (int i = 0;i<chara.weapons.size();i++)
             ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
                     .WeaponLayout(top,main,((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(i)));
@@ -383,10 +381,10 @@ public class WeaponsCard {
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
         final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root);
         for (int i = 0;i<vh.weapons.size();i++){
-            ((LinearLayout)top.findViewById(R.id.weapon_list_layout)).addView(new WeaponLayout().WeaponLayout(main,
-                    ((LinearLayout)top.findViewById(R.id.weapon_list_layout)),vh,vh.weapons.get(i)));
+            ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout().WeaponLayout(main,
+                    ((LinearLayout)top.findViewById(R.id.weapons_layout)),vh,vh.weapons.get(i)));
         }
-        top.findViewById(R.id.weapon_add).setOnClickListener(new View.OnClickListener() {
+        top.findViewById(R.id.weapons_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Weapon tmp = new Weapon();
@@ -542,8 +540,8 @@ public class WeaponsCard {
                         tmp.slug = slug.isChecked();
                         tmp.firingArc = arc.getText().toString();
                         vh.weapons.add(tmp);
-                        ((LinearLayout)top.findViewById(R.id.weapon_list_layout)).addView(new WeaponLayout()
-                                .WeaponLayout(main,((LinearLayout)top.findViewById(R.id.weapon_list_layout)),vh,vh.weapons.get(vh.weapons.size()-1)));
+                        ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
+                                .WeaponLayout(main,((LinearLayout)top.findViewById(R.id.weapons_layout)),vh,vh.weapons.get(vh.weapons.size()-1)));
                         dialog.cancel();
                     }
                 }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

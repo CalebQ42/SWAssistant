@@ -14,7 +14,7 @@ import com.apps.darkstorm.swrpg.sw.Character;
 
 public class XpCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_xp,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_xp,root,false);
         final TextView xpCur = (TextView)top.findViewById(R.id.xp_current_text);
         final TextView xpTot = (TextView)top.findViewById(R.id.xp_total_text);
         xpCur.setText(String.valueOf(chara.xpCur));

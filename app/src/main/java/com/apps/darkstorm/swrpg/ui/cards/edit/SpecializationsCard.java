@@ -14,7 +14,7 @@ import com.apps.darkstorm.swrpg.ui.character.SpecializationLayout;
 
 public class SpecializationsCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_specializations,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_specializations,root,false);
         final LinearLayout specLay = (LinearLayout)top.findViewById(R.id.specialization_layout);
         for (int i = 0;i<chara.specializations.size();i++)
             specLay.addView(new SpecializationLayout().SpecializationLayout(

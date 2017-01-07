@@ -18,7 +18,7 @@ import com.apps.darkstorm.swrpg.ui.ItemLayout;
 
 public class InventoryCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_inventory,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_inventory,root,false);
         final TextView creds = (TextView)top.findViewById(R.id.credits_val);
         creds.setText(String.valueOf(chara.credits));
         top.findViewById(R.id.credits_layout).setOnLongClickListener(new View.OnLongClickListener() {

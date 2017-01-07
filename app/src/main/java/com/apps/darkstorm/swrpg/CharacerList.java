@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,11 @@ public class CharacerList extends Fragment {
                 loadChars();
             }
         });
+        TypedValue primary = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.colorPrimary,primary,true);
+        TypedValue accent = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.colorAccent,accent,true);
+        refresh.setColorSchemeResources(primary.resourceId,accent.resourceId);
         final LinearLayout linLay = (LinearLayout)top.findViewById(R.id.main_lay);
         handle = new Handler(Looper.getMainLooper()){
             @Override
@@ -84,7 +90,10 @@ public class CharacerList extends Fragment {
                             characters.remove(ind);
                         }
                     }else{
-                        topHandle.sendMessage(msg);
+                        Message out = topHandle.obtainMessage();
+                        out.arg1 = msg.arg1;
+                        out.obj = msg.obj;
+                        topHandle.sendMessage(out);
                     }
                 }
             }
@@ -110,15 +119,6 @@ public class CharacerList extends Fragment {
                 Message dal = handle.obtainMessage();
                 dal.arg1 = 20;
                 handle.sendMessage(dal);
-                if(ContextCompat.checkSelfPermission(CharacerList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    while(app.askingPerm){
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
                 if(ContextCompat.checkSelfPermission(CharacerList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     if(app.prefs.getBoolean(getString(R.string.cloud_key),false)){
                         DriveLoadCharacters dlc = new DriveLoadCharacters(getActivity());
@@ -137,7 +137,7 @@ public class CharacerList extends Fragment {
                 return null;
             }
         };
-        async.execute();
+        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void onResume(){
