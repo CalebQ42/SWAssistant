@@ -83,6 +83,5 @@ public class MinionEditMain extends Fragment {
     }
 
     public interface OnMinionEditInteractionListener {
-        void OnMinionEditInteractionListener();
     }
 }

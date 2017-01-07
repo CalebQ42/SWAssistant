@@ -6,16 +6,17 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
-import com.apps.darkstorm.swrpg.custvars.DriveSaveLoad;
-import com.apps.darkstorm.swrpg.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
+import com.apps.darkstorm.swrpg.custvars.DriveSaveLoad;
+import com.apps.darkstorm.swrpg.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
@@ -94,96 +95,96 @@ public class Vehicle {
         editing=false;
     }
     public void showHideCards(final View top){
-//        ((Switch)top.findViewById(R.id.basic_info_switch)).setChecked(showCards[0]);
-//        if (showCards[0])
-//            top.findViewById(R.id.basic_info_layout).setVisibility(View.VISIBLE);
-//        else
-//            top.findViewById(R.id.basic_info_layout).setVisibility(View.GONE);
-//        ((Switch)top.findViewById(R.id.basic_info_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                showCards[0] = b;
-//                if (b)
-//                    top.findViewById(R.id.basic_info_layout).setVisibility(View.VISIBLE);
-//                else
-//                    top.findViewById(R.id.basic_info_layout).setVisibility(View.GONE);
-//            }
-//        });
-//        ((Switch)top.findViewById(R.id.defense_switch)).setChecked(showCards[1]);
-//        if (showCards[1])
-//            top.findViewById(R.id.defense_layout).setVisibility(View.VISIBLE);
-//        else
-//            top.findViewById(R.id.defense_layout).setVisibility(View.GONE);
-//        ((Switch)top.findViewById(R.id.defense_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                showCards[1] = b;
-//                if (b)
-//                    top.findViewById(R.id.defense_layout).setVisibility(View.VISIBLE);
-//                else
-//                    top.findViewById(R.id.defense_layout).setVisibility(View.GONE);
-//            }
-//        });
-//        ((Switch)top.findViewById(R.id.damage_switch)).setChecked(showCards[2]);
-//        if (showCards[2])
-//            top.findViewById(R.id.damage_layout).setVisibility(View.VISIBLE);
-//        else
-//            top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
-//        ((Switch)top.findViewById(R.id.damage_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                showCards[2] = b;
-//                if (b)
-//                    top.findViewById(R.id.damage_layout).setVisibility(View.VISIBLE);
-//                else
-//                    top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
-//            }
-//        });
-//        ((Switch)top.findViewById(R.id.weapon_switch)).setChecked(showCards[3]);
-//        if (showCards[3])
-//            top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
-//        else
-//            top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
-//        ((Switch)top.findViewById(R.id.weapon_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                showCards[3] = b;
-//                if (b)
-//                    top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
-//                else
-//                    top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
-//            }
-//        });
-//        ((Switch)top.findViewById(R.id.crit_inj_switch)).setChecked(showCards[4]);
-//        if (showCards[4])
-//            top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
-//        else
-//            top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
-//        ((Switch)top.findViewById(R.id.crit_inj_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                showCards[4] = b;
-//                if (b)
-//                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
-//                else
-//                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
-//            }
-//        });
-//        ((Switch)top.findViewById(R.id.desc_switch)).setChecked(showCards[5]);
-//        if (showCards[5])
-//            top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
-//        else
-//            top.findViewById(R.id.desc_main).setVisibility(View.GONE);
-//        ((Switch)top.findViewById(R.id.desc_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                showCards[5] = b;
-//                if (b)
-//                    top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
-//                else
-//                    top.findViewById(R.id.desc_main).setVisibility(View.GONE);
-//            }
-//        });
+        ((Switch)top.findViewById(R.id.basic_info_switch)).setChecked(showCards[0]);
+        if (showCards[0])
+            top.findViewById(R.id.basic_info_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.basic_info_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.basic_info_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[0] = b;
+                if (b)
+                    top.findViewById(R.id.basic_info_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.basic_info_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.defense_switch)).setChecked(showCards[1]);
+        if (showCards[1])
+            top.findViewById(R.id.defense_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.defense_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.defense_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[1] = b;
+                if (b)
+                    top.findViewById(R.id.defense_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.defense_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.damage_switch)).setChecked(showCards[2]);
+        if (showCards[2])
+            top.findViewById(R.id.damage_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.damage_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[2] = b;
+                if (b)
+                    top.findViewById(R.id.damage_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.damage_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.weapon_switch)).setChecked(showCards[3]);
+        if (showCards[3])
+            top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.weapon_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[3] = b;
+                if (b)
+                    top.findViewById(R.id.weapon_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.weapon_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.crit_inj_switch)).setChecked(showCards[4]);
+        if (showCards[4])
+            top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.crit_inj_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[4] = b;
+                if (b)
+                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.crit_inj_layout).setVisibility(View.GONE);
+            }
+        });
+        ((Switch)top.findViewById(R.id.desc_switch)).setChecked(showCards[5]);
+        if (showCards[5])
+            top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
+        else
+            top.findViewById(R.id.desc_main).setVisibility(View.GONE);
+        ((Switch)top.findViewById(R.id.desc_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                showCards[5] = b;
+                if (b)
+                    top.findViewById(R.id.desc_main).setVisibility(View.VISIBLE);
+                else
+                    top.findViewById(R.id.desc_main).setVisibility(View.GONE);
+            }
+        });
     }
     public Vehicle clone(){
         Vehicle tmp = new Vehicle();
@@ -216,16 +217,14 @@ public class Vehicle {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     Vehicle old = Vehicle.this.clone();
-                    Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,getFileId(
-                            ((SWrpg)main.getApplication()).gac,fold),false);
+                    Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,getFileId(main),false);
                     Vehicle.this.save(getFileLocation(main));
                     do{
                         if (!saving) {
                             saving = true;
                             if (!Vehicle.this.equals(old)) {
                                 System.out.println("save");
-                                Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,
-                                        getFileId(((SWrpg)main.getApplication()).gac, fold), false);
+                                Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac, getFileId(main), false);
                                 Vehicle.this.save(getFileLocation(main));
                                 old = Vehicle.this.clone();
                             }
@@ -241,7 +240,7 @@ public class Vehicle {
                         saving = true;
                         if (!Vehicle.this.equals(old)) {
                             Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,
-                                    getFileId(((SWrpg)main.getApplication()).gac, fold), false);
+                                    getFileId(main), false);
                             Vehicle.this.save(getFileLocation(main));
                         }
                         saving = false;
@@ -288,7 +287,7 @@ public class Vehicle {
         async.execute();
     }
     }
-    void save(String filename){
+    public void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
         sl.addSave(ID);
         sl.addSave(name);
@@ -312,7 +311,7 @@ public class Vehicle {
         sl.addSave(model);
         sl.save();
     }
-    void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
+    public void cloudSave(GoogleApiClient gac, DriveId fil, boolean async){
         if(fil != null){
             DriveSaveLoad sl = new DriveSaveLoad(fil);
             sl.setMime("swrpg/vhcl");
@@ -371,7 +370,7 @@ public class Vehicle {
                     ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
         }
     }
-    void reLoad(GoogleApiClient gac,DriveId fil){
+    public void reLoad(GoogleApiClient gac, DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] val = sl.load(gac);
         switch (val.length){
@@ -438,21 +437,21 @@ public class Vehicle {
         }
         return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".vhcl";
     }
-    public DriveId getFileId(GoogleApiClient gac,DriveId fold){
+    public DriveId getFileId(Activity main){
+        SWrpg app = (SWrpg)main.getApplication();
         String name = Integer.toString(ID) + ".vhcl";
-        DriveFolder folder = fold.asDriveFolder();
         DriveId fi = null;
-        DriveApi.MetadataBufferResult res = folder.queryChildren(gac,new Query.Builder().addFilter(
+        DriveApi.MetadataBufferResult res = app.vehicFold.queryChildren(app.gac,new Query.Builder().addFilter(
                 Filters.eq(SearchableField.TITLE,name)).build()).await();
         for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isFolder() && met.getTitle().equals(name) && !met.isTrashed()){
+            if (!met.isTrashed()){
                 fi = met.getDriveId();
                 break;
             }
         }
         res.release();
         if (fi == null){
-            fi = folder.createFile(gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+            fi = app.vehicFold.createFile(app.gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
                     .getDriveFile().getDriveId();
         }
         return fi;

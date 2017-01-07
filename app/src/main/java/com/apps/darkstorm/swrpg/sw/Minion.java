@@ -18,7 +18,6 @@ import com.apps.darkstorm.swrpg.sw.stuff.Talents;
 import com.apps.darkstorm.swrpg.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
@@ -73,15 +72,13 @@ public class Minion {
                 protected Void doInBackground(Void... voids) {
                     Minion tmpChar = Minion.this.clone();
                     Minion.this.save(Minion.this.getFileLocation(main));
-                    cloudSave(((SWrpg)main.getApplication()).gac,getFileId(((SWrpg)main.getApplication()).gac,
-                            fold),false);
+                    cloudSave(((SWrpg)main.getApplication()).gac,getFileId(main),false);
                     do{
                         if (!saving) {
                             saving = true;
                             if (!Minion.this.equals(tmpChar)) {
                                 Minion.this.save(Minion.this.getFileLocation(main));
-                                cloudSave(((SWrpg)main.getApplication()).gac,
-                                        getFileId(((SWrpg)main.getApplication()).gac,fold),false);
+                                cloudSave(((SWrpg)main.getApplication()).gac, getFileId(main),false);
                                 tmpChar = Minion.this.clone();
                             }
                             saving = false;
@@ -96,8 +93,7 @@ public class Minion {
                         saving = true;
                         if (!Minion.this.equals(tmpChar)) {
                             Minion.this.save(Minion.this.getFileLocation(main));
-                            cloudSave(((SWrpg)main.getApplication()).gac,getFileId(
-                                    ((SWrpg)main.getApplication()).gac,fold),false);
+                            cloudSave(((SWrpg)main.getApplication()).gac,getFileId(main),false);
                         }
                         saving = false;
                     }
@@ -174,9 +170,9 @@ public class Minion {
                 return "";
             }
         }
-        return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".minion";
+        return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".vehicles";
     }
-    void save(String filename){
+    public void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
         sl.addSave(ID);
         sl.addSave(name);
@@ -230,11 +226,11 @@ public class Minion {
                     ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
         }
     }
-    public DriveId getFileId(GoogleApiClient gac, DriveId fold){
+    public DriveId getFileId(Activity main){
+        SWrpg app = (SWrpg)main.getApplication();
         String name = Integer.toString(ID) + ".minion";
-        DriveFolder folder = fold.asDriveFolder();
         DriveId fi = null;
-        DriveApi.MetadataBufferResult res = folder.queryChildren(gac,new Query.Builder().addFilter(
+        DriveApi.MetadataBufferResult res = app.charsFold.queryChildren(app.gac,new Query.Builder().addFilter(
                 Filters.eq(SearchableField.TITLE,name)).build()).await();
         for (Metadata met:res.getMetadataBuffer()){
             if (!met.isTrashed()){
@@ -243,12 +239,13 @@ public class Minion {
             }
         }
         res.release();
-        if (fi == null)
-            fi = folder.createFile(gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+        if (fi == null){
+            fi = app.charsFold.createFile(app.gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
                     .getDriveFile().getDriveId();
+        }
         return fi;
     }
-    void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
+    public void cloudSave(GoogleApiClient gac, DriveId fil, boolean async){
         if (fil != null){
             DriveSaveLoad sl = new DriveSaveLoad(fil);
             sl.addSave(ID);

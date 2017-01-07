@@ -1,14 +1,13 @@
 package com.apps.darkstorm.swrpg;
 
+import android.Manifest;
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -17,13 +16,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.Manifest;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SettingsFragment.OnSettingsInteractionListener,
-            DiceFragment.OnDiceInteractionListener, GuideMain.OnGuideInteractionListener{
+            DiceFragment.OnDiceInteractionListener, GuideMain.OnGuideInteractionListener,VehicleList.OnVehicleListInteractionListener,
+            VehicleEdit.OnVehicleEditInteractionListener,MinionCharacterFragment.OnMinionCharacterListInteraction,
+            MinionList.OnMinionListInteractionListener,MinionEditMain.OnMinionEditInteractionListener,
+            CharacterEditMain.OnFragmentInteractionListener,CharacerList.OnCharacterListInteractionListener,
+            CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener{
     SWrpg app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id){
             case (R.id.characters):
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,MinionCharacterFragment.newInstance())
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out)
+                        .addToBackStack("").commit();
                 break;
             case (R.id.vehicles):
+                getFragmentManager().beginTransaction().replace(R.id.content_main,VehicleList.newInstance())
+                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,
+                                android.R.animator.fade_in,android.R.animator.fade_out)
+                        .addToBackStack("").commit();
                 break;
             case (R.id.gm_mode):
                 break;
@@ -97,7 +107,7 @@ public class MainActivity extends AppCompatActivity
     public void onStart(){
         super.onStart();
         app.askingPerm = true;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
         }else{

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.R;
-import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.stuff.Note;
 
 public class NoteCard {
@@ -30,7 +29,7 @@ public class NoteCard {
             @Override
             public boolean onLongClick(View v) {
                 AlertDialog.Builder build = new AlertDialog.Builder(main);
-                build.setMessage(R.string.character_delete);
+                build.setMessage(R.string.noted_delete);
                 build.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -1,0 +1,153 @@
+package com.apps.darkstorm.swrpg;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.apps.darkstorm.swrpg.load.DriveLoadMinions;
+import com.apps.darkstorm.swrpg.load.LoadMinions;
+import com.apps.darkstorm.swrpg.sw.Minion;
+import com.apps.darkstorm.swrpg.ui.cards.MinionCard;
+
+import java.util.ArrayList;
+
+public class MinionList extends Fragment {
+
+    private OnMinionListInteractionListener mListener;
+    Handler topHandle;
+    Handler handle;
+    ArrayList<Minion> minions = new ArrayList<>();
+    SWrpg app;
+
+    public MinionList() {}
+
+    public static MinionList newInstance(Handler topHandle) {
+        MinionList fragment = new MinionList();
+        fragment.topHandle = topHandle;
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (SWrpg)getActivity().getApplication();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View top = inflater.inflate(R.layout.general_list, container, false);
+        final SwipeRefreshLayout refresh = (SwipeRefreshLayout)top.findViewById(R.id.swipe_refresh);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadMinions();
+            }
+        });
+        final LinearLayout linLay = (LinearLayout)top.findViewById(R.id.main_lay);
+        handle = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.arg1==20){
+                    refresh.setRefreshing(true);
+                }else if(msg.arg1==-20){
+                    refresh.setRefreshing(false);
+                }
+                if (msg.obj instanceof ArrayList){
+                    ArrayList<Minion> chars = (ArrayList<Minion>)msg.obj;
+                    if(!chars.equals(minions)) {
+                        linLay.removeAllViews();
+                        minions = chars;
+                        for(Minion chara:chars){
+                            linLay.addView(MinionCard.getCard(getActivity(),linLay,chara,handle));
+                        }
+                    }
+                }
+                if (msg.obj instanceof Minion){
+                    if (msg.arg1==-1){
+                        int ind = minions.indexOf(msg.obj);
+                        if(ind != -1){
+                            linLay.removeViewAt(ind);
+                            minions.remove(ind);
+                        }
+                    }else{
+                        topHandle.sendMessage(msg);
+                    }
+                }
+            }
+        };
+        return top;
+    }
+    public void loadMinions(){
+        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Message dal = handle.obtainMessage();
+                dal.arg1 = 20;
+                handle.sendMessage(dal);
+                if(ContextCompat.checkSelfPermission(MinionList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    while(app.askingPerm){
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if(ContextCompat.checkSelfPermission(MinionList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    if(app.prefs.getBoolean(getString(R.string.cloud_key),false)){
+                        DriveLoadMinions dlc = new DriveLoadMinions(getActivity());
+                        if(dlc.minions!=null){
+                            dlc.saveLocal(getActivity());
+                        }
+                    }
+                    LoadMinions lc = new LoadMinions(getActivity());
+                    Message out = handle.obtainMessage();
+                    out.obj = lc.minions;
+                    handle.sendMessage(out);
+                }
+                Message out = handle.obtainMessage();
+                out.arg1 = -20;
+                handle.sendMessage(out);
+                return null;
+            }
+        };
+        async.execute();
+    }
+
+    public void onResume(){
+        super.onResume();
+        loadMinions();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMinionListInteractionListener) {
+            mListener = (OnMinionListInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnMinionListInteractionListener {
+    }
+}

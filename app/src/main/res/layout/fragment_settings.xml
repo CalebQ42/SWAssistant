@@ -76,8 +76,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sync_switch"
-        android:textSize="18sp"
-        android:paddingStart="20dp" />
+        android:textSize="16sp"
+        android:paddingStart="20dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:orientation="vertical"

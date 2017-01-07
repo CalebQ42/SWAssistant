@@ -1,16 +1,13 @@
 package com.apps.darkstorm.swrpg.sw;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.view.View;
 
-import com.apps.darkstorm.swrpg.custvars.DriveSaveLoad;
-import com.apps.darkstorm.swrpg.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
+import com.apps.darkstorm.swrpg.custvars.DriveSaveLoad;
+import com.apps.darkstorm.swrpg.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.sw.stuff.Dutys;
 import com.apps.darkstorm.swrpg.sw.stuff.ForcePowers;
@@ -23,7 +20,6 @@ import com.apps.darkstorm.swrpg.sw.stuff.Talents;
 import com.apps.darkstorm.swrpg.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
@@ -192,7 +188,7 @@ public class Character {
         }
         return location.getAbsolutePath() + "/" + Integer.toString(ID) + Character.fileExt;
     }
-    void save(String filename){
+    public void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
         sl.addSave(ID);
         sl.addSave(name);
@@ -300,7 +296,7 @@ public class Character {
         }
         return fi;
     }
-    void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
+    public void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
         if (fil != null) {
             DriveSaveLoad sl = new DriveSaveLoad(fil);
             sl.addSave(ID);

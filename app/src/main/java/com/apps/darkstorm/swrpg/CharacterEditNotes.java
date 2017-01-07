@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.apps.darkstorm.swrpg.sw.Character;
+import com.apps.darkstorm.swrpg.ui.NoteCard;
 
 
 public class CharacterEditNotes extends Fragment {

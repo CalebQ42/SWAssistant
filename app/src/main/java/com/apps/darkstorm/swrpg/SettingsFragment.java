@@ -96,6 +96,57 @@ public class SettingsFragment extends Fragment {
                 build.show();
             }
         });
+        Switch cloud = (Switch)top.findViewById(R.id.cloud_switch);
+        final Switch sync = (Switch)top.findViewById(R.id.sync_switch);
+        cloud.setChecked(app.prefs.getBoolean(getString(R.string.cloud_key),false));
+        cloud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                app.prefs.edit().putBoolean(getString(R.string.cloud_key),isChecked).apply();
+                if(isChecked){
+                    sync.setVisibility(View.VISIBLE);
+                }else{
+                    sync.setVisibility(View.GONE);
+                }
+            }
+        });
+        sync.setChecked(app.prefs.getBoolean(getString(R.string.sync_key),true));
+        sync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                app.prefs.edit().putBoolean(getString(R.string.sync_key),isChecked).apply();
+            }
+        });
+        sync.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder build = new AlertDialog.Builder(getContext());
+                build.setMessage(R.string.sync_desc);
+                build.show();
+                return true;
+            }
+        });
+        Switch ads = (Switch)top.findViewById(R.id.ads_switch);
+        ads.setChecked(app.prefs.getBoolean(getString(R.string.ads_key),true));
+        ads.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                app.prefs.edit().putBoolean(getString(R.string.ads_key),isChecked).apply();
+            }
+        });
+        ads.setEnabled(false);
+        Switch light = (Switch)top.findViewById(R.id.theme_switch);
+        light.setChecked(app.prefs.getBoolean(getString(R.string.light_side_key),false));
+        light.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                app.prefs.edit().putBoolean(getString(R.string.light_side_key),isChecked).apply();
+                if(isChecked) {
+                    app.setTheme(R.style.LightSide);
+                }else
+                    app.setTheme(R.style.DarkSide);
+            }
+        });
         return top;
     }
 

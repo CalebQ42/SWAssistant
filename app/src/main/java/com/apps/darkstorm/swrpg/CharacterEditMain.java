@@ -141,6 +141,5 @@ public class CharacterEditMain extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction();
     }
 }
