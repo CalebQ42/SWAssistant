@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wound_strain_card"
+    android:animateLayoutChanges="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:animateLayoutChanges="true"
+        android:animationCache="true">
+
+        <Switch
+            android:text="@string/wound_strain_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/wound_strain_show"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/wound_strain_main"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/soak_layout"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_gravity="center_horizontal"
+                tools:targetApi="lollipop">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView21"
+                    android:layout_weight="1"
+                    android:text="@string/soak_text"
+                    android:textAlignment="textEnd"
+                    android:layout_marginRight="5dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:text="0"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/soak_text"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="16sp"
+                    android:textStyle="normal|bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/wound_layout"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless">
+
+                    <TextView
+                        android:text="@string/wound_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView17"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:text="-"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/wound_minus"
+                            android:layout_weight="1"
+                            style="@style/Widget.AppCompat.Button.Borderless" />
+
+                        <TextView
+                            android:text="0"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/wound_text"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            android:textStyle="normal|bold"
+                            android:layout_gravity="center_vertical|center_horizontal" />
+
+                        <Button
+                            android:text="+"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/wound_plus"
+                            android:layout_weight="1"
+                            style="@style/Widget.AppCompat.Button.Borderless" />
+                    </LinearLayout>
+
+                    <Button
+                        android:text="@string/reset_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/wound_reset"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/strain_layout"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless">
+
+                    <TextView
+                        android:text="@string/strain_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView18"
+                        android:textSize="16sp"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:text="-"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/strain_minus"
+                            android:layout_weight="1"
+                            style="@style/Widget.AppCompat.Button.Borderless" />
+
+                        <TextView
+                            android:text="0"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/strain_text"
+                            android:layout_weight="1"
+                            android:textStyle="normal|bold"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            android:layout_gravity="center_vertical|center_horizontal" />
+
+                        <Button
+                            android:text="+"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/strain_plus"
+                            android:layout_weight="1"
+                            style="@style/Widget.AppCompat.Button.Borderless" />
+                    </LinearLayout>
+
+                    <Button
+                        android:text="@string/reset_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/strain_reset"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
