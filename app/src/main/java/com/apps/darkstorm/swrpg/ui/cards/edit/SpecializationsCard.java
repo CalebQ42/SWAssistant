@@ -26,7 +26,7 @@ public class SpecializationsCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.spec_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText("");
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
                     @Override

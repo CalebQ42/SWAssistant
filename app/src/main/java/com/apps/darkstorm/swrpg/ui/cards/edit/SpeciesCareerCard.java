@@ -27,7 +27,7 @@ public class SpeciesCareerCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.motivation_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(chara.motivation);
                 val.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -52,7 +52,7 @@ public class SpeciesCareerCard {
                 AlertDialog.Builder build = new AlertDialog.Builder(main);
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(String.valueOf(chara.age));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -81,7 +81,7 @@ public class SpeciesCareerCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.species_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(chara.species);
                 val.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -107,7 +107,7 @@ public class SpeciesCareerCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.career_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(chara.career);
                 val.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {

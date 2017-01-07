@@ -3,8 +3,6 @@ package com.apps.darkstorm.swrpg.ui.cards.edit;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Handler;
-import android.os.Message;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,7 @@ public class NameCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.name_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 val.setText(chara.name);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -57,7 +55,7 @@ public class NameCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.name_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 val.setText(minion.name);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -88,7 +86,7 @@ public class NameCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.name_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 val.setText(vehic.name);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {

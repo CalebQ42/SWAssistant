@@ -26,7 +26,7 @@ public class XpCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.total_xp_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(String.valueOf(String.valueOf(chara.xpTot)));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {

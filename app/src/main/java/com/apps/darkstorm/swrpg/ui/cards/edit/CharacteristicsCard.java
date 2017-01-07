@@ -27,7 +27,7 @@ public class CharacteristicsCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.brawn_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.charVals[0]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -198,7 +198,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.agility_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.charVals[1]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -370,7 +370,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.intellect_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.charVals[2]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -542,7 +542,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.cunning_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.charVals[3]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -714,7 +714,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.willpower_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.charVals[4]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -886,7 +886,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.presence_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.charVals[5]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -1061,7 +1061,7 @@ public class CharacteristicsCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.brawn_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.charVals[0]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -1232,7 +1232,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.agility_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.charVals[1]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -1404,7 +1404,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.intellect_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.charVals[2]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -1576,7 +1576,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.cunning_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.charVals[3]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -1748,7 +1748,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.willpower_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.charVals[4]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -1920,7 +1920,7 @@ public class CharacteristicsCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.presence_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.charVals[5]));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {

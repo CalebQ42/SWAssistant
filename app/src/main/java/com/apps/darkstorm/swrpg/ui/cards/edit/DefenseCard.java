@@ -2,7 +2,6 @@ package com.apps.darkstorm.swrpg.ui.cards.edit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.view.View;
@@ -27,7 +26,7 @@ public class DefenseCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.melee_defense_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.defMelee));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -60,7 +59,7 @@ public class DefenseCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.ranged_defense_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.defRanged));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -97,7 +96,7 @@ public class DefenseCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.melee_defense_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.defMelee));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -130,7 +129,7 @@ public class DefenseCard {
                 final View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.ranged_defense_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(minion.defRanged));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -178,7 +177,7 @@ public class DefenseCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.total_defense_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(String.valueOf(vh.totalDefense));
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {

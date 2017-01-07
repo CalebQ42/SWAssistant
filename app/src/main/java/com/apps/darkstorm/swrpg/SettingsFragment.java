@@ -1,11 +1,10 @@
 package com.apps.darkstorm.swrpg;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import java.util.zip.Inflater;
 
 public class SettingsFragment extends Fragment {
     private OnSettingsInteractionListener mListener;
@@ -72,7 +69,7 @@ public class SettingsFragment extends Fragment {
                         build.setTitle(R.string.save_location_text);
                         LayoutInflater inflate = getActivity().getLayoutInflater();
                         View simple = inflate.inflate(R.layout.dialog_simple_text,null);
-                        final EditText edit = (EditText)simple.findViewById(R.id.editText);
+                        final EditText edit = (EditText)simple.findViewById(R.id.edit_val);
                         edit.setText(app.prefs.getString(getString(R.string.local_location_key),app.defaultLoc));
                         build.setView(simple).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override

@@ -28,7 +28,7 @@ public class InventoryCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.credits_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.credits));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -61,7 +61,7 @@ public class InventoryCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.encumbrance_capacity_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.encumCapacity));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {

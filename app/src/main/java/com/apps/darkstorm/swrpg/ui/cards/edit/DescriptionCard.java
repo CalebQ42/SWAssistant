@@ -25,7 +25,7 @@ public class DescriptionCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.description_text);
-                final EditText desc = (EditText)dia.findViewById(R.id.editText);
+                final EditText desc = (EditText)dia.findViewById(R.id.edit_val);
                 desc.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 desc.setText(chara.desc);
                 desc.setSingleLine(false);
@@ -58,7 +58,7 @@ public class DescriptionCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.description_text);
-                final EditText desc = (EditText)dia.findViewById(R.id.editText);
+                final EditText desc = (EditText)dia.findViewById(R.id.edit_val);
                 desc.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 desc.setText(minion.desc);
                 desc.setSingleLine(false);
@@ -91,7 +91,7 @@ public class DescriptionCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.description_text);
-                final EditText desc = (EditText)dia.findViewById(R.id.editText);
+                final EditText desc = (EditText)dia.findViewById(R.id.edit_val);
                 desc.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 desc.setText(vh.desc);
                 desc.setSingleLine(false);

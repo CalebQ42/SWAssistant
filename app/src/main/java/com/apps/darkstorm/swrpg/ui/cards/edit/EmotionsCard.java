@@ -28,7 +28,7 @@ public class EmotionsCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.morality_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.morality));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -58,7 +58,7 @@ public class EmotionsCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.conflict_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setInputType(InputType.TYPE_CLASS_NUMBER);
                 val.setText(String.valueOf(chara.conflict));
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
@@ -106,7 +106,7 @@ public class EmotionsCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.strength_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(chara.emotionalStr[0]);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
                     @Override
@@ -134,7 +134,7 @@ public class EmotionsCard {
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.weakness_text);
-                final EditText val = (EditText)dia.findViewById(R.id.editText);
+                final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(chara.emotionalWeak[0]);
                 build.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
                     @Override
