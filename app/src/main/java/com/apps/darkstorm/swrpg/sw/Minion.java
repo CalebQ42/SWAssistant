@@ -7,10 +7,11 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.View;
 
-import com.apps.darkstorm.swrpg.custvars.DriveSaveLoad;
-import com.apps.darkstorm.swrpg.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
+import com.apps.darkstorm.swrpg.custvars.DriveSaveLoad;
+import com.apps.darkstorm.swrpg.custvars.SaveLoad;
+import com.apps.darkstorm.swrpg.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.sw.stuff.Inventory;
 import com.apps.darkstorm.swrpg.sw.stuff.Skills;
 import com.apps.darkstorm.swrpg.sw.stuff.Talents;
@@ -46,6 +47,10 @@ public class Minion {
     private int minNum;
     public String desc = "";
     private boolean[] showCard = new boolean[9];
+    //Version 2 16-18
+    public CriticalInjuries critInjuries = new CriticalInjuries();
+    public Inventory origInv = new Inventory();
+    public Weapons origWeapons = new Weapons();
 
 
     private boolean editing = false;
@@ -189,12 +194,19 @@ public class Minion {
         sl.addSave(minNum);
         sl.addSave(desc);
         sl.addSave(showCard);
+        sl.addSave(critInjuries);
+        sl.addSave(origInv);
+        sl.addSave(origWeapons);
         sl.save();
     }
     public void reLoad(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] obj = sl.load();
         switch(obj.length){
+            case 19:
+                origWeapons = (Weapons)obj[18];
+                origInv = (Inventory)obj[17];
+                critInjuries = (CriticalInjuries)obj[16];
             case 16:
                 showCard = (boolean[])obj[15];
                 desc = (String)obj[14];
@@ -255,6 +267,9 @@ public class Minion {
             sl.addSave(minNum);
             sl.addSave(desc);
             sl.addSave(showCard);
+            sl.addSave(critInjuries);
+            sl.addSave(origInv);
+            sl.addSave(origWeapons);
             sl.save(gac, async);
         }
     }
@@ -262,6 +277,10 @@ public class Minion {
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] obj = sl.load(gac);
         switch(obj.length){
+            case 19:
+                origWeapons = (Weapons)obj[18];
+                origInv = (Inventory)obj[17];
+                critInjuries = (CriticalInjuries)obj[16];
             case 16:
                 showCard = (boolean[])obj[15];
                 desc = (String)obj[14];
@@ -512,6 +531,7 @@ public class Minion {
                 tmp.skills.equals(skills) && tmp.talents.equals(talents) && tmp.inv.equals(inv) &&
                 tmp.weapons.equals(weapons) && tmp.woundThresh == woundThresh && tmp.woundCur == woundCur &&
                 tmp.defMelee == defMelee && tmp.defRanged == defRanged && tmp.soak == soak && tmp.desc.equals(desc) &&
-                Arrays.equals(tmp.showCard, showCard) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum;
+                Arrays.equals(tmp.showCard, showCard) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum &&
+                tmp.critInjuries.equals(critInjuries);
     }
 }
