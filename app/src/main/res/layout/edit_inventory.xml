@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/inventory_card"
+    android:layout_margin="5dp"
+    android:animateLayoutChanges="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:animateLayoutChanges="true"
+        android:animationCache="true">
+
+        <Switch
+            android:text="@string/inventory_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/inventory_show"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:textColor="?android:attr/textColorTertiary" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/inventory_main"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/credits_layout"
+                android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                <TextView
+                    android:text="@string/credits_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView68"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textAlignment="textEnd"
+                    android:layout_marginRight="5dp" />
+
+                <TextView
+                    android:text="0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/credits_val"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textAlignment="center"
+                    android:textStyle="normal|bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/encum_layout"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:text="@string/encumbrance_capacity_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView127"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp"
+                    android:layout_marginRight="5dp" />
+
+                <TextView
+                    android:text="0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/encum_val"
+                    android:layout_weight="1"
+                    android:textStyle="normal|bold"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:text="@string/encum_warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/encum_warning"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/inventory_layout"
+                android:animateLayoutChanges="true"></LinearLayout>
+
+            <Button
+                android:text="@string/add_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/inventory_add"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_gravity="end" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
