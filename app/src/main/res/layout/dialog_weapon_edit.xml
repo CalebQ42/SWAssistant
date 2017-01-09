@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="250dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical|center_horizontal"
-    android:layout_marginBottom="5dp"
-    android:layout_marginEnd="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginTop="5dp">
 
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarStyle="insideInset"
-        android:layout_height="310dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/dialog_padding">
 
             <TextView
                 android:text="@string/name_text"
@@ -89,7 +80,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/minion_hide">
 
                 <TextView
@@ -113,7 +104,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/weapon_edit_arc_layout"
                 android:visibility="gone">
 
@@ -241,7 +232,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/weapon_edit_ammo_layout"
                 android:visibility="gone">
 
@@ -256,7 +247,7 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <Button
                         android:text="-"
@@ -288,37 +279,3 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end">
-
-        <Button
-            android:text="@string/save_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/weapon_edit_save"
-            android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
-
-        <Button
-            android:text="@string/delete_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/weapon_edit_delete"
-            android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:visibility="gone" />
-
-        <Button
-            android:text="@android:string/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/weapon_edit_cancel"
-            android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
-    </LinearLayout>
-
-</LinearLayout>

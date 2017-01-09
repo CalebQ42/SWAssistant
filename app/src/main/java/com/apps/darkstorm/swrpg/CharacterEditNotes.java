@@ -1,7 +1,6 @@
 package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -10,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.apps.darkstorm.swrpg.StarWars.Character;
-import com.apps.darkstorm.swrpg.UI.Char.NoteCard;
+import com.apps.darkstorm.swrpg.sw.Character;
+import com.apps.darkstorm.swrpg.ui.NoteCard;
 
 
 public class CharacterEditNotes extends Fragment {
@@ -30,13 +29,14 @@ public class CharacterEditNotes extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_character_edit_notes, container, false);
-        final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
-        fab.setImageResource(R.drawable.ic_add);
+        final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
+        fab.setImageResource(R.drawable.add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,11 +49,6 @@ public class CharacterEditNotes extends Fragment {
                     chara,chara.nts.get(i),fab));
         }
         return top;
-    }
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onNoteInteraction();
-        }
     }
 
     @Override
@@ -72,7 +67,5 @@ public class CharacterEditNotes extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    public interface OnNoteInteractionListener {
-        void onNoteInteraction();
-    }
+    public interface OnNoteInteractionListener {}
 }

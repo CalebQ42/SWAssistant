@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/weapons_card"
+    android:layout_margin="5dp"
+    android:animateLayoutChanges="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:animateLayoutChanges="true"
+        android:animationCache="true">
+
+        <Switch
+            android:text="@string/weapons_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weapons_show"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="?android:attr/textColorTertiary" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/weapons_main"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/weapons_layout"
+                android:animateLayoutChanges="true"></LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/weap_save_load"
+                    android:visibility="gone">
+
+                    <Button
+                        android:text="@string/save_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weap_save"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+
+                    <Button
+                        android:text="@string/load_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weap_load"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+                </LinearLayout>
+
+                <Button
+                    android:text="@string/add_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weapons_add"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_gravity="end"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -7,15 +7,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 
 public class GuideMain extends Fragment {
     private OnGuideInteractionListener mListener;
@@ -50,7 +44,7 @@ public class GuideMain extends Fragment {
         TabLayout taber = (TabLayout)top.findViewById(R.id.guide_taber);
         ViewPager pager = (ViewPager)top.findViewById(R.id.guide_pager);
         taber.setupWithViewPager(pager);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.universeFab);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);
         fab.hide();
         PagerAdapter adap = new PagerAdapter() {
             @Override
@@ -125,7 +119,5 @@ public class GuideMain extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    public interface OnGuideInteractionListener {
-        void onGuideInteraction();
-    }
+    public interface OnGuideInteractionListener {}
 }

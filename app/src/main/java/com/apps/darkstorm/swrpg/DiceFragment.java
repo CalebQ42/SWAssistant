@@ -1,27 +1,23 @@
 package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.apps.darkstorm.swrpg.Dice.DiceRoll;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-
+import com.apps.darkstorm.swrpg.dice.DiceRoll;
 public class DiceFragment extends Fragment {
+
     private OnDiceInteractionListener mListener;
 
     public DiceFragment() {}
+
+    int ability, proficiency,difficulty,challenge,boost,setback,force;
 
     public static DiceFragment newInstance() {
         return new DiceFragment();
@@ -32,14 +28,11 @@ public class DiceFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
-    int ability, proficiency, difficulty, challenge, boost, setback, force;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_dice, container, false);
-        SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE)
-                .getBoolean(getString(R.string.ads_key),true)) {
+                             Bundle savedInstanceState) {final View top = inflater.inflate(R.layout.fragment_dice, container, false);
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
 //            AdView ads = new AdView(getContext());
 //            ads.setAdSize(AdSize.BANNER);
 //            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -56,7 +49,7 @@ public class DiceFragment extends Fragment {
 //            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
 //            topLinLay.addView(ads,0);
         }
-        if (pref.getBoolean(getString(R.string.color_dice_key),true)){
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
             top.findViewById(R.id.ability_card).setBackgroundColor(getResources().getColor(R.color.ability_card));
             ((TextView)top.findViewById(R.id.ability_label)).setTextColor(getResources().getColor(R.color.ability_text));
             ((TextView)top.findViewById(R.id.ability_num)).setTextColor(getResources().getColor(R.color.ability_text));
@@ -100,9 +93,9 @@ public class DiceFragment extends Fragment {
         boost = 0;
         setback = 0;
         force = 0;
-        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.universeFab);
+        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
         fab.show();
-        fab.setImageResource(R.drawable.ic_die_icon);
+        fab.setImageResource(R.drawable.die);
         ((TextView)top.findViewById(R.id.ability_num)).setText(String.valueOf(ability));
         ((TextView)top.findViewById(R.id.proficiency_num)).setText(String.valueOf(proficiency));
         ((TextView)top.findViewById(R.id.difficulty_num)).setText(String.valueOf(difficulty));
@@ -229,7 +222,7 @@ public class DiceFragment extends Fragment {
         });
         fab.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                new DiceRoll().rollDice(ability,proficiency,difficulty,challenge,boost,setback,force).showDialog(getContext());
+                new DiceRoll().rollDice(ability,proficiency,difficulty,challenge,boost,setback,force).showDialog(getActivity());
             }
         });
         top.findViewById(R.id.dhun_roll).setOnClickListener(new View.OnClickListener(){
@@ -263,6 +256,5 @@ public class DiceFragment extends Fragment {
     }
 
     public interface OnDiceInteractionListener {
-        void onDiceInteraction();
     }
 }

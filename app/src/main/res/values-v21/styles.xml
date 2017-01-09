@@ -16,6 +16,6 @@
     </style>
 
     <style name="LightSide" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:navigationBarColor">@color/primary_dark_material_dark</item>
+        <item name="android:navigationBarColor">?android:attr/colorPrimaryDark</item>
     </style>
 </resources>

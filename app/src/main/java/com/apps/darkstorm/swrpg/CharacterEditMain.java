@@ -12,8 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.apps.darkstorm.swrpg.StarWars.Character;
-import com.google.android.gms.drive.DriveId;
+import com.apps.darkstorm.swrpg.sw.Character;
 
 public class CharacterEditMain extends Fragment {
     private OnFragmentInteractionListener mListener;
@@ -45,7 +44,7 @@ public class CharacterEditMain extends Fragment {
                              Bundle savedInstanceState) {
         final View top = inflater.inflate(R.layout.fragment_character_edit_main, container, false);
         TabLayout taby = (TabLayout)top.findViewById(R.id.tabLay);
-        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.universeFab);
+        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);
         taby.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -121,9 +120,8 @@ public class CharacterEditMain extends Fragment {
     public void onResume(){
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
-            chara.startEditing(getActivity(),
-                    DriveId.decodeFromString(pref.getString(getString(R.string.swchars_id_key),"")));
+        if (pref.getBoolean(getString(R.string.google_drive_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
+            chara.startEditing(getActivity(), ((SWrpg)getActivity().getApplication()).charsFold.getDriveId());
         }else{
             chara.startEditing(getActivity());
         }
@@ -141,6 +139,5 @@ public class CharacterEditMain extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction();
     }
 }
