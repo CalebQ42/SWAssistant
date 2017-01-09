@@ -33,7 +33,6 @@ public class DriveLoadCharacters {
         DriveApi.MetadataBufferResult metBufRes = ((SWrpg)main.getApplication())
                 .charsFold.listChildren(((SWrpg)main.getApplication()).gac).await();
         MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
-        System.out.println(String.valueOf(metBuf.getCount())+" Files loaded");
         for(Metadata met:metBuf){
             System.out.println(met.getTitle());
             if (!met.isFolder() &&

@@ -35,7 +35,8 @@ public class DriveLoadMinions {
                 .charsFold.queryChildren(((SWrpg)main.getApplication()).gac, null).await();
         MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
         for (Metadata met : metBuf) {
-            if (met.getFileExtension()!= null && met.getFileExtension().equals("minion") && !met.isTrashed()) {
+            if (!met.isFolder() && met.getFileExtension()!= null && met.getFileExtension().equals("minion")
+                    && !met.isTrashed()) {
                 Minion tmp = new Minion();
                 tmp.reLoad(((SWrpg)main.getApplication()).gac, met.getDriveId());
                 minions.add(tmp);

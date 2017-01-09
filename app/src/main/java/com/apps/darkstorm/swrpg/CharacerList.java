@@ -44,6 +44,7 @@ public class CharacerList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -86,6 +87,8 @@ public class CharacerList extends Fragment {
                 if (msg.obj instanceof Character){
                     if (msg.arg1==-1){
                         int ind = characters.indexOf(msg.obj);
+                        Character min = (Character)msg.obj;
+                        min.delete(getActivity());
                         if(ind != -1){
                             linLay.removeViewAt(ind);
                             characters.remove(ind);
@@ -145,7 +148,6 @@ public class CharacerList extends Fragment {
                         }
                     }
                     LoadCharacters lc = new LoadCharacters(getActivity());
-                    System.out.println(lc.characters.size());
                     Message out = handle.obtainMessage();
                     out.obj = lc.characters;
                     handle.sendMessage(out);

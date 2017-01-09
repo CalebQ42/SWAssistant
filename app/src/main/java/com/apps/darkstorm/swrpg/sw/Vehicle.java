@@ -468,4 +468,18 @@ public class Vehicle {
                 && in.encumCapacity == encumCapacity && in.passengerCapacity == passengerCapacity && in.hp == hp && in.weapons.equals(weapons)
                 && in.crits.equals(crits) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model);
     }
+    public void delete(final Activity main){
+        File tmp = new File(getFileLocation(main));
+        tmp.delete();
+        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false)){
+            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    getFileId(main).asDriveResource().delete(((SWrpg)main.getApplication()).gac).await();
+                    return null;
+                }
+            };
+            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
 }

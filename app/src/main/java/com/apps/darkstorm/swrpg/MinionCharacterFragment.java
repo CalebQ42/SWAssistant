@@ -34,6 +34,7 @@ public class MinionCharacterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class MinionCharacterFragment extends Fragment {
                             i = -1;
                         }
                     }
-                    getFragmentManager().beginTransaction().replace(R.id.content_main,CharacterEditMain.newInstance(id))
+                    getFragmentManager().beginTransaction().replace(R.id.content_main,MinionEditMain.newInstance(id))
                             .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
                                     android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
                 }

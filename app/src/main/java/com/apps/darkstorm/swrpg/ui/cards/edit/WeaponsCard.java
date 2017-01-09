@@ -24,11 +24,11 @@ import com.apps.darkstorm.swrpg.ui.WeapCharLayout;
 import com.apps.darkstorm.swrpg.ui.WeaponLayout;
 
 public class WeaponsCard {
-    public static View getCard(final Activity main, ViewGroup root, final Character chara){
+    public static View getCard(final Activity main, final ViewGroup root, final Character chara){
         final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root,false);
         for (int i = 0;i<chara.weapons.size();i++)
             ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
-                    .WeaponLayout(top,main,((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(i)));
+                    .WeaponLayout(root,main,((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(i)));
         top.findViewById(R.id.weapons_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,9 +187,13 @@ public class WeaponsCard {
                         tmp.addBrawn = addBrawn.isChecked();
                         tmp.loaded = loaded.isChecked();
                         tmp.slug = slug.isChecked();
+                        if (chara.isOverEncum())
+                            root.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+                        else
+                            root.findViewById(R.id.encum_warning).setVisibility(View.GONE);
                         chara.weapons.add(tmp);
                         ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
-                                .WeaponLayout(top,main,((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(chara.weapons.size()-1)));
+                                .WeaponLayout(root,main,((LinearLayout)top.findViewById(R.id.weapons_layout)),chara,chara.weapons.get(chara.weapons.size()-1)));
                         dialog.cancel();
                     }
                 }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

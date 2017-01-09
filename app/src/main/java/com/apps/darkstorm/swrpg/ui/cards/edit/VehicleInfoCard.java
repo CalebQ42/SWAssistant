@@ -13,7 +13,7 @@ import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class VehicleInfoCard {
-    public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
+    public static View getCard(final Activity main, final ViewGroup root, final Vehicle vh){
         final View top = main.getLayoutInflater().inflate(R.layout.edit_vehicle_info,root,false);
         final TextView model = (TextView)top.findViewById(R.id.model_text);
         model.setText(vh.model);
@@ -98,11 +98,11 @@ public class VehicleInfoCard {
                         silhouette.setText(String.valueOf(vh.silhouette));
                         if ((oldSilhouette >4) != (vh.silhouette>4)){
                             if (vh.silhouette>4) {
-                                ((TextView) top.findViewById(R.id.port_defense_text)).setText(String.valueOf(vh.defense[1]));
-                                ((TextView) top.findViewById(R.id.starboard_defense_text)).setText(String.valueOf(vh.defense[2]));
+                                ((TextView) root.findViewById(R.id.port_defense_text)).setText(String.valueOf(vh.defense[1]));
+                                ((TextView) root.findViewById(R.id.starboard_defense_text)).setText(String.valueOf(vh.defense[2]));
                             }else {
-                                ((TextView) top.findViewById(R.id.port_defense_text)).setText("-");
-                                ((TextView) top.findViewById(R.id.starboard_defense_text)).setText("-");
+                                ((TextView) root.findViewById(R.id.port_defense_text)).setText("-");
+                                ((TextView) root.findViewById(R.id.starboard_defense_text)).setText("-");
                             }
                         }
                         dialog.cancel();

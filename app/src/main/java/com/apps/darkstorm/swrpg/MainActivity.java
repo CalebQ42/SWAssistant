@@ -36,12 +36,13 @@ public class MainActivity extends AppCompatActivity
             MinionList.OnMinionListInteractionListener,MinionEditMain.OnMinionEditInteractionListener,
             CharacterEditMain.OnFragmentInteractionListener,CharacerList.OnCharacterListInteractionListener,
             CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
-            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+            GMFragment.OnGMInteractionListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ((SWrpg)getApplication()).prefs = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.light_side_key),false))
-            ((SWrpg)getApplication()).setTheme(R.style.LightSide);
+            setTheme(R.style.LightSide);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -106,6 +107,10 @@ public class MainActivity extends AppCompatActivity
                         .addToBackStack("").commit();
                 break;
             case (R.id.gm_mode):
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,GMFragment.newInstance())
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out)
+                        .addToBackStack("").commit();
                 break;
             case (R.id.dice):
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main,DiceFragment.newInstance())

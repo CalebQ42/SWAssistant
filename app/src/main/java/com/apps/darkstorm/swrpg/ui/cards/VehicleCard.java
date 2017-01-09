@@ -14,8 +14,9 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class VehicleCard {
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vehic, final Handler handle){
-        View top = main.getLayoutInflater().inflate(R.layout.card_minion_vehicle_note,root,false);
+        View top = main.getLayoutInflater().inflate(R.layout.card_character,root,false);
         ((TextView)top.findViewById(R.id.name_text)).setText(vehic.name);
+        ((TextView)top.findViewById(R.id.career_text)).setText(vehic.model);
         top.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

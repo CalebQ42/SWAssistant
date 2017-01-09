@@ -41,6 +41,7 @@ public class MinionList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class MinionList extends Fragment {
                 }
                 if (msg.obj instanceof ArrayList){
                     ArrayList<Minion> chars = (ArrayList<Minion>)msg.obj;
-                    if(!chars.equals(minions)) {
+                    if(!chars.equals(minions)||linLay.getChildCount()!=chars.size()) {
                         linLay.removeAllViews();
                         minions = chars;
                         for(Minion chara:chars){
@@ -78,12 +79,17 @@ public class MinionList extends Fragment {
                 if (msg.obj instanceof Minion){
                     if (msg.arg1==-1){
                         int ind = minions.indexOf(msg.obj);
+                        Minion min = (Minion)msg.obj;
+                        min.delete(getActivity());
                         if(ind != -1){
                             linLay.removeViewAt(ind);
                             minions.remove(ind);
                         }
                     }else{
-                        topHandle.sendMessage(msg);
+                        Message out = topHandle.obtainMessage();
+                        out.arg1 = msg.arg1;
+                        out.obj = msg.obj;
+                        topHandle.sendMessage(out);
                     }
                 }
             }

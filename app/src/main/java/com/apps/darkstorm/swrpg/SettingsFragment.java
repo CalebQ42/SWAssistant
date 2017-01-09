@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsFragment extends Fragment {
     private OnSettingsInteractionListener mListener;
@@ -26,6 +28,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -110,6 +113,9 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
+        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+            sync.setVisibility(View.VISIBLE);
+        }
         sync.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.sync_key),true));
         sync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -141,10 +147,14 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.light_side_key),isChecked).apply();
-                if(isChecked) {
-                    ((SWrpg)getActivity().getApplication()).setTheme(R.style.LightSide);
-                }else
-                    ((SWrpg)getActivity().getApplication()).setTheme(R.style.DarkSide);
+                if (isChecked){
+                    Toast.makeText(getActivity(),R.string.light_side_toast,Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(),R.string.dark_side_toast, Toast.LENGTH_LONG).show();
+                }
+                TaskStackBuilder.create(getActivity())
+                        .addNextIntent(getActivity().getIntent())
+                        .startActivities();
             }
         });
         return top;
