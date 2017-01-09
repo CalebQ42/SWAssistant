@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,7 +31,6 @@ public class CharacerList extends Fragment {
     private Handler handle;
     private Handler topHandle;
     ArrayList<Character> characters = new ArrayList<>();
-    SWrpg app;
 
 
     public CharacerList() {}
@@ -44,13 +44,12 @@ public class CharacerList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (SWrpg)getActivity().getApplication();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View top = inflater.inflate(R.layout.general_list, container, false);
+        final View top = inflater.inflate(R.layout.general_list, container, false);
         final SwipeRefreshLayout refresh = (SwipeRefreshLayout)top.findViewById(R.id.swipe_refresh);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -71,12 +70,14 @@ public class CharacerList extends Fragment {
                     refresh.setRefreshing(true);
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
+                }else if(msg.arg1==5){
+                    Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
                     ArrayList<Character> chars = (ArrayList<Character>)msg.obj;
-                    if(!chars.equals(characters)) {
-                        linLay.removeAllViews();
+                    if(!chars.equals(characters)||linLay.getChildCount()!=chars.size()) {
                         characters = chars;
+                        linLay.removeAllViews();
                         for(Character chara:chars){
                             linLay.addView(CharacterCard.getCard(getActivity(),linLay,chara,handle));
                         }
@@ -120,13 +121,31 @@ public class CharacerList extends Fragment {
                 dal.arg1 = 20;
                 handle.sendMessage(dal);
                 if(ContextCompat.checkSelfPermission(CharacerList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    if(app.prefs.getBoolean(getString(R.string.cloud_key),false)){
-                        DriveLoadCharacters dlc = new DriveLoadCharacters(getActivity());
-                        if(dlc.characters!=null){
-                            dlc.saveLocal(getActivity());
+                    if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                        int timeout = 0;
+                        while((((SWrpg)getActivity().getApplication()).gac == null ||
+                                !((SWrpg)getActivity().getApplication()).gac.isConnected() ||
+                                ((SWrpg)getActivity().getApplication()).charsFold==null)&& timeout< 50){
+                            try {
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            timeout++;
+                        }
+                        if(timeout != 50) {
+                            DriveLoadCharacters dlc = new DriveLoadCharacters(getActivity());
+                            if (dlc.characters != null) {
+                                dlc.saveLocal(getActivity());
+                            }
+                        }else{
+                            Message out = handle.obtainMessage();
+                            out.arg1 = 5;
+                            handle.sendMessage(out);
                         }
                     }
                     LoadCharacters lc = new LoadCharacters(getActivity());
+                    System.out.println(lc.characters.size());
                     Message out = handle.obtainMessage();
                     out.obj = lc.characters;
                     handle.sendMessage(out);

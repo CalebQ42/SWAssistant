@@ -438,10 +438,11 @@ public class Vehicle {
         return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".vhcl";
     }
     public DriveId getFileId(Activity main){
-        SWrpg app = (SWrpg)main.getApplication();
         String name = Integer.toString(ID) + ".vhcl";
         DriveId fi = null;
-        DriveApi.MetadataBufferResult res = app.vehicFold.queryChildren(app.gac,new Query.Builder().addFilter(
+        DriveApi.MetadataBufferResult res =
+                ((SWrpg)main.getApplication()).vehicFold.queryChildren
+                        (((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
                 Filters.eq(SearchableField.TITLE,name)).build()).await();
         for (Metadata met:res.getMetadataBuffer()){
             if (!met.isTrashed()){
@@ -451,7 +452,8 @@ public class Vehicle {
         }
         res.release();
         if (fi == null){
-            fi = app.vehicFold.createFile(app.gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+            fi = ((SWrpg)main.getApplication()).vehicFold.createFile
+                    (((SWrpg)main.getApplication()).gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
                     .getDriveFile().getDriveId();
         }
         return fi;

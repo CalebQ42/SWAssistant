@@ -18,9 +18,8 @@ public class DriveLoadVehicles {
     public ArrayList<Date> lastMod;
 
     public DriveLoadVehicles(Activity main) {
-        SWrpg app = (SWrpg) main.getApplication();
         int timeout = 0;
-        while (app.vehicFold == null && timeout < 100) {
+        while (((SWrpg)main.getApplication()).vehicFold == null && timeout < 100) {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
@@ -28,16 +27,17 @@ public class DriveLoadVehicles {
             }
             timeout++;
         }
-        if (app.vehicFold == null)
+        if (((SWrpg)main.getApplication()).vehicFold == null)
             return;
         vehicles = new ArrayList<>();
         lastMod = new ArrayList<>();
-        DriveApi.MetadataBufferResult metBufRes = app.vehicFold.queryChildren(app.gac, null).await();
+        DriveApi.MetadataBufferResult metBufRes = ((SWrpg)main.getApplication())
+                .vehicFold.queryChildren(((SWrpg)main.getApplication()).gac, null).await();
         MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
         for (Metadata met : metBuf) {
             if (met.getFileExtension().equals("vhcl") && !met.isTrashed()) {
                 Vehicle tmp = new Vehicle();
-                tmp.reLoad(app.gac, met.getDriveId());
+                tmp.reLoad(((SWrpg)main.getApplication()).gac, met.getDriveId());
                 vehicles.add(tmp);
                 lastMod.add(met.getModifiedDate());
             }
@@ -47,7 +47,6 @@ public class DriveLoadVehicles {
     }
 
     public void saveLocal(Activity main) {
-        SWrpg app = (SWrpg) main.getApplication();
         LoadVehicles lc = new LoadVehicles(main);
         for (int i = 0; i < lc.vehicles.size(); i++) {
             boolean found = false;
@@ -55,16 +54,19 @@ public class DriveLoadVehicles {
                 if (lc.vehicles.get(i).ID == vehicles.get(j).ID) {
                     found = true;
                     if (lc.lastMod.get(i).after(lastMod.get(j)))
-                        lc.vehicles.get(i).cloudSave(app.gac, lc.vehicles.get(i).getFileId(main), false);
+                        lc.vehicles.get(i).cloudSave(((SWrpg)main.getApplication())
+                                .gac, lc.vehicles.get(i).getFileId(main), false);
                     break;
                 }
             }
             if (!found) {
-                if (app.prefs.getBoolean(main.getString(R.string.sync_key), true)) {
+                if (((SWrpg)main.getApplication())
+                        .prefs.getBoolean(main.getString(R.string.sync_key), true)) {
                     File tmp = new File(lc.vehicles.get(i).getFileLocation(main));
                     tmp.delete();
                 } else {
-                    lc.vehicles.get(i).cloudSave(app.gac, lc.vehicles.get(i).getFileId(main), false);
+                    lc.vehicles.get(i).cloudSave(((SWrpg)main.getApplication())
+                            .gac, lc.vehicles.get(i).getFileId(main), false);
                 }
             }
         }

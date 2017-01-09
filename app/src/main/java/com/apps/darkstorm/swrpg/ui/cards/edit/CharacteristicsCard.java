@@ -1051,7 +1051,7 @@ public class CharacteristicsCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_characteristics,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_characteristics,root,false);
         final TextView brawnText = (TextView)top.findViewById(R.id.brawn_text);
         brawnText.setText(String.valueOf(minion.charVals[0]));
         top.findViewById(R.id.brawn_layout).setOnLongClickListener(new View.OnLongClickListener() {

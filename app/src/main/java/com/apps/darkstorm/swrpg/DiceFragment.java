@@ -31,8 +31,7 @@ public class DiceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {final View top = inflater.inflate(R.layout.fragment_dice, container, false);
-        SWrpg app = (SWrpg)getActivity().getApplication();
-        if (app.prefs.getBoolean(getString(R.string.ads_key),true)) {
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
 //            AdView ads = new AdView(getContext());
 //            ads.setAdSize(AdSize.BANNER);
 //            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -49,42 +48,42 @@ public class DiceFragment extends Fragment {
 //            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
 //            topLinLay.addView(ads,0);
         }
-        if (app.prefs.getBoolean(getString(R.string.color_dice_key),true)){
-            top.findViewById(R.id.ability_card).setBackgroundColor(getResources().getColor(R.color.ability_card,app.getTheme()));
-            ((TextView)top.findViewById(R.id.ability_label)).setTextColor(getResources().getColor(R.color.ability_text,app.getTheme()));
-            ((TextView)top.findViewById(R.id.ability_num)).setTextColor(getResources().getColor(R.color.ability_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.ability_plus)).setTextColor(getResources().getColor(R.color.ability_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.ability_minus)).setTextColor(getResources().getColor(R.color.ability_text,app.getTheme()));
-            top.findViewById(R.id.proficiency_card).setBackgroundColor(getResources().getColor(R.color.proficiency_card,app.getTheme()));
-            ((TextView)top.findViewById(R.id.proficiency_label)).setTextColor(getResources().getColor(R.color.proficiency_text,app.getTheme()));
-            ((TextView)top.findViewById(R.id.proficiency_num)).setTextColor(getResources().getColor(R.color.proficiency_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.proficiency_plus)).setTextColor(getResources().getColor(R.color.proficiency_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.proficiency_minus)).setTextColor(getResources().getColor(R.color.proficiency_text,app.getTheme()));
-            top.findViewById(R.id.difficulty_card).setBackgroundColor(getResources().getColor(R.color.difficulty_card,app.getTheme()));
-            ((TextView)top.findViewById(R.id.difficulty_label)).setTextColor(getResources().getColor(R.color.difficulty_text,app.getTheme()));
-            ((TextView)top.findViewById(R.id.difficulty_num)).setTextColor(getResources().getColor(R.color.difficulty_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.difficulty_plus)).setTextColor(getResources().getColor(R.color.difficulty_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.difficulty_minus)).setTextColor(getResources().getColor(R.color.difficulty_text,app.getTheme()));
-            top.findViewById(R.id.challenge_card).setBackgroundColor(getResources().getColor(R.color.challenge_card,app.getTheme()));
-            ((TextView)top.findViewById(R.id.challenge_label)).setTextColor(getResources().getColor(R.color.challenge_text,app.getTheme()));
-            ((TextView)top.findViewById(R.id.challenge_num)).setTextColor(getResources().getColor(R.color.challenge_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.challenge_plus)).setTextColor(getResources().getColor(R.color.challenge_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.challenge_minus)).setTextColor(getResources().getColor(R.color.challenge_text,app.getTheme()));
-            top.findViewById(R.id.boost_card).setBackgroundColor(getResources().getColor(R.color.boost_card,app.getTheme()));
-            ((TextView)top.findViewById(R.id.boost_label)).setTextColor(getResources().getColor(R.color.boost_text,app.getTheme()));
-            ((TextView)top.findViewById(R.id.boost_num)).setTextColor(getResources().getColor(R.color.boost_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.boost_plus)).setTextColor(getResources().getColor(R.color.boost_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.boost_minus)).setTextColor(getResources().getColor(R.color.boost_text,app.getTheme()));
-            top.findViewById(R.id.setback_card).setBackgroundColor(getResources().getColor(R.color.setback_card,app.getTheme()));
-            ((TextView)top.findViewById(R.id.setback_label)).setTextColor(getResources().getColor(R.color.setback_text,app.getTheme()));
-            ((TextView)top.findViewById(R.id.setback_num)).setTextColor(getResources().getColor(R.color.setback_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.setback_plus)).setTextColor(getResources().getColor(R.color.setback_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.setback_minus)).setTextColor(getResources().getColor(R.color.setback_text,app.getTheme()));
-            top.findViewById(R.id.force_card).setBackgroundColor(getResources().getColor(R.color.force_card,app.getTheme()));
-            ((TextView)top.findViewById(R.id.force_label)).setTextColor(getResources().getColor(R.color.force_text,app.getTheme()));
-            ((TextView)top.findViewById(R.id.force_num)).setTextColor(getResources().getColor(R.color.force_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.force_plus)).setTextColor(getResources().getColor(R.color.force_text,app.getTheme()));
-            ((Button)top.findViewById(R.id.force_minus)).setTextColor(getResources().getColor(R.color.force_text,app.getTheme()));
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+            top.findViewById(R.id.ability_card).setBackgroundColor(getResources().getColor(R.color.ability_card));
+            ((TextView)top.findViewById(R.id.ability_label)).setTextColor(getResources().getColor(R.color.ability_text));
+            ((TextView)top.findViewById(R.id.ability_num)).setTextColor(getResources().getColor(R.color.ability_text));
+            ((Button)top.findViewById(R.id.ability_plus)).setTextColor(getResources().getColor(R.color.ability_text));
+            ((Button)top.findViewById(R.id.ability_minus)).setTextColor(getResources().getColor(R.color.ability_text));
+            top.findViewById(R.id.proficiency_card).setBackgroundColor(getResources().getColor(R.color.proficiency_card));
+            ((TextView)top.findViewById(R.id.proficiency_label)).setTextColor(getResources().getColor(R.color.proficiency_text));
+            ((TextView)top.findViewById(R.id.proficiency_num)).setTextColor(getResources().getColor(R.color.proficiency_text));
+            ((Button)top.findViewById(R.id.proficiency_plus)).setTextColor(getResources().getColor(R.color.proficiency_text));
+            ((Button)top.findViewById(R.id.proficiency_minus)).setTextColor(getResources().getColor(R.color.proficiency_text));
+            top.findViewById(R.id.difficulty_card).setBackgroundColor(getResources().getColor(R.color.difficulty_card));
+            ((TextView)top.findViewById(R.id.difficulty_label)).setTextColor(getResources().getColor(R.color.difficulty_text));
+            ((TextView)top.findViewById(R.id.difficulty_num)).setTextColor(getResources().getColor(R.color.difficulty_text));
+            ((Button)top.findViewById(R.id.difficulty_plus)).setTextColor(getResources().getColor(R.color.difficulty_text));
+            ((Button)top.findViewById(R.id.difficulty_minus)).setTextColor(getResources().getColor(R.color.difficulty_text));
+            top.findViewById(R.id.challenge_card).setBackgroundColor(getResources().getColor(R.color.challenge_card));
+            ((TextView)top.findViewById(R.id.challenge_label)).setTextColor(getResources().getColor(R.color.challenge_text));
+            ((TextView)top.findViewById(R.id.challenge_num)).setTextColor(getResources().getColor(R.color.challenge_text));
+            ((Button)top.findViewById(R.id.challenge_plus)).setTextColor(getResources().getColor(R.color.challenge_text));
+            ((Button)top.findViewById(R.id.challenge_minus)).setTextColor(getResources().getColor(R.color.challenge_text));
+            top.findViewById(R.id.boost_card).setBackgroundColor(getResources().getColor(R.color.boost_card));
+            ((TextView)top.findViewById(R.id.boost_label)).setTextColor(getResources().getColor(R.color.boost_text));
+            ((TextView)top.findViewById(R.id.boost_num)).setTextColor(getResources().getColor(R.color.boost_text));
+            ((Button)top.findViewById(R.id.boost_plus)).setTextColor(getResources().getColor(R.color.boost_text));
+            ((Button)top.findViewById(R.id.boost_minus)).setTextColor(getResources().getColor(R.color.boost_text));
+            top.findViewById(R.id.setback_card).setBackgroundColor(getResources().getColor(R.color.setback_card));
+            ((TextView)top.findViewById(R.id.setback_label)).setTextColor(getResources().getColor(R.color.setback_text));
+            ((TextView)top.findViewById(R.id.setback_num)).setTextColor(getResources().getColor(R.color.setback_text));
+            ((Button)top.findViewById(R.id.setback_plus)).setTextColor(getResources().getColor(R.color.setback_text));
+            ((Button)top.findViewById(R.id.setback_minus)).setTextColor(getResources().getColor(R.color.setback_text));
+            top.findViewById(R.id.force_card).setBackgroundColor(getResources().getColor(R.color.force_card));
+            ((TextView)top.findViewById(R.id.force_label)).setTextColor(getResources().getColor(R.color.force_text));
+            ((TextView)top.findViewById(R.id.force_num)).setTextColor(getResources().getColor(R.color.force_text));
+            ((Button)top.findViewById(R.id.force_plus)).setTextColor(getResources().getColor(R.color.force_text));
+            ((Button)top.findViewById(R.id.force_minus)).setTextColor(getResources().getColor(R.color.force_text));
         }
         ability = 0;
         proficiency = 0;

@@ -204,7 +204,7 @@ public class WeaponsCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root,false);
         for (int i = 0;i<minion.weapons.size();i++)
             ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
                     .WeaponLayout(main,((LinearLayout)top.findViewById(R.id.weapons_layout)),minion,minion.weapons.get(i)));
@@ -379,7 +379,7 @@ public class WeaponsCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_weapons,root,false);
         for (int i = 0;i<vh.weapons.size();i++){
             ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout().WeaponLayout(main,
                     ((LinearLayout)top.findViewById(R.id.weapons_layout)),vh,vh.weapons.get(i)));

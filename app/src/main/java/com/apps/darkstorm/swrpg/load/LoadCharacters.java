@@ -17,8 +17,7 @@ public class LoadCharacters {
     public LoadCharacters(Activity main){
         characters = new ArrayList<>();
         lastMod = new ArrayList<>();
-        SWrpg app = (SWrpg)main.getApplication();
-        File fold = new File(app.prefs.getString(main.getString(R.string.local_location_key),app.defaultLoc));
+        File fold = new File(((SWrpg)main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),((SWrpg)main.getApplication()).defaultLoc));
         if(!fold.exists()){
             if (!fold.mkdir()){
                 return;

@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/name_card"
     android:foreground="?attr/selectableItemBackgroundBorderless"
-    android:animateLayoutChanges="true"
+    android:animateLayoutChanges="false"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_margin="5dp">
 
@@ -17,7 +17,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="false">
 
         <TextView
             android:text="@string/name_text"

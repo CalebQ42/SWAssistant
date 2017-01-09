@@ -3,6 +3,9 @@ package com.apps.darkstorm.swrpg;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,7 +20,6 @@ public class VehicleEdit extends Fragment {
     private OnVehicleEditInteractionListener mListener;
 
     Vehicle vh;
-    SWrpg app;
 
     public VehicleEdit() {}
 
@@ -37,7 +39,6 @@ public class VehicleEdit extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        app = (SWrpg)getActivity().getApplication();
     }
 
     @Override
@@ -46,8 +47,14 @@ public class VehicleEdit extends Fragment {
         final View top = inflater.inflate(R.layout.fragment_vehicle_edit, container, false);
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
         fab.hide();
-        SetupVehicEdit.setup(((LinearLayout)top.findViewById(R.id.main_lay)),getActivity(),vh);
-        vh.showHideCards(top);
+        Handler handle = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                SetupVehicEdit.setup(((LinearLayout)top.findViewById(R.id.main_lay)),getActivity(),vh);
+                vh.showHideCards(top);
+            }
+        };
+        handle.sendEmptyMessage(0);
         top.setFocusableInTouchMode(true);
         top.requestFocus();
         return top;
@@ -67,8 +74,8 @@ public class VehicleEdit extends Fragment {
     public void onResume(){
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
-            vh.startEditing(getActivity(),app.vehicFold.getDriveId());
+        if (pref.getBoolean(getString(R.string.google_drive_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
+            vh.startEditing(getActivity(),((SWrpg)getActivity().getApplication()).vehicFold.getDriveId());
         }else{
             vh.startEditing(getActivity());
         }

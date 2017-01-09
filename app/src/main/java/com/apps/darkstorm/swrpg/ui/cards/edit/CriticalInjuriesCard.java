@@ -61,7 +61,7 @@ public class CriticalInjuriesCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_critical_injuries,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_critical_injuries,root,false);
         final LinearLayout critLay = (LinearLayout)top.findViewById(R.id.critical_injuries_layout);
         for (int i = 0;i<minion.critInjuries.size();i++)
             critLay.addView(new CritInjLayout().CritInjLayout(main,critLay,minion,minion.critInjuries.get(i)));
@@ -103,7 +103,7 @@ public class CriticalInjuriesCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_critical_injuries,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_critical_injuries,root,false);
         final LinearLayout critLay = (LinearLayout)top.findViewById(R.id.critical_injuries_layout);
         for (int i = 0;i<vh.crits.size();i++)
             critLay.addView(new CritInjLayout().CritInjLayout(main,critLay,vh,vh.crits.get(i)));

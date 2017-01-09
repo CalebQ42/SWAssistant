@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
 
 public class VehicleList extends Fragment {
     private OnVehicleListInteractionListener mListener;
-    SWrpg app;
     Handler handle;
     ArrayList<Vehicle> vehicles = new ArrayList<>();
 
@@ -38,7 +38,6 @@ public class VehicleList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (SWrpg)getActivity().getApplication();
     }
 
     @Override
@@ -87,6 +86,28 @@ public class VehicleList extends Fragment {
                 }
             }
         };
+        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
+        fab.setImageResource(R.drawable.add);
+        fab.show();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadVehicles lv = new LoadVehicles(getActivity());
+                ArrayList<Integer> has = new ArrayList<>();
+                for (Vehicle vh:lv.vehicles)
+                    has.add(vh.ID);
+                int id = 0;
+                for(int i = 0;i<lv.vehicles.size();i++){
+                    if(lv.vehicles.get(i).ID==id){
+                        id++;
+                        i = -1;
+                    }
+                }
+                getFragmentManager().beginTransaction().replace(R.id.content_main,VehicleEdit.newInstance(id))
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
+            }
+        });
         return top;
     }
 
@@ -103,7 +124,7 @@ public class VehicleList extends Fragment {
                 dal.arg1 = 20;
                 handle.sendMessage(dal);
                 if(ContextCompat.checkSelfPermission(VehicleList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    while(app.askingPerm){
+                    while(((SWrpg)getActivity().getApplication()).askingPerm){
                         try {
                             Thread.sleep(200);
                         } catch (InterruptedException e) {
@@ -112,7 +133,7 @@ public class VehicleList extends Fragment {
                     }
                 }
                 if(ContextCompat.checkSelfPermission(VehicleList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    if(app.prefs.getBoolean(getString(R.string.cloud_key),false)){
+                    if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
                         DriveLoadVehicles dlc = new DriveLoadVehicles(getActivity());
                         if(dlc.vehicles!=null){
                             dlc.saveLocal(getActivity());

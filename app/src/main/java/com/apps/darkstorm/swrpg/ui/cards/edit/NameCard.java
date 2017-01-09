@@ -47,7 +47,7 @@ public class NameCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.card_character,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.card_character,root,false);
         ((TextView)top.findViewById(R.id.name_text)).setText(minion.name);
         top.findViewById(R.id.name_card).setOnLongClickListener(new View.OnLongClickListener(){
             public boolean onLongClick(View v){
@@ -78,7 +78,7 @@ public class NameCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vehic){
-        final View top = main.getLayoutInflater().inflate(R.layout.card_character,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.card_character,root,false);
         ((TextView)top.findViewById(R.id.name_text)).setText(vehic.name);
         top.findViewById(R.id.name_card).setOnLongClickListener(new View.OnLongClickListener(){
             public boolean onLongClick(View v){

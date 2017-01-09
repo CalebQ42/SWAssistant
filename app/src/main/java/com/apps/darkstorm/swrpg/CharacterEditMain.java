@@ -17,7 +17,6 @@ import com.apps.darkstorm.swrpg.sw.Character;
 public class CharacterEditMain extends Fragment {
     private OnFragmentInteractionListener mListener;
     Character chara;
-    SWrpg app;
 
     public CharacterEditMain() {}
 
@@ -38,7 +37,6 @@ public class CharacterEditMain extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        app = (SWrpg)getActivity().getApplication();
     }
 
     @Override
@@ -122,8 +120,8 @@ public class CharacterEditMain extends Fragment {
     public void onResume(){
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
-            chara.startEditing(getActivity(), app.charsFold.getDriveId());
+        if (pref.getBoolean(getString(R.string.google_drive_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
+            chara.startEditing(getActivity(), ((SWrpg)getActivity().getApplication()).charsFold.getDriveId());
         }else{
             chara.startEditing(getActivity());
         }

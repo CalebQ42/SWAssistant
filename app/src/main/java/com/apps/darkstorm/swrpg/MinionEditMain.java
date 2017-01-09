@@ -2,6 +2,9 @@ package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,7 +19,6 @@ public class MinionEditMain extends Fragment {
 
     private OnMinionEditInteractionListener mListener;
     private Minion minion;
-    SWrpg app;
 
     public MinionEditMain() {
     }
@@ -35,7 +37,6 @@ public class MinionEditMain extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (SWrpg)getActivity().getApplication();
     }
 
     @Override
@@ -44,8 +45,14 @@ public class MinionEditMain extends Fragment {
         final View top = inflater.inflate(R.layout.fragment_minion_edit_main, container, false);
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);
         fab.hide();
-        SetupMinionAttr.setup((LinearLayout)top.findViewById(R.id.main_lay),getActivity(),minion);
-        minion.showHideCards(top);
+        Handler handle = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                SetupMinionAttr.setup((LinearLayout)top.findViewById(R.id.main_lay),getActivity(),minion);
+                minion.showHideCards(top);
+            }
+        };
+        handle.sendEmptyMessage(0);
         top.setFocusableInTouchMode(true);
         top.requestFocus();
         return top;
@@ -53,8 +60,9 @@ public class MinionEditMain extends Fragment {
 
     public void onResume(){
         super.onResume();
-        if (app.prefs.getBoolean(getString(R.string.cloud_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
-            minion.startEditing(getActivity(),app.charsFold.getDriveId());
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false) &&
+                ((SWrpg)getActivity().getApplication()).gac != null){
+            minion.startEditing(getActivity(),((SWrpg)getActivity().getApplication()).charsFold.getDriveId());
         }else{
             minion.startEditing(getActivity());
         }

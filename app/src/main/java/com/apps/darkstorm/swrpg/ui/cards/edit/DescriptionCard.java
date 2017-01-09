@@ -49,7 +49,7 @@ public class DescriptionCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_description,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_description,root,false);
         ((TextView)top.findViewById(R.id.desc_main)).setText(minion.desc);
         top.findViewById(R.id.desc_card).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -82,7 +82,7 @@ public class DescriptionCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_description,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_description,root,false);
         ((TextView)top.findViewById(R.id.desc_main)).setText(vh.desc);
         top.findViewById(R.id.desc_card).setOnLongClickListener(new View.OnLongClickListener() {
             @Override

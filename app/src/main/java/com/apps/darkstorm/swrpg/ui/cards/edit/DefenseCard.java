@@ -86,7 +86,7 @@ public class DefenseCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_defense_character,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_defense_character,root,false);
         final TextView defMelee = (TextView)top.findViewById(R.id.melee_defense_text);
         defMelee.setText(String.valueOf(minion.defMelee));
         top.findViewById(R.id.melee_defense_layout).setOnLongClickListener(new View.OnLongClickListener() {
@@ -156,7 +156,7 @@ public class DefenseCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_defense_vehicle,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_defense_vehicle,root,false);
         if (vh.silhouette > 4){
             if (vh.defense[0]+vh.defense[1]+vh.defense[2]+vh.defense[3] != vh.totalDefense)
                 top.findViewById(R.id.defense_warning).setVisibility(View.VISIBLE);

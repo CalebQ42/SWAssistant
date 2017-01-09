@@ -178,8 +178,8 @@ public class Character {
         editing = false;
     }
     public String getFileLocation(Activity main){
-        SWrpg app = (SWrpg)main.getApplication();
-        String loc = app.prefs.getString(main.getString(R.string.local_location_key),app.defaultLoc);
+        String loc = ((SWrpg)main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
+                ((SWrpg)main.getApplication()).defaultLoc);
         File location = new File(loc);
         if (!location.exists()){
             if (!location.mkdir()){
@@ -278,10 +278,10 @@ public class Character {
         }
     }
     public DriveId getFileId(Activity main){
-        SWrpg app = (SWrpg)main.getApplication();
         String name = Integer.toString(ID) + Character.fileExt;
         DriveId fi = null;
-        DriveApi.MetadataBufferResult res = app.charsFold.queryChildren(app.gac,new Query.Builder().addFilter(
+        DriveApi.MetadataBufferResult res = ((SWrpg)main.getApplication())
+                .charsFold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
                 Filters.eq(SearchableField.TITLE,name)).build()).await();
         for (Metadata met:res.getMetadataBuffer()){
             if (!met.isTrashed()){
@@ -291,7 +291,9 @@ public class Character {
         }
         res.release();
         if (fi == null){
-            fi = app.charsFold.createFile(app.gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+            fi = ((SWrpg)main.getApplication()).charsFold.createFile
+                    (((SWrpg)main.getApplication())
+                            .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
                     .getDriveFile().getDriveId();
         }
         return fi;

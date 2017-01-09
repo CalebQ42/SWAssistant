@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 
+
 android {
     signingConfigs {
-        defaultSign {
+        config {
             keyAlias 'belac darkstorm'
             keyPassword 'intel_idle.max_cstate=1'
             storeFile file('/media/belac/DriveyExt/Documents/AndroidApps/sign_key.jks')
@@ -16,32 +17,34 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName '2.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.defaultSign
         }
     }
     productFlavors {
         freeConfig {
-            minSdkVersion 25
+            versionName '1.0.2.4'
+            minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 53
-            versionName '1.1.0.0'
+            versionCode 52
+            signingConfig signingConfigs.config
         }
         paidConfig {
-            minSdkVersion 25
+            minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg.donate'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 53
-            versionName '1.1.0.0'
+            versionCode 52
+            versionName '1.0.2.4'
+            signingConfig signingConfigs.config
         }
     }
 }
@@ -57,14 +60,11 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile 'com.google.firebase:firebase-ads:10.0.1'
     compile 'com.google.android.gms:play-services-drive:10.0.1'
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
     compile 'com.google.firebase:firebase-storage:10.0.1'
     compile 'com.google.firebase:firebase-auth:10.0.1'
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:cardview-v7:25.1.0'
+    testCompile 'junit:junit:4.12'
 }
-
-
-
-
 
 apply plugin: 'com.google.gms.google-services'

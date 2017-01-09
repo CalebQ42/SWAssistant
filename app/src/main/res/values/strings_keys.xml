@@ -2,7 +2,7 @@
 <resources>
     <string name="preference_key">prefs</string>
 
-    <string name="cloud_key">cloudEnabled</string>
+    <string name="google_drive_key">cloudEnabled</string>
     <string name="sync_key">syncStyleCloud</string>
 
     <string name="dice_key">getDiceOnLaunch</string>

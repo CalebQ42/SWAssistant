@@ -143,7 +143,7 @@ public class InventoryCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_inventory,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_inventory,root,false);
         top.findViewById(R.id.credits_layout).setVisibility(View.GONE);
         top.findViewById(R.id.encum_layout).setVisibility(View.GONE);
         final LinearLayout invLay = (LinearLayout)top.findViewById(R.id.inventory_layout);

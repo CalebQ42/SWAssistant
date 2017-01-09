@@ -176,7 +176,7 @@ public class WoundStrainCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_wound_strain_vehicle,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_wound_strain_vehicle,root,false);
         final TextView hullText = (TextView)top.findViewById(R.id.hull_trauma_text);
         hullText.setText(String.valueOf(vh.hullTraumaCur));
         top.findViewById(R.id.hull_trauma_minus).setOnClickListener(new View.OnClickListener() {

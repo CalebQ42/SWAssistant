@@ -74,7 +74,7 @@ public class TalentsCard {
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Minion minion){
-        final View top = main.getLayoutInflater().inflate(R.layout.edit_talents,root);
+        final View top = main.getLayoutInflater().inflate(R.layout.edit_talents,root,false);
         for (int i =0;i<minion.talents.size();i++)
             ((LinearLayout)top.findViewById(R.id.talents_layout)).addView
                     (new TalentLayout().TalentLayout(main,((LinearLayout)

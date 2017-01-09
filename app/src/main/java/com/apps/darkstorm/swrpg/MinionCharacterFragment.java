@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.apps.darkstorm.swrpg.load.LoadCharacters;
+import com.apps.darkstorm.swrpg.load.LoadMinions;
 import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
+
+import java.util.ArrayList;
 
 public class MinionCharacterFragment extends Fragment {
 
@@ -49,7 +54,7 @@ public class MinionCharacterFragment extends Fragment {
                 }
             }
         };
-        TabLayout tab = (TabLayout)top.findViewById(R.id.tabLayout);
+        final TabLayout tab = (TabLayout)top.findViewById(R.id.tabLayout);
         ViewPager pager = (ViewPager)top.findViewById(R.id.pager);
         tab.setupWithViewPager(pager);
         FragmentPagerAdapter adap = new FragmentPagerAdapter(getChildFragmentManager()) {
@@ -79,6 +84,45 @@ public class MinionCharacterFragment extends Fragment {
                 }
             }
         };
+        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
+        fab.setImageResource(R.drawable.add);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tab.getSelectedTabPosition() == 0){
+                    LoadCharacters lc = new LoadCharacters(getActivity());
+                    ArrayList<Integer> taken = new ArrayList<>();
+                    for(Character chara:lc.characters)
+                        taken.add(chara.ID);
+                    int id = 0;
+                    for (int i = 0;i<taken.size();i++){
+                        if(taken.get(i)==id){
+                            id++;
+                            i = -1;
+                        }
+                    }
+                    getFragmentManager().beginTransaction().replace(R.id.content_main,CharacterEditMain.newInstance(id))
+                            .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                    android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
+                }else{
+                    LoadMinions lc = new LoadMinions(getActivity());
+                    ArrayList<Integer> taken = new ArrayList<>();
+                    for(Minion chara:lc.minions)
+                        taken.add(chara.ID);
+                    int id = 0;
+                    for (int i = 0;i<taken.size();i++){
+                        if(taken.get(i)==id){
+                            id++;
+                            i = -1;
+                        }
+                    }
+                    getFragmentManager().beginTransaction().replace(R.id.content_main,CharacterEditMain.newInstance(id))
+                            .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                    android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
+                }
+            }
+        });
+        fab.show();
         pager.setAdapter(adap);
         top.requestFocus();
         top.setFocusableInTouchMode(true);
