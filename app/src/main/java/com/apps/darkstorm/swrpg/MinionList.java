@@ -72,7 +72,8 @@ public class MinionList extends Fragment {
                         linLay.removeAllViews();
                         minions = chars;
                         for(Minion chara:chars){
-                            linLay.addView(MinionCard.getCard(getActivity(),linLay,chara,handle));
+                            if(getActivity()!=null)
+                                linLay.addView(MinionCard.getCard(getActivity(),linLay,chara,handle));
                         }
                     }
                 }
