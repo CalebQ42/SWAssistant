@@ -80,7 +80,8 @@ public class CharacerList extends Fragment {
                         characters = chars;
                         linLay.removeAllViews();
                         for(Character chara:chars){
-                            linLay.addView(CharacterCard.getCard(getActivity(),linLay,chara,handle));
+                            if(getActivity()!=null)
+                                linLay.addView(CharacterCard.getCard(getActivity(),linLay,chara,handle));
                         }
                     }
                 }
