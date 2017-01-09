@@ -70,7 +70,8 @@ public class VehicleList extends Fragment {
                         linLay.removeAllViews();
                         vehicles = chars;
                         for(Vehicle chara:chars){
-                            linLay.addView(VehicleCard.getCard(getActivity(),linLay,chara,handle));
+                            if(getActivity()!=null)
+                                linLay.addView(VehicleCard.getCard(getActivity(),linLay,chara,handle));
                         }
                     }
                 }
