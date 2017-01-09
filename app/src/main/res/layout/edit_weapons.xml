@@ -43,13 +43,47 @@
                 android:id="@+id/weapons_layout"
                 android:animateLayoutChanges="true"></LinearLayout>
 
-            <Button
-                android:text="@string/add_text"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/weapons_add"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_gravity="end" />
+                android:layout_gravity="right">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/weap_save_load"
+                    android:visibility="gone">
+
+                    <Button
+                        android:text="@string/save_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weap_save"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+
+                    <Button
+                        android:text="@string/load_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weap_load"
+                        android:layout_weight="1"
+                        style="@style/Widget.AppCompat.Button.Borderless" />
+                </LinearLayout>
+
+                <Button
+                    android:text="@string/add_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weapons_add"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_gravity="end"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

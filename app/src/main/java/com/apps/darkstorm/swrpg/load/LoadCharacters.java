@@ -17,26 +17,28 @@ public class LoadCharacters {
     public LoadCharacters(Activity main){
         characters = new ArrayList<>();
         lastMod = new ArrayList<>();
-        File fold = new File(((SWrpg)main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),((SWrpg)main.getApplication()).defaultLoc));
-        if(!fold.exists()){
-            if (!fold.mkdir()){
-                return;
-            }
-        }
-        File[] chars = fold.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                if(name.endsWith(".char")){
-                    return true;
+        if(main!= null) {
+            File fold = new File(((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key), ((SWrpg) main.getApplication()).defaultLoc));
+            if (!fold.exists()) {
+                if (!fold.mkdir()) {
+                    return;
                 }
-                return false;
             }
-        });
-        for(File fil:chars){
-            Character tmp = new Character();
-            tmp.reLoad(fil.getAbsolutePath());
-            characters.add(tmp);
-            lastMod.add(new Date(fil.lastModified()));
+            File[] chars = fold.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    if (name.endsWith(".char")) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            for (File fil : chars) {
+                Character tmp = new Character();
+                tmp.reLoad(fil.getAbsolutePath());
+                characters.add(tmp);
+                lastMod.add(new Date(fil.lastModified()));
+            }
         }
     }
 }

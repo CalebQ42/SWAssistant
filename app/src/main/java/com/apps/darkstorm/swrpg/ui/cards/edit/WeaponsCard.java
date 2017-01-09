@@ -380,6 +380,23 @@ public class WeaponsCard {
                 build.show();
             }
         });
+        top.findViewById(R.id.weap_save_load).setVisibility(View.VISIBLE);
+        top.findViewById(R.id.weap_save).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minion.origWeapons = minion.weapons.clone();
+            }
+        });
+        top.findViewById(R.id.weap_load).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minion.weapons = minion.origWeapons.clone();
+                ((LinearLayout)top.findViewById(R.id.weapons_layout)).removeAllViews();
+                for (int i = 0;i<minion.weapons.size();i++)
+                    ((LinearLayout)top.findViewById(R.id.weapons_layout)).addView(new WeaponLayout()
+                            .WeaponLayout(main,((LinearLayout)top.findViewById(R.id.weapons_layout)),minion,minion.weapons.get(i)));
+            }
+        });
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vh){

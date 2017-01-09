@@ -3,16 +3,27 @@ package com.apps.darkstorm.swrpg.ui.cards.edit;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.SWrpg;
+import com.apps.darkstorm.swrpg.load.DriveLoadCharacters;
+import com.apps.darkstorm.swrpg.load.DriveLoadMinions;
+import com.apps.darkstorm.swrpg.load.DriveLoadVehicles;
+import com.apps.darkstorm.swrpg.load.LoadCharacters;
+import com.apps.darkstorm.swrpg.load.LoadMinions;
+import com.apps.darkstorm.swrpg.load.LoadVehicles;
 import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
+
+import java.util.ArrayList;
 
 public class NameCard {
     public static View getCard(final Activity main, ViewGroup root, final Character chara){
@@ -42,6 +53,44 @@ public class NameCard {
                 });
                 build.show();
                 return true;
+            }
+        });
+        top.findViewById(R.id.clone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(main,R.string.cloning_text,Toast.LENGTH_SHORT).show();
+                AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false)){
+                            DriveLoadCharacters dlc = new DriveLoadCharacters(main);
+                            dlc.saveLocal(main);
+                        }
+                        LoadCharacters lc = new LoadCharacters(main);
+                        ArrayList<Integer> taken = new ArrayList<>();
+                        for(Character chara:lc.characters)
+                            taken.add(chara.ID);
+                        int id = 0;
+                        for (int i = 0;i<taken.size();i++){
+                            if(taken.get(i)==id){
+                                id++;
+                                i = -1;
+                            }
+                        }
+                        Character clone = chara.clone();
+                        clone.ID = id;
+                        clone.save(clone.getFileLocation(main));
+                        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false))
+                            clone.cloudSave(((SWrpg)main.getApplication()).gac,clone.getFileId(main),false);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        Toast.makeText(main,R.string.cloning_done_text,Toast.LENGTH_SHORT).show();
+                    }
+                };
+                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
         return top;
@@ -75,6 +124,44 @@ public class NameCard {
                 return true;
             }
         });
+        top.findViewById(R.id.clone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(main,R.string.cloning_text,Toast.LENGTH_SHORT).show();
+                AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false)){
+                            DriveLoadMinions dlc = new DriveLoadMinions(main);
+                            dlc.saveLocal(main);
+                        }
+                        LoadMinions lc = new LoadMinions(main);
+                        ArrayList<Integer> taken = new ArrayList<>();
+                        for(Minion chara:lc.minions)
+                            taken.add(chara.ID);
+                        int id = 0;
+                        for (int i = 0;i<taken.size();i++){
+                            if(taken.get(i)==id){
+                                id++;
+                                i = -1;
+                            }
+                        }
+                        Minion clone = minion.clone();
+                        clone.ID = id;
+                        clone.save(clone.getFileLocation(main));
+                        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false))
+                            clone.cloudSave(((SWrpg)main.getApplication()).gac,clone.getFileId(main),false);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        Toast.makeText(main,R.string.cloning_done_text,Toast.LENGTH_SHORT).show();
+                    }
+                };
+                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vehic){
@@ -104,6 +191,44 @@ public class NameCard {
                 });
                 build.show();
                 return true;
+            }
+        });
+        top.findViewById(R.id.clone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(main,R.string.cloning_text,Toast.LENGTH_SHORT).show();
+                AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false)){
+                            DriveLoadVehicles dlc = new DriveLoadVehicles(main);
+                            dlc.saveLocal(main);
+                        }
+                        LoadVehicles lc = new LoadVehicles(main);
+                        ArrayList<Integer> taken = new ArrayList<>();
+                        for(Vehicle chara:lc.vehicles)
+                            taken.add(chara.ID);
+                        int id = 0;
+                        for (int i = 0;i<taken.size();i++){
+                            if(taken.get(i)==id){
+                                id++;
+                                i = -1;
+                            }
+                        }
+                        Vehicle clone = vehic.clone();
+                        clone.ID = id;
+                        clone.save(clone.getFileLocation(main));
+                        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false))
+                            clone.cloudSave(((SWrpg)main.getApplication()).gac,clone.getFileId(main),false);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        Toast.makeText(main,R.string.cloning_done_text,Toast.LENGTH_SHORT).show();
+                    }
+                };
+                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
         return top;

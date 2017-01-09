@@ -17,33 +17,35 @@ public class LoadVehicles {
     public LoadVehicles(Activity main){
         vehicles = new ArrayList<>();
         lastMod = new ArrayList<>();
-        File fold = new File(((SWrpg)main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
-                ((SWrpg)main.getApplication()).defaultLoc));
-        if(!fold.exists()){
-            if (!fold.mkdir()){
-                return;
-            }
-        }
-        fold = new File(fold.getAbsolutePath()+"/SWShips");
-        if(!fold.exists()){
-            if (!fold.mkdir()){
-                return;
-            }
-        }
-        File[] chars = fold.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                if(name.endsWith(".vhcl")){
-                    return true;
+        if(main!= null) {
+            File fold = new File(((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
+                    ((SWrpg) main.getApplication()).defaultLoc));
+            if (!fold.exists()) {
+                if (!fold.mkdir()) {
+                    return;
                 }
-                return false;
             }
-        });
-        for(File fil:chars){
-            Vehicle tmp = new Vehicle();
-            tmp.reLoad(fil.getAbsolutePath());
-            vehicles.add(tmp);
-            lastMod.add(new Date(fil.lastModified()));
+            fold = new File(fold.getAbsolutePath() + "/SWShips");
+            if (!fold.exists()) {
+                if (!fold.mkdir()) {
+                    return;
+                }
+            }
+            File[] chars = fold.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    if (name.endsWith(".vhcl")) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            for (File fil : chars) {
+                Vehicle tmp = new Vehicle();
+                tmp.reLoad(fil.getAbsolutePath());
+                vehicles.add(tmp);
+                lastMod.add(new Date(fil.lastModified()));
+            }
         }
     }
 }

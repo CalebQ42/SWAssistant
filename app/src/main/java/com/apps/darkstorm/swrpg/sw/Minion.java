@@ -267,9 +267,9 @@ public class Minion {
             sl.addSave(minNum);
             sl.addSave(desc);
             sl.addSave(showCard);
-            sl.addSave(critInjuries);
-            sl.addSave(origInv);
-            sl.addSave(origWeapons);
+            sl.addSave(critInjuries.serialObject());
+            sl.addSave(origInv.serialObject());
+            sl.addSave(origWeapons.serialObject());
             sl.save(gac, async);
         }
     }
@@ -278,9 +278,9 @@ public class Minion {
         Object[] obj = sl.load(gac);
         switch(obj.length){
             case 19:
-                origWeapons = (Weapons)obj[18];
-                origInv = (Inventory)obj[17];
-                critInjuries = (CriticalInjuries)obj[16];
+                origWeapons.loadFromObject(obj[18]);
+                origInv.loadFromObject(obj[17]);
+                critInjuries.loadFromObject(obj[16]);
             case 16:
                 showCard = (boolean[])obj[15];
                 desc = (String)obj[14];

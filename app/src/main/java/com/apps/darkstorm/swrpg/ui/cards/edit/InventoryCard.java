@@ -189,6 +189,22 @@ public class InventoryCard {
                 build.show();
             }
         });
+        top.findViewById(R.id.inv_save_load).setVisibility(View.VISIBLE);
+        top.findViewById(R.id.save_inv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minion.origInv = minion.inv.clone();
+            }
+        });
+        top.findViewById(R.id.load_inv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minion.inv = minion.origInv.clone();
+                invLay.removeAllViews();
+                for (int i = 0;i<minion.inv.size();i++)
+                    invLay.addView(new ItemLayout().ItemLayout(main,invLay,minion,minion.inv.get(i)));
+            }
+        });
         return top;
     }
 }
