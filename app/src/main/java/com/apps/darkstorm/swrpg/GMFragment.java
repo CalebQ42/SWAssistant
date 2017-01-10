@@ -90,7 +90,7 @@ public class GMFragment extends Fragment {
         };
         FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
         fab.hide();
-        FloatingActionButton add = (FloatingActionButton)getActivity().findViewById(R.id.gm_add_fab);
+        FloatingActionButton add = (FloatingActionButton)top.findViewById(R.id.gm_add_fab);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
