@@ -123,7 +123,10 @@ public class MinionList extends Fragment {
                     if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
                         int timeout = 0;
                         while((((SWrpg)getActivity().getApplication()).gac == null ||
-                                !((SWrpg)getActivity().getApplication()).gac.isConnected())&& timeout< 50){
+                                !((SWrpg)getActivity().getApplication()).gac.isConnected() ||
+                                ((SWrpg)getActivity().getApplication()).charsFold==null)&& timeout< 50){
+                            if(!((SWrpg)getActivity().getApplication()).gac.isConnecting())
+                                ((MainActivity)getActivity()).gacMaker();
                             try {
                                 Thread.sleep(200);
                             } catch (InterruptedException e) {

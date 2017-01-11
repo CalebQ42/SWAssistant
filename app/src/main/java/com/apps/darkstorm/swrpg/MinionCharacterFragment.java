@@ -63,7 +63,7 @@ public class MinionCharacterFragment extends Fragment {
             public android.support.v4.app.Fragment getItem(int position) {
                 switch(position){
                     case 0:
-                        return CharacerList.newInstance(handle);
+                        return CharacterList.newInstance(handle);
                     case 1:
                         return MinionList.newInstance(handle);
                 }

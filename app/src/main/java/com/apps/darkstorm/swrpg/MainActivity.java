@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
             DiceFragment.OnDiceInteractionListener, GuideMain.OnGuideInteractionListener,VehicleList.OnVehicleListInteractionListener,
             VehicleEdit.OnVehicleEditInteractionListener,MinionCharacterFragment.OnMinionCharacterListInteraction,
             MinionList.OnMinionListInteractionListener,MinionEditMain.OnMinionEditInteractionListener,
-            CharacterEditMain.OnFragmentInteractionListener,CharacerList.OnCharacterListInteractionListener,
+            CharacterEditMain.OnFragmentInteractionListener,CharacterList.OnCharacterListInteractionListener,
             CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
             GMFragment.OnGMInteractionListener{
