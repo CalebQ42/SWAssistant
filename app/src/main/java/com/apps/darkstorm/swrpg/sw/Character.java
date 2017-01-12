@@ -178,16 +178,19 @@ public class Character {
         editing = false;
     }
     public String getFileLocation(Activity main){
-        String loc = ((SWrpg)main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
-                ((SWrpg)main.getApplication()).defaultLoc);
-        File location = new File(loc);
-        if (!location.exists()){
-            if (!location.mkdir()){
-                return "";
+        if(main!= null) {
+            String loc = ((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
+                    ((SWrpg) main.getApplication()).defaultLoc);
+            File location = new File(loc);
+            if (!location.exists()) {
+                if (!location.mkdir()) {
+                    return "";
+                }
             }
+            return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
+        }else{
+            return "";
         }
-        System.out.println(name);
-        return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
     }
     public void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
@@ -276,6 +279,9 @@ public class Character {
                 darkSide = (boolean)vals[32];
                 age = (int)vals[33];
                 nts.loadFromObject(vals[34]);
+                if (nts == null){
+                    nts = new Notes();
+                }
         }
     }
     public DriveId getFileId(Activity main){
@@ -388,6 +394,9 @@ public class Character {
                 darkSide = (boolean)vals[32];
                 age = (int)vals[33];
                 nts.loadFromObject(vals[34]);
+                if (nts == null){
+                    nts = new Notes();
+                }
         }
     }
     @SuppressWarnings("CloneDoesntCallSuperClone")

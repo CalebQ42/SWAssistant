@@ -145,34 +145,19 @@ public class Minion {
         editing = false;
     }
     public String getFileLocation(Activity main){
-        File location;
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-            File tmp = Environment.getExternalStorageDirectory();
-            location = new File(tmp.getAbsolutePath() + "/SWChars");
-            if (!location.exists()){
-                if (!location.mkdir()){
+        if(main!= null) {
+            String loc = ((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
+                    ((SWrpg) main.getApplication()).defaultLoc);
+            File location = new File(loc);
+            if (!location.exists()) {
+                if (!location.mkdir()) {
                     return "";
                 }
             }
+            return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".minion";
         }else{
-            File tmp = main.getFilesDir();
-            location = new File(tmp.getAbsolutePath() + "/SWChars");
-            if (!location.exists()){
-                if (!location.mkdir()){
-                    return "";
-                }
-            }
+            return "";
         }
-        SharedPreferences pref = main.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        String def = location.getAbsolutePath();
-        String loc = pref.getString(main.getString(R.string.local_location_key),def);
-        location = new File(loc);
-        if (!location.exists()){
-            if (!location.mkdir()){
-                return "";
-            }
-        }
-        return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".minion";
     }
     public void save(String filename){
         SaveLoad sl = new SaveLoad(filename);

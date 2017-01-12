@@ -13,7 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 public class SaveLoad implements Serializable{
     public SaveLoad(String filename){
-        savFolder = new File(filename.substring(0,filename.lastIndexOf("/")));
+        if(filename.contains("/")) {
+            savFolder = new File(filename.substring(0, filename.lastIndexOf("/")));
+        }
         sav = new File(filename);
     }
     public void addSave(Object e){
@@ -40,8 +42,8 @@ public class SaveLoad implements Serializable{
     }
     public void save(){
         try {
-            if(!savFolder.exists())
-                savFolder.mkdir();
+            if(savFolder != null && !savFolder.exists())
+                savFolder.mkdirs();
             if(sav.exists()){
                 sav.delete();
             }
@@ -59,7 +61,7 @@ public class SaveLoad implements Serializable{
     private ObjectInputStream inO;
     private FileOutputStream tada;
     private ObjectOutputStream toodoo;
-    private File savFolder=new File("sav"),sav=new File("sav/sav.sav");
+    private File savFolder=null,sav;
     private ArrayList<Object> saveItems = new ArrayList<>();
     private ArrayList<Object> loadItems = new ArrayList<>();
     //</editor-fold>

@@ -209,6 +209,7 @@ public class WoundStrainCard {
             public boolean onLongClick(View view) {
                 AlertDialog.Builder build = new AlertDialog.Builder(main);
                 View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
+                build.setView(dia);
                 build.setTitle(R.string.hull_trauma_thresh_text);
                 final EditText val = (EditText)dia.findViewById(R.id.edit_val);
                 val.setText(String.valueOf(vh.hullTraumaThresh));
@@ -267,7 +268,7 @@ public class WoundStrainCard {
             @Override
             public boolean onLongClick(View view) {
                 AlertDialog.Builder build = new AlertDialog.Builder(main);
-                View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_edit,null);
+                View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
                 build.setView(dia);
                 build.setTitle(R.string.sys_stress_thresh_text);
                 final EditText val = (EditText)dia.findViewById(R.id.edit_val);
