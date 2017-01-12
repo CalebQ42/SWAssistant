@@ -12,7 +12,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +53,6 @@ public class VehicleList extends Fragment {
                 loadVehicles();
             }
         });
-        TypedValue primary = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.colorPrimary,primary,true);
-        TypedValue accent = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.colorAccent,accent,true);
-        refresh.setColorSchemeResources(primary.resourceId,accent.resourceId);
         final LinearLayout linLay = (LinearLayout)top.findViewById(R.id.main_lay);
         handle = new Handler(Looper.getMainLooper()){
             @Override
@@ -146,10 +140,7 @@ public class VehicleList extends Fragment {
                 }
                 if(ContextCompat.checkSelfPermission(VehicleList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){int timeout = 0;
                     while((((SWrpg)getActivity().getApplication()).gac == null ||
-                            !((SWrpg)getActivity().getApplication()).gac.isConnected() ||
-                            ((SWrpg)getActivity().getApplication()).charsFold==null)&& timeout< 50){
-                        if(!((SWrpg)getActivity().getApplication()).gac.isConnecting())
-                            ((MainActivity)getActivity()).gacMaker();
+                            !((SWrpg)getActivity().getApplication()).gac.isConnected())&& timeout< 50){
                         try {
                             Thread.sleep(200);
                         } catch (InterruptedException e) {

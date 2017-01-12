@@ -58,7 +58,7 @@ public class GMFragment extends Fragment {
         };
         final TabLayout tabs = (TabLayout)top.findViewById(R.id.tabs);
         ViewPager pager = (ViewPager)top.findViewById(R.id.pager);
-        final CharacterList charList = CharacterList.newInstance(handle);
+        final CharacerList charList = CharacerList.newInstance(handle);
         final MinionList miniList = MinionList.newInstance(handle);
         FragmentPagerAdapter adap = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override

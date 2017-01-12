@@ -25,7 +25,7 @@ import com.apps.darkstorm.swrpg.ui.cards.CharacterCard;
 
 import java.util.ArrayList;
 
-public class CharacterList extends Fragment {
+public class CharacerList extends Fragment {
 
     private OnCharacterListInteractionListener mListener;
     private Handler handle;
@@ -33,10 +33,10 @@ public class CharacterList extends Fragment {
     ArrayList<Character> characters = new ArrayList<>();
 
 
-    public CharacterList() {}
+    public CharacerList() {}
 
-    public static CharacterList newInstance(Handler topHandle) {
-        CharacterList fragment = new CharacterList();
+    public static CharacerList newInstance(Handler topHandle) {
+        CharacerList fragment = new CharacerList();
         fragment.topHandle = topHandle;
         return fragment;
     }
@@ -124,14 +124,12 @@ public class CharacterList extends Fragment {
                 Message dal = handle.obtainMessage();
                 dal.arg1 = 20;
                 handle.sendMessage(dal);
-                if(ContextCompat.checkSelfPermission(CharacterList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                if(ContextCompat.checkSelfPermission(CharacerList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
                         int timeout = 0;
                         while((((SWrpg)getActivity().getApplication()).gac == null ||
                                 !((SWrpg)getActivity().getApplication()).gac.isConnected() ||
                                 ((SWrpg)getActivity().getApplication()).charsFold==null)&& timeout< 50){
-                            if(!((SWrpg)getActivity().getApplication()).gac.isConnecting())
-                                ((MainActivity)getActivity()).gacMaker();
                             try {
                                 Thread.sleep(200);
                             } catch (InterruptedException e) {
