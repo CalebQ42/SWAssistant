@@ -62,7 +62,8 @@ public class VehicleList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
+                    if (top != null)
+                        Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
                     ArrayList<Vehicle> chars = (ArrayList<Vehicle>)msg.obj;
@@ -138,27 +139,32 @@ public class VehicleList extends Fragment {
                         }
                     }
                 }
-                if(ContextCompat.checkSelfPermission(VehicleList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){int timeout = 0;
-                    while((((SWrpg)getActivity().getApplication()).gac == null ||
-                            !((SWrpg)getActivity().getApplication()).gac.isConnected())&& timeout< 50){
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                if(ContextCompat.checkSelfPermission(VehicleList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                    if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)) {
+                        int timeout = 0;
+                        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                            if(((SWrpg)getActivity().getApplication()).gac==null ||!((SWrpg)getActivity().getApplication()).gac.isConnected())
+                                ((MainActivity)getActivity()).gacMaker();
                         }
-                        timeout++;
-                    }
-                    if(timeout != 50) {
-                        if (((SWrpg) getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key), false)) {
+                        while ((((SWrpg) getActivity().getApplication()).gac == null ||
+                                !((SWrpg) getActivity().getApplication()).gac.isConnected()) && timeout < 50) {
+                            try {
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            timeout++;
+                        }
+                        if (timeout != 50) {
                             DriveLoadVehicles dlc = new DriveLoadVehicles(getActivity());
                             if (dlc.vehicles != null) {
                                 dlc.saveLocal(getActivity());
                             }
+                        } else {
+                            Message out = handle.obtainMessage();
+                            out.arg1 = 5;
+                            handle.sendMessage(out);
                         }
-                    }else{
-                        Message out = handle.obtainMessage();
-                        out.arg1 = 5;
-                        handle.sendMessage(out);
                     }
                     LoadVehicles lc = new LoadVehicles(getActivity());
                     Message out = handle.obtainMessage();
@@ -171,7 +177,7 @@ public class VehicleList extends Fragment {
                 return null;
             }
         };
-        async.execute();
+        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override

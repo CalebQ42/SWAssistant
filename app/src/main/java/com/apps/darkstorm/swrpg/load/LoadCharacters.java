@@ -27,10 +27,7 @@ public class LoadCharacters {
             File[] chars = fold.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    if (name.endsWith(".char")) {
-                        return true;
-                    }
-                    return false;
+                    return name.endsWith(".char");
                 }
             });
             for (File fil : chars) {

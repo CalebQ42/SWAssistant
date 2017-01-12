@@ -34,10 +34,7 @@ public class LoadVehicles {
             File[] chars = fold.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    if (name.endsWith(".vhcl")) {
-                        return true;
-                    }
-                    return false;
+                    return name.endsWith(".vhcl");
                 }
             });
             for (File fil : chars) {

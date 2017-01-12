@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
             DiceFragment.OnDiceInteractionListener, GuideMain.OnGuideInteractionListener,VehicleList.OnVehicleListInteractionListener,
             VehicleEdit.OnVehicleEditInteractionListener,MinionCharacterFragment.OnMinionCharacterListInteraction,
             MinionList.OnMinionListInteractionListener,MinionEditMain.OnMinionEditInteractionListener,
-            CharacterEditMain.OnFragmentInteractionListener,CharacerList.OnCharacterListInteractionListener,
+            CharacterEditMain.OnFragmentInteractionListener,CharacterList.OnCharacterListInteractionListener,
             CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
             GMFragment.OnGMInteractionListener{
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity
     public void gacMaker(){
         if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
             if(((SWrpg)getApplication()).gac == null) {
+                System.out.println("Making gac");
                 ((SWrpg)getApplication()).gac = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
                         .addScope(Drive.SCOPE_FILE)
@@ -74,8 +75,7 @@ public class MainActivity extends AppCompatActivity
                         .addOnConnectionFailedListener(this)
                         .build();
             }
-            if(!((SWrpg)getApplication()).gac.isConnected())
-                ((SWrpg)getApplication()).gac.connect();
+            ((SWrpg)getApplication()).gac.connect();
         }
     }
 
@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity
                                 android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
                 break;
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -169,6 +168,10 @@ public class MainActivity extends AppCompatActivity
             ((SWrpg)getApplication()).askingPerm = false;
         }
         gacMaker();
+    }
+
+    public void onResume(){
+        super.onResume();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){

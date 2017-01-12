@@ -25,7 +25,7 @@ import com.apps.darkstorm.swrpg.ui.cards.CharacterCard;
 
 import java.util.ArrayList;
 
-public class CharacerList extends Fragment {
+public class CharacterList extends Fragment {
 
     private OnCharacterListInteractionListener mListener;
     private Handler handle;
@@ -33,10 +33,10 @@ public class CharacerList extends Fragment {
     ArrayList<Character> characters = new ArrayList<>();
 
 
-    public CharacerList() {}
+    public CharacterList() {}
 
-    public static CharacerList newInstance(Handler topHandle) {
-        CharacerList fragment = new CharacerList();
+    public static CharacterList newInstance(Handler topHandle) {
+        CharacterList fragment = new CharacterList();
         fragment.topHandle = topHandle;
         return fragment;
     }
@@ -72,7 +72,8 @@ public class CharacerList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
+                    if (top != null)
+                        Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
                     ArrayList<Character> chars = (ArrayList<Character>)msg.obj;
@@ -124,12 +125,20 @@ public class CharacerList extends Fragment {
                 Message dal = handle.obtainMessage();
                 dal.arg1 = 20;
                 handle.sendMessage(dal);
-                if(ContextCompat.checkSelfPermission(CharacerList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                if(ContextCompat.checkSelfPermission(CharacterList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    while(((SWrpg)getActivity().getApplication()).askingPerm){
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if(ContextCompat.checkSelfPermission(CharacterList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
                         int timeout = 0;
                         while((((SWrpg)getActivity().getApplication()).gac == null ||
-                                !((SWrpg)getActivity().getApplication()).gac.isConnected() ||
-                                ((SWrpg)getActivity().getApplication()).charsFold==null)&& timeout< 50){
+                                !((SWrpg)getActivity().getApplication()).gac.isConnected()) && timeout < 50){
                             try {
                                 Thread.sleep(200);
                             } catch (InterruptedException e) {

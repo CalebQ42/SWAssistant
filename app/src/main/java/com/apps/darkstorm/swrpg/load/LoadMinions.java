@@ -27,10 +27,7 @@ public class LoadMinions {
             File[] chars = fold.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    if (name.endsWith(".minion")) {
-                        return true;
-                    }
-                    return false;
+                    return name.endsWith(".minion");
                 }
             });
             for (File fil : chars) {

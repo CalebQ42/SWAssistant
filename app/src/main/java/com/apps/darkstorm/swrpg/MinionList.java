@@ -70,7 +70,8 @@ public class MinionList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
+                    if (top != null)
+                        Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
                     ArrayList<Minion> chars = (ArrayList<Minion>)msg.obj;
@@ -153,7 +154,7 @@ public class MinionList extends Fragment {
                 return null;
             }
         };
-        async.execute();
+        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void onResume(){

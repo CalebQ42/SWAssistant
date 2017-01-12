@@ -35,7 +35,7 @@ public class DriveLoadVehicles {
                 .vehicFold.queryChildren(((SWrpg)main.getApplication()).gac, null).await();
         MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
         for (Metadata met : metBuf) {
-            if (!met.isFolder() && met.getFileExtension().equals("vhcl") && !met.isTrashed()) {
+            if (!met.isFolder() && met.getFileExtension()!=null && met.getFileExtension().equals("vhcl") && !met.isTrashed()) {
                 Vehicle tmp = new Vehicle();
                 tmp.reLoad(((SWrpg)main.getApplication()).gac, met.getDriveId());
                 vehicles.add(tmp);

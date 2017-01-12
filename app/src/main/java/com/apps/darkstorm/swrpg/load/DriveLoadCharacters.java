@@ -35,7 +35,7 @@ public class DriveLoadCharacters {
         MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
         for(Metadata met:metBuf){
             System.out.println(met.getTitle());
-            if (!met.isFolder() &&
+            if (!met.isFolder() && met.getFileExtension()!=null &&
                     met.getFileExtension().equals("char") && !met.isTrashed()){
                 Character tmp = new Character();
                 tmp.reLoad(((SWrpg)main.getApplication()).gac,met.getDriveId());

@@ -63,7 +63,7 @@ public class MinionCharacterFragment extends Fragment {
             public android.support.v4.app.Fragment getItem(int position) {
                 switch(position){
                     case 0:
-                        return CharacerList.newInstance(handle);
+                        return CharacterList.newInstance(handle);
                     case 1:
                         return MinionList.newInstance(handle);
                 }
@@ -128,6 +128,14 @@ public class MinionCharacterFragment extends Fragment {
         top.requestFocus();
         top.setFocusableInTouchMode(true);
         return top;
+    }
+
+    public void onResume(){
+        super.onResume();
+        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+            if(((SWrpg)getActivity().getApplication()).gac==null ||!((SWrpg)getActivity().getApplication()).gac.isConnected())
+                ((MainActivity)getActivity()).gacMaker();
+        }
     }
 
     @Override
