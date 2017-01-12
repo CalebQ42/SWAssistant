@@ -131,22 +131,28 @@ public class MinionList extends Fragment {
                                 e.printStackTrace();
                             }
                             timeout++;
+                            if(getActivity()==null)
+                                break;
                         }
-                        if(timeout != 50) {
-                            DriveLoadMinions dlc = new DriveLoadMinions(getActivity());
-                            if (dlc.minions != null) {
-                                dlc.saveLocal(getActivity());
+                        if (getActivity()!= null) {
+                            if (timeout != 50) {
+                                DriveLoadMinions dlc = new DriveLoadMinions(getActivity());
+                                if (dlc.minions != null) {
+                                    dlc.saveLocal(getActivity());
+                                }
+                            } else {
+                                Message out = handle.obtainMessage();
+                                out.arg1 = 5;
+                                handle.sendMessage(out);
                             }
-                        }else{
-                            Message out = handle.obtainMessage();
-                            out.arg1 = 5;
-                            handle.sendMessage(out);
                         }
                     }
-                    LoadMinions lc = new LoadMinions(getActivity());
-                    Message out = handle.obtainMessage();
-                    out.obj = lc.minions;
-                    handle.sendMessage(out);
+                    if (getActivity()!= null) {
+                        LoadMinions lc = new LoadMinions(getActivity());
+                        Message out = handle.obtainMessage();
+                        out.obj = lc.minions;
+                        handle.sendMessage(out);
+                    }
                 }
                 Message out = handle.obtainMessage();
                 out.arg1 = -20;

@@ -106,9 +106,9 @@ public class WeaponsCard {
                                 tmp.chars.add(wr);
                                 spec.addView(new WeapCharLayout().WeapCharLayout(main,spec,tmp,tmp.chars.get(tmp.chars.size()-1)));
                                 if (chara.isOverEncum())
-                                    top.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
+                                    root.findViewById(R.id.encum_warning).setVisibility(View.VISIBLE);
                                 else
-                                    top.findViewById(R.id.encum_warning).setVisibility(View.GONE);
+                                    root.findViewById(R.id.encum_warning).setVisibility(View.GONE);
                                 dialog.cancel();
                             }
                         }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

@@ -154,22 +154,28 @@ public class VehicleList extends Fragment {
                                 e.printStackTrace();
                             }
                             timeout++;
+                            if(getActivity()==null)
+                                break;
                         }
-                        if (timeout != 50) {
-                            DriveLoadVehicles dlc = new DriveLoadVehicles(getActivity());
-                            if (dlc.vehicles != null) {
-                                dlc.saveLocal(getActivity());
+                        if (getActivity()!= null) {
+                            if (timeout != 50) {
+                                DriveLoadVehicles dlc = new DriveLoadVehicles(getActivity());
+                                if (dlc.vehicles != null) {
+                                    dlc.saveLocal(getActivity());
+                                }
+                            } else {
+                                Message out = handle.obtainMessage();
+                                out.arg1 = 5;
+                                handle.sendMessage(out);
                             }
-                        } else {
-                            Message out = handle.obtainMessage();
-                            out.arg1 = 5;
-                            handle.sendMessage(out);
                         }
                     }
-                    LoadVehicles lc = new LoadVehicles(getActivity());
-                    Message out = handle.obtainMessage();
-                    out.obj = lc.vehicles;
-                    handle.sendMessage(out);
+                    if (getActivity()!= null) {
+                        LoadVehicles lc = new LoadVehicles(getActivity());
+                        Message out = handle.obtainMessage();
+                        out.obj = lc.vehicles;
+                        handle.sendMessage(out);
+                    }
                 }
                 Message out = handle.obtainMessage();
                 out.arg1 = -20;
