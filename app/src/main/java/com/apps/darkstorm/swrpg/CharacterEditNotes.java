@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.apps.darkstorm.swrpg.sw.Character;
+import com.apps.darkstorm.swrpg.sw.stuff.Notes;
 import com.apps.darkstorm.swrpg.ui.NoteCard;
 
 
@@ -43,6 +44,8 @@ public class CharacterEditNotes extends Fragment {
                 new NoteCard().newNote(top,top.getContext(),((LinearLayout)top.findViewById(R.id.notes_main)),((LinearLayout)top.findViewById(R.id.notes_edit)),chara,fab);
             }
         });
+        if(chara.nts == null)
+            chara.nts = new Notes();
         for (int i =0;i<chara.nts.size();i++) {
             ((LinearLayout)top.findViewById(R.id.notes_main)).addView(new NoteCard().NoteCard(top,top.getContext(),
                     ((LinearLayout)top.findViewById(R.id.notes_main)),((LinearLayout)top.findViewById(R.id.notes_edit)),
