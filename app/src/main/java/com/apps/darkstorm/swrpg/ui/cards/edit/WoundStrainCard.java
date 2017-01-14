@@ -238,7 +238,7 @@ public class WoundStrainCard {
             }
         });
         final TextView sysText = (TextView)top.findViewById(R.id.sys_stress_text);
-        hullText.setText(String.valueOf(vh.sysStressCur));
+        sysText.setText(String.valueOf(vh.sysStressCur));
         top.findViewById(R.id.sys_stress_minus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
