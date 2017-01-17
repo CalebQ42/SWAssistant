@@ -50,8 +50,10 @@ public class VehicleEdit extends Fragment {
         Handler handle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
-                SetupVehicEdit.setup(((LinearLayout)top.findViewById(R.id.main_lay)),getActivity(),vh);
-                vh.showHideCards(top);
+                if(getActivity()!= null && vh!=null) {
+                    SetupVehicEdit.setup(((LinearLayout) top.findViewById(R.id.main_lay)), getActivity(), vh);
+                    vh.showHideCards(top);
+                }
             }
         };
         handle.sendEmptyMessage(0);

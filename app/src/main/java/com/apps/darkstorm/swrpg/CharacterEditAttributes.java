@@ -41,8 +41,10 @@ public class CharacterEditAttributes extends Fragment {
         handle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
-                SetupCharAttr.setup(linLay,getActivity(),chara);
-                chara.showHideCards(top);
+                if(getActivity()!= null&&chara!=null) {
+                    SetupCharAttr.setup(linLay, getActivity(), chara);
+                    chara.showHideCards(top);
+                }
             }
         };
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);

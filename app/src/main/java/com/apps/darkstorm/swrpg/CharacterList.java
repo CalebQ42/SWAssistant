@@ -80,10 +80,12 @@ public class CharacterList extends Fragment {
                     if(!chars.equals(characters)||linLay.getChildCount()!=chars.size()) {
                         characters = chars;
                         linLay.removeAllViews();
-                        for(Character chara:chars){
-                            if(getActivity()!=null)
-                                linLay.addView(CharacterCard.getCard(getActivity(),linLay,chara,handle));
+                        for (int i = 0;i<chars.size();i++){
+                            if(chars.get(i) == null)
+                                chars.remove(i);
                         }
+                        for(Character chara:chars)
+                            linLay.addView(CharacterCard.getCard(getActivity(),linLay,chara,handle));
                     }
                 }
                 if (msg.obj instanceof Character){
@@ -122,55 +124,61 @@ public class CharacterList extends Fragment {
         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                Message dal = handle.obtainMessage();
-                dal.arg1 = 20;
-                handle.sendMessage(dal);
-                if(ContextCompat.checkSelfPermission(CharacterList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    while(((SWrpg)getActivity().getApplication()).askingPerm){
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                if(handle!= null) {
+                    Message dal = handle.obtainMessage();
+                    dal.arg1 = 20;
+                    handle.sendMessage(dal);
                 }
-                if(ContextCompat.checkSelfPermission(CharacterList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-                        int timeout = 0;
-                        while((((SWrpg)getActivity().getApplication()).gac == null ||
-                                !((SWrpg)getActivity().getApplication()).gac.isConnected()) && timeout < 50){
+                if(getContext()!= null) {
+                    if (ContextCompat.checkSelfPermission(CharacterList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        while (((SWrpg) getActivity().getApplication()).askingPerm) {
                             try {
                                 Thread.sleep(200);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            timeout++;
-                            if(getActivity()==null)
-                                break;
                         }
-                        if (getActivity()!= null) {
-                            if (timeout != 50) {
-                                DriveLoadCharacters dlc = new DriveLoadCharacters(getActivity());
-                                if (dlc.characters != null) {
-                                    dlc.saveLocal(getActivity());
+                    }
+                    if (ContextCompat.checkSelfPermission(CharacterList.this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        if (((SWrpg) getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key), false)) {
+                            int timeout = 0;
+                            while ((((SWrpg) getActivity().getApplication()).gac == null ||
+                                    !((SWrpg) getActivity().getApplication()).gac.isConnected()) && timeout < 50) {
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
-                            } else {
-                                Message out = handle.obtainMessage();
-                                out.arg1 = 5;
-                                handle.sendMessage(out);
+                                timeout++;
+                                if (getActivity() == null)
+                                    break;
+                            }
+                            if (getActivity() != null) {
+                                if (timeout != 50) {
+                                    DriveLoadCharacters dlc = new DriveLoadCharacters(getActivity());
+                                    if (dlc.characters != null) {
+                                        dlc.saveLocal(getActivity());
+                                    }
+                                } else {
+                                    Message out = handle.obtainMessage();
+                                    out.arg1 = 5;
+                                    handle.sendMessage(out);
+                                }
                             }
                         }
-                    }
-                    if(getActivity()!= null) {
-                        LoadCharacters lc = new LoadCharacters(getActivity());
-                        Message out = handle.obtainMessage();
-                        out.obj = lc.characters;
-                        handle.sendMessage(out);
+                        if (getActivity() != null) {
+                            LoadCharacters lc = new LoadCharacters(getActivity());
+                            Message out = handle.obtainMessage();
+                            out.obj = lc.characters;
+                            handle.sendMessage(out);
+                        }
                     }
                 }
-                Message out = handle.obtainMessage();
-                out.arg1 = -20;
-                handle.sendMessage(out);
+                if (handle!=null) {
+                    Message out = handle.obtainMessage();
+                    out.arg1 = -20;
+                    handle.sendMessage(out);
+                }
                 return null;
             }
         };

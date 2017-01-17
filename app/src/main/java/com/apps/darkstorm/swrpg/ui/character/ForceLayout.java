@@ -43,7 +43,7 @@ public class ForceLayout {
             @Override
             public boolean onLongClick(View v) {
                 AlertDialog.Builder build = new AlertDialog.Builder(main);
-                View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_text,null);
+                View dia = main.getLayoutInflater().inflate(R.layout.dialog_simple_edit,null);
                 build.setView(dia);
                 dia.findViewById(R.id.edit_desc_main).setVisibility(View.VISIBLE);
                 ((TextView)dia.findViewById(R.id.edit_name)).setText(R.string.force_power_text);

@@ -49,8 +49,10 @@ public class MinionEditMain extends Fragment {
         Handler handle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
-                SetupMinionAttr.setup((LinearLayout)top.findViewById(R.id.main_lay),getActivity(),minion);
-                minion.showHideCards(top);
+                if(getActivity()!= null&& minion!=null) {
+                    SetupMinionAttr.setup((LinearLayout) top.findViewById(R.id.main_lay), getActivity(), minion);
+                    minion.showHideCards(top);
+                }
             }
         };
         handle.sendEmptyMessage(0);

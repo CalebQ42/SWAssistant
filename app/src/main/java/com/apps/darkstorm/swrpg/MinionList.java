@@ -111,47 +111,49 @@ public class MinionList extends Fragment {
                 Message dal = handle.obtainMessage();
                 dal.arg1 = 20;
                 handle.sendMessage(dal);
-                if(ContextCompat.checkSelfPermission(MinionList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    while(((SWrpg)getActivity().getApplication()).askingPerm){
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                if(ContextCompat.checkSelfPermission(MinionList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-                        int timeout = 0;
-                        while((((SWrpg)getActivity().getApplication()).gac == null ||
-                                !((SWrpg)getActivity().getApplication()).gac.isConnected())&& timeout< 50){
+                if(getContext()!=null) {
+                    if (ContextCompat.checkSelfPermission(MinionList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        while (((SWrpg) getActivity().getApplication()).askingPerm) {
                             try {
                                 Thread.sleep(200);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            timeout++;
-                            if(getActivity()==null)
-                                break;
-                        }
-                        if (getActivity()!= null) {
-                            if (timeout != 50) {
-                                DriveLoadMinions dlc = new DriveLoadMinions(getActivity());
-                                if (dlc.minions != null) {
-                                    dlc.saveLocal(getActivity());
-                                }
-                            } else {
-                                Message out = handle.obtainMessage();
-                                out.arg1 = 5;
-                                handle.sendMessage(out);
-                            }
                         }
                     }
-                    if (getActivity()!= null) {
-                        LoadMinions lc = new LoadMinions(getActivity());
-                        Message out = handle.obtainMessage();
-                        out.obj = lc.minions;
-                        handle.sendMessage(out);
+                    if (ContextCompat.checkSelfPermission(MinionList.this.getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        if (((SWrpg) getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key), false)) {
+                            int timeout = 0;
+                            while ((((SWrpg) getActivity().getApplication()).gac == null ||
+                                    !((SWrpg) getActivity().getApplication()).gac.isConnected()) && timeout < 50) {
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                timeout++;
+                                if (getActivity() == null)
+                                    break;
+                            }
+                            if (getActivity() != null) {
+                                if (timeout != 50) {
+                                    DriveLoadMinions dlc = new DriveLoadMinions(getActivity());
+                                    if (dlc.minions != null) {
+                                        dlc.saveLocal(getActivity());
+                                    }
+                                } else {
+                                    Message out = handle.obtainMessage();
+                                    out.arg1 = 5;
+                                    handle.sendMessage(out);
+                                }
+                            }
+                        }
+                        if (getActivity() != null) {
+                            LoadMinions lc = new LoadMinions(getActivity());
+                            Message out = handle.obtainMessage();
+                            out.obj = lc.minions;
+                            handle.sendMessage(out);
+                        }
                     }
                 }
                 Message out = handle.obtainMessage();
