@@ -109,6 +109,12 @@ public class MainActivity extends AppCompatActivity
                 i.setData(Uri.parse(url));
                 startActivity(i);
                 return true;
+            case R.id.translate:
+                String urlial = "https://crowdin.com/project/swrpg/invite";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(urlial));
+                startActivity(intent);
+                return true;
             default:
                 return false;
         }

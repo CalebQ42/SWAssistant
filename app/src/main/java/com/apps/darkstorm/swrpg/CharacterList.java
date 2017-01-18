@@ -72,7 +72,7 @@ public class CharacterList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    if (top != null)
+                    if(top!=null)
                         Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
@@ -88,7 +88,7 @@ public class CharacterList extends Fragment {
                             linLay.addView(CharacterCard.getCard(getActivity(),linLay,chara,handle));
                     }
                 }
-                if (msg.obj instanceof Character){
+                if (msg.obj instanceof Character && getActivity()!=null){
                     if (msg.arg1==-1){
                         int ind = characters.indexOf(msg.obj);
                         Character min = (Character)msg.obj;

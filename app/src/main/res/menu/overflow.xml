@@ -3,4 +3,6 @@
 
     <item android:title="@string/g_plus"
         android:id="@+id/g_plus" />
+    <item android:title="@string/translate_text"
+        android:id="@+id/translate" />
 </menu>
