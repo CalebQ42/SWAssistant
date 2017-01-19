@@ -11,19 +11,16 @@
   <!--Difficulty Card-->
   <string name="difficulty_text">Difficulté:</string>
   <string name="easy_text">Facile</string>
-  <string name="average_text">Average</string>
-  <string name="hard_text">Hard</string>
-  <string name="daunting_text">Daunting</string>
-  <string name="formidable_text">Formidable</string>
+  <string name="average_text">Moyen</string>
+  <string name="hard_text">Difficile</string>
+  <string name="daunting_text">Intimidant</string>
+  <string name="formidable_text">Exceptionnel</string>
   <!--Dice Descriptions-->
-  <string name="ability_dice_desc">Basic positive die used in most skill checks. Represents aptitude in a skill.</string>
-  <string name="proficiency_dice_desc">A more powerful positive die used in most skill checks. Upgraded form of the
-    ability die. Represents innate ability or training.</string>
-  <string name="difficulty_dice_desc">Basic negative die used in most skill checks. Represents the difficulty of
-    a given task.</string>
-  <string name="challenge_dice_desc">A more powerful negative die. Upgraded form of
-    the difficulty die. Represents great adversity.</string>
-  <string name="boost_dice_desc">A positive die representing an advantage.</string>
-  <string name="setback_dice_desc">A negative die representing a disadvantage.</string>
-  <string name="force_dice_desc">A die representing the force. Used only when a player calls upon the force.</string>
+  <string name="ability_dice_desc">Dé positif de base utilisé dans la plupart des tests de compétence. Représente le savoir-faire d\'une compétence.</string>
+  <string name="proficiency_dice_desc">Un dé positif plus puissant utilisé dans la plupart des tests de compétence. Forme amélioré du dé Aptitude. Représente la Maîtrise ou le talent inné.</string>
+  <string name="difficulty_dice_desc">Dé négatif de base utilisé dans la plupart des tests de compétence. Représente la difficulté d\'une épreuve donnée.</string>
+  <string name="challenge_dice_desc">Dé négatif plus puissant. Forme dégradé du dé de Difficulté. Représente un grand Défi.</string>
+  <string name="boost_dice_desc">Dé positif représentant une Fortune.</string>
+  <string name="setback_dice_desc">Dé négatif représentant une Infortune.</string>
+  <string name="force_dice_desc">Dé représentant la Force. Utilisé seulement pour des pouvoirs de Force.</string>
 </resources>
