@@ -17,8 +17,7 @@
   <string name="cloud_text">Enregistrer sur Google Drive ( devrait fonctionner)</string>
   <string name="sync_text"><b>Sync-style</b>\nLong press for info</string>
   <string name="sync_summary">Restez appuyé pour infos</string>
-  <string name="sync_desc">Standard:\nDoes a two-way sync with Google Drive and local storage.
-        If used with multiple devices it\'s hard to actually delete a character. Good if you won\'t always have internet.\n
-        Sync-Style:\nFavors the Cloud over local storage. Good for multiple devices. You can edit characters, but deleting and creating characters
-        will be undone next time your online.</string>
+  <string name="sync_desc">Standard:n\Effectue une synchronisation à deux sens avec Google Drive and la sauvegarde locale.
+        Si utilisé sur plusieurs appareils, il est difficile d\'effacer un personnage. Pratique si internet n\'est pas toujours disponible.
+        Sync-style:\nUtilise le Cloud plutôt que la sauvegarde locale. Pratique pour plusieurs appareils. Edition de personnage possible mais         créer et effacer ce défont lors de la prochaine connection.</string>
 </resources>
