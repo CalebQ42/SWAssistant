@@ -209,8 +209,13 @@ public class Minion {
                 String title = filename.substring(filename.lastIndexOf("/")+1);
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)obj[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)obj[0];
+                    }
+                }
         }
     }
     public DriveId getFileId(Activity main){
@@ -285,8 +290,13 @@ public class Minion {
                 String title = fil.asDriveFile().getMetadata(gac).await().getMetadata().getTitle();
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)obj[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)obj[0];
+                    }
+                }
         }
     }
 

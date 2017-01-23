@@ -72,8 +72,11 @@ public class CharacterList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    if(top!=null)
+                    if(getContext()!=null)
                         Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
+                }else if(msg.arg1==15){
+                    if(getContext()!=null)
+                        Snackbar.make(top,R.string.still_loading,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
                     ArrayList<Character> chars = (ArrayList<Character>)msg.obj;
@@ -100,10 +103,16 @@ public class CharacterList extends Fragment {
                             characters.remove(ind);
                         }
                     }else{
-                        Message out = topHandle.obtainMessage();
-                        out.arg1 = msg.arg1;
-                        out.obj = msg.obj;
-                        topHandle.sendMessage(out);
+                        if(!refresh.isRefreshing()) {
+                            Message out = topHandle.obtainMessage();
+                            out.arg1 = msg.arg1;
+                            out.obj = msg.obj;
+                            topHandle.sendMessage(out);
+                        }else{
+                            Message out = handle.obtainMessage();
+                            out.arg1=15;
+                            handle.sendMessage(out);
+                        }
                     }
                 }
             }

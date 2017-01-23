@@ -243,8 +243,13 @@ public class Character {
                 String title = filename.substring(filename.lastIndexOf("/")+1);
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)vals[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)vals[0];
+                    }
+                }
                 name = (String)vals[1];
                 charVals = (int[])vals[2];
                 skills.loadFromObject(vals[3]);
@@ -358,8 +363,13 @@ public class Character {
                 String title = fil.asDriveFile().getMetadata(gac).await().getMetadata().getTitle();
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)vals[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)vals[0];
+                    }
+                }
                 name = (String)vals[1];
                 charVals = (int[])vals[2];
                 skills.loadFromObject(vals[3]);

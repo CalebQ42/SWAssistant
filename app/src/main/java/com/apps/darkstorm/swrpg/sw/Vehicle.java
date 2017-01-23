@@ -366,8 +366,13 @@ public class Vehicle {
                 String title = filename.substring(filename.lastIndexOf("/")+1);
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)val[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)val[0];
+                    }
+                }
         }
     }
     public void reLoad(GoogleApiClient gac, DriveId fil){
@@ -397,8 +402,13 @@ public class Vehicle {
                 String title = fil.asDriveFile().getMetadata(gac).await().getMetadata().getTitle();
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)val[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)val[0];
+                    }
+                }
         }
     }
     public String getFileLocation(Activity main){

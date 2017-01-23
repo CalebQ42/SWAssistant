@@ -62,8 +62,11 @@ public class VehicleList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    if (top != null)
+                    if (getContext() != null)
                         Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
+                }else if(msg.arg1==15){
+                    if(getContext()!=null)
+                        Snackbar.make(top,R.string.still_loading,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
                     ArrayList<Vehicle> chars = (ArrayList<Vehicle>)msg.obj;
@@ -85,10 +88,16 @@ public class VehicleList extends Fragment {
                             vehicles.remove(ind);
                         }
                     }else{
-                        getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                VehicleEdit.newInstance((Vehicle)msg.obj))
-                                .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                                android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
+                        if(!refresh.isRefreshing()) {
+                            getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                    VehicleEdit.newInstance((Vehicle) msg.obj))
+                                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                                            android.R.anim.fade_in, android.R.anim.fade_out).addToBackStack("").commit();
+                        }else{
+                            Message out = handle.obtainMessage();
+                            out.arg1=15;
+                            handle.sendMessage(out);
+                        }
                     }
                 }
             }
