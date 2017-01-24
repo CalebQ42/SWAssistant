@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'belac darkstorm'
             keyPassword 'intel_idle.max_cstate=1'
-            storeFile file('/media/belac/DriveyExt/Documents/AndroidApps/sign_key.jks')
+            storeFile file('/run/media/belac/DriveyExt/Documents/AndroidApps/sign_key.jks')
             storePassword 'intel_idle.max_cstate=1'
         }
     }
@@ -29,12 +29,12 @@ android {
     }
     productFlavors {
         freeConfig {
-            versionName '1.0.4.2'
+            versionName '1.0.4.5'
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 65
+            versionCode 66
             signingConfig signingConfigs.config
         }
         paidConfig {
@@ -42,8 +42,8 @@ android {
             applicationId 'com.apps.darkstorm.swrpg.donate'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 65
-            versionName '1.0.4.2'
+            versionCode 66
+            versionName '1.0.4.5'
             signingConfig signingConfigs.config
         }
     }

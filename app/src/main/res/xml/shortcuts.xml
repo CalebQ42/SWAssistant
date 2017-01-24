@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="dice"
+        android:enabled="true"
+        android:icon="@drawable/die_shortcut"
+        android:shortcutShortLabel="@string/dice_item"
+        android:shortcutLongLabel="@string/dice_item">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="dice"
+            android:targetPackage="com.apps.darkstorm.swrpg"
+            android:targetClass="com.apps.darkstorm.swrpg.MainActivity"/>
+    </shortcut>
+    <shortcut
+        android:shortcutId="guide"
+        android:enabled="true"
+        android:icon="@drawable/guide_shortcut"
+        android:shortcutShortLabel="@string/guide_item"
+        android:shortcutLongLabel="@string/guide_item">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="guide"
+            android:targetPackage="com.apps.darkstorm.swrpg"
+            android:targetClass="com.apps.darkstorm.swrpg.MainActivity"/>
+    </shortcut>
+</shortcuts>

@@ -57,14 +57,30 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+        Intent in = getIntent();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false)){
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,DiceFragment.newInstance()).commit();
+        if(in.getDataString()!=null) {
+            switch (in.getDataString()) {
+                case "dice":
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
+                    break;
+                case "guide":
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, GuideMain.newInstance()).commit();
+                    break;
+                default:
+                    if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+                    }
+            }
         }else{
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,MinionCharacterFragment.newInstance()).commit();
+            if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
+            } else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+            }
         }
     }
 
