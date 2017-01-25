@@ -230,6 +230,12 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
                 }
             }
+        }else{
+            if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
+            } else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+            }
         }
     }
 
