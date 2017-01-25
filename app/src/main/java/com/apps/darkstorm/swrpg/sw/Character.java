@@ -85,6 +85,7 @@ public class Character {
     private boolean editing = false;
     private boolean saving = false;
     private String loc = "";
+    public boolean external = false;
 
     public Character(){
         morality = 50;
@@ -100,7 +101,7 @@ public class Character {
         }
     }
     public void startEditing(final Activity main, final DriveId fold){
-        if(getFileLocation(main).equals(loc) && !loc.equals("")){
+        if(external){
             startEditing(main);
         }else {
             if (!editing) {
@@ -221,7 +222,7 @@ public class Character {
                 }
             }
             String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
-            if(!this.loc.equals(def)&&!loc.equals(""))
+            if(external)
                 return this.loc;
             return def;
         }else{

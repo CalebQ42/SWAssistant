@@ -58,6 +58,7 @@ public class Minion {
     private boolean editing = false;
     private boolean saving = false;
     private String loc = "";
+    public boolean external = false;
 
     public Minion(){
         for (int i = 0; i< showCard.length; i++)
@@ -69,7 +70,7 @@ public class Minion {
             showCard[i] = true;
     }
     public void startEditing(final Activity main, final DriveId fold){
-        if(getFileLocation(main).equals(loc) && !loc.equals("")){
+        if(external){
             startEditing(main);
         }else {
             if (!editing) {
@@ -188,7 +189,7 @@ public class Minion {
                 }
             }
             String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".minion";
-            if(!this.loc.equals(def)&&!this.loc.equals(""))
+            if(external)
                 return this.loc;
             return def;
         }else{

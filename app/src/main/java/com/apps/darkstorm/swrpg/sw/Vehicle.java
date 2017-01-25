@@ -64,6 +64,7 @@ public class Vehicle {
     private boolean editing = false;
     private boolean saving = false;
     private String loc="";
+    public boolean external = false;
 
 
     public Vehicle(){
@@ -213,7 +214,7 @@ public class Vehicle {
         return tmp;
     }
     public void startEditing(final Activity main, final DriveId fold){
-        if(getFileLocation(main).equals(loc) && !loc.equals("")){
+        if(external){
             startEditing(main);
         }else {
             if (!editing) {
@@ -456,7 +457,7 @@ public class Vehicle {
                 }
             }
             String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".vhcl";
-            if(!this.loc.equals(def)&&!this.loc.equals(""))
+            if(external)
                 return this.loc;
             return def;
         }else{
