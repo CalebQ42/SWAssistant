@@ -2,10 +2,12 @@ package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,6 +29,17 @@ public class VehicleEdit extends Fragment {
         VehicleEdit fragment = new VehicleEdit();
         fragment.vh = vh;
         return fragment;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            if(!((SWrpg)getActivity().getApplication()).hasShortcut(vh))
+                ((SWrpg)getActivity().getApplication()).addShortcut(vh,getActivity());
+            else
+                ((SWrpg)getActivity().getApplication()).updateShortcut(vh,getActivity());
+        }
     }
 
     public static VehicleEdit newInstance(int ID) {

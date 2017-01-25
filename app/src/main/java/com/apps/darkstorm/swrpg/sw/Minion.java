@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -56,6 +57,7 @@ public class Minion {
 
     private boolean editing = false;
     private boolean saving = false;
+    private String loc = "";
 
     public Minion(){
         for (int i = 0; i< showCard.length; i++)
@@ -67,42 +69,60 @@ public class Minion {
             showCard[i] = true;
     }
     public void startEditing(final Activity main, final DriveId fold){
-        if (!editing) {
-            editing = true;
-            AsyncTask<Void,Void,Void> blablah = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    Minion tmpChar = Minion.this.clone();
-                    Minion.this.save(Minion.this.getFileLocation(main));
-                    cloudSave(((SWrpg)main.getApplication()).gac,getFileId(main),false);
-                    do{
+        if(getFileLocation(main).equals(loc) && !loc.equals("")){
+            startEditing(main);
+        }else {
+            if (!editing) {
+                editing = true;
+                AsyncTask<Void, Void, Void> blablah = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        Minion tmpChar = Minion.this.clone();
+                        Minion.this.save(Minion.this.getFileLocation(main));
+                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        do {
+                            if (!saving) {
+                                saving = true;
+                                if (!Minion.this.equals(tmpChar)) {
+                                    if (!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                                        if (((SWrpg) main.getApplication()).hasShortcut(Minion.this)) {
+                                            ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
+                                        } else {
+                                            ((SWrpg) main.getApplication()).addShortcut(Minion.this, main);
+                                        }
+                                    }
+                                    Minion.this.save(Minion.this.getFileLocation(main));
+                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                                    tmpChar = Minion.this.clone();
+                                }
+                                saving = false;
+                            }
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } while (editing);
                         if (!saving) {
                             saving = true;
                             if (!Minion.this.equals(tmpChar)) {
+                                if (!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                                    if (((SWrpg) main.getApplication()).hasShortcut(Minion.this)) {
+                                        ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
+                                    } else {
+                                        ((SWrpg) main.getApplication()).addShortcut(Minion.this, main);
+                                    }
+                                }
                                 Minion.this.save(Minion.this.getFileLocation(main));
-                                cloudSave(((SWrpg)main.getApplication()).gac, getFileId(main),false);
-                                tmpChar = Minion.this.clone();
+                                cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                             }
                             saving = false;
                         }
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }while (editing);
-                    if (!saving) {
-                        saving = true;
-                        if (!Minion.this.equals(tmpChar)) {
-                            Minion.this.save(Minion.this.getFileLocation(main));
-                            cloudSave(((SWrpg)main.getApplication()).gac,getFileId(main),false);
-                        }
-                        saving = false;
+                        return null;
                     }
-                    return null;
-                }
-            };
-            blablah.execute();
+                };
+                blablah.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
         }
     }
     public void startEditing(final Activity main){
@@ -117,7 +137,13 @@ public class Minion {
                         if (!saving) {
                             saving = true;
                             if (!Minion.this.equals(tmpChar)) {
-                                System.out.println("saving...");
+                                if(!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
+                                    if(((SWrpg)main.getApplication()).hasShortcut(Minion.this)) {
+                                        ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
+                                    }else{
+                                        ((SWrpg)main.getApplication()).addShortcut(Minion.this,main);
+                                    }
+                                }
                                 Minion.this.save(Minion.this.getFileLocation(main));
                                 tmpChar = Minion.this.clone();
                             }
@@ -132,6 +158,13 @@ public class Minion {
                     if (!saving) {
                         saving = true;
                         if (!Minion.this.equals(tmpChar)) {
+                            if(!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
+                                if(((SWrpg)main.getApplication()).hasShortcut(Minion.this)) {
+                                    ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
+                                }else{
+                                    ((SWrpg)main.getApplication()).addShortcut(Minion.this,main);
+                                }
+                            }
                             Minion.this.save(Minion.this.getFileLocation(main));
                         }
                         saving = false;
@@ -154,7 +187,10 @@ public class Minion {
                     return "";
                 }
             }
-            return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".minion";
+            String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".minion";
+            if(!this.loc.equals(def)&&!this.loc.equals(""))
+                return this.loc;
+            return def;
         }else{
             return "";
         }
@@ -541,6 +577,9 @@ public class Minion {
                 }
             };
             async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            ((SWrpg)main.getApplication()).deleteShortcut(this,main);
         }
     }
 }

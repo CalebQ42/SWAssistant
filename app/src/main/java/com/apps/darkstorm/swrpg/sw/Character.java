@@ -2,6 +2,7 @@ package com.apps.darkstorm.swrpg.sw;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -83,6 +84,7 @@ public class Character {
 
     private boolean editing = false;
     private boolean saving = false;
+    private String loc = "";
 
     public Character(){
         morality = 50;
@@ -98,44 +100,62 @@ public class Character {
         }
     }
     public void startEditing(final Activity main, final DriveId fold){
-        if (!editing) {
-            editing = true;
-            AsyncTask<Void,Void,Void> blablah = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    Character tmpChar = Character.this.clone();
-                    Character.this.save(Character.this.getFileLocation(main));
-                    cloudSave(((SWrpg)main.getApplication()).gac,getFileId(main),false);
-                    do{
+        if(getFileLocation(main).equals(loc) && !loc.equals("")){
+            startEditing(main);
+        }else {
+            if (!editing) {
+                editing = true;
+                AsyncTask<Void, Void, Void> blablah = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        Character tmpChar = Character.this.clone();
+                        Character.this.save(Character.this.getFileLocation(main));
+                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        do {
+                            if (!saving) {
+                                saving = true;
+                                if (!Character.this.equals(tmpChar)) {
+                                    if (!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                                        if (((SWrpg) main.getApplication()).hasShortcut(Character.this)) {
+                                            ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
+                                        } else {
+                                            ((SWrpg) main.getApplication()).addShortcut(Character.this, main);
+                                        }
+                                    }
+                                    Character.this.save(Character.this.getFileLocation(main));
+                                    cloudSave(((SWrpg) main.getApplication()).gac,
+                                            getFileId(main), false);
+                                    tmpChar = Character.this.clone();
+                                }
+                                saving = false;
+                            }
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } while (editing);
                         if (!saving) {
                             saving = true;
                             if (!Character.this.equals(tmpChar)) {
+                                if (!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                                    if (((SWrpg) main.getApplication()).hasShortcut(Character.this)) {
+                                        ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
+                                    } else {
+                                        ((SWrpg) main.getApplication()).addShortcut(Character.this, main);
+                                    }
+                                }
                                 Character.this.save(Character.this.getFileLocation(main));
-                                cloudSave(((SWrpg)main.getApplication()).gac,
-                                        getFileId(main),false);
-                                tmpChar = Character.this.clone();
+                                cloudSave(((SWrpg) main.getApplication()).gac, getFileId(
+                                        main), false);
                             }
                             saving = false;
                         }
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }while (editing);
-                    if (!saving) {
-                        saving = true;
-                        if (!Character.this.equals(tmpChar)) {
-                            Character.this.save(Character.this.getFileLocation(main));
-                            cloudSave(((SWrpg)main.getApplication()).gac,getFileId(
-                                    main),false);
-                        }
-                        saving = false;
+                        return null;
                     }
-                    return null;
-                }
-            };
-            blablah.execute();
+                };
+                blablah.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
         }
     }
     public void startEditing(final Activity main){
@@ -150,7 +170,13 @@ public class Character {
                         if (!saving) {
                             saving = true;
                             if (!Character.this.equals(tmpChar)) {
-                                System.out.println("saving...");
+                                if(!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
+                                    if(((SWrpg)main.getApplication()).hasShortcut(Character.this)) {
+                                        ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
+                                    }else{
+                                        ((SWrpg)main.getApplication()).addShortcut(Character.this,main);
+                                    }
+                                }
                                 Character.this.save(Character.this.getFileLocation(main));
                                 tmpChar = Character.this.clone();
                             }
@@ -165,6 +191,13 @@ public class Character {
                     if (!saving) {
                         saving = true;
                         if (!Character.this.equals(tmpChar)) {
+                            if(!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
+                                if(((SWrpg)main.getApplication()).hasShortcut(Character.this)) {
+                                    ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
+                                }else{
+                                    ((SWrpg)main.getApplication()).addShortcut(Character.this,main);
+                                }
+                            }
                             Character.this.save(Character.this.getFileLocation(main));
                         }
                         saving = false;
@@ -187,7 +220,10 @@ public class Character {
                     return "";
                 }
             }
-            return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
+            String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
+            if(!this.loc.equals(def)&&!loc.equals(""))
+                return this.loc;
+            return def;
         }else{
             return "";
         }
@@ -771,6 +807,9 @@ public class Character {
                 }
             };
             async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            ((SWrpg)main.getApplication()).deleteShortcut(Character.this,main);
         }
     }
 }
