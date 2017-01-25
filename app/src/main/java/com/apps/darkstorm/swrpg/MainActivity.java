@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ((SWrpg)getApplication()).prefs = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
-        if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.light_side_key),false))
+        ((SWrpg) getApplication()).prefs = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
+        if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.light_side_key), false))
             setTheme(R.style.LightSide);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         Intent in = getIntent();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        if(in.getDataString()!=null) {
+        try {
             switch (in.getDataString()) {
                 case "dice":
                     getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
                     }
             }
-        }else{
+        } catch (java.lang.NullPointerException ignored) {
             if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
             } else {
