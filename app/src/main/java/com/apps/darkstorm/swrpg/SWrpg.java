@@ -28,7 +28,7 @@ public class SWrpg extends Application{
     public SharedPreferences prefs = null;
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     public void addShortcut(Character pl, Activity main){
-        if(!pl.name.equals("")) {
+        if(!pl.name.equals("")&&!pl.external) {
             ShortcutManager manag = getSystemService(ShortcutManager.class);
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://character/" + String.valueOf(pl.ID)));
@@ -49,7 +49,7 @@ public class SWrpg extends Application{
     }
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     public void addShortcut(Minion pl, Activity main){
-        if(!pl.name.equals("")) {
+        if(!pl.name.equals("")&&!pl.external) {
             ShortcutManager manag = getSystemService(ShortcutManager.class);
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://minion/" + String.valueOf(pl.ID)));
@@ -69,7 +69,7 @@ public class SWrpg extends Application{
     }
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     public void addShortcut(Vehicle pl, Activity main){
-        if(!pl.name.equals("")) {
+        if(!pl.name.equals("")&&!pl.external) {
             ShortcutManager manag = getSystemService(ShortcutManager.class);
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://vehicle/" + String.valueOf(pl.ID)));
