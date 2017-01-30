@@ -28,7 +28,7 @@
   <string name="add_text">Ajouter</string>
   <string name="add_brawn_text">Ajouter Pugilat</string>
   <string name="loaded_text">Chargé</string>
-  <string name="slug_text">Slugthrower (needs ammo)</string>
-  <string name="ammo_text">Ammo:</string>
-  <string name="encum_text">Encumbrance:</string>
+  <string name="slug_text">Percussion (nécessite munitions)</string>
+  <string name="ammo_text">Munition:</string>
+  <string name="encum_text">Encombrement:</string>
 </resources>
