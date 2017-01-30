@@ -3,27 +3,27 @@
 <resources>
   <string-array name="gear_damage_levels">
     <item>Aucun</item>
-    <item>Minor</item>
-    <item>Moderate</item>
-    <item>Major</item>
+    <item>Légers</item>
+    <item>Modérés</item>
+    <item>Graves</item>
   </string-array>
   <string-array name="crit_injury_severities">
-    <item>Easy</item>
-    <item>Average</item>
-    <item>Hard</item>
-    <item>Daunting</item>
+    <item>Facile</item>
+    <item>Moyen</item>
+    <item>Difficile</item>
+    <item>Intimidant</item>
   </string-array>
   <string-array name="range_bands">
-    <item>Engaged</item>
-    <item>Short</item>
-    <item>Medium</item>
-    <item>Long</item>
-    <item>Extreme</item>
+    <item>Au Contact</item>
+    <item>Courte</item>
+    <item>Moyenne</item>
+    <item>Longue</item>
+    <item>Extrême</item>
   </string-array>
   <string-array name="weapon_skills">
-    <item>Brawl</item>
-    <item>Gunnery</item>
-    <item>Lightsaber</item>
+    <item>Pugilat</item>
+    <item>Artillerie</item>
+    <item>Sabre laser</item>
     <item>Melee</item>
     <item>Ranged(Light)</item>
     <item>Ranged(Heavy)</item>
