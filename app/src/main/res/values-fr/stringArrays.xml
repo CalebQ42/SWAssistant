@@ -62,15 +62,15 @@
     <item>Pugilat</item>
     <item>Artillerie</item>
     <item>Sabre laser</item>
-    <item>Melee</item>
-    <item>Ranged(Light)</item>
-    <item>Ranged(Heavy)</item>
-    <item>Knowledge(Core Worlds)</item>
-    <item>Knowledge(Education)</item>
-    <item>Knowledge(Lore)</item>
-    <item>Knowledge(Outer Rim)</item>
-    <item>Knowledge(Underworld)</item>
-    <item>Knowledge(Xenology)</item>
-    <item>Other&#8230;</item>
+    <item>Corps à Corps</item>
+    <item>Distance(arme légère)</item>
+    <item>Distance(arme lourde)</item>
+    <item>Connaissance(Monde du Noyau)</item>
+    <item>Connaissance(Éducation)</item>
+    <item>Connaissance(Culture)</item>
+    <item>Connaissance(Bordure Extérieure)</item>
+    <item>Connaissance(Pègre)</item>
+    <item>Connaissance(Xenologie)</item>
+    <item>Autre&#8230;</item>
   </string-array>
 </resources>
