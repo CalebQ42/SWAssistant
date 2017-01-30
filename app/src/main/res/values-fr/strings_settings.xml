@@ -15,7 +15,7 @@
   <!--cloud strings-->
   <string name="cloud_warning">ATTENTION : Travaux en cours, utilisez à vos propres risques.</string>
   <string name="cloud_text">Enregistrer sur Google Drive ( devrait fonctionner)</string>
-  <string name="sync_text"><b>Sync-style</b>\nLong press for info</string>
+  <string name="sync_text"><b>Sync-style</b>\nAppuyer longtemps pour info</string>
   <string name="sync_summary">Restez appuyé pour infos</string>
   <string name="sync_desc">Standard:n\Effectue une synchronisation à deux sens avec Google Drive and la sauvegarde locale.
         Si utilisé sur plusieurs appareils, il est difficile d\'effacer un personnage. Pratique si internet n\'est pas toujours disponible.
