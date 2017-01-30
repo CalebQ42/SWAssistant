@@ -24,44 +24,44 @@
     <item>Pugilat</item>
     <item>Artillerie</item>
     <item>Sabre laser</item>
-    <item>Melee</item>
-    <item>Ranged(Light)</item>
-    <item>Ranged(Heavy)</item>
+    <item>Corps à Corps</item>
+    <item>Distance(arme légère)</item>
+    <item>Distance(arme lourde)</item>
   </string-array>
   <string-array name="base_characteristics">
-    <item>Brawn</item>
-    <item>Agility</item>
-    <item>Intellect</item>
-    <item>Cunning</item>
-    <item>Willpower</item>
-    <item>Presence</item>
+    <item>Vigueur</item>
+    <item>Agilité</item>
+    <item>Intelligence</item>
+    <item>Ruse</item>
+    <item>Volonté</item>
+    <item>Présence</item>
   </string-array>
   <string-array name="skills_list">
     <item>Astrogation</item>
-    <item>Athletics</item>
-    <item>Charm</item>
-    <item>Coercion</item>
-    <item>Computers</item>
-    <item>Cool</item>
+    <item>Athlétisme</item>
+    <item>Charme</item>
+    <item>Coercition</item>
+    <item>Informatique</item>
+    <item>Calme</item>
     <item>Coordination</item>
-    <item>Deception</item>
-    <item>Discipline</item>
-    <item>Leadership</item>
-    <item>Mechanics</item>
-    <item>Medicine</item>
-    <item>Negotiation</item>
+    <item>Tromperie</item>
+    <item>Sang-froid</item>
+    <item>Commandement</item>
+    <item>Mécanique</item>
+    <item>Médecine</item>
+    <item>Négociation</item>
     <item>Perception</item>
-    <item>Piloting(Planetary)</item>
-    <item>Piloting(Space)</item>
-    <item>Resilience</item>
-    <item>Skulduggery</item>
-    <item>Stealth</item>
-    <item>Streetwise</item>
-    <item>Survival</item>
+    <item>Pilitage(Planétaire)</item>
+    <item>Pilotage(Espace)</item>
+    <item>Résistance</item>
+    <item>Magouilles</item>
+    <item>Discrétion</item>
+    <item>Système D</item>
+    <item>Survie</item>
     <item>Vigilance</item>
-    <item>Brawl</item>
-    <item>Gunnery</item>
-    <item>Lightsaber</item>
+    <item>Pugilat</item>
+    <item>Artillerie</item>
+    <item>Sabre laser</item>
     <item>Melee</item>
     <item>Ranged(Light)</item>
     <item>Ranged(Heavy)</item>
