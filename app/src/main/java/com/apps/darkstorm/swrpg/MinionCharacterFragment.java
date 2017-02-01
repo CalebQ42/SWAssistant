@@ -102,7 +102,8 @@ public class MinionCharacterFragment extends Fragment {
                             i = -1;
                         }
                     }
-                    getFragmentManager().beginTransaction().replace(R.id.content_main,CharacterEditMain.newInstance(id))
+                    if(getActivity()!=null)
+                        getFragmentManager().beginTransaction().replace(R.id.content_main,CharacterEditMain.newInstance(id))
                             .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
                                     android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
                 }else{

@@ -2,7 +2,9 @@ package com.apps.darkstorm.swrpg;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -31,6 +33,17 @@ public class CharacterEditMain extends Fragment {
         Character tmp = new Character(Id);
         fragment.chara = tmp;
         return fragment;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            if(!((SWrpg)getActivity().getApplication()).hasShortcut(chara))
+                ((SWrpg)getActivity().getApplication()).addShortcut(chara,getActivity());
+            else
+                ((SWrpg)getActivity().getApplication()).updateShortcut(chara,getActivity());
+        }
     }
 
     @Override
@@ -120,10 +133,12 @@ public class CharacterEditMain extends Fragment {
     public void onResume(){
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.google_drive_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
-            chara.startEditing(getActivity(), ((SWrpg)getActivity().getApplication()).charsFold.getDriveId());
-        }else{
-            chara.startEditing(getActivity());
+        if(getActivity()!=null) {
+            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null) {
+                chara.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).charsFold.getDriveId());
+            } else {
+                chara.startEditing(getActivity());
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -62,6 +63,8 @@ public class Vehicle {
 
     private boolean editing = false;
     private boolean saving = false;
+    private String loc="";
+    public boolean external = false;
 
 
     public Vehicle(){
@@ -211,44 +214,61 @@ public class Vehicle {
         return tmp;
     }
     public void startEditing(final Activity main, final DriveId fold){
-        if (!editing){
-            editing = true;
-            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    Vehicle old = Vehicle.this.clone();
-                    Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,getFileId(main),false);
-                    Vehicle.this.save(getFileLocation(main));
-                    do{
+        if(external){
+            startEditing(main);
+        }else {
+            if (!editing) {
+                editing = true;
+                AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        Vehicle old = Vehicle.this.clone();
+                        Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        Vehicle.this.save(getFileLocation(main));
+                        do {
+                            if (!saving) {
+                                saving = true;
+                                if (!Vehicle.this.equals(old)) {
+                                    if (!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                                        if (((SWrpg) main.getApplication()).hasShortcut(Vehicle.this)) {
+                                            ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
+                                        } else {
+                                            ((SWrpg) main.getApplication()).addShortcut(Vehicle.this, main);
+                                        }
+                                    }
+                                    Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                                    Vehicle.this.save(getFileLocation(main));
+                                    old = Vehicle.this.clone();
+                                }
+                                saving = false;
+                            }
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } while (editing);
                         if (!saving) {
                             saving = true;
                             if (!Vehicle.this.equals(old)) {
-                                System.out.println("save");
-                                Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac, getFileId(main), false);
+                                if (!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                                    if (((SWrpg) main.getApplication()).hasShortcut(Vehicle.this)) {
+                                        ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
+                                    } else {
+                                        ((SWrpg) main.getApplication()).addShortcut(Vehicle.this, main);
+                                    }
+                                }
+                                Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac,
+                                        getFileId(main), false);
                                 Vehicle.this.save(getFileLocation(main));
-                                old = Vehicle.this.clone();
                             }
                             saving = false;
                         }
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }while(editing);
-                    if (!saving) {
-                        saving = true;
-                        if (!Vehicle.this.equals(old)) {
-                            Vehicle.this.cloudSave(((SWrpg)main.getApplication()).gac,
-                                    getFileId(main), false);
-                            Vehicle.this.save(getFileLocation(main));
-                        }
-                        saving = false;
+                        return null;
                     }
-                    return null;
-                }
-            };
-            async.execute();
+                };
+                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
         }
     }
     public void startEditing(final Activity main){
@@ -263,6 +283,13 @@ public class Vehicle {
                     if (!saving) {
                         saving = true;
                         if (!Vehicle.this.equals(old)) {
+                            if(!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
+                                if(((SWrpg)main.getApplication()).hasShortcut(Vehicle.this)) {
+                                    ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
+                                }else{
+                                    ((SWrpg)main.getApplication()).addShortcut(Vehicle.this,main);
+                                }
+                            }
                             Vehicle.this.save(getFileLocation(main));
                             old = Vehicle.this.clone();
                         }
@@ -277,6 +304,13 @@ public class Vehicle {
                 if (!saving) {
                     saving = true;
                     if (!Vehicle.this.equals(old)) {
+                        if(!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
+                            if(((SWrpg)main.getApplication()).hasShortcut(Vehicle.this)) {
+                                ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
+                            }else{
+                                ((SWrpg)main.getApplication()).addShortcut(Vehicle.this,main);
+                            }
+                        }
                         Vehicle.this.save(getFileLocation(main));
                     }
                     saving = false;
@@ -339,6 +373,7 @@ public class Vehicle {
         }
     }
     public void reLoad(String filename){
+        loc = filename;
         SaveLoad sl = new SaveLoad(filename);
         Object[] val = sl.load();
         System.out.println("Loading...");
@@ -366,8 +401,13 @@ public class Vehicle {
                 String title = filename.substring(filename.lastIndexOf("/")+1);
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)val[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)val[0];
+                    }
+                }
         }
     }
     public void reLoad(GoogleApiClient gac, DriveId fil){
@@ -397,8 +437,13 @@ public class Vehicle {
                 String title = fil.asDriveFile().getMetadata(gac).await().getMetadata().getTitle();
                 if (title.substring(0,title.indexOf(".")).equals(""))
                     ID = (int)val[0];
-                else
-                    ID = Integer.parseInt(title.substring(0,title.indexOf(".")));
+                else {
+                    try {
+                        ID = Integer.parseInt(title.substring(0, title.indexOf(".")));
+                    }catch(java.lang.NumberFormatException ignored){
+                        ID = (int)val[0];
+                    }
+                }
         }
     }
     public String getFileLocation(Activity main){
@@ -411,7 +456,10 @@ public class Vehicle {
                     return "";
                 }
             }
-            return location.getAbsolutePath() + "/" + Integer.toString(ID) + ".vhcl";
+            String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".vhcl";
+            if(external)
+                return this.loc;
+            return def;
         }else{
             return "";
         }
@@ -459,6 +507,9 @@ public class Vehicle {
                 }
             };
             async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            ((SWrpg)main.getApplication()).deleteShortcut(this,main);
         }
     }
 }
