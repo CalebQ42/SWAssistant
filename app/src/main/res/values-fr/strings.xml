@@ -17,4 +17,6 @@
   <string name="g_plus">Communauté G+</string>
   <string name="translate_text">Aidez à la traduction!</string>
   <string name="still_loading">Chargement en cours... Merci de patienter</string>
+  <string name="drive_loading">Connecting to Google Drive&#8230;</string>
+  <string name="ad_not_loaded">Ad not loaded, wait a moment</string>
 </resources>
