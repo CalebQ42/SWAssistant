@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "366257084395-19v64as4tnm1ttut4gtdebqigj4j5gn1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.apps.darkstorm.swrpg.donate",
-            "certificate_hash": "7CAACC6002A2AEEF753CFAC45415679F4AD218E9"
-          }
-        },
-        {
           "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -58,14 +50,6 @@
         }
       },
       "oauth_client": [
-        {
-          "client_id": "366257084395-n6rtgab6chptk5ke5rni0nk7i8otjcqe.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.apps.darkstorm.swrpg",
-            "certificate_hash": "7CAACC6002A2AEEF753CFAC45415679F4AD218E9"
-          }
-        },
         {
           "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
           "client_type": 3

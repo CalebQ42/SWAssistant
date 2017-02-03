@@ -107,7 +107,6 @@ public class SettingsFragment extends Fragment {
                 ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.google_drive_key),isChecked).apply();
                 if(isChecked){
                     sync.setVisibility(View.VISIBLE);
-                    ((MainActivity)getActivity()).gacMaker();
                 }else{
                     sync.setVisibility(View.GONE);
                 }

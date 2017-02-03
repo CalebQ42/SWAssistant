@@ -89,10 +89,12 @@ public class VehicleEdit extends Fragment {
     public void onResume(){
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
-        if (pref.getBoolean(getString(R.string.google_drive_key),false) && ((SWrpg)getActivity().getApplication()).gac != null){
-            vh.startEditing(getActivity(),((SWrpg)getActivity().getApplication()).vehicFold.getDriveId());
-        }else{
-            vh.startEditing(getActivity());
+        if(getActivity()!=null) {
+            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null) {
+                vh.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).vehicFold.getDriveId());
+            } else {
+                vh.startEditing(getActivity());
+            }
         }
     }
 

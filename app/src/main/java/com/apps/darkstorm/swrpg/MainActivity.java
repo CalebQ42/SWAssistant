@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -27,6 +28,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.darkstorm.swrpg.load.DriveLoadCharacters;
 import com.apps.darkstorm.swrpg.load.DriveLoadMinions;
@@ -38,15 +42,28 @@ import com.apps.darkstorm.swrpg.load.LoadVehicles;
 import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
+import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SettingsFragment.OnSettingsInteractionListener,
@@ -58,12 +75,32 @@ public class MainActivity extends AppCompatActivity
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
             GMFragment.OnGMInteractionListener{
 
+    InterstitialAd inti;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ((SWrpg) getApplication()).prefs = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.light_side_key), false))
             setTheme(R.style.LightSide);
         super.onCreate(savedInstanceState);
+        inti = new InterstitialAd(this);
+        if(BuildConfig.DEBUG){
+            inti.setAdUnitId(getString(R.string.interstitial_test));
+        }else {
+            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                inti.setAdUnitId(getString(R.string.free_interstitial));
+            else
+                inti.setAdUnitId(getString(R.string.paid_interstitial));
+        }
+        inti.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                AdRequest req = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("RPG").build();
+                inti.loadAd(req);
+            }
+        });
+        AdRequest req = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("RPG").build();
+        inti.loadAd(req);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,73 +116,93 @@ public class MainActivity extends AppCompatActivity
         final Handler handle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
-                String data = in.getDataString();
-                data = data.replace("content://","");
-                ArrayList<String> seg = new ArrayList<>();
-                seg.addAll(Arrays.asList(data.split("/")));
-                switch (seg.get(0)) {
-                    case "character":
-                        LoadCharacters lc = new LoadCharacters(MainActivity.this);
-                        int id = Integer.parseInt(seg.get(1));
-                        boolean changed = false;
-                        for (Character ch:lc.characters){
-                            if(ch.ID==id){
-                                changed = true;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,
-                                        CharacterEditMain.newInstance(ch)).commit();
+                if(!MainActivity.this.isDestroyed()) {
+                    String data = in.getDataString();
+                    data = data.replace("content://", "");
+                    ArrayList<String> seg = new ArrayList<>();
+                    seg.addAll(Arrays.asList(data.split("/")));
+                    switch (seg.get(0)) {
+                        case "character":
+                            LoadCharacters lc = new LoadCharacters(MainActivity.this);
+                            int id = Integer.parseInt(seg.get(1));
+                            boolean changed = false;
+                            for (Character ch : lc.characters) {
+                                if (ch.ID == id) {
+                                    changed = true;
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main,
+                                            CharacterEditMain.newInstance(ch)).commit();
+                                }
                             }
-                        }
-                        if(!changed){
-                            if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
-                            } else {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+                            if (!changed) {
+                                if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
+                                } else {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+                                }
                             }
-                        }
-                        break;
-                    case "minion":
-                        LoadMinions lm = new LoadMinions(MainActivity.this);
-                        id = Integer.parseInt(seg.get(1));
-                        changed = false;
-                        for (Minion ch:lm.minions){
-                            if(ch.ID==id){
-                                changed = true;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,
-                                        MinionEditMain.newInstance(ch)).commit();
+                            if(msg.obj instanceof AlertDialog){
+                                AlertDialog build = (AlertDialog)msg.obj;
+                                build.cancel();
                             }
-                        }
-                        if(!changed){
-                            if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
-                            } else {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+                            break;
+                        case "minion":
+                            LoadMinions lm = new LoadMinions(MainActivity.this);
+                            id = Integer.parseInt(seg.get(1));
+                            changed = false;
+                            for (Minion ch : lm.minions) {
+                                if (ch.ID == id) {
+                                    changed = true;
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main,
+                                            MinionEditMain.newInstance(ch)).commit();
+                                }
                             }
-                        }
-                        break;
-                    case "vehicle":
-                        LoadVehicles lv = new LoadVehicles(MainActivity.this);
-                        id = Integer.parseInt(seg.get(1));
-                        changed = false;
-                        for (Vehicle ch:lv.vehicles){
-                            if(ch.ID==id){
-                                changed = true;
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,
-                                        VehicleEdit.newInstance(ch)).commit();
+                            if (!changed) {
+                                if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
+                                } else {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+                                }
                             }
-                        }
-                        if(!changed){
-                            if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
-                            } else {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+                            if(msg.obj instanceof AlertDialog){
+                                AlertDialog build = (AlertDialog)msg.obj;
+                                build.cancel();
                             }
-                        }
-                        break;
+                            break;
+                        case "vehicle":
+                            LoadVehicles lv = new LoadVehicles(MainActivity.this);
+                            id = Integer.parseInt(seg.get(1));
+                            changed = false;
+                            for (Vehicle ch : lv.vehicles) {
+                                if (ch.ID == id) {
+                                    changed = true;
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main,
+                                            VehicleEdit.newInstance(ch)).commit();
+                                }
+                            }
+                            if (!changed) {
+                                if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false)) {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, DiceFragment.newInstance()).commit();
+                                } else {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.content_main, MinionCharacterFragment.newInstance()).commit();
+                                }
+                            }
+                            if(msg.obj instanceof AlertDialog){
+                                AlertDialog build = (AlertDialog)msg.obj;
+                                build.cancel();
+                            }
+                            break;
+                    }
                 }
             }
         };
         if(in.getAction().equals(Intent.ACTION_EDIT)){
             if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)) {
+                final AlertDialog.Builder build = new AlertDialog.Builder(this);
+                View dia = getLayoutInflater().inflate(R.layout.dialog_loading,null);
+                ((TextView)dia.findViewById(R.id.loading_text)).setText(R.string.drive_loading);
+                build.setView(dia);
+                final AlertDialog builded = build.create();
+                builded.show();
                 AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -179,7 +236,9 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
                         }
-                        handle.sendEmptyMessage(0);
+                        Message out = handle.obtainMessage();
+                        out.obj = builded;
+                        handle.sendMessage(out);
                         return null;
                     }
                 };
@@ -242,6 +301,7 @@ public class MainActivity extends AppCompatActivity
     public void gacMaker(){
         if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
             if(((SWrpg)getApplication()).gac == null) {
+                System.out.println("Making gac");
                 ((SWrpg)getApplication()).gac = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
                         .addScope(Drive.SCOPE_FILE)
@@ -328,6 +388,13 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main,SettingsFragment.newInstance())
                         .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
                                 android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
+                break;
+            case (R.id.interstitial):
+                if(inti.isLoaded()){
+                    inti.show();
+                }else{
+                    Toast.makeText(this,R.string.ad_not_loaded,Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -448,7 +515,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        System.out.println("Connected");
         InitialConnect.connect(this);
     }
 

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,9 @@ import com.apps.darkstorm.swrpg.load.DriveLoadMinions;
 import com.apps.darkstorm.swrpg.load.LoadMinions;
 import com.apps.darkstorm.swrpg.sw.Minion;
 import com.apps.darkstorm.swrpg.ui.cards.MinionCard;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
@@ -61,6 +65,26 @@ public class MinionList extends Fragment {
         TypedValue accent = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorAccent,accent,true);
         refresh.setColorSchemeResources(primary.resourceId,accent.resourceId);
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getActivity().getString(R.string.ads_key),true)) {
+            AdView ads = new AdView(getActivity());
+            ads.setAdSize(AdSize.BANNER);
+            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            adLayout.weight = 0;
+            adLayout.topMargin = (int)(5*getActivity().getResources().getDisplayMetrics().density);
+            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+            ads.setLayoutParams(adLayout);
+            if(BuildConfig.DEBUG){
+                ads.setAdUnitId(getActivity().getString(R.string.banner_test));
+            }else {
+                if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                    ads.setAdUnitId(getActivity().getString(R.string.free_banner_ad_id));
+                else
+                    ads.setAdUnitId(getActivity().getString(R.string.paid_banner_ad_id));
+            }
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+            ((LinearLayout)top.findViewById(R.id.top_lay)).addView(ads,0);
+        }
         final LinearLayout linLay = (LinearLayout)top.findViewById(R.id.main_lay);
         handle = new Handler(Looper.getMainLooper()){
             @Override
@@ -134,7 +158,8 @@ public class MinionList extends Fragment {
                         if (((SWrpg) getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key), false)) {
                             int timeout = 0;
                             while ((((SWrpg) getActivity().getApplication()).gac == null ||
-                                    !((SWrpg) getActivity().getApplication()).gac.isConnected()) && timeout < 50) {
+                                    !((SWrpg) getActivity().getApplication()).gac.isConnected() ||
+                                    ((SWrpg)getActivity().getApplication()).vehicFold==null) && timeout < 50) {
                                 try {
                                     Thread.sleep(200);
                                 } catch (InterruptedException e) {

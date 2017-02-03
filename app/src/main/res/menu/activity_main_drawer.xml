@@ -27,4 +27,10 @@
             android:icon="@drawable/settings"
             android:id="@+id/settings" />
     </group>
+    <item android:title="@string/other_group">
+        <menu >
+            <item android:title="@string/show_ad"
+                android:id="@+id/interstitial" />
+        </menu>
+    </item>
 </menu>

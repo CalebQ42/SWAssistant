@@ -111,7 +111,8 @@ public class Character {
                     protected Void doInBackground(Void... voids) {
                         Character tmpChar = Character.this.clone();
                         Character.this.save(Character.this.getFileLocation(main));
-                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        if(((SWrpg)main.getApplication()).vehicFold!=null)
+                            cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                         do {
                             if (!saving) {
                                 saving = true;
@@ -124,7 +125,8 @@ public class Character {
                                         }
                                     }
                                     Character.this.save(Character.this.getFileLocation(main));
-                                    cloudSave(((SWrpg) main.getApplication()).gac,
+                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                        cloudSave(((SWrpg) main.getApplication()).gac,
                                             getFileId(main), false);
                                     tmpChar = Character.this.clone();
                                 }
@@ -147,7 +149,8 @@ public class Character {
                                     }
                                 }
                                 Character.this.save(Character.this.getFileLocation(main));
-                                cloudSave(((SWrpg) main.getApplication()).gac, getFileId(
+                                if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(
                                         main), false);
                             }
                             saving = false;

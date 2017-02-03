@@ -16,4 +16,10 @@
     <!--AdKeys-->
     <string name="free_banner_ad_id">ca-app-pub-2493790455010177/5957657444</string>
     <string name="paid_banner_ad_id">ca-app-pub-2493790455010177/5120052649</string>
+
+    <string name="free_interstitial">ca-app-pub-2493790455010177/2958441049</string>
+    <string name="paid_interstitial">ca-app-pub-2493790455010177/5120052649</string>
+
+    <string name="banner_test">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_test">ca-app-pub-3940256099942544/1033173712</string>
 </resources>

@@ -223,7 +223,8 @@ public class Vehicle {
                     @Override
                     protected Void doInBackground(Void... voids) {
                         Vehicle old = Vehicle.this.clone();
-                        Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        if(((SWrpg)main.getApplication()).vehicFold!=null)
+                            Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                         Vehicle.this.save(getFileLocation(main));
                         do {
                             if (!saving) {
@@ -236,7 +237,8 @@ public class Vehicle {
                                             ((SWrpg) main.getApplication()).addShortcut(Vehicle.this, main);
                                         }
                                     }
-                                    Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                        Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                                     Vehicle.this.save(getFileLocation(main));
                                     old = Vehicle.this.clone();
                                 }
@@ -258,7 +260,8 @@ public class Vehicle {
                                         ((SWrpg) main.getApplication()).addShortcut(Vehicle.this, main);
                                     }
                                 }
-                                Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac,
+                                if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                    Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac,
                                         getFileId(main), false);
                                 Vehicle.this.save(getFileLocation(main));
                             }

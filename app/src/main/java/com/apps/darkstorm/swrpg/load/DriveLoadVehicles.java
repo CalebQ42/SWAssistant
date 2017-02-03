@@ -8,6 +8,9 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +35,8 @@ public class DriveLoadVehicles {
         vehicles = new ArrayList<>();
         lastMod = new ArrayList<>();
         DriveApi.MetadataBufferResult metBufRes = ((SWrpg)main.getApplication())
-                .vehicFold.queryChildren(((SWrpg)main.getApplication()).gac, null).await();
+                .vehicFold.queryChildren(((SWrpg)main.getApplication()).gac,
+                        new Query.Builder().addFilter(Filters.contains(SearchableField.TITLE,".vhcl")).build()).await();
         MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
         for (Metadata met : metBuf) {
             if (!met.isFolder() && met.getFileExtension()!=null && met.getFileExtension().equals("vhcl") && !met.isTrashed()) {

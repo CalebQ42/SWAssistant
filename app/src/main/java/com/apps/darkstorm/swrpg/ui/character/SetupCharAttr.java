@@ -1,8 +1,10 @@
 package com.apps.darkstorm.swrpg.ui.character;
 
 import android.app.Activity;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 
+import com.apps.darkstorm.swrpg.BuildConfig;
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
 import com.apps.darkstorm.swrpg.sw.Character;
@@ -23,24 +25,31 @@ import com.apps.darkstorm.swrpg.ui.cards.edit.TalentsCard;
 import com.apps.darkstorm.swrpg.ui.cards.edit.WeaponsCard;
 import com.apps.darkstorm.swrpg.ui.cards.edit.WoundStrainCard;
 import com.apps.darkstorm.swrpg.ui.cards.edit.XpCard;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public class SetupCharAttr {
     public static void setup(LinearLayout linLay,final Activity main, final Character chara){
         if (((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.ads_key),true)) {
-//            AdView ads = new AdView(main);
-//            ads.setAdSize(AdSize.BANNER);
-//            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-//            adLayout.weight = 0;
-//            adLayout.topMargin = (int)(5*main.getResources().getDisplayMetrics().density);
-//            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
-//            ads.setLayoutParams(adLayout);
-//            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
-//                ads.setAdUnitId(main.getString(R.string.free_banner_ad_id));
-//            else
-//                ads.setAdUnitId(main.getString(R.string.paid_banner_ad_id));
-//            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
-//            ads.loadAd(adRequest);
-//            linLay.addView(ads);
+            AdView ads = new AdView(main);
+            ads.setAdSize(AdSize.BANNER);
+            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            adLayout.weight = 0;
+            adLayout.topMargin = (int)(5*main.getResources().getDisplayMetrics().density);
+            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+            ads.setLayoutParams(adLayout);
+            if(BuildConfig.DEBUG){
+                ads.setAdUnitId(main.getString(R.string.banner_test));
+            }else {
+                if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                    ads.setAdUnitId(main.getString(R.string.free_banner_ad_id));
+                else
+                    ads.setAdUnitId(main.getString(R.string.paid_banner_ad_id));
+            }
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+            linLay.addView(ads);
         }
         linLay.addView(NameCard.getCard(main,linLay,chara));
         linLay.addView(SpeciesCareerCard.getCard(main,linLay,chara));

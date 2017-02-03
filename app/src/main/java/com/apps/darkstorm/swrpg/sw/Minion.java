@@ -80,7 +80,8 @@ public class Minion {
                     protected Void doInBackground(Void... voids) {
                         Minion tmpChar = Minion.this.clone();
                         Minion.this.save(Minion.this.getFileLocation(main));
-                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        if(((SWrpg)main.getApplication()).vehicFold!=null)
+                            cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                         do {
                             if (!saving) {
                                 saving = true;
@@ -93,7 +94,8 @@ public class Minion {
                                         }
                                     }
                                     Minion.this.save(Minion.this.getFileLocation(main));
-                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                                     tmpChar = Minion.this.clone();
                                 }
                                 saving = false;
@@ -115,7 +117,8 @@ public class Minion {
                                     }
                                 }
                                 Minion.this.save(Minion.this.getFileLocation(main));
-                                cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                                if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                             }
                             saving = false;
                         }

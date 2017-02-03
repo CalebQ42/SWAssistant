@@ -76,11 +76,13 @@ public class MinionEditMain extends Fragment {
 
     public void onResume(){
         super.onResume();
-        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false) &&
-                ((SWrpg)getActivity().getApplication()).gac != null){
-            minion.startEditing(getActivity(),((SWrpg)getActivity().getApplication()).charsFold.getDriveId());
-        }else{
-            minion.startEditing(getActivity());
+        if(getActivity()!=null) {
+            if (((SWrpg) getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key), false) &&
+                    ((SWrpg) getActivity().getApplication()).gac != null) {
+                minion.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).charsFold.getDriveId());
+            } else {
+                minion.startEditing(getActivity());
+            }
         }
     }
 
