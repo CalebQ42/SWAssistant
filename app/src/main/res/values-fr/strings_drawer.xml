@@ -8,4 +8,6 @@
   <string name="dice_item">Dés</string>
   <string name="guide_item">Guide</string>
   <string name="settings_item">Paramètres</string>
+  <string name="show_ad">Show Ad</string>
+  <string name="other_group">Other Stuff</string>
 </resources>
