@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -48,22 +47,11 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.MetadataBuffer;
-import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.drive.query.Filters;
-import com.google.android.gms.drive.query.Query;
-import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SettingsFragment.OnSettingsInteractionListener,
@@ -301,7 +289,6 @@ public class MainActivity extends AppCompatActivity
     public void gacMaker(){
         if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
             if(((SWrpg)getApplication()).gac == null) {
-                System.out.println("Making gac");
                 ((SWrpg)getApplication()).gac = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
                         .addScope(Drive.SCOPE_FILE)

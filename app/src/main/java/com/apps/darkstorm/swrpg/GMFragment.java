@@ -41,14 +41,17 @@ public class GMFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View top = inflater.inflate(R.layout.fragment_gm, container, false);
+        return inflater.inflate(R.layout.fragment_gm, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final Handler handle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
                 if(msg.obj instanceof Character){
                     getChildFragmentManager().beginTransaction().replace
                             (R.id.fragment_holder,CharacterEditMain.newInstance((Character)msg.obj))
-                    .commit();
+                            .commit();
                 }else if(msg.obj instanceof Minion){
                     getChildFragmentManager().beginTransaction().replace
                             (R.id.fragment_holder,MinionEditMain.newInstance((Minion)msg.obj))
@@ -132,7 +135,6 @@ public class GMFragment extends Fragment {
         });
         pager.setAdapter(adap);
         tabs.setupWithViewPager(pager);
-        return top;
     }
 
     @Override

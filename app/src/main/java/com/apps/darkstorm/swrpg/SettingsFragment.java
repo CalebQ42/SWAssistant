@@ -34,7 +34,10 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View top = inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
         fab.hide();
 
@@ -64,32 +67,32 @@ public class SettingsFragment extends Fragment {
                 AlertDialog.Builder build = new AlertDialog.Builder(getContext());
                 build.setMessage(R.string.save_warning)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        AlertDialog.Builder build = new AlertDialog.Builder(getContext());
-                        build.setTitle(R.string.save_location_text);
-                        LayoutInflater inflate = getActivity().getLayoutInflater();
-                        View simple = inflate.inflate(R.layout.dialog_simple_text,null);
-                        final EditText edit = (EditText)simple.findViewById(R.id.edit_val);
-                        edit.setText(((SWrpg)getActivity().getApplication()).prefs.getString(getString(R.string.local_location_key),((SWrpg)getActivity().getApplication()).defaultLoc));
-                        build.setView(simple).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
-                                ((SWrpg)getActivity().getApplication()).prefs.edit().putString(getString(R.string.local_location_key),edit.getText().toString())
-                                        .apply();
-                                loc.setText(edit.getText());
+                                AlertDialog.Builder build = new AlertDialog.Builder(getContext());
+                                build.setTitle(R.string.save_location_text);
+                                LayoutInflater inflate = getActivity().getLayoutInflater();
+                                View simple = inflate.inflate(R.layout.dialog_simple_text,null);
+                                final EditText edit = (EditText)simple.findViewById(R.id.edit_val);
+                                edit.setText(((SWrpg)getActivity().getApplication()).prefs.getString(getString(R.string.local_location_key),((SWrpg)getActivity().getApplication()).defaultLoc));
+                                build.setView(simple).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                        ((SWrpg)getActivity().getApplication()).prefs.edit().putString(getString(R.string.local_location_key),edit.getText().toString())
+                                                .apply();
+                                        loc.setText(edit.getText());
+                                    }
+                                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                build.show();
                             }
                         }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        build.show();
-                    }
-                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -139,7 +142,6 @@ public class SettingsFragment extends Fragment {
                 ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.ads_key),isChecked).apply();
             }
         });
-        ads.setEnabled(false);
         Switch light = (Switch)top.findViewById(R.id.theme_switch);
         light.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.light_side_key),false));
         light.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -156,7 +158,6 @@ public class SettingsFragment extends Fragment {
                         .startActivities();
             }
         });
-        return top;
     }
 
     @Override

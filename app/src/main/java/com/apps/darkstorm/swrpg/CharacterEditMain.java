@@ -55,7 +55,10 @@ public class CharacterEditMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_character_edit_main, container, false);
+        return inflater.inflate(R.layout.fragment_character_edit_main, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         TabLayout taby = (TabLayout)top.findViewById(R.id.tabLay);
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);
         taby.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -116,7 +119,6 @@ public class CharacterEditMain extends Fragment {
         pager.setAdapter(adap);
         top.setFocusableInTouchMode(true);
         top.requestFocus();
-        return top;
     }
 
     @Override

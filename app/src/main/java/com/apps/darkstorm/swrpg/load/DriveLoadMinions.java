@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg.load;
 
 import android.app.Activity;
+import android.support.design.widget.Snackbar;
 
 import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.SWrpg;
@@ -23,6 +24,10 @@ public class DriveLoadMinions {
     public DriveLoadMinions(Activity main) {
         int timeout = 0;
         while (((SWrpg)main.getApplication()).charsFold == null && timeout < 100) {
+            if(((SWrpg)main.getApplication()).driveFail) {
+                Snackbar.make(main.findViewById(R.id.content_main),R.string.drive_fail,Snackbar.LENGTH_LONG).show();
+                return;
+            }
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {

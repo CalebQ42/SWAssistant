@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.apps.darkstorm.swrpg.load.DriveLoadVehicles;
+import com.apps.darkstorm.swrpg.load.InitialConnect;
 import com.apps.darkstorm.swrpg.load.LoadVehicles;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.apps.darkstorm.swrpg.ui.cards.VehicleCard;
@@ -49,7 +50,10 @@ public class VehicleList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.general_list, container, false);
+        return inflater.inflate(R.layout.general_list, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final SwipeRefreshLayout refresh = (SwipeRefreshLayout)top.findViewById(R.id.swipe_refresh);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -148,7 +152,6 @@ public class VehicleList extends Fragment {
                                 android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
             }
         });
-        return top;
     }
 
     public void onResume(){
@@ -180,8 +183,7 @@ public class VehicleList extends Fragment {
                                 ((MainActivity)getActivity()).gacMaker();
                         }
                         while ((((SWrpg) getActivity().getApplication()).gac == null ||
-                                !((SWrpg) getActivity().getApplication()).gac.isConnected() ||
-                                ((SWrpg)getActivity().getApplication()).vehicFold==null) && timeout < 50) {
+                                !((SWrpg) getActivity().getApplication()).gac.isConnected()) && timeout < 50) {
                             try {
                                 Thread.sleep(200);
                             } catch (InterruptedException e) {
@@ -192,7 +194,11 @@ public class VehicleList extends Fragment {
                                 break;
                         }
                         if (getActivity()!= null) {
-                            if (timeout != 50) {
+                            if (timeout < 50) {
+                                if(((SWrpg)getActivity().getApplication()).driveFail){
+                                    ((SWrpg)getActivity().getApplication()).driveFail = false;
+                                    InitialConnect.connect(getActivity());
+                                }
                                 DriveLoadVehicles dlc = new DriveLoadVehicles(getActivity());
                                 if (dlc.vehicles != null) {
                                     dlc.saveLocal(getActivity());

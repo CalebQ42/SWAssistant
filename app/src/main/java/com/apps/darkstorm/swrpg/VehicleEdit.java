@@ -57,7 +57,10 @@ public class VehicleEdit extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_vehicle_edit, container, false);
+        return inflater.inflate(R.layout.fragment_vehicle_edit, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
         fab.hide();
         Handler handle = new Handler(Looper.getMainLooper()){
@@ -72,7 +75,6 @@ public class VehicleEdit extends Fragment {
         handle.sendEmptyMessage(0);
         top.setFocusableInTouchMode(true);
         top.requestFocus();
-        return top;
     }
 
     @Override

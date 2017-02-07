@@ -56,7 +56,10 @@ public class MinionEditMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_minion_edit_main, container, false);
+        return inflater.inflate(R.layout.fragment_minion_edit_main, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);
         fab.hide();
         Handler handle = new Handler(Looper.getMainLooper()){
@@ -71,7 +74,6 @@ public class MinionEditMain extends Fragment {
         handle.sendEmptyMessage(0);
         top.setFocusableInTouchMode(true);
         top.requestFocus();
-        return top;
     }
 
     public void onResume(){

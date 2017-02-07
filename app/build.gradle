@@ -9,6 +9,12 @@ android {
             storeFile file('/run/media/belac/DriveyExt/Documents/AndroidApps/sign_key.jks')
             storePassword 'intel_idle.max_cstate=1'
         }
+        MainConfig {
+            keyAlias 'belac darkstorm'
+            keyPassword 'intel_idle.max_cstate=1'
+            storeFile file('/run/media/belac/DriveyExt/Documents/AndroidApps/sign_key.jks')
+            storePassword 'intel_idle.max_cstate=1'
+        }
     }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -26,26 +32,28 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.MainConfig
+        }
+        debug {
+            signingConfig signingConfigs.MainConfig
         }
     }
     productFlavors {
         freeConfig {
-            versionName '1.0.6.0'
+            versionName '1.0.6.1'
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 73
-            signingConfig signingConfigs.config
+            versionCode 74
         }
         paidConfig {
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg.donate'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 73
-            versionName '1.0.6.0'
-            signingConfig signingConfigs.config
+            versionCode 74
+            versionName '1.0.6.1'
         }
     }
 }
@@ -57,18 +65,19 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
-    compile 'com.google.firebase:firebase-core:9.8.0'
-    compile 'com.google.firebase:firebase-messaging:9.8.0'
-    compile 'com.google.firebase:firebase-ads:9.8.0'
-    compile 'com.google.android.gms:play-services-drive:9.8.0'
-    compile 'com.google.android.gms:play-services-auth:9.8.0'
-    compile 'com.google.firebase:firebase-storage:9.8.0'
-    compile 'com.google.firebase:firebase-auth:9.8.0'
+    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.google.firebase:firebase-ads:10.0.1'
+    compile 'com.google.android.gms:play-services-drive:10.0.1'
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
+    compile 'com.google.firebase:firebase-storage:10.0.1'
+    compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'com.android.support:cardview-v7:25.1.1'
     compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.google.firebase:firebase-crash:9.8.0'
+    compile 'com.google.firebase:firebase-crash:10.0.1'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 
