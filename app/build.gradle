@@ -40,20 +40,20 @@ android {
     }
     productFlavors {
         freeConfig {
-            versionName '1.0.6.1'
+            versionName '1.0.6.3'
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 74
+            versionCode 76
         }
         paidConfig {
             minSdkVersion 19
             applicationId 'com.apps.darkstorm.swrpg.donate'
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 74
-            versionName '1.0.6.1'
+            versionCode 76
+            versionName '1.0.6.3'
         }
     }
 }

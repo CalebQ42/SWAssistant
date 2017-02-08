@@ -9,6 +9,9 @@
             <item android:title="@string/vehicles_item"
                 android:icon="@drawable/ship"
                 android:id="@+id/vehicles" />
+            <item android:title="@string/download_item"
+                android:id="@+id/download"
+                android:icon="@drawable/download" />
         </menu>
     </item>
     <group >

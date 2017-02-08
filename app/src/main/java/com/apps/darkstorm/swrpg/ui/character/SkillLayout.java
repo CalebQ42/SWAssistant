@@ -16,8 +16,8 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.apps.darkstorm.swrpg.dice.DiceRoll;
 import com.apps.darkstorm.swrpg.R;
+import com.apps.darkstorm.swrpg.dice.DiceRoll;
 import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
 import com.apps.darkstorm.swrpg.sw.stuff.Skill;

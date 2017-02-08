@@ -19,14 +19,14 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.dice.DiceResults;
 import com.apps.darkstorm.swrpg.dice.DiceRoll;
-import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
+import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.apps.darkstorm.swrpg.sw.stuff.WeapChar;
 import com.apps.darkstorm.swrpg.sw.stuff.Weapon;
-import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class WeaponLayout {
     int ability,proficiency,difficulty,challenge,boost,setback,force;

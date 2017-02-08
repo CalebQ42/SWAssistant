@@ -1,13 +1,30 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.apps.darkstorm.swrpg.DownloadFragment">
+    tools:context="com.apps.darkstorm.swrpg.DownloadFragment"
+    android:orientation="vertical"
+    android:id="@+id/top_lay">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <android.support.design.widget.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:id="@+id/tab_lay">
+
+    </android.support.design.widget.TabLayout>
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_weight="1"
+        android:id="@+id/pager"></android.support.v4.view.ViewPager>
 
-</FrameLayout>
+    <Button
+        android:text="@string/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/refresh_button"
+        android:layout_weight="0" />
+</LinearLayout>

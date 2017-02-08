@@ -98,10 +98,10 @@ public class MinionList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    if (getContext() != null)
+                    if (getView() != null)
                         Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
                 }else if(msg.arg1==15){
-                    if(getContext()!=null)
+                    if(getView()!=null)
                         Snackbar.make(top,R.string.still_loading,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){

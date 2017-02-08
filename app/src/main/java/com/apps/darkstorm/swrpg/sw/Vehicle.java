@@ -1,11 +1,8 @@
 package com.apps.darkstorm.swrpg.sw;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;

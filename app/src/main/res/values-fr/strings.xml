@@ -22,4 +22,8 @@
 
   <string name="ad_not_loaded">Ad not loaded, wait a moment</string>
   <string name="drive_fail">Google Drive has failed to connect</string>
+
+  <string name="refresh">Refresh</string>
+
+  <string name="tap_download">Tap to Download</string>
 </resources>

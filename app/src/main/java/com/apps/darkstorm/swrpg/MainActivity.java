@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
             CharacterEditMain.OnFragmentInteractionListener,CharacterList.OnCharacterListInteractionListener,
             CharacterEditAttributes.OnCharEditInteractionListener,CharacterEditNotes.OnNoteInteractionListener,
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-            GMFragment.OnGMInteractionListener{
+            GMFragment.OnGMInteractionListener, DownloadFragment.OnDownloadInteractionListener{
 
     InterstitialAd inti;
 
@@ -353,6 +353,13 @@ public class MainActivity extends AppCompatActivity
                         .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
                                 android.R.anim.fade_in,android.R.anim.fade_out)
                         .addToBackStack("").commit();
+                break;
+            case (R.id.download):
+                Toast.makeText(this,"Coming!",Toast.LENGTH_SHORT).show();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,DownloadFragment.newInstance())
+//                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+//                                android.R.anim.fade_in,android.R.anim.fade_out)
+//                        .addToBackStack("").commit();
                 break;
             case (R.id.gm_mode):
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main,GMFragment.newInstance())
