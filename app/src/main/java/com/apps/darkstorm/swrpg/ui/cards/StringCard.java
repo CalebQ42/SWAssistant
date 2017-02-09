@@ -18,6 +18,7 @@ public class StringCard {
             public void onClick(View v) {
                 Message out = handle.obtainMessage();
                 out.obj = str;
+                System.out.println("From Card: "+ out.obj);
                 handle.sendMessage(out);
             }
         });

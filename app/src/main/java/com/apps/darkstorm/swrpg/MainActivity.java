@@ -24,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -48,6 +49,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -355,11 +358,11 @@ public class MainActivity extends AppCompatActivity
                         .addToBackStack("").commit();
                 break;
             case (R.id.download):
-                Toast.makeText(this,"Coming!",Toast.LENGTH_SHORT).show();
-//                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,DownloadFragment.newInstance())
-//                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-//                                android.R.anim.fade_in,android.R.anim.fade_out)
-//                        .addToBackStack("").commit();
+//                Toast.makeText(this,"Coming!",Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,DownloadFragment.newInstance())
+                        .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                android.R.anim.fade_in,android.R.anim.fade_out)
+                        .addToBackStack("").commit();
                 break;
             case (R.id.gm_mode):
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main,GMFragment.newInstance())
@@ -500,10 +503,13 @@ public class MainActivity extends AppCompatActivity
         if (connectionResult.hasResolution()) {
             try {
                 connectionResult.startResolutionForResult(this, 1);
-            } catch (IntentSender.SendIntentException ignored) {}
+            } catch (IntentSender.SendIntentException ignored) {
+                ((SWrpg)getApplication()).driveFail = true;
+            }
         } else {
             GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
             gaa.getErrorDialog(this, connectionResult.getErrorCode(), 0).show();
+            ((SWrpg)getApplication()).driveFail = true;
         }
     }
 
@@ -514,7 +520,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -522,6 +527,8 @@ public class MainActivity extends AppCompatActivity
             case 5:
                 if (resultCode == RESULT_OK) {
                     ((SWrpg)getApplication()).gac.connect();
+                }else{
+                    ((SWrpg)getApplication()).driveFail = true;
                 }
                 break;
         }

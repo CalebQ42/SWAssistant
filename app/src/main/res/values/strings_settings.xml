@@ -28,4 +28,10 @@
         If used with multiple devices it\'s hard to actually delete a character. Good if you won\'t always have internet.\n
         Sync-Style:\nFavors the Cloud over local storage. Good for multiple devices. You can edit characters, but deleting and creating characters
         will be undone next time your online.</string>
+
+    <string name="upload_text">Upload</string>
+
+    <string name="uploading">Uploading…</string>
+
+    <string name="upload_question">Do you want to upload all local profiles?</string>
 </resources>

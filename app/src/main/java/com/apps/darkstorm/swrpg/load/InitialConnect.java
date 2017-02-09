@@ -20,6 +20,7 @@ import com.google.android.gms.drive.query.SortableField;
 
 public class InitialConnect {
     public static void connect(final Activity main){
+        System.out.println("Start Init");
         Drive.DriveApi.requestSync(((SWrpg)main.getApplication()).gac).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {

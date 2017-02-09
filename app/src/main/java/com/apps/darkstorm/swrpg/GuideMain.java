@@ -70,9 +70,13 @@ public class GuideMain extends Fragment {
                 View tmp;
                 switch(position){
                     case 0:
-                        return getLayoutInflater(saved).inflate(R.layout.guide_dice,group);
+                        tmp = getLayoutInflater(getArguments()).inflate(R.layout.guide_dice,group,false);
+                        group.addView(tmp);
+                        return tmp;
                     case 1:
-                        return getLayoutInflater(saved).inflate(R.layout.guide_skill_basic,group);
+                        tmp = getLayoutInflater(getArguments()).inflate(R.layout.guide_skill_basic,group,false);
+                        group.addView(tmp);
+                        return tmp;
                     default:
                         return null;
                 }

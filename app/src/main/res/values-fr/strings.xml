@@ -26,4 +26,7 @@
   <string name="refresh">Refresh</string>
 
   <string name="tap_download">Tap to Download</string>
+
+  <string name="success">Success</string>
+  <string name="failure">Failure</string>
 </resources>

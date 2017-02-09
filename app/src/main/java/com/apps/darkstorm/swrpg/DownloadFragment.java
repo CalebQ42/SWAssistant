@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -30,6 +31,8 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.apps.darkstorm.swrpg.ui.cards.StringCard;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -62,7 +65,7 @@ public class DownloadFragment extends Fragment {
 
     View chara,mini,vehic;
 
-    Handler charHandle,miniHandle,vehicHandle;
+    Handler charHandle,miniHandle,vehicHandle,main;
 
     @Override
     public void onViewCreated(View top, @Nullable final Bundle savedInstanceState) {
@@ -75,18 +78,25 @@ public class DownloadFragment extends Fragment {
         });
         TabLayout tab = (TabLayout) top.findViewById(R.id.tab_lay);
         ViewPager pager = (ViewPager)top.findViewById(R.id.pager);
-        chara = getLayoutInflater(savedInstanceState).inflate(R.layout.general_list,pager);
-        mini = getLayoutInflater(savedInstanceState).inflate(R.layout.general_list,pager);
-        vehic = getLayoutInflater(savedInstanceState).inflate(R.layout.general_list,pager);
+        ((FloatingActionButton)getActivity().findViewById(R.id.uni_fab)).hide();
+        vehic = getLayoutInflater(savedInstanceState).inflate(R.layout.general_list,pager,false);
+        mini = getLayoutInflater(savedInstanceState).inflate(R.layout.general_list,pager,false);
+        chara = getLayoutInflater(savedInstanceState).inflate(R.layout.general_list,pager,false);
         adap = new PagerAdapter() {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 switch(position){
                     case 0:
+                        container.removeView(chara);
+                        container.addView(chara);
                         return chara;
                     case 1:
+                        container.removeView(mini);
+                        container.addView(mini);
                         return mini;
                     case 2:
+                        container.removeView(vehic);
+                        container.addView(vehic);
                         return vehic;
                     default:
                         return null;
@@ -133,7 +143,7 @@ public class DownloadFragment extends Fragment {
         };
         pager.setAdapter(adap);
         tab.setupWithViewPager(pager);
-        final Handler main = new Handler(Looper.getMainLooper()){
+        main = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
                 if(msg.arg1 == -1){
@@ -148,14 +158,14 @@ public class DownloadFragment extends Fragment {
         charHandle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(final Message msg) {
+                final String name = (String)msg.obj;
                 AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
-                        Message msg = main.obtainMessage();
-                        msg.arg1 = 20;
-                        main.sendMessage(msg);
+                        Message out = main.obtainMessage();
+                        out.arg1 = 20;
+                        main.sendMessage(out);
                     }
-
                     @Override
                     protected Void doInBackground(Void... params) {
                         if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
@@ -173,11 +183,15 @@ public class DownloadFragment extends Fragment {
                                 i = -1;
                             }
                         }
-                        Character tmp = new Character(id);
+                        final Character tmp = new Character(id);
                         StorageReference stor = FirebaseStorage.getInstance().getReference().getRoot().child("Characters");
-                        stor.child((String)msg.obj).getFile(new File(tmp.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        stor.child(name + ".char").getFile(new File(tmp.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)) {
+                                    tmp.reLoad(tmp.getFileLocation(getActivity()));
+                                    tmp.cloudSave(((SWrpg) getActivity().getApplication()).gac, tmp.getFileId(getActivity()), false);
+                                }
                                 Message msg = main.obtainMessage();
                                 msg.arg1 = 1;
                                 main.sendMessage(msg);
@@ -199,12 +213,13 @@ public class DownloadFragment extends Fragment {
         miniHandle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(final Message msg) {
+                final String name = (String)msg.obj;
                 AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
-                        Message msg = main.obtainMessage();
-                        msg.arg1 = 20;
-                        main.sendMessage(msg);
+                        Message out = main.obtainMessage();
+                        out.arg1 = 20;
+                        main.sendMessage(out);
                     }
 
                     @Override
@@ -224,11 +239,15 @@ public class DownloadFragment extends Fragment {
                                 i = -1;
                             }
                         }
-                        Minion tmp = new Minion(id);
+                        final Minion tmp = new Minion(id);
                         StorageReference stor = FirebaseStorage.getInstance().getReference().getRoot().child("Minions");
-                        stor.child((String)msg.obj).getFile(new File(tmp.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        stor.child(name + ".minion").getFile(new File(tmp.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)) {
+                                    tmp.reLoad(tmp.getFileLocation(getActivity()));
+                                    tmp.cloudSave(((SWrpg) getActivity().getApplication()).gac, tmp.getFileId(getActivity()), false);
+                                }
                                 Message msg = main.obtainMessage();
                                 msg.arg1 = 1;
                                 main.sendMessage(msg);
@@ -250,12 +269,13 @@ public class DownloadFragment extends Fragment {
         vehicHandle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(final Message msg) {
+                final String name = (String)msg.obj;
                 AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected void onPreExecute() {
-                        Message msg = main.obtainMessage();
-                        msg.arg1 = 20;
-                        main.sendMessage(msg);
+                        Message out = main.obtainMessage();
+                        out.arg1 = 20;
+                        main.sendMessage(out);
                     }
 
                     @Override
@@ -275,11 +295,15 @@ public class DownloadFragment extends Fragment {
                                 i = -1;
                             }
                         }
-                        Vehicle tmp = new Vehicle(id);
-                        StorageReference stor = FirebaseStorage.getInstance().getReference().getRoot().child("Characters");
-                        stor.child((String)msg.obj).getFile(new File(tmp.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        final Vehicle tmp = new Vehicle(id);
+                        StorageReference stor = FirebaseStorage.getInstance().getReference().getRoot().child("Vehicles");
+                        stor.child(name + ".vhcl").getFile(new File(tmp.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)) {
+                                    tmp.reLoad(tmp.getFileLocation(getActivity()));
+                                    tmp.cloudSave(((SWrpg) getActivity().getApplication()).gac, tmp.getFileId(getActivity()), false);
+                                }
                                 Message msg = main.obtainMessage();
                                 msg.arg1 = 1;
                                 main.sendMessage(msg);
@@ -302,7 +326,8 @@ public class DownloadFragment extends Fragment {
     }
 
     public void updateAll(){
-        StorageReference stor = FirebaseStorage.getInstance().getReference().getRoot();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference stor = storage.getReferenceFromUrl("gs://swrpg-48c41.appspot.com");
         stor.child("List").getBytes(102400).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -334,6 +359,9 @@ public class DownloadFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                Message msg = main.obtainMessage();
+                msg.arg1 = -1;
+                main.sendMessage(msg);
             }
         });
     }

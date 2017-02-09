@@ -20,4 +20,10 @@
   <string name="sync_desc">Standard:n\Effectue une synchronisation à deux sens avec Google Drive and la sauvegarde locale.
         Si utilisé sur plusieurs appareils, il est difficile d\'effacer un personnage. Pratique si internet n\'est pas toujours disponible.
         Sync-style:\nUtilise le Cloud plutôt que la sauvegarde locale. Pratique pour plusieurs appareils. Edition de personnage possible mais         créer et effacer ce défont lors de la prochaine connection.</string>
+
+  <string name="upload_text">Upload</string>
+
+  <string name="upload_question">Do you want to upload all local profiles?</string>
+
+  <string name="uploading">Uploading…</string>
 </resources>
