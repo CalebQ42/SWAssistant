@@ -31,8 +31,6 @@ import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.apps.darkstorm.swrpg.ui.cards.StringCard;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -335,7 +333,7 @@ public class DownloadFragment extends Fragment {
                 String[] chars = tot.substring(tot.indexOf("{{Characters}}")+"{{Characters}}".length(),tot.indexOf("{{Minions}}")).split("\n");
                 String[] minis = tot.substring(tot.indexOf("{{Minions}}")+"{{Minions}}".length(),tot.indexOf("{{Vehicles}}")).split("\n");
                 String[] vehis = tot.substring(tot.indexOf("{{Vehicles}}")+"{{Vehicles}}".length()).split("\n");
-                if(adap != null){
+                if(adap != null && getActivity()!=null){
                     LinearLayout charaLay = (LinearLayout)chara.findViewById(R.id.main_lay);
                     charaLay.removeAllViews();
                     for(String ch:chars) {

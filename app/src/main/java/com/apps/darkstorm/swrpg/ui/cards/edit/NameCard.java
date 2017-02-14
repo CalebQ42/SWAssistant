@@ -3,6 +3,7 @@ package com.apps.darkstorm.swrpg.ui.cards.edit;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.InputType;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class NameCard {
@@ -162,6 +164,15 @@ public class NameCard {
                 async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
+        top.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.putExtra("Mini", (Serializable) minion);
+                intent.setType("resource/folder");
+                main.startActivityForResult(intent,20);
+            }
+        });
         return top;
     }
     public static View getCard(final Activity main, ViewGroup root, final Vehicle vehic){
@@ -229,6 +240,15 @@ public class NameCard {
                     }
                 };
                 async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+        top.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.putExtra("Vhcl", (Serializable) vehic);
+                intent.setType("resource/folder");
+                main.startActivityForResult(intent,20);
             }
         });
         return top;

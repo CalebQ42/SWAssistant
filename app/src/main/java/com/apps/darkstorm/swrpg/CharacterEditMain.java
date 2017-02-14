@@ -136,7 +136,8 @@ public class CharacterEditMain extends Fragment {
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         if(getActivity()!=null) {
-            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null) {
+            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null
+                    && chara!=null) {
                 chara.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).charsFold.getDriveId());
             } else {
                 chara.startEditing(getActivity());

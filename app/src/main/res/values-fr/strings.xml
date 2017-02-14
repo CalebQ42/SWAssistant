@@ -29,4 +29,8 @@
 
   <string name="success">Success</string>
   <string name="failure">Failure</string>
+
+  <string name="export">Select Export Folder:</string>
+
+  <string name="select">Select</string>
 </resources>

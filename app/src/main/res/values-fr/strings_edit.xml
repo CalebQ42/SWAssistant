@@ -61,4 +61,6 @@
   <string name="presence_text">Présence:</string>
   <string name="character_delete">Êtes-vous certains de vouloir supprimer ce personnage?</string>
   <string name="minion_delete">Êtes-vous certains de vouloir supprimer ce sbire?</string>
+
+  <string name="export_text">Export</string>
 </resources>

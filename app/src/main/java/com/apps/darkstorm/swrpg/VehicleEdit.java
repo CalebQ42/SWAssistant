@@ -18,6 +18,9 @@ import android.widget.LinearLayout;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.apps.darkstorm.swrpg.ui.vehicle.SetupVehicEdit;
 
+import ir.sohreco.androidfilechooser.ExternalStorageNotAvailableException;
+import ir.sohreco.androidfilechooser.FileChooserDialog;
+
 public class VehicleEdit extends Fragment {
     private OnVehicleEditInteractionListener mListener;
 
@@ -69,6 +72,24 @@ public class VehicleEdit extends Fragment {
                 if(getActivity()!= null && vh!=null) {
                     SetupVehicEdit.setup(((LinearLayout) top.findViewById(R.id.main_lay)), getActivity(), vh);
                     vh.showHideCards(top);
+                    top.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            FileChooserDialog.Builder build = new FileChooserDialog.Builder(FileChooserDialog.ChooserType.DIRECTORY_CHOOSER,
+                                    new FileChooserDialog.ChooserListener() {
+                                        @Override
+                                        public void onSelect(String path) {
+                                            vh.save(path+"/"+vh.name+".vhcl");
+                                        }
+                                    }).setTitle(getString(R.string.export))
+                                    .setSelectDirectoryButtonText(getString(R.string.select));
+                            try {
+                                build.build().show(getChildFragmentManager(), null);
+                            } catch (ExternalStorageNotAvailableException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             }
         };
@@ -92,7 +113,8 @@ public class VehicleEdit extends Fragment {
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         if(getActivity()!=null) {
-            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null) {
+            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null
+                    && vh!=null) {
                 vh.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).vehicFold.getDriveId());
             } else {
                 vh.startEditing(getActivity());
