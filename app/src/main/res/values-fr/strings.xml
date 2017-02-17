@@ -19,4 +19,11 @@
   <string name="still_loading">Chargement en cours... Merci de patienter</string>
   <string name="drive_loading">Connecting to Google Drive&#8230;</string>
   <string name="ad_not_loaded">Ad not loaded, wait a moment</string>
+  <string name="drive_fail">Google Drive has failed to connect</string>
+  <string name="refresh">Refresh</string>
+  <string name="tap_download">Tap to Download</string>
+  <string name="success">Success</string>
+  <string name="failure">Failure</string>
+  <string name="export">Select Export Folder:</string>
+  <string name="select">Select</string>
 </resources>
