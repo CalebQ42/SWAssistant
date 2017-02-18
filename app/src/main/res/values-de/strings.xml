@@ -15,15 +15,15 @@ Bei Abbrechen wechselt die App in den Nur-Würfel-Modus.</string>
   <string name="retry">Erneut versuchen</string>
   <string name="swipe_refresh">Nach unten wischen um Charakterliste zu aktualisieren</string>
   <string name="g_plus">G+ Community</string>
-  <string name="translate_text">Help Translate!</string>
-  <string name="still_loading">Still loading&#8230;Please wait</string>
-  <string name="drive_loading">Connecting to Google Drive&#8230;</string>
-  <string name="ad_not_loaded">Ad not loaded, wait a moment</string>
-  <string name="drive_fail">Google Drive has failed to connect</string>
-  <string name="refresh">Refresh</string>
-  <string name="tap_download">Tap to Download</string>
-  <string name="success">Success</string>
-  <string name="failure">Failure</string>
-  <string name="export">Select Export Folder:</string>
-  <string name="select">Select</string>
+  <string name="translate_text">Hilf beim Übersetzen!</string>
+  <string name="still_loading">Lädt... Bitte warten</string>
+  <string name="drive_loading">Verbinden mit Google Drive&#8230;</string>
+  <string name="ad_not_loaded">Anzeige nicht korrekt geladen, warte einen Moment</string>
+  <string name="drive_fail">Google Drive Verbindung fehlgeschlagen</string>
+  <string name="refresh">Aktualisieren</string>
+  <string name="tap_download">Zum Herunterladen tippen</string>
+  <string name="success">Erfolgreich</string>
+  <string name="failure">Fehler</string>
+  <string name="export">Export-Ordner wählen:</string>
+  <string name="select">Auswählen</string>
 </resources>
