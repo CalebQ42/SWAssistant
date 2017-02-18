@@ -25,10 +25,10 @@
   <string name="weapon_state_text">Weapon State:</string>
   <string name="range_text">Reichweite</string>
   <string name="skill_characteristic_text">Skill Characteristic:</string>
-  <string name="add_text">Add</string>
+  <string name="add_text">Hinzufügen</string>
   <string name="add_brawn_text">Add Brawn</string>
-  <string name="loaded_text">Loaded</string>
+  <string name="loaded_text">Geladen</string>
   <string name="slug_text">Slugthrower (needs ammo)</string>
-  <string name="ammo_text">Ammo:</string>
-  <string name="encum_text">Encumbrance:</string>
+  <string name="ammo_text">Munition:</string>
+  <string name="encum_text">Last:</string>
 </resources>
