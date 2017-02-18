@@ -14,19 +14,19 @@
     <item>Sehr schwierig</item>
   </string-array>
   <string-array name="range_bands">
-    <item>Engaged</item>
-    <item>Short</item>
-    <item>Medium</item>
-    <item>Long</item>
-    <item>Extreme</item>
+    <item>Nahkampf</item>
+    <item>Kurz</item>
+    <item>Mittel</item>
+    <item>Groß</item>
+    <item>Sehr groß</item>
   </string-array>
   <string-array name="weapon_skills">
-    <item>Brawl</item>
-    <item>Gunnery</item>
-    <item>Lightsaber</item>
-    <item>Melee</item>
-    <item>Ranged(Light)</item>
-    <item>Ranged(Heavy)</item>
+    <item>Handgemenge</item>
+    <item>Artillerie</item>
+    <item>Lichtschwert</item>
+    <item>Nahkampf</item>
+    <item>Fernkampf (Leicht)</item>
+    <item>Fernkampf (Schwer)</item>
   </string-array>
   <string-array name="base_characteristics">
     <item>Brawn</item>
