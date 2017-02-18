@@ -8,10 +8,10 @@
     <item>Major</item>
   </string-array>
   <string-array name="crit_injury_severities">
-    <item>Easy</item>
-    <item>Average</item>
-    <item>Hard</item>
-    <item>Daunting</item>
+    <item>Einfach</item>
+    <item>Mittelschwer</item>
+    <item>Schwierig</item>
+    <item>Sehr schwierig</item>
   </string-array>
   <string-array name="range_bands">
     <item>Engaged</item>
