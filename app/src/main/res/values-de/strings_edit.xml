@@ -20,7 +20,7 @@
   <string name="specializations_text">Spezialisierungen:</string>
   <string name="talents_text">Fertigkeiten:</string>
   <string name="force_powers_text">Machtkräfte:</string>
-  <string name="force_rating_text">Force Rating:</string>
+  <string name="force_rating_text">Macht Rang:</string>
   <string name="xp_text">XP:</string>
   <string name="current_text">Aktuell:</string>
   <string name="total_text">Gesamt:</string>
@@ -53,13 +53,13 @@
   <string name="cloning_text">Wird geklont&#8230;</string>
   <string name="cloning_done_text">Klonen abgeschlossen!</string>
   <!--Characteristic strings -->
-  <string name="brawn_text">Brawn:</string>
-  <string name="agility_text">Agility:</string>
-  <string name="intellect_text">Intellect:</string>
-  <string name="cunning_text">Cunning:</string>
-  <string name="willpower_text">Willpower:</string>
-  <string name="presence_text">Presence:</string>
+  <string name="brawn_text">Stärke:</string>
+  <string name="agility_text">Gewandtheit:</string>
+  <string name="intellect_text">Intelligenz:</string>
+  <string name="cunning_text">List:</string>
+  <string name="willpower_text">Willenskraft:</string>
+  <string name="presence_text">Charisma:</string>
   <string name="character_delete">Willst du diesen Charakter wirklich löschen?</string>
-  <string name="minion_delete">Are you sure you want to delete this minion?</string>
+  <string name="minion_delete">Willst du diesen Lakei wirklich löschen?</string>
   <string name="export_text">Export</string>
 </resources>
