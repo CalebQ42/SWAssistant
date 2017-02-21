@@ -16,7 +16,7 @@
   <string name="daunting_text">Sehr schwierig</string>
   <string name="formidable_text">Extrem schwierig</string>
   <!--Dice Descriptions-->
-  <string name="ability_dice_desc">Basic positive die used in most skill checks. Represents aptitude in a skill.</string>
+  <string name="ability_dice_desc">Einfacher positiver Würfel der in den meisten Fertigkeitschecks verwendet wird. Represäntiert eine Begabung.</string>
   <string name="proficiency_dice_desc">A more powerful positive die used in most skill checks. Upgraded form of the
     ability die. Represents innate ability or training.</string>
   <string name="difficulty_dice_desc">Basic negative die used in most skill checks. Represents the difficulty of
@@ -25,5 +25,5 @@
     the difficulty die. Represents great adversity.</string>
   <string name="boost_dice_desc">A positive die representing an advantage.</string>
   <string name="setback_dice_desc">A negative die representing a disadvantage.</string>
-  <string name="force_dice_desc">A die representing the force. Used only when a player calls upon the force.</string>
+  <string name="force_dice_desc">Ein Würfel der die Macht repräsentiert. Wird nur genutzt wenn ein Spieler die Macht ruft.</string>
 </resources>
