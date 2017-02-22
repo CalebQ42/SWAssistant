@@ -11,11 +11,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveFolder;
-import com.apps.darkstorm.swrpg.sw.Character;
 
 import java.util.Collections;
 
@@ -25,6 +25,7 @@ public class SWrpg extends Application{
     public DriveFolder vehicFold = null;
     public String defaultLoc = "";
     public boolean askingPerm = false;
+    public boolean driveFail = false;
     public SharedPreferences prefs = null;
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     public void addShortcut(Character pl, Activity main){

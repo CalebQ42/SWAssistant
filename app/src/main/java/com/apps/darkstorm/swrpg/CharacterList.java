@@ -13,15 +13,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.apps.darkstorm.swrpg.load.DriveLoadCharacters;
+import com.apps.darkstorm.swrpg.load.InitialConnect;
 import com.apps.darkstorm.swrpg.load.LoadCharacters;
 import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.ui.cards.CharacterCard;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
@@ -50,7 +55,10 @@ public class CharacterList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.general_list, container, false);
+        return inflater.inflate(R.layout.general_list, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final SwipeRefreshLayout refresh = (SwipeRefreshLayout)top.findViewById(R.id.swipe_refresh);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -63,6 +71,26 @@ public class CharacterList extends Fragment {
         TypedValue accent = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.colorAccent,accent,true);
         refresh.setColorSchemeResources(primary.resourceId,accent.resourceId);
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getActivity().getString(R.string.ads_key),true)) {
+            AdView ads = new AdView(getActivity());
+            ads.setAdSize(AdSize.BANNER);
+            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            adLayout.weight = 0;
+            adLayout.topMargin = (int)(5*getActivity().getResources().getDisplayMetrics().density);
+            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+            ads.setLayoutParams(adLayout);
+            if(BuildConfig.DEBUG){
+                ads.setAdUnitId(getActivity().getString(R.string.banner_test));
+            }else {
+                if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                    ads.setAdUnitId(getActivity().getString(R.string.free_banner_ad_id));
+                else
+                    ads.setAdUnitId(getActivity().getString(R.string.paid_banner_ad_id));
+            }
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+            ((LinearLayout)top.findViewById(R.id.top_lay)).addView(ads,0);
+        }
         final LinearLayout linLay = (LinearLayout)top.findViewById(R.id.main_lay);
         handle = new Handler(Looper.getMainLooper()){
             @Override
@@ -72,10 +100,10 @@ public class CharacterList extends Fragment {
                 }else if(msg.arg1==-20){
                     refresh.setRefreshing(false);
                 }else if(msg.arg1==5){
-                    if(getContext()!=null)
+                    if(getView()!=null)
                         Snackbar.make(top,R.string.cloud_fail,Snackbar.LENGTH_LONG).show();
                 }else if(msg.arg1==15){
-                    if(getContext()!=null)
+                    if(getView()!=null)
                         Snackbar.make(top,R.string.still_loading,Snackbar.LENGTH_LONG).show();
                 }
                 if (msg.obj instanceof ArrayList){
@@ -104,20 +132,23 @@ public class CharacterList extends Fragment {
                         }
                     }else{
                         if(!refresh.isRefreshing()) {
-                            Message out = topHandle.obtainMessage();
-                            out.arg1 = msg.arg1;
-                            out.obj = msg.obj;
-                            topHandle.sendMessage(out);
+                            if(topHandle!=null) {
+                                Message out = topHandle.obtainMessage();
+                                out.arg1 = msg.arg1;
+                                out.obj = msg.obj;
+                                topHandle.sendMessage(out);
+                            }
                         }else{
-                            Message out = handle.obtainMessage();
-                            out.arg1=15;
-                            handle.sendMessage(out);
+                            if(handle!=null) {
+                                Message out = handle.obtainMessage();
+                                out.arg1 = 15;
+                                handle.sendMessage(out);
+                            }
                         }
                     }
                 }
             }
         };
-        return top;
     }
 
     @Override
@@ -165,7 +196,11 @@ public class CharacterList extends Fragment {
                                     break;
                             }
                             if (getActivity() != null) {
-                                if (timeout != 50) {
+                                if (timeout < 50) {
+                                    if(((SWrpg)getActivity().getApplication()).driveFail){
+                                        ((SWrpg)getActivity().getApplication()).driveFail = false;
+                                        InitialConnect.connect(getActivity());
+                                    }
                                     DriveLoadCharacters dlc = new DriveLoadCharacters(getActivity());
                                     if (dlc.characters != null) {
                                         dlc.saveLocal(getActivity());

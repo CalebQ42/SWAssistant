@@ -64,4 +64,6 @@
     <string name="character_delete">Are you sure you want to delete this character?</string>
 
     <string name="minion_delete">Are you sure you want to delete this minion?</string>
+
+    <string name="export_text">Export</string>
 </resources>

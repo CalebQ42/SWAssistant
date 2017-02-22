@@ -40,7 +40,10 @@ public class MinionCharacterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View top = inflater.inflate(R.layout.fragment_minion_character, container, false);
+        return inflater.inflate(R.layout.fragment_minion_character, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final Handler handle = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
@@ -104,8 +107,8 @@ public class MinionCharacterFragment extends Fragment {
                     }
                     if(getActivity()!=null)
                         getFragmentManager().beginTransaction().replace(R.id.content_main,CharacterEditMain.newInstance(id))
-                            .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
-                                    android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
+                                .setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out,
+                                        android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
                 }else{
                     LoadMinions lc = new LoadMinions(getActivity());
                     ArrayList<Integer> taken = new ArrayList<>();
@@ -128,7 +131,6 @@ public class MinionCharacterFragment extends Fragment {
         pager.setAdapter(adap);
         top.requestFocus();
         top.setFocusableInTouchMode(true);
-        return top;
     }
 
     public void onResume(){

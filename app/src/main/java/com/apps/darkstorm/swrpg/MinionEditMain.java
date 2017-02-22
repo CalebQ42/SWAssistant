@@ -17,6 +17,9 @@ import android.widget.LinearLayout;
 import com.apps.darkstorm.swrpg.sw.Minion;
 import com.apps.darkstorm.swrpg.ui.SetupMinionAttr;
 
+import ir.sohreco.androidfilechooser.ExternalStorageNotAvailableException;
+import ir.sohreco.androidfilechooser.FileChooserDialog;
+
 public class MinionEditMain extends Fragment {
 
     private OnMinionEditInteractionListener mListener;
@@ -56,7 +59,10 @@ public class MinionEditMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_minion_edit_main, container, false);
+        return inflater.inflate(R.layout.fragment_minion_edit_main, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);
         fab.hide();
         Handler handle = new Handler(Looper.getMainLooper()){
@@ -65,22 +71,42 @@ public class MinionEditMain extends Fragment {
                 if(getActivity()!= null&& minion!=null) {
                     SetupMinionAttr.setup((LinearLayout) top.findViewById(R.id.main_lay), getActivity(), minion);
                     minion.showHideCards(top);
+                    top.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            FileChooserDialog.Builder build = new FileChooserDialog.Builder(FileChooserDialog.ChooserType.DIRECTORY_CHOOSER,
+                                    new FileChooserDialog.ChooserListener() {
+                                        @Override
+                                        public void onSelect(String path) {
+                                            minion.save(path+"/"+minion.name+".minion");
+                                        }
+                                    }).setTitle(getString(R.string.export))
+                                    .setSelectDirectoryButtonText(getString(R.string.select));
+                            try {
+                                build.build().show(getChildFragmentManager(), null);
+                            } catch (ExternalStorageNotAvailableException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             }
         };
         handle.sendEmptyMessage(0);
         top.setFocusableInTouchMode(true);
         top.requestFocus();
-        return top;
     }
 
     public void onResume(){
         super.onResume();
-        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false) &&
-                ((SWrpg)getActivity().getApplication()).gac != null){
-            minion.startEditing(getActivity(),((SWrpg)getActivity().getApplication()).charsFold.getDriveId());
-        }else{
-            minion.startEditing(getActivity());
+        if(getActivity()!=null) {
+            if (((SWrpg) getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key), false) &&
+                    ((SWrpg) getActivity().getApplication()).gac != null
+                    && minion!=null) {
+                minion.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).charsFold.getDriveId());
+            } else {
+                minion.startEditing(getActivity());
+            }
         }
     }
 

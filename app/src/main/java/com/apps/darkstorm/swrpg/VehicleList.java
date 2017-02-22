@@ -12,15 +12,20 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.apps.darkstorm.swrpg.load.DriveLoadVehicles;
+import com.apps.darkstorm.swrpg.load.InitialConnect;
 import com.apps.darkstorm.swrpg.load.LoadVehicles;
 import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.apps.darkstorm.swrpg.ui.cards.VehicleCard;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
@@ -45,7 +50,10 @@ public class VehicleList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.general_list, container, false);
+        return inflater.inflate(R.layout.general_list, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final SwipeRefreshLayout refresh = (SwipeRefreshLayout)top.findViewById(R.id.swipe_refresh);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -53,6 +61,26 @@ public class VehicleList extends Fragment {
                 loadVehicles();
             }
         });
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getActivity().getString(R.string.ads_key),true)) {
+            AdView ads = new AdView(getActivity());
+            ads.setAdSize(AdSize.BANNER);
+            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            adLayout.weight = 0;
+            adLayout.topMargin = (int)(5*getActivity().getResources().getDisplayMetrics().density);
+            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+            ads.setLayoutParams(adLayout);
+            if(BuildConfig.DEBUG){
+                ads.setAdUnitId(getActivity().getString(R.string.banner_test));
+            }else {
+                if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                    ads.setAdUnitId(getActivity().getString(R.string.free_banner_ad_id));
+                else
+                    ads.setAdUnitId(getActivity().getString(R.string.paid_banner_ad_id));
+            }
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+            ((LinearLayout)top.findViewById(R.id.top_lay)).addView(ads,0);
+        }
         final LinearLayout linLay = (LinearLayout)top.findViewById(R.id.main_lay);
         handle = new Handler(Looper.getMainLooper()){
             @Override
@@ -124,7 +152,6 @@ public class VehicleList extends Fragment {
                                 android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack("").commit();
             }
         });
-        return top;
     }
 
     public void onResume(){
@@ -167,7 +194,11 @@ public class VehicleList extends Fragment {
                                 break;
                         }
                         if (getActivity()!= null) {
-                            if (timeout != 50) {
+                            if (timeout < 50) {
+                                if(((SWrpg)getActivity().getApplication()).driveFail){
+                                    ((SWrpg)getActivity().getApplication()).driveFail = false;
+                                    InitialConnect.connect(getActivity());
+                                }
                                 DriveLoadVehicles dlc = new DriveLoadVehicles(getActivity());
                                 if (dlc.vehicles != null) {
                                     dlc.saveLocal(getActivity());

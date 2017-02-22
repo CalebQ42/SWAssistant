@@ -31,6 +31,7 @@ import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -111,7 +112,8 @@ public class Character {
                     protected Void doInBackground(Void... voids) {
                         Character tmpChar = Character.this.clone();
                         Character.this.save(Character.this.getFileLocation(main));
-                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        if(((SWrpg)main.getApplication()).vehicFold!=null)
+                            cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                         do {
                             if (!saving) {
                                 saving = true;
@@ -124,7 +126,8 @@ public class Character {
                                         }
                                     }
                                     Character.this.save(Character.this.getFileLocation(main));
-                                    cloudSave(((SWrpg) main.getApplication()).gac,
+                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                        cloudSave(((SWrpg) main.getApplication()).gac,
                                             getFileId(main), false);
                                     tmpChar = Character.this.clone();
                                 }
@@ -147,7 +150,8 @@ public class Character {
                                     }
                                 }
                                 Character.this.save(Character.this.getFileLocation(main));
-                                cloudSave(((SWrpg) main.getApplication()).gac, getFileId(
+                                if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(
                                         main), false);
                             }
                             saving = false;
@@ -811,6 +815,88 @@ public class Character {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             ((SWrpg)main.getApplication()).deleteShortcut(Character.this,main);
+        }
+    }
+    
+    public Object serialObject(){
+        ArrayList<Object> out = new ArrayList<>();
+        out.add(ID);
+        out.add(name);
+        out.add(charVals);
+        out.add(skills.serialObject());
+        out.add(species);
+        out.add(career);
+        out.add(specializations.serialObject());
+        out.add(talents.serialObject());
+        out.add(inv.serialObject());
+        out.add(weapons.serialObject());
+        out.add(forcePowers.serialObject());
+        out.add(motivation);
+        out.add(critInjuries.serialObject());
+        out.add(emotionalStr);
+        out.add(emotionalWeak);
+        out.add(duty.serialObject());
+        out.add(obligation.serialObject());
+        out.add(woundThresh);
+        out.add(woundCur);
+        out.add(strainThresh);
+        out.add(strainCur);
+        out.add(xpTot);
+        out.add(xpCur);
+        out.add(defMelee);
+        out.add(defRanged);
+        out.add(soak);
+        out.add(force);
+        out.add(credits);
+        out.add(morality);
+        out.add(conflict);
+        out.add(desc);
+        out.add(showCard);
+        out.add(darkSide);
+        out.add(age);
+        out.add(nts.serialObject());
+        out.add(encumCapacity);
+        return out.toArray();
+    }
+    public void loadFromObject(Object in){
+        Object[] vals = (Object[])in;encumCapacity = (int)vals[35];
+        ID = (int)vals[0];
+        name = (String)vals[1];
+        charVals = (int[])vals[2];
+        skills.loadFromObject(vals[3]);
+        species = (String)vals[4];
+        career = (String)vals[5];
+        specializations.loadFromObject(vals[6]);
+        talents.loadFromObject(vals[7]);
+        inv.loadFromObject(vals[8]);
+        weapons.loadFromObject(vals[9]);
+        forcePowers.loadFromObject(vals[10]);
+        motivation = (String)vals[11];
+        critInjuries.loadFromObject(vals[12]);
+        emotionalStr = (String[])vals[13];
+        emotionalWeak = (String[])vals[14];
+        duty.loadFromObject(vals[15]);
+        obligation.loadFromObject(vals[16]);
+        woundThresh = (int)vals[17];
+        woundCur = (int)vals[18];
+        strainThresh = (int)vals[19];
+        strainCur = (int)vals[20];
+        xpTot = (int)vals[21];
+        xpCur = (int)vals[22];
+        defMelee = (int)vals[23];
+        defRanged = (int)vals[24];
+        soak = (int)vals[25];
+        force = (int)vals[26];
+        credits = (int)vals[27];
+        morality = (int)vals[28];
+        conflict = (int)vals[29];
+        desc = (String)vals[30];
+        showCard = (boolean[])vals[31];
+        darkSide = (boolean)vals[32];
+        age = (int)vals[33];
+        nts.loadFromObject(vals[34]);
+        if (nts == null){
+            nts = new Notes();
         }
     }
 }

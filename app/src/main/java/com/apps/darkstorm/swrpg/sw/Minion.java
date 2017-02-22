@@ -1,11 +1,8 @@
 package com.apps.darkstorm.swrpg.sw;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -80,7 +77,8 @@ public class Minion {
                     protected Void doInBackground(Void... voids) {
                         Minion tmpChar = Minion.this.clone();
                         Minion.this.save(Minion.this.getFileLocation(main));
-                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                        if(((SWrpg)main.getApplication()).vehicFold!=null)
+                            cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                         do {
                             if (!saving) {
                                 saving = true;
@@ -93,7 +91,8 @@ public class Minion {
                                         }
                                     }
                                     Minion.this.save(Minion.this.getFileLocation(main));
-                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                                     tmpChar = Minion.this.clone();
                                 }
                                 saving = false;
@@ -115,7 +114,8 @@ public class Minion {
                                     }
                                 }
                                 Minion.this.save(Minion.this.getFileLocation(main));
-                                cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
+                                if(((SWrpg)main.getApplication()).vehicFold!=null)
+                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
                             }
                             saving = false;
                         }

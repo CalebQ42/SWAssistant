@@ -19,17 +19,158 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.dice.DiceResults;
 import com.apps.darkstorm.swrpg.dice.DiceRoll;
-import com.apps.darkstorm.swrpg.R;
 import com.apps.darkstorm.swrpg.sw.Character;
 import com.apps.darkstorm.swrpg.sw.Minion;
+import com.apps.darkstorm.swrpg.sw.Vehicle;
 import com.apps.darkstorm.swrpg.sw.stuff.WeapChar;
 import com.apps.darkstorm.swrpg.sw.stuff.Weapon;
-import com.apps.darkstorm.swrpg.sw.Vehicle;
 
 public class WeaponLayout {
     int ability,proficiency,difficulty,challenge,boost,setback,force;
+
+    public void showDialog(final Activity main,final Character chara,final Weapon w,final DiceResults res){
+        AlertDialog.Builder build = new AlertDialog.Builder(main);
+        View dia = main.getLayoutInflater().inflate(R.layout.dialog_weapon_damage,null);
+        build.setView(dia);
+        if (w.slug)
+            w.ammo--;
+        if (res.success <= res.fail) {
+            dia.findViewById(R.id.weapon_miss).setVisibility(View.VISIBLE);
+        } else {
+            int dmg = res.success - res.fail + w.dmg;
+            if (w.addBrawn)
+                dmg += chara.charVals[0];
+            dia.findViewById(R.id.weapon_damage_main).setVisibility(View.VISIBLE);
+            ((TextView) dia.findViewById(R.id.weapon_damage_val)).setText(String.valueOf(dmg));
+        }
+        if (res.advantage > res.threat){
+            dia.findViewById(R.id.weapon_advantage_main).setVisibility(View.VISIBLE);
+            dia.findViewById(R.id.weapon_char_topper).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_advantage_val))
+                    .setText(String.valueOf(res.advantage -res.threat));
+            dia.findViewById(R.id.weapon_char_scroll).setVisibility(View.VISIBLE);
+            ((ScrollView)dia.findViewById(R.id.weapon_char_scroll)).addView(WeapCharList(
+                    main,chara,w));
+        }else if (res.threat > res.advantage){
+            dia.findViewById(R.id.weapon_threat_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_threat_val)).setText(
+                    String.valueOf(res.threat -res.advantage));
+        }else if (res.triumph > 0){
+            dia.findViewById(R.id.weapon_triumph_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_triumph_val)).setText(String.valueOf(res.triumph));
+        }else if (res.despair >0){
+            dia.findViewById(R.id.weapon_despair_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_despair_val)).setText(String.valueOf(res.despair));
+        }
+        build.setNeutralButton(R.string.modify_results, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DiceResults.modifyResults(res, main, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showDialog(main,chara,w,res);
+                    }
+                });
+            }
+        });
+        build.show();
+    }
+    public void showDialog(final Activity main,final Minion chara,final Weapon w,final DiceResults res){
+        AlertDialog.Builder build = new AlertDialog.Builder(main);
+        View dia = main.getLayoutInflater().inflate(R.layout.dialog_weapon_damage,null);
+        build.setView(dia);
+        if (w.slug)
+            w.ammo--;
+        if (res.success <= res.fail) {
+            dia.findViewById(R.id.weapon_miss).setVisibility(View.VISIBLE);
+        } else {
+            int dmg = res.success - res.fail + w.dmg;
+            if (w.addBrawn)
+                dmg += chara.charVals[0];
+            dia.findViewById(R.id.weapon_damage_main).setVisibility(View.VISIBLE);
+            ((TextView) dia.findViewById(R.id.weapon_damage_val)).setText(String.valueOf(dmg));
+        }
+        if (res.advantage > res.threat){
+            dia.findViewById(R.id.weapon_advantage_main).setVisibility(View.VISIBLE);
+            dia.findViewById(R.id.weapon_char_topper).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_advantage_val))
+                    .setText(String.valueOf(res.advantage -res.threat));
+            dia.findViewById(R.id.weapon_char_scroll).setVisibility(View.VISIBLE);
+            ((ScrollView)dia.findViewById(R.id.weapon_char_scroll)).addView(WeapCharList(
+                    main,chara,w));
+        }else if (res.threat > res.advantage){
+            dia.findViewById(R.id.weapon_threat_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_threat_val)).setText(
+                    String.valueOf(res.threat -res.advantage));
+        }else if (res.triumph > 0){
+            dia.findViewById(R.id.weapon_triumph_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_triumph_val)).setText(String.valueOf(res.triumph));
+        }else if (res.despair >0){
+            dia.findViewById(R.id.weapon_despair_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_despair_val)).setText(String.valueOf(res.despair));
+        }
+        build.setNeutralButton(R.string.modify_results, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DiceResults.modifyResults(res, main, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showDialog(main,chara,w,res);
+                    }
+                });
+            }
+        });
+        build.show();
+    }
+    public void showDialog(final Activity main,final Vehicle chara,final Weapon w,final DiceResults res){
+        AlertDialog.Builder build = new AlertDialog.Builder(main);
+        View dia = main.getLayoutInflater().inflate(R.layout.dialog_weapon_damage,null);
+        build.setView(dia);
+        if (w.slug)
+            w.ammo--;
+        if (res.success <= res.fail) {
+            dia.findViewById(R.id.weapon_miss).setVisibility(View.VISIBLE);
+        } else {
+            int dmg = res.success - res.fail + w.dmg;
+            dia.findViewById(R.id.weapon_damage_main).setVisibility(View.VISIBLE);
+            ((TextView) dia.findViewById(R.id.weapon_damage_val)).setText(String.valueOf(dmg));
+        }
+        if (res.advantage > res.threat){
+            dia.findViewById(R.id.weapon_advantage_main).setVisibility(View.VISIBLE);
+            dia.findViewById(R.id.weapon_char_topper).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_advantage_val))
+                    .setText(String.valueOf(res.advantage -res.threat));
+            dia.findViewById(R.id.weapon_char_scroll).setVisibility(View.VISIBLE);
+            ((ScrollView)dia.findViewById(R.id.weapon_char_scroll)).addView(WeapCharList(
+                    main,chara,w));
+        }else if (res.threat > res.advantage){
+            dia.findViewById(R.id.weapon_threat_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_threat_val)).setText(
+                    String.valueOf(res.threat -res.advantage));
+        }else if (res.triumph > 0){
+            dia.findViewById(R.id.weapon_triumph_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_triumph_val)).setText(String.valueOf(res.triumph));
+        }else if (res.despair >0){
+            dia.findViewById(R.id.weapon_despair_main).setVisibility(View.VISIBLE);
+            ((TextView)dia.findViewById(R.id.weapon_despair_val)).setText(String.valueOf(res.despair));
+        }
+        build.setNeutralButton(R.string.modify_results, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DiceResults.modifyResults(res, main, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showDialog(main,chara,w,res);
+                    }
+                });
+            }
+        });
+        build.show();
+    }
+
     public LinearLayout WeaponLayout(final View toppest, final Activity main, final LinearLayout weapLay, final Character chara, final Weapon w){
         LinearLayout top = new LinearLayout(main);
         LinearLayout.LayoutParams toplp =
@@ -203,43 +344,10 @@ public class WeaponLayout {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             DiceRoll dr = new DiceRoll();
-                            DiceResults res = dr.rollDice(ability
+                            final DiceResults res = dr.rollDice(ability
                                     , proficiency, difficulty, challenge, boost, setback, force);
                             dialog.cancel();
-                            AlertDialog.Builder build = new AlertDialog.Builder(main);
-                            View dia = main.getLayoutInflater().inflate(R.layout.dialog_weapon_damage,null);
-                            build.setView(dia);
-                            if (w.slug)
-                                w.ammo--;
-                            if (res.suc <= res.fail) {
-                                dia.findViewById(R.id.weapon_miss).setVisibility(View.VISIBLE);
-                            } else {
-                                int dmg = res.suc - res.fail + w.dmg;
-                                if (w.addBrawn)
-                                    dmg += chara.charVals[0];
-                                dia.findViewById(R.id.weapon_damage_main).setVisibility(View.VISIBLE);
-                                ((TextView) dia.findViewById(R.id.weapon_damage_val)).setText(String.valueOf(dmg));
-                            }
-                            if (res.adv > res.thr){
-                                dia.findViewById(R.id.weapon_advantage_main).setVisibility(View.VISIBLE);
-                                dia.findViewById(R.id.weapon_char_topper).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_advantage_val))
-                                        .setText(String.valueOf(res.adv-res.thr));
-                                dia.findViewById(R.id.weapon_char_scroll).setVisibility(View.VISIBLE);
-                                ((ScrollView)dia.findViewById(R.id.weapon_char_scroll)).addView(WeapCharList(
-                                        main,chara,w));
-                            }else if (res.thr > res.adv){
-                                dia.findViewById(R.id.weapon_threat_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_threat_val)).setText(
-                                        String.valueOf(res.thr-res.adv));
-                            }else if (res.tri > 0){
-                                dia.findViewById(R.id.weapon_triumph_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_triumph_val)).setText(String.valueOf(res.tri));
-                            }else if (res.desp >0){
-                                dia.findViewById(R.id.weapon_despair_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_despair_val)).setText(String.valueOf(res.desp));
-                            }
-                            build.show();
+                            showDialog(main,chara,w,res);
                         }
                     }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -603,38 +711,7 @@ public class WeaponLayout {
                             DiceResults res = dr.rollDice(ability
                                     , proficiency, difficulty, challenge, boost, setback, force);
                             dialog.cancel();
-                            AlertDialog.Builder build = new AlertDialog.Builder(main);
-                            final View dia = main.getLayoutInflater().inflate(R.layout.dialog_weapon_damage,null);
-                            build.setView(dia);
-                            if (w.slug)
-                                w.ammo--;
-                            if (res.suc <= res.fail) {
-                                dia.findViewById(R.id.weapon_miss).setVisibility(View.VISIBLE);
-                            } else {
-                                int dmg = res.suc - res.fail + w.dmg;
-                                dia.findViewById(R.id.weapon_damage_main).setVisibility(View.VISIBLE);
-                                ((TextView) dia.findViewById(R.id.weapon_damage_val)).setText(String.valueOf(dmg));
-                            }
-                            if (res.adv > res.thr){
-                                dia.findViewById(R.id.weapon_advantage_main).setVisibility(View.VISIBLE);
-                                dia.findViewById(R.id.weapon_char_topper).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_advantage_val))
-                                        .setText(String.valueOf(res.adv-res.thr));
-                                dia.findViewById(R.id.weapon_char_scroll).setVisibility(View.VISIBLE);
-                                ((ScrollView)dia.findViewById(R.id.weapon_char_scroll)).addView(WeapCharList(
-                                        main,vh,w));
-                            }else if (res.thr > res.adv){
-                                dia.findViewById(R.id.weapon_threat_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_threat_val)).setText(
-                                        String.valueOf(res.thr-res.adv));
-                            }else if (res.tri > 0){
-                                dia.findViewById(R.id.weapon_triumph_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_triumph_val)).setText(String.valueOf(res.tri));
-                            }else if (res.desp >0){
-                                dia.findViewById(R.id.weapon_despair_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_despair_val)).setText(String.valueOf(res.desp));
-                            }
-                            build.show();
+                            showDialog(main,vh,w,res);
                         }
                     }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -1177,40 +1254,7 @@ public class WeaponLayout {
                             DiceResults res = dr.rollDice(ability
                                     , proficiency, difficulty, challenge, boost, setback, force);
                             dialog.cancel();
-                            AlertDialog.Builder build = new AlertDialog.Builder(main);
-                            View dia = main.getLayoutInflater().inflate(R.layout.dialog_weapon_damage,null);
-                            build.setView(dia);
-                            if (w.slug)
-                                w.ammo--;
-                            if (res.suc <= res.fail) {
-                                dia.findViewById(R.id.weapon_miss).setVisibility(View.VISIBLE);
-                            } else {
-                                int dmg = res.suc - res.fail + w.dmg;
-                                if (w.addBrawn)
-                                    dmg += minion.charVals[0];
-                                dia.findViewById(R.id.weapon_damage_main).setVisibility(View.VISIBLE);
-                                ((TextView) dia.findViewById(R.id.weapon_damage_val)).setText(String.valueOf(dmg));
-                            }
-                            if (res.adv > res.thr){
-                                dia.findViewById(R.id.weapon_advantage_main).setVisibility(View.VISIBLE);
-                                dia.findViewById(R.id.weapon_char_topper).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_advantage_val))
-                                        .setText(String.valueOf(res.adv-res.thr));
-                                dia.findViewById(R.id.weapon_char_scroll).setVisibility(View.VISIBLE);
-                                ((ScrollView)dia.findViewById(R.id.weapon_char_scroll)).addView(WeapCharList(
-                                        main,minion,w));
-                            }else if (res.thr > res.adv){
-                                dia.findViewById(R.id.weapon_threat_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_threat_val)).setText(
-                                        String.valueOf(res.thr-res.adv));
-                            }else if (res.tri > 0){
-                                dia.findViewById(R.id.weapon_triumph_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_triumph_val)).setText(String.valueOf(res.tri));
-                            }else if (res.desp >0){
-                                dia.findViewById(R.id.weapon_despair_main).setVisibility(View.VISIBLE);
-                                ((TextView)dia.findViewById(R.id.weapon_despair_val)).setText(String.valueOf(res.desp));
-                            }
-                            build.show();
+                            showDialog(main,minion,w,res);
                         }
                     }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override

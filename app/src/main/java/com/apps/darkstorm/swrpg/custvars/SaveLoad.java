@@ -44,14 +44,16 @@ public class SaveLoad implements Serializable{
         try {
             if(savFolder != null && !savFolder.exists())
                 savFolder.mkdirs();
-            if(sav.exists()){
-                sav.delete();
-            }
+            File tmp = new File(sav.getAbsolutePath());
+            tmp.renameTo(new File(sav.getAbsoluteFile()+".bak"));
+            tmp = new File(sav.getAbsolutePath() + ".bak");
+            sav.delete();
             tada=new FileOutputStream(sav);
             toodoo = new ObjectOutputStream(tada);
             toodoo.writeObject(saveItems);
             toodoo.close();
             tada.close();
+            tmp.delete();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -9,6 +9,9 @@
             <item android:title="@string/vehicles_item"
                 android:icon="@drawable/ship"
                 android:id="@+id/vehicles" />
+            <item android:title="@string/download_item"
+                android:id="@+id/download"
+                android:icon="@drawable/download" />
         </menu>
     </item>
     <group >
@@ -27,4 +30,10 @@
             android:icon="@drawable/settings"
             android:id="@+id/settings" />
     </group>
+    <item android:title="@string/other_group">
+        <menu >
+            <item android:title="@string/show_ad"
+                android:id="@+id/interstitial" />
+        </menu>
+    </item>
 </menu>

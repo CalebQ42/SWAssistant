@@ -1,83 +1,148 @@
 package com.apps.darkstorm.swrpg.load;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
 import com.apps.darkstorm.swrpg.SWrpg;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
+import com.google.android.gms.drive.query.SortOrder;
+import com.google.android.gms.drive.query.SortableField;
 
 public class InitialConnect {
     public static void connect(final Activity main){
-        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+        Drive.DriveApi.requestSync(((SWrpg)main.getApplication()).gac).setResultCallback(new ResultCallback<Status>() {
             @Override
-            protected Void doInBackground(Void... params) {
-                DriveFolder root = Drive.DriveApi.getRootFolder(((SWrpg)main.getApplication()).gac);
-                MetadataBuffer metBuf;
-                DriveApi.MetadataBufferResult metBufRes;
-                int countdown = 0;
-                do {
-                    metBufRes = root.queryChildren(((SWrpg) main.getApplication()).gac,
-                            new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE, "SWChars"))
-                                    .addFilter(Filters.eq(SearchableField.MIME_TYPE, DriveFolder.MIME_TYPE)).build()).await();
-                    metBuf = metBufRes.getMetadataBuffer();
-                    countdown++;
-                    if (metBuf.getCount() == 0 && countdown < 5){
-                        metBufRes.release();
-                        metBuf.release();
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }while(metBuf.getCount() == 0 && countdown <5);
-                DriveId charsFold = null;
-                for (Metadata met:metBuf){
-                    if (met.getTitle().equals("SWChars") && !met.isTrashed()){
-                        charsFold = met.getDriveId();
-                        break;
-                    }
+            public void onResult(@NonNull Status status) {
+                if(status.isSuccess()){
+                    final DriveFolder root = Drive.DriveApi.getRootFolder(((SWrpg)main.getApplication()).gac);
+                    root.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder()
+                            .addFilter(Filters.eq(SearchableField.TITLE,"SWChars")).setSortOrder(new SortOrder.Builder()
+                                    .addSortDescending(SortableField.MODIFIED_DATE).build()).build())
+                            .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
+                                @Override
+                                public void onResult(@NonNull final DriveApi.MetadataBufferResult metBufRes) {
+                                    if(metBufRes.getStatus().isSuccess()){
+                                        final MetadataBuffer metBuf = metBufRes.getMetadataBuffer();
+                                        final DriveFolder[] charsFold = {null};
+                                        for(Metadata met:metBuf){
+                                            if(met.isFolder() && !met.isTrashed()){
+                                                charsFold[0] = met.getDriveId().asDriveFolder();
+                                                break;
+                                            }
+                                        }
+                                        metBuf.release();
+                                        if(charsFold[0] ==null){
+                                            root.createFolder(((SWrpg)main.getApplication()).gac,
+                                                    new MetadataChangeSet.Builder().setTitle("SWChars").build())
+                                                    .setResultCallback(new ResultCallback<DriveFolder.DriveFolderResult>() {
+                                                        @Override
+                                                        public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
+                                                            if(driveFolderResult.getStatus().isSuccess()){
+                                                                charsFold[0] = driveFolderResult.getDriveFolder();
+                                                                charsFold[0].queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder()
+                                                                        .addFilter(Filters.eq(SearchableField.TITLE,"SWShips")).build())
+                                                                        .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
+                                                                            @Override
+                                                                            public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                                                                                if(metadataBufferResult.getStatus().isSuccess()) {
+                                                                                    MetadataBuffer metBuffer = metadataBufferResult.getMetadataBuffer();
+                                                                                    final DriveFolder[] shipFold = {null};
+                                                                                    for (Metadata met:metBuffer){
+                                                                                        if(met.isFolder()&&!met.isTrashed()){
+                                                                                            shipFold[0] = met.getDriveId().asDriveFolder();
+                                                                                            break;
+                                                                                        }
+                                                                                    }
+                                                                                    metBuf.release();
+                                                                                    if(shipFold[0] ==null){
+                                                                                        charsFold[0].createFolder(((SWrpg)main.getApplication()).gac,
+                                                                                                new MetadataChangeSet.Builder().setTitle("SWShips").build())
+                                                                                                .setResultCallback(new ResultCallback<DriveFolder.DriveFolderResult>() {
+                                                                                                    @Override
+                                                                                                    public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
+                                                                                                        if(driveFolderResult.getStatus().isSuccess()){
+                                                                                                            shipFold[0] = driveFolderResult.getDriveFolder();
+                                                                                                            ((SWrpg)main.getApplication()).charsFold = charsFold[0];
+                                                                                                            ((SWrpg)main.getApplication()).vehicFold = shipFold[0];
+                                                                                                            System.out.println("Done");
+                                                                                                        }else{
+                                                                                                            ((SWrpg)main.getApplication()).driveFail = true;
+                                                                                                        }
+                                                                                                    }
+                                                                                                });
+                                                                                    }
+                                                                                }else{
+                                                                                    ((SWrpg)main.getApplication()).driveFail = true;
+                                                                                }
+                                                                                metadataBufferResult.release();
+                                                                            }
+                                                                        });
+                                                            }else{
+                                                                ((SWrpg)main.getApplication()).driveFail = true;
+                                                            }
+                                                        }
+                                                    });
+                                        }else{
+                                            charsFold[0].queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder()
+                                                    .addFilter(Filters.eq(SearchableField.TITLE,"SWShips")).build())
+                                                    .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
+                                                        @Override
+                                                        public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                                                            if(metadataBufferResult.getStatus().isSuccess()){
+                                                                MetadataBuffer mets = metadataBufferResult.getMetadataBuffer();
+                                                                DriveFolder vehic = null;
+                                                                for (Metadata met:mets){
+                                                                    if(met.isFolder()&&!met.isTrashed()){
+                                                                        vehic = met.getDriveId().asDriveFolder();
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                mets.release();
+                                                                if(vehic == null){
+                                                                    charsFold[0].createFolder(((SWrpg)main.getApplication()).gac,new MetadataChangeSet.Builder()
+                                                                            .setTitle("SWShips").build())
+                                                                            .setResultCallback(new ResultCallback<DriveFolder.DriveFolderResult>() {
+                                                                                @Override
+                                                                                public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
+                                                                                    if(driveFolderResult.getStatus().isSuccess()){
+                                                                                        ((SWrpg)main.getApplication()).vehicFold = driveFolderResult.getDriveFolder();
+                                                                                        ((SWrpg)main.getApplication()).charsFold = charsFold[0];
+                                                                                    }else{
+                                                                                        ((SWrpg)main.getApplication()).driveFail = true;
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                }else{
+                                                                    ((SWrpg)main.getApplication()).vehicFold = vehic;
+                                                                    ((SWrpg)main.getApplication()).charsFold = charsFold[0];
+                                                                }
+                                                            }else{
+                                                                ((SWrpg)main.getApplication()).driveFail = true;
+                                                            }
+                                                            metadataBufferResult.release();
+                                                        }
+                                                    });
+                                        }
+                                        metBufRes.release();
+                                    }else{
+                                        ((SWrpg)main.getApplication()).driveFail = true;
+                                    }
+                                }
+                            });
+                }else{
+                    ((SWrpg)main.getApplication()).driveFail = true;
                 }
-                metBuf.release();
-                metBufRes.release();
-                if (charsFold == null){
-                    DriveFolder.DriveFolderResult foldRes = root.createFolder(((SWrpg)main.getApplication()).gac,
-                            new MetadataChangeSet.Builder().setTitle("SWChars").build()).await();
-                    charsFold = foldRes.getDriveFolder().getDriveId();
-                }
-                ((SWrpg)main.getApplication()).charsFold = charsFold.asDriveFolder();
-                DriveFolder fold = charsFold.asDriveFolder();
-                metBufRes = fold.queryChildren(((SWrpg)main.getApplication()).gac,
-                        new Query.Builder().addFilter(Filters.eq(SearchableField.TITLE,"SWShips"))
-                                .addFilter(Filters.eq(SearchableField.MIME_TYPE,DriveFolder.MIME_TYPE)).build()).await();
-                metBuf = metBufRes.getMetadataBuffer();
-                DriveId shipsFold = null;
-                for (Metadata met:metBuf){
-                    if (met.isFolder() && met.getTitle().equals("SWShips") && !met.isTrashed()){
-                        shipsFold = met.getDriveId();
-                        break;
-                    }
-                }
-                metBuf.release();
-                metBufRes.release();
-                if (shipsFold == null){
-                    DriveFolder.DriveFolderResult foldRes = fold.createFolder(((SWrpg)main.getApplication()).gac,
-                            new MetadataChangeSet.Builder().setTitle("SWShips").build()).await();
-                    shipsFold = foldRes.getDriveFolder().getDriveId();
-                }
-                ((SWrpg)main.getApplication()).vehicFold = shipsFold.asDriveFolder();
-                return null;
             }
-        };
-        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        });
     }
 }

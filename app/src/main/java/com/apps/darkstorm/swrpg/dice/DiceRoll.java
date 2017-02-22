@@ -38,44 +38,44 @@ public class DiceRoll {
         for (int i = 0;i<res.size();i++){
             switch (res.get(i)){
                 case Success:
-                    out.suc++;
+                    out.success++;
                     break;
                 case Advantage:
-                    out.adv++;
+                    out.advantage++;
                     break;
                 case Advantage + Advantage:
-                    out.adv += 2;
+                    out.advantage += 2;
                     break;
                 case Success+Success:
-                    out.suc += 2;
+                    out.success += 2;
                     break;
                 case Success + Advantage:
-                    out.suc++;
-                    out.adv++;
+                    out.success++;
+                    out.advantage++;
                     break;
                 case Failure:
                     out.fail++;
                     break;
                 case Threat:
-                    out.thr++;
+                    out.threat++;
                     break;
                 case Failure + Failure:
                     out.fail += 2;
                     break;
                 case Threat + Threat:
-                    out.thr += 2;
+                    out.threat += 2;
                     break;
                 case Failure + Threat:
                     out.fail++;
-                    out.thr++;
+                    out.threat++;
                     break;
                 case Triumph:
-                    out.suc++;
-                    out.tri++;
+                    out.success++;
+                    out.triumph++;
                     break;
                 case Despair:
                     out.fail++;
-                    out.desp++;
+                    out.despair++;
                     break;
                 case LTPoint:
                     out.lt++;
@@ -113,44 +113,44 @@ public class DiceRoll {
         for (int i = 0;i<res.size();i++){
             switch (res.get(i)){
                 case Success:
-                    out.suc++;
+                    out.success++;
                     break;
                 case Advantage:
-                    out.adv++;
+                    out.advantage++;
                     break;
                 case Advantage + Advantage:
-                    out.adv += 2;
+                    out.advantage += 2;
                     break;
                 case Success+Success:
-                    out.suc += 2;
+                    out.success += 2;
                     break;
                 case Success + Advantage:
-                    out.suc++;
-                    out.adv++;
+                    out.success++;
+                    out.advantage++;
                     break;
                 case Failure:
                     out.fail++;
                     break;
                 case Threat:
-                    out.thr++;
+                    out.threat++;
                     break;
                 case Failure + Failure:
                     out.fail += 2;
                     break;
                 case Threat + Threat:
-                    out.thr += 2;
+                    out.threat += 2;
                     break;
                 case Failure + Threat:
                     out.fail++;
-                    out.thr++;
+                    out.threat++;
                     break;
                 case Triumph:
-                    out.suc++;
-                    out.tri++;
+                    out.success++;
+                    out.triumph++;
                     break;
                 case Despair:
                     out.fail++;
-                    out.desp++;
+                    out.despair++;
                     break;
                 case LTPoint:
                     out.lt++;

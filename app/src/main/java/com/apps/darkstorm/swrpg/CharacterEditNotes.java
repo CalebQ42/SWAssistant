@@ -35,7 +35,10 @@ public class CharacterEditNotes extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_character_edit_notes, container, false);
+        return inflater.inflate(R.layout.fragment_character_edit_notes, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.uni_fab);
         fab.setImageResource(R.drawable.add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +56,6 @@ public class CharacterEditNotes extends Fragment {
                         chara, chara.nts.get(i), fab));
             }
         }
-        return top;
     }
 
     @Override

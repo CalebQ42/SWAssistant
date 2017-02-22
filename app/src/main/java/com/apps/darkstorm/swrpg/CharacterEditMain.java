@@ -38,11 +38,13 @@ public class CharacterEditMain extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            if(!((SWrpg)getActivity().getApplication()).hasShortcut(chara))
-                ((SWrpg)getActivity().getApplication()).addShortcut(chara,getActivity());
-            else
-                ((SWrpg)getActivity().getApplication()).updateShortcut(chara,getActivity());
+        if(chara!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                if (!((SWrpg) getActivity().getApplication()).hasShortcut(chara))
+                    ((SWrpg) getActivity().getApplication()).addShortcut(chara, getActivity());
+                else
+                    ((SWrpg) getActivity().getApplication()).updateShortcut(chara, getActivity());
+            }
         }
     }
 
@@ -55,7 +57,10 @@ public class CharacterEditMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View top = inflater.inflate(R.layout.fragment_character_edit_main, container, false);
+        return inflater.inflate(R.layout.fragment_character_edit_main, container, false);
+    }
+
+    public void onViewCreated(final View top,Bundle saved){
         TabLayout taby = (TabLayout)top.findViewById(R.id.tabLay);
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.uni_fab);
         taby.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -116,7 +121,6 @@ public class CharacterEditMain extends Fragment {
         pager.setAdapter(adap);
         top.setFocusableInTouchMode(true);
         top.requestFocus();
-        return top;
     }
 
     @Override
@@ -134,7 +138,8 @@ public class CharacterEditMain extends Fragment {
         super.onResume();
         SharedPreferences pref = getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE);
         if(getActivity()!=null) {
-            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null) {
+            if (pref.getBoolean(getString(R.string.google_drive_key), false) && ((SWrpg) getActivity().getApplication()).gac != null
+                    && chara!=null) {
                 chara.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).charsFold.getDriveId());
             } else {
                 chara.startEditing(getActivity());

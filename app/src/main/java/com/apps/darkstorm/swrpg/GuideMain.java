@@ -7,9 +7,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public class GuideMain extends Fragment {
     private OnGuideInteractionListener mListener;
@@ -40,7 +46,10 @@ public class GuideMain extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View top = inflater.inflate(R.layout.fragment_guide_main, container, false);
+        return inflater.inflate(R.layout.fragment_guide_main, container, false);
+    }
+
+    public void onViewCreated(final View top,final Bundle saved){
         TabLayout taber = (TabLayout)top.findViewById(R.id.guide_taber);
         ViewPager pager = (ViewPager)top.findViewById(R.id.guide_pager);
         taber.setupWithViewPager(pager);
@@ -61,11 +70,11 @@ public class GuideMain extends Fragment {
                 View tmp;
                 switch(position){
                     case 0:
-                        tmp = diceView(inflater,group);
+                        tmp = getLayoutInflater(getArguments()).inflate(R.layout.guide_dice,group,false);
                         group.addView(tmp);
                         return tmp;
                     case 1:
-                        tmp = skillBasicView(inflater,group);
+                        tmp = getLayoutInflater(getArguments()).inflate(R.layout.guide_skill_basic,group,false);
                         group.addView(tmp);
                         return tmp;
                     default:
@@ -87,30 +96,21 @@ public class GuideMain extends Fragment {
         pager.setAdapter(adap);
         if (getActivity().getSharedPreferences(getString(R.string.preference_key),Context.MODE_PRIVATE)
                 .getBoolean(getString(R.string.ads_key),true)) {
-//            AdView ads = new AdView(getContext());
-//            ads.setAdSize(AdSize.BANNER);
-//            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-//            adLayout.weight = 0;
-//            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
-//            ads.setLayoutParams(adLayout);
-//            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
-//                ads.setAdUnitId(getString(R.string.free_banner_ad_id));
-//            else
-//                ads.setAdUnitId(getString(R.string.paid_banner_ad_id));
-//            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
-//            ads.loadAd(adRequest);
-//            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
-//            topLinLay.addView(ads,topLinLay.getChildCount());
+            AdView ads = new AdView(getContext());
+            ads.setAdSize(AdSize.BANNER);
+            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            adLayout.weight = 0;
+            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+            ads.setLayoutParams(adLayout);
+            if (BuildConfig.APPLICATION_ID.equals("com.apps.darkstorm.swrpg"))
+                ads.setAdUnitId(getString(R.string.free_banner_ad_id));
+            else
+                ads.setAdUnitId(getString(R.string.paid_banner_ad_id));
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
+            topLinLay.addView(ads,topLinLay.getChildCount());
         }
-        return top;
-    }
-
-    public View skillBasicView(LayoutInflater inflater, ViewGroup container){
-        return inflater.inflate(R.layout.guide_skill_basic,container,false);
-    }
-
-    public View diceView(LayoutInflater inflater, ViewGroup container){
-        return inflater.inflate(R.layout.guide_dice,container,false);
     }
 
 
