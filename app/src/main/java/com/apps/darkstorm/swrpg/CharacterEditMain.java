@@ -38,11 +38,13 @@ public class CharacterEditMain extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            if(!((SWrpg)getActivity().getApplication()).hasShortcut(chara))
-                ((SWrpg)getActivity().getApplication()).addShortcut(chara,getActivity());
-            else
-                ((SWrpg)getActivity().getApplication()).updateShortcut(chara,getActivity());
+        if(chara!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                if (!((SWrpg) getActivity().getApplication()).hasShortcut(chara))
+                    ((SWrpg) getActivity().getApplication()).addShortcut(chara, getActivity());
+                else
+                    ((SWrpg) getActivity().getApplication()).updateShortcut(chara, getActivity());
+            }
         }
     }
 

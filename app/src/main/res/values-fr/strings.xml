@@ -33,4 +33,8 @@
   <string name="export">Select Export Folder:</string>
 
   <string name="select">Select</string>
+
+  <string name="re_show">Re-Show</string>
+
+  <string name="modify_results">Modify</string>
 </resources>
