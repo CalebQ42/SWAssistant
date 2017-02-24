@@ -3,9 +3,9 @@
 <resources>
   <string-array name="gear_damage_levels">
     <item>Kein</item>
-    <item>Minor</item>
-    <item>Moderate</item>
-    <item>Major</item>
+    <item>Leicht</item>
+    <item>Mittelschwer</item>
+    <item>Schwer</item>
   </string-array>
   <string-array name="crit_injury_severities">
     <item>Einfach</item>
