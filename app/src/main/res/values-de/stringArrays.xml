@@ -63,14 +63,14 @@
     <item>Artillerie</item>
     <item>Lichtschwert</item>
     <item>Nahkampf</item>
-    <item>Ranged(Light)</item>
-    <item>Ranged(Heavy)</item>
-    <item>Knowledge(Core Worlds)</item>
-    <item>Knowledge(Education)</item>
-    <item>Knowledge(Lore)</item>
-    <item>Knowledge(Outer Rim)</item>
-    <item>Knowledge(Underworld)</item>
-    <item>Knowledge(Xenology)</item>
+    <item>Fernkampf (Leicht)</item>
+    <item>Fernkampf (Schwer)</item>
+    <item>Wissen (Kernwelten)</item>
+    <item>Wissen (Allgemeinbildung)</item>
+    <item>Wissen (Altes Wissen)</item>
+    <item>Wissen (Äußerer Rand)</item>
+    <item>Wissen (Unterwelt)</item>
+    <item>Wissen (Xenologie)</item>
     <item>Andere&#8230;</item>
   </string-array>
 </resources>
