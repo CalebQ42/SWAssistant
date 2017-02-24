@@ -27,5 +27,5 @@ Bei Abbrechen wechselt die App in den Nur-Würfel-Modus.</string>
   <string name="export">Export-Ordner wählen:</string>
   <string name="select">Auswählen</string>
   <string name="re_show">Re-Show</string>
-  <string name="modify_results">Modify</string>
+  <string name="modify_results">Abändern</string>
 </resources>
