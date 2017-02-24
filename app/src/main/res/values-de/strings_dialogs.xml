@@ -19,12 +19,12 @@
   <string name="not_loaded">Nicht geladen</string>
   <string name="miss_text">Verfehlt</string>
   <string name="damage_text">Schaden:</string>
-  <string name="specials_text">Specials:</string>
+  <string name="specials_text">Sonstiges:</string>
   <string name="critical_text">Kritisch</string>
   <string name="hard_points_text">Aufrüstungspunkte:</string>
   <string name="weapon_state_text">Zustand:</string>
   <string name="range_text">Reichweite</string>
-  <string name="skill_characteristic_text">Skill Characteristic:</string>
+  <string name="skill_characteristic_text">Fertigkeitseigenschaft:</string>
   <string name="add_text">Hinzufügen</string>
   <string name="add_brawn_text">Add Brawn</string>
   <string name="loaded_text">Geladen</string>
