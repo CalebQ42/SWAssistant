@@ -3,9 +3,9 @@
 <resources>
   <string-array name="gear_damage_levels">
     <item>Kein</item>
-    <item>Minor</item>
-    <item>Moderate</item>
-    <item>Major</item>
+    <item>Leicht</item>
+    <item>Mittelschwer</item>
+    <item>Schwer</item>
   </string-array>
   <string-array name="crit_injury_severities">
     <item>Einfach</item>
@@ -29,48 +29,48 @@
     <item>Fernkampf (Schwer)</item>
   </string-array>
   <string-array name="base_characteristics">
-    <item>Brawn</item>
-    <item>Agility</item>
-    <item>Intellect</item>
-    <item>Cunning</item>
-    <item>Willpower</item>
-    <item>Presence</item>
+    <item>Stärke</item>
+    <item>Gewandtheit</item>
+    <item>Intelligenz</item>
+    <item>List</item>
+    <item>Willenskraft</item>
+    <item>Charisma</item>
   </string-array>
   <string-array name="skills_list">
-    <item>Astrogation</item>
-    <item>Athletics</item>
-    <item>Charm</item>
-    <item>Coercion</item>
-    <item>Computers</item>
-    <item>Cool</item>
-    <item>Coordination</item>
-    <item>Deception</item>
-    <item>Discipline</item>
-    <item>Leadership</item>
-    <item>Mechanics</item>
-    <item>Medicine</item>
-    <item>Negotiation</item>
-    <item>Perception</item>
-    <item>Piloting(Planetary)</item>
-    <item>Piloting(Space)</item>
-    <item>Resilience</item>
-    <item>Skulduggery</item>
-    <item>Stealth</item>
-    <item>Streetwise</item>
-    <item>Survival</item>
-    <item>Vigilance</item>
-    <item>Brawl</item>
-    <item>Gunnery</item>
-    <item>Lightsaber</item>
-    <item>Melee</item>
-    <item>Ranged(Light)</item>
-    <item>Ranged(Heavy)</item>
-    <item>Knowledge(Core Worlds)</item>
-    <item>Knowledge(Education)</item>
-    <item>Knowledge(Lore)</item>
-    <item>Knowledge(Outer Rim)</item>
-    <item>Knowledge(Underworld)</item>
-    <item>Knowledge(Xenology)</item>
+    <item>Astronavigation</item>
+    <item>Athletik</item>
+    <item>Charme</item>
+    <item>Einschüchterung</item>
+    <item>Computertechnik</item>
+    <item>Coolness</item>
+    <item>Körperbeherrschung</item>
+    <item>Täuschung</item>
+    <item>Disziplin</item>
+    <item>Führungsqualität</item>
+    <item>Mechanik</item>
+    <item>Medizin</item>
+    <item>Verhandeln</item>
+    <item>Wahrnehmung</item>
+    <item>Pilot (Planetar)</item>
+    <item>Pilot (Weltraum)</item>
+    <item>Widerstandskraft</item>
+    <item>Infiltration</item>
+    <item>Heimlichkeit</item>
+    <item>Straßenwissen</item>
+    <item>Überleben</item>
+    <item>Wachsamkeit</item>
+    <item>Handgemenge</item>
+    <item>Artillerie</item>
+    <item>Lichtschwert</item>
+    <item>Nahkampf</item>
+    <item>Fernkampf (Leicht)</item>
+    <item>Fernkampf (Schwer)</item>
+    <item>Wissen (Kernwelten)</item>
+    <item>Wissen (Allgemeinbildung)</item>
+    <item>Wissen (Altes Wissen)</item>
+    <item>Wissen (Äußerer Rand)</item>
+    <item>Wissen (Unterwelt)</item>
+    <item>Wissen (Xenologie)</item>
     <item>Andere&#8230;</item>
   </string-array>
 </resources>
