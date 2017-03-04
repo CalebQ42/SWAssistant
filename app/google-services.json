@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "366257084395-qv0llt34s4637u3j2mt95bqu9qmpdkeq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.darkstorm.swrpg.donate",
+            "certificate_hash": "ebe0446a4ce7f0aad71e14ca704ab157c419af07"
+          }
+        },
+        {
+          "client_id": "366257084395-19v64as4tnm1ttut4gtdebqigj4j5gn1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.darkstorm.swrpg.donate",
+            "certificate_hash": "7caacc6002a2aeef753cfac45415679f4ad218e9"
+          }
+        },
+        {
           "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -51,6 +67,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "366257084395-c1cg3k38a3342452ijreulvrbmgtc6ko.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.darkstorm.swrpg",
+            "certificate_hash": "ebe0446a4ce7f0aad71e14ca704ab157c419af07"
+          }
+        },
+        {
+          "client_id": "366257084395-n6rtgab6chptk5ke5rni0nk7i8otjcqe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.darkstorm.swrpg",
+            "certificate_hash": "7caacc6002a2aeef753cfac45415679f4ad218e9"
+          }
+        },
+        {
           "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -67,6 +99,94 @@
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366257084395:android:b8431d563bf04422",
+        "android_client_info": {
+          "package_name": "com.apps.darkstorm.swrpg.assistant.donate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "366257084395-rm0r6pivnk45jf27eaq1tjegg8hnan1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.darkstorm.swrpg.assistant.donate",
+            "certificate_hash": "764f3ae4378b0f2dfb4a6e864507c4b2e1f93e2e"
+          }
+        },
+        {
+          "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9hZde_JjaFFeae8KWoiL-2uSpdqBRlHg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366257084395:android:6ac95dceae0f09e2",
+        "android_client_info": {
+          "package_name": "com.apps.darkstorm.swrpg.assistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "366257084395-o1l6pgaev7qoj9qi6o15e2vdur1f2hcm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.darkstorm.swrpg.assistant",
+            "certificate_hash": "764f3ae4378b0f2dfb4a6e864507c4b2e1f93e2e"
+          }
+        },
+        {
+          "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9hZde_JjaFFeae8KWoiL-2uSpdqBRlHg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "366257084395-5iu85ajcir48i586p1ls75v3vkffgjiv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

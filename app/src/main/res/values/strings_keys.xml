@@ -14,10 +14,10 @@
     <string name="color_dice_key">colorDiceKey</string>
 
     <!--AdKeys-->
-    <string name="free_banner_ad_id">ca-app-pub-2493790455010177/5957657444</string>
+    <string name="free_banner_ad_id">ca-app-pub-2493790455010177/3496603845</string>
     <string name="paid_banner_ad_id">ca-app-pub-2493790455010177/5120052649</string>
 
-    <string name="free_interstitial">ca-app-pub-2493790455010177/2958441049</string>
+    <string name="free_interstitial">ca-app-pub-2493790455010177/4973337047</string>
     <string name="paid_interstitial">ca-app-pub-2493790455010177/5120052649</string>
 
     <string name="banner_test">ca-app-pub-3940256099942544/6300978111</string>
