@@ -32,6 +32,7 @@ public class CharacterEditNotes extends Fragment {
         super.onCreate(savedInstanceState);
 //        setRetainInstance(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
