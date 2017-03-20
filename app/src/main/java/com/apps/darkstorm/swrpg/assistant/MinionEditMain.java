@@ -54,7 +54,6 @@ public class MinionEditMain extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     @Override
@@ -80,6 +79,7 @@ public class MinionEditMain extends Fragment {
                             DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                                     .initialDirectory(((SWrpg) getActivity().getApplication()).prefs.getString(getString(R.string.local_location_key),
                                             ((SWrpg) getActivity().getApplication()).defaultLoc)).allowReadOnlyDirectory(false)
+                                    .newDirectoryName("SWrpg")
                                     .allowNewDirectoryNameModification(true).build();
                             dcf = DirectoryChooserFragment.newInstance(config);
                             dcf.setTargetFragment(MinionEditMain.this, 0);
@@ -111,7 +111,7 @@ public class MinionEditMain extends Fragment {
         if(getActivity()!=null) {
             if (((SWrpg) getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key), false) &&
                     ((SWrpg) getActivity().getApplication()).gac != null
-                    && minion!=null) {
+                    && minion!=null && ((SWrpg) getActivity().getApplication()).charsFold!=null) {
                 minion.startEditing(getActivity(), ((SWrpg) getActivity().getApplication()).charsFold.getDriveId());
             } else {
                 minion.startEditing(getActivity());

@@ -81,6 +81,7 @@ public class VehicleEdit extends Fragment {
                             DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                                     .initialDirectory(((SWrpg) getActivity().getApplication()).prefs.getString(getString(R.string.local_location_key),
                                             ((SWrpg) getActivity().getApplication()).defaultLoc)).allowReadOnlyDirectory(false)
+                                    .newDirectoryName("SWrpg")
                                     .allowNewDirectoryNameModification(true).build();
                             dcf = DirectoryChooserFragment.newInstance(config);
                             dcf.setTargetFragment(VehicleEdit.this, 0);
