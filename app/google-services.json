@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "833010378067",
+    "firebase_url": "https://swrpg-assistant.firebaseio.com",
+    "project_id": "swrpg-assistant",
+    "storage_bucket": "swrpg-assistant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833010378067:android:6ac95dceae0f09e2",
+        "android_client_info": {
+          "package_name": "com.apps.darkstorm.swrpg.assistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833010378067-gj02uuqti8jcjpgu3n4t54rch7c73b62.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.darkstorm.swrpg.assistant",
+            "certificate_hash": "c7e0e5702ef0914bfc0450e98ec5cc47c794577b"
+          }
+        },
+        {
+          "client_id": "833010378067-50ndo5389kbu8rra8della3p6m807nk4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC9a6w36Td2yEqXe5CqAT-JuDCtePDFkE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833010378067-50ndo5389kbu8rra8della3p6m807nk4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

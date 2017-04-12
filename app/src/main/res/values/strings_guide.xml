@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_pool_title">Building a Dice Pool:</string>
+    <string name="dice_pool_main">2 Numbers:\nskill rank, skill base characteristic rank</string>
+    <string name="dice_pool_ability">= Greater number - Lesser number</string>
+    <string name="dice_pool_proficiency">= Lesser number</string>
+    <string name="dice_pool_difficulty">= Difficulty</string>
+    <string name="dice_pool_boost">= Number of advantages</string>
+    <string name="dice_pool_setback">= Number of disadvantages</string>
+
+    <!--Difficulty Card-->
+    <string name="difficulty_text">Difficulty:</string>
+    <string name="easy_text">Easy</string>
+    <string name="average_text">Average</string>
+    <string name="hard_text">Hard</string>
+    <string name="daunting_text">Daunting</string>
+    <string name="formidable_text">Formidable</string>
+
+    <!--Dice Descriptions-->
+    <string name="ability_dice_desc">Basic positive die used in most skill checks. Represents aptitude in a skill.</string>
+    <string name="proficiency_dice_desc">A more powerful positive die used in most skill checks. Upgraded form of the
+    ability die. Represents innate ability or training.</string>
+    <string name="difficulty_dice_desc">Basic negative die used in most skill checks. Represents the difficulty of
+    a given task.</string>
+    <string name="challenge_dice_desc">A more powerful negative die. Upgraded form of
+    the difficulty die. Represents great adversity.</string>
+    <string name="boost_dice_desc">A positive die representing an advantage.</string>
+    <string name="setback_dice_desc">A negative die representing a disadvantage.</string>
+    <string name="force_dice_desc">A die representing the force. Used only when a player calls upon the force.</string>
+</resources>

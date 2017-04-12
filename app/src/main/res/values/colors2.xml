@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f44336</color>
+    <color name="colorPrimaryDark">#c62828</color>
+    <color name="colorAccent">#ff5252</color>
+    <color name="lineCol">#99999999</color>
+
+    <color name="ability_card">#2E7D32</color>
+    <color name="proficiency_card">#F9A825</color>
+    <color name="difficulty_card">#6A1B9A</color>
+    <color name="challenge_card">#C62828</color>
+    <color name="boost_card">#01579B</color>
+    <color name="setback_card">#424242</color>
+    <color name="force_card">#CCCCCC</color>
+    <color name="ability_text">#CCCCCC</color>
+    <color name="proficiency_text">#000000</color>
+    <color name="difficulty_text">#CCCCCC</color>
+    <color name="challenge_text">#CCCCCC</color>
+    <color name="boost_text">#CCCCCC</color>
+    <color name="setback_text">#CCCCCC</color>
+    <color name="force_text">#000000</color>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
+    <string name="preference_key">prefs</string>
+
+    <string name="google_drive_key">cloudEnabled</string>
+    <string name="sync_key">syncStyleCloud</string>
+
+    <string name="dice_key">getDiceOnLaunch</string>
+    <string name="light_side_key">lightSideKey</string>
+    <string name="ads_key">adsOn</string>
+
+    <string name="local_location_key">saveLocation</string>
+
+    <string name="color_dice_key">colorDiceKey</string>
+
+    <!--AdKeys-->
+    <string name="free_banner_ad_id">ca-app-pub-2493790455010177/3496603845</string>
+    <string name="paid_banner_ad_id">ca-app-pub-2493790455010177/5120052649</string>
+
+    <string name="free_interstitial">ca-app-pub-2493790455010177/4973337047</string>
+    <string name="paid_interstitial">ca-app-pub-2493790455010177/5120052649</string>
+
+    <string name="banner_test">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_test">ca-app-pub-3940256099942544/1033173712</string>
+</resources>
