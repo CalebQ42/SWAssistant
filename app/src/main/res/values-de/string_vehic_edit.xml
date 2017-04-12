@@ -21,6 +21,6 @@
   <string name="passenger_capacity_text">Passagierkapazität:</string>
   <string name="encumbrance_text">Last:</string>
   <string name="encumbrance_capacity_text">Lastenkapazität:</string>
-  <string name="arc_text">Waffenbogen:</string>
+  <string name="arc_text">Waffentreffspanne:</string>
   <string name="vehicle_delete">Willst du dieses Fahrzeug wirklich löschen?</string>
 </resources>
