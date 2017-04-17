@@ -33,7 +33,8 @@ import com.google.android.gms.drive.Drive;
 import java.io.File;
 
 public class MainDrawer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener,
+        DiceRollFragment.OnDiceRollFragmentInteraction{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class MainDrawer extends AppCompatActivity
         }else if(Intent.ACTION_EDIT.equals(intent.getAction())&&intent.getData()!=null){
             switch(intent.getDataString()){
                 case "dice":
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
                     break;
                 case "guide":
                     break;
@@ -125,6 +127,8 @@ public class MainDrawer extends AppCompatActivity
             case R.id.dnld_nav:
                 break;
             case R.id.dice_nav:
+                getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance())
+                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Dice").commit();
                 break;
             case R.id.guid_nav:
                 break;

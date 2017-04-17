@@ -12,6 +12,7 @@
                 android:title="@string/characters" />
             <item
                 android:id="@+id/min_nav"
+                android:icon="@drawable/people_silhouette"
                 android:title="@string/minions" />
             <item
                 android:id="@+id/vehic_nav"
@@ -23,7 +24,8 @@
                 android:title="@string/download" />
         </menu>
     </item>
-    <group>
+    <item android:title="@string/other_group">
+        <menu>
         <item
             android:id="@+id/dice_nav"
             android:icon="@drawable/die_icon"
@@ -36,5 +38,6 @@
             android:id="@+id/stng_nav"
             android:icon="@drawable/gear"
             android:title="@string/settings" />
-    </group>
+        </menu>
+    </item>
 </menu>

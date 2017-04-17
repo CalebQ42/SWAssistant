@@ -28,15 +28,15 @@
             </intent-filter>
             <!--Thanks to http://stackoverflow.com/questions/1733195/android-intent-filter-for-a-particular-file-extension/2062112#2062112-->
             <intent-filter>
-            <action android:name="android.intent.action.EDIT" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="file" />
-            <data android:mimeType="*/*" />
-            <data android:pathPattern=".*\\.char" />
-            <data android:pathPattern=".*\\.vhcl" />
-            <data android:pathPattern=".*\\.minion" />
-            <data android:host="*" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.char" />
+                <data android:pathPattern=".*\\.vhcl" />
+                <data android:pathPattern=".*\\.minion" />
+                <data android:host="*" />
             </intent-filter>
             <meta-data android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
