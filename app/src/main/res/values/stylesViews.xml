@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="number_label">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:text">0</item>
+    </style>
+    <style name="plus_button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:text">+</item>
+    </style>
+    <style name="minus_button" parent="@style/Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:text">-</item>
+    </style>
+    <style name="card_title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

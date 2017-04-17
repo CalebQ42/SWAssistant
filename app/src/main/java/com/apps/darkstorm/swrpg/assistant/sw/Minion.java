@@ -3,12 +3,9 @@ package com.apps.darkstorm.swrpg.assistant.sw;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
-import com.apps.darkstorm.swrpg.assistant.custvars.DriveSaveLoad;
+import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Inventory;

@@ -14,7 +14,6 @@ import android.support.annotation.RequiresApi;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
-import com.apps.darkstorm.swrpg.assistant.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveFolder;
 
@@ -35,12 +34,12 @@ public class SWrpg extends Application{
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://character/" + String.valueOf(pl.ID)));
             tmp.setPackage(this.getPackageName());
-            tmp.setClass(main, MainActivity.class);
+            tmp.setClass(main, MainDrawer.class);
             String name = pl.name;
             ShortcutInfo cut = new ShortcutInfo.Builder(main, "character" + "/" + String.valueOf(pl.ID))
                     .setShortLabel(pl.name)
                     .setLongLabel(pl.name)
-                    .setIcon(Icon.createWithResource(main, R.drawable.person_shortcut))
+                    .setIcon(Icon.createWithResource(main, R.drawable.char_launch))
                     .setIntent(tmp)
                     .setActivity(main.getComponentName())
                     .build();
@@ -56,11 +55,11 @@ public class SWrpg extends Application{
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://minion/" + String.valueOf(pl.ID)));
             tmp.setPackage(this.getPackageName());
-            tmp.setClass(main, MainActivity.class);
+            tmp.setClass(main, MainDrawer.class);
             ShortcutInfo cut = new ShortcutInfo.Builder(main, "minion" + "/" + String.valueOf(pl.ID))
                     .setShortLabel(pl.name)
                     .setLongLabel(pl.name)
-                    .setIcon(Icon.createWithResource(main, R.drawable.minion_shortcut))
+                    .setIcon(Icon.createWithResource(main, R.drawable.minion_launch))
                     .setIntent(tmp)
                     .setActivity(main.getComponentName())
                     .build();
@@ -76,11 +75,11 @@ public class SWrpg extends Application{
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://vehicle/" + String.valueOf(pl.ID)));
             tmp.setPackage(this.getPackageName());
-            tmp.setClass(main, MainActivity.class);
+            tmp.setClass(main, MainDrawer.class);
             ShortcutInfo cut = new ShortcutInfo.Builder(main, "vehicle" + "/" + String.valueOf(pl.ID))
                     .setShortLabel(pl.name)
                     .setLongLabel(pl.name)
-                    .setIcon(Icon.createWithResource(main, R.drawable.ship_shortcut))
+                    .setIcon(Icon.createWithResource(main, R.drawable.vehic_launch))
                     .setIntent(tmp)
                     .setActivity(main.getComponentName())
                     .build();
@@ -126,11 +125,11 @@ public class SWrpg extends Application{
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://character/" + String.valueOf(pl.ID)));
             tmp.setPackage(this.getPackageName());
-            tmp.setClass(main, MainActivity.class);
+            tmp.setClass(main, MainDrawer.class);
             ShortcutInfo cut = new ShortcutInfo.Builder(main, "character" + "/" + String.valueOf(pl.ID))
                     .setShortLabel(pl.name)
                     .setLongLabel(pl.name)
-                    .setIcon(Icon.createWithResource(main, R.drawable.person_shortcut))
+                    .setIcon(Icon.createWithResource(main, R.drawable.person_silhouette))
                     .setIntent(tmp)
                     .setActivity(main.getComponentName())
                     .build();
@@ -146,11 +145,11 @@ public class SWrpg extends Application{
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://minion/" + String.valueOf(pl.ID)));
             tmp.setPackage(this.getPackageName());
-            tmp.setClass(main, MainActivity.class);
+            tmp.setClass(main, MainDrawer.class);
             ShortcutInfo cut = new ShortcutInfo.Builder(main, "minion" + "/" + String.valueOf(pl.ID))
                     .setShortLabel(pl.name)
                     .setLongLabel(pl.name)
-                    .setIcon(Icon.createWithResource(main, R.drawable.person_shortcut))
+                    .setIcon(Icon.createWithResource(main, R.drawable.person_silhouette))
                     .setIntent(tmp)
                     .setActivity(main.getComponentName())
                     .build();
@@ -166,11 +165,11 @@ public class SWrpg extends Application{
             Intent tmp = new Intent(Intent.ACTION_EDIT);
             tmp.setData(Uri.parse("content://vehicle/" + String.valueOf(pl.ID)));
             tmp.setPackage(this.getPackageName());
-            tmp.setClass(main, MainActivity.class);
+            tmp.setClass(main, MainDrawer.class);
             ShortcutInfo cut = new ShortcutInfo.Builder(main, "vehicle" + "/" + String.valueOf(pl.ID))
                     .setShortLabel(pl.name)
                     .setLongLabel(pl.name)
-                    .setIcon(Icon.createWithResource(main, R.drawable.person_shortcut))
+                    .setIcon(Icon.createWithResource(main, R.drawable.person_silhouette))
                     .setIntent(tmp)
                     .setActivity(main.getComponentName())
                     .build();
