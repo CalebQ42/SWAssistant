@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:scrollbars="horizontal">
+
+        <TextView
+            android:id="@+id/success_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/success_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/success_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/success_label" />
+
+        <Button
+            android:id="@+id/success_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/success_label" />
+
+        <TextView
+            android:id="@+id/success_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/success_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/success_minus"
+            app:layout_constraintRight_toLeftOf="@+id/success_plus"
+            app:layout_constraintTop_toTopOf="@+id/success_plus" />
+
+        <TextView
+            android:id="@+id/failure_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/fail_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/success_plus" />
+
+        <Button
+            android:id="@+id/failure_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/failure_label" />
+
+        <Button
+            android:id="@+id/failure_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/failure_label" />
+
+        <TextView
+            android:id="@+id/failure_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/failure_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/failure_minus"
+            app:layout_constraintRight_toLeftOf="@+id/failure_plus"
+            app:layout_constraintTop_toTopOf="@+id/failure_plus" />
+
+        <TextView
+            android:id="@+id/advantage_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/advantage_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/failure_plus" />
+
+        <Button
+            android:id="@+id/advantage_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/advantage_label" />
+
+        <Button
+            android:id="@+id/advantage_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/advantage_label" />
+
+        <TextView
+            android:id="@+id/advantage_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/advantage_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/advantage_minus"
+            app:layout_constraintRight_toLeftOf="@+id/advantage_plus"
+            app:layout_constraintTop_toTopOf="@+id/advantage_plus" />
+
+        <TextView
+            android:id="@+id/threat_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/threat_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/advantage_plus" />
+
+        <Button
+            android:id="@+id/threat_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/threat_label" />
+
+        <Button
+            android:id="@+id/threat_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/threat_label" />
+
+        <TextView
+            android:id="@+id/threat_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/threat_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/threat_minus"
+            app:layout_constraintRight_toLeftOf="@+id/threat_plus"
+            app:layout_constraintTop_toTopOf="@+id/threat_plus" />
+
+        <TextView
+            android:id="@+id/triumph_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/triumph_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/threat_plus" />
+
+        <Button
+            android:id="@+id/triumph_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/triumph_label" />
+
+        <Button
+            android:id="@+id/triumph_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/triumph_label" />
+
+        <TextView
+            android:id="@+id/triumph_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/triumph_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/triumph_minus"
+            app:layout_constraintRight_toLeftOf="@+id/triumph_plus"
+            app:layout_constraintTop_toTopOf="@+id/triumph_plus" />
+
+        <TextView
+            android:id="@+id/despair_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/despair_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/triumph_plus" />
+
+        <Button
+            android:id="@+id/despair_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/despair_label" />
+
+        <Button
+            android:id="@+id/despair_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/despair_label" />
+
+        <TextView
+            android:id="@+id/despair_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/despair_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/despair_minus"
+            app:layout_constraintRight_toLeftOf="@+id/despair_plus"
+            app:layout_constraintTop_toTopOf="@+id/despair_plus" />
+
+        <TextView
+            android:id="@+id/light_side_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/light_side_points_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/despair_plus" />
+
+        <Button
+            android:id="@+id/light_side_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/light_side_label" />
+
+        <Button
+            android:id="@+id/light_side_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/light_side_label" />
+
+        <TextView
+            android:id="@+id/light_side_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/light_side_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/light_side_minus"
+            app:layout_constraintRight_toLeftOf="@+id/light_side_plus"
+            app:layout_constraintTop_toTopOf="@+id/light_side_plus" />
+
+        <TextView
+            android:id="@+id/dark_side_label"
+            style="@style/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/dark_side_points_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/light_side_plus" />
+
+        <Button
+            android:id="@+id/dark_side_minus"
+            style="@style/minus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dark_side_label" />
+
+        <Button
+            android:id="@+id/dark_side_plus"
+            style="@style/plus_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dark_side_label" />
+
+        <TextView
+            android:id="@+id/dark_side_num"
+            style="@style/number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/dark_side_plus"
+            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintLeft_toRightOf="@+id/dark_side_minus"
+            app:layout_constraintRight_toLeftOf="@+id/dark_side_plus"
+            app:layout_constraintTop_toTopOf="@+id/dark_side_plus" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

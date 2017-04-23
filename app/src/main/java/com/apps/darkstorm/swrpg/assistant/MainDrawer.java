@@ -59,7 +59,7 @@ public class MainDrawer extends AppCompatActivity
             System.out.println(intent.getDataString());
         }else if(Intent.ACTION_EDIT.equals(intent.getAction())&&intent.getData()!=null){
             switch(intent.getDataString()){
-                case "dice":
+                case "die":
                     getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
                     break;
                 case "guide":
