@@ -4,15 +4,15 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
-import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
+import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Inventory;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skills;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talents;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
-import com.apps.darkstorm.swrpg.assistant.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
@@ -47,6 +47,8 @@ public class Minion {
     public CriticalInjuries critInjuries = new CriticalInjuries();
     public Inventory origInv = new Inventory();
     public Weapons origWeapons = new Weapons();
+    //Version 3 17
+    public String category = "";
 
 
     private boolean editing = false;
@@ -214,12 +216,15 @@ public class Minion {
         sl.addSave(critInjuries.serialObject());
         sl.addSave(origInv.serialObject());
         sl.addSave(origWeapons.serialObject());
+        sl.addSave(category);
         sl.save();
     }
     public void reLoad(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] obj = sl.load();
         switch(obj.length){
+            case 20:
+                category = (String)obj[19];
             case 19:
                 origWeapons.loadFromObject(obj[18]);
                 origInv.loadFromObject(obj[17]);
@@ -294,6 +299,7 @@ public class Minion {
             sl.addSave(critInjuries.serialObject());
             sl.addSave(origInv.serialObject());
             sl.addSave(origWeapons.serialObject());
+            sl.addSave(category);
             sl.save(gac, async);
         }
     }
@@ -301,6 +307,8 @@ public class Minion {
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] obj = sl.load(gac);
         switch(obj.length){
+            case 20:
+                category = (String)obj[19];
             case 19:
                 origWeapons.loadFromObject(obj[18]);
                 origInv.loadFromObject(obj[17]);
@@ -395,6 +403,7 @@ public class Minion {
         min.soak = soak;
         min.desc = desc;
         min.showCard = showCard.clone();
+        min.category = category;
         return min;
     }
     public boolean equals(Object obj){
@@ -406,7 +415,7 @@ public class Minion {
                 tmp.weapons.equals(weapons) && tmp.woundThresh == woundThresh && tmp.woundCur == woundCur &&
                 tmp.defMelee == defMelee && tmp.defRanged == defRanged && tmp.soak == soak && tmp.desc.equals(desc) &&
                 Arrays.equals(tmp.showCard, showCard) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum &&
-                tmp.critInjuries.equals(critInjuries);
+                tmp.critInjuries.equals(critInjuries)&& tmp.category.equals(category);
     }
     public void delete(final Activity main){
         File tmp = new File(getFileLocation(main));

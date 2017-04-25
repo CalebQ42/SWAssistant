@@ -49,16 +49,16 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/up_down_label" />
 
-        <TextView
-            android:id="@+id/up_down_num"
-            style="@style/number_label"
+        <TextSwitcher
+            android:id="@+id/up_down_switcher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_margin="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/up"
             app:layout_constraintLeft_toRightOf="@+id/down"
             app:layout_constraintRight_toLeftOf="@+id/up"
-            app:layout_constraintTop_toTopOf="@+id/up" />
+            app:layout_constraintTop_toTopOf="@+id/up">
+
+        </TextSwitcher>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

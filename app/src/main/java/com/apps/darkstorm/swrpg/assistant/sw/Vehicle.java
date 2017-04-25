@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
-import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
+import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
-import com.apps.darkstorm.swrpg.assistant.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
@@ -50,9 +50,13 @@ public class Vehicle {
     public String desc = "";
     public String model = "";
     //
-    //  ^                 ^
-    //  |  Version 1 End  |
-    //  |                 |
+    // Version 2 start (20)
+    //
+    public String category = "";
+    //
+    //  ^               ^
+    //  |  Vehicle End  |
+    //  |               |
     //
 
     private boolean editing = false;
@@ -113,6 +117,7 @@ public class Vehicle {
         tmp.showCards = showCards.clone();
         tmp.desc = desc;
         tmp.model = model;
+        tmp.category = category;
         return tmp;
     }
     public void startEditing(final Activity main, final DriveId fold){
@@ -248,6 +253,7 @@ public class Vehicle {
         sl.addSave(showCards);
         sl.addSave(desc);
         sl.addSave(model);
+        sl.addSave(category);
         sl.save();
     }
     public void cloudSave(GoogleApiClient gac, DriveId fil, boolean async){
@@ -274,6 +280,7 @@ public class Vehicle {
             sl.addSave(showCards);
             sl.addSave(desc);
             sl.addSave(model);
+            sl.addSave(category);
             sl.save(gac,async);
         }
     }
@@ -281,8 +288,9 @@ public class Vehicle {
         loc = filename;
         SaveLoad sl = new SaveLoad(filename);
         Object[] val = sl.load();
-        System.out.println("Loading...");
         switch (val.length){
+            case 21:
+                category = (String)val[20];
             case 20:
                 model = (String)val[19];
                 desc = (String)val[18];
@@ -319,6 +327,8 @@ public class Vehicle {
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] val = sl.load(gac);
         switch (val.length){
+            case 21:
+                category = (String)val[20];
             case 20:
                 model = (String)val[19];
                 desc = (String)val[18];
@@ -398,7 +408,8 @@ public class Vehicle {
                 && in.armor == armor && Arrays.equals(in.defense,defense) && totalDefense == in.totalDefense && in.hullTraumaCur == hullTraumaCur
                 && in.hullTraumaThresh == hullTraumaThresh && in.sysStressCur == sysStressCur && in.sysStressThresh == sysStressThresh
                 && in.encumCapacity == encumCapacity && in.passengerCapacity == passengerCapacity && in.hp == hp && in.weapons.equals(weapons)
-                && in.crits.equals(crits) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model);
+                && in.crits.equals(crits) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model)
+                && in.category.equals(category);
     }
     public void delete(final Activity main){
         File tmp = new File(getFileLocation(main));

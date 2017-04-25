@@ -28,4 +28,7 @@ Bei Abbrechen wechselt die App in den Nur-Würfel-Modus.</string>
   <string name="select">Auswählen</string>
   <string name="re_show">Neues Ergebnis</string>
   <string name="modify_results">Abändern</string>
+    <string name="category_text">Category:</string>
+  <string name="minions">Minions</string>
+  <string name="title_activity_main_drawer">MainDrawer</string>
 </resources>

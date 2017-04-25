@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
-import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
+import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Dutys;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.ForcePowers;
@@ -17,7 +18,6 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skills;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Specializations;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talents;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
-import com.apps.darkstorm.swrpg.assistant.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
@@ -77,7 +77,7 @@ public class Character {
     //
     // Character v3 Start (36)
     //
-    public String category;
+    public String category = "";
     //
     //  ^                 ^
     //  |  Character End  |

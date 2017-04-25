@@ -1,19 +1,22 @@
 package com.apps.darkstorm.swrpg.assistant;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.ui.upDownCard;
@@ -47,11 +50,12 @@ public class DiceRollFragment extends Fragment {
         super.onAttach(context);
         if (!(context instanceof OnDiceRollFragmentInteraction)) {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSettingInterfactionInterface");
         }
     }
 
     RecyclerView r,i;
+    StaggeredGridLayoutManager rl,il;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -66,27 +70,38 @@ public class DiceRollFragment extends Fragment {
         fab.setImageResource(R.drawable.die_icon);
         r = (RecyclerView)view.findViewById(R.id.dice_recycler);
         final DiceList d = new DiceList();
+        d.setHasStableIds(true);
         r.setAdapter(d);
         i = (RecyclerView)view.findViewById(R.id.instant_recycler);
-        i.setAdapter(new InstantList());
+        final InstantList inst = new InstantList();
+        inst.setHasStableIds(true);
+        i.setAdapter(inst);
         view.findViewById(R.id.dice_reset).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dice.reset();
                 d.notifyDataSetChanged();
             }
         });
+        il = new StaggeredGridLayoutManager(1,RecyclerView.VERTICAL);
+        i.setLayoutManager(il);
+        rl = new StaggeredGridLayoutManager(1,RecyclerView.VERTICAL);
+        r.setLayoutManager(rl);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
                 ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
                 ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
-            i.setLayoutManager(new StaggeredGridLayoutManager(3,RecyclerView.VERTICAL));
-            r.setLayoutManager(new StaggeredGridLayoutManager(3,RecyclerView.VERTICAL));
+            il.setSpanCount(3);
+            rl.setSpanCount(3);
+        }else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
+                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
+            il.setSpanCount(2);
+            rl.setSpanCount(2);
         }else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
                 (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) !=Configuration.SCREENLAYOUT_SIZE_SMALL){
-            i.setLayoutManager(new StaggeredGridLayoutManager(2,RecyclerView.VERTICAL));
-            r.setLayoutManager(new StaggeredGridLayoutManager(2,RecyclerView.VERTICAL));
+            il.setSpanCount(2);
+            rl.setSpanCount(2);
         }else{
-            i.setLayoutManager(new LinearLayoutManager(getActivity()));
-            r.setLayoutManager(new LinearLayoutManager(getActivity()));
+            il.setSpanCount(1);
+            rl.setSpanCount(1);
         }
     }
 
@@ -96,15 +111,19 @@ public class DiceRollFragment extends Fragment {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
                 ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
                 ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
-            i.setLayoutManager(new StaggeredGridLayoutManager(3,RecyclerView.VERTICAL));
-            r.setLayoutManager(new StaggeredGridLayoutManager(3,RecyclerView.VERTICAL));
+            il.setSpanCount(3);
+            rl.setSpanCount(3);
+        }else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
+                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
+            il.setSpanCount(2);
+            rl.setSpanCount(2);
         }else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
                 (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) !=Configuration.SCREENLAYOUT_SIZE_SMALL){
-            i.setLayoutManager(new StaggeredGridLayoutManager(2,RecyclerView.VERTICAL));
-            r.setLayoutManager(new StaggeredGridLayoutManager(2,RecyclerView.VERTICAL));
+            il.setSpanCount(2);
+            rl.setSpanCount(2);
         }else{
-            i.setLayoutManager(new LinearLayoutManager(getActivity()));
-            r.setLayoutManager(new LinearLayoutManager(getActivity()));
+            il.setSpanCount(1);
+            rl.setSpanCount(1);
         }
     }
 
@@ -118,6 +137,20 @@ public class DiceRollFragment extends Fragment {
         }
         public InstantCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             CardView c = (CardView)getActivity().getLayoutInflater().inflate(R.layout.card_instant_dice,parent,false);
+            final TextSwitcher ts = (TextSwitcher)c.findViewById(R.id.instant_switcher);
+            Animation in = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_in_left);
+            in.setInterpolator(getActivity(),android.R.anim.anticipate_overshoot_interpolator);
+            Animation out = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_out_right);
+            out.setInterpolator(getActivity(),android.R.anim.anticipate_overshoot_interpolator);
+            ts.setInAnimation(in);
+            ts.setOutAnimation(out);
+            ts.setFactory(new ViewSwitcher.ViewFactory() {
+                @Override
+                public View makeView() {
+                    return getActivity().getLayoutInflater().inflate(R.layout.template_num_text,ts,false);
+                }
+            });
+            ts.setText("");
             return new InstantCardHolder(c);
         }
         public void onBindViewHolder(final InstantCardHolder i, int position) {
@@ -127,7 +160,7 @@ public class DiceRollFragment extends Fragment {
                     i.c.findViewById(R.id.instant_roll).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((TextView)i.c.findViewById(R.id.instant_num)).setText(new Random().nextInt(99)+1);
+                            ((TextSwitcher)i.c.findViewById(R.id.instant_switcher)).setText(String.valueOf(new Random().nextInt(99)+1));
                         }
                     });
                     break;
@@ -136,7 +169,7 @@ public class DiceRollFragment extends Fragment {
                     i.c.findViewById(R.id.instant_roll).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((TextView)i.c.findViewById(R.id.instant_num)).setText(new Random().nextInt(9));
+                            ((TextSwitcher)i.c.findViewById(R.id.instant_switcher)).setText(String.valueOf(new Random().nextInt(9)));
                         }
                     });
                     break;
@@ -156,7 +189,20 @@ public class DiceRollFragment extends Fragment {
             }
         }
         public DiceCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            CardView c = (CardView)getActivity().getLayoutInflater().inflate(R.layout.card_up_down,parent,false);
+            final CardView c = (CardView)getActivity().getLayoutInflater().inflate(R.layout.card_up_down,parent,false);
+            final TextSwitcher ts = (TextSwitcher)c.findViewById(R.id.up_down_switcher);
+            Animation in = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_in_left);
+            in.setInterpolator(getActivity(),android.R.anim.anticipate_overshoot_interpolator);
+            Animation out = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_out_right);
+            out.setInterpolator(getActivity(),android.R.anim.anticipate_overshoot_interpolator);
+            ts.setInAnimation(in);
+            ts.setOutAnimation(out);
+            ts.setFactory(new ViewSwitcher.ViewFactory() {
+                @Override
+                public View makeView() {
+                    return getActivity().getLayoutInflater().inflate(R.layout.template_num_text,ts,false);
+                }
+            });
             return new DiceCardHolder(c);
         }
         public void onBindViewHolder(DiceCardHolder d, int position) {
@@ -176,7 +222,7 @@ public class DiceRollFragment extends Fragment {
                         }
                     });
                     if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
-                        upDownCard.setColors(d.c,getResources(),R.color.ability_card,R.color.ability_text);
+                        upDownCard.setColors(d.c,R.color.ability_card,R.color.ability_text);
                     }
                     break;
                 case 1:
@@ -194,7 +240,7 @@ public class DiceRollFragment extends Fragment {
                         }
                     });
                     if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
-                        upDownCard.setColors(d.c,getResources(),R.color.proficiency_card,R.color.proficiency_text);
+                        upDownCard.setColors(d.c,R.color.proficiency_card,R.color.proficiency_text);
                     }
                     break;
                 case 2:
@@ -212,7 +258,7 @@ public class DiceRollFragment extends Fragment {
                         }
                     });
                     if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
-                        upDownCard.setColors(d.c,getResources(),R.color.boost_card,R.color.boost_text);
+                        upDownCard.setColors(d.c,R.color.boost_card,R.color.boost_text);
                     }
                     break;
                 case 3:
@@ -230,7 +276,7 @@ public class DiceRollFragment extends Fragment {
                         }
                     });
                     if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
-                        upDownCard.setColors(d.c,getResources(),R.color.difficulty_card,R.color.difficulty_text);
+                        upDownCard.setColors(d.c,R.color.difficulty_card,R.color.difficulty_text);
                     }
                     break;
                 case 4:
@@ -248,7 +294,7 @@ public class DiceRollFragment extends Fragment {
                         }
                     });
                     if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
-                        upDownCard.setColors(d.c,getResources(),R.color.challenge_card,R.color.challenge_text);
+                        upDownCard.setColors(d.c,R.color.challenge_card,R.color.challenge_text);
                     }
                     break;
                 case 5:
@@ -266,7 +312,7 @@ public class DiceRollFragment extends Fragment {
                         }
                     });
                     if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
-                        upDownCard.setColors(d.c,getResources(),R.color.setback_card,R.color.setback_text);
+                        upDownCard.setColors(d.c,R.color.setback_card,R.color.setback_text);
                     }
                     break;
                 case 6:
@@ -284,7 +330,7 @@ public class DiceRollFragment extends Fragment {
                         }
                     });
                     if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
-                        upDownCard.setColors(d.c,getResources(),R.color.force_card,R.color.force_text);
+                        upDownCard.setColors(d.c,R.color.force_card,R.color.force_text);
                     }
                     break;
             }

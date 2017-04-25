@@ -1,6 +1,8 @@
 package com.apps.darkstorm.swrpg.assistant;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +15,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,9 +24,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.Manifest;
+import android.view.View;
+import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.drive.Init;
+import com.apps.darkstorm.swrpg.assistant.drive.Load;
+import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Minion;
+import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,7 +42,8 @@ import java.io.File;
 
 public class MainDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener,
-        DiceRollFragment.OnDiceRollFragmentInteraction{
+        DiceRollFragment.OnDiceRollFragmentInteraction, SettingsFragment.OnSettingInterfactionInterface,
+        CharacterList.OnCharacterListInteractionListener,VehicleList.OnVehicleListInteractionListener,MinionList.OnMinionListInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +64,55 @@ public class MainDrawer extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Intent intent = getIntent();
-        if (Intent.ACTION_EDIT.equals(intent.getAction())&& intent.getData()!=null){
-            System.out.println(intent.getDataString());
+        ((SWrpg)getApplication()).askingPerm = true;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
+            }
+        }else{
+            File location;
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                File tmp = Environment.getExternalStorageDirectory();
+                location = new File(tmp.getAbsolutePath() + "/SWChars");
+            } else {
+                File tmp = this.getFilesDir();
+                location = new File(tmp.getAbsolutePath() + "/SWChars");
+            }
+            ((SWrpg) getApplication()).defaultLoc = location.getAbsolutePath();
+            ((SWrpg) getApplication()).askingPerm = false;
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.INTERNET}, 40);
+            }
+        }else{
+            ((SWrpg)getApplication()).askingPerm = false;
+        }
+        gacMaker();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())&& intent.getData()!=null){
+            String path = intent.getData().getPath();
+            if (path.endsWith(".char")){
+                Character tmp = new Character();
+                tmp.reLoad(path);
+                tmp.external = true;
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterEdit.newInstance(tmp)).commit();
+            }else if(path.endsWith(".vhcl")){
+                Vehicle tmp = new Vehicle();
+                tmp.reLoad(path);
+                tmp.external = true;
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleEdit.newInstance(tmp)).commit();
+            }else if(path.endsWith(".minion")){
+                Minion tmp = new Minion();
+                tmp.reLoad(path);
+                tmp.external = true;
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, MinionEdit.newInstance(tmp)).commit();
+            }else{
+                if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+            }
         }else if(Intent.ACTION_EDIT.equals(intent.getAction())&&intent.getData()!=null){
             switch(intent.getDataString()){
                 case "die":
@@ -65,10 +121,192 @@ public class MainDrawer extends AppCompatActivity
                 case "guide":
                     break;
                 default:
+                    if (intent.getDataString().startsWith("content://")){
+                        AlertDialog.Builder b = new AlertDialog.Builder(this);
+                        View v = getLayoutInflater().inflate(R.layout.dialog_loading,null);
+                        ((TextView)v.findViewById(R.id.loading_message)).setText(R.string.still_loading);
+                        b.setView(v);
+                        final AlertDialog ad = b.show();
+                        String data = intent.getDataString().substring("content://".length()-1);
+                        if (data.startsWith("character")){
+                            data = data.replace("character/","");
+                            final int ID = Integer.parseInt(data);
+                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                                while (!((SWrpg) getApplication()).driveFail){
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                if(((SWrpg) getApplication()).driveFail){
+                                    ad.cancel();
+                                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                                }else{
+                                    final Load.Characters ld = new Load.Characters();
+                                    ld.setOnFinish(new Load.onFinish() {
+                                        @Override
+                                        public void finish() {
+                                            ld.saveLocal(MainDrawer.this);
+                                            boolean found = false;
+                                            for (int i = 0; i<ld.characters.size(); i++){
+                                                Character c = ld.characters.get(i);
+                                                if (c.ID == ID){
+                                                    found = true;
+                                                    ad.cancel();
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterEdit.newInstance(ch[i])).commit();
+                                                    break;
+                                                }
+                                            }
+                                            if (!found){
+                                                ad.cancel();
+                                                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                                            }
+                                        }
+                                    });
+                                    ld.load(MainDrawer.this);
+                                }
+                            }else{
+                                Character[] ch = LoadLocal.characters(MainDrawer.this);
+                                boolean found = false;
+                                for (int i = 0;i<ch.length;i++){
+                                    if (ch[i].ID == ID){
+                                        found = true;
+                                        ad.cancel();
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterEdit.newInstance(ch[i])).commit();
+                                        break;
+                                    }
+                                }
+                                if (!found){
+                                    ad.cancel();
+                                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                                }
+                            }
+                        }else if(data.startsWith("minion")){
+                            data = data.replace("minion/","");
+                            final int ID = Integer.parseInt(data);
+                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                                while (!((SWrpg) getApplication()).driveFail){
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                if(((SWrpg) getApplication()).driveFail){
+                                    ad.cancel();
+                                    getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
+                                }else{
+                                    final Load.Minions ld = new Load.Minions();
+                                    ld.setOnFinish(new Load.onFinish() {
+                                        @Override
+                                        public void finish() {
+                                            ld.saveLocal(MainDrawer.this);
+                                            boolean found = false;
+                                            for (int i = 0;i<ld.minions.size();i++){
+                                                if (ld.minions.get(i).ID == ID){
+                                                    found = true;
+                                                    ad.cancel();
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, MinionEdit.newInstance(ch[i])).commit();
+                                                    break;
+                                                }
+                                            }
+                                            if (!found){
+                                                ad.cancel();
+                                                getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
+                                            }
+                                        }
+                                    });
+                                    ld.load(MainDrawer.this);
+                                }
+                            }else{
+                                Minion[] ch = LoadLocal.minions(MainDrawer.this);
+                                boolean found = false;
+                                for (int i = 0;i<ch.length;i++){
+                                    if (ch[i].ID == ID){
+                                        found = true;
+                                        ad.cancel();
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, MinionEdit.newInstance(ch[i])).commit();
+                                        break;
+                                    }
+                                }
+                                if (!found){
+                                    ad.cancel();
+                                    getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
+                                }
+                            }
+                        }else if(data.startsWith("vehicle")){
+                            data = data.replace("vehicle/","");
+                            final int ID = Integer.parseInt(data);
+                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                                while (!((SWrpg) getApplication()).driveFail){
+                                    try {
+                                        Thread.sleep(200);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                if(((SWrpg) getApplication()).driveFail){
+                                    ad.cancel();
+                                    //TODO: go to Vehicle list
+                                }else{
+                                    final Load.Vehicles ld = new Load.Vehicles();
+                                    ld.setOnFinish(new Load.onFinish() {
+                                        @Override
+                                        public void finish() {
+                                            ld.saveLocal(MainDrawer.this);
+                                            boolean found = false;
+                                            for (int i = 0; i<ld.vehicles.size(); i++){
+                                                if (ld.vehicles.get(i).ID == ID){
+                                                    found = true;
+                                                    ad.cancel();
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleEdit.newInstance(ch[i])).commit();
+                                                    break;
+                                                }
+                                            }
+                                            if (!found){
+                                                ad.cancel();
+                                                getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
+                                            }
+                                        }
+                                    });
+                                    ld.load(MainDrawer.this);
+                                }
+                            }else{
+                                Vehicle[] ch = LoadLocal.vehicles(MainDrawer.this);
+                                boolean found = false;
+                                for (int i = 0;i<ch.length;i++){
+                                    if (ch[i].ID == ID){
+                                        found = true;
+                                        ad.cancel();
+//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleEdit.newInstance(ch[i])).commit();
+                                        break;
+                                    }
+                                }
+                                if (!found){
+                                    ad.cancel();
+                                    getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
+                                }
+                            }
+                        }else{
+                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
+                                getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
+                            else
+                                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                        }
+                    }else{
+                        if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
+                            getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
+                        else
+                            getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                    }
                     break;
             }
         }else{
-
+            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
+                getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
+            else
+                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
         }
     }
 
@@ -115,27 +353,55 @@ public class MainDrawer extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Fragment cur = getFragmentManager().findFragmentById(R.id.content_main);
         switch (id){
             case R.id.gm_nav:
                 break;
             case R.id.char_nav:
+                if (cur instanceof CharacterList)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Character List").commit();
                 break;
             case R.id.min_nav:
+                if (cur instanceof MinionList)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Minion List").commit();
                 break;
             case R.id.vehic_nav:
+                if (cur instanceof VehicleList)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Vehicle List").commit();
                 break;
             case R.id.dnld_nav:
                 break;
             case R.id.dice_nav:
-                getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance())
-                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Dice").commit();
+                if (cur instanceof DiceRollFragment)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Dice").commit();
                 break;
             case R.id.guid_nav:
                 break;
             case R.id.stng_nav:
+                if (cur instanceof SettingsFragment)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, SettingsFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, SettingsFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Settings").commit();
                 break;
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -175,36 +441,6 @@ public class MainDrawer extends AppCompatActivity
         }
     }
 
-    public void onStart(){
-        super.onStart();
-        ((SWrpg)getApplication()).askingPerm = true;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE}, 50);
-            }
-        }else{
-            File location;
-            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                File tmp = Environment.getExternalStorageDirectory();
-                location = new File(tmp.getAbsolutePath() + "/SWChars");
-            } else {
-                File tmp = this.getFilesDir();
-                location = new File(tmp.getAbsolutePath() + "/SWChars");
-            }
-            ((SWrpg) getApplication()).defaultLoc = location.getAbsolutePath();
-            ((SWrpg) getApplication()).askingPerm = false;
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.INTERNET}, 40);
-            }
-        }else{
-            ((SWrpg)getApplication()).askingPerm = false;
-        }
-        gacMaker();
-    }
-
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         switch (requestCode) {
             case 5:
@@ -241,6 +477,10 @@ public class MainDrawer extends AppCompatActivity
                         location = new File(tmp.getAbsolutePath() + "/SWChars");
                     }
                     ((SWrpg)getApplication()).defaultLoc = location.getAbsolutePath();
+                    Fragment fr = getFragmentManager().findFragmentById(R.id.content_main);
+                    if(fr instanceof CharacterList){
+                        ((CharacterList)fr).loadCharacters();
+                    }
                 }else{
                     AlertDialog.Builder build = new AlertDialog.Builder(this);
                     build.setMessage(R.string.permission_error).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -257,7 +497,12 @@ public class MainDrawer extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                             ((SWrpg)getApplication()).prefs.edit().putBoolean(getString(R.string.dice_key),true).apply();
-                            //To Dice Fragment
+                            if (getFragmentManager().findFragmentById(R.id.content_main) instanceof DiceRollFragment)
+                                getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance())
+                                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                            else
+                                getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance())
+                                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Dice").commit();
                         }
                     });
                     build.show();

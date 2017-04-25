@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
@@ -16,26 +17,29 @@ public class upDownCard {
         public abstract String labelValue();
     }
 
-    public static void setUp(CardView c,String title,final upDown ud){
+    public static void setUp(final CardView c,String title,final upDown ud){
         ((TextView)c.findViewById(R.id.up_down_label)).setText(title);
-        final TextView num = (TextView)c.findViewById(R.id.up_down_num);
-        num.setText(ud.labelValue());
+        final TextSwitcher ts = (TextSwitcher)c.findViewById(R.id.up_down_switcher);
+        ts.setText(ud.labelValue());
         c.findViewById(R.id.up).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ud.up();
-                num.setText(ud.labelValue());
+                if (!((TextView)ts.getCurrentView()).getText().equals(ud.labelValue()))
+                    ts.setText(ud.labelValue());
             }
         });
         c.findViewById(R.id.down).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ud.down();
-                num.setText(ud.labelValue());
+                if (!((TextView)ts.getCurrentView()).getText().equals(ud.labelValue()))
+                    ts.setText(ud.labelValue());
             }
         });
     }
-    public static void setColors(CardView c, Resources r, int cardColId, int textColId){
+    public static void setColors(CardView c, int cardColId, int textColId){
+        Resources r = c.getContext().getResources();
         c.setCardBackgroundColor(r.getColor(cardColId));
         ViewGroup vg = (ViewGroup)c.findViewById(R.id.up_down_lay);
         for (int i = 0;i<vg.getChildCount();i++){
@@ -43,6 +47,10 @@ public class upDownCard {
                 ((TextView)vg.getChildAt(i)).setTextColor(r.getColor(textColId));
             }else if (vg.getChildAt(i) instanceof Button){
                 ((Button)vg.getChildAt(i)).setTextColor(r.getColor(textColId));
+            }else if (vg.getChildAt(i) instanceof TextSwitcher){
+                TextSwitcher tv = ((TextSwitcher)vg.getChildAt(i));
+                ((TextView)tv.getCurrentView()).setTextColor(r.getColor(textColId));
+                ((TextView)tv.getNextView()).setTextColor(r.getColor(textColId));
             }
         }
     }
