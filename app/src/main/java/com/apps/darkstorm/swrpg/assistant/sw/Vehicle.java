@@ -3,7 +3,9 @@ package com.apps.darkstorm.swrpg.assistant.sw;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v7.widget.CardView;
 
+import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
@@ -22,7 +24,7 @@ import com.google.android.gms.drive.query.SearchableField;
 import java.io.File;
 import java.util.Arrays;
 
-public class Vehicle {
+public class Vehicle extends Editable{
     //
     //  |  Version 1  |
     //  |             |
@@ -50,9 +52,10 @@ public class Vehicle {
     public String desc = "";
     public String model = "";
     //
-    // Version 2 start (20)
+    // Version 2 start (20-1)
     //
     public String category = "";
+    //Public Notes nts (From Editable)
     //
     //  ^               ^
     //  |  Vehicle End  |
@@ -118,6 +121,7 @@ public class Vehicle {
         tmp.desc = desc;
         tmp.model = model;
         tmp.category = category;
+        tmp.nts = nts.clone();
         return tmp;
     }
     public void startEditing(final Activity main, final DriveId fold){
@@ -231,6 +235,7 @@ public class Vehicle {
         async.execute();
     }
     }
+
     public void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
         sl.addSave(ID);
@@ -254,6 +259,7 @@ public class Vehicle {
         sl.addSave(desc);
         sl.addSave(model);
         sl.addSave(category);
+        sl.addSave(nts.serialObject());
         sl.save();
     }
     public void cloudSave(GoogleApiClient gac, DriveId fil, boolean async){
@@ -281,6 +287,7 @@ public class Vehicle {
             sl.addSave(desc);
             sl.addSave(model);
             sl.addSave(category);
+            sl.addSave(nts.serialObject());
             sl.save(gac,async);
         }
     }
@@ -289,7 +296,8 @@ public class Vehicle {
         SaveLoad sl = new SaveLoad(filename);
         Object[] val = sl.load();
         switch (val.length){
-            case 21:
+            case 22:
+                nts.loadFromObject(val[21]);
                 category = (String)val[20];
             case 20:
                 model = (String)val[19];
@@ -327,7 +335,8 @@ public class Vehicle {
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] val = sl.load(gac);
         switch (val.length){
-            case 21:
+            case 22:
+                nts.loadFromObject(val[21]);
                 category = (String)val[20];
             case 20:
                 model = (String)val[19];
@@ -426,6 +435,47 @@ public class Vehicle {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             ((SWrpg)main.getApplication()).deleteShortcut(this,main);
+        }
+    }
+    public void exportTo(String folder){
+        File fold = new File(folder);
+        if(!fold.exists()) {
+            if (!fold.mkdir())
+                return;
+        }
+        File f = new File(folder+"/"+name+".vhcl");
+        if(f.exists()){
+            if(!f.delete())
+                return;
+        }
+        save(folder+"/"+name+".vhcl");
+    }
+    public int cardNumber() {
+        return 7;
+    }
+    public void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos){
+        switch(pos){
+            //name
+            case 0:
+                break;
+            //info
+            case 1:
+                break;
+            //defense
+            case 2:
+                break;
+            //dmg
+            case 3:
+                break;
+            //weapons
+            case 4:
+                break;
+            //crit inj
+            case 5:
+                break;
+            //desc
+            case 6:
+                break;
         }
     }
 }

@@ -67,7 +67,17 @@ public class Notes{
     }
     public Notes clone(){
         Notes out = new Notes();
-        out.ns = ns.clone();
+        out.ns = new Note[ns.length];
+        for (int i = 0;i<ns.length;i++)
+            out.ns[i] = ns[i].clone();
         return out;
+    }
+    public int indexOf(Note nt){
+        for (int i = 0;i<ns.length;i++){
+            if(ns[i].equals(nt)){
+                return i;
+            }
+        }
+        return -1;
     }
 }

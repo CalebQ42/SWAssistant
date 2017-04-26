@@ -1,0 +1,117 @@
+package com.apps.darkstorm.swrpg.assistant;
+
+import android.app.Fragment;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+
+public class EditGeneral extends Fragment {
+    public EditGeneral() {}
+
+    Editable e;
+
+    public static EditGeneral newInstance(Editable e) {
+        EditGeneral fragment = new EditGeneral();
+        fragment.e = e;
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.recycler_general, container, false);
+    }
+
+    StaggeredGridLayoutManager sgl;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        RecyclerView r = (RecyclerView)view.findViewById(R.id.recycler);
+        EditableAdap adap = new EditableAdap();
+        r.setAdapter(adap);
+        sgl = new StaggeredGridLayoutManager(1,RecyclerView.VERTICAL);
+        r.setLayoutManager(sgl);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
+            sgl.setSpanCount(3);
+        }else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
+                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
+            sgl.setSpanCount(2);
+        }else{
+            sgl.setSpanCount(1);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
+            sgl.setSpanCount(3);
+        }else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
+                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
+            sgl.setSpanCount(2);
+        }else{
+            sgl.setSpanCount(1);
+        }
+    }
+    public class EditableAdap extends RecyclerView.Adapter<EditableAdap.ViewHolder>{
+
+        final int nameCard = 0;
+
+        final int other = 1;
+        @Override
+        public int getItemViewType(int position) {
+            if(position==0)
+                return nameCard;
+            else
+                return other;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if(viewType==nameCard)
+                return new ViewHolder((CardView)getActivity().getLayoutInflater().inflate(R.layout.card_editable_name,parent,false));
+            else
+                return new ViewHolder((CardView)getActivity().getLayoutInflater().inflate(R.layout.card_hideable,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            e.setupCards(getActivity(),this,holder.c,position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return e.cardNumber();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            CardView c;
+            ViewHolder(CardView c){
+                super(c);
+                this.c = c;
+            }
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof OnEditInteractionListener)) {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnEditInteractionListener");
+        }
+    }
+
+    public interface OnEditInteractionListener {}
+}

@@ -1,10 +1,13 @@
 package com.apps.darkstorm.swrpg.assistant;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -57,8 +60,28 @@ public class VehicleList extends Fragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.add);
+        fab.show();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Integer> IDs = new ArrayList<>();
+                for (Vehicle c:vehicles){
+                    IDs.add(c.ID);
+                }
+                int ID = 0;
+                while(IDs.contains(ID)){
+                    ID++;
+                }
+                Vehicle ch = new Vehicle(ID);
+                getFragmentManager().beginTransaction().replace(R.id.content_main,EditFragment.newInstance(ch))
+                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Vehicle Edit").commit();
+                ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
+            }
+        });
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.characters);
+        toolbar.setTitle(R.string.vehicles);
         srl = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
         sp = (Spinner)view.findViewById(R.id.cat_spinner);
         cats = new ArrayList<>();
@@ -181,8 +204,39 @@ public class VehicleList extends Fragment {
             c.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    TODO: getFragmentManager().beginTransaction().replace(R.id.content_main,VehicleEdit.newInstance(n.vehicle))
-//                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                     getFragmentManager().beginTransaction().replace(R.id.content_main,EditFragment.newInstance(n.vehicle))
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                    ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
+                }
+            });
+            c.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                    b.setMessage(R.string.character_delete);
+                    b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            vehicles.remove(n.vehicle);
+                            int ind = vehicleCats.get(sp.getSelectedItemPosition()).indexOf(n.vehicle);
+                            if (ind != -1){
+                                vehicleCats.remove(ind);
+                                NameCardAdap.this.notifyItemRemoved(ind);
+                            }
+                            for (ArrayList<Vehicle> al:vehicleCats){
+                                al.remove(n.vehicle);
+                            }
+                            n.vehicle.delete(getActivity());
+                            dialog.cancel();
+                        }
+                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    b.show();
+                    return true;
                 }
             });
             return n;

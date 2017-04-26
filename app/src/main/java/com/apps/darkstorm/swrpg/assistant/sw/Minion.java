@@ -3,7 +3,9 @@ package com.apps.darkstorm.swrpg.assistant.sw;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v7.widget.CardView;
 
+import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
@@ -25,7 +27,7 @@ import com.google.android.gms.drive.query.SearchableField;
 import java.io.File;
 import java.util.Arrays;
 
-public class Minion {
+public class Minion extends Editable{
     //Version 1 0-15
     public int ID;
     public String name = "";
@@ -47,8 +49,9 @@ public class Minion {
     public CriticalInjuries critInjuries = new CriticalInjuries();
     public Inventory origInv = new Inventory();
     public Weapons origWeapons = new Weapons();
-    //Version 3 17
+    //Version 3 19-20
     public String category = "";
+    //public Notes nts (From Editable)
 
 
     private boolean editing = false;
@@ -195,6 +198,12 @@ public class Minion {
             return "";
         }
     }
+
+    @Override
+    public int cardNumber() {
+        return 10;
+    }
+
     public void save(String filename){
         SaveLoad sl = new SaveLoad(filename);
         sl.addSave(ID);
@@ -217,13 +226,15 @@ public class Minion {
         sl.addSave(origInv.serialObject());
         sl.addSave(origWeapons.serialObject());
         sl.addSave(category);
+        sl.addSave(nts.serialObject());
         sl.save();
     }
     public void reLoad(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] obj = sl.load();
         switch(obj.length){
-            case 20:
+            case 21:
+                nts.loadFromObject(obj[20]);
                 category = (String)obj[19];
             case 19:
                 origWeapons.loadFromObject(obj[18]);
@@ -300,6 +311,7 @@ public class Minion {
             sl.addSave(origInv.serialObject());
             sl.addSave(origWeapons.serialObject());
             sl.addSave(category);
+            sl.addSave(nts.serialObject());
             sl.save(gac, async);
         }
     }
@@ -307,7 +319,8 @@ public class Minion {
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] obj = sl.load(gac);
         switch(obj.length){
-            case 20:
+            case 21:
+                nts.loadFromObject(obj[20]);
                 category = (String)obj[19];
             case 19:
                 origWeapons.loadFromObject(obj[18]);
@@ -341,7 +354,6 @@ public class Minion {
                 }
         }
     }
-
     public void setWound(int wound){
         woundCur = wound;
         if (((woundCur/woundThreshInd)<minNum-1 || (woundCur/woundThreshInd == minNum-1 && woundCur%woundThreshInd == 0) )&& minNum != 0){
@@ -404,6 +416,7 @@ public class Minion {
         min.desc = desc;
         min.showCard = showCard.clone();
         min.category = category;
+        min.nts = nts.clone();
         return min;
     }
     public boolean equals(Object obj){
@@ -415,7 +428,7 @@ public class Minion {
                 tmp.weapons.equals(weapons) && tmp.woundThresh == woundThresh && tmp.woundCur == woundCur &&
                 tmp.defMelee == defMelee && tmp.defRanged == defRanged && tmp.soak == soak && tmp.desc.equals(desc) &&
                 Arrays.equals(tmp.showCard, showCard) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum &&
-                tmp.critInjuries.equals(critInjuries)&& tmp.category.equals(category);
+                tmp.critInjuries.equals(critInjuries)&& tmp.category.equals(category)&& tmp.nts.equals(nts);
     }
     public void delete(final Activity main){
         File tmp = new File(getFileLocation(main));
@@ -432,6 +445,54 @@ public class Minion {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             ((SWrpg)main.getApplication()).deleteShortcut(this,main);
+        }
+    }
+    public void exportTo(String folder){
+        File fold = new File(folder);
+        if(!fold.exists()) {
+            if (!fold.mkdir())
+                return;
+        }
+        File f = new File(folder+"/"+name+".minion");
+        if(f.exists()){
+            if(!f.delete())
+                return;
+        }
+        save(folder+"/"+name+".minion");
+    }
+
+    public void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos){
+        switch(pos){
+            //name
+            case 0:
+                break;
+            //number
+            case 1:
+                break;
+            //wound
+            case 2:
+                break;
+            //characteristics
+            case 3:
+                break;
+            //skill
+            case 4:
+                break;
+            //defense
+            case 5:
+                break;
+            //weapon
+            case 6:
+                break;
+            //talents
+            case 7:
+                break;
+            //inv
+            case 8:
+                break;
+            //desc
+            case 9:
+                break;
         }
     }
 }

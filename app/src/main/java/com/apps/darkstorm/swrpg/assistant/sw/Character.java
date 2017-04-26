@@ -1,13 +1,26 @@
 package com.apps.darkstorm.swrpg.assistant.sw;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
+import android.text.InputType;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 
+import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
+import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Dutys;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.ForcePowers;
@@ -32,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Character {
+public class Character extends Editable{
 
     //
     //  |  Char v1 Start  |
@@ -69,7 +82,7 @@ public class Character {
     private boolean[] showCard = new boolean[16];
     public boolean darkSide;
     public int age;
-    public Notes nts = new Notes();
+    //public Notes nts (From Editable)
     //
     // Character V2 Start (35)
     //
@@ -551,7 +564,6 @@ public class Character {
             ((SWrpg)main.getApplication()).deleteShortcut(Character.this,main);
         }
     }
-    
     public Object serialObject(){
         ArrayList<Object> out = new ArrayList<>();
         out.add(ID);
@@ -640,6 +652,324 @@ public class Character {
                 if (nts == null){
                     nts = new Notes();
                 }
+        }
+    }
+    public void exportTo(String folder){
+        File fold = new File(folder);
+        if(!fold.exists()) {
+            if (!fold.mkdir())
+                return;
+        }
+        File f = new File(folder+"/"+name+".char");
+        if(f.exists()){
+            if(!f.delete())
+                return;
+        }
+        save(folder+"/"+name+".char");
+    }
+
+    public int cardNumber(){
+        return 17;
+    }
+
+    @Override
+    public void setupCards(final Activity ac, EditGeneral.EditableAdap ea,final CardView c, int pos) {
+        switch(pos){
+            //Name Card
+            case 0:
+                ((TextView)c.findViewById(R.id.name)).setText(name);
+                c.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        View vw = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                        b.setView(vw);
+                        TextInputLayout t = (TextInputLayout)vw.findViewById(R.id.edit_layout);
+                        t.setHint(ac.getString(R.string.name_text));
+                        final EditText et = (EditText)vw.findViewById(R.id.edit_text);
+                        et.setText(Character.this.name);
+                        b.setPositiveButton(R.string.save_text, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Character.this.name = et.getText().toString();
+                                ((TextView)c.findViewById(R.id.name)).setText(Character.this.name);
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                        return true;
+                    }
+                });
+                c.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                        b.setView(in);
+                        final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                        et.setText(((SWrpg)ac.getApplication()).prefs.getString(ac.getString(R.string.local_location_key),
+                                ((SWrpg)ac.getApplication()).defaultLoc));
+                        //TODO: resource
+                        ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint("Export Location");
+                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                exportTo(et.getText().toString());
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                    }
+                });
+                c.findViewById(R.id.clone).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Character[] characters = LoadLocal.characters(ac);
+                        ArrayList<Integer> IDs = new ArrayList<>();
+                        for (Character c:characters){
+                            IDs.add(c.ID);
+                        }
+                        int ID = 0;
+                        while(IDs.contains(ID)){
+                            ID++;
+                        }
+                        Character ch = new Character(ID);
+                        ch.save(ch.getFileLocation(ac));
+                        if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),false))
+                            ch.cloudSave(((SWrpg)ac.getApplication()).gac,ch.getFileId(ac),true);
+                    }
+                });
+                break;
+            //info card
+            case 1:
+                final FrameLayout fl = (FrameLayout) c.findViewById(R.id.holder);
+                final View info = ac.getLayoutInflater().inflate(R.layout.layout_character_info,fl,false);
+                fl.addView(info);
+                Switch hide = (Switch)c.findViewById(R.id.hide);
+                hide.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        showCard[0] = !isChecked;
+                        if(isChecked){
+                            fl.setVisibility(View.GONE);
+                        }else{
+                            fl.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+                hide.setChecked(!showCard[0]);
+                final TextView speciesText = (TextView)info.findViewById(R.id.species);
+                speciesText.setText(species);
+                info.findViewById(R.id.species_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                        b.setView(in);
+                        final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                        et.setText(species);
+                        ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.species_text));
+                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                species = et.getText().toString();
+                                speciesText.setText(species);
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                        return true;
+                    }
+                });
+                final TextView ageText = (TextView)info.findViewById(R.id.age);
+                ageText.setText(String.valueOf(age));
+                info.findViewById(R.id.age_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                        b.setView(in);
+                        final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                        et.setText(String.valueOf(age));
+                        et.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.age_text));
+                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                age = Integer.parseInt(et.getText().toString());
+                                ageText.setText(String.valueOf(age));
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                        return true;
+                    }
+                });
+                final TextView motivationText = (TextView)info.findViewById(R.id.motivation);
+                motivationText.setText(motivation);
+                info.findViewById(R.id.motivation_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                        b.setView(in);
+                        final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                        et.setText(motivation);
+                        ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.motivation_text));
+                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                motivation = et.getText().toString();
+                                motivationText.setText(motivation);
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                        return true;
+                    }
+                });
+                final TextView careerText = (TextView)info.findViewById(R.id.career);
+                careerText.setText(career);
+                info.findViewById(R.id.career_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                        b.setView(in);
+                        final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                        et.setText(career);
+                        ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.career_text));
+                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                career = et.getText().toString();
+                                careerText.setText(career);
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                        return true;
+                    }
+                });
+                final TextView categoryText = (TextView)info.findViewById(R.id.category_text);
+                categoryText.setText(category);
+                info.findViewById(R.id.category_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                        b.setView(in);
+                        final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                        et.setText(category);
+                        ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.category_text));
+                        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                category = et.getText().toString();
+                                categoryText.setText(category);
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                        return true;
+                    }
+                });
+                break;
+            //wound/strain
+            case 2:
+                //TODO
+                break;
+            //Characteristics
+            case 3:
+                //TODO
+                break;
+            //Skill
+            case 4:
+                //TODO
+                break;
+            //Defense
+            case 5:
+                //TODO
+                break;
+            //Weapons
+            case 6:
+                //TODO
+                break;
+            //Crit inj
+            case 7:
+                //TODO
+                break;
+            //Specializations
+            case 8:
+                //TODO
+                break;
+            //Talents
+            case 9:
+                //TODO
+                break;
+            //Force Powers
+            case 10:
+                //TODO
+                break;
+            //XP
+            case 11:
+                //TODO
+                break;
+            //Inv
+            case 12:
+                //TODO
+                break;
+            //morality
+            case 13:
+                //TODO
+                break;
+            //duty
+            case 14:
+                //TODO
+                break;
+            //obligation
+            case 15:
+                //TODO
+                break;
+            //desc
+            case 16:
+                //TODO
+                break;
         }
     }
 }

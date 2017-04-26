@@ -43,7 +43,9 @@ import java.io.File;
 public class MainDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener,
         DiceRollFragment.OnDiceRollFragmentInteraction, SettingsFragment.OnSettingInterfactionInterface,
-        CharacterList.OnCharacterListInteractionListener,VehicleList.OnVehicleListInteractionListener,MinionList.OnMinionListInteractionListener{
+        CharacterList.OnCharacterListInteractionListener,VehicleList.OnVehicleListInteractionListener,MinionList.OnMinionListInteractionListener,
+        EditFragment.OnCharacterEditInteractionListener,EditGeneral.OnEditInteractionListener,NoteEdit.OnNoteEditInteractionListener,
+        NotesFragment.OnFragmentInteractionListener,NotesListFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class MainDrawer extends AppCompatActivity
                 Character tmp = new Character();
                 tmp.reLoad(path);
                 tmp.external = true;
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterEdit.newInstance(tmp)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
             }else if(path.endsWith(".vhcl")){
                 Vehicle tmp = new Vehicle();
                 tmp.reLoad(path);
@@ -154,7 +156,8 @@ public class MainDrawer extends AppCompatActivity
                                                 if (c.ID == ID){
                                                     found = true;
                                                     ad.cancel();
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterEdit.newInstance(ch[i])).commit();
+                                                    getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                            EditFragment.newInstance(c)).commit();
                                                     break;
                                                 }
                                             }
@@ -173,7 +176,8 @@ public class MainDrawer extends AppCompatActivity
                                     if (ch[i].ID == ID){
                                         found = true;
                                         ad.cancel();
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterEdit.newInstance(ch[i])).commit();
+                                        getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                EditFragment.newInstance(ch[i])).commit();
                                         break;
                                     }
                                 }
@@ -310,13 +314,25 @@ public class MainDrawer extends AppCompatActivity
         }
     }
 
-    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Fragment cur = getFragmentManager().findFragmentById(R.id.content_main);
+            // If the fragment exists and has some back-stack entry
+            if (cur != null){
+                Fragment childMost = cur.getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 1);
+                if (childMost != null && childMost.getChildFragmentManager().getBackStackEntryCount()>0){
+                    childMost.getChildFragmentManager().popBackStack();
+                }else if(cur.getChildFragmentManager().getBackStackEntryCount()>0){
+                    cur.getChildFragmentManager().popBackStack();
+                }else{
+                    super.onBackPressed();
+                }
+            } else{
+                super.onBackPressed();
+            }
         }
     }
 

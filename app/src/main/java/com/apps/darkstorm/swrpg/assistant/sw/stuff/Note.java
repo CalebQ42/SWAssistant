@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Note{
     //Version 1 0-1
-    public String title,note;
+    public String title = "",note = "";
     public Object serialObject(){
         ArrayList<Object> tmp = new ArrayList<>();
         tmp.add(title);
@@ -24,5 +24,11 @@ public class Note{
             return false;
         Note in = (Note)obj;
         return in.title.equals(title) && in.note.equals(note);
+    }
+    public Note clone(){
+        Note n = new Note();
+        n.title = title;
+        n.note = note;
+        return n;
     }
 }
