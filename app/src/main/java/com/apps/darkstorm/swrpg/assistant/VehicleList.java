@@ -26,10 +26,9 @@ import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VehicleList extends Fragment {
-
-    Vehicle[] vehic;
 
     public VehicleList() {}
 
@@ -38,18 +37,12 @@ public class VehicleList extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        vehic = LoadLocal.vehicles(getActivity());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cat_list,container,false);
+        return inflater.inflate(R.layout.fragment_cat_list, container, false);
     }
 
-    Vehicle[] vehicles;
+    ArrayList<Vehicle> vehicles;
     ArrayList<CharSequence> cats;
     ArrayList<ArrayList<Vehicle>> vehicleCats;
 
@@ -75,7 +68,7 @@ public class VehicleList extends Fragment {
                     ID++;
                 }
                 Vehicle ch = new Vehicle(ID);
-                getFragmentManager().beginTransaction().replace(R.id.content_main,EditFragment.newInstance(ch))
+                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(ch))
                         .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Vehicle Edit").commit();
                 ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
             }
@@ -94,7 +87,7 @@ public class VehicleList extends Fragment {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adap.vehicles = vehicleCats.get(position);
+                adap.vehiclesAdap = vehicleCats.get(position);
                 adap.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -162,7 +155,8 @@ public class VehicleList extends Fragment {
             ch.load(getActivity());
         }else{
             srl.setRefreshing(true);
-            vehicles = LoadLocal.vehicles(getActivity());
+            vehicles = new ArrayList<>();
+            vehicles.addAll(Arrays.asList(LoadLocal.vehicles(getActivity())));
             cats.clear();
             vehicleCats.clear();
             cats.add("All");
@@ -195,7 +189,7 @@ public class VehicleList extends Fragment {
 
     class NameCardAdap extends RecyclerView.Adapter<NameCardAdap.NameCard> {
 
-        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        ArrayList<Vehicle> vehiclesAdap = new ArrayList<>();
 
         @Override
         public NameCard onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -204,8 +198,8 @@ public class VehicleList extends Fragment {
             c.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     getFragmentManager().beginTransaction().replace(R.id.content_main,EditFragment.newInstance(n.vehicle))
-                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(n.vehicle))
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Editing").commit();
                     ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
                 }
             });
@@ -213,14 +207,14 @@ public class VehicleList extends Fragment {
                 @Override
                 public boolean onLongClick(View v) {
                     AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-                    b.setMessage(R.string.character_delete);
+                    b.setMessage(R.string.vehicle_delete);
                     b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             vehicles.remove(n.vehicle);
-                            int ind = vehicleCats.get(sp.getSelectedItemPosition()).indexOf(n.vehicle);
+                            int ind = vehiclesAdap.indexOf(n.vehicle);
                             if (ind != -1){
-                                vehicleCats.remove(ind);
+                                vehiclesAdap.remove(ind);
                                 NameCardAdap.this.notifyItemRemoved(ind);
                             }
                             for (ArrayList<Vehicle> al:vehicleCats){
@@ -244,17 +238,17 @@ public class VehicleList extends Fragment {
 
         @Override
         public void onBindViewHolder(NameCard holder, int position) {
-            ((TextView)holder.c.findViewById(R.id.name)).setText(vehicles.get(position).name);
-            if (vehicles.get(position).model.equals(""))
+            ((TextView)holder.c.findViewById(R.id.name)).setText(vehiclesAdap.get(position).name);
+            if (vehiclesAdap.get(position).model.equals(""))
                 holder.c.findViewById(R.id.subname).setVisibility(View.GONE);
             else
-                ((TextView) holder.c.findViewById(R.id.subname)).setText(vehicles.get(position).model);
-            holder.vehicle = vehicles.get(position);
+                ((TextView) holder.c.findViewById(R.id.subname)).setText(vehiclesAdap.get(position).model);
+            holder.vehicle = vehiclesAdap.get(position);
         }
 
         @Override
         public int getItemCount() {
-            return vehicles.size();
+            return vehiclesAdap.size();
         }
 
         class NameCard extends RecyclerView.ViewHolder {
@@ -276,6 +270,5 @@ public class VehicleList extends Fragment {
         }
     }
 
-    public interface OnVehicleListInteractionListener {
-    }
+    interface OnVehicleListInteractionListener {}
 }

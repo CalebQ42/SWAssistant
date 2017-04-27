@@ -34,4 +34,11 @@ public class Item{
         Item in = (Item)obj;
         return in.name.equals(name) && in.desc.equals(desc) && in.count == count && in.encum == encum;
     }
+    public Item clone(){
+        Item out = new Item();
+        out.name = name;
+        out.desc = desc;
+        out.count = count;
+        return out;
+    }
 }

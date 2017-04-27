@@ -8,12 +8,14 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginStart="5dp"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:animateLayoutChanges="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:animateLayoutChanges="true">
 
         <Switch
             android:id="@+id/hide"
@@ -46,6 +48,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginTop="5dp"
+            android:animateLayoutChanges="true"
             android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

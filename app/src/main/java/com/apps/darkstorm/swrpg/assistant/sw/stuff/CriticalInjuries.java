@@ -71,7 +71,9 @@ public class CriticalInjuries{
     }
     public CriticalInjuries clone(){
         CriticalInjuries out = new CriticalInjuries();
-        out.critInj = critInj.clone();
+        out.critInj = new CriticalInjury[critInj.length];
+        for(int i = 0;i<critInj.length;i++)
+            out.critInj[i] = critInj[i].clone();
         return out;
     }
 }

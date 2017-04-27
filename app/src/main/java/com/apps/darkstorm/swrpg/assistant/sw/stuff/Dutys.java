@@ -67,7 +67,10 @@ public class Dutys{
     }
     public Dutys clone(){
         Dutys out = new Dutys();
-        out.d = d.clone();
+        out.d = new Duty[d.length];
+        for (int i = 0;i<d.length;i++){
+            out.d[i] = d[i].clone();
+        }
         return out;
     }
 }

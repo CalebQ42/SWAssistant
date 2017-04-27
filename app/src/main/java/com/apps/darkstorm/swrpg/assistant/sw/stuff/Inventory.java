@@ -67,7 +67,9 @@ public class Inventory{
     }
     public Inventory clone(){
         Inventory out = new Inventory();
-        out.inv = inv.clone();
+        out.inv = new Item[inv.length];
+        for(int i = 0;i<inv.length;i++)
+            out.inv[i] = inv[i].clone();
         return out;
     }
     public int totalEncum(){

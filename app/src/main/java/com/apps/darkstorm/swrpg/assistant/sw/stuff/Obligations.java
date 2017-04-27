@@ -67,7 +67,9 @@ public class Obligations{
     }
     public Obligations clone(){
         Obligations out = new Obligations();
-        out.o = o.clone();
+        out.o = new Obligation[o.length];
+        for(int i = 0;i<o.length;i++)
+            out.o[i] = o[i].clone();
         return out;
     }
 }

@@ -42,7 +42,6 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
-        fab.show();
         fab.setImageResource(R.drawable.add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,5 +151,5 @@ public class NotesListFragment extends Fragment {
         }
     }
 
-    public interface OnFragmentInteractionListener {}
+    interface OnFragmentInteractionListener {}
 }

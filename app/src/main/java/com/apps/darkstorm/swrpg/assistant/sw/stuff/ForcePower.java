@@ -25,4 +25,10 @@ public class ForcePower{
         ForcePower in = (ForcePower)obj;
         return in.name.equals(name) && in.desc.equals(desc);
     }
+    public ForcePower clone(){
+        ForcePower out = new ForcePower();
+        out.name = name;
+        out.desc = desc;
+        return out;
+    }
 }

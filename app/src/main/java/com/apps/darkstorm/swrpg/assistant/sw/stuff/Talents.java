@@ -78,7 +78,9 @@ public class Talents{
     }
     public Talents clone(){
         Talents out = new Talents();
-        out.tal = tal.clone();
+        out.tal = new Talent[tal.length];
+        for(int i = 0;i<tal.length;i++)
+            out.tal[i] = tal[i].clone();
         return out;
     }
 }

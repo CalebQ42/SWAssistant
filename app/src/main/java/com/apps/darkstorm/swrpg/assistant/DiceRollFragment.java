@@ -1,5 +1,6 @@
 package com.apps.darkstorm.swrpg.assistant;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -69,7 +70,7 @@ public class DiceRollFragment extends Fragment {
         });
         fab.setImageResource(R.drawable.die_icon);
         r = (RecyclerView)view.findViewById(R.id.dice_recycler);
-        final DiceList d = new DiceList();
+        final DiceList d = new DiceList(getActivity(),dice);
         d.setHasStableIds(true);
         r.setAdapter(d);
         i = (RecyclerView)view.findViewById(R.id.instant_recycler);
@@ -180,7 +181,7 @@ public class DiceRollFragment extends Fragment {
         }
     }
 
-    class DiceList extends RecyclerView.Adapter<DiceList.DiceCardHolder>{
+    public static class DiceList extends RecyclerView.Adapter<DiceList.DiceCardHolder>{
         class DiceCardHolder extends RecyclerView.ViewHolder{
             CardView c;
             DiceCardHolder(CardView c) {
@@ -189,18 +190,18 @@ public class DiceRollFragment extends Fragment {
             }
         }
         public DiceCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            final CardView c = (CardView)getActivity().getLayoutInflater().inflate(R.layout.card_up_down,parent,false);
+            final CardView c = (CardView)ac.getLayoutInflater().inflate(R.layout.card_up_down,parent,false);
             final TextSwitcher ts = (TextSwitcher)c.findViewById(R.id.up_down_switcher);
-            Animation in = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_in_left);
-            in.setInterpolator(getActivity(),android.R.anim.anticipate_overshoot_interpolator);
-            Animation out = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_out_right);
-            out.setInterpolator(getActivity(),android.R.anim.anticipate_overshoot_interpolator);
+            Animation in = AnimationUtils.loadAnimation(ac,android.R.anim.slide_in_left);
+            in.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
+            Animation out = AnimationUtils.loadAnimation(ac,android.R.anim.slide_out_right);
+            out.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
             ts.setInAnimation(in);
             ts.setOutAnimation(out);
             ts.setFactory(new ViewSwitcher.ViewFactory() {
                 @Override
                 public View makeView() {
-                    return getActivity().getLayoutInflater().inflate(R.layout.template_num_text,ts,false);
+                    return ac.getLayoutInflater().inflate(R.layout.template_num_text,ts,false);
                 }
             });
             return new DiceCardHolder(c);
@@ -208,7 +209,7 @@ public class DiceRollFragment extends Fragment {
         public void onBindViewHolder(DiceCardHolder d, int position) {
             switch(position){
                 case 0:
-                    upDownCard.setUp(d.c, getString(R.string.ability_dice), new upDownCard.upDown() {
+                    upDownCard.setUp(d.c, ac.getString(R.string.ability_dice), new upDownCard.upDown() {
                         public void up() {
                             dice.ability++;
                         }
@@ -221,12 +222,12 @@ public class DiceRollFragment extends Fragment {
                             return String.valueOf(dice.ability);
                         }
                     });
-                    if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+                    if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),true)){
                         upDownCard.setColors(d.c,R.color.ability_card,R.color.ability_text);
                     }
                     break;
                 case 1:
-                    upDownCard.setUp(d.c, getString(R.string.proficiency_dice), new upDownCard.upDown() {
+                    upDownCard.setUp(d.c, ac.getString(R.string.proficiency_dice), new upDownCard.upDown() {
                         public void up() {
                             dice.proficiency++;
                         }
@@ -239,12 +240,12 @@ public class DiceRollFragment extends Fragment {
                             return String.valueOf(dice.proficiency);
                         }
                     });
-                    if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+                    if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),true)){
                         upDownCard.setColors(d.c,R.color.proficiency_card,R.color.proficiency_text);
                     }
                     break;
                 case 2:
-                    upDownCard.setUp(d.c, getString(R.string.boost_dice), new upDownCard.upDown() {
+                    upDownCard.setUp(d.c, ac.getString(R.string.boost_dice), new upDownCard.upDown() {
                         public void up() {
                             dice.boost++;
                         }
@@ -257,12 +258,12 @@ public class DiceRollFragment extends Fragment {
                             return String.valueOf(dice.boost);
                         }
                     });
-                    if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+                    if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),true)){
                         upDownCard.setColors(d.c,R.color.boost_card,R.color.boost_text);
                     }
                     break;
                 case 3:
-                    upDownCard.setUp(d.c, getString(R.string.difficulty_dice), new upDownCard.upDown() {
+                    upDownCard.setUp(d.c, ac.getString(R.string.difficulty_dice), new upDownCard.upDown() {
                         public void up() {
                             dice.difficulty++;
                         }
@@ -275,12 +276,12 @@ public class DiceRollFragment extends Fragment {
                             return String.valueOf(dice.difficulty);
                         }
                     });
-                    if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+                    if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),true)){
                         upDownCard.setColors(d.c,R.color.difficulty_card,R.color.difficulty_text);
                     }
                     break;
                 case 4:
-                    upDownCard.setUp(d.c, getString(R.string.challenge_dice), new upDownCard.upDown() {
+                    upDownCard.setUp(d.c, ac.getString(R.string.challenge_dice), new upDownCard.upDown() {
                         public void up() {
                             dice.challenge++;
                         }
@@ -293,12 +294,12 @@ public class DiceRollFragment extends Fragment {
                             return String.valueOf(dice.challenge);
                         }
                     });
-                    if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+                    if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),true)){
                         upDownCard.setColors(d.c,R.color.challenge_card,R.color.challenge_text);
                     }
                     break;
                 case 5:
-                    upDownCard.setUp(d.c, getString(R.string.setback_dice), new upDownCard.upDown() {
+                    upDownCard.setUp(d.c, ac.getString(R.string.setback_dice), new upDownCard.upDown() {
                         public void up() {
                             dice.setback++;
                         }
@@ -311,12 +312,12 @@ public class DiceRollFragment extends Fragment {
                             return String.valueOf(dice.setback);
                         }
                     });
-                    if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+                    if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),true)){
                         upDownCard.setColors(d.c,R.color.setback_card,R.color.setback_text);
                     }
                     break;
                 case 6:
-                    upDownCard.setUp(d.c, getString(R.string.force_dice), new upDownCard.upDown() {
+                    upDownCard.setUp(d.c, ac.getString(R.string.force_dice), new upDownCard.upDown() {
                         public void up() {
                             dice.force++;
                         }
@@ -329,7 +330,7 @@ public class DiceRollFragment extends Fragment {
                             return String.valueOf(dice.force);
                         }
                     });
-                    if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true)){
+                    if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),true)){
                         upDownCard.setColors(d.c,R.color.force_card,R.color.force_text);
                     }
                     break;
@@ -337,6 +338,12 @@ public class DiceRollFragment extends Fragment {
         }
         public int getItemCount() {
             return 7;
+        }
+        Activity ac;
+        DiceHolder dice;
+        public DiceList(Activity ac,DiceHolder dice){
+            this.ac = ac;
+            this.dice = dice;
         }
     }
 

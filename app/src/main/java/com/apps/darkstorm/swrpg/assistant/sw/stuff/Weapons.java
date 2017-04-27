@@ -78,7 +78,9 @@ public class Weapons{
     }
     public Weapons clone(){
         Weapons out = new Weapons();
-        out.w = w.clone();
+        out.w = new Weapon[w.length];
+        for (int i = 0;i<w.length;i++)
+            out.w[i] = w[i];
         return out;
     }
     public int totalEncum(){

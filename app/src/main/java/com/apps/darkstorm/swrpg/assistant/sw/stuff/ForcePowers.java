@@ -67,7 +67,9 @@ public class ForcePowers{
     }
     public ForcePowers clone(){
         ForcePowers out = new ForcePowers();
-        out.fp = fp.clone();
+        out.fp = new ForcePower[fp.length];
+        for (int i = 0;i<fp.length;i++)
+            out.fp[i] = fp[i].clone();
         return out;
     }
 }

@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg.assistant;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -103,12 +104,12 @@ public class MainDrawer extends AppCompatActivity
                 Vehicle tmp = new Vehicle();
                 tmp.reLoad(path);
                 tmp.external = true;
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleEdit.newInstance(tmp)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
             }else if(path.endsWith(".minion")){
                 Minion tmp = new Minion();
                 tmp.reLoad(path);
                 tmp.external = true;
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, MinionEdit.newInstance(tmp)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
             }else{
                 if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
                     getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
@@ -125,7 +126,7 @@ public class MainDrawer extends AppCompatActivity
                 default:
                     if (intent.getDataString().startsWith("content://")){
                         AlertDialog.Builder b = new AlertDialog.Builder(this);
-                        View v = getLayoutInflater().inflate(R.layout.dialog_loading,null);
+                        @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.dialog_loading,null);
                         ((TextView)v.findViewById(R.id.loading_message)).setText(R.string.still_loading);
                         b.setView(v);
                         final AlertDialog ad = b.show();
@@ -172,12 +173,12 @@ public class MainDrawer extends AppCompatActivity
                             }else{
                                 Character[] ch = LoadLocal.characters(MainDrawer.this);
                                 boolean found = false;
-                                for (int i = 0;i<ch.length;i++){
-                                    if (ch[i].ID == ID){
+                                for (Character aCh : ch) {
+                                    if (aCh.ID == ID) {
                                         found = true;
                                         ad.cancel();
                                         getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                EditFragment.newInstance(ch[i])).commit();
+                                                EditFragment.newInstance(aCh)).commit();
                                         break;
                                     }
                                 }
@@ -211,7 +212,8 @@ public class MainDrawer extends AppCompatActivity
                                                 if (ld.minions.get(i).ID == ID){
                                                     found = true;
                                                     ad.cancel();
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, MinionEdit.newInstance(ch[i])).commit();
+                                                    getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                            EditFragment.newInstance(ld.minions.get(i))).commit();
                                                     break;
                                                 }
                                             }
@@ -226,11 +228,11 @@ public class MainDrawer extends AppCompatActivity
                             }else{
                                 Minion[] ch = LoadLocal.minions(MainDrawer.this);
                                 boolean found = false;
-                                for (int i = 0;i<ch.length;i++){
-                                    if (ch[i].ID == ID){
+                                for (Minion aCh : ch) {
+                                    if (aCh.ID == ID) {
                                         found = true;
                                         ad.cancel();
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, MinionEdit.newInstance(ch[i])).commit();
+                                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(aCh)).commit();
                                         break;
                                     }
                                 }
@@ -252,7 +254,7 @@ public class MainDrawer extends AppCompatActivity
                                 }
                                 if(((SWrpg) getApplication()).driveFail){
                                     ad.cancel();
-                                    //TODO: go to Vehicle list
+                                    getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
                                 }else{
                                     final Load.Vehicles ld = new Load.Vehicles();
                                     ld.setOnFinish(new Load.onFinish() {
@@ -264,7 +266,8 @@ public class MainDrawer extends AppCompatActivity
                                                 if (ld.vehicles.get(i).ID == ID){
                                                     found = true;
                                                     ad.cancel();
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleEdit.newInstance(ch[i])).commit();
+                                                    getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                            EditFragment.newInstance(ld.vehicles.get(i))).commit();
                                                     break;
                                                 }
                                             }
@@ -279,11 +282,11 @@ public class MainDrawer extends AppCompatActivity
                             }else{
                                 Vehicle[] ch = LoadLocal.vehicles(MainDrawer.this);
                                 boolean found = false;
-                                for (int i = 0;i<ch.length;i++){
-                                    if (ch[i].ID == ID){
+                                for (Vehicle aCh : ch) {
+                                    if (aCh.ID == ID) {
                                         found = true;
                                         ad.cancel();
-//                TODO: getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleEdit.newInstance(ch[i])).commit();
+                                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(aCh)).commit();
                                         break;
                                     }
                                 }
@@ -320,11 +323,11 @@ public class MainDrawer extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Fragment cur = getFragmentManager().findFragmentById(R.id.content_main);
-            // If the fragment exists and has some back-stack entry
             if (cur != null){
                 Fragment childMost = cur.getChildFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 1);
                 if (childMost != null && childMost.getChildFragmentManager().getBackStackEntryCount()>0){
                     childMost.getChildFragmentManager().popBackStack();
+                    ((FloatingActionButton)findViewById(R.id.fab)).show();
                 }else if(cur.getChildFragmentManager().getBackStackEntryCount()>0){
                     cur.getChildFragmentManager().popBackStack();
                 }else{
@@ -367,7 +370,7 @@ public class MainDrawer extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         Fragment cur = getFragmentManager().findFragmentById(R.id.content_main);
         switch (id){

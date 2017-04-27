@@ -9,12 +9,7 @@ public class WeapChar{
     public int adv;
     //Version 1 end
     public WeapChar clone(){
-        WeapChar tmp;
-        try {
-            tmp = (WeapChar)super.clone();
-        } catch (CloneNotSupportedException ignored) {
-            tmp = new WeapChar();
-        }
+        WeapChar tmp = new WeapChar();
         tmp.name = name;
         tmp.val = val;
         tmp.adv = adv;

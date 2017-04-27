@@ -42,12 +42,7 @@ public class Weapon{
         encum = w.encum;
     }
     public Weapon clone(){
-        Weapon tmp;
-        try {
-            tmp = (Weapon)super.clone();
-        } catch (CloneNotSupportedException ignored) {
-            tmp = new Weapon();
-        }
+        Weapon tmp = new Weapon();
         tmp.name = name;
         tmp.dmg = dmg;
         tmp.crit = crit;

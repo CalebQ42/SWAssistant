@@ -31,4 +31,11 @@ public class CriticalInjury{
             return false;
         }
     }
+    public CriticalInjury clone(){
+        CriticalInjury out = new CriticalInjury();
+        out.name = name;
+        out.desc = desc;
+        out.severity = severity;
+        return out;
+    }
 }

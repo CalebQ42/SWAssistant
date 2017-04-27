@@ -26,6 +26,7 @@ import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CharacterList extends Fragment {
 
@@ -41,7 +42,7 @@ public class CharacterList extends Fragment {
         return inflater.inflate(R.layout.fragment_cat_list, container, false);
     }
 
-    Character[] characters;
+    ArrayList<Character> characters;
     ArrayList<CharSequence> cats;
     ArrayList<ArrayList<Character>> characterCats;
 
@@ -86,7 +87,7 @@ public class CharacterList extends Fragment {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adap.characters = characterCats.get(position);
+                adap.charactersAdap = characterCats.get(position);
                 adap.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -154,7 +155,8 @@ public class CharacterList extends Fragment {
             ch.load(getActivity());
         }else{
             srl.setRefreshing(true);
-            characters = LoadLocal.characters(getActivity());
+            characters = new ArrayList<>();
+            characters.addAll(Arrays.asList(LoadLocal.characters(getActivity())));
             cats.clear();
             characterCats.clear();
             cats.add("All");
@@ -187,7 +189,7 @@ public class CharacterList extends Fragment {
 
     class NameCardAdap extends RecyclerView.Adapter<NameCardAdap.NameCard> {
 
-        ArrayList<Character> characters = new ArrayList<>();
+        ArrayList<Character> charactersAdap = new ArrayList<>();
 
         @Override
         public NameCard onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -210,9 +212,9 @@ public class CharacterList extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             characters.remove(n.character);
-                            int ind = characterCats.get(sp.getSelectedItemPosition()).indexOf(n.character);
+                            int ind = charactersAdap.indexOf(n.character);
                             if (ind != -1){
-                                characterCats.remove(ind);
+                                charactersAdap.remove(ind);
                                 NameCardAdap.this.notifyItemRemoved(ind);
                             }
                             for (ArrayList<Character> al:characterCats){
@@ -236,17 +238,17 @@ public class CharacterList extends Fragment {
 
         @Override
         public void onBindViewHolder(NameCard holder, int position) {
-            ((TextView)holder.c.findViewById(R.id.name)).setText(characters.get(position).name);
-            if (characters.get(position).career.equals(""))
+            ((TextView)holder.c.findViewById(R.id.name)).setText(charactersAdap.get(position).name);
+            if (charactersAdap.get(position).career.equals(""))
                 holder.c.findViewById(R.id.subname).setVisibility(View.GONE);
             else
-                ((TextView) holder.c.findViewById(R.id.subname)).setText(characters.get(position).career);
-            holder.character = characters.get(position);
+                ((TextView) holder.c.findViewById(R.id.subname)).setText(charactersAdap.get(position).career);
+            holder.character = charactersAdap.get(position);
         }
 
         @Override
         public int getItemCount() {
-            return characters.size();
+            return charactersAdap.size();
         }
 
         class NameCard extends RecyclerView.ViewHolder {

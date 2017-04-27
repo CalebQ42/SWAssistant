@@ -26,4 +26,10 @@ public class Duty{
         Duty in = (Duty)obj;
         return in.name.equals(name) && in.val == val;
     }
+    public Duty clone(){
+        Duty out = new Duty();
+        out.name = name;
+        out.val = val;
+        return out;
+    }
 }

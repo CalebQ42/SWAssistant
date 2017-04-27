@@ -26,4 +26,10 @@ public class Obligation{
         Obligation in = (Obligation)obj;
         return in.name.equals(name) && in.val == val;
     }
+    public Obligation clone(){
+        Obligation out = new Obligation();
+        out.name = name;
+        out.val = val;
+        return out;
+    }
 }

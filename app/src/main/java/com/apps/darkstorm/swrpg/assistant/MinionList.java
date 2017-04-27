@@ -26,6 +26,7 @@ import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MinionList extends Fragment {
 
@@ -36,18 +37,12 @@ public class MinionList extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        minions = LoadLocal.minions(getActivity());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cat_list,container,false);
+        return inflater.inflate(R.layout.fragment_cat_list, container, false);
     }
 
-    Minion[] minions;
+    ArrayList<Minion> minions;
     ArrayList<CharSequence> cats;
     ArrayList<ArrayList<Minion>> minionCats;
 
@@ -58,7 +53,7 @@ public class MinionList extends Fragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
         fab.setImageResource(R.drawable.add);
         fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,9 +68,9 @@ public class MinionList extends Fragment {
                     ID++;
                 }
                 Minion ch = new Minion(ID);
-                getFragmentManager().beginTransaction().replace(R.id.content_main,EditFragment.newInstance(ch))
+                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(ch))
                         .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Minion Edit").commit();
-                fab.hide();
+                ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
             }
         });
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -92,7 +87,7 @@ public class MinionList extends Fragment {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adap.minions = minionCats.get(position);
+                adap.minionsAdap = minionCats.get(position);
                 adap.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -160,7 +155,8 @@ public class MinionList extends Fragment {
             ch.load(getActivity());
         }else{
             srl.setRefreshing(true);
-            minions = LoadLocal.minions(getActivity());
+            minions = new ArrayList<>();
+            minions.addAll(Arrays.asList(LoadLocal.minions(getActivity())));
             cats.clear();
             minionCats.clear();
             cats.add("All");
@@ -193,7 +189,7 @@ public class MinionList extends Fragment {
 
     class NameCardAdap extends RecyclerView.Adapter<NameCardAdap.NameCard> {
 
-        ArrayList<Minion> minions = new ArrayList<>();
+        ArrayList<Minion> minionsAdap = new ArrayList<>();
 
         @Override
         public NameCard onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -202,8 +198,8 @@ public class MinionList extends Fragment {
             c.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     getFragmentManager().beginTransaction().replace(R.id.content_main,EditFragment.newInstance(n.minion))
-                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(n.minion))
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Editing").commit();
                     ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
                 }
             });
@@ -211,14 +207,14 @@ public class MinionList extends Fragment {
                 @Override
                 public boolean onLongClick(View v) {
                     AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-                    b.setMessage(R.string.character_delete);
+                    b.setMessage(R.string.minion_delete);
                     b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             minions.remove(n.minion);
-                            int ind = minionCats.get(sp.getSelectedItemPosition()).indexOf(n.minion);
+                            int ind = minionsAdap.indexOf(n.minion);
                             if (ind != -1){
-                                minionCats.remove(ind);
+                                minionsAdap.remove(ind);
                                 NameCardAdap.this.notifyItemRemoved(ind);
                             }
                             for (ArrayList<Minion> al:minionCats){
@@ -242,14 +238,14 @@ public class MinionList extends Fragment {
 
         @Override
         public void onBindViewHolder(NameCard holder, int position) {
-            ((TextView)holder.c.findViewById(R.id.name)).setText(minions.get(position).name);
+            ((TextView)holder.c.findViewById(R.id.name)).setText(minionsAdap.get(position).name);
             holder.c.findViewById(R.id.subname).setVisibility(View.GONE);
-            holder.minion = minions.get(position);
+            holder.minion = minionsAdap.get(position);
         }
 
         @Override
         public int getItemCount() {
-            return minions.size();
+            return minionsAdap.size();
         }
 
         class NameCard extends RecyclerView.ViewHolder {
@@ -267,9 +263,9 @@ public class MinionList extends Fragment {
         super.onAttach(context);
         if (!(context instanceof OnMinionListInteractionListener)) {
             throw new RuntimeException(context.toString()
-                    + " must implement OnVehicleListInteractionListener");
+                    + " must implement OnMinionListInteractionListener");
         }
     }
 
-    public interface OnMinionListInteractionListener {}
+    interface OnMinionListInteractionListener {}
 }

@@ -37,13 +37,10 @@ public class WeapChars{
         return wc.length;
     }
     public WeapChars clone(){
-        WeapChars tmp;
-        try {
-            tmp = (WeapChars)super.clone();
-        } catch (CloneNotSupportedException ignored) {
-            tmp = new WeapChars();
-        }
-        tmp.wc = wc.clone();
+        WeapChars tmp = new WeapChars();
+        tmp.wc = new WeapChar[wc.length];
+        for(int i = 0;i<wc.length;i++)
+            tmp.wc[i] = wc[i];
         return tmp;
     }
     public Object serialObject(){

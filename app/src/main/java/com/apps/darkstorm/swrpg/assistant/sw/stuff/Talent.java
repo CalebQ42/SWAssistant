@@ -29,4 +29,11 @@ public class Talent{
         Talent in = (Talent)obj;
         return in.name.equals(name) && in.desc.equals(desc) && in.val == val;
     }
+    public Talent clone(){
+        Talent out = new Talent();
+        out.name = name;
+        out.desc = desc;
+        out.val = val;
+        return out;
+    }
 }
