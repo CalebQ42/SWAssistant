@@ -1,5 +1,18 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+
 import java.util.Arrays;
 
 public class Specializations {
@@ -59,5 +72,87 @@ public class Specializations {
         Specializations out = new Specializations();
         out.specs = specs.clone();
         return out;
+    }
+
+    public static class SpecializationsAdapter extends RecyclerView.Adapter<SpecializationsAdapter.ViewHolder>{
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            ((TextView)holder.v.findViewById(R.id.name)).setText(s.specializations.get(position));
+            holder.v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editSpecialization(ac, s, holder.getAdapterPosition(),false , new Skill.onSave() {
+                        public void save() {
+                            SpecializationsAdapter.this.notifyDataSetChanged();
+                        }
+                        public void delete() {
+                            s.specializations.remove(s.specializations.get(holder.getAdapterPosition()));
+                            SpecializationsAdapter.this.notifyDataSetChanged();
+                        }
+                        public void cancel() {}
+                    });
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return s.specializations.size();
+        }
+
+        Activity ac;
+        Character s;
+
+        public SpecializationsAdapter(Character s,Activity ac){
+            this.ac = ac;
+            this.s = s;
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            View v;
+            ViewHolder(View v){
+                super(v);
+                this.v = v;
+            }
+        }
+    }
+
+    public static void editSpecialization(Activity ac, final Character c, final int pos, boolean newSpecial, final Skill.onSave os){
+        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+        View v = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+        b.setView(v);
+        TextInputLayout ti = (TextInputLayout)v.findViewById(R.id.edit_layout);
+        ti.setHint(ac.getString(R.string.specializations_text));
+        final EditText e = (EditText)v.findViewById(R.id.edit_text);
+        e.setText(c.specializations.get(pos));
+        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                c.specializations.specs[pos] = e.getText().toString();
+                os.save();
+                dialog.cancel();
+            }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                os.cancel();
+                dialog.cancel();
+            }
+        });
+        if(newSpecial){
+            b.setNeutralButton(R.string.delete_text, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    os.delete();
+                    dialog.cancel();
+                }
+            });
+        }
+        b.show();
     }
 }

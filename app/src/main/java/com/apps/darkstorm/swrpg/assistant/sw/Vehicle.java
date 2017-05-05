@@ -1,16 +1,31 @@
 package com.apps.darkstorm.swrpg.assistant.sw;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
+import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjury;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skill;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
@@ -22,6 +37,7 @@ import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Vehicle extends Editable{
@@ -30,8 +46,8 @@ public class Vehicle extends Editable{
     //  |             |
     //  V     0-19    V
     //
-    public int ID;
-    public String name = "";
+    //public int ID;
+    //public String name = "";
     public int silhouette;
     public int speed;
     public int handling;
@@ -46,15 +62,15 @@ public class Vehicle extends Editable{
     public int encumCapacity;
     public int passengerCapacity;
     public int hp;
-    public Weapons weapons = new Weapons();
-    public CriticalInjuries crits = new CriticalInjuries();
+    //public Weapons weapons = new Weapons();
+    //public CriticalInjuries crits = new CriticalInjuries();
     private boolean[] showCards = new boolean[6];
-    public String desc = "";
+    //public String desc = "";
     public String model = "";
     //
     // Version 2 start (20-1)
     //
-    public String category = "";
+    //public String category = "";
     //Public Notes nts (From Editable)
     //
     //  ^               ^
@@ -116,7 +132,7 @@ public class Vehicle extends Editable{
         tmp.passengerCapacity = passengerCapacity;
         tmp.hp = hp;
         tmp.weapons = weapons.clone();
-        tmp.crits = crits.clone();
+        tmp.critInjuries = critInjuries.clone();
         tmp.showCards = showCards.clone();
         tmp.desc = desc;
         tmp.model = model;
@@ -254,7 +270,7 @@ public class Vehicle extends Editable{
         sl.addSave(passengerCapacity);
         sl.addSave(hp);
         sl.addSave(weapons.serialObject());
-        sl.addSave(crits.serialObject());
+        sl.addSave(critInjuries.serialObject());
         sl.addSave(showCards);
         sl.addSave(desc);
         sl.addSave(model);
@@ -282,7 +298,7 @@ public class Vehicle extends Editable{
             sl.addSave(passengerCapacity);
             sl.addSave(hp);
             sl.addSave(weapons.serialObject());
-            sl.addSave(crits.serialObject());
+            sl.addSave(critInjuries.serialObject());
             sl.addSave(showCards);
             sl.addSave(desc);
             sl.addSave(model);
@@ -303,7 +319,7 @@ public class Vehicle extends Editable{
                 model = (String)val[19];
                 desc = (String)val[18];
                 showCards = (boolean[])val[17];
-                crits.loadFromObject(val[16]);
+                critInjuries.loadFromObject(val[16]);
                 weapons.loadFromObject(val[15]);
                 hp = (int)val[14];
                 passengerCapacity = (int)val[13];
@@ -342,7 +358,7 @@ public class Vehicle extends Editable{
                 model = (String)val[19];
                 desc = (String)val[18];
                 showCards = (boolean[])val[17];
-                crits.loadFromObject(val[16]);
+                critInjuries.loadFromObject(val[16]);
                 weapons.loadFromObject(val[15]);
                 hp = (int)val[14];
                 passengerCapacity = (int)val[13];
@@ -417,7 +433,7 @@ public class Vehicle extends Editable{
                 && in.armor == armor && Arrays.equals(in.defense,defense) && totalDefense == in.totalDefense && in.hullTraumaCur == hullTraumaCur
                 && in.hullTraumaThresh == hullTraumaThresh && in.sysStressCur == sysStressCur && in.sysStressThresh == sysStressThresh
                 && in.encumCapacity == encumCapacity && in.passengerCapacity == passengerCapacity && in.hp == hp && in.weapons.equals(weapons)
-                && in.crits.equals(crits) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model)
+                && in.critInjuries.equals(critInjuries) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model)
                 && in.category.equals(category);
     }
     public void delete(final Activity main){
@@ -453,29 +469,178 @@ public class Vehicle extends Editable{
     public int cardNumber() {
         return 7;
     }
-    public void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos){
-        switch(pos){
-            //name
-            case 0:
-                break;
-            //info
-            case 1:
-                break;
-            //defense
-            case 2:
-                break;
-            //dmg
-            case 3:
-                break;
-            //weapons
-            case 4:
-                break;
-            //crit inj
-            case 5:
-                break;
-            //desc
-            case 6:
-                break;
+    public void setupCards(final Activity ac, EditGeneral.EditableAdap ea, final CardView c, final  int pos){
+        if (pos!= 0){
+            final FrameLayout fl = (FrameLayout) c.findViewById(R.id.holder);
+            fl.removeAllViews();
+            Switch hide = (Switch) c.findViewById(R.id.hide);
+            hide.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    showCards[pos - 1] = isChecked;
+                    if (isChecked)
+                        fl.setVisibility(View.VISIBLE);
+                    else
+                        fl.setVisibility(View.GONE);
+                }
+            });
+            hide.setChecked(showCards[pos-1]);
+            if (showCards[pos-1])
+                fl.setVisibility(View.VISIBLE);
+            else
+                fl.setVisibility(View.GONE);
+            switch(pos){
+                //Basic Info
+                case 1:
+                    ((TextView)c.findViewById(R.id.title)).setText(R.string.basic_info_text);
+                    //TODO
+                    break;
+                //Defense
+                case 2:
+                    ((TextView)c.findViewById(R.id.title)).setText(R.string.defense_text);
+                    //TODO
+                    break;
+                //Damage
+                case 3:
+                    ((TextView)c.findViewById(R.id.title)).setText(R.string.damage_text);
+                    //TODO
+                    break;
+                //<editor-fold desc="Weapons">
+                case 4:
+                    ((TextView)c.findViewById(R.id.title)).setText(R.string.weapons_text);
+                    final View weapon = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
+                    fl.addView(weapon);
+                    RecyclerView r = (RecyclerView)weapon.findViewById(R.id.recycler);
+                    final Weapons.WeaponsAdapChar adapW = new Weapons.WeaponsAdapChar(this,ac);
+                    r.setAdapter(adapW);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    weapon.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            weapons.add(new Weapon());
+                            Weapon.editWeapon(ac, Vehicle.this,weapons.size() - 1,true, new Skill.onSave() {
+                                public void save() {
+                                    adapW.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                    weapons.remove(weapons.get(weapons.size()-1));
+                                }
+                                public void cancel() {
+                                    weapons.remove(weapons.get(weapons.size()-1));
+                                }
+                            });
+                        }
+                    });
+                    break;
+                //</editor-fold>
+                //<editor-fold desc="Crit inj">
+                case 5:
+                    ((TextView)c.findViewById(R.id.title)).setText(R.string.critical_injuries_text);
+                    final View crit = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
+                    fl.addView(crit);
+                    r = (RecyclerView)crit.findViewById(R.id.recycler);
+                    final CriticalInjuries.CriticalInjuriesAdapChar adapCrit = new CriticalInjuries.CriticalInjuriesAdapChar(this,ac);
+                    r.setAdapter(adapCrit);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    crit.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            critInjuries.add(new CriticalInjury());
+                            CriticalInjury.editCritical(ac, Vehicle.this,critInjuries.size() - 1,true, new Skill.onSave() {
+                                public void save() {
+                                    adapCrit.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                }
+                                public void cancel() {
+                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                }
+                            });
+                        }
+                    });
+                    break;
+                //</editor-fold>
+                //Description
+                case 6:
+                    ((TextView)c.findViewById(R.id.title)).setText(R.string.description_text);
+                    //TODO
+                    break;
+            }
+        }else{
+            ((TextView)c.findViewById(R.id.name)).setText(name);
+            c.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                    View vw = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                    b.setView(vw);
+                    TextInputLayout t = (TextInputLayout)vw.findViewById(R.id.edit_layout);
+                    t.setHint(ac.getString(R.string.name_text));
+                    final EditText et = (EditText)vw.findViewById(R.id.edit_text);
+                    et.setText(Vehicle.this.name);
+                    b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Vehicle.this.name = et.getText().toString();
+                            ((TextView)c.findViewById(R.id.name)).setText(Vehicle.this.name);
+                            dialog.cancel();
+                        }
+                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    b.show();
+                    return true;
+                }
+            });
+            c.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                    View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                    b.setView(in);
+                    final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                    et.setText(((SWrpg)ac.getApplication()).prefs.getString(ac.getString(R.string.local_location_key),
+                            ((SWrpg)ac.getApplication()).defaultLoc));
+                    //TODO: resource
+                    ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint("Export Location");
+                    b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            exportTo(et.getText().toString());
+                            dialog.cancel();
+                        }
+                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    b.show();
+                }
+            });
+            c.findViewById(R.id.clone).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Character[] characters = LoadLocal.characters(ac);
+                    ArrayList<Integer> IDs = new ArrayList<>();
+                    for (Character c:characters){
+                        IDs.add(c.ID);
+                    }
+                    int ID = 0;
+                    while(IDs.contains(ID)){
+                        ID++;
+                    }
+                    Vehicle ch = Vehicle.this.clone();
+                    ch.ID = ID;
+                    ch.save(ch.getFileLocation(ac));
+                    if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.google_drive_key),false))
+                        ch.cloudSave(((SWrpg)ac.getApplication()).gac,ch.getFileId(ac),true);
+                }
+            });
         }
     }
 }

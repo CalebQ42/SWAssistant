@@ -28,6 +28,7 @@ import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
 import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjury;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Dutys;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.ForcePowers;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Inventory;
@@ -36,7 +37,9 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Obligations;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skill;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skills;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Specializations;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talent;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talents;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveApi;
@@ -59,8 +62,8 @@ public class Character extends Editable{
     //  |                 |
     //  V      0-34       V
     //
-    public int ID;
-    public String name = "";
+    //public int ID;
+    //public String name = "";
     //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
     public int[] charVals = new int[6];
     public Skills skills = new Skills();
@@ -69,10 +72,10 @@ public class Character extends Editable{
     public Specializations specializations = new Specializations();
     public Talents talents = new Talents();
     public Inventory inv = new Inventory();
-    public Weapons weapons = new Weapons();
+    //public Weapons weapons = new Weapons();
     public ForcePowers forcePowers = new ForcePowers();
     public String motivation = "";
-    public CriticalInjuries critInjuries = new CriticalInjuries();
+    //public CriticalInjuries critInjuries = new CriticalInjuries();
     public String[] emotionalStr = new String[1];
     public String[] emotionalWeak = new String[1];
     public Dutys duty = new Dutys();
@@ -85,8 +88,8 @@ public class Character extends Editable{
     public int force;
     public int credits;
     public int morality,conflict;
-    public String desc = "";
-    private boolean[] showCard = new boolean[16];
+    //public String desc = "";
+    private boolean[] showCards = new boolean[16];
     public boolean darkSide;
     public int age;
     //public Notes nts (From Editable)
@@ -97,7 +100,7 @@ public class Character extends Editable{
     //
     // Character v3 Start (36)
     //
-    public String category = "";
+    //public String category = "";
     //
     //  ^                 ^
     //  |  Character End  |
@@ -111,15 +114,15 @@ public class Character extends Editable{
 
     public Character(){
         morality = 50;
-        for (int i = 0;i<showCard.length;i++){
-            showCard[i] = true;
+        for (int i = 0; i< showCards.length; i++){
+            showCards[i] = true;
         }
     }
     public Character(int ID){
         this.ID = ID;
         morality = 50;
-        for (int i = 0;i<showCard.length;i++){
-            showCard[i] = true;
+        for (int i = 0; i< showCards.length; i++){
+            showCards[i] = true;
         }
     }
     public void startEditing(final Activity main, final DriveId fold){
@@ -287,7 +290,7 @@ public class Character extends Editable{
         sl.addSave(morality);
         sl.addSave(conflict);
         sl.addSave(desc);
-        sl.addSave(showCard);
+        sl.addSave(showCards);
         sl.addSave(darkSide);
         sl.addSave(age);
         sl.addSave(nts.serialObject());
@@ -345,7 +348,7 @@ public class Character extends Editable{
                 morality = (int)vals[28];
                 conflict = (int)vals[29];
                 desc = (String)vals[30];
-                showCard = (boolean[])vals[31];
+                showCards = (boolean[])vals[31];
                 darkSide = (boolean)vals[32];
                 age = (int)vals[33];
                 nts.loadFromObject(vals[34]);
@@ -409,7 +412,7 @@ public class Character extends Editable{
             sl.addSave(morality);
             sl.addSave(conflict);
             sl.addSave(desc);
-            sl.addSave(showCard);
+            sl.addSave(showCards);
             sl.addSave(darkSide);
             sl.addSave(age);
             sl.addSave(nts.serialObject());
@@ -468,7 +471,7 @@ public class Character extends Editable{
                 morality = (int)vals[28];
                 conflict = (int)vals[29];
                 desc = (String)vals[30];
-                showCard = (boolean[])vals[31];
+                showCards = (boolean[])vals[31];
                 darkSide = (boolean)vals[32];
                 age = (int)vals[33];
                 nts.loadFromObject(vals[34]);
@@ -515,7 +518,7 @@ public class Character extends Editable{
         tmp.morality = morality;
         tmp.conflict = conflict;
         tmp.desc = desc;
-        tmp.showCard = showCard.clone();
+        tmp.showCards = showCards.clone();
         tmp.darkSide = darkSide;
         tmp.age = age;
         tmp.nts = nts.clone();
@@ -548,7 +551,7 @@ public class Character extends Editable{
                 strainCur == chara.strainCur && xpCur == chara.xpCur && xpTot == chara.xpTot && defMelee == chara.defMelee &&
                 defRanged == chara.defRanged && soak == chara.soak && force == chara.force && credits == chara.credits &&
                 morality == chara.morality && conflict == chara.conflict && Objects.equals(chara.desc, desc) &&
-                Arrays.equals(showCard, chara.showCard) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts) &&
+                Arrays.equals(showCards, chara.showCards) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts) &&
                 encumCapacity == chara.encumCapacity && category.equals(chara.category);
     }
     public boolean isOverEncum(){
@@ -604,7 +607,7 @@ public class Character extends Editable{
         out.add(morality);
         out.add(conflict);
         out.add(desc);
-        out.add(showCard);
+        out.add(showCards);
         out.add(darkSide);
         out.add(age);
         out.add(nts.serialObject());
@@ -652,7 +655,7 @@ public class Character extends Editable{
                 morality = (int)vals[28];
                 conflict = (int)vals[29];
                 desc = (String)vals[30];
-                showCard = (boolean[])vals[31];
+                showCards = (boolean[])vals[31];
                 darkSide = (boolean)vals[32];
                 age = (int)vals[33];
                 nts.loadFromObject(vals[34]);
@@ -688,15 +691,15 @@ public class Character extends Editable{
             hide.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    showCard[pos - 1] = isChecked;
+                    showCards[pos - 1] = isChecked;
                     if (isChecked)
                         fl.setVisibility(View.VISIBLE);
                     else
                         fl.setVisibility(View.GONE);
                 }
             });
-            hide.setChecked(showCard[pos-1]);
-            if (showCard[pos-1])
+            hide.setChecked(showCards[pos-1]);
+            if (showCards[pos-1])
                 fl.setVisibility(View.VISIBLE);
             else
                 fl.setVisibility(View.GONE);
@@ -1186,20 +1189,20 @@ public class Character extends Editable{
                     });
                     break;
                 //</editor-fold>
-                //Skill
+                //<editor-fold desc="Skill">
                 case 4:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.skill_text);
-                    final View skill = ac.getLayoutInflater().inflate(R.layout.layout_skill,fl,false);
+                    final View skill = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
                     fl.addView(skill);
                     RecyclerView r = (RecyclerView)skill.findViewById(R.id.recycler);
                     final Skills.SkillsAdapChar adap = new Skills.SkillsAdapChar(this,ac);
                     r.setAdapter(adap);
                     r.setLayoutManager(new LinearLayoutManager(ac));
-                    skill.findViewById(R.id.skill_add).setOnClickListener(new View.OnClickListener() {
+                    skill.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             skills.add(new Skill());
-                            Skill.editSkill(ac, Character.this,skills.size() - 1,true, false, new Skill.onSave() {
+                            Skill.editSkill(ac, Character.this,skills.size() - 1,true, new Skill.onSave() {
                                 public void save() {
                                     adap.notifyDataSetChanged();
                                 }
@@ -1212,33 +1215,186 @@ public class Character extends Editable{
                             });
                         }
                     });
-                    //TODO
                     break;
-                //Defense
+                //</editor-fold>
+                //<editor-fold desc="Defense">
                 case 5:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.defense_text);
-                    //TODO
+                    View def = ac.getLayoutInflater().inflate(R.layout.layout_defense,fl,false);
+                    fl.addView(def);
+                    final TextView rng = (TextView)def.findViewById(R.id.ranged_num);
+                    final TextView mel = (TextView)def.findViewById(R.id.melee_num);
+                    rng.setText(String.valueOf(defRanged));
+                    mel.setText(String.valueOf(defMelee));
+                    def.findViewById(R.id.ranged_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                            View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                            b.setView(in);
+                            final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                            et.setText(String.valueOf(defRanged));
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
+                            ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.ranged_defense_text));
+                            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    defRanged = Integer.parseInt(et.getText().toString());
+                                    rng.setText(String.valueOf(defRanged));
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                            return true;
+                        }
+                    });
+                    def.findViewById(R.id.melee_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                            View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                            b.setView(in);
+                            final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                            et.setText(String.valueOf(defMelee));
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
+                            ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.melee_defense_text));
+                            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    defMelee = Integer.parseInt(et.getText().toString());
+                                    mel.setText(String.valueOf(defMelee));
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                            return true;
+                        }
+                    });
                     break;
-                //Weapons
+                //</editor-fold>s
+                //<editor-fold desc="Weapons">
                 case 6:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.weapons_text);
-                    //TODO
+                    final View weapon = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
+                    fl.addView(weapon);
+                    r = (RecyclerView)weapon.findViewById(R.id.recycler);
+                    final Weapons.WeaponsAdapChar adapW = new Weapons.WeaponsAdapChar(this,ac);
+                    r.setAdapter(adapW);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    weapon.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            weapons.add(new Weapon());
+                            Weapon.editWeapon(ac, Character.this,weapons.size() - 1,true, new Skill.onSave() {
+                                public void save() {
+                                    adapW.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                    weapons.remove(weapons.get(weapons.size()-1));
+                                }
+                                public void cancel() {
+                                    weapons.remove(weapons.get(weapons.size()-1));
+                                }
+                            });
+                        }
+                    });
                     break;
-                //Crit inj
+                //</editor-fold>
+                //<editor-fold desc="Crit inj">
                 case 7:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.critical_injuries_text);
-                    //TODO
+                    final View crit = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
+                    fl.addView(crit);
+                    r = (RecyclerView)crit.findViewById(R.id.recycler);
+                    final CriticalInjuries.CriticalInjuriesAdapChar adapCrit = new CriticalInjuries.CriticalInjuriesAdapChar(this,ac);
+                    r.setAdapter(adapCrit);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    crit.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            critInjuries.add(new CriticalInjury());
+                            CriticalInjury.editCritical(ac, Character.this,critInjuries.size() - 1,true, new Skill.onSave() {
+                                public void save() {
+                                    adapCrit.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                }
+                                public void cancel() {
+                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                }
+                            });
+                        }
+                    });
                     break;
-                //Specializations
+                //</editor-fold>
+                //<editor-fold desc="Specializations">
                 case 8:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.specializations_text);
-                    //TODO
+                    final View spec = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
+                    fl.addView(spec);
+                    r = (RecyclerView)spec.findViewById(R.id.recycler);
+                    final Specializations.SpecializationsAdapter adapSpec = new Specializations.SpecializationsAdapter(this,ac);
+                    r.setAdapter(adapSpec);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    spec.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            specializations.add("");
+                            Specializations.editSpecialization(ac, Character.this,specializations.size() - 1,true, new Skill.onSave() {
+                                public void save() {
+                                    adapSpec.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                }
+                                public void cancel() {
+                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                }
+                            });
+                        }
+                    });
                     break;
-                //Talents
+                //</editor-fold>
+                //<editor-fold desc="Talents">
                 case 9:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.talents_text);
-                    //TODO
+                    ((TextView)c.findViewById(R.id.title)).setText(R.string.critical_injuries_text);
+                    final View tal = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
+                    fl.addView(tal);
+                    r = (RecyclerView)tal.findViewById(R.id.recycler);
+                    final Talents.TalentsAdap adapTal = new Talents.TalentsAdap(this,ac);
+                    r.setAdapter(adapTal);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    tal.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            talents.add(new Talent());
+                            Talent.editTalent(ac, Character.this,talents.size() - 1,true, new Skill.onSave() {
+                                public void save() {
+                                    adapTal.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                    talents.remove(talents.get(talents.size()-1));
+                                }
+                                public void cancel() {
+                                    talents.remove(talents.get(talents.size()-1));
+                                }
+                            });
+                        }
+                    });
                     break;
+                //</editor-fold>
                 //Force Powers
                 case 10:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.force_powers_text);
@@ -1345,7 +1501,7 @@ public class Character extends Editable{
                     Character ch = Character.this.clone();
                     ch.ID = ID;
                     ch.save(ch.getFileLocation(ac));
-                    if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.color_dice_key),false))
+                    if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.google_drive_key),false))
                         ch.cloudSave(((SWrpg)ac.getApplication()).gac,ch.getFileId(ac),true);
                 }
             });

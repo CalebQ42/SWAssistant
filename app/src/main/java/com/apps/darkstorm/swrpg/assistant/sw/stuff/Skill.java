@@ -12,6 +12,8 @@ import android.widget.Switch;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,12 +80,18 @@ public class Skill{
         public abstract void cancel();
     }
 
-    public static void editSkill(final Activity ac,final Character c,final int pos,final boolean newSkill,final boolean minion,final onSave os){
-        final Skills s = c.skills;
+    public static void editSkill(final Activity ac, final Editable c, final int pos, final boolean newSkill, final onSave os){
+        final Skills s;
+        if(c instanceof Character)
+            s = ((Character)c).skills;
+        else if(c instanceof Minion)
+            s = ((Minion)c).skills;
+        else
+            s = new Skills();
         AlertDialog.Builder b = new AlertDialog.Builder(ac);
         final View ed = ac.getLayoutInflater().inflate(R.layout.dialog_skill_edit,null);
         b.setView(ed);
-        if (minion) {
+        if (c instanceof Minion) {
             ed.findViewById(R.id.value_lay).setVisibility(View.GONE);
             ed.findViewById(R.id.career).setVisibility(View.GONE);
         }else{
@@ -132,7 +140,7 @@ public class Skill{
                 }else{
                     s.get(pos).name = skills.get(skillSpin.getSelectedItemPosition());
                 }
-                if(!minion){
+                if(!(c instanceof Minion)){
                     s.get(pos).val = Integer.parseInt(((EditText)ed.findViewById(R.id.value_edit)).getText().toString());
                 }
                 s.get(pos).career = ((Switch)ed.findViewById(R.id.career)).isChecked();
@@ -145,13 +153,16 @@ public class Skill{
                 os.cancel();
                 dialog.cancel();
             }
-        }).setNeutralButton(R.string.delete_text, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                os.delete();
-                dialog.cancel();
-            }
         });
+        if(!newSkill) {
+            b.setNeutralButton(R.string.delete_text, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    os.delete();
+                    dialog.cancel();
+                }
+            });
+        }
         b.show();
     }
 }

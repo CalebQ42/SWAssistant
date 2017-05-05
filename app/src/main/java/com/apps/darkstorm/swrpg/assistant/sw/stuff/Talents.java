@@ -1,5 +1,16 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
+import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.Minion;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -82,5 +93,81 @@ public class Talents{
         for(int i = 0;i<tal.length;i++)
             out.tal[i] = tal[i].clone();
         return out;
+    }
+
+    public static class TalentsAdap extends RecyclerView.Adapter<TalentsAdap.ViewHolder>{
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            if(c instanceof Character) {
+                final Talents ts = ((Character) c).talents;
+                ((TextView)holder.v.findViewById(R.id.name)).setText(ts.get(position).name);
+                holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Talent.editTalent(ac,c,holder.getAdapterPosition(),false,new Skill.onSave(){
+                            public void save() {
+                                TalentsAdap.this.notifyItemChanged(holder.getAdapterPosition());
+                            }
+                            public void delete() {
+                                int ind = ts.remove(ts.get(holder.getAdapterPosition()));
+                                TalentsAdap.this.notifyItemRemoved(ind);
+                            }
+                            public void cancel() {}
+                        });
+                        return true;
+                    }
+                });
+            }else if(c instanceof Minion) {
+                final Talents ts = ((Minion) c).talents;
+                ((TextView)holder.v.findViewById(R.id.name)).setText(ts.get(position).name);
+                holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Talent.editTalent(ac,c,holder.getAdapterPosition(),false,new Skill.onSave(){
+                            public void save() {
+                                TalentsAdap.this.notifyItemChanged(holder.getAdapterPosition());
+                            }
+                            public void delete() {
+                                int ind = ts.remove(ts.get(holder.getAdapterPosition()));
+                                TalentsAdap.this.notifyItemRemoved(ind);
+                            }
+                            public void cancel() {}
+                        });
+                        return true;
+                    }
+                });
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            Talents ts;
+            if(c instanceof Character)
+                ts = ((Character)c).talents;
+            else if(c instanceof Minion)
+                ts = ((Minion)c).talents;
+            else
+                return 0;
+            return ts.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            View v;
+            ViewHolder(View v){
+                super(v);
+                this.v = v;
+            }
+        }
+        Editable c;
+        Activity ac;
+        public TalentsAdap(Editable c,Activity ac){
+            this.c = c;
+            this.ac = ac;
+        }
     }
 }

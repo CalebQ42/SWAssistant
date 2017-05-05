@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 
 public class DiceResults {
 
@@ -65,14 +69,14 @@ public class DiceResults {
         build.setNegativeButton(R.string.modify_results, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                showEditDialog(ac);
+                showEditDialog(ac,null);
                 dialog.cancel();
             }
         });
         build.show();
     }
 
-    public void showEditDialog(final Activity ac){
+    public void showEditDialog(final Activity ac, final Weapon w){
         AlertDialog.Builder build = new AlertDialog.Builder(ac);
         @SuppressLint("InflateParams") View v = ac.getLayoutInflater().inflate(R.layout.dialog_results_modify,null);
         build.setView(v);
@@ -235,7 +239,10 @@ public class DiceResults {
         build.setPositiveButton(R.string.re_show, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                showDialog(ac);
+                if (w== null)
+                    showDialog(ac);
+                else
+                    showWeaponDialog(ac,w);
                 dialog.cancel();
             }
         }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -278,5 +285,100 @@ public class DiceResults {
         out.lightSide = lightSide;
         out.darkSide = darkSide;
         return out;
+    }
+
+    public void showWeaponDialog(final Activity ac,final Weapon w){
+        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+        View v = ac.getLayoutInflater().inflate(R.layout.dialog_weapon_res,null);
+        b.setView(v);
+        DiceResults simp = simplify();
+        if(failure==0 && success==0 && advantage==0&& threat==0&& triumph==0&& despair==0)
+            v.findViewById(R.id.no_res).setVisibility(View.VISIBLE);
+        if(success>0) {
+            v.findViewById(R.id.dmg).setVisibility(View.VISIBLE);
+            ((TextView)v.findViewById(R.id.dmg_num)).setText(String.valueOf(w.dmg+success));
+        }else
+            v.findViewById(R.id.miss).setVisibility(View.VISIBLE);
+        if(advantage>0){
+            v.findViewById(R.id.adv_thr).setVisibility(View.VISIBLE);
+            ((TextView)v.findViewById(R.id.adv_thr_label)).setText(ac.getText(R.string.advantage_text));
+            ((TextView)v.findViewById(R.id.adv_thr_num)).setText(String.valueOf(advantage));
+            if(w.crit>0 || w.chars.size()>0){
+                v.findViewById(R.id.specials).setVisibility(View.VISIBLE);
+                RecyclerView r = (RecyclerView)v.findViewById(R.id.recycler);
+                weaponSpecialAdap adap = new weaponSpecialAdap(ac,w);
+                r.setAdapter(adap);
+                r.setLayoutManager(new LinearLayoutManager(ac));
+            }
+        }else if(threat>0){
+            v.findViewById(R.id.adv_thr).setVisibility(View.VISIBLE);
+            ((TextView)v.findViewById(R.id.adv_thr_label)).setText(ac.getText(R.string.threat_text));
+            ((TextView)v.findViewById(R.id.adv_thr_num)).setText(String.valueOf(threat));
+        }
+        if(triumph>0){
+            v.findViewById(R.id.triumph).setVisibility(View.VISIBLE);
+            ((TextView)v.findViewById(R.id.triumph_num)).setText(String.valueOf(triumph));
+        }
+        if(despair>0){
+            v.findViewById(R.id.despair).setVisibility(View.VISIBLE);
+            ((TextView)v.findViewById(R.id.despair_num)).setText(String.valueOf(despair));
+        }
+        b.setNegativeButton(R.string.modify_results, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showEditDialog(ac,w);
+                dialog.cancel();
+            }
+        });
+        b.show();
+    }
+
+    public static class weaponSpecialAdap extends RecyclerView.Adapter<weaponSpecialAdap.ViewHolder>{
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_weapon_char,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            TextView num = (TextView)holder.v.findViewById(R.id.num);
+            TextView name = (TextView)holder.v.findViewById(R.id.name);
+            if(w.crit>0){
+                if(position==0){
+                    name.setText(R.string.critical_text);
+                    num.setText(String.valueOf(w.crit));
+                }else{
+                    name.setText(w.chars.get(position-1).name);
+                    num.setText(String.valueOf(w.chars.get(position-1).adv));
+                }
+            }else{
+                name.setText(w.chars.get(position).name);
+                num.setText(String.valueOf(w.chars.get(position).adv));
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            if(w.crit>0)
+                return w.chars.size()+1;
+            else
+                return w.chars.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder{
+            View v;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                v = itemView;
+            }
+        }
+
+        Weapon w;
+        Activity ac;
+
+        public weaponSpecialAdap(Activity ac,Weapon w){
+            this.w = w;
+            this.ac = ac;
+        }
     }
 }

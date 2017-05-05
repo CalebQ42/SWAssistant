@@ -13,6 +13,8 @@ import com.apps.darkstorm.swrpg.assistant.DiceRollFragment;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,72 +92,144 @@ public class Skills{
     public static class SkillsAdapChar extends RecyclerView.Adapter<SkillsAdapChar.ViewHolder>{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.skill_item,parent,false));
+            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_skill,parent,false));
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            if(c.skills.get(position).career)
-                ((TextView)holder.v.findViewById(R.id.skill_name)).setText("*"+c.skills.get(position).name);
-            else
-                ((TextView)holder.v.findViewById(R.id.skill_name)).setText(" "+c.skills.get(position).name);
-            ((TextView)holder.v.findViewById(R.id.skill_value)).setText(String.valueOf(c.skills.get(position).val));
-            holder.v.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Skill.editSkill(ac,c,holder.getAdapterPosition(),false,false,new Skill.onSave(){
-                        public void save() {
-                            SkillsAdapChar.this.notifyItemChanged(holder.getAdapterPosition());
-                        }
-                        public void delete() {
-                            int ind = c.skills.remove(c.skills.get(holder.getAdapterPosition()));
-                            SkillsAdapChar.this.notifyItemRemoved(ind);
-                        }
-                        public void cancel() {}
-                    });
-                    return true;
-                }
-            });
-            holder.v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder b = new AlertDialog.Builder(ac);
-                    final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll,null);
-                    b.setView(view);
-                    view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
-                    view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
-                    final DiceHolder dh = new DiceHolder();
-                    if(c.charVals[c.skills.get(holder.getAdapterPosition()).baseChar]>c.skills.get(holder.getAdapterPosition()).val) {
-                        dh.ability = c.charVals[c.skills.get(holder.getAdapterPosition()).baseChar] - c.skills.get(holder.getAdapterPosition()).val;
-                        dh.proficiency = c.skills.get(holder.getAdapterPosition()).val;
-                    }else{
-                        dh.ability = c.skills.get(holder.getAdapterPosition()).val-c.charVals[c.skills.get(holder.getAdapterPosition()).baseChar];
-                        dh.proficiency = c.charVals[c.skills.get(holder.getAdapterPosition()).baseChar];
+            if(c instanceof Character) {
+                final Skills skls = ((Character)c).skills;
+                if (skls.get(position).career)
+                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText("*" + skls.get(position).name);
+                else
+                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText(" " + skls.get(position).name);
+                ((TextView) holder.v.findViewById(R.id.skill_value)).setText(String.valueOf(skls.get(position).val));
+                holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Skill.editSkill(ac, c, holder.getAdapterPosition(), false, new Skill.onSave() {
+                            public void save() {
+                                SkillsAdapChar.this.notifyItemChanged(holder.getAdapterPosition());
+                            }
+
+                            public void delete() {
+                                int ind = skls.remove(skls.get(holder.getAdapterPosition()));
+                                SkillsAdapChar.this.notifyItemRemoved(ind);
+                            }
+
+                            public void cancel() {
+                            }
+                        });
+                        return true;
                     }
-                    final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac,dh);
-                    RecyclerView r = (RecyclerView)view.findViewById(R.id.dice_recycler);
-                    r.setAdapter(dl);
-                    r.setLayoutManager(new LinearLayoutManager(ac));
-                    b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dh.roll().showDialog(ac);
-                            dialog.cancel();
+                });
+                holder.v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                        b.setView(view);
+                        view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                        view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                        final DiceHolder dh = new DiceHolder();
+                        if (((Character)c).charVals[skls.get(holder.getAdapterPosition()).baseChar] > skls.get(holder.getAdapterPosition()).val) {
+                            dh.ability = ((Character)c).charVals[skls.get(holder.getAdapterPosition()).baseChar] - skls.get(holder.getAdapterPosition()).val;
+                            dh.proficiency = skls.get(holder.getAdapterPosition()).val;
+                        } else {
+                            dh.ability = skls.get(holder.getAdapterPosition()).val - ((Character)c).charVals[skls.get(holder.getAdapterPosition()).baseChar];
+                            dh.proficiency = ((Character)c).charVals[skls.get(holder.getAdapterPosition()).baseChar];
                         }
-                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
+                        final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                        RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                        r.setAdapter(dl);
+                        r.setLayoutManager(new LinearLayoutManager(ac));
+                        b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dh.roll().showDialog(ac);
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                    }
+                });
+            }else if(c instanceof Minion){
+                final Skills skls = ((Minion)c).skills;
+                if (skls.get(position).career)
+                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText("*" + skls.get(position).name);
+                else
+                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText(" " + skls.get(position).name);
+                ((TextView) holder.v.findViewById(R.id.skill_value)).setText(String.valueOf(skls.get(position).val));
+                holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Skill.editSkill(ac, c, holder.getAdapterPosition(), false, new Skill.onSave() {
+                            public void save() {
+                                SkillsAdapChar.this.notifyItemChanged(holder.getAdapterPosition());
+                            }
+
+                            public void delete() {
+                                int ind = skls.remove(skls.get(holder.getAdapterPosition()));
+                                SkillsAdapChar.this.notifyItemRemoved(ind);
+                            }
+
+                            public void cancel() {
+                            }
+                        });
+                        return true;
+                    }
+                });
+                holder.v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                        final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                        b.setView(view);
+                        view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                        view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                        final DiceHolder dh = new DiceHolder();
+                        if (((Minion)c).charVals[skls.get(holder.getAdapterPosition()).baseChar] > skls.get(holder.getAdapterPosition()).val) {
+                            dh.ability = ((Minion)c).charVals[skls.get(holder.getAdapterPosition()).baseChar] - skls.get(holder.getAdapterPosition()).val;
+                            dh.proficiency = skls.get(holder.getAdapterPosition()).val;
+                        } else {
+                            dh.ability = skls.get(holder.getAdapterPosition()).val - ((Minion)c).charVals[skls.get(holder.getAdapterPosition()).baseChar];
+                            dh.proficiency = ((Minion)c).charVals[skls.get(holder.getAdapterPosition()).baseChar];
                         }
-                    });
-                    b.show();
-                }
-            });
+                        final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                        RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                        r.setAdapter(dl);
+                        r.setLayoutManager(new LinearLayoutManager(ac));
+                        b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dh.roll().showDialog(ac);
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                    }
+                });
+            }
         }
 
         @Override
         public int getItemCount() {
-            return c.skills.size();
+            if(c instanceof Character)
+                return ((Character)c).skills.size();
+            else if(c instanceof Minion)
+                return ((Minion)c).skills.size();
+            else
+                return 0;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
@@ -165,9 +239,9 @@ public class Skills{
                 this.v = v;
             }
         }
-        Character c;
+        Editable c;
         Activity ac;
-        public SkillsAdapChar(Character c,Activity ac){
+        public SkillsAdapChar(Editable c,Activity ac){
             this.c = c;
             this.ac = ac;
         }

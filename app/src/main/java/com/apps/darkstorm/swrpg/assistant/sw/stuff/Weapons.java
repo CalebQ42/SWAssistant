@@ -1,5 +1,21 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.apps.darkstorm.swrpg.assistant.DiceRollFragment;
+import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.Minion;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -80,7 +96,7 @@ public class Weapons{
         Weapons out = new Weapons();
         out.w = new Weapon[w.length];
         for (int i = 0;i<w.length;i++)
-            out.w[i] = w[i];
+            out.w[i] = w[i].clone();
         return out;
     }
     public int totalEncum(){
@@ -88,5 +104,118 @@ public class Weapons{
         for (Weapon we:w)
             total += we.encum;
         return total;
+    }
+
+    public static class WeaponsAdapChar extends RecyclerView.Adapter<WeaponsAdapChar.ViewHolder>{
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            ((TextView)holder.v.findViewById(R.id.name)).setText(c.weapons.get(position).name);
+            holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Weapon.editWeapon(ac,c,holder.getAdapterPosition(),false,new Skill.onSave(){
+                        public void save() {
+                            WeaponsAdapChar.this.notifyItemChanged(holder.getAdapterPosition());
+                        }
+                        public void delete() {
+                            int ind = c.weapons.remove(c.weapons.get(holder.getAdapterPosition()));
+                            WeaponsAdapChar.this.notifyItemRemoved(ind);
+                        }
+                        public void cancel() {}
+                    });
+                    return true;
+                }
+            });
+            holder.v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                    final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll,null);
+                    b.setView(view);
+                    view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                    view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                    view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                    view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                    view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                    final DiceHolder dh = new DiceHolder();
+                    if(c instanceof Character) {
+                        Character ch = (Character)c;
+                        String[] weapSkills = ac.getResources().getStringArray(R.array.weapon_skills);
+                        int skillVal = 0;
+                        for (int i = 0; i < ch.skills.size(); i++) {
+                            if (ch.skills.get(i).name.equals(weapSkills[ch.weapons.get(holder.getAdapterPosition()).skill])) {
+                                skillVal = ch.skills.get(i).val;
+                                break;
+                            }
+                        }
+                        if (ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase] > skillVal) {
+                            dh.ability = ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase] - skillVal;
+                            dh.proficiency = skillVal;
+                        } else {
+                            dh.ability = skillVal - ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase];
+                            dh.proficiency = ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase];
+                        }
+                    }else if (c instanceof Minion){
+                        Minion ch = (Minion)c;
+                        String[] weapSkills = ac.getResources().getStringArray(R.array.weapon_skills);
+                        int skillVal = 0;
+                        for (int i = 0; i < ch.skills.size(); i++) {
+                            if (ch.skills.get(i).name.equals(weapSkills[ch.weapons.get(holder.getAdapterPosition()).skill])) {
+                                skillVal = ch.skills.get(i).val;
+                                break;
+                            }
+                        }
+                        if (ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase] > skillVal) {
+                            dh.ability = ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase] - skillVal;
+                            dh.proficiency = skillVal;
+                        } else {
+                            dh.ability = skillVal - ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase];
+                            dh.proficiency = ch.charVals[ch.weapons.get(holder.getAdapterPosition()).skillBase];
+                        }
+                    }
+                    final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac,dh);
+                    RecyclerView r = (RecyclerView)view.findViewById(R.id.dice_recycler);
+                    r.setAdapter(dl);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dh.roll().showWeaponDialog(ac,c.weapons.get(holder.getAdapterPosition()));
+                            dialog.cancel();
+                        }
+                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    b.show();
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return c.weapons.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            View v;
+            ViewHolder(View v){
+                super(v);
+                this.v = v;
+            }
+        }
+        Editable c;
+        Activity ac;
+        public WeaponsAdapChar(Editable c,Activity ac){
+            this.c = c;
+            this.ac = ac;
+        }
     }
 }
