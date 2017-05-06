@@ -1,5 +1,14 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
+import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -71,5 +80,53 @@ public class ForcePowers{
         for (int i = 0;i<fp.length;i++)
             out.fp[i] = fp[i].clone();
         return out;
+    }
+    
+    public static class ForcePowersAdap extends RecyclerView.Adapter<ForcePowers.ForcePowersAdap.ViewHolder>{
+        @Override
+        public ForcePowers.ForcePowersAdap.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ForcePowers.ForcePowersAdap.ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(final ForcePowers.ForcePowersAdap.ViewHolder holder, final int position) {
+            ((TextView)holder.v.findViewById(R.id.name)).setText(c.forcePowers.get(holder.getAdapterPosition()).name);
+            holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ForcePower.editForcePower(ac, c, holder.getAdapterPosition(), false, new Skill.onSave() {
+                        public void save() {
+                            ForcePowers.ForcePowersAdap.this.notifyItemChanged(holder.getAdapterPosition());
+                        }
+                        public void delete() {
+                            int ind = c.forcePowers.remove(c.forcePowers.get(holder.getAdapterPosition()));
+                            ForcePowers.ForcePowersAdap.this.notifyItemRemoved(ind);
+                        }
+                        public void cancel() {
+                        }
+                    });
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return c.forcePowers.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            View v;
+            ViewHolder(View v){
+                super(v);
+                this.v = v;
+            }
+        }
+        Character c;
+        Activity ac;
+        public ForcePowersAdap(Character c, Activity ac){
+            this.c = c;
+            this.ac = ac;
+        }
     }
 }

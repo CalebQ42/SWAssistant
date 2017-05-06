@@ -511,7 +511,8 @@ public class Vehicle extends Editable{
                     final View weapon = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
                     fl.addView(weapon);
                     RecyclerView r = (RecyclerView)weapon.findViewById(R.id.recycler);
-                    final Weapons.WeaponsAdapChar adapW = new Weapons.WeaponsAdapChar(this,ac);
+                    final Weapons.WeaponsAdap adapW = new Weapons.WeaponsAdap(this, new Skill.onSave() {public void save() {} public void delete() {}
+                            public void cancel() {}}, ac);
                     r.setAdapter(adapW);
                     r.setLayoutManager(new LinearLayoutManager(ac));
                     weapon.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {

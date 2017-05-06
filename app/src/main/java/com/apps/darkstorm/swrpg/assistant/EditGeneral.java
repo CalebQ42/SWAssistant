@@ -37,7 +37,7 @@ public class EditGeneral extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         RecyclerView r = (RecyclerView)view.findViewById(R.id.recycler);
         EditableAdap adap = new EditableAdap();
-//        adap.setHasStableIds(false);
+        adap.setHasStableIds(false);
         r.setHasFixedSize(false);
         r.setAdapter(adap);
         sgl = new StaggeredGridLayoutManager(1,RecyclerView.VERTICAL);

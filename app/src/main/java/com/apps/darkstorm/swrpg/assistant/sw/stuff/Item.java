@@ -1,11 +1,22 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.view.View;
+import android.widget.EditText;
+
+import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.Minion;
+
 import java.util.ArrayList;
 
 public class Item{
     //Version 1 0-2
-    public String name;
-    public String desc;
+    public String name = "";
+    public String desc = "";
     public int count;
     //Version 2 3
     public int encum;
@@ -40,5 +51,59 @@ public class Item{
         out.desc = desc;
         out.count = count;
         return out;
+    }
+
+    public static void editItem(final Activity ac, final Editable c, final int pos, final boolean newItem, final Skill.onSave os){
+        final Inventory inv;
+        if(c instanceof Character)
+            inv = ((Character)c).inv;
+        else if(c instanceof Minion)
+            inv = ((Minion)c).inv;
+        else
+            return;
+        AlertDialog.Builder b = new AlertDialog.Builder(ac);
+        View v = ac.getLayoutInflater().inflate(R.layout.dialog_item_edit,null);
+        b.setView(v);
+        final EditText name = (EditText)v.findViewById(R.id.name_edit);
+        name.setText(inv.get(pos).name);
+        final EditText count = (EditText)v.findViewById(R.id.count_edit);
+        count.setText(String.valueOf(inv.get(pos).count));
+        final EditText encum = (EditText)v.findViewById(R.id.encum_edit);
+        encum.setText(String.valueOf(inv.get(pos).encum));
+        final EditText desc = (EditText)v.findViewById(R.id.desc_edit);
+        desc.setText(inv.get(pos).desc);
+        b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                inv.get(pos).name = name.getText().toString();
+                if(count.getText().toString().equals(""))
+                    inv.get(pos).count = Integer.parseInt(count.getText().toString());
+                else
+                    inv.get(pos).count = 0;
+                if(encum.getText().toString().equals(""))
+                    inv.get(pos).encum = Integer.parseInt(encum.getText().toString());
+                else
+                    inv.get(pos).encum = 0;
+                inv.get(pos).desc = desc.getText().toString();
+                os.save();
+                dialog.cancel();
+            }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                os.cancel();
+                dialog.cancel();
+            }
+        });
+        if(!newItem){
+            b.setNeutralButton(R.string.delete_text, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    os.delete();
+                    dialog.cancel();
+                }
+            });
+        }
+        b.show();
     }
 }

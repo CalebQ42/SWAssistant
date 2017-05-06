@@ -106,7 +106,7 @@ public class Weapons{
         return total;
     }
 
-    public static class WeaponsAdapChar extends RecyclerView.Adapter<WeaponsAdapChar.ViewHolder>{
+    public static class WeaponsAdap extends RecyclerView.Adapter<WeaponsAdap.ViewHolder>{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
@@ -120,13 +120,17 @@ public class Weapons{
                 public boolean onLongClick(View v) {
                     Weapon.editWeapon(ac,c,holder.getAdapterPosition(),false,new Skill.onSave(){
                         public void save() {
-                            WeaponsAdapChar.this.notifyItemChanged(holder.getAdapterPosition());
+                            WeaponsAdap.this.notifyItemChanged(holder.getAdapterPosition());
+                            os.save();
                         }
                         public void delete() {
                             int ind = c.weapons.remove(c.weapons.get(holder.getAdapterPosition()));
-                            WeaponsAdapChar.this.notifyItemRemoved(ind);
+                            WeaponsAdap.this.notifyItemRemoved(ind);
+                            os.delete();
                         }
-                        public void cancel() {}
+                        public void cancel() {
+                            os.cancel();
+                        }
                     });
                     return true;
                 }
@@ -213,9 +217,11 @@ public class Weapons{
         }
         Editable c;
         Activity ac;
-        public WeaponsAdapChar(Editable c,Activity ac){
+        Skill.onSave os;
+        public WeaponsAdap(Editable c,Skill.onSave os, Activity ac){
             this.c = c;
             this.ac = ac;
+            this.os = os;
         }
     }
 }

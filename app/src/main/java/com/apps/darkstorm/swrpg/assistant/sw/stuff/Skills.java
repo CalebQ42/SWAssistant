@@ -89,7 +89,7 @@ public class Skills{
         return out;
     }
 
-    public static class SkillsAdapChar extends RecyclerView.Adapter<SkillsAdapChar.ViewHolder>{
+    public static class SkillsAdap extends RecyclerView.Adapter<SkillsAdap.ViewHolder>{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_skill,parent,false));
@@ -109,12 +109,12 @@ public class Skills{
                     public boolean onLongClick(View v) {
                         Skill.editSkill(ac, c, holder.getAdapterPosition(), false, new Skill.onSave() {
                             public void save() {
-                                SkillsAdapChar.this.notifyItemChanged(holder.getAdapterPosition());
+                                SkillsAdap.this.notifyItemChanged(holder.getAdapterPosition());
                             }
 
                             public void delete() {
                                 int ind = skls.remove(skls.get(holder.getAdapterPosition()));
-                                SkillsAdapChar.this.notifyItemRemoved(ind);
+                                SkillsAdap.this.notifyItemRemoved(ind);
                             }
 
                             public void cancel() {
@@ -170,12 +170,12 @@ public class Skills{
                     public boolean onLongClick(View v) {
                         Skill.editSkill(ac, c, holder.getAdapterPosition(), false, new Skill.onSave() {
                             public void save() {
-                                SkillsAdapChar.this.notifyItemChanged(holder.getAdapterPosition());
+                                SkillsAdap.this.notifyItemChanged(holder.getAdapterPosition());
                             }
 
                             public void delete() {
                                 int ind = skls.remove(skls.get(holder.getAdapterPosition()));
-                                SkillsAdapChar.this.notifyItemRemoved(ind);
+                                SkillsAdap.this.notifyItemRemoved(ind);
                             }
 
                             public void cancel() {
@@ -241,7 +241,7 @@ public class Skills{
         }
         Editable c;
         Activity ac;
-        public SkillsAdapChar(Editable c,Activity ac){
+        public SkillsAdap(Editable c, Activity ac){
             this.c = c;
             this.ac = ac;
         }

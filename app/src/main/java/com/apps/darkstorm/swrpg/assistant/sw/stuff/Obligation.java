@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Obligation{
     //Version 1 0-1
-    public String name;
+    public String name = "";
     public int val;
     public Object serialObject(){
         ArrayList<Object> tmp = new ArrayList<>();

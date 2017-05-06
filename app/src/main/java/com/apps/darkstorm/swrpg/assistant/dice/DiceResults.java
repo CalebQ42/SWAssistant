@@ -323,10 +323,15 @@ public class DiceResults {
             v.findViewById(R.id.despair).setVisibility(View.VISIBLE);
             ((TextView)v.findViewById(R.id.despair_num)).setText(String.valueOf(despair));
         }
-        b.setNegativeButton(R.string.modify_results, new DialogInterface.OnClickListener() {
+        b.setPositiveButton(R.string.modify_results, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 showEditDialog(ac,w);
+                dialog.cancel();
+            }
+        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });

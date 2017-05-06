@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class CriticalInjury{
     //Version 1 0-2
-    public String name;
-    public String desc;
+    public String name = "";
+    public String desc = "";
     public int severity;
     public Object serialObject(){
         ArrayList<Object> tmp = new ArrayList<>();

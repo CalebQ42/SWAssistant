@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 public class Talent{
     //Version 1 0-2
-    public String name;
-    public String desc;
+    public String name = "";
+    public String desc = "";
     public int val;
     public Object serialObject(){
         ArrayList<Object> tmp = new ArrayList<>();
@@ -69,7 +69,7 @@ public class Talent{
         in.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
         Animation out = AnimationUtils.loadAnimation(ac,android.R.anim.slide_out_right);
         out.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
-        final TextSwitcher numText = (TextSwitcher)v.findViewById(R.id.ammo_switch);
+        final TextSwitcher numText = (TextSwitcher)v.findViewById(R.id.value_switch);
         numText.setInAnimation(in);
         numText.setOutAnimation(out);
         numText.setFactory(new ViewSwitcher.ViewFactory() {
@@ -78,7 +78,7 @@ public class Talent{
                 return ac.getLayoutInflater().inflate(R.layout.template_num_text,numText,false);
             }
         });
-        final int[] val = new int[0];
+        final int[] val = new int[1];
         val[0] = ts.get(pos).val;
         numText.setText(String.valueOf(val[0]));
         v.findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,7 @@ public class Talent{
                 dialog.cancel();
             }
         });
-        if(newTalent){
+        if(!newTalent){
             b.setNeutralButton(R.string.delete_text, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

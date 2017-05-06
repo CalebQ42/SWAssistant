@@ -83,9 +83,9 @@ public class Specializations {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             ((TextView)holder.v.findViewById(R.id.name)).setText(s.specializations.get(position));
-            holder.v.setOnClickListener(new View.OnClickListener() {
+            holder.v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick(View v) {
                     editSpecialization(ac, s, holder.getAdapterPosition(),false , new Skill.onSave() {
                         public void save() {
                             SpecializationsAdapter.this.notifyDataSetChanged();
@@ -96,6 +96,7 @@ public class Specializations {
                         }
                         public void cancel() {}
                     });
+                    return false;
                 }
             });
         }
@@ -144,7 +145,7 @@ public class Specializations {
                 dialog.cancel();
             }
         });
-        if(newSpecial){
+        if(!newSpecial){
             b.setNeutralButton(R.string.delete_text, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

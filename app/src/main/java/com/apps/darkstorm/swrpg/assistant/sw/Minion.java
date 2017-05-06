@@ -696,7 +696,7 @@ public class Minion extends Editable{
                     final View skill = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
                     fl.addView(skill);
                     RecyclerView r = (RecyclerView)skill.findViewById(R.id.recycler);
-                    final Skills.SkillsAdapChar adap = new Skills.SkillsAdapChar(this,ac);
+                    final Skills.SkillsAdap adap = new Skills.SkillsAdap(this,ac);
                     r.setAdapter(adap);
                     r.setLayoutManager(new LinearLayoutManager(ac));
                     skill.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
@@ -789,7 +789,8 @@ public class Minion extends Editable{
                     final View weapon = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
                     fl.addView(weapon);
                     r = (RecyclerView)weapon.findViewById(R.id.recycler);
-                    final Weapons.WeaponsAdapChar adapW = new Weapons.WeaponsAdapChar(this,ac);
+                    final Weapons.WeaponsAdap adapW = new Weapons.WeaponsAdap(this, new Skill.onSave() {public void save() {}public void delete() {}
+                        public void cancel() {}}, ac);
                     r.setAdapter(adapW);
                     r.setLayoutManager(new LinearLayoutManager(ac));
                     weapon.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
