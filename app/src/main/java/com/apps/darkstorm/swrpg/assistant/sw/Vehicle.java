@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -562,11 +563,43 @@ public class Vehicle extends Editable{
                     });
                     break;
                 //</editor-fold>
-                //Description
+                //<editor-fold desc="desc">
                 case 6:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.description_text);
-                    //TODO
+                    final TextView descText = (TextView)ac.getLayoutInflater().inflate(R.layout.layout_desc,fl,false);
+                    fl.addView(descText);
+                    descText.setText(desc);
+                    descText.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                            View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                            b.setView(in);
+                            final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                            et.setText(desc);
+                            et.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES|InputType.TYPE_TEXT_FLAG_AUTO_CORRECT|InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE|
+                                    InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                            et.setSingleLine(false);
+                            ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.description_text));
+                            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    desc = et.getText().toString();
+                                    descText.setText(desc);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                            return true;
+                        }
+                    });
                     break;
+                //</editor-fold>
             }
         }else{
             ((TextView)c.findViewById(R.id.name)).setText(name);

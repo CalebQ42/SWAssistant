@@ -26,8 +26,10 @@ import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjury;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Inventory;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.Item;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skill;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skills;
+import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talent;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talents;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
@@ -827,16 +829,66 @@ public class Minion extends Editable{
                     });
                     break;
                 //</editor-fold>
-                //Talents
+                //<editor-fold desc="Talents">
                 case 7:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.talents_text);
-                    //TODO
+                    final View tal = ac.getLayoutInflater().inflate(R.layout.layout_list,fl,false);
+                    fl.addView(tal);
+                    r = (RecyclerView)tal.findViewById(R.id.recycler);
+                    final Talents.TalentsAdap adapTal = new Talents.TalentsAdap(this,ac);
+                    r.setAdapter(adapTal);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    tal.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            talents.add(new Talent());
+                            Talent.editTalent(ac, Minion.this,talents.size() - 1,true, new Skill.onSave() {
+                                public void save() {
+                                    adapTal.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                    talents.remove(talents.get(talents.size()-1));
+                                }
+                                public void cancel() {
+                                    talents.remove(talents.get(talents.size()-1));
+                                }
+                            });
+                        }
+                    });
                     break;
-                //Inv
+                //</editor-fold>
+                //<editor-fold desc="Inv">
                 case 8:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.inventory_text);
-                    //TODO
+                    View invLay = ac.getLayoutInflater().inflate(R.layout.layout_inventory,fl,false);
+                    fl.addView(invLay);
+                    invLay.findViewById(R.id.credits_lay).setVisibility(View.GONE);
+                    invLay.findViewById(R.id.encum_lay).setVisibility(View.GONE);
+                    final Inventory.InventoryAdap invAdap = new Inventory.InventoryAdap(this, new Skill.onSave() {
+                        public void save() {}public void delete() {}public void cancel() {}
+                    }, ac);
+                    r = (RecyclerView)invLay.findViewById(R.id.recycler);
+                    r.setAdapter(invAdap);
+                    r.setLayoutManager(new LinearLayoutManager(ac));
+                    invLay.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            inv.add(new Item());
+                            Item.editItem(ac, Minion.this, inv.size() - 1, true, new Skill.onSave() {
+                                @Override
+                                public void save() {
+                                    invAdap.notifyDataSetChanged();
+                                }
+                                public void delete() {
+                                }
+                                public void cancel() {
+                                    inv.remove(inv.get(inv.size()-1));
+                                }
+                            });
+                        }
+                    });
                     break;
+                //</editor-fold>
                 //<editor-fold desc="Crit inj">
                 case 9:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.critical_injuries_text);
@@ -865,11 +917,43 @@ public class Minion extends Editable{
                     });
                     break;
                 //</editor-fold>
-                //Descritption
+                //<editor-fold desc="desc">
                 case 10:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.description_text);
-                    //TODO
+                    final TextView descText = (TextView)ac.getLayoutInflater().inflate(R.layout.layout_desc,fl,false);
+                    fl.addView(descText);
+                    descText.setText(desc);
+                    descText.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                            View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                            b.setView(in);
+                            final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                            et.setText(desc);
+                            et.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES|InputType.TYPE_TEXT_FLAG_AUTO_CORRECT|InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE|
+                                    InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                            et.setSingleLine(false);
+                            ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.description_text));
+                            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    desc = et.getText().toString();
+                                    descText.setText(desc);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                            return true;
+                        }
+                    });
                     break;
+                //</editor-fold>
             }
         }else{
             ((TextView)c.findViewById(R.id.name)).setText(name);

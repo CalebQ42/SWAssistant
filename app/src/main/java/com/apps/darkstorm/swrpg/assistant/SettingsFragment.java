@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
         Switch diceLaunch = (Switch)view.findViewById(R.id.dice_launch_switch);
         diceLaunch.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.dice_key),false));
         diceLaunch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

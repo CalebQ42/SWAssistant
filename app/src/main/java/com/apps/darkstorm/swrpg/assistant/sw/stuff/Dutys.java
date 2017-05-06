@@ -1,5 +1,14 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
+import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -72,5 +81,54 @@ public class Dutys{
             out.d[i] = d[i].clone();
         }
         return out;
+    }
+    
+    public static class DutysAdap extends RecyclerView.Adapter<DutysAdap.ViewHolder>{
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+                ((TextView) holder.v.findViewById(R.id.name)).setText(c.duty.get(holder.getAdapterPosition()).name);
+                holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Duty.editDuty(ac, c, holder.getAdapterPosition(), false, new Skill.onSave() {
+                            public void save() {
+                                DutysAdap.this.notifyItemChanged(holder.getAdapterPosition());
+                            }
+
+                            public void delete() {
+                                int ind = c.duty.remove(c.duty.get(holder.getAdapterPosition()));
+                                DutysAdap.this.notifyItemRemoved(ind);
+                            }
+
+                            public void cancel() {}
+                        });
+                        return true;
+                    }
+                });
+        }
+
+        @Override
+        public int getItemCount() {
+            return c.duty.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            View v;
+            ViewHolder(View v){
+                super(v);
+                this.v = v;
+            }
+        }
+        Character c;
+        Activity ac;
+        public DutysAdap(Character c, Activity ac){
+            this.c = c;
+            this.ac = ac;
+        }
     }
 }

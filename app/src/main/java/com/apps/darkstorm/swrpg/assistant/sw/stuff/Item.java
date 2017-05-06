@@ -68,8 +68,14 @@ public class Item{
         name.setText(inv.get(pos).name);
         final EditText count = (EditText)v.findViewById(R.id.count_edit);
         count.setText(String.valueOf(inv.get(pos).count));
-        final EditText encum = (EditText)v.findViewById(R.id.encum_edit);
-        encum.setText(String.valueOf(inv.get(pos).encum));
+        final EditText encum;
+        if (c instanceof Character) {
+            encum = (EditText) v.findViewById(R.id.encum_edit);
+            encum.setText(String.valueOf(inv.get(pos).encum));
+        }else {
+            v.findViewById(R.id.encum_lay).setVisibility(View.GONE);
+            encum = new EditText(ac);
+        }
         final EditText desc = (EditText)v.findViewById(R.id.desc_edit);
         desc.setText(inv.get(pos).desc);
         b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -80,10 +86,12 @@ public class Item{
                     inv.get(pos).count = Integer.parseInt(count.getText().toString());
                 else
                     inv.get(pos).count = 0;
-                if(encum.getText().toString().equals(""))
-                    inv.get(pos).encum = Integer.parseInt(encum.getText().toString());
-                else
-                    inv.get(pos).encum = 0;
+                if(c instanceof Character) {
+                    if (encum.getText().toString().equals(""))
+                        inv.get(pos).encum = Integer.parseInt(encum.getText().toString());
+                    else
+                        inv.get(pos).encum = 0;
+                }
                 inv.get(pos).desc = desc.getText().toString();
                 os.save();
                 dialog.cancel();
