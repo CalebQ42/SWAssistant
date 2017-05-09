@@ -11,11 +11,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Switch;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.R;
@@ -388,9 +392,6 @@ public class Minion extends Editable{
             setMinNum(num);
         }
     }
-    public int getWound(){
-        return woundCur;
-    }
     public void setMinNum(int num){
         minNum = num;
         woundThresh = woundThreshInd*minNum;
@@ -403,18 +404,12 @@ public class Minion extends Editable{
                 skills.get(i).val = 5;
         }
     }
-    public int getMinNum(){
-        return minNum;
-    }
     public void setWoundInd(int wound){
         if (wound <= 0)
             wound = 1;
         woundThreshInd = wound;
         woundThresh = minNum*woundThreshInd;
         woundCur = woundThresh;
-    }
-    public int getWoundInd(){
-        return woundThreshInd;
     }
 
     @SuppressWarnings("CloneDoesntCallSuperClone")
@@ -501,16 +496,181 @@ public class Minion extends Editable{
             else
                 fl.setVisibility(View.GONE);
             switch(pos){
-                //Minion Numbers
+                //<editor-fold desc="Minion Numbers">
                 case 1:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.min_num_text);
-                    //TODO
+                    View num = ac.getLayoutInflater().inflate(R.layout.layout_minion_number,fl,false);
+                    fl.addView(num);
+                    final TextSwitcher value = (TextSwitcher)num.findViewById(R.id.num_switcher);
+                    Animation in = AnimationUtils.loadAnimation(ac,android.R.anim.slide_in_left);
+                    in.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
+                    Animation out = AnimationUtils.loadAnimation(ac,android.R.anim.slide_out_right);
+                    out.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
+                    value.setInAnimation(in);
+                    value.setOutAnimation(out);
+                    value.setFactory(new ViewSwitcher.ViewFactory() {
+                        @Override
+                        public View makeView() {
+                            return ac.getLayoutInflater().inflate(R.layout.template_num_text,value,false);
+                        }
+                    });
+                    value.setText(String.valueOf(minNum));
+                    num.findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setMinNum(minNum+1);
+                            value.setText(String.valueOf(minNum));
+                            ea.notifyItemChanged(2);
+                            ea.notifyItemChanged(4);
+                        }
+                    });
+                    num.findViewById(R.id.plus).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            setMinNum(minNum+1);
+                            value.setText(String.valueOf(minNum));
+                            ea.notifyItemChanged(2);
+                            ea.notifyItemChanged(4);
+                            return false;
+                        }
+                    });
+                    num.findViewById(R.id.minus).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(minNum>0){
+                                setMinNum(minNum-1);
+                                value.setText(String.valueOf(minNum));
+                                ea.notifyItemChanged(2);
+                                ea.notifyItemChanged(4);
+                            }
+                        }
+                    });
+                    num.findViewById(R.id.minus).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            if(minNum>0){
+                                setMinNum(minNum-1);
+                                value.setText(String.valueOf(minNum));
+                                ea.notifyItemChanged(2);
+                                ea.notifyItemChanged(4);
+                            }
+                            return false;
+                        }
+                    });
                     break;
-                //Wound
+                //</editor-fold>
+                //<editor-fold desc="Wound">
                 case 2:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.wound_text);
-                    //TODO
+                    View wnd = ac.getLayoutInflater().inflate(R.layout.layout_minion_wound,fl,false);
+                    fl.addView(wnd);
+                    final TextView soakText = (TextView)wnd.findViewById(R.id.soak_value);
+                    soakText.setText(String.valueOf(soak));
+                    final TextSwitcher valueWound = (TextSwitcher)wnd.findViewById(R.id.value_switch);
+                    wnd.findViewById(R.id.soak_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                            View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                            b.setView(in);
+                            final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                            et.setText(String.valueOf(soak));
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
+                            ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.soak_text));
+                            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(!et.getText().toString().equals(""))
+                                        soak = Integer.parseInt(et.getText().toString());
+                                    else
+                                        soak = 0;
+                                    soakText.setText(String.valueOf(soak));
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                            return true;
+                        }
+                    });
+                    final TextView woundPer = (TextView)wnd.findViewById(R.id.minion_wound_value);
+                    woundPer.setText(String.valueOf(woundThreshInd));
+                    wnd.findViewById(R.id.minion_wound_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            AlertDialog.Builder b = new AlertDialog.Builder(ac);
+                            View in = ac.getLayoutInflater().inflate(R.layout.dialog_one_string,null);
+                            b.setView(in);
+                            final EditText et = (EditText)in.findViewById(R.id.edit_text);
+                            et.setText(String.valueOf(woundThreshInd));
+                            et.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
+                            ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.wound_ind_text));
+                            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(et.getText().toString().equals(""))
+                                        setWoundInd(0);
+                                    else
+                                        setWoundInd(Integer.parseInt(et.getText().toString()));
+                                    woundPer.setText(String.valueOf(woundThreshInd));
+                                    valueWound.setText(String.valueOf(woundCur));
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                            return true;
+                        }
+                    });
+                    in = AnimationUtils.loadAnimation(ac,android.R.anim.slide_in_left);
+                    in.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
+                    out = AnimationUtils.loadAnimation(ac,android.R.anim.slide_out_right);
+                    out.setInterpolator(ac,android.R.anim.anticipate_overshoot_interpolator);
+                    valueWound.setInAnimation(in);
+                    valueWound.setOutAnimation(out);
+                    valueWound.setFactory(new ViewSwitcher.ViewFactory() {
+                        @Override
+                        public View makeView() {
+                            return ac.getLayoutInflater().inflate(R.layout.template_num_text,valueWound,false);
+                        }
+                    });
+                    valueWound.setText(String.valueOf(woundCur));
+                    wnd.findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int tmp = minNum;
+                            setWound(woundCur+1);
+                            valueWound.setText(String.valueOf(woundCur));
+                            if(tmp != minNum) {
+                                ea.notifyItemChanged(1);
+                                ea.notifyItemChanged(4);
+                            }
+                        }
+                    });
+                    wnd.findViewById(R.id.minus).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(woundCur>0) {
+                                int tmp = minNum;
+                                setWound(woundCur - 1);
+                                valueWound.setText(String.valueOf(woundCur));
+                                if (tmp != minNum) {
+                                    ea.notifyItemChanged(1);
+                                    ea.notifyItemChanged(4);
+                                }
+                            }
+                        }
+                    });
                     break;
+                //</editor-fold>
                 //<editor-fold desc="Characteristics">
                 case 3:
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.characteristics_text);
@@ -862,7 +1022,7 @@ public class Minion extends Editable{
                     ((TextView)c.findViewById(R.id.title)).setText(R.string.inventory_text);
                     View invLay = ac.getLayoutInflater().inflate(R.layout.layout_inventory,fl,false);
                     fl.addView(invLay);
-                    invLay.findViewById(R.id.credits_lay).setVisibility(View.GONE);
+                    invLay.findViewById(R.id.soak_lay).setVisibility(View.GONE);
                     invLay.findViewById(R.id.encum_lay).setVisibility(View.GONE);
                     final Inventory.InventoryAdap invAdap = new Inventory.InventoryAdap(this, new Skill.onSave() {
                         public void save() {}public void delete() {}public void cancel() {}
@@ -885,6 +1045,20 @@ public class Minion extends Editable{
                                     inv.remove(inv.get(inv.size()-1));
                                 }
                             });
+                        }
+                    });
+                    invLay.findViewById(R.id.save).setVisibility(View.VISIBLE);
+                    invLay.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            origInv = inv.clone();
+                        }
+                    });
+                    invLay.findViewById(R.id.load).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            inv = origInv.clone();
+                            invAdap.notifyDataSetChanged();
                         }
                     });
                     break;
@@ -993,8 +1167,7 @@ public class Minion extends Editable{
                     final EditText et = (EditText)in.findViewById(R.id.edit_text);
                     et.setText(((SWrpg)ac.getApplication()).prefs.getString(ac.getString(R.string.local_location_key),
                             ((SWrpg)ac.getApplication()).defaultLoc));
-                    //TODO: resource
-                    ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint("Export Location");
+                    ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.export_location));
                     b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

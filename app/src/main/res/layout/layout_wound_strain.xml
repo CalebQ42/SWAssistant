@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:background="?attr/selectableItemBackground"
@@ -45,15 +45,16 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5"
         tools:layout_editor_absoluteX="172dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteY="0dp"
+        android:layout_marginRight="0dp" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/wound_lay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="4dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
         android:background="?attr/selectableItemBackground"
@@ -62,10 +63,10 @@
         app:layout_constraintTop_toBottomOf="@+id/soak_lay">
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/wound_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="0dp"
             android:text="@string/wound_text"
@@ -95,7 +96,7 @@
             android:layout_marginRight="0dp"
             android:layout_marginTop="0dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/wound_label" />
 
         <Button
             android:id="@+id/wound_minus"
@@ -105,7 +106,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/wound_label" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -113,8 +114,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
         android:background="?attr/selectableItemBackground"
@@ -123,11 +124,11 @@
         app:layout_constraintTop_toBottomOf="@+id/soak_lay">
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/strain_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:layout_marginTop="0dp"
             android:text="@string/strain_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu"
@@ -156,7 +157,7 @@
             android:layout_marginRight="0dp"
             android:layout_marginTop="0dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toBottomOf="@+id/strain_label" />
 
         <Button
             android:id="@+id/strain_minus"
@@ -166,7 +167,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toBottomOf="@+id/strain_label" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

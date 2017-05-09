@@ -1625,7 +1625,7 @@ public class Character extends Editable{
                     creds.setText(String.valueOf(credits));
                     final TextView encum = (TextView)invLay.findViewById(R.id.encum_value);
                     encum.setText(String.valueOf(encumCapacity));
-                    invLay.findViewById(R.id.credits_lay).setOnLongClickListener(new View.OnLongClickListener() {
+                    invLay.findViewById(R.id.soak_lay).setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
                             AlertDialog.Builder b = new AlertDialog.Builder(ac);
@@ -2009,8 +2009,7 @@ public class Character extends Editable{
                     final EditText et = (EditText)in.findViewById(R.id.edit_text);
                     et.setText(((SWrpg)ac.getApplication()).prefs.getString(ac.getString(R.string.local_location_key),
                             ((SWrpg)ac.getApplication()).defaultLoc));
-                    //TODO: resource
-                    ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint("Export Location");
+                    ((TextInputLayout)in.findViewById(R.id.edit_layout)).setHint(ac.getString(R.string.export_location));
                     b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
