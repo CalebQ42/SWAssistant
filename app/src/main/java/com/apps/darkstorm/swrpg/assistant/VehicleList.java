@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,6 +38,13 @@ public class VehicleList extends Fragment {
         return new VehicleList();
     }
 
+    Handler parentHandle = null;
+    public static VehicleList newInstance(Handler parentHandle){
+        VehicleList cl = new VehicleList();
+        cl.parentHandle = parentHandle;
+        return cl;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,26 +62,28 @@ public class VehicleList extends Fragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.add);
-        fab.show();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<Integer> IDs = new ArrayList<>();
-                for (Vehicle c:vehicles){
-                    IDs.add(c.ID);
+        if(parentHandle == null) {
+            FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+            fab.setImageResource(R.drawable.add);
+            fab.show();
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<Integer> IDs = new ArrayList<>();
+                    for (Vehicle c : vehicles) {
+                        IDs.add(c.ID);
+                    }
+                    int ID = 0;
+                    while (IDs.contains(ID)) {
+                        ID++;
+                    }
+                    Vehicle ch = new Vehicle(ID);
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(ch))
+                            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).addToBackStack("Vehicle Edit").commit();
+                    ((FloatingActionButton) getActivity().findViewById(R.id.fab)).hide();
                 }
-                int ID = 0;
-                while(IDs.contains(ID)){
-                    ID++;
-                }
-                Vehicle ch = new Vehicle(ID);
-                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(ch))
-                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Vehicle Edit").commit();
-                ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
-            }
-        });
+            });
+        }
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.vehicles);
         srl = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
@@ -131,6 +142,7 @@ public class VehicleList extends Fragment {
                 @Override
                 public void finish() {
                     ch.saveLocal(getActivity());
+                    vehicles = ch.vehicles;
                     cats.clear();
                     vehicleCats.clear();
                     cats.add("All");
@@ -176,6 +188,12 @@ public class VehicleList extends Fragment {
             srl.setRefreshing(false);
             sp.setSelection(0);
         }
+        if(parentHandle!= null){
+            Message msg = parentHandle.obtainMessage();
+            msg.obj = vehicles;
+            msg.arg1 = 2;
+            parentHandle.sendMessage(msg);
+        }
     }
 
     @Override
@@ -198,9 +216,15 @@ public class VehicleList extends Fragment {
             c.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(n.vehicle))
-                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Editing").commit();
-                    ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
+                    if(parentHandle== null) {
+                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(n.vehicle))
+                                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).addToBackStack("Editing").commit();
+                        ((FloatingActionButton) getActivity().findViewById(R.id.fab)).hide();
+                    }else{
+                        Message msg = parentHandle.obtainMessage();
+                        msg.obj = n.vehicle;
+                        parentHandle.sendMessage(msg);
+                    }
                 }
             });
             c.setOnLongClickListener(new View.OnLongClickListener() {

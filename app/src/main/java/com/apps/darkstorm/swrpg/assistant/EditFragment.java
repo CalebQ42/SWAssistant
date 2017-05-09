@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -29,6 +30,13 @@ public class EditFragment extends Fragment {
         fragment.c = c;
         return fragment;
     }
+    Handler parentHandle = null;
+    public static EditFragment newInstance(Editable c,Handler parentHandle) {
+        EditFragment fragment = new EditFragment();
+        fragment.c = c;
+        fragment.parentHandle = parentHandle;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +53,8 @@ public class EditFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.dice_roll){AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+        if(item.getItemId() == R.id.dice_roll){
+            AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
             final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dice_roll,null);
             b.setView(view);
             view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
@@ -89,7 +98,7 @@ public class EditFragment extends Fragment {
             public Fragment getItem(int position) {
                 switch(position){
                     case 0:
-                        return EditGeneral.newInstance(c);
+                        return EditGeneral.newInstance(c,parentHandle);
                     case 1:
                         return NotesFragment.newInstance(c);
                     default:

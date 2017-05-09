@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg.assistant.sw;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.support.v7.widget.CardView;
 
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
@@ -19,7 +20,7 @@ public abstract class Editable {
     public CriticalInjuries critInjuries = new CriticalInjuries();
     public String desc = "";
     public abstract int cardNumber();
-    public abstract void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos);
+    public abstract void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos,Handler parentHandle);
     public abstract void save(String filename);
     public abstract void cloudSave(GoogleApiClient gac, DriveId fil, boolean async);
     public abstract void reLoad(GoogleApiClient gac,DriveId fil);

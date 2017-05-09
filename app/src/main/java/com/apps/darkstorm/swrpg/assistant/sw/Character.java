@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -687,7 +689,7 @@ public class Character extends Editable{
     }
 
     @Override
-    public void setupCards(final Activity ac, final EditGeneral.EditableAdap ea, final CardView c, final int pos) {
+    public void setupCards(final Activity ac, final EditGeneral.EditableAdap ea, final CardView c, final int pos, final Handler parentHandle) {
         if (pos!= 0){
             final FrameLayout fl = (FrameLayout) c.findViewById(R.id.holder);
             fl.removeAllViews();
@@ -1988,6 +1990,21 @@ public class Character extends Editable{
                         public void onClick(DialogInterface dialog, int which) {
                             Character.this.name = et.getText().toString();
                             ((TextView)c.findViewById(R.id.name)).setText(Character.this.name);
+                            if(parentHandle!=null){
+                                AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... params) {
+                                        try {
+                                            Thread.sleep(500);
+                                        } catch (InterruptedException ignored) {}
+                                        Message msg = parentHandle.obtainMessage();
+                                        msg.arg2 = 5;
+                                        parentHandle.sendMessage(msg);
+                                        return null;
+                                    }
+                                };
+                                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            }
                             dialog.cancel();
                         }
                     }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

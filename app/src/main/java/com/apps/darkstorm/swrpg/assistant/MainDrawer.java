@@ -46,7 +46,7 @@ public class MainDrawer extends AppCompatActivity
         DiceRollFragment.OnDiceRollFragmentInteraction, SettingsFragment.OnSettingInterfactionInterface,
         CharacterList.OnCharacterListInteractionListener,VehicleList.OnVehicleListInteractionListener,MinionList.OnMinionListInteractionListener,
         EditFragment.OnCharacterEditInteractionListener,EditGeneral.OnEditInteractionListener,NoteEdit.OnNoteEditInteractionListener,
-        NotesFragment.OnFragmentInteractionListener,NotesListFragment.OnFragmentInteractionListener{
+        NotesFragment.OnFragmentInteractionListener,NotesListFragment.OnFragmentInteractionListener, GMFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -375,6 +375,12 @@ public class MainDrawer extends AppCompatActivity
         Fragment cur = getFragmentManager().findFragmentById(R.id.content_main);
         switch (id){
             case R.id.gm_nav:
+                if(cur instanceof GMFragment)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, GMFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, GMFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("GM").commit();
                 break;
             case R.id.char_nav:
                 if (cur instanceof CharacterList)
