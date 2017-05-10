@@ -8,6 +8,7 @@
         android:id="@+id/category_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
         app:cardElevation="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

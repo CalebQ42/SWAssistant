@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg.assistant.drive;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.apps.darkstorm.swrpg.assistant.R;
@@ -34,21 +35,28 @@ public class Load {
             DriveFolder charsFold = ((SWrpg)ac.getApplication()).charsFold;
             charsFold.listChildren(((SWrpg)ac.getApplication()).gac).setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                 @Override
-                public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                public void onResult(@NonNull final DriveApi.MetadataBufferResult metadataBufferResult) {
                     if (metadataBufferResult.getStatus().isSuccess()){
-                        MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
-                        for (Metadata met:metBuf){
-                            if (met.getTitle().endsWith(".char")){
-                                Character tmp = new Character();
-                                tmp.reLoad(((SWrpg)ac.getApplication()).gac,met.getDriveId());
-                                characters.add(tmp);
-                                lastMod.add(met.getModifiedDate());
-                            }
-                        }
-                        metBuf.release();
-                        metadataBufferResult.release();
-                        done = true;
-                        of.finish();
+                            AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected Void doInBackground(Void... params) {
+                                    MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
+                                    for (Metadata met : metBuf) {
+                                        if (met.getTitle().endsWith(".char")) {
+                                            Character tmp = new Character();
+                                            tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
+                                            characters.add(tmp);
+                                            lastMod.add(met.getModifiedDate());
+                                        }
+                                    }
+                                    metBuf.release();
+                                    metadataBufferResult.release();
+                                    done = true;
+                                    of.finish();
+                                    return null;
+                                }
+                            };
+                            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }else{
                         done = true;
                         of.finish();
@@ -102,21 +110,28 @@ public class Load {
             DriveFolder vehicFold = ((SWrpg)ac.getApplication()).vehicFold;
             vehicFold.listChildren(((SWrpg)ac.getApplication()).gac).setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                 @Override
-                public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                public void onResult(@NonNull final DriveApi.MetadataBufferResult metadataBufferResult) {
                     if (metadataBufferResult.getStatus().isSuccess()){
-                        MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
-                        for (Metadata met:metBuf){
-                            if (met.getTitle().endsWith(".vhcl")){
-                                Vehicle tmp = new Vehicle();
-                                tmp.reLoad(((SWrpg)ac.getApplication()).gac,met.getDriveId());
-                                vehicles.add(tmp);
-                                lastMod.add(met.getModifiedDate());
-                            }
-                        }
-                        metBuf.release();
-                        metadataBufferResult.release();
-                        done = true;
-                        of.finish();
+                            AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected Void doInBackground(Void... params) {
+                                    MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
+                                    for (Metadata met : metBuf) {
+                                        if (met.getTitle().endsWith(".char")) {
+                                            Vehicle tmp = new Vehicle();
+                                            tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
+                                            vehicles.add(tmp);
+                                            lastMod.add(met.getModifiedDate());
+                                        }
+                                    }
+                                    metBuf.release();
+                                    metadataBufferResult.release();
+                                    done = true;
+                                    of.finish();
+                                    return null;
+                                }
+                            };
+                            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }else{
                         done = true;
                         of.finish();
@@ -170,21 +185,28 @@ public class Load {
             DriveFolder charsFold = ((SWrpg)ac.getApplication()).charsFold;
             charsFold.listChildren(((SWrpg)ac.getApplication()).gac).setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                 @Override
-                public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                public void onResult(@NonNull final DriveApi.MetadataBufferResult metadataBufferResult) {
                     if (metadataBufferResult.getStatus().isSuccess()){
-                        MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
-                        for (Metadata met:metBuf){
-                            if (met.getTitle().endsWith(".minion")){
-                                Minion tmp = new Minion();
-                                tmp.reLoad(((SWrpg)ac.getApplication()).gac,met.getDriveId());
-                                minions.add(tmp);
-                                lastMod.add(met.getModifiedDate());
-                            }
-                        }
-                        metBuf.release();
-                        metadataBufferResult.release();
-                        done = true;
-                        of.finish();
+                            AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected Void doInBackground(Void... params) {
+                                    MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
+                                    for (Metadata met : metBuf) {
+                                        if (met.getTitle().endsWith(".char")) {
+                                            Minion tmp = new Minion();
+                                            tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
+                                            minions.add(tmp);
+                                            lastMod.add(met.getModifiedDate());
+                                        }
+                                    }
+                                    metBuf.release();
+                                    metadataBufferResult.release();
+                                    done = true;
+                                    of.finish();
+                                    return null;
+                                }
+                            };
+                            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }else{
                         done = true;
                         of.finish();

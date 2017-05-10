@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -136,34 +137,82 @@ public class MinionList extends Fragment {
 
     public void loadMinions(){
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            final Load.Minions ch = new Load.Minions();
-            ch.setOnFinish(new Load.onFinish() {
+            AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                 @Override
-                public void finish() {
-                    ch.saveLocal(getActivity());
-                    minions = ch.minions;
-                    cats.clear();
-                    minionCats.clear();
-                    cats.add("All");
-                    minionCats.add(new ArrayList<Minion>());
-                    for (Minion c:ch.minions){
-                        if(cats.contains(c.category)){
-                            minionCats.get(cats.indexOf(c.category)).add(c);
-                        }else if(!c.category.equals("")){
-                            cats.add(c.category);
-                            minionCats.add(new ArrayList<Minion>());
-                            minionCats.get(minionCats.size()-1).add(c);
-                        }
-                        minionCats.get(0).add(c);
-                    }
-                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-                    sp.setAdapter(apAdap);
-                    srl.setRefreshing(false);
-                    sp.setSelection(0);
+                protected void onPreExecute() {
+                    srl.setRefreshing(true);
                 }
-            });
-            srl.setRefreshing(true);
-            ch.load(getActivity());
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    if(((SWrpg)getActivity().getApplication()).driveFail) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                        b.setMessage(R.string.drive_fail);
+                        b.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                loadMinions();
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(R.string.dice, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                getFragmentManager().beginTransaction().replace(R.id.content_main,DiceRollFragment.newInstance())
+                                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                                dialog.cancel();
+                            }
+                        });
+                        b.setCancelable(false);
+                        srl.setRefreshing(false);
+                        return;
+                    }
+                    final Load.Minions ch = new Load.Minions();
+                    ch.setOnFinish(new Load.onFinish() {
+                        @Override
+                        public void finish() {
+                            ch.saveLocal(getActivity());
+                            minions = ch.minions;
+                            cats.clear();
+                            minionCats.clear();
+                            cats.add("All");
+                            minionCats.add(new ArrayList<Minion>());
+                            for (Minion c:ch.minions){
+                                if(cats.contains(c.category)){
+                                    minionCats.get(cats.indexOf(c.category)).add(c);
+                                }else if(!c.category.equals("")){
+                                    cats.add(c.category);
+                                    minionCats.add(new ArrayList<Minion>());
+                                    minionCats.get(minionCats.size()-1).add(c);
+                                }
+                                minionCats.get(0).add(c);
+                            }
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
+                                    sp.setAdapter(apAdap);
+                                    srl.setRefreshing(false);
+                                    sp.setSelection(0);
+                                }
+                            });
+                        }
+                    });
+                    ch.load(getActivity());
+                }
+            };
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else{
             srl.setRefreshing(true);
             minions = new ArrayList<>();
@@ -190,7 +239,7 @@ public class MinionList extends Fragment {
         if(parentHandle!= null){
             Message msg = parentHandle.obtainMessage();
             msg.obj = minions;
-            msg.arg1 = 1;
+            msg.arg1 = 0;
             parentHandle.sendMessage(msg);
         }
     }

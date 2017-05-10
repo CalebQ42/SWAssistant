@@ -40,4 +40,5 @@
     <string name="category_text">Category:</string>
   <string name="minions">Minions</string>
   <string name="title_activity_main_drawer">MainDrawer</string>
+    <string name="export_location">Export Location:</string>
 </resources>

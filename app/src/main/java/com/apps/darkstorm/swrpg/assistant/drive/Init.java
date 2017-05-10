@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.drive.Drive;

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -137,34 +138,77 @@ public class VehicleList extends Fragment {
 
     public void loadVehicles(){
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            final Load.Vehicles ch = new Load.Vehicles();
-            ch.setOnFinish(new Load.onFinish() {
+            AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                 @Override
-                public void finish() {
-                    ch.saveLocal(getActivity());
-                    vehicles = ch.vehicles;
-                    cats.clear();
-                    vehicleCats.clear();
-                    cats.add("All");
-                    vehicleCats.add(new ArrayList<Vehicle>());
-                    for (Vehicle c:ch.vehicles){
-                        if(cats.contains(c.category)){
-                            vehicleCats.get(cats.indexOf(c.category)).add(c);
-                        }else if(!c.category.equals("")){
-                            cats.add(c.category);
-                            vehicleCats.add(new ArrayList<Vehicle>());
-                            vehicleCats.get(vehicleCats.size()-1).add(c);
-                        }
-                        vehicleCats.get(0).add(c);
-                    }
-                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-                    sp.setAdapter(apAdap);
-                    srl.setRefreshing(false);
-                    sp.setSelection(0);
+                protected void onPreExecute() {
+                    srl.setRefreshing(true);
                 }
-            });
-            srl.setRefreshing(true);
-            ch.load(getActivity());
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    if(((SWrpg)getActivity().getApplication()).driveFail) {
+                        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                        b.setMessage(R.string.drive_fail);
+                        b.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                loadVehicles();
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(R.string.dice, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                getFragmentManager().beginTransaction().replace(R.id.content_main,DiceRollFragment.newInstance())
+                                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                                dialog.cancel();
+                            }
+                        });
+                        b.setCancelable(false);
+                        srl.setRefreshing(false);
+                        return;
+                    }
+                    final Load.Vehicles ch = new Load.Vehicles();
+                    ch.setOnFinish(new Load.onFinish() {
+                        @Override
+                        public void finish() {
+                            ch.saveLocal(getActivity());
+                            vehicles = ch.vehicles;
+                            cats.clear();
+                            vehicleCats.clear();
+                            cats.add("All");
+                            vehicleCats.add(new ArrayList<Vehicle>());
+                            for (Vehicle c:ch.vehicles){
+                                if(cats.contains(c.category)){
+                                    vehicleCats.get(cats.indexOf(c.category)).add(c);
+                                }else if(!c.category.equals("")){
+                                    cats.add(c.category);
+                                    vehicleCats.add(new ArrayList<Vehicle>());
+                                    vehicleCats.get(vehicleCats.size()-1).add(c);
+                                }
+                                vehicleCats.get(0).add(c);
+                            }
+                            ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
+                            sp.setAdapter(apAdap);
+                            srl.setRefreshing(false);
+                            sp.setSelection(0);
+                        }
+                    });
+                    ch.load(getActivity());
+                }
+            };
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else{
             srl.setRefreshing(true);
             vehicles = new ArrayList<>();
@@ -183,15 +227,20 @@ public class VehicleList extends Fragment {
                 }
                 vehicleCats.get(0).add(c);
             }
-            ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-            sp.setAdapter(apAdap);
-            srl.setRefreshing(false);
-            sp.setSelection(0);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
+                    sp.setAdapter(apAdap);
+                    srl.setRefreshing(false);
+                    sp.setSelection(0);
+                }
+            });
         }
         if(parentHandle!= null){
             Message msg = parentHandle.obtainMessage();
             msg.obj = vehicles;
-            msg.arg1 = 2;
+            msg.arg1 = 0;
             parentHandle.sendMessage(msg);
         }
     }

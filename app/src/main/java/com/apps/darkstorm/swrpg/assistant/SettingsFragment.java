@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.apps.darkstorm.swrpg.assistant.drive.Load;
+import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
+import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Minion;
+import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
+
+import java.util.ArrayList;
 
 public class SettingsFragment extends Fragment {
     public SettingsFragment() {}
@@ -97,14 +106,172 @@ public class SettingsFragment extends Fragment {
                 build.show();
             }
         });
-        Switch sync = (Switch)view.findViewById(R.id.sync_switch);
-        Switch cloud = (Switch)view.findViewById(R.id.cloud_switch);
+        final Switch sync = (Switch)view.findViewById(R.id.sync_switch);
+        sync.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.sync_key),true));
+        sync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.sync_key),isChecked).apply();
+            }
+        });
+        final Switch cloud = (Switch)view.findViewById(R.id.cloud_switch);
         cloud.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false));
         cloud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //put stuff here :)
+                ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.google_drive_key),isChecked).apply();
+                if(isChecked){
+                    AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected void onPreExecute() {
+                            ((MainDrawer)getActivity()).gacMaker();
+                        }
+
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            if(((SWrpg)getActivity().getApplication()).driveFail){
+                                cloud.setChecked(false);
+                                return;
+                            }
+                            final Character[] characters = LoadLocal.characters(getActivity());
+                            final Minion[] minions = LoadLocal.minions(getActivity());
+                            final Vehicle[] vehicles = LoadLocal.vehicles(getActivity());
+                            if(characters.length==0&&minions.length==0&&vehicles.length==0)
+                                return;
+                            AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                            b.setMessage(R.string.upload_question);
+                            b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                                    View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_loading,null);
+                                    b.setView(v);
+                                    TextView msg = (TextView)v.findViewById(R.id.loading_message);
+                                    msg.setText(R.string.uploading);
+                                    b.setCancelable(false);
+                                    final AlertDialog ad = b.show();
+                                    AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                                        @Override
+                                        protected Void doInBackground(Void... params) {
+                                            final boolean[] finished =new boolean[]{false,false,false};
+                                            final Load.Characters lc = new Load.Characters();
+                                            lc.setOnFinish(new Load.onFinish() {
+                                                @Override
+                                                public void finish() {
+                                                    ArrayList<Integer> IDs = new ArrayList<>();
+                                                    for (Character c : lc.characters) {
+                                                        IDs.add(c.ID);
+                                                    }
+                                                    for(Character c:characters){
+                                                        int ID = 0;
+                                                        while (IDs.contains(ID)) {
+                                                            ID++;
+                                                        }
+                                                        c.ID = ID;
+                                                        c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
+                                                        IDs.add(ID);
+                                                    }
+                                                    finished[0] = true;
+                                                }
+                                            });
+                                            lc.load(getActivity());
+                                            final Load.Minions lm = new Load.Minions();
+                                            lm.setOnFinish(new Load.onFinish() {
+                                                @Override
+                                                public void finish() {
+                                                    ArrayList<Integer> IDs = new ArrayList<>();
+                                                    for (Minion c : lm.minions) {
+                                                        IDs.add(c.ID);
+                                                    }
+                                                    for(Minion c:minions){
+                                                        int ID = 0;
+                                                        while (IDs.contains(ID)) {
+                                                            ID++;
+                                                        }
+                                                        c.ID = ID;
+                                                        c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
+                                                        IDs.add(ID);
+                                                    }
+                                                    finished[1] = true;
+                                                }
+                                            });
+                                            lm.load(getActivity());
+                                            final Load.Vehicles lv = new Load.Vehicles();
+                                            lv.setOnFinish(new Load.onFinish() {
+                                                @Override
+                                                public void finish() {
+                                                    ArrayList<Integer> IDs = new ArrayList<>();
+                                                    for (Vehicle c : lv.vehicles) {
+                                                        IDs.add(c.ID);
+                                                    }
+                                                    for(Vehicle c:vehicles){
+                                                        int ID = 0;
+                                                        while (IDs.contains(ID)) {
+                                                            ID++;
+                                                        }
+                                                        c.ID = ID;
+                                                        c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
+                                                        IDs.add(ID);
+                                                    }
+                                                    finished[2] = true;
+                                                }
+                                            });
+                                            lv.load(getActivity());
+                                            while(!finished[0]||!finished[1]||!finished[2]){
+                                                try {
+                                                    Thread.sleep(500);
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            return null;
+                                        }
+                                        @Override
+                                        protected void onPostExecute(Void aVoid) {
+                                            ad.cancel();
+                                        }
+                                    };
+                                    async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                        }
+                    };
+                    asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+                if(cloud.isChecked()){
+                    sync.setVisibility(View.VISIBLE);
+                }else{
+                    sync.setVisibility(View.GONE);
+                }
+            }
+        });
+        sync.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                b.setMessage(R.string.sync_desc);
+                b.show();
+                return true;
             }
         });
         if(cloud.isChecked()){

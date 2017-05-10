@@ -92,7 +92,8 @@ public class MainDrawer extends AppCompatActivity
         }else{
             ((SWrpg)getApplication()).askingPerm = false;
         }
-        gacMaker();
+        if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
+            gacMaker();
         if (Intent.ACTION_VIEW.equals(intent.getAction())&& intent.getData()!=null){
             String path = intent.getData().getPath();
             if (path.endsWith(".char")){
@@ -433,29 +434,30 @@ public class MainDrawer extends AppCompatActivity
     }
 
     public void gacMaker(){
-        if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            if(((SWrpg)getApplication()).gac == null) {
-                ((SWrpg)getApplication()).gac = new GoogleApiClient.Builder(this)
-                        .addApi(Drive.API)
-                        .addScope(Drive.SCOPE_FILE)
-                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                            @Override
-                            public void onConnected(@Nullable Bundle bundle) {
-                                Init.connect(MainDrawer.this);
-                            }
-                            @Override
-                            public void onConnectionSuspended(int i) {}
-                        })
-                        .addOnConnectionFailedListener(this)
-                        .build();
-            }
-            ((SWrpg)getApplication()).gac.connect();
+        if(((SWrpg)getApplication()).gac == null) {
+            ((SWrpg)getApplication()).gac = new GoogleApiClient.Builder(this)
+                    .addApi(Drive.API)
+                    .addScope(Drive.SCOPE_FILE)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(@Nullable Bundle bundle) {
+                            System.out.println("HelloSuccess");
+                            Init.connect(MainDrawer.this);
+                        }
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                            System.out.println("HelloSuspend");
+                        }
+                    })
+                    .addOnConnectionFailedListener(this)
+                    .build();
         }
+        ((SWrpg)getApplication()).gac.connect();
     }
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
             try {
-                connectionResult.startResolutionForResult(this, 1);
+                connectionResult.startResolutionForResult(this, 5);
             } catch (IntentSender.SendIntentException ignored) {
                 ((SWrpg)getApplication()).driveFail = true;
             }
