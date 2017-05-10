@@ -199,10 +199,15 @@ public class VehicleList extends Fragment {
                                 }
                                 vehicleCats.get(0).add(c);
                             }
-                            ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-                            sp.setAdapter(apAdap);
-                            srl.setRefreshing(false);
-                            sp.setSelection(0);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
+                                    sp.setAdapter(apAdap);
+                                    srl.setRefreshing(false);
+                                    sp.setSelection(0);
+                                }
+                            });
                         }
                     });
                     ch.load(getActivity());
@@ -227,15 +232,10 @@ public class VehicleList extends Fragment {
                 }
                 vehicleCats.get(0).add(c);
             }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-                    sp.setAdapter(apAdap);
-                    srl.setRefreshing(false);
-                    sp.setSelection(0);
-                }
-            });
+            ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
+            sp.setAdapter(apAdap);
+            srl.setRefreshing(false);
+            sp.setSelection(0);
         }
         if(parentHandle!= null){
             Message msg = parentHandle.obtainMessage();
