@@ -5,8 +5,7 @@
         android:id="@+id/dice_roll"
         android:icon="@drawable/die_icon"
         android:title="@string/dice"
-        android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/g_plus_item"
         android:title="@string/g_plus" />

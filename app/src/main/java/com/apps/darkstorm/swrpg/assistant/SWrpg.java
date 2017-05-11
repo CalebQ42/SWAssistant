@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
@@ -27,6 +28,10 @@ public class SWrpg extends Application{
     public boolean askingPerm = false;
     public boolean driveFail = false;
     public SharedPreferences prefs = null;
+    public boolean bought = false;
+
+    IInAppBillingService iaps;
+
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     public void addShortcut(Character pl, Activity main){
         if(!pl.name.equals("")&&!pl.external) {

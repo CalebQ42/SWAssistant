@@ -3,10 +3,17 @@ package com.apps.darkstorm.swrpg.assistant;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -15,14 +22,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -122,7 +135,13 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.google_drive_key),isChecked).apply();
                 if(isChecked){
-                    AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                    final boolean[] complete = {false};
+                    AlertDialog.Builder bLoad = new AlertDialog.Builder(getActivity());
+                    View cont = getActivity().getLayoutInflater().inflate(R.layout.dialog_loading,null);
+                    bLoad.setView(cont);
+                    ((TextView)cont.findViewById(R.id.loading_message)).setText(R.string.drive_loading);
+                    final AlertDialog driveLoading = bLoad.create();
+                    final AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                         @Override
                         protected void onPreExecute() {
                             ((MainDrawer)getActivity()).gacMaker();
@@ -144,13 +163,17 @@ public class SettingsFragment extends Fragment {
                         protected void onPostExecute(Void aVoid) {
                             if(((SWrpg)getActivity().getApplication()).driveFail){
                                 cloud.setChecked(false);
+                                driveLoading.cancel();
                                 return;
                             }
                             final Character[] characters = LoadLocal.characters(getActivity());
                             final Minion[] minions = LoadLocal.minions(getActivity());
                             final Vehicle[] vehicles = LoadLocal.vehicles(getActivity());
-                            if(characters.length==0&&minions.length==0&&vehicles.length==0)
+                            if(characters.length==0&&minions.length==0&&vehicles.length==0) {
+                                complete[0] = true;
+                                driveLoading.dismiss();
                                 return;
+                            }
                             AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
                             b.setMessage(R.string.upload_question);
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -237,6 +260,8 @@ public class SettingsFragment extends Fragment {
                                                     e.printStackTrace();
                                                 }
                                             }
+                                            complete[0] = true;
+                                            driveLoading.dismiss();
                                             return null;
                                         }
                                         @Override
@@ -251,13 +276,26 @@ public class SettingsFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.cancel();
+                                    driveLoading.dismiss();
+                                    complete[0] = true;
                                 }
                             });
                             b.show();
                         }
                     };
+                    driveLoading.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            if(!complete[0]) {
+                                cloud.setChecked(false);
+                                asyncTask.cancel(true);
+                            }
+                        }
+                    });
+                    driveLoading.show();
                     asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
+
                 if(cloud.isChecked()){
                     sync.setVisibility(View.VISIBLE);
                 }else{
@@ -296,6 +334,136 @@ public class SettingsFragment extends Fragment {
                 getActivity().recreate();
             }
         });
+        view.findViewById(R.id.donate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((SWrpg)getActivity().getApplication()).iaps!=null) {
+                    ArrayList<String> items = new ArrayList<>();
+                    items.add("donate1");
+                    items.add("donate3");
+                    items.add("donate5");
+                    items.add("donate10");
+                    final Bundle itemQuery = new Bundle();
+                    itemQuery.putStringArrayList("ITEM_ID_LIST", items);
+                    final String[] prices = new String[4];
+                    AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
+                        boolean success = false;
+
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            try {
+                                Bundle details = ((SWrpg) getActivity().getApplication()).iaps.getSkuDetails(3, getActivity().getPackageName(), "inapp", itemQuery);
+                                if (details.getInt("RESPONSE_CODE") == 0) {
+                                    ArrayList<String> resp = details.getStringArrayList("DETAILS_LIST");
+                                    if (resp == null) return null;
+                                    for (String s : resp) {
+                                        JSONObject obj = new JSONObject(s);
+                                        switch (obj.getString("productId")) {
+                                            case "donate1":
+                                                prices[0] = obj.getString("price");
+                                                break;
+                                            case "donate3":
+                                                prices[1] = obj.getString("price");
+                                                break;
+                                            case "donate5":
+                                                prices[2] = obj.getString("price");
+                                                break;
+                                            case "donate10":
+                                                prices[3] = obj.getString("price");
+                                                break;
+                                        }
+                                    }
+                                    success = true;
+                                } else
+                                    return null;
+                            } catch (RemoteException e) {
+                                return null;
+                            } catch (JSONException e) {
+                                return null;
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            if (!success)
+                                return;
+                            AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                            final View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_donate, null);
+                            b.setView(v);
+                            ((RadioButton) v.findViewById(R.id.one)).setText(prices[0]);
+                            ((RadioButton) v.findViewById(R.id.three)).setText(prices[1]);
+                            ((RadioButton) v.findViewById(R.id.five)).setText(prices[2]);
+                            ((RadioButton) v.findViewById(R.id.ten)).setText(prices[3]);
+                            ((RadioButton) v.findViewById(R.id.one)).setChecked(true);
+                            b.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    RadioGroup rg = (RadioGroup) v.findViewById(R.id.radG);
+                                    Bundle buyBundle = null;
+                                    try {
+                                        switch (rg.getCheckedRadioButtonId()) {
+                                            case R.id.one:
+                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate1", "inapp", "");
+                                                break;
+                                            case R.id.three:
+                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate3", "inapp", "");
+                                                break;
+                                            case R.id.five:
+                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate5", "inapp", "");
+                                                break;
+                                            case R.id.ten:
+                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate10", "inapp", "");
+                                                break;
+                                        }
+                                    } catch (RemoteException ignored) {}
+                                    if (buyBundle == null) {
+                                        dialog.cancel();
+                                        return;
+                                    }
+                                    PendingIntent buyInt = buyBundle.getParcelable("BUY_INTENT");
+                                    try {
+                                        getActivity().startIntentSenderForResult(buyInt.getIntentSender(), 100, new Intent(), 0, 0, 0, new Bundle());
+                                    } catch (IntentSender.SendIntentException ignored) {}
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                        }
+                    };
+                    async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }else{
+                    Toast.makeText(getActivity(),R.string.error,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        final Switch thanks = (Switch)view.findViewById(R.id.thanks_switch);
+        thanks.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.thank_you_key),true));
+        thanks.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.thank_you_key),isChecked).apply();
+            }
+        });
+        if(((SWrpg)getActivity().getApplication()).bought)
+            thanks.setVisibility(View.VISIBLE);
+        handle = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                thanks.setVisibility(View.VISIBLE);
+            }
+        };
+    }
+
+    Handler handle;
+
+    public void showThanks(){
+        handle.sendEmptyMessage(0);
     }
 
     @Override

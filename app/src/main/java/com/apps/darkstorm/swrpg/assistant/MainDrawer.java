@@ -4,15 +4,20 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,12 +27,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
+import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.drive.Init;
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
@@ -39,6 +49,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 
 public class MainDrawer extends AppCompatActivity
@@ -46,14 +59,79 @@ public class MainDrawer extends AppCompatActivity
         DiceRollFragment.OnDiceRollFragmentInteraction, SettingsFragment.OnSettingInterfactionInterface,
         CharacterList.OnCharacterListInteractionListener,VehicleList.OnVehicleListInteractionListener,MinionList.OnMinionListInteractionListener,
         EditFragment.OnCharacterEditInteractionListener,EditGeneral.OnEditInteractionListener,NoteEdit.OnNoteEditInteractionListener,
-        NotesFragment.OnFragmentInteractionListener,NotesListFragment.OnFragmentInteractionListener, GMFragment.OnFragmentInteractionListener{
+        NotesFragment.OnFragmentInteractionListener,NotesListFragment.OnFragmentInteractionListener, GMFragment.OnFragmentInteractionListener,
+        GuideMain.OnGuideInteractionListener,DownloadFragment.OnFragmentInteractionListener{
 
+
+    ServiceConnection iapsService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ((SWrpg)getApplication()).prefs = getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE);
         if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.light_side_key), false))
             setTheme(R.style.LightSide);
         super.onCreate(savedInstanceState);
+        iapsService =  new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                ((SWrpg)getApplication()).iaps = null;
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+                ((SWrpg)getApplication()).iaps = IInAppBillingService.Stub.asInterface(service);
+            }
+        };
+        Intent iapInt = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        iapInt.setPackage("com.android.vending");
+        bindService(iapInt, iapsService, Context.BIND_AUTO_CREATE);
+        if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.thank_you_key),true)) {
+            AsyncTask<Void, Void, Void> asyncIAP = new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        Bundle owned = ((SWrpg)getApplication()).iaps.getPurchaseHistory(3,getPackageName(),"inapp","",null);
+                        if(owned.getInt("RESPONSE_CODE")==0){
+                            if(owned.getStringArrayList("INAPP_PURCHASE_ITEM_LIST").size()>0)
+                                ((SWrpg)getApplication()).bought = true;
+                        }
+                    } catch (RemoteException|NullPointerException e) {
+                        return null;
+                    }
+                    return null;
+                }
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    if(((SWrpg)getApplication()).bought)
+                        Toast.makeText(MainDrawer.this,R.string.thanks_toast,Toast.LENGTH_LONG).show();
+                }
+            };
+            asyncIAP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        AsyncTask<Void, Void, Void> asyncIAP = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Bundle owned = ((SWrpg)getApplication()).iaps.getPurchases(3,getPackageName(),"inapp",null);
+                    if(owned.getInt("RESPONSE_CODE")==0){
+                        if(owned.getStringArrayList("INAPP_PURCHASE_ITEM_LIST").size()>0){
+                            for(String s:owned.getStringArrayList("INAPP_PURCHASE_DATA_LIST")){
+                                JSONObject boj = new JSONObject(s);
+                                String tok = boj.getString("purchaseToken");
+                                ((SWrpg)getApplication()).iaps.consumePurchase(3,getPackageName(),tok);
+                            }
+                        }
+                    }
+                } catch (RemoteException|NullPointerException|JSONException ignored) {}
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                if(((SWrpg)getApplication()).bought)
+                    Toast.makeText(MainDrawer.this,R.string.thanks_toast,Toast.LENGTH_LONG).show();
+            }
+        };
+        asyncIAP.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         setContentView(R.layout.activity_main_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -364,6 +442,34 @@ public class MainDrawer extends AppCompatActivity
                 i.setData(Uri.parse(url));
                 startActivity(i);
                 return true;
+            case R.id.dice_roll:
+                AlertDialog.Builder b = new AlertDialog.Builder(this);
+                final View view = getLayoutInflater().inflate(R.layout.fragment_dice_roll,null);
+                b.setView(view);
+                view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                final DiceHolder dh = new DiceHolder();
+                final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(this,dh);
+                RecyclerView r = (RecyclerView)view.findViewById(R.id.dice_recycler);
+                r.setAdapter(dl);
+                r.setLayoutManager(new LinearLayoutManager(this));
+                b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dh.roll().showDialog(MainDrawer.this);
+                        dialog.cancel();
+                    }
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                b.show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -408,6 +514,12 @@ public class MainDrawer extends AppCompatActivity
                             .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Vehicle List").commit();
                 break;
             case R.id.dnld_nav:
+                if (cur instanceof DownloadFragment)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, DownloadFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, DownloadFragment.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Download").commit();
                 break;
             case R.id.dice_nav:
                 if (cur instanceof DiceRollFragment)
@@ -418,6 +530,12 @@ public class MainDrawer extends AppCompatActivity
                             .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Dice").commit();
                 break;
             case R.id.guid_nav:
+                if (cur instanceof GuideMain)
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, GuideMain.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, GuideMain.newInstance())
+                            .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).addToBackStack("Guide").commit();
                 break;
             case R.id.stng_nav:
                 if (cur instanceof SettingsFragment)
@@ -477,6 +595,18 @@ public class MainDrawer extends AppCompatActivity
                     ((SWrpg)getApplication()).driveFail = true;
                 }
                 break;
+            case 100:
+                if(data.getIntExtra("RESPONSE_CODE",0) == RESULT_OK){
+                    String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+                    try {
+                        JSONObject obj = new JSONObject(purchaseData);
+                        String token = obj.getString("purchaseToken");
+                        ((SWrpg)getApplication()).iaps.consumePurchase(3,getPackageName(),token);
+                    } catch (JSONException|RemoteException ignored) {}
+                    Toast.makeText(this,R.string.thanks_toast,Toast.LENGTH_LONG).show();
+                    Fragment cur = getFragmentManager().findFragmentById(R.id.content_main);
+                    if(cur instanceof SettingsFragment) ((SettingsFragment)cur).showThanks();
+                }
         }
     }
 
@@ -537,5 +667,12 @@ public class MainDrawer extends AppCompatActivity
                 break;
         }
         ((SWrpg)getApplication()).askingPerm = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(((SWrpg)getApplication()).iaps!=null)
+            unbindService(iapsService);
     }
 }

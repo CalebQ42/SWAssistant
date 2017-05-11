@@ -560,9 +560,6 @@ public class Character extends Editable{
                 Arrays.equals(showCards, chara.showCards) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts) &&
                 encumCapacity == chara.encumCapacity && category.equals(chara.category);
     }
-    public boolean isOverEncum(){
-        return (encumCapacity < inv.totalEncum() + weapons.totalEncum());
-    }
     public void delete(final Activity main){
         File tmp = new File(getFileLocation(main));
         tmp.delete();

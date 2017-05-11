@@ -41,4 +41,10 @@
   <string name="minions">Minions</string>
   <string name="title_activity_main_drawer">MainDrawer</string>
     <string name="export_location">Export Location:</string>
+    <string name="donate">Donate</string>
+    <string name="thanks_toast">Thanks for donating :)</string>
+  <string name="thanks_toast_switch">Thank You Toast</string>
+    <string name="error">Error!</string>
+    <string name="type">Type:</string>
+    <string name="downloading">Downloading...</string>
 </resources>

@@ -34,18 +34,11 @@ android {
             minSdkVersion 19
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 105
-            versionName '2.0.0.1'
+            versionCode 106
+            versionName '2.0.0.0'
             applicationId 'com.apps.darkstorm.swrpg.assistant'
             signingConfig signingConfigs.config
-        }
-        Testing {
-            applicationId 'com.apps.darkstorm.swrpg.assistant.test'
-            minSdkVersion 19
-            targetSdkVersion 25
-            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 4
-            versionName '2.0.0.0'
+            versionNameSuffix 'rc1'
         }
     }
 }
@@ -68,6 +61,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

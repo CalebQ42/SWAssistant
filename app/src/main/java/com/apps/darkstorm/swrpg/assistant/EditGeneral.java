@@ -9,11 +9,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public class EditGeneral extends Fragment {
     public EditGeneral() {}
@@ -75,35 +80,65 @@ public class EditGeneral extends Fragment {
             sgl.setSpanCount(1);
         }
     }
-    public class EditableAdap extends RecyclerView.Adapter<EditableAdap.ViewHolder>{
+    public class EditableAdap extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         final int nameCard = 0;
 
         final int other = 1;
+
+        final int ad = 2;
         @Override
         public int getItemViewType(int position) {
-            if(position==0)
-                return nameCard;
-            else
+            if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)){
+                if(position==0)
+                    return ad;
+                if(position==1)
+                    return nameCard;
                 return other;
+            }else {
+                if (position == 0)
+                    return nameCard;
+                else
+                    return other;
+            }
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if(viewType==ad) {
+                AdView ads = new AdView(getActivity());
+                ads.setAdSize(AdSize.BANNER);
+                LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                adLayout.weight = 0;
+                adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+                ads.setLayoutParams(adLayout);
+                ads.setAdUnitId(getString(R.string.free_banner_ad_id));
+                return new adHolder(ads);
+            }
             if(viewType==nameCard)
                 return new ViewHolder((CardView)getActivity().getLayoutInflater().inflate(R.layout.card_editable_name,parent,false));
-            else
-                return new ViewHolder((CardView)getActivity().getLayoutInflater().inflate(R.layout.card_hideable,parent,false));
+            return new ViewHolder((CardView)getActivity().getLayoutInflater().inflate(R.layout.card_hideable,parent,false));
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            e.setupCards(getActivity(),this,holder.c,position,parentHandle);
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)){
+                if(position==0){
+                    adHolder ah = (adHolder)holder;
+                    AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+                    ah.a.loadAd(adRequest);
+                }else
+                    e.setupCards(getActivity(),this,((ViewHolder)holder).c,position-1,parentHandle);
+            }else
+                e.setupCards(getActivity(),this,((ViewHolder)holder).c,position,parentHandle);
         }
 
         @Override
         public int getItemCount() {
-            return e.cardNumber();
+            if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true))
+                return e.cardNumber()+1;
+            else
+                return e.cardNumber();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
@@ -111,6 +146,13 @@ public class EditGeneral extends Fragment {
             ViewHolder(CardView c){
                 super(c);
                 this.c = c;
+            }
+        }
+        class adHolder extends  RecyclerView.ViewHolder{
+            AdView a;
+            adHolder(AdView a){
+                super(a);
+                this.a = a;
             }
         }
     }

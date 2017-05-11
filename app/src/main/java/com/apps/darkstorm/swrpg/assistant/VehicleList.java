@@ -27,6 +27,8 @@ import android.widget.TextView;
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +65,12 @@ public class VehicleList extends Fragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
+            AdView ads = (AdView)view.findViewById(R.id.adView);
+            ads.setVisibility(View.VISIBLE);
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            ads.loadAd(adRequest);
+        }
         if(parentHandle == null) {
             FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
             fab.setImageResource(R.drawable.add);

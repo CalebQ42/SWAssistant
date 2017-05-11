@@ -13,13 +13,10 @@
 
     <string name="color_dice_key" translatable="false">colorDiceKey</string>
 
+    <string name="thank_you_key" translatable="false">donateThankYou</string>
+
     <!--AdKeys-->
     <string name="free_banner_ad_id" translatable="false">ca-app-pub-2493790455010177/3496603845</string>
-    <string name="paid_banner_ad_id" translatable="false">ca-app-pub-2493790455010177/5120052649</string>
-
-    <string name="free_interstitial" translatable="false">ca-app-pub-2493790455010177/4973337047</string>
-    <string name="paid_interstitial" translatable="false">ca-app-pub-2493790455010177/5120052649</string>
 
     <string name="banner_test" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_test" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 </resources>
