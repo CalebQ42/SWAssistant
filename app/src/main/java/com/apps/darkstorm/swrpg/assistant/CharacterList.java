@@ -68,7 +68,7 @@ public class CharacterList extends Fragment {
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
             AdView ads = (AdView)view.findViewById(R.id.adView);
             ads.setVisibility(View.VISIBLE);
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
             ads.loadAd(adRequest);
         }
         if(parentHandle == null) {
@@ -160,18 +160,22 @@ public class CharacterList extends Fragment {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        System.out.println("Checking");
                     }
                     return null;
                 }
 
                 @Override
                 protected void onPostExecute(Void aVoid) {
+                    System.out.println("Hellotooloo");
                     if(((SWrpg)getActivity().getApplication()).driveFail) {
                         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
                         b.setMessage(R.string.drive_fail);
                         b.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                ((SWrpg)getActivity().getApplication()).driveFail = false;
+                                ((MainDrawer)getActivity()).gacMaker();
                                 loadCharacters();
                                 dialog.cancel();
                             }
@@ -185,12 +189,16 @@ public class CharacterList extends Fragment {
                         });
                         b.setCancelable(false);
                         srl.setRefreshing(false);
+                        System.out.println("Hellograa");
+                        b.show();
                         return;
                     }
+                    System.out.println("Hellod");
                     final Load.Characters ch = new Load.Characters();
                     ch.setOnFinish(new Load.onFinish() {
                         @Override
                         public void finish() {
+                            System.out.println("Hello");
                             ch.saveLocal(getActivity());
                             characters = ch.characters;
                             cats.clear();

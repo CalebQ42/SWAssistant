@@ -92,6 +92,7 @@ public class MainDrawer extends AppCompatActivity
                     try {
                         Bundle owned = ((SWrpg)getApplication()).iaps.getPurchaseHistory(3,getPackageName(),"inapp","",null);
                         if(owned.getInt("RESPONSE_CODE")==0){
+                            //noinspection ConstantConditions
                             if(owned.getStringArrayList("INAPP_PURCHASE_ITEM_LIST").size()>0)
                                 ((SWrpg)getApplication()).bought = true;
                         }
@@ -114,7 +115,9 @@ public class MainDrawer extends AppCompatActivity
                 try {
                     Bundle owned = ((SWrpg)getApplication()).iaps.getPurchases(3,getPackageName(),"inapp",null);
                     if(owned.getInt("RESPONSE_CODE")==0){
+                        //noinspection ConstantConditions
                         if(owned.getStringArrayList("INAPP_PURCHASE_ITEM_LIST").size()>0){
+                            //noinspection ConstantConditions
                             for(String s:owned.getStringArrayList("INAPP_PURCHASE_DATA_LIST")){
                                 JSONObject boj = new JSONObject(s);
                                 String tok = boj.getString("purchaseToken");
@@ -201,6 +204,7 @@ public class MainDrawer extends AppCompatActivity
                     getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
                     break;
                 case "guide":
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, GuideMain.newInstance()).commit();
                     break;
                 default:
                     if (intent.getDataString().startsWith("content://")){
@@ -444,7 +448,7 @@ public class MainDrawer extends AppCompatActivity
                 return true;
             case R.id.dice_roll:
                 AlertDialog.Builder b = new AlertDialog.Builder(this);
-                final View view = getLayoutInflater().inflate(R.layout.fragment_dice_roll,null);
+                @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.fragment_dice_roll,null);
                 b.setView(view);
                 view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
                 view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
@@ -559,8 +563,7 @@ public class MainDrawer extends AppCompatActivity
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                         @Override
                         public void onConnected(@Nullable Bundle bundle) {
-                            System.out.println("HelloSuccess");
-                            Init.connect(MainDrawer.this);
+                            Init.connect(MainDrawer.this,0);
                         }
                         @Override
                         public void onConnectionSuspended(int i) {
@@ -570,7 +573,10 @@ public class MainDrawer extends AppCompatActivity
                     .addOnConnectionFailedListener(this)
                     .build();
         }
-        ((SWrpg)getApplication()).gac.connect();
+        if (((SWrpg)getApplication()).gac.isConnected())
+            Init.connect(this,0);
+        else
+            ((SWrpg)getApplication()).gac.connect();
     }
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
@@ -588,12 +594,12 @@ public class MainDrawer extends AppCompatActivity
 
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         switch (requestCode) {
+
             case 5:
-                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK)
                     ((SWrpg)getApplication()).gac.connect();
-                }else{
+                else
                     ((SWrpg)getApplication()).driveFail = true;
-                }
                 break;
             case 100:
                 if(data.getIntExtra("RESPONSE_CODE",0) == RESULT_OK){

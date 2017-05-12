@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -68,7 +67,7 @@ public class VehicleList extends Fragment {
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
             AdView ads = (AdView)view.findViewById(R.id.adView);
             ads.setVisibility(View.VISIBLE);
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
             ads.loadAd(adRequest);
         }
         if(parentHandle == null) {
@@ -144,16 +143,13 @@ public class VehicleList extends Fragment {
         }
     }
 
-    public void loadVehicles(){
-        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected void onPreExecute() {
-                    srl.setRefreshing(true);
-                }
 
+    public void loadVehicles(){
+        srl.setRefreshing(true);
+        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+            Thread th = new Thread(new Runnable() {
                 @Override
-                protected Void doInBackground(Void... params) {
+                public void run() {
                     while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
                         try {
                             Thread.sleep(500);
@@ -161,11 +157,6 @@ public class VehicleList extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
                     if(((SWrpg)getActivity().getApplication()).driveFail) {
                         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
                         b.setMessage(R.string.drive_fail);
@@ -212,18 +203,17 @@ public class VehicleList extends Fragment {
                                 public void run() {
                                     ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
                                     sp.setAdapter(apAdap);
-                                    srl.setRefreshing(false);
                                     sp.setSelection(0);
+                                    srl.setRefreshing(false);
                                 }
                             });
                         }
                     });
                     ch.load(getActivity());
                 }
-            };
-            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            });
+            th.run();
         }else{
-            srl.setRefreshing(true);
             vehicles = new ArrayList<>();
             vehicles.addAll(Arrays.asList(LoadLocal.vehicles(getActivity())));
             cats.clear();
@@ -242,8 +232,8 @@ public class VehicleList extends Fragment {
             }
             ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
             sp.setAdapter(apAdap);
-            srl.setRefreshing(false);
             sp.setSelection(0);
+            srl.setRefreshing(false);
         }
         if(parentHandle!= null){
             Message msg = parentHandle.obtainMessage();

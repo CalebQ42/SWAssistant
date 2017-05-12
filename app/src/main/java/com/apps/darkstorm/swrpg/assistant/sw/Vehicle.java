@@ -333,6 +333,8 @@ public class Vehicle extends Editable{
                 hullTraumaCur = (int)val[8];
                 totalDefense = (int)val[7];
                 defense = (int[])val[6];
+                if(defense[Vehicle.starboard]==-1)defense[Vehicle.starboard] = 0;
+                if(defense[Vehicle.port]==-1)defense[Vehicle.starboard] = 0;
                 armor = (int)val[5];
                 handling = (int)val[4];
                 speed = (int)val[3];
@@ -372,6 +374,8 @@ public class Vehicle extends Editable{
                 hullTraumaCur = (int)val[8];
                 totalDefense = (int)val[7];
                 defense = (int[])val[6];
+                if(defense[Vehicle.starboard]==-1)defense[Vehicle.starboard] = 0;
+                if(defense[Vehicle.port]==-1)defense[Vehicle.port] = 0;
                 armor = (int)val[5];
                 handling = (int)val[4];
                 speed = (int)val[3];

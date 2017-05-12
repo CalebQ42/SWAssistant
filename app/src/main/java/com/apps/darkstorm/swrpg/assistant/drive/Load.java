@@ -117,7 +117,7 @@ public class Load {
                                 protected Void doInBackground(Void... params) {
                                     MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
                                     for (Metadata met : metBuf) {
-                                        if (met.getTitle().endsWith(".char")) {
+                                        if (met.getTitle().endsWith(".vhcl")) {
                                             Vehicle tmp = new Vehicle();
                                             tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
                                             vehicles.add(tmp);
@@ -140,7 +140,7 @@ public class Load {
             });
         }
         public void saveLocal(Activity ac){
-            File fold = new File(((SWrpg)ac.getApplication()).prefs.getString(ac.getString(R.string.local_location_key),((SWrpg)ac.getApplication()).defaultLoc) + "/SWShps");
+            File fold = new File(((SWrpg)ac.getApplication()).prefs.getString(ac.getString(R.string.local_location_key),((SWrpg)ac.getApplication()).defaultLoc) + "/SWShips");
             if (!fold.exists()){
                 fold.mkdirs();
                 fold.mkdir();
@@ -192,7 +192,7 @@ public class Load {
                                 protected Void doInBackground(Void... params) {
                                     MetadataBuffer metBuf = metadataBufferResult.getMetadataBuffer();
                                     for (Metadata met : metBuf) {
-                                        if (met.getTitle().endsWith(".char")) {
+                                        if (met.getTitle().endsWith(".minion")) {
                                             Minion tmp = new Minion();
                                             tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
                                             minions.add(tmp);

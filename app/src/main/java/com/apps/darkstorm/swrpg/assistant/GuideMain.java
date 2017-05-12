@@ -99,7 +99,7 @@ public class GuideMain extends Fragment {
             adLayout.gravity = Gravity.CENTER_HORIZONTAL;
             ads.setLayoutParams(adLayout);
             ads.setAdUnitId(getString(R.string.free_banner_ad_id));
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
             ads.loadAd(adRequest);
             LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
             topLinLay.addView(ads,topLinLay.getChildCount());

@@ -34,11 +34,11 @@ android {
             minSdkVersion 19
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 107
+            versionCode 108
             versionName '2.0.0.0'
             applicationId 'com.apps.darkstorm.swrpg.assistant'
             signingConfig signingConfigs.config
-            versionNameSuffix 'rc1'
+            versionNameSuffix 'rc2'
         }
     }
 }
@@ -59,8 +59,10 @@ dependencies {
     compile 'com.android.support:support-v13:25.3.1'
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.google.firebase:firebase-crash:10.0.1'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 

@@ -63,9 +63,9 @@ public class DiceRollFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
-            AdView ads = (AdView)view.findViewById(R.id.adView);
+            AdView ads = (AdView)view.findViewById(R.id.ad_recycle);
             ads.setVisibility(View.VISIBLE);
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
             ads.loadAd(adRequest);
         }
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
