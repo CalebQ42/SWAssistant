@@ -1,0 +1,11 @@
+files:
+  - source: /app/src/main/res/values/*
+    ignore:
+      - /app/src/main/res/values/drawables.xml
+      - /app/src/main/res/values/integerArrays.xml
+      - /app/src/main/res/values/strings_keys.xml
+      - /app/src/main/res/values/colors.xml
+      - /app/src/main/res/values/dimens.xml
+      - /app/src/main/res/values/styles
+      - /app/src/main/res/values/values.xml
+    translation: /app/src/main/res/values-%two_letters_code%/%original_file_name%
