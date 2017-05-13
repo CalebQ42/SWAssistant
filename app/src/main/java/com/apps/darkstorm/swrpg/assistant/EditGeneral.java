@@ -46,7 +46,7 @@ public class EditGeneral extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)){
+        if(parentHandle==null&&((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)){
             AdView adv = (AdView)view.findViewById(R.id.ad_recycle);
             AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
             adv.loadAd(adRequest);

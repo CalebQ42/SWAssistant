@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,8 @@ public class GuideMain extends Fragment {
     }
 
     public void onViewCreated(final View top,final Bundle saved){
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.guide);
         TabLayout taber = (TabLayout)top.findViewById(R.id.guide_taber);
         ViewPager pager = (ViewPager)top.findViewById(R.id.guide_pager);
         taber.setupWithViewPager(pager);

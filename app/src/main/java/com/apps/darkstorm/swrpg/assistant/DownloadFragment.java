@@ -185,6 +185,8 @@ public class DownloadFragment extends Fragment {
 
         @Override
         public downloadItemAdap.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            toolbar.setTitle(R.string.download);
             View v = getActivity().getLayoutInflater().inflate(R.layout.card_name,parent,false);
             v.findViewById(R.id.subname).setVisibility(View.GONE);
             final ViewHolder hdl = new ViewHolder(v);

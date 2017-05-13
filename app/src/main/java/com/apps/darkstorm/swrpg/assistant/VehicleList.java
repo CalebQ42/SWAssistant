@@ -64,13 +64,15 @@ public class VehicleList extends Fragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
-            AdView ads = (AdView)view.findViewById(R.id.adView);
-            ads.setVisibility(View.VISIBLE);
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
-            ads.loadAd(adRequest);
-        }
         if(parentHandle == null) {
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            toolbar.setTitle(R.string.vehicles);
+            if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
+                AdView ads = (AdView)view.findViewById(R.id.adView);
+                ads.setVisibility(View.VISIBLE);
+                AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
+                ads.loadAd(adRequest);
+            }
             FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
             fab.setImageResource(R.drawable.add);
             fab.show();
@@ -92,8 +94,6 @@ public class VehicleList extends Fragment {
                 }
             });
         }
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.vehicles);
         srl = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
         sp = (Spinner)view.findViewById(R.id.cat_spinner);
         cats = new ArrayList<>();
@@ -118,28 +118,32 @@ public class VehicleList extends Fragment {
             }
         });
         loadVehicles();
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
-                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
-            sgl.setSpanCount(3);
-        }else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
-                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
-            sgl.setSpanCount(2);
-        }else{
-            sgl.setSpanCount(1);
+        if(parentHandle==null) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                    ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)) {
+                sgl.setSpanCount(3);
+            } else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
+                    ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)) {
+                sgl.setSpanCount(2);
+            } else {
+                sgl.setSpanCount(1);
+            }
         }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
-                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
-            sgl.setSpanCount(3);
-        }else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_LARGE)||
-                ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) ==Configuration.SCREENLAYOUT_SIZE_XLARGE)){
-            sgl.setSpanCount(2);
-        }else{
-            sgl.setSpanCount(1);
+        if(parentHandle==null) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                    ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)) {
+                sgl.setSpanCount(3);
+            } else if (((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) ||
+                    ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)) {
+                sgl.setSpanCount(2);
+            } else {
+                sgl.setSpanCount(1);
+            }
         }
     }
 
