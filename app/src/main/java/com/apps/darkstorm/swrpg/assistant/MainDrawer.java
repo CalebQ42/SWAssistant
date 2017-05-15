@@ -176,49 +176,53 @@ public class MainDrawer extends AppCompatActivity
         if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
             gacMaker();
         if (Intent.ACTION_VIEW.equals(intent.getAction())&& intent.getData()!=null){
-            String path = intent.getData().getPath();
-            if (path.endsWith(".char")){
-                Character tmp = new Character();
-                tmp.reLoad(path);
-                tmp.external = true;
-                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
-            }else if(path.endsWith(".vhcl")){
-                Vehicle tmp = new Vehicle();
-                tmp.reLoad(path);
-                tmp.external = true;
-                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
-            }else if(path.endsWith(".minion")){
-                Minion tmp = new Minion();
-                tmp.reLoad(path);
-                tmp.external = true;
-                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
-            }else{
-                if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
-                    getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
-                else
-                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
-            }
-        }else if(Intent.ACTION_EDIT.equals(intent.getAction())&&intent.getData()!=null){
-            switch(intent.getDataString()){
-                case "die":
+            switch(intent.getDataString()) {
+                case "dice":
                     getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
                     break;
                 case "guide":
                     getFragmentManager().beginTransaction().replace(R.id.content_main, GuideMain.newInstance()).commit();
                     break;
                 default:
-                    if (intent.getDataString().startsWith("content://")){
-                        AlertDialog.Builder b = new AlertDialog.Builder(this);
-                        @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.dialog_loading,null);
-                        ((TextView)v.findViewById(R.id.loading_message)).setText(R.string.still_loading);
-                        b.setView(v);
-                        final AlertDialog ad = b.show();
-                        String data = intent.getDataString().substring("content://".length()-1);
-                        if (data.startsWith("character")){
-                            data = data.replace("character/","");
-                            final int ID = Integer.parseInt(data);
-                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-                                while (!((SWrpg) getApplication()).driveFail){
+                    String path = intent.getData().getPath();
+                    if (path.endsWith(".char")) {
+                        Character tmp = new Character();
+                        tmp.reLoad(path);
+                        tmp.external = true;
+                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
+                    } else if (path.endsWith(".vhcl")) {
+                        Vehicle tmp = new Vehicle();
+                        tmp.reLoad(path);
+                        tmp.external = true;
+                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
+                    } else if (path.endsWith(".minion")) {
+                        Minion tmp = new Minion();
+                        tmp.reLoad(path);
+                        tmp.external = true;
+                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
+                    } else {
+                        if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.dice_key), false))
+                            getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
+                        else
+                            getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                    }
+            }
+        }else if(Intent.ACTION_EDIT.equals(intent.getAction())&&intent.getData()!=null){
+            if (intent.getDataString().startsWith("content://")){
+                AlertDialog.Builder b = new AlertDialog.Builder(this);
+                @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.dialog_loading,null);
+                ((TextView)v.findViewById(R.id.loading_message)).setText(R.string.still_loading);
+                b.setView(v);
+                final AlertDialog ad = b.show();
+                String data = intent.getDataString().substring("content://".length());
+                if (data.startsWith("character")){
+                    data = data.replace("character/","");
+                    final int ID = Integer.parseInt(data);
+                    if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                while (!((SWrpg) getApplication()).driveFail && ((SWrpg)getApplication()).charsFold==null){
                                     try {
                                         Thread.sleep(200);
                                     } catch (InterruptedException e) {
@@ -236,45 +240,62 @@ public class MainDrawer extends AppCompatActivity
                                             ld.saveLocal(MainDrawer.this);
                                             boolean found = false;
                                             for (int i = 0; i<ld.characters.size(); i++){
-                                                Character c = ld.characters.get(i);
+                                                final Character c = ld.characters.get(i);
                                                 if (c.ID == ID){
                                                     found = true;
-                                                    ad.cancel();
-                                                    getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                            EditFragment.newInstance(c)).commit();
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            ad.cancel();
+                                                            getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                                    EditFragment.newInstance(c)).commit();
+                                                        }
+                                                    });
                                                     break;
                                                 }
                                             }
                                             if (!found){
-                                                ad.cancel();
-                                                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        ad.cancel();
+                                                        getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                                                    }
+                                                });
                                             }
                                         }
                                     });
                                     ld.load(MainDrawer.this);
                                 }
-                            }else{
-                                Character[] ch = LoadLocal.characters(MainDrawer.this);
-                                boolean found = false;
-                                for (Character aCh : ch) {
-                                    if (aCh.ID == ID) {
-                                        found = true;
-                                        ad.cancel();
-                                        getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                EditFragment.newInstance(aCh)).commit();
-                                        break;
-                                    }
-                                }
-                                if (!found){
-                                    ad.cancel();
-                                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
-                                }
+                                return null;
                             }
-                        }else if(data.startsWith("minion")){
-                            data = data.replace("minion/","");
-                            final int ID = Integer.parseInt(data);
-                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-                                while (!((SWrpg) getApplication()).driveFail){
+                        };
+                        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }else{
+                        Character[] ch = LoadLocal.characters(MainDrawer.this);
+                        boolean found = false;
+                        for (Character aCh : ch) {
+                            if (aCh.ID == ID) {
+                                found = true;
+                                ad.cancel();
+                                getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                        EditFragment.newInstance(aCh)).commit();
+                                break;
+                            }
+                        }
+                        if (!found){
+                            ad.cancel();
+                            getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                        }
+                    }
+                }else if(data.startsWith("minion")){
+                    data = data.replace("minion/","");
+                    final int ID = Integer.parseInt(data);
+                    if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                while (!((SWrpg) getApplication()).driveFail && ((SWrpg)getApplication()).charsFold==null){
                                     try {
                                         Thread.sleep(200);
                                     } catch (InterruptedException e) {
@@ -291,44 +312,62 @@ public class MainDrawer extends AppCompatActivity
                                         public void finish() {
                                             ld.saveLocal(MainDrawer.this);
                                             boolean found = false;
-                                            for (int i = 0;i<ld.minions.size();i++){
-                                                if (ld.minions.get(i).ID == ID){
+                                            for (int i = 0; i<ld.minions.size(); i++){
+                                                final Minion c = ld.minions.get(i);
+                                                if (c.ID == ID){
                                                     found = true;
-                                                    ad.cancel();
-                                                    getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                            EditFragment.newInstance(ld.minions.get(i))).commit();
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            ad.cancel();
+                                                            getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                                    EditFragment.newInstance(c)).commit();
+                                                        }
+                                                    });
                                                     break;
                                                 }
                                             }
                                             if (!found){
-                                                ad.cancel();
-                                                getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        ad.cancel();
+                                                        getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
+                                                    }
+                                                });
                                             }
                                         }
                                     });
                                     ld.load(MainDrawer.this);
                                 }
-                            }else{
-                                Minion[] ch = LoadLocal.minions(MainDrawer.this);
-                                boolean found = false;
-                                for (Minion aCh : ch) {
-                                    if (aCh.ID == ID) {
-                                        found = true;
-                                        ad.cancel();
-                                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(aCh)).commit();
-                                        break;
-                                    }
-                                }
-                                if (!found){
-                                    ad.cancel();
-                                    getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
-                                }
+                                return null;
                             }
-                        }else if(data.startsWith("vehicle")){
-                            data = data.replace("vehicle/","");
-                            final int ID = Integer.parseInt(data);
-                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-                                while (!((SWrpg) getApplication()).driveFail){
+                        };
+                        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }else{
+                        Minion[] ch = LoadLocal.minions(MainDrawer.this);
+                        boolean found = false;
+                        for (Minion aCh : ch) {
+                            if (aCh.ID == ID) {
+                                found = true;
+                                ad.cancel();
+                                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(aCh)).commit();
+                                break;
+                            }
+                        }
+                        if (!found){
+                            ad.cancel();
+                            getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
+                        }
+                    }
+                }else if(data.startsWith("vehicle")){
+                    data = data.replace("vehicle/","");
+                    final int ID = Integer.parseInt(data);
+                    if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+                        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                while (!((SWrpg) getApplication()).driveFail && ((SWrpg)getApplication()).charsFold==null){
                                     try {
                                         Thread.sleep(200);
                                     } catch (InterruptedException e) {
@@ -346,51 +385,65 @@ public class MainDrawer extends AppCompatActivity
                                             ld.saveLocal(MainDrawer.this);
                                             boolean found = false;
                                             for (int i = 0; i<ld.vehicles.size(); i++){
-                                                if (ld.vehicles.get(i).ID == ID){
+                                                final Vehicle c = ld.vehicles.get(i);
+                                                if (c.ID == ID){
                                                     found = true;
-                                                    ad.cancel();
-                                                    getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                            EditFragment.newInstance(ld.vehicles.get(i))).commit();
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            ad.cancel();
+                                                            getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                                    EditFragment.newInstance(c)).commit();
+                                                        }
+                                                    });
                                                     break;
                                                 }
                                             }
                                             if (!found){
-                                                ad.cancel();
-                                                getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        ad.cancel();
+                                                        getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
+                                                    }
+                                                });
                                             }
                                         }
                                     });
                                     ld.load(MainDrawer.this);
                                 }
-                            }else{
-                                Vehicle[] ch = LoadLocal.vehicles(MainDrawer.this);
-                                boolean found = false;
-                                for (Vehicle aCh : ch) {
-                                    if (aCh.ID == ID) {
-                                        found = true;
-                                        ad.cancel();
-                                        getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(aCh)).commit();
-                                        break;
-                                    }
-                                }
-                                if (!found){
-                                    ad.cancel();
-                                    getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
-                                }
+                                return null;
                             }
-                        }else{
-                            if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
-                                getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
-                            else
-                                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
-                        }
+                        };
+                        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     }else{
-                        if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
-                            getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
-                        else
-                            getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                        Vehicle[] ch = LoadLocal.vehicles(MainDrawer.this);
+                        boolean found = false;
+                        for (Vehicle aCh : ch) {
+                            if (aCh.ID == ID) {
+                                found = true;
+                                ad.cancel();
+                                getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(aCh)).commit();
+                                break;
+                            }
+                        }
+                        if (!found){
+                            ad.cancel();
+                            getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
+                        }
                     }
-                    break;
+                }else{
+                    ad.cancel();
+                    if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
+                        getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
+                    else
+                        getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                }
+            }else{
+                if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance()).commit();
+                else
+                    getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
             }
         }else{
             if (((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.dice_key),false))
