@@ -9,6 +9,9 @@
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
+    <supports-screens android:largeScreens="true"
+        android:xlargeScreens="true"/>
+
 
     <application
         android:name=".SWrpg"
