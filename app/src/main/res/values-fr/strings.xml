@@ -8,8 +8,6 @@
   <string name="title_activity_settings">Options</string>
   <string name="permission_error">Malheureusement cette app NÉCESSITE les droits de lecture et de modifacation. Si vous appuyez sur OK,  l\'app demandera l\'autorisation de nouveau.
     Si vous appuyez sur ANNULER,  l\'app passera en mode dès.</string>
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Bonjour fragment vide</string>
   <string name="loading_snack">Chargement des Personnages&#8230;</string>
   <string name="cloud_fail">Erreur de connection à Google Drive</string>
   <string name="retry">Réessayer</string>
@@ -38,4 +36,6 @@
   <string name="error">Error!</string>
   <string name="type">Type:</string>
   <string name="downloading">Downloading...</string>
+  <string name="general">General</string>
+  <string name="notes">Notes</string>
 </resources>
