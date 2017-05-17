@@ -3,7 +3,6 @@ package com.apps.darkstorm.swrpg.assistant.sw;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
@@ -85,11 +84,6 @@ public class Vehicle extends Editable{
     //  |               |
     //
 
-    private boolean editing = false;
-    private boolean saving = false;
-    private String loc="";
-    public boolean external = false;
-
     public static int fore = 0;
     public static int port = 1;
     public static int starboard = 2;
@@ -117,7 +111,8 @@ public class Vehicle extends Editable{
     public void stopEditing(){
         editing=false;
     }
-    public Vehicle clone(){
+    @SuppressWarnings("CloneDoesntCallSuperClone")
+    public Editable clone(){
         Vehicle tmp = new Vehicle();
         tmp.ID = ID;
         tmp.name = name;
@@ -142,117 +137,6 @@ public class Vehicle extends Editable{
         tmp.category = category;
         tmp.nts = nts.clone();
         return tmp;
-    }
-    public void startEditing(final Activity main, final DriveId fold){
-        if(external){
-            startEditing(main);
-        }else {
-            if (!editing) {
-                editing = true;
-                AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        Vehicle old = Vehicle.this.clone();
-                        if(((SWrpg)main.getApplication()).vehicFold!=null)
-                            Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
-                        Vehicle.this.save(getFileLocation(main));
-                        do {
-                            if (!saving) {
-                                saving = true;
-                                if (!Vehicle.this.equals(old)) {
-                                    if (!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                                        if (((SWrpg) main.getApplication()).hasShortcut(Vehicle.this)) {
-                                            ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
-                                        } else {
-                                            ((SWrpg) main.getApplication()).addShortcut(Vehicle.this, main);
-                                        }
-                                    }
-                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
-                                        Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
-                                    Vehicle.this.save(getFileLocation(main));
-                                    old = Vehicle.this.clone();
-                                }
-                                saving = false;
-                            }
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } while (editing);
-                        if (!saving) {
-                            saving = true;
-                            if (!Vehicle.this.equals(old)) {
-                                if (!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                                    if (((SWrpg) main.getApplication()).hasShortcut(Vehicle.this)) {
-                                        ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
-                                    } else {
-                                        ((SWrpg) main.getApplication()).addShortcut(Vehicle.this, main);
-                                    }
-                                }
-                                if(((SWrpg)main.getApplication()).vehicFold!=null)
-                                    Vehicle.this.cloudSave(((SWrpg) main.getApplication()).gac,
-                                        getFileId(main), false);
-                                Vehicle.this.save(getFileLocation(main));
-                            }
-                            saving = false;
-                        }
-                        return null;
-                    }
-                };
-                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }
-        }
-    }
-    public void startEditing(final Activity main){
-        if (!editing){
-            editing = true;
-            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Vehicle old = Vehicle.this.clone();
-                Vehicle.this.save(getFileLocation(main));
-                do{
-                    if (!saving) {
-                        saving = true;
-                        if (!Vehicle.this.equals(old)) {
-                            if(!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
-                                if(((SWrpg)main.getApplication()).hasShortcut(Vehicle.this)) {
-                                    ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
-                                }else{
-                                    ((SWrpg)main.getApplication()).addShortcut(Vehicle.this,main);
-                                }
-                            }
-                            Vehicle.this.save(getFileLocation(main));
-                            old = Vehicle.this.clone();
-                        }
-                        saving = false;
-                    }
-                    try {
-                        Thread.sleep(300);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }while(editing);
-                if (!saving) {
-                    saving = true;
-                    if (!Vehicle.this.equals(old)) {
-                        if(!old.name.equals(Vehicle.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
-                            if(((SWrpg)main.getApplication()).hasShortcut(Vehicle.this)) {
-                                ((SWrpg) main.getApplication()).updateShortcut(Vehicle.this, main);
-                            }else{
-                                ((SWrpg)main.getApplication()).addShortcut(Vehicle.this,main);
-                            }
-                        }
-                        Vehicle.this.save(getFileLocation(main));
-                    }
-                    saving = false;
-                }
-                return null;
-            }
-        };
-        async.execute();
-    }
     }
 
     public void save(String filename){
@@ -442,23 +326,6 @@ public class Vehicle extends Editable{
                 && in.encumCapacity == encumCapacity && in.passengerCapacity == passengerCapacity && in.hp == hp && in.weapons.equals(weapons)
                 && in.critInjuries.equals(critInjuries) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model)
                 && in.category.equals(category);
-    }
-    public void delete(final Activity main){
-        File tmp = new File(getFileLocation(main));
-        tmp.delete();
-        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false)){
-            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    getFileId(main).asDriveResource().delete(((SWrpg)main.getApplication()).gac).await();
-                    return null;
-                }
-            };
-            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            ((SWrpg)main.getApplication()).deleteShortcut(this,main);
-        }
     }
     public void exportTo(String folder){
         File fold = new File(folder);
@@ -1235,7 +1102,7 @@ public class Vehicle extends Editable{
                     while(IDs.contains(ID)){
                         ID++;
                     }
-                    Vehicle ch = Vehicle.this.clone();
+                    Vehicle ch = (Vehicle)Vehicle.this.clone();
                     ch.ID = ID;
                     ch.save(ch.getFileLocation(ac));
                     if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.google_drive_key),false))

@@ -3,7 +3,6 @@ package com.apps.darkstorm.swrpg.assistant.sw;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
@@ -78,12 +77,6 @@ public class Minion extends Editable{
     //public String category = "";
     //public Notes nts (From Editable)
 
-
-    private boolean editing = false;
-    private boolean saving = false;
-    private String loc = "";
-    public boolean external = false;
-
     public Minion(){
         for (int i = 0; i< showCards.length; i++)
             showCards[i] = true;
@@ -92,118 +85,6 @@ public class Minion extends Editable{
         this.ID = ID;
         for (int i = 0; i< showCards.length; i++)
             showCards[i] = true;
-    }
-    public void startEditing(final Activity main, final DriveId fold){
-        if(external){
-            startEditing(main);
-        }else {
-            if (!editing) {
-                editing = true;
-                AsyncTask<Void, Void, Void> blablah = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        Minion tmpChar = Minion.this.clone();
-                        Minion.this.save(Minion.this.getFileLocation(main));
-                        if(((SWrpg)main.getApplication()).vehicFold!=null)
-                            cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
-                        do {
-                            if (!saving) {
-                                saving = true;
-                                if (!Minion.this.equals(tmpChar)) {
-                                    if (!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                                        if (((SWrpg) main.getApplication()).hasShortcut(Minion.this)) {
-                                            ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
-                                        } else {
-                                            ((SWrpg) main.getApplication()).addShortcut(Minion.this, main);
-                                        }
-                                    }
-                                    Minion.this.save(Minion.this.getFileLocation(main));
-                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
-                                        cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
-                                    tmpChar = Minion.this.clone();
-                                }
-                                saving = false;
-                            }
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } while (editing);
-                        if (!saving) {
-                            saving = true;
-                            if (!Minion.this.equals(tmpChar)) {
-                                if (!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                                    if (((SWrpg) main.getApplication()).hasShortcut(Minion.this)) {
-                                        ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
-                                    } else {
-                                        ((SWrpg) main.getApplication()).addShortcut(Minion.this, main);
-                                    }
-                                }
-                                Minion.this.save(Minion.this.getFileLocation(main));
-                                if(((SWrpg)main.getApplication()).vehicFold!=null)
-                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
-                            }
-                            saving = false;
-                        }
-                        return null;
-                    }
-                };
-                blablah.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }
-        }
-    }
-    public void startEditing(final Activity main){
-        if (!editing) {
-            editing = true;
-            Thread tmp = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Minion tmpChar = Minion.this.clone();
-                    Minion.this.save(Minion.this.getFileLocation(main));
-                    do{
-                        if (!saving) {
-                            saving = true;
-                            if (!Minion.this.equals(tmpChar)) {
-                                if(!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
-                                    if(((SWrpg)main.getApplication()).hasShortcut(Minion.this)) {
-                                        ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
-                                    }else{
-                                        ((SWrpg)main.getApplication()).addShortcut(Minion.this,main);
-                                    }
-                                }
-                                Minion.this.save(Minion.this.getFileLocation(main));
-                                tmpChar = Minion.this.clone();
-                            }
-                            saving = false;
-                        }
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }while (editing);
-                    if (!saving) {
-                        saving = true;
-                        if (!Minion.this.equals(tmpChar)) {
-                            if(!tmpChar.name.equals(Minion.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
-                                if(((SWrpg)main.getApplication()).hasShortcut(Minion.this)) {
-                                    ((SWrpg) main.getApplication()).updateShortcut(Minion.this, main);
-                                }else{
-                                    ((SWrpg)main.getApplication()).addShortcut(Minion.this,main);
-                                }
-                            }
-                            Minion.this.save(Minion.this.getFileLocation(main));
-                        }
-                        saving = false;
-                    }
-                }
-            });
-            tmp.start();
-        }
-    }
-    public void stopEditing(){
-        editing = false;
     }
     public String getFileLocation(Activity main){
         if(main!= null) {
@@ -415,7 +296,7 @@ public class Minion extends Editable{
     }
 
     @SuppressWarnings("CloneDoesntCallSuperClone")
-    public Minion clone(){
+    public Editable clone(){
         Minion min = new Minion();
         min.ID = ID;
         min.name = name;
@@ -445,23 +326,6 @@ public class Minion extends Editable{
                 tmp.defMelee == defMelee && tmp.defRanged == defRanged && tmp.soak == soak && tmp.desc.equals(desc) &&
                 Arrays.equals(tmp.showCards, showCards) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum &&
                 tmp.critInjuries.equals(critInjuries)&& tmp.category.equals(category)&& tmp.nts.equals(nts);
-    }
-    public void delete(final Activity main){
-        File tmp = new File(getFileLocation(main));
-        tmp.delete();
-        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false)){
-            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    getFileId(main).asDriveResource().delete(((SWrpg)main.getApplication()).gac).await();
-                    return null;
-                }
-            };
-            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            ((SWrpg)main.getApplication()).deleteShortcut(this,main);
-        }
     }
     public void exportTo(String folder){
         File fold = new File(folder);
@@ -1212,7 +1076,7 @@ public class Minion extends Editable{
                     while(IDs.contains(ID)){
                         ID++;
                     }
-                    Minion ch = Minion.this.clone();
+                    Minion ch = (Minion)Minion.this.clone();
                     ch.ID = ID;
                     ch.save(ch.getFileLocation(ac));
                     if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.google_drive_key),false))

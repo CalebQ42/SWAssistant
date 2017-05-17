@@ -3,7 +3,6 @@ package com.apps.darkstorm.swrpg.assistant.sw;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
@@ -113,11 +112,6 @@ public class Character extends Editable{
     //  |                 |
     //
 
-    private boolean editing = false;
-    private boolean saving = false;
-    private String loc = "";
-    public boolean external = false;
-
     public Character(){
         morality = 50;
         for (int i = 0; i< showCards.length; i++){
@@ -130,120 +124,6 @@ public class Character extends Editable{
         for (int i = 0; i< showCards.length; i++){
             showCards[i] = true;
         }
-    }
-    public void startEditing(final Activity main, final DriveId fold){
-        if(external){
-            startEditing(main);
-        }else {
-            if (!editing) {
-                editing = true;
-                AsyncTask<Void, Void, Void> blablah = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        Character tmpChar = Character.this.clone();
-                        Character.this.save(Character.this.getFileLocation(main));
-                        if(((SWrpg)main.getApplication()).vehicFold!=null)
-                            cloudSave(((SWrpg) main.getApplication()).gac, getFileId(main), false);
-                        do {
-                            if (!saving) {
-                                saving = true;
-                                if (!Character.this.equals(tmpChar)) {
-                                    if (!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                                        if (((SWrpg) main.getApplication()).hasShortcut(Character.this)) {
-                                            ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
-                                        } else {
-                                            ((SWrpg) main.getApplication()).addShortcut(Character.this, main);
-                                        }
-                                    }
-                                    Character.this.save(Character.this.getFileLocation(main));
-                                    if(((SWrpg)main.getApplication()).vehicFold!=null)
-                                        cloudSave(((SWrpg) main.getApplication()).gac,
-                                            getFileId(main), false);
-                                    tmpChar = Character.this.clone();
-                                }
-                                saving = false;
-                            }
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } while (editing);
-                        if (!saving) {
-                            saving = true;
-                            if (!Character.this.equals(tmpChar)) {
-                                if (!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                                    if (((SWrpg) main.getApplication()).hasShortcut(Character.this)) {
-                                        ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
-                                    } else {
-                                        ((SWrpg) main.getApplication()).addShortcut(Character.this, main);
-                                    }
-                                }
-                                Character.this.save(Character.this.getFileLocation(main));
-                                if(((SWrpg)main.getApplication()).vehicFold!=null)
-                                    cloudSave(((SWrpg) main.getApplication()).gac, getFileId(
-                                        main), false);
-                            }
-                            saving = false;
-                        }
-                        return null;
-                    }
-                };
-                blablah.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }
-        }
-    }
-    public void startEditing(final Activity main){
-        if (!editing) {
-            editing = true;
-            Thread tmp = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Character tmpChar = Character.this.clone();
-                    Character.this.save(Character.this.getFileLocation(main));
-                    do{
-                        if (!saving) {
-                            saving = true;
-                            if (!Character.this.equals(tmpChar)) {
-                                if(!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
-                                    if(((SWrpg)main.getApplication()).hasShortcut(Character.this)) {
-                                        ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
-                                    }else{
-                                        ((SWrpg)main.getApplication()).addShortcut(Character.this,main);
-                                    }
-                                }
-                                Character.this.save(Character.this.getFileLocation(main));
-                                tmpChar = Character.this.clone();
-                            }
-                            saving = false;
-                        }
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }while (editing);
-                    if (!saving) {
-                        saving = true;
-                        if (!Character.this.equals(tmpChar)) {
-                            if(!tmpChar.name.equals(Character.this.name) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
-                                if(((SWrpg)main.getApplication()).hasShortcut(Character.this)) {
-                                    ((SWrpg) main.getApplication()).updateShortcut(Character.this, main);
-                                }else{
-                                    ((SWrpg)main.getApplication()).addShortcut(Character.this,main);
-                                }
-                            }
-                            Character.this.save(Character.this.getFileLocation(main));
-                        }
-                        saving = false;
-                    }
-                }
-            });
-            tmp.start();
-        }
-    }
-    public void stopEditing(){
-        editing = false;
     }
     public String getFileLocation(Activity main){
         if(main!= null) {
@@ -487,7 +367,7 @@ public class Character extends Editable{
         }
     }
     @SuppressWarnings("CloneDoesntCallSuperClone")
-    public Character clone(){
+    public Editable clone(){
         Character tmp = new Character();
         tmp.ID = ID;
         tmp.name = name;
@@ -559,23 +439,6 @@ public class Character extends Editable{
                 morality == chara.morality && conflict == chara.conflict && Objects.equals(chara.desc, desc) &&
                 Arrays.equals(showCards, chara.showCards) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts) &&
                 encumCapacity == chara.encumCapacity && category.equals(chara.category);
-    }
-    public void delete(final Activity main){
-        File tmp = new File(getFileLocation(main));
-        tmp.delete();
-        if(((SWrpg)main.getApplication()).prefs.getBoolean(main.getString(R.string.google_drive_key),false)){
-            AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    getFileId(main).asDriveResource().delete(((SWrpg)main.getApplication()).gac).await();
-                    return null;
-                }
-            };
-            async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            ((SWrpg)main.getApplication()).deleteShortcut(Character.this,main);
-        }
     }
     public Object serialObject(){
         ArrayList<Object> out = new ArrayList<>();
@@ -2051,7 +1914,7 @@ public class Character extends Editable{
                     while(IDs.contains(ID)){
                         ID++;
                     }
-                    Character ch = Character.this.clone();
+                    Character ch = (Character)Character.this.clone();
                     ch.ID = ID;
                     ch.save(ch.getFileLocation(ac));
                     if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.google_drive_key),false))

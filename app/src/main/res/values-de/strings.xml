@@ -8,8 +8,6 @@
   <string name="title_activity_settings">Einstellungen</string>
   <string name="permission_error">Leider BRAUCHT diese App Datei-Lese- und -Schreibrechte. Mit OK wird die App nochmals um Erlaubnis bitten.
 Bei Abbrechen wechselt die App in den Nur-Würfel-Modus.</string>
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hallo leeres Fragment</string>
   <string name="loading_snack">Lädt Charaktere&#8230;</string>
   <string name="cloud_fail">Verbinden mit Google Drive fehlgeschlagen</string>
   <string name="retry">Erneut versuchen</string>
@@ -38,4 +36,6 @@ Bei Abbrechen wechselt die App in den Nur-Würfel-Modus.</string>
     <string name="error">Error!</string>
     <string name="type">Type:</string>
     <string name="downloading">Downloading...</string>
+    <string name="general">General</string>
+  <string name="notes">Notes</string>
 </resources>

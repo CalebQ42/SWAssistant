@@ -17,15 +17,15 @@ import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 
 public class EditFragment extends Fragment {
     public EditFragment() {}
-    public static EditFragment newInstance(Editable c) {
+    public static EditFragment newInstance(Editable ed) {
         EditFragment fragment = new EditFragment();
-        fragment.c = c;
+        fragment.ed = ed;
         return fragment;
     }
     Handler parentHandle = null;
-    public static EditFragment newInstance(Editable c,Handler parentHandle) {
+    public static EditFragment newInstance(Editable ed,Handler parentHandle) {
         EditFragment fragment = new EditFragment();
-        fragment.c = c;
+        fragment.ed = ed;
         fragment.parentHandle = parentHandle;
         return fragment;
     }
@@ -36,7 +36,7 @@ public class EditFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_editable_edit, container, false);
     }
 
-    Editable c;
+    Editable ed;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -49,9 +49,9 @@ public class EditFragment extends Fragment {
             public Fragment getItem(int position) {
                 switch(position){
                     case 0:
-                        return EditGeneral.newInstance(c,parentHandle);
+                        return EditGeneral.newInstance(ed,parentHandle);
                     case 1:
-                        return NotesFragment.newInstance(c);
+                        return NotesFragment.newInstance(ed);
                     default:
                         return null;
                 }
@@ -64,12 +64,11 @@ public class EditFragment extends Fragment {
 
             @Override
             public CharSequence getPageTitle(int position){
-                //TODO: use resource strings
                 switch(position){
                     case 0:
-                        return "General";
+                        return getString(R.string.general);
                     case 1:
-                        return "Notes";
+                        return getString(R.string.notes);
                     default:
                         return "";
                 }
@@ -101,11 +100,13 @@ public class EditFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
-            c.startEditing(getActivity(),((SWrpg)getActivity().getApplication()).charsFold.getDriveId());
-        else{
-            c.startEditing(getActivity());
-        }
+        ed.startEditing(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ed.stopEditing();
     }
 
     @Override
@@ -117,5 +118,5 @@ public class EditFragment extends Fragment {
         }
     }
 
-    public interface OnCharacterEditInteractionListener {}
+    interface OnCharacterEditInteractionListener {}
 }

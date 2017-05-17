@@ -10,9 +10,6 @@
     <string name="permission_error">Unfortunately this app NEEDS file read and write privileges. If you tap OK the app will ask for the permission again.
     If you click cancel the app switch to dice only.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="loading_snack">Loading Characters…</string>
     <string name="cloud_fail">Can\'t connect to Google Drive</string>
     <string name="retry">Retry</string>
@@ -54,4 +51,6 @@
     <string name="error">Error!</string>
     <string name="type">Type:</string>
     <string name="downloading">Downloading...</string>
+    <string name="general">General</string>
+    <string name="notes">Notes</string>
 </resources>
