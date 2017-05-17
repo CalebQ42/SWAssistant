@@ -1,5 +1,6 @@
 package com.apps.darkstorm.swrpg.assistant;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 import com.google.android.gms.ads.AdRequest;
@@ -194,7 +196,7 @@ public class DownloadFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-                    View ld = getActivity().getLayoutInflater().inflate(R.layout.dialog_loading,null);
+                    @SuppressLint("InflateParams") View ld = getActivity().getLayoutInflater().inflate(R.layout.dialog_loading,null);
                     b.setView(ld);
                     ((TextView)ld.findViewById(R.id.loading_message)).setText(R.string.downloading);
                     final AlertDialog loading = b.show();
@@ -202,11 +204,17 @@ public class DownloadFragment extends Fragment {
                         case 0:
                             if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
                                 final Load.Characters lc = new Load.Characters();
-                                lc.setOnFinish(new Load.onFinish() {
+                                lc.setOnFinish(new Load.OnLoad() {
                                     @Override
-                                    public void finish() {
+                                    public void onStart() {}
+                                    @Override
+                                    public boolean onLoad(Editable ed) {
+                                        return false;
+                                    }
+                                    @Override
+                                    public void onFinish(ArrayList<Editable> characters) {
                                         ArrayList<Integer> IDs = new ArrayList<>();
-                                        for (Character c : lc.characters) {
+                                        for (Editable c : characters) {
                                             IDs.add(c.ID);
                                         }
                                         int ID = 0;
@@ -272,11 +280,21 @@ public class DownloadFragment extends Fragment {
                         case 1:
                             if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
                                 final Load.Minions lc = new Load.Minions();
-                                lc.setOnFinish(new Load.onFinish() {
+                                lc.setOnFinish(new Load.OnLoad() {
                                     @Override
-                                    public void finish() {
+                                    public void onStart() {
+
+                                    }
+
+                                    @Override
+                                    public boolean onLoad(Editable ed) {
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public void onFinish(ArrayList<Editable> characters) {
                                         ArrayList<Integer> IDs = new ArrayList<>();
-                                        for (Minion c : lc.minions) {
+                                        for (Editable c : characters) {
                                             IDs.add(c.ID);
                                         }
                                         int ID = 0;
@@ -344,11 +362,17 @@ public class DownloadFragment extends Fragment {
                         case 2:
                             if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
                                 final Load.Vehicles lc = new Load.Vehicles();
-                                lc.setOnFinish(new Load.onFinish() {
+                                lc.setOnFinish(new Load.OnLoad() {
                                     @Override
-                                    public void finish() {
+                                    public void onStart() {}
+                                    @Override
+                                    public boolean onLoad(Editable ed) {
+                                        return false;
+                                    }
+                                    @Override
+                                    public void onFinish(ArrayList<Editable> characters) {
                                         ArrayList<Integer> IDs = new ArrayList<>();
-                                        for (Vehicle c : lc.vehicles) {
+                                        for (Editable c : characters) {
                                             IDs.add(c.ID);
                                         }
                                         int ID = 0;

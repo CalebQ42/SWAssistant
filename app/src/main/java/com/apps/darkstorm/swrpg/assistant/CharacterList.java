@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -62,6 +63,7 @@ public class CharacterList extends Fragment {
 
     Spinner sp;
     SwipeRefreshLayout srl;
+    NameCardAdap adap;
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -98,8 +100,12 @@ public class CharacterList extends Fragment {
         srl = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
         sp = (Spinner)view.findViewById(R.id.cat_spinner);
         cats = new ArrayList<>();
+        cats.add("All");
         characterCats = new ArrayList<>();
-        final NameCardAdap adap = new NameCardAdap();
+        characterCats.add(new ArrayList<Character>());
+        characters = new ArrayList<>();
+        adap = new NameCardAdap();
+        adap.setHasStableIds(true);
         RecyclerView r = (RecyclerView)view.findViewById(R.id.recycler);
         r.setAdapter(adap);
         sgl = new StaggeredGridLayoutManager(1,RecyclerView.VERTICAL);
@@ -107,11 +113,12 @@ public class CharacterList extends Fragment {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adap.charactersAdap = characterCats.get(position);
+                adap.cat = position;
                 adap.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {}
         });
+        sp.setAdapter(new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats));
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -149,6 +156,11 @@ public class CharacterList extends Fragment {
     }
 
     public void loadCharacters(){
+        sp.setSelection(0);
+        if(cats.size()>1) {
+            cats.removeAll(cats.subList(1, cats.size() - 1));
+            characterCats.removeAll(characterCats.subList(1,characterCats.size()-1));
+        }
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
             AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                 @Override
@@ -164,14 +176,12 @@ public class CharacterList extends Fragment {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        System.out.println("Checking");
                     }
                     return null;
                 }
 
                 @Override
                 protected void onPostExecute(Void aVoid) {
-                    System.out.println("Hellotooloo");
                     if(((SWrpg)getActivity().getApplication()).driveFail) {
                         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
                         b.setMessage(R.string.drive_fail);
@@ -193,41 +203,55 @@ public class CharacterList extends Fragment {
                         });
                         b.setCancelable(false);
                         srl.setRefreshing(false);
-                        System.out.println("Hellograa");
                         b.show();
                         return;
                     }
-                    System.out.println("Hellod");
                     final Load.Characters ch = new Load.Characters();
-                    ch.setOnFinish(new Load.onFinish() {
+                    ch.setOnFinish(new Load.OnLoad() {
                         @Override
-                        public void finish() {
-                            System.out.println("Hello");
-                            ch.saveLocal(getActivity());
-                            characters = ch.characters;
-                            cats.clear();
-                            characterCats.clear();
-                            cats.add("All");
-                            characterCats.add(new ArrayList<Character>());
-                            for (Character c:ch.characters){
-                                if(cats.contains(c.category)){
-                                    characterCats.get(cats.indexOf(c.category)).add(c);
-                                }else if(!c.category.equals("")){
-                                    cats.add(c.category);
-                                    characterCats.add(new ArrayList<Character>());
-                                    characterCats.get(characterCats.size()-1).add(c);
-                                }
-                                characterCats.get(0).add(c);
+                        public void onStart() {
+                            srl.setRefreshing(false);
+                            if(parentHandle==null)
+                                getActivity().findViewById(R.id.fab).setEnabled(false);
+                        }
+
+                        @Override
+                        public boolean onLoad(final Editable ed) {
+                            if(cats.contains(ed.category))
+                                characterCats.get(cats.indexOf(ed.category)).add((Character)ed);
+                            else if(!ed.category.equals("")){
+                                cats.add(ed.category);
+                                characterCats.add(new ArrayList<Character>());
+                                characterCats.get(cats.size()-1).add((Character)ed);
                             }
+                            characterCats.get(0).add((Character)ed);
+                            if(sp.getSelectedItemPosition()==cats.indexOf(ed.category)||sp.getSelectedItemPosition()==0) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(sp.getSelectedItemPosition()!=0)
+                                            adap.notifyItemInserted(characterCats.get(cats.indexOf(ed.category)).size() - 1);
+                                        else
+                                            adap.notifyItemInserted(characterCats.get(0).size()-1);
+                                    }
+                                });
+                            }
+                            return false;
+                        }
+
+                        @Override
+                        public void onFinish(ArrayList<Editable> characters) {
+                            CharacterList.this.characters.clear();
+                            for(Editable ed:characters)
+                                CharacterList.this.characters.add((Character)ed);
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-                                    sp.setAdapter(apAdap);
-                                    srl.setRefreshing(false);
-                                    sp.setSelection(0);
+                                    if(parentHandle==null)
+                                        getActivity().findViewById(R.id.fab).setEnabled(true);
                                 }
                             });
+                            ch.saveLocal(getActivity());
                         }
                     });
                     ch.load(getActivity());
@@ -252,10 +276,7 @@ public class CharacterList extends Fragment {
                 }
                 characterCats.get(0).add(c);
             }
-            ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-            sp.setAdapter(apAdap);
             srl.setRefreshing(false);
-            sp.setSelection(0);
         }
         if(parentHandle!= null){
             Message msg = parentHandle.obtainMessage();
@@ -265,19 +286,9 @@ public class CharacterList extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            if(((SWrpg)getActivity().getApplication()).gac==null ||!((SWrpg)getActivity().getApplication()).gac.isConnected()) {
-                ((MainDrawer) getActivity()).gacMaker();
-            }
-        }
-    }
-
     class NameCardAdap extends RecyclerView.Adapter<NameCardAdap.NameCard> {
 
-        ArrayList<Character> charactersAdap = new ArrayList<>();
+        int cat = 0;
 
         @Override
         public NameCard onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -306,9 +317,9 @@ public class CharacterList extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             characters.remove(n.character);
-                            int ind = charactersAdap.indexOf(n.character);
+                            int ind = characterCats.get(cat).indexOf(n.character);
                             if (ind != -1){
-                                charactersAdap.remove(ind);
+                                characterCats.get(cat).remove(ind);
                                 NameCardAdap.this.notifyItemRemoved(ind);
                             }
                             for (ArrayList<Character> al:characterCats){
@@ -332,17 +343,17 @@ public class CharacterList extends Fragment {
 
         @Override
         public void onBindViewHolder(NameCard holder, int position) {
-            ((TextView)holder.c.findViewById(R.id.name)).setText(charactersAdap.get(position).name);
-            if (charactersAdap.get(position).career.equals(""))
+            ((TextView)holder.c.findViewById(R.id.name)).setText(characterCats.get(cat).get(position).name);
+            if (characterCats.get(cat).get(position).career.equals(""))
                 holder.c.findViewById(R.id.subname).setVisibility(View.GONE);
             else
-                ((TextView) holder.c.findViewById(R.id.subname)).setText(charactersAdap.get(position).career);
-            holder.character = charactersAdap.get(position);
+                ((TextView) holder.c.findViewById(R.id.subname)).setText(characterCats.get(cat).get(position).career);
+            holder.character = characterCats.get(cat).get(position);
         }
 
         @Override
         public int getItemCount() {
-            return charactersAdap.size();
+            return characterCats.get(cat).size();
         }
 
         class NameCard extends RecyclerView.ViewHolder {
@@ -351,6 +362,16 @@ public class CharacterList extends Fragment {
             NameCard(CardView c) {
                 super(c);
                 this.c = c;
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+            if(((SWrpg)getActivity().getApplication()).gac==null ||!((SWrpg)getActivity().getApplication()).gac.isConnected()) {
+                ((MainDrawer) getActivity()).gacMaker();
             }
         }
     }

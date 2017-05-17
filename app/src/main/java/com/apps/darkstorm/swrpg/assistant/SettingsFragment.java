@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 
@@ -194,14 +195,21 @@ public class SettingsFragment extends Fragment {
                                         protected Void doInBackground(Void... params) {
                                             final boolean[] finished =new boolean[]{false,false,false};
                                             final Load.Characters lc = new Load.Characters();
-                                            lc.setOnFinish(new Load.onFinish() {
+                                            lc.setOnFinish(new Load.OnLoad() {
                                                 @Override
-                                                public void finish() {
+                                                public void onStart() {}
+                                                @Override
+                                                public boolean onLoad(Editable ed) {
+                                                    return false;
+                                                }
+
+                                                @Override
+                                                public void onFinish(ArrayList<Editable> characters) {
                                                     ArrayList<Integer> IDs = new ArrayList<>();
-                                                    for (Character c : lc.characters) {
+                                                    for (Editable c : characters) {
                                                         IDs.add(c.ID);
                                                     }
-                                                    for(Character c:characters){
+                                                    for(Editable c: characters){
                                                         int ID = 0;
                                                         while (IDs.contains(ID)) {
                                                             ID++;
@@ -215,14 +223,21 @@ public class SettingsFragment extends Fragment {
                                             });
                                             lc.load(getActivity());
                                             final Load.Minions lm = new Load.Minions();
-                                            lm.setOnFinish(new Load.onFinish() {
+                                            lm.setOnFinish(new Load.OnLoad() {
                                                 @Override
-                                                public void finish() {
+                                                public void onStart() {}
+                                                @Override
+                                                public boolean onLoad(Editable ed) {
+                                                    return false;
+                                                }
+
+                                                @Override
+                                                public void onFinish(ArrayList<Editable> characters) {
                                                     ArrayList<Integer> IDs = new ArrayList<>();
-                                                    for (Minion c : lm.minions) {
+                                                    for (Editable c : characters) {
                                                         IDs.add(c.ID);
                                                     }
-                                                    for(Minion c:minions){
+                                                    for(Editable c: characters){
                                                         int ID = 0;
                                                         while (IDs.contains(ID)) {
                                                             ID++;
@@ -231,19 +246,26 @@ public class SettingsFragment extends Fragment {
                                                         c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
                                                         IDs.add(ID);
                                                     }
-                                                    finished[1] = true;
+                                                    finished[0] = true;
                                                 }
                                             });
                                             lm.load(getActivity());
                                             final Load.Vehicles lv = new Load.Vehicles();
-                                            lv.setOnFinish(new Load.onFinish() {
+                                            lv.setOnFinish(new Load.OnLoad() {
                                                 @Override
-                                                public void finish() {
+                                                public void onStart() {}
+                                                @Override
+                                                public boolean onLoad(Editable ed) {
+                                                    return false;
+                                                }
+
+                                                @Override
+                                                public void onFinish(ArrayList<Editable> characters) {
                                                     ArrayList<Integer> IDs = new ArrayList<>();
-                                                    for (Vehicle c : lv.vehicles) {
+                                                    for (Editable c : characters) {
                                                         IDs.add(c.ID);
                                                     }
-                                                    for(Vehicle c:vehicles){
+                                                    for(Editable c: characters){
                                                         int ID = 0;
                                                         while (IDs.contains(ID)) {
                                                             ID++;
@@ -252,7 +274,7 @@ public class SettingsFragment extends Fragment {
                                                         c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
                                                         IDs.add(ID);
                                                     }
-                                                    finished[2] = true;
+                                                    finished[0] = true;
                                                 }
                                             });
                                             lv.load(getActivity());

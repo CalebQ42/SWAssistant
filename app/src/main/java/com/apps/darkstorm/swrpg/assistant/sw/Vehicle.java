@@ -1102,11 +1102,19 @@ public class Vehicle extends Editable{
                     while(IDs.contains(ID)){
                         ID++;
                     }
-                    Vehicle ch = (Vehicle)Vehicle.this.clone();
+                    final Vehicle ch = (Vehicle)Vehicle.this.clone();
                     ch.ID = ID;
                     ch.save(ch.getFileLocation(ac));
-                    if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.google_drive_key),false))
-                        ch.cloudSave(((SWrpg)ac.getApplication()).gac,ch.getFileId(ac),true);
+                    if(((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.google_drive_key),false)) {
+                        AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                ch.cloudSave(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac), true);
+                                return null;
+                            }
+                        };
+                        async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }
                 }
             });
         }

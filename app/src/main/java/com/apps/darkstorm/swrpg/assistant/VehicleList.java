@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -61,12 +63,11 @@ public class VehicleList extends Fragment {
 
     Spinner sp;
     SwipeRefreshLayout srl;
+    NameCardAdap adap;
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         if(parentHandle == null) {
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            toolbar.setTitle(R.string.vehicles);
             if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
                 AdView ads = (AdView)view.findViewById(R.id.adView);
                 ads.setVisibility(View.VISIBLE);
@@ -93,12 +94,18 @@ public class VehicleList extends Fragment {
                     ((FloatingActionButton) getActivity().findViewById(R.id.fab)).hide();
                 }
             });
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            toolbar.setTitle(R.string.vehicles);
         }
         srl = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
         sp = (Spinner)view.findViewById(R.id.cat_spinner);
         cats = new ArrayList<>();
+        cats.add("All");
         vehicleCats = new ArrayList<>();
-        final NameCardAdap adap = new NameCardAdap();
+        vehicleCats.add(new ArrayList<Vehicle>());
+        vehicles = new ArrayList<>();
+        adap = new NameCardAdap();
+        adap.setHasStableIds(true);
         RecyclerView r = (RecyclerView)view.findViewById(R.id.recycler);
         r.setAdapter(adap);
         sgl = new StaggeredGridLayoutManager(1,RecyclerView.VERTICAL);
@@ -106,11 +113,12 @@ public class VehicleList extends Fragment {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adap.vehiclesAdap = vehicleCats.get(position);
+                adap.cat = position;
                 adap.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {}
         });
+        sp.setAdapter(new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats));
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -147,13 +155,21 @@ public class VehicleList extends Fragment {
         }
     }
 
-
     public void loadVehicles(){
-        srl.setRefreshing(true);
+        sp.setSelection(0);
+        if(cats.size()>1) {
+            cats.removeAll(cats.subList(1, cats.size() - 1));
+            vehicleCats.removeAll(vehicleCats.subList(1,vehicleCats.size()-1));
+        }
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            Thread th = new Thread(new Runnable() {
+            AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                 @Override
-                public void run() {
+                protected void onPreExecute() {
+                    srl.setRefreshing(true);
+                }
+
+                @Override
+                protected Void doInBackground(Void... params) {
                     while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
                         try {
                             Thread.sleep(500);
@@ -161,12 +177,19 @@ public class VehicleList extends Fragment {
                             e.printStackTrace();
                         }
                     }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
                     if(((SWrpg)getActivity().getApplication()).driveFail) {
                         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
                         b.setMessage(R.string.drive_fail);
                         b.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                ((SWrpg)getActivity().getApplication()).driveFail = false;
+                                ((MainDrawer)getActivity()).gacMaker();
                                 loadVehicles();
                                 dialog.cancel();
                             }
@@ -180,44 +203,63 @@ public class VehicleList extends Fragment {
                         });
                         b.setCancelable(false);
                         srl.setRefreshing(false);
+                        b.show();
                         return;
                     }
                     final Load.Vehicles ch = new Load.Vehicles();
-                    ch.setOnFinish(new Load.onFinish() {
+                    ch.setOnFinish(new Load.OnLoad() {
                         @Override
-                        public void finish() {
-                            ch.saveLocal(getActivity());
-                            vehicles = ch.vehicles;
-                            cats.clear();
-                            vehicleCats.clear();
-                            cats.add("All");
-                            vehicleCats.add(new ArrayList<Vehicle>());
-                            for (Vehicle c:ch.vehicles){
-                                if(cats.contains(c.category)){
-                                    vehicleCats.get(cats.indexOf(c.category)).add(c);
-                                }else if(!c.category.equals("")){
-                                    cats.add(c.category);
-                                    vehicleCats.add(new ArrayList<Vehicle>());
-                                    vehicleCats.get(vehicleCats.size()-1).add(c);
-                                }
-                                vehicleCats.get(0).add(c);
+                        public void onStart() {
+                            srl.setRefreshing(false);
+                            if(parentHandle==null)
+                                getActivity().findViewById(R.id.fab).setEnabled(false);
+                        }
+
+                        @Override
+                        public boolean onLoad(final Editable ed) {
+                            if(cats.contains(ed.category))
+                                vehicleCats.get(cats.indexOf(ed.category)).add((Vehicle)ed);
+                            else if(!ed.category.equals("")){
+                                cats.add(ed.category);
+                                vehicleCats.add(new ArrayList<Vehicle>());
+                                vehicleCats.get(cats.size()-1).add((Vehicle)ed);
                             }
+                            vehicleCats.get(0).add((Vehicle)ed);
+                            if(sp.getSelectedItemPosition()==cats.indexOf(ed.category)||sp.getSelectedItemPosition()==0) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(sp.getSelectedItemPosition()!=0)
+                                            adap.notifyItemInserted(vehicleCats.get(cats.indexOf(ed.category)).size() - 1);
+                                        else
+                                            adap.notifyItemInserted(vehicleCats.get(0).size()-1);
+                                    }
+                                });
+                            }
+                            return false;
+                        }
+
+                        @Override
+                        public void onFinish(ArrayList<Editable> vehicles) {
+                            VehicleList.this.vehicles.clear();
+                            for(Editable ed:vehicles)
+                                VehicleList.this.vehicles.add((Vehicle)ed);
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-                                    sp.setAdapter(apAdap);
-                                    sp.setSelection(0);
-                                    srl.setRefreshing(false);
+                                    if(parentHandle==null)
+                                        getActivity().findViewById(R.id.fab).setEnabled(true);
                                 }
                             });
+                            ch.saveLocal(getActivity());
                         }
                     });
                     ch.load(getActivity());
                 }
-            });
-            th.run();
+            };
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else{
+            srl.setRefreshing(true);
             vehicles = new ArrayList<>();
             vehicles.addAll(Arrays.asList(LoadLocal.vehicles(getActivity())));
             cats.clear();
@@ -234,9 +276,6 @@ public class VehicleList extends Fragment {
                 }
                 vehicleCats.get(0).add(c);
             }
-            ArrayAdapter<CharSequence> apAdap = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,cats);
-            sp.setAdapter(apAdap);
-            sp.setSelection(0);
             srl.setRefreshing(false);
         }
         if(parentHandle!= null){
@@ -247,18 +286,9 @@ public class VehicleList extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            if(((SWrpg)getActivity().getApplication()).gac==null ||!((SWrpg)getActivity().getApplication()).gac.isConnected())
-                ((MainDrawer)getActivity()).gacMaker();
-        }
-    }
-
     class NameCardAdap extends RecyclerView.Adapter<NameCardAdap.NameCard> {
 
-        ArrayList<Vehicle> vehiclesAdap = new ArrayList<>();
+        int cat = 0;
 
         @Override
         public NameCard onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -287,9 +317,9 @@ public class VehicleList extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             vehicles.remove(n.vehicle);
-                            int ind = vehiclesAdap.indexOf(n.vehicle);
+                            int ind = vehicleCats.get(cat).indexOf(n.vehicle);
                             if (ind != -1){
-                                vehiclesAdap.remove(ind);
+                                vehicleCats.get(cat).remove(ind);
                                 NameCardAdap.this.notifyItemRemoved(ind);
                             }
                             for (ArrayList<Vehicle> al:vehicleCats){
@@ -313,17 +343,17 @@ public class VehicleList extends Fragment {
 
         @Override
         public void onBindViewHolder(NameCard holder, int position) {
-            ((TextView)holder.c.findViewById(R.id.name)).setText(vehiclesAdap.get(position).name);
-            if (vehiclesAdap.get(position).model.equals(""))
+            ((TextView)holder.c.findViewById(R.id.name)).setText(vehicleCats.get(cat).get(position).name);
+            if (vehicleCats.get(cat).get(position).model.equals(""))
                 holder.c.findViewById(R.id.subname).setVisibility(View.GONE);
             else
-                ((TextView) holder.c.findViewById(R.id.subname)).setText(vehiclesAdap.get(position).model);
-            holder.vehicle = vehiclesAdap.get(position);
+                ((TextView) holder.c.findViewById(R.id.subname)).setText(vehicleCats.get(cat).get(position).model);
+            holder.vehicle = vehicleCats.get(cat).get(position);
         }
 
         @Override
         public int getItemCount() {
-            return vehiclesAdap.size();
+            return vehicleCats.get(cat).size();
         }
 
         class NameCard extends RecyclerView.ViewHolder {
@@ -333,6 +363,15 @@ public class VehicleList extends Fragment {
                 super(c);
                 this.c = c;
             }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
+            if(((SWrpg)getActivity().getApplication()).gac==null ||!((SWrpg)getActivity().getApplication()).gac.isConnected())
+                ((MainDrawer)getActivity()).gacMaker();
         }
     }
 

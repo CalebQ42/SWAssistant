@@ -42,6 +42,7 @@ import com.apps.darkstorm.swrpg.assistant.drive.Init;
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 import com.google.android.gms.common.ConnectionResult;
@@ -53,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener,
@@ -233,35 +235,36 @@ public class MainDrawer extends AppCompatActivity
                                     ad.cancel();
                                     getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
                                 }else{
+                                    final boolean[] found = {false};
                                     final Load.Characters ld = new Load.Characters();
-                                    ld.setOnFinish(new Load.onFinish() {
+                                    ld.setOnFinish(new Load.OnLoad() {
                                         @Override
-                                        public void finish() {
-                                            ld.saveLocal(MainDrawer.this);
-                                            boolean found = false;
-                                            for (int i = 0; i<ld.characters.size(); i++){
-                                                final Character c = ld.characters.get(i);
-                                                if (c.ID == ID){
-                                                    found = true;
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            ad.cancel();
-                                                            getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                                    EditFragment.newInstance(c)).commit();
-                                                        }
-                                                    });
-                                                    break;
-                                                }
-                                            }
-                                            if (!found){
+                                        public void onStart() {
+
+                                        }
+
+                                        @Override
+                                        public boolean onLoad(final Editable ed) {
+                                            if (ed.ID == ID){
+                                                found[0] = true;
                                                 runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         ad.cancel();
-                                                        getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
+                                                        getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                                EditFragment.newInstance(ed)).commit();
                                                     }
                                                 });
+                                                return true;
+                                            }
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public void onFinish(ArrayList<Editable> characters) {
+                                            if (!found[0]) {
+                                                ad.cancel();
+                                                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
                                             }
                                         }
                                     });
@@ -307,34 +310,35 @@ public class MainDrawer extends AppCompatActivity
                                     getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
                                 }else{
                                     final Load.Minions ld = new Load.Minions();
-                                    ld.setOnFinish(new Load.onFinish() {
+                                    final boolean[] found = {false};
+                                    ld.setOnFinish(new Load.OnLoad() {
                                         @Override
-                                        public void finish() {
-                                            ld.saveLocal(MainDrawer.this);
-                                            boolean found = false;
-                                            for (int i = 0; i<ld.minions.size(); i++){
-                                                final Minion c = ld.minions.get(i);
-                                                if (c.ID == ID){
-                                                    found = true;
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            ad.cancel();
-                                                            getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                                    EditFragment.newInstance(c)).commit();
-                                                        }
-                                                    });
-                                                    break;
-                                                }
-                                            }
-                                            if (!found){
+                                        public void onStart() {
+
+                                        }
+
+                                        @Override
+                                        public boolean onLoad(final Editable ed) {
+                                            if (ed.ID == ID){
+                                                found[0] = true;
                                                 runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         ad.cancel();
-                                                        getFragmentManager().beginTransaction().replace(R.id.content_main, MinionList.newInstance()).commit();
+                                                        getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                                EditFragment.newInstance(ed)).commit();
                                                     }
                                                 });
+                                                return true;
+                                            }
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public void onFinish(ArrayList<Editable> characters) {
+                                            if (!found[0]) {
+                                                ad.cancel();
+                                                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
                                             }
                                         }
                                     });
@@ -379,34 +383,35 @@ public class MainDrawer extends AppCompatActivity
                                     getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
                                 }else{
                                     final Load.Vehicles ld = new Load.Vehicles();
-                                    ld.setOnFinish(new Load.onFinish() {
+                                    final boolean[] found = {false};
+                                    ld.setOnFinish(new Load.OnLoad() {
                                         @Override
-                                        public void finish() {
-                                            ld.saveLocal(MainDrawer.this);
-                                            boolean found = false;
-                                            for (int i = 0; i<ld.vehicles.size(); i++){
-                                                final Vehicle c = ld.vehicles.get(i);
-                                                if (c.ID == ID){
-                                                    found = true;
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            ad.cancel();
-                                                            getFragmentManager().beginTransaction().replace(R.id.content_main,
-                                                                    EditFragment.newInstance(c)).commit();
-                                                        }
-                                                    });
-                                                    break;
-                                                }
-                                            }
-                                            if (!found){
+                                        public void onStart() {
+
+                                        }
+
+                                        @Override
+                                        public boolean onLoad(final Editable ed) {
+                                            if (ed.ID == ID){
+                                                found[0] = true;
                                                 runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         ad.cancel();
-                                                        getFragmentManager().beginTransaction().replace(R.id.content_main, VehicleList.newInstance()).commit();
+                                                        getFragmentManager().beginTransaction().replace(R.id.content_main,
+                                                                EditFragment.newInstance(ed)).commit();
                                                     }
                                                 });
+                                                return true;
+                                            }
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public void onFinish(ArrayList<Editable> characters) {
+                                            if (!found[0]) {
+                                                ad.cancel();
+                                                getFragmentManager().beginTransaction().replace(R.id.content_main, CharacterList.newInstance()).commit();
                                             }
                                         }
                                     });
