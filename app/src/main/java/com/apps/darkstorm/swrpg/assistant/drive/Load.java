@@ -82,29 +82,23 @@ public class Load {
                 fold.mkdirs();
                 fold.mkdir();
             }
-            if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.sync_key),true)){
-                for (File f:fold.listFiles()){
-                    if (f.getName().endsWith(".char"))
-                        f.delete();
-                }
-                for (Editable c: characters)
-                    c.save(c.getFileLocation(ac));
-            }else {
-                Character[] ch = LoadLocal.characters(ac);
-                for (int i = 0; i < characters.size(); i++) {
-                    Editable drch = characters.get(i);
-                    boolean found = false;
-                    for (Character c : ch) {
-                        if (drch.ID == c.ID) {
-                            File local = new File(c.getFileLocation(ac));
-                            if (new Date(local.lastModified()).before(lastMod.get(i)))
-                                drch.save(drch.getFileLocation(ac));
-                            found = true;
-                        }
+            Character[] ch = LoadLocal.characters(ac);
+            for(Character c:ch) {
+                boolean found = false;
+                for(int i = 0;i<characters.size();i++) {
+                    Editable ed = characters.get(i);
+                    if(ed.ID==c.ID) {
+                        found = true;
+                        Date local = new Date(new File(c.getFileLocation(ac)).lastModified());
+                        if(local.after(lastMod.get(i)))
+                            c.cloudSave(((SWrpg)ac.getApplication()).gac,c.getFileId(ac),true);
+                        else
+                            ed.save(ed.getFileLocation(ac));
+                        break;
                     }
-                    if (!found)
-                        drch.save(drch.getFileLocation(ac));
                 }
+                if(!found)
+                    c.delete(ac);
             }
         }
         public void setOnFinish(OnLoad ol){
@@ -165,29 +159,23 @@ public class Load {
                 fold.mkdirs();
                 fold.mkdir();
             }
-            if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.sync_key),true)){
-                for (File f:fold.listFiles()){
-                    if (f.getName().endsWith(".minion"))
-                        f.delete();
-                }
-                for (Editable c: minions)
-                    c.save(c.getFileLocation(ac));
-            }else {
-                Minion[] ch = LoadLocal.minions(ac);
-                for (int i = 0; i < minions.size(); i++) {
-                    Editable drch = minions.get(i);
-                    boolean found = false;
-                    for (Minion c : ch) {
-                        if (drch.ID == c.ID) {
-                            File local = new File(c.getFileLocation(ac));
-                            if (new Date(local.lastModified()).before(lastMod.get(i)))
-                                drch.save(drch.getFileLocation(ac));
-                            found = true;
-                        }
+            Minion[] ch = LoadLocal.minions(ac);
+            for(Minion c:ch) {
+                boolean found = false;
+                for(int i = 0;i<minions.size();i++) {
+                    Editable ed = minions.get(i);
+                    if(ed.ID==c.ID) {
+                        found = true;
+                        Date local = new Date(new File(c.getFileLocation(ac)).lastModified());
+                        if(local.after(lastMod.get(i)))
+                            c.cloudSave(((SWrpg)ac.getApplication()).gac,c.getFileId(ac),true);
+                        else
+                            ed.save(ed.getFileLocation(ac));
+                        break;
                     }
-                    if (!found)
-                        drch.save(drch.getFileLocation(ac));
                 }
+                if(!found)
+                    c.delete(ac);
             }
         }
         public void setOnFinish(OnLoad ol){
@@ -252,34 +240,23 @@ public class Load {
                 fold.mkdirs();
                 fold.mkdir();
             }
-            fold = new File(((SWrpg)ac.getApplication()).prefs.getString(ac.getString(R.string.local_location_key),((SWrpg)ac.getApplication()).defaultLoc)+"/SWShips");
-            if (!fold.exists()){
-                fold.mkdirs();
-                fold.mkdir();
-            }
-            if (((SWrpg)ac.getApplication()).prefs.getBoolean(ac.getString(R.string.sync_key),true)){
-                for (File f:fold.listFiles()){
-                    if (f.getName().endsWith(".vhcl"))
-                        f.delete();
-                }
-                for (Editable c: vehicles)
-                    c.save(c.getFileLocation(ac));
-            }else {
-                Vehicle[] ch = LoadLocal.vehicles(ac);
-                for (int i = 0; i < vehicles.size(); i++) {
-                    Editable drch = vehicles.get(i);
-                    boolean found = false;
-                    for (Vehicle c : ch) {
-                        if (drch.ID == c.ID) {
-                            File local = new File(c.getFileLocation(ac));
-                            if (new Date(local.lastModified()).before(lastMod.get(i)))
-                                drch.save(drch.getFileLocation(ac));
-                            found = true;
-                        }
+            Vehicle[] ch = LoadLocal.vehicles(ac);
+            for(Vehicle c:ch) {
+                boolean found = false;
+                for(int i = 0;i<vehicles.size();i++) {
+                    Editable ed = vehicles.get(i);
+                    if(ed.ID==c.ID) {
+                        found = true;
+                        Date local = new Date(new File(c.getFileLocation(ac)).lastModified());
+                        if(local.after(lastMod.get(i)))
+                            c.cloudSave(((SWrpg)ac.getApplication()).gac,c.getFileId(ac),true);
+                        else
+                            ed.save(ed.getFileLocation(ac));
+                        break;
                     }
-                    if (!found)
-                        drch.save(drch.getFileLocation(ac));
                 }
+                if(!found)
+                    c.delete(ac);
             }
         }
         public void setOnFinish(OnLoad ol){

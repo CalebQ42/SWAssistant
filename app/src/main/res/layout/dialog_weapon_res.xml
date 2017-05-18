@@ -127,7 +127,7 @@
             android:layout_height="1dp"
             android:layout_marginBottom="2dp"
             android:background="@color/lineDivider"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"

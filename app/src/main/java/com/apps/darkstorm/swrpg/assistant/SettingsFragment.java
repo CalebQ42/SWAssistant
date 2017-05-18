@@ -123,14 +123,6 @@ public class SettingsFragment extends Fragment {
                 build.show();
             }
         });
-        final Switch sync = (Switch)view.findViewById(R.id.sync_switch);
-        sync.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.sync_key),true));
-        sync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.sync_key),isChecked).apply();
-            }
-        });
         final Switch cloud = (Switch)view.findViewById(R.id.cloud_switch);
         cloud.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false));
         cloud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -320,28 +312,8 @@ public class SettingsFragment extends Fragment {
                     driveLoading.show();
                     asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
-
-                if(cloud.isChecked()){
-                    sync.setVisibility(View.VISIBLE);
-                }else{
-                    sync.setVisibility(View.GONE);
-                }
             }
         });
-        sync.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-                b.setMessage(R.string.sync_desc);
-                b.show();
-                return true;
-            }
-        });
-        if(cloud.isChecked()){
-            sync.setVisibility(View.VISIBLE);
-        }else{
-            sync.setVisibility(View.GONE);
-        }
         Switch ads = (Switch)view.findViewById(R.id.ads_switch);
         ads.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true));
         ads.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

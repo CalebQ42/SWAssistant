@@ -41,6 +41,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+
+                        android:contentDescription="@string/ability_dice"
                         app:srcCompat="@drawable/ability" />
                 </LinearLayout>
 
@@ -88,6 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+                        android:contentDescription="@string/proficiency_dice"
                         app:srcCompat="@drawable/proficiency" />
                 </LinearLayout>
 
@@ -135,6 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+                        android:contentDescription="@string/difficulty_dice"
                         app:srcCompat="@drawable/difficulty" />
                 </LinearLayout>
 
@@ -181,6 +185,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+                        android:contentDescription="@string/challenge_dice"
                         app:srcCompat="@drawable/challenge" />
                 </LinearLayout>
 
@@ -227,6 +232,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+                        android:contentDescription="@string/boost_dice"
                         app:srcCompat="@drawable/boost" />
                 </LinearLayout>
 
@@ -273,6 +279,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+                        android:contentDescription="@string/setback_dice"
                         app:srcCompat="@drawable/setback" />
                 </LinearLayout>
 
@@ -319,6 +326,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+                        android:contentDescription="@string/force_dice"
                         app:srcCompat="@drawable/force" />
                 </LinearLayout>
 

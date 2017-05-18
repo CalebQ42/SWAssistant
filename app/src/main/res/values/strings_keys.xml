@@ -3,7 +3,6 @@
     <string name="preference_key" translatable="false">prefs</string>
 
     <string name="google_drive_key" translatable="false">cloudEnabled</string>
-    <string name="sync_key" translatable="false">syncStyleCloud</string>
 
     <string name="dice_key" translatable="false">getDiceOnLaunch</string>
     <string name="light_side_key" translatable="false">lightSideKey</string>

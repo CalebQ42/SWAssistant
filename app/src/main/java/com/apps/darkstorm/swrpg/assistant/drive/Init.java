@@ -25,6 +25,7 @@ public class Init {
             public void onResult(@NonNull Status status) {
                 switch(String.valueOf(status.isSuccess())){
                     case "false":
+                        //noinspection ConstantConditions
                         if(!status.getStatusMessage().equals("Sync request rate limit exceeded.")) {
                             if (number < 5)
                                 Init.connect(main, number + 1);

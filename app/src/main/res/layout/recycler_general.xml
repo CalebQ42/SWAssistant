@@ -33,5 +33,5 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/ad_recycle"></android.support.v7.widget.RecyclerView>
+        app:layout_constraintBottom_toTopOf="@+id/ad_recycle" />
 </android.support.constraint.ConstraintLayout>
