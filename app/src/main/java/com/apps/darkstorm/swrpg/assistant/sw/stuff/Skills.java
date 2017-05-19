@@ -92,18 +92,9 @@ public class Skills{
     public static class SkillsAdap extends RecyclerView.Adapter<SkillsAdap.ViewHolder>{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_skill,parent,false));
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
-            if(c instanceof Character) {
+            final ViewHolder holder = new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_skill,parent,false));
+            if(c instanceof Character){
                 final Skills skls = ((Character)c).skills;
-                if (skls.get(position).career)
-                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText("*" + skls.get(position).name);
-                else
-                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText(" " + skls.get(position).name);
-                ((TextView) holder.v.findViewById(R.id.skill_value)).setText(String.valueOf(skls.get(position).val));
                 holder.v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -131,6 +122,9 @@ public class Skills{
                         b.setView(view);
                         view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
                         view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                        view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                        view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                        view.findViewById(R.id.dice_label).setVisibility(View.GONE);
                         final DiceHolder dh = new DiceHolder();
                         if (((Character)c).charVals[skls.get(holder.getAdapterPosition()).baseChar] > skls.get(holder.getAdapterPosition()).val) {
                             dh.ability = ((Character)c).charVals[skls.get(holder.getAdapterPosition()).baseChar] - skls.get(holder.getAdapterPosition()).val;
@@ -160,11 +154,6 @@ public class Skills{
                 });
             }else if(c instanceof Minion){
                 final Skills skls = ((Minion)c).skills;
-                if (skls.get(position).career)
-                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText("*" + skls.get(position).name);
-                else
-                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText(" " + skls.get(position).name);
-                ((TextView) holder.v.findViewById(R.id.skill_value)).setText(String.valueOf(skls.get(position).val));
                 holder.v.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -219,6 +208,23 @@ public class Skills{
                         b.show();
                     }
                 });
+            }
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            if(c instanceof Character) {
+                final Skills skls = ((Character)c).skills;
+                ((TextView) holder.v.findViewById(R.id.skill_name)).setText(skls.get(position).getNameString());
+                ((TextView) holder.v.findViewById(R.id.skill_value)).setText(String.valueOf(skls.get(position).val));
+            }else if(c instanceof Minion){
+                final Skills skls = ((Minion)c).skills;
+                if (skls.get(position).career)
+                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText("*" + skls.get(position).name);
+                else
+                    ((TextView) holder.v.findViewById(R.id.skill_name)).setText(" " + skls.get(position).name);
+                ((TextView) holder.v.findViewById(R.id.skill_value)).setText(String.valueOf(skls.get(position).val));
             }
         }
 

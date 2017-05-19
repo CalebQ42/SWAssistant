@@ -22,7 +22,7 @@ public class Skill{
     //Version 1 0-3
     public String name = "";
     public int val;
-    public int baseChar;
+    int baseChar;
     public boolean career;
     public int costNext(){
         int out = 5*(val+1);
@@ -141,7 +141,10 @@ public class Skill{
                     s.get(pos).name = skills.get(skillSpin.getSelectedItemPosition());
                 }
                 if(!(c instanceof Minion)){
-                    s.get(pos).val = Integer.parseInt(((EditText)ed.findViewById(R.id.value_edit)).getText().toString());
+                    if(!((EditText)ed.findViewById(R.id.value_edit)).getText().toString().equals(""))
+                        s.get(pos).val = Integer.parseInt(((EditText)ed.findViewById(R.id.value_edit)).getText().toString());
+                    else
+                        s.get(pos).val = 0;
                 }
                 s.get(pos).career = ((Switch)ed.findViewById(R.id.career)).isChecked();
                 os.save();
