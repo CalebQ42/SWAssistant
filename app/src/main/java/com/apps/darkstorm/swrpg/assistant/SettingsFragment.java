@@ -27,7 +27,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
@@ -145,6 +144,8 @@ public class SettingsFragment extends Fragment {
 
                         @Override
                         protected Void doInBackground(Void... params) {
+                            if(getActivity()==null)
+                                return null;
                             while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
                                 try {
                                     Thread.sleep(500);
@@ -334,109 +335,109 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.donate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(((SWrpg)getActivity().getApplication()).iaps!=null) {
-                    ArrayList<String> items = new ArrayList<>();
-                    items.add("donate1");
-                    items.add("donate3");
-                    items.add("donate5");
-                    items.add("donate10");
-                    final Bundle itemQuery = new Bundle();
-                    itemQuery.putStringArrayList("ITEM_ID_LIST", items);
-                    final String[] prices = new String[4];
-                    AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
-                        boolean success = false;
+                if(((SWrpg)getActivity().getApplication()).iaps!=null)
+                    ((MainDrawer)getActivity()).iapsMaker();
+                ArrayList<String> items = new ArrayList<>();
+                items.add("donate1");
+                items.add("donate3");
+                items.add("donate5");
+                items.add("donate10");
+                final Bundle itemQuery = new Bundle();
+                itemQuery.putStringArrayList("ITEM_ID_LIST", items);
+                final String[] prices = new String[4];
+                AsyncTask<Void, Void, Void> async = new AsyncTask<Void, Void, Void>() {
+                    boolean success = false;
 
-                        @Override
-                        protected Void doInBackground(Void... params) {
-                            try {
-                                Bundle details = ((SWrpg) getActivity().getApplication()).iaps.getSkuDetails(3, getActivity().getPackageName(), "inapp", itemQuery);
-                                if (details.getInt("RESPONSE_CODE") == 0) {
-                                    ArrayList<String> resp = details.getStringArrayList("DETAILS_LIST");
-                                    if (resp == null) return null;
-                                    for (String s : resp) {
-                                        JSONObject obj = new JSONObject(s);
-                                        switch (obj.getString("productId")) {
-                                            case "donate1":
-                                                prices[0] = obj.getString("price");
-                                                break;
-                                            case "donate3":
-                                                prices[1] = obj.getString("price");
-                                                break;
-                                            case "donate5":
-                                                prices[2] = obj.getString("price");
-                                                break;
-                                            case "donate10":
-                                                prices[3] = obj.getString("price");
-                                                break;
-                                        }
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Bundle details = ((SWrpg) getActivity().getApplication()).iaps.getSkuDetails(3, getActivity().getPackageName(), "inapp", itemQuery);
+                            if (details.getInt("RESPONSE_CODE") == 0) {
+                                ArrayList<String> resp = details.getStringArrayList("DETAILS_LIST");
+                                if (resp == null) return null;
+                                for (String s : resp) {
+                                    JSONObject obj = new JSONObject(s);
+                                    switch (obj.getString("productId")) {
+                                        case "donate1":
+                                            prices[0] = obj.getString("price");
+                                            break;
+                                        case "donate3":
+                                            prices[1] = obj.getString("price");
+                                            break;
+                                        case "donate5":
+                                            prices[2] = obj.getString("price");
+                                            break;
+                                        case "donate10":
+                                            prices[3] = obj.getString("price");
+                                            break;
                                     }
-                                    success = true;
-                                } else
-                                    return null;
-                            } catch (RemoteException e) {
+                                }
+                                success = true;
+                            } else
                                 return null;
-                            } catch (JSONException e) {
-                                return null;
-                            }
+                        } catch (RemoteException e) {
+                            return null;
+                        } catch (JSONException e) {
                             return null;
                         }
+                        return null;
+                    }
 
-                        @Override
-                        protected void onPostExecute(Void aVoid) {
-                            if (!success)
-                                return;
-                            AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-                            final View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_donate, null);
-                            b.setView(v);
-                            ((RadioButton) v.findViewById(R.id.one)).setText(prices[0]);
-                            ((RadioButton) v.findViewById(R.id.three)).setText(prices[1]);
-                            ((RadioButton) v.findViewById(R.id.five)).setText(prices[2]);
-                            ((RadioButton) v.findViewById(R.id.ten)).setText(prices[3]);
-                            ((RadioButton) v.findViewById(R.id.one)).setChecked(true);
-                            b.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    RadioGroup rg = (RadioGroup) v.findViewById(R.id.radG);
-                                    Bundle buyBundle = null;
-                                    try {
-                                        switch (rg.getCheckedRadioButtonId()) {
-                                            case R.id.one:
-                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate1", "inapp", "");
-                                                break;
-                                            case R.id.three:
-                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate3", "inapp", "");
-                                                break;
-                                            case R.id.five:
-                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate5", "inapp", "");
-                                                break;
-                                            case R.id.ten:
-                                                buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate10", "inapp", "");
-                                                break;
-                                        }
-                                    } catch (RemoteException ignored) {}
-                                    if (buyBundle == null) {
-                                        dialog.cancel();
-                                        return;
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (!success)
+                            return;
+                        if(getActivity()==null)
+                            return;
+                        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                        final View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_donate, null);
+                        b.setView(v);
+                        ((RadioButton) v.findViewById(R.id.one)).setText(prices[0]);
+                        ((RadioButton) v.findViewById(R.id.three)).setText(prices[1]);
+                        ((RadioButton) v.findViewById(R.id.five)).setText(prices[2]);
+                        ((RadioButton) v.findViewById(R.id.ten)).setText(prices[3]);
+                        ((RadioButton) v.findViewById(R.id.one)).setChecked(true);
+                        b.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                RadioGroup rg = (RadioGroup) v.findViewById(R.id.radG);
+                                Bundle buyBundle = null;
+                                try {
+                                    switch (rg.getCheckedRadioButtonId()) {
+                                        case R.id.one:
+                                            buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate1", "inapp", "");
+                                            break;
+                                        case R.id.three:
+                                            buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate3", "inapp", "");
+                                            break;
+                                        case R.id.five:
+                                            buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate5", "inapp", "");
+                                            break;
+                                        case R.id.ten:
+                                            buyBundle = ((SWrpg) getActivity().getApplication()).iaps.getBuyIntent(3, getActivity().getPackageName(), "donate10", "inapp", "");
+                                            break;
                                     }
-                                    PendingIntent buyInt = buyBundle.getParcelable("BUY_INTENT");
-                                    try {
-                                        getActivity().startIntentSenderForResult(buyInt.getIntentSender(), 100, new Intent(), 0, 0, 0, new Bundle());
-                                    } catch (IntentSender.SendIntentException ignored) {}
+                                } catch (RemoteException ignored) {}
+                                if (buyBundle == null) {
                                     dialog.cancel();
+                                    return;
                                 }
-                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            b.show();
-                        }
-                    };
-                    async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }else{
-                    Toast.makeText(getActivity(),R.string.error,Toast.LENGTH_SHORT).show();
-                }
+                                PendingIntent buyInt = buyBundle.getParcelable("BUY_INTENT");
+                                try {
+                                    getActivity().startIntentSenderForResult(buyInt.getIntentSender(), 100, new Intent(), 0, 0, 0, new Bundle());
+                                } catch (IntentSender.SendIntentException ignored) {}
+                                dialog.cancel();
+                            }
+                        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        b.show();
+                    }
+                };
+                async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
         final Switch thanks = (Switch)view.findViewById(R.id.thanks_switch);

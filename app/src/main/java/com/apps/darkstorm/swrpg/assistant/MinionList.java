@@ -156,7 +156,11 @@ public class MinionList extends Fragment {
     }
 
     public void loadMinions(){
-        sp.setSelection(0);
+        minionCats.get(0).clear();
+        if(sp.getSelectedItemPosition()==0)
+            adap.notifyDataSetChanged();
+        else
+            sp.setSelection(0);
         if(cats.size()>1) {
             cats.removeAll(cats.subList(1, cats.size() - 1));
             minionCats.removeAll(minionCats.subList(1,minionCats.size()-1));
@@ -170,6 +174,8 @@ public class MinionList extends Fragment {
 
                 @Override
                 protected Void doInBackground(Void... params) {
+                    if(getActivity()==null)
+                        return null;
                     while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
                         try {
                             Thread.sleep(500);
@@ -182,6 +188,8 @@ public class MinionList extends Fragment {
 
                 @Override
                 protected void onPostExecute(Void aVoid) {
+                    if(getActivity()==null)
+                        return;
                     if(((SWrpg)getActivity().getApplication()).driveFail) {
                         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
                         b.setMessage(R.string.drive_fail);

@@ -79,7 +79,7 @@ public class DiceRollFragment extends Fragment {
                 dice.roll().showDialog(getActivity());
             }
         });
-        fab.setImageResource(R.drawable.die_icon);
+        fab.setImageResource(R.drawable.die_roll);
         r = (RecyclerView)view.findViewById(R.id.dice_recycler);
         final DiceList d = new DiceList(getActivity(),dice);
         d.setHasStableIds(true);

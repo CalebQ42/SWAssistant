@@ -1274,10 +1274,10 @@ public class Character extends Editable{
                                     adapSpec.notifyDataSetChanged();
                                 }
                                 public void delete() {
-                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                    specializations.remove(specializations.get(specializations.size()-1));
                                 }
                                 public void cancel() {
-                                    critInjuries.remove(critInjuries.get(critInjuries.size()-1));
+                                    specializations.remove(specializations.get(specializations.size()-1));
                                 }
                             });
                         }

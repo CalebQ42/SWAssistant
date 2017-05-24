@@ -100,7 +100,10 @@ public class EditFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ed.startEditing(getActivity());
+        if (ed!= null)
+            ed.startEditing(getActivity());
+        else
+            getFragmentManager().popBackStack();
     }
 
     @Override

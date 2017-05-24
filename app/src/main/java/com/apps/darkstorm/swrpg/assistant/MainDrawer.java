@@ -72,21 +72,7 @@ public class MainDrawer extends AppCompatActivity
         if (((SWrpg) getApplication()).prefs.getBoolean(getString(R.string.light_side_key), false))
             setTheme(R.style.LightSide);
         super.onCreate(savedInstanceState);
-        iapsService =  new ServiceConnection() {
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                ((SWrpg)getApplication()).iaps = null;
-            }
-
-            @Override
-            public void onServiceConnected(ComponentName name,
-                                           IBinder service) {
-                ((SWrpg)getApplication()).iaps = IInAppBillingService.Stub.asInterface(service);
-            }
-        };
-        Intent iapInt = new Intent("com.android.vending.billing.InAppBillingService.BIND");
-        iapInt.setPackage("com.android.vending");
-        bindService(iapInt, iapsService, Context.BIND_AUTO_CREATE);
+        iapsMaker();
         if(((SWrpg)getApplication()).prefs.getBoolean(getString(R.string.thank_you_key),true)) {
             AsyncTask<Void, Void, Void> asyncIAP = new AsyncTask<Void, Void, Void>() {
                 @Override
@@ -636,6 +622,25 @@ public class MainDrawer extends AppCompatActivity
         else
             ((SWrpg)getApplication()).gac.connect();
     }
+
+    public void iapsMaker(){
+        iapsService =  new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                ((SWrpg)getApplication()).iaps = null;
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+                ((SWrpg)getApplication()).iaps = IInAppBillingService.Stub.asInterface(service);
+            }
+        };
+        Intent iapInt = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        iapInt.setPackage("com.android.vending");
+        bindService(iapInt, iapsService, Context.BIND_AUTO_CREATE);
+    }
+
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
             try {
