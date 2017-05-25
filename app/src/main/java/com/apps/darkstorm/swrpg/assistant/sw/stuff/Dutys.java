@@ -2,17 +2,21 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Dutys{
+public class Dutys implements JsonSavable {
     Duty[] d;
     public Dutys(){
         d = new Duty[0];
@@ -82,7 +86,26 @@ public class Dutys{
         }
         return out;
     }
-    
+
+    public void saveJson(JsonWriter jw) throws IOException {
+        jw.name("Dutys").beginArray();
+        for(Duty dt:d)
+            dt.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jw) throws IOException {
+        ArrayList<Duty> out = new ArrayList<>();
+        jw.beginArray();
+        while(jw.hasNext()){
+            Duty du = new Duty();
+            du.loadJson(jw);
+            out.add(du);
+        }
+        jw.endArray();
+        d = out.toArray(d);
+    }
+
     public static class DutysAdap extends RecyclerView.Adapter<DutysAdap.ViewHolder>{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

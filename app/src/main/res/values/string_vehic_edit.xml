@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="model_text">Model:</string>
     <string name="speed_text">Speed:</string>
     <string name="silhouette_text">Silhouette:</string>
     <string name="armor_text">Armor:</string>
@@ -18,7 +17,6 @@
     <string name="capacity_text">Capacity:</string>
     <string name="passenger_text">Passenger:</string>
     <string name="passenger_capacity_text">Passenger Capacity:</string>
-    <string name="encumbrance_text">Encumbrance:</string>
     <string name="encumbrance_capacity_text">Encumbrance Capacity:</string>
     <string name="arc_text">Weapon Arc:</string>
 

@@ -3,6 +3,8 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,11 +15,13 @@ import android.widget.ViewSwitcher;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class Talent{
+public class Talent implements JsonSavable {
     //Version 1 0-2
     public String name = "";
     public String desc = "";
@@ -50,6 +54,25 @@ public class Talent{
         out.desc = desc;
         out.val = val;
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.beginObject();
+        jw.name("name").value(name);
+        jw.name("description").value(desc);
+        jw.name("value").value(val);
+        jw.endObject();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        jr.beginObject();
+        jr.skipValue();
+        name = jr.nextString();
+        jr.skipValue();
+        desc = jr.nextString();
+        jr.skipValue();
+        val = jr.nextInt();
+        jr.endObject();
     }
 
     public static void editTalent(final Activity ac, final Editable c, final int pos, final boolean newTalent, final Skill.onSave os){

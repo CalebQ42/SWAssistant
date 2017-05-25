@@ -2,17 +2,21 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ForcePowers{
+public class ForcePowers implements JsonSavable {
     ForcePower[] fp;
     public ForcePowers(){
         fp = new ForcePower[0];
@@ -80,6 +84,25 @@ public class ForcePowers{
         for (int i = 0;i<fp.length;i++)
             out.fp[i] = fp[i].clone();
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Force Powers").beginArray();
+        for(ForcePower f:fp)
+            f.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<ForcePower> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            ForcePower tmp = new ForcePower();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        fp = out.toArray(fp);
     }
     
     public static class ForcePowersAdap extends RecyclerView.Adapter<ForcePowers.ForcePowersAdap.ViewHolder>{

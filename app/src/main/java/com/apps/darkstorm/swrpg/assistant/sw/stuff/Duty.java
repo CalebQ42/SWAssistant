@@ -4,15 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class Duty{
+public class Duty implements JsonSavable {
     //Version 1 0-1;
     public String name = "";
     public int val;
@@ -41,6 +45,22 @@ public class Duty{
         out.name = name;
         out.val = val;
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException {
+        jw.beginObject();
+        jw.name("name").value(name);
+        jw.name("value").value(val);
+        jw.endObject();
+    }
+
+    public void loadJson(JsonReader jw) throws IOException {
+        jw.beginObject();
+        jw.skipValue();
+        name = jw.nextString();
+        jw.skipValue();
+        val = jw.nextInt();
+        jw.endObject();
     }
 
     public static void editDuty(final Activity ac, final Character c, final int pos, final boolean newDuty, final Skill.onSave os){

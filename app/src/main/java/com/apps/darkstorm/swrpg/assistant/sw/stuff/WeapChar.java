@@ -5,14 +5,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
 
 import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class WeapChar{
+public class WeapChar implements JsonSavable {
     //Version 1 (0-2)
     public String name = "";
     public int val; //Depreciated
@@ -47,6 +51,26 @@ public class WeapChar{
         WeapChar in = (WeapChar)obj;
         return in.name.equals(name) && in.val == val && in.adv == adv;
     }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.beginObject();
+        jw.name("name").value(name);
+        jw.name("value").value(val);
+        jw.name("advantage").value(adv);
+        jw.endObject();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        jr.beginObject();
+        jr.skipValue();
+        name = jr.nextString();
+        jr.skipValue();
+        val = jr.nextInt();
+        jr.skipValue();
+        adv = jr.nextInt();
+        jr.endObject();
+    }
+
     public static void editWeapChar(final Activity ac, final Weapon c, final int pos, final boolean newChar, final Skill.onSave os){
         AlertDialog.Builder b = new AlertDialog.Builder(ac);
         View ed = ac.getLayoutInflater().inflate(R.layout.dialog_two_strings,null);

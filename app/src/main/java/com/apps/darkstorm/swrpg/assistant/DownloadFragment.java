@@ -229,8 +229,8 @@ public class DownloadFragment extends Fragment {
                                                 AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
-                                                        ch.reLoad(ch.getFileLocation(getActivity()));
-                                                        ch.cloudSave(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),false);
+                                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
+                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()));
                                                         return null;
                                                     }
 
@@ -310,9 +310,9 @@ public class DownloadFragment extends Fragment {
                                                 AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
-                                                        ch.reLoad(ch.getFileLocation(getActivity()));
+                                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
                                                         System.out.println("DLN: "+ch.name);
-                                                        ch.cloudSave(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),false);
+                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()));
                                                         return null;
                                                     }
 
@@ -387,9 +387,9 @@ public class DownloadFragment extends Fragment {
                                                 AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
-                                                        ch.reLoad(ch.getFileLocation(getActivity()));
+                                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
                                                         System.out.println("DLN: "+ch.name);
-                                                        ch.cloudSave(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),false);
+                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()));
                                                         return null;
                                                     }
 

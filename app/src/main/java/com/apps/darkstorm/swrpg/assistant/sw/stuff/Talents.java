@@ -2,6 +2,8 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,12 +11,14 @@ import android.widget.TextView;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Talents{
+public class Talents implements JsonSavable {
     Talent[] tal;
     public Talents(){
         tal= new Talent[0];
@@ -93,6 +97,25 @@ public class Talents{
         for(int i = 0;i<tal.length;i++)
             out.tal[i] = tal[i].clone();
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Talents").beginArray();
+        for(Talent t:tal)
+            t.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<Talent> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            Talent tmp = new Talent();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        tal = out.toArray(tal);
     }
 
     public static class TalentsAdap extends RecyclerView.Adapter<TalentsAdap.ViewHolder>{

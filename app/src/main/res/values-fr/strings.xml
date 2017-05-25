@@ -4,45 +4,29 @@
   <string name="app_name">SWrpg</string>
   <string name="navigation_drawer_open">Ouvrir fenêtre de navigation</string>
   <string name="navigation_drawer_close">Fermé fenêtre de navigation</string>
-  <string name="action_settings">Options</string>
-  <string name="title_activity_settings">Options</string>
-  <string name="permission_error">Malheureusement cette app NÉCESSITE les droits de lecture et de modifacation. Si vous appuyez sur OK,  l\'app demandera l\'autorisation de nouveau.
+    <string name="permission_error">Malheureusement cette app NÉCESSITE les droits de lecture et de modifacation. Si vous appuyez sur OK,  l\'app demandera l\'autorisation de nouveau.
     Si vous appuyez sur ANNULER,  l\'app passera en mode dès.</string>
-  <string name="loading_snack">Chargement des Personnages&#8230;</string>
-  <string name="cloud_fail">Erreur de connection à Google Drive</string>
-  <string name="retry">Réessayer</string>
-  <string name="swipe_refresh">Swipe vers le bas pour rafraîchir la liste de personnage</string>
-  <string name="g_plus">Communauté G+</string>
+    <string name="retry">Réessayer</string>
+    <string name="g_plus">Communauté G+</string>
   <string name="translate_text">Aidez à la traduction!</string>
   <string name="still_loading">Chargement en cours… Merci de patienter</string>
 
   <string name="drive_loading">Connecting to Google Drive…</string>
 
-  <string name="ad_not_loaded">Ad not loaded, wait a moment</string>
-  <string name="drive_fail">Google Drive has failed to connect</string>
+    <string name="drive_fail">Google Drive has failed to connect</string>
 
-  <string name="refresh">Refresh</string>
-
-  <string name="tap_download">Tap to Download</string>
-
-  <string name="success">Success</string>
+    <string name="success">Success</string>
   <string name="failure">Failure</string>
 
-  <string name="export">Select Export Folder:</string>
-
-  <string name="select">Select</string>
-
-  <string name="re_show">Re-Show</string>
+    <string name="re_show">Re-Show</string>
 
   <string name="modify_results">Modify</string>
     <string name="category_text">Category:</string>
   <string name="minions">Minions</string>
-  <string name="title_activity_main_drawer">MainDrawer</string>
     <string name="export_location">Export Location:</string>
     <string name="donate">Donate</string>
     <string name="thanks_toast">Thanks for donating :)</string>
   <string name="thanks_toast_switch">Thank You Toast</string>
-    <string name="error">Error!</string>
     <string name="type">Type:</string>
     <string name="downloading">Downloading...</string>
     <string name="general">General</string>

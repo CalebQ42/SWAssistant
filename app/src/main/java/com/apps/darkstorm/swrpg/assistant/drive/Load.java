@@ -52,11 +52,21 @@ public class Load {
                                     for (Metadata met : metBuf) {
                                         if (met.getTitle().endsWith(".char")) {
                                             Character tmp = new Character();
-                                            tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
+                                            tmp.reLoadLegacy(((SWrpg) ac.getApplication()).gac, met.getDriveId());
                                             characters.add(tmp);
                                             lastMod.add(met.getModifiedDate());
                                             boolean br = ol.onLoad(tmp);
                                             if (br)
+                                                break;
+                                            met.getDriveId().asDriveResource().delete(((SWrpg) ac.getApplication()).gac);
+                                            tmp.save(((SWrpg) ac.getApplication()).gac,tmp.getFileId(ac));
+                                        }else if(met.getTitle().endsWith(Character.fileExtension)){
+                                            Character tmp = new Character();
+                                            tmp.load(((SWrpg)ac.getApplication()).gac,met.getDriveId());
+                                            characters.add(tmp);
+                                            lastMod.add(met.getModifiedDate());
+                                            boolean br = ol.onLoad(tmp);
+                                            if(br)
                                                 break;
                                         }
                                     }
@@ -91,7 +101,7 @@ public class Load {
                         found = true;
                         Date local = new Date(new File(c.getFileLocation(ac)).lastModified());
                         if(local.after(lastMod.get(i)))
-                            c.cloudSave(((SWrpg)ac.getApplication()).gac,c.getFileId(ac),true);
+                            c.save(((SWrpg)ac.getApplication()).gac,c.getFileId(ac));
                         else
                             ed.save(ed.getFileLocation(ac));
                         break;
@@ -129,11 +139,21 @@ public class Load {
                                 for (Metadata met : metBuf) {
                                     if (met.getTitle().endsWith(".minion")) {
                                         Minion tmp = new Minion();
-                                        tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
+                                        tmp.reLoadLegacy(((SWrpg) ac.getApplication()).gac, met.getDriveId());
                                         minions.add(tmp);
                                         lastMod.add(met.getModifiedDate());
                                         boolean br = ol.onLoad(tmp);
                                         if (br)
+                                            break;
+                                        met.getDriveId().asDriveResource().delete(((SWrpg) ac.getApplication()).gac);
+                                        tmp.save(((SWrpg) ac.getApplication()).gac,tmp.getFileId(ac));
+                                    }else if(met.getTitle().endsWith(Minion.fileExtension)){
+                                        Minion tmp = new Minion();
+                                        tmp.load(((SWrpg)ac.getApplication()).gac,met.getDriveId());
+                                        minions.add(tmp);
+                                        lastMod.add(met.getModifiedDate());
+                                        boolean br = ol.onLoad(tmp);
+                                        if(br)
                                             break;
                                     }
                                 }
@@ -168,7 +188,7 @@ public class Load {
                         found = true;
                         Date local = new Date(new File(c.getFileLocation(ac)).lastModified());
                         if(local.after(lastMod.get(i)))
-                            c.cloudSave(((SWrpg)ac.getApplication()).gac,c.getFileId(ac),true);
+                            c.save(((SWrpg)ac.getApplication()).gac,c.getFileId(ac));
                         else
                             ed.save(ed.getFileLocation(ac));
                         break;
@@ -190,7 +210,7 @@ public class Load {
         public void load(final Activity ac){
             lastMod = new ArrayList<>();
             vehicles = new ArrayList<>();
-            DriveFolder vhFold = ((SWrpg)ac.getApplication()).vehicFold;
+            DriveFolder vhFold = ((SWrpg)ac.getApplication()).charsFold;
             vhFold.listChildren(((SWrpg)ac.getApplication()).gac).setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                 @Override
                 public void onResult(@NonNull final DriveApi.MetadataBufferResult metadataBufferResult) {
@@ -206,11 +226,21 @@ public class Load {
                                 for (Metadata met : metBuf) {
                                     if (met.getTitle().endsWith(".vhcl")) {
                                         Vehicle tmp = new Vehicle();
-                                        tmp.reLoad(((SWrpg) ac.getApplication()).gac, met.getDriveId());
+                                        tmp.reLoadLegacy(((SWrpg) ac.getApplication()).gac, met.getDriveId());
                                         vehicles.add(tmp);
                                         lastMod.add(met.getModifiedDate());
                                         boolean br = ol.onLoad(tmp);
                                         if (br)
+                                            break;
+                                        met.getDriveId().asDriveResource().delete(((SWrpg) ac.getApplication()).gac);
+                                        tmp.save(((SWrpg) ac.getApplication()).gac,tmp.getFileId(ac));
+                                    }else if(met.getTitle().endsWith(Vehicle.fileExtension)){
+                                        Vehicle tmp = new Vehicle();
+                                        tmp.load(((SWrpg)ac.getApplication()).gac,met.getDriveId());
+                                        vehicles.add(tmp);
+                                        lastMod.add(met.getModifiedDate());
+                                        boolean br = ol.onLoad(tmp);
+                                        if(br)
                                             break;
                                     }
                                 }
@@ -249,7 +279,7 @@ public class Load {
                         found = true;
                         Date local = new Date(new File(c.getFileLocation(ac)).lastModified());
                         if(local.after(lastMod.get(i)))
-                            c.cloudSave(((SWrpg)ac.getApplication()).gac,c.getFileId(ac),true);
+                            c.save(((SWrpg)ac.getApplication()).gac,c.getFileId(ac));
                         else
                             ed.save(ed.getFileLocation(ac));
                         break;

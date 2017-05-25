@@ -2,16 +2,20 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WeapChars{
+public class WeapChars implements JsonSavable {
     WeapChar[] wc;
     public WeapChars(){
         wc = new WeapChar[0];
@@ -79,6 +83,25 @@ public class WeapChars{
                 return false;
         }
         return true;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("WeapChars").beginArray();
+        for(WeapChar w:wc)
+            w.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<WeapChar> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            WeapChar tmp = new WeapChar();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        wc = out.toArray(wc);
     }
 
     public static class WeapCharsAdap extends RecyclerView.Adapter<WeapCharsAdap.ViewHolder>{

@@ -2,6 +2,8 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,12 +11,14 @@ import android.widget.TextView;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Inventory{
+public class Inventory implements JsonSavable {
     Item[] inv;
     public Inventory(){
         inv = new Item[0];
@@ -88,6 +92,25 @@ public class Inventory{
         for (Item it:inv)
             total += it.encum;
         return total;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Inventory").beginArray();
+        for(Item i:inv)
+            i.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<Item> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            Item tmp = new Item();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        inv = out.toArray(inv);
     }
 
     public static class InventoryAdap extends RecyclerView.Adapter<InventoryAdap.ViewHolder>{

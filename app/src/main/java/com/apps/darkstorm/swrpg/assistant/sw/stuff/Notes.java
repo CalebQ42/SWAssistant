@@ -1,9 +1,15 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
+import android.util.JsonReader;
+import android.util.JsonWriter;
+
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Notes{
+public class Notes implements JsonSavable {
     Note[] ns;
     public Notes(){
         ns = new Note[0];
@@ -79,5 +85,24 @@ public class Notes{
             }
         }
         return -1;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Notes").beginArray();
+        for(Note n:ns)
+            n.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<Note> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            Note tmp = new Note();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        ns = out.toArray(ns);
     }
 }

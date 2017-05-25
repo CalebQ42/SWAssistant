@@ -11,6 +11,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -39,15 +41,10 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talents;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.drive.query.Filters;
-import com.google.android.gms.drive.query.Query;
-import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -62,20 +59,22 @@ public class Minion extends Editable{
     public Inventory inv = new Inventory();
     //public Weapons weapons = new Weapons();
     private int woundThreshInd = 1;
-    public int woundThresh;
+    private int woundThresh;
     private int woundCur;
-    public int defMelee,defRanged;
-    public int soak;
+    private int defMelee,defRanged;
+    private int soak;
     private int minNum;
     //public String desc = "";
     private boolean[] showCards = new boolean[9];
     //Version 2 16-18
     //public CriticalInjuries critInjuries = new CriticalInjuries();
-    public Inventory origInv = new Inventory();
-    public Weapons origWeapons = new Weapons();
+    private Inventory origInv = new Inventory();
+    private Weapons origWeapons = new Weapons();
     //Version 3 19-20
     //public String category = "";
     //public Notes nts (From Editable)
+
+    public static String fileExtension = ".swminion";
 
     public Minion(){
         for (int i = 0; i< showCards.length; i++)
@@ -86,56 +85,98 @@ public class Minion extends Editable{
         for (int i = 0; i< showCards.length; i++)
             showCards[i] = true;
     }
-    public String getFileLocation(Activity main){
-        if(main!= null) {
-            String loc = ((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
-                    ((SWrpg) main.getApplication()).defaultLoc);
-            File location = new File(loc);
-            if (!location.exists()) {
-                if (!location.mkdir()) {
-                    return "";
-                }
-            }
-            String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".minion";
-            if(external)
-                return this.loc;
-            return def;
-        }else{
-            return "";
-        }
+
+    public void saveJson(JsonWriter jw) throws IOException {
+        jw.name("ID").value(ID);
+        jw.name("name").value(name);
+        jw.name("characteristics").beginArray();
+        for (int i:charVals)
+            jw.value(i);
+        jw.endArray();
+        skills.saveJson(jw);
+        talents.saveJson(jw);
+        inv.saveJson(jw);
+        weapons.saveJson(jw);
+        jw.name("wound threshold per minion").value(woundThreshInd);
+        jw.name("wound threshold").value(woundThresh);
+        jw.name("wound current").value(woundCur);
+        jw.name("defense melee").value(defMelee);
+        jw.name("defense ranged").value(defRanged);
+        jw.name("soak").value(soak);
+        jw.name("minion number").value(minNum);
+        jw.name("description").value(desc);
+        jw.name("show cards").beginArray();
+        for(boolean b:showCards)
+            jw.value(b);
+        jw.endArray();
+        critInjuries.saveJson(jw);
+        jw.name("Saved").beginObject();
+        origInv.saveJson(jw);
+        origWeapons.saveJson(jw);
+        jw.endObject();
+        jw.name("category").value(category);
+        nts.saveJson(jw);
+    }
+
+    public void loadJson(JsonReader jw) throws IOException {
+        jw.skipValue();
+        ID = jw.nextInt();
+        jw.skipValue();
+        name = jw.nextString();
+        jw.skipValue();
+        jw.beginArray();
+        for(int i = 0;i<charVals.length;i++)
+            charVals[i] = jw.nextInt();
+        jw.endArray();
+        jw.skipValue();
+        skills.loadJson(jw);
+        jw.skipValue();
+        talents.loadJson(jw);
+        jw.skipValue();
+        inv.loadJson(jw);
+        jw.skipValue();
+        weapons.loadJson(jw);
+        jw.skipValue();
+        woundThreshInd = jw.nextInt();
+        jw.skipValue();
+        woundThresh = jw.nextInt();
+        jw.skipValue();
+        woundCur = jw.nextInt();
+        jw.skipValue();
+        defMelee = jw.nextInt();
+        jw.skipValue();
+        defRanged = jw.nextInt();
+        jw.skipValue();
+        soak = jw.nextInt();
+        jw.skipValue();
+        minNum = jw.nextInt();
+        jw.skipValue();
+        desc = jw.nextString();
+        jw.skipValue();
+        jw.beginArray();
+        for(int i = 0;i<showCards.length;i++)
+            showCards[i] = jw.nextBoolean();
+        jw.endArray();
+        jw.skipValue();
+        critInjuries.loadJson(jw);
+        jw.skipValue();
+        jw.beginObject();
+        jw.skipValue();
+        origInv.loadJson(jw);
+        jw.skipValue();
+        origWeapons.loadJson(jw);
+        jw.endObject();
+        jw.skipValue();
+        category = jw.nextString();
+        jw.skipValue();
+        nts.loadJson(jw);
     }
 
     @Override
     public int cardNumber() {
         return 10;
     }
-
-    public void save(String filename){
-        SaveLoad sl = new SaveLoad(filename);
-        sl.addSave(ID);
-        sl.addSave(name);
-        sl.addSave(charVals);
-        sl.addSave(skills.serialObject());
-        sl.addSave(talents.serialObject());
-        sl.addSave(inv.serialObject());
-        sl.addSave(weapons.serialObject());
-        sl.addSave(woundThreshInd);
-        sl.addSave(woundThresh);
-        sl.addSave(woundCur);
-        sl.addSave(defMelee);
-        sl.addSave(defRanged);
-        sl.addSave(soak);
-        sl.addSave(minNum);
-        sl.addSave(desc);
-        sl.addSave(showCards);
-        sl.addSave(critInjuries.serialObject());
-        sl.addSave(origInv.serialObject());
-        sl.addSave(origWeapons.serialObject());
-        sl.addSave(category);
-        sl.addSave(nts.serialObject());
-        sl.save();
-    }
-    public void reLoad(String filename){
+    public void reLoadLegacy(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] obj = sl.load();
         switch(obj.length){
@@ -174,54 +215,7 @@ public class Minion extends Editable{
                 }
         }
     }
-    public DriveId getFileId(Activity main){
-        String name = Integer.toString(ID) + ".minion";
-        DriveId fi = null;
-        DriveApi.MetadataBufferResult res = ((SWrpg)main.getApplication())
-                .charsFold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
-                Filters.eq(SearchableField.TITLE,name)).build()).await();
-        for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isTrashed()){
-                fi = met.getDriveId();
-                break;
-            }
-        }
-        res.release();
-        if (fi == null){
-            fi = ((SWrpg)main.getApplication()).charsFold.createFile
-                    (((SWrpg)main.getApplication()).gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
-                    .getDriveFile().getDriveId();
-        }
-        return fi;
-    }
-    public void cloudSave(GoogleApiClient gac, DriveId fil, boolean async){
-        if (fil != null){
-            DriveSaveLoad sl = new DriveSaveLoad(fil);
-            sl.addSave(ID);
-            sl.addSave(name);
-            sl.addSave(charVals);
-            sl.addSave(skills.serialObject());
-            sl.addSave(talents.serialObject());
-            sl.addSave(inv.serialObject());
-            sl.addSave(weapons.serialObject());
-            sl.addSave(woundThreshInd);
-            sl.addSave(woundThresh);
-            sl.addSave(woundCur);
-            sl.addSave(defMelee);
-            sl.addSave(defRanged);
-            sl.addSave(soak);
-            sl.addSave(minNum);
-            sl.addSave(desc);
-            sl.addSave(showCards);
-            sl.addSave(critInjuries.serialObject());
-            sl.addSave(origInv.serialObject());
-            sl.addSave(origWeapons.serialObject());
-            sl.addSave(category);
-            sl.addSave(nts.serialObject());
-            sl.save(gac, async);
-        }
-    }
-    public void reLoad(GoogleApiClient gac,DriveId fil){
+    public void reLoadLegacy(GoogleApiClient gac, DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] obj = sl.load(gac);
         switch(obj.length){
@@ -260,7 +254,7 @@ public class Minion extends Editable{
                 }
         }
     }
-    public void setWound(int wound){
+    private void setWound(int wound){
         woundCur = wound;
         if (((woundCur/woundThreshInd)<minNum-1 || (woundCur/woundThreshInd == minNum-1 && woundCur%woundThreshInd == 0) )&& minNum != 0){
             int num = woundCur/woundThreshInd;
@@ -275,7 +269,7 @@ public class Minion extends Editable{
             setMinNum(num);
         }
     }
-    public void setMinNum(int num){
+    private void setMinNum(int num){
         minNum = num;
         woundThresh = woundThreshInd*minNum;
         woundCur = woundThresh;
@@ -287,12 +281,15 @@ public class Minion extends Editable{
                 skills.get(i).val = 5;
         }
     }
-    public void setWoundInd(int wound){
+    private void setWoundInd(int wound){
         if (wound <= 0)
             wound = 1;
         woundThreshInd = wound;
         woundThresh = minNum*woundThreshInd;
         woundCur = woundThresh;
+    }
+    public String getFileExtension() {
+        return ".swminion";
     }
 
     @SuppressWarnings("CloneDoesntCallSuperClone")
@@ -327,7 +324,7 @@ public class Minion extends Editable{
                 Arrays.equals(tmp.showCards, showCards) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum &&
                 tmp.critInjuries.equals(critInjuries)&& tmp.category.equals(category)&& tmp.nts.equals(nts);
     }
-    public void exportTo(String folder){
+    private void exportTo(String folder){
         File fold = new File(folder);
         if(!fold.exists()) {
             if (!fold.mkdir())
@@ -920,6 +917,7 @@ public class Minion extends Editable{
                             origInv = inv.clone();
                         }
                     });
+                    invLay.findViewById(R.id.load).setVisibility(View.VISIBLE);
                     invLay.findViewById(R.id.load).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1083,7 +1081,7 @@ public class Minion extends Editable{
                         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... params) {
-                                ch.cloudSave(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac), true);
+                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac));
                                 return null;
                             }
                         };

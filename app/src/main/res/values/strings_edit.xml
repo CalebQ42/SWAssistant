@@ -21,8 +21,6 @@
     <string name="force_powers_text">Force Powers:</string>
     <string name="force_rating_text">Force Rating:</string>
     <string name="xp_text">XP:</string>
-    <string name="current_text">Current:</string>
-    <string name="total_text">Total:</string>
     <string name="inventory_text">Inventory:</string>
     <string name="credits_text">Credits:</string>
     <string name="morality_text">Morality:</string>
@@ -34,23 +32,18 @@
     <string name="dark_side_resolution_text">Dark Side Conflict Resolution</string>
     <string name="duty_text">Duty:</string>
     <string name="obligation_text">Obligation:</string>
-    <string name="desc_text">Description/Misc:</string>
     <string name="title_text">Title:</string>
     <string name="note_text">Note:</string>
     <string name="wound_thresh_text">Wound Threshold:</string>
     <string name="strain_thresh_text">Strain Threshold:</string>
     <string name="melee_defense_text">Melee Defense:</string>
     <string name="ranged_defense_text">Ranged Defense:</string>
-    <string name="spec_text">Specialization:</string>
-    <string name="force_power_text">Force Power:</string>
     <string name="total_xp_text">Total XP:</string>
     <string name="current_xp_text">Current XP:</string>
     <string name="noted_delete">Are you sure you want to delete this note?</string>
     <string name="encum_warning">WARNING: You are over your encumbrance limit!</string>
     <string name="load_text">Load</string>
     <string name="clone_text">Clone</string>
-    <string name="cloning_text">Cloning…</string>
-    <string name="cloning_done_text">Clone Finished!</string>
 
     <!--Characteristic strings -->
 

@@ -2,17 +2,21 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CriticalInjuries{
+public class CriticalInjuries implements JsonSavable {
     CriticalInjury[] critInj;
     public CriticalInjuries(){
         critInj = new CriticalInjury[0];
@@ -84,6 +88,25 @@ public class CriticalInjuries{
         for(int i = 0;i<critInj.length;i++)
             out.critInj[i] = critInj[i].clone();
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException {
+        jw.name("Critical Injuries").beginArray();
+        for (CriticalInjury ci: critInj)
+            ci.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<CriticalInjury> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            CriticalInjury tmp = new CriticalInjury();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        critInj = out.toArray(critInj);
     }
 
     public static class CriticalInjuriesAdapChar extends RecyclerView.Adapter<CriticalInjuriesAdapChar.ViewHolder>{

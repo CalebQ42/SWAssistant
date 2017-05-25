@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,12 +21,14 @@ import android.widget.ViewSwitcher;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class Weapon{
+public class Weapon implements JsonSavable {
     //Version 1 0-12
     public String name = "";
     public int dmg;
@@ -135,6 +139,61 @@ public class Weapon{
         return in.name.equals(name) && in.dmg == dmg && in.crit == crit && in.hp == hp && in.range == range && in.skill == skill
                 && in.skillBase == skillBase && in.chars.equals(chars) && in.addBrawn == addBrawn && in.loaded == loaded && in.limitedAmmo == limitedAmmo
                 && in.itemState == itemState && in.ammo == ammo && in.firingArc.equals(firingArc) && in.encum == encum;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.beginObject();
+        jw.name("name").value(name);
+        jw.name("damage").value(dmg);
+        jw.name("critical rating").value(crit);
+        jw.name("hard points").value(hp);
+        jw.name("range").value(range);
+        jw.name("skill").value(skill);
+        jw.name("base").value(skillBase);
+        chars.saveJson(jw);
+        jw.name("add brawn").value(addBrawn);
+        jw.name("loaded").value(loaded);
+        jw.name("limited ammo").value(limitedAmmo);
+        jw.name("item state").value(itemState);
+        jw.name("ammo").value(ammo);
+        jw.name("firing arc").value(firingArc);
+        jw.name("encumbrance").value(encum);
+        jw.endObject();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        jr.beginObject();
+        jr.skipValue();
+        name = jr.nextString();
+        jr.skipValue();
+        dmg = jr.nextInt();
+        jr.skipValue();
+        crit = jr.nextInt();
+        jr.skipValue();
+        hp = jr.nextInt();
+        jr.skipValue();
+        range = jr.nextInt();
+        jr.skipValue();
+        skill = jr.nextInt();
+        jr.skipValue();
+        skillBase = jr.nextInt();
+        jr.skipValue();
+        chars.loadJson(jr);
+        jr.skipValue();
+        addBrawn = jr.nextBoolean();
+        jr.skipValue();
+        loaded = jr.nextBoolean();
+        jr.skipValue();
+        limitedAmmo = jr.nextBoolean();
+        jr.skipValue();
+        itemState = jr.nextInt();
+        jr.skipValue();
+        ammo = jr.nextInt();
+        jr.skipValue();
+        firingArc = jr.nextString();
+        jr.skipValue();
+        encum = jr.nextInt();
+        jr.endObject();
     }
 
     public static void editWeapon(final Activity ac, final Editable c, final int pos, final boolean newWeapon, final Skill.onSave os){

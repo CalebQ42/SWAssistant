@@ -13,14 +13,7 @@
     <item>Difficile</item>
     <item>Intimidant</item>
   </string-array>
-  <string-array name="range_bands">
-    <item>Au Contact</item>
-    <item>Courte</item>
-    <item>Moyenne</item>
-    <item>Longue</item>
-    <item>Extrême</item>
-  </string-array>
-  <string-array name="weapon_skills">
+    <string-array name="weapon_skills">
     <item>Pugilat</item>
     <item>Artillerie</item>
     <item>Sabre laser</item>

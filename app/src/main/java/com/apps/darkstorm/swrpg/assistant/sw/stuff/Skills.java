@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,12 +16,14 @@ import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Skills{
+public class Skills implements JsonSavable {
     Skill[] sk;
     public Skills(){
         sk = new Skill[0];
@@ -87,6 +91,25 @@ public class Skills{
         for (int i = 0;i<sk.length;i++)
             out.sk[i] = sk[i].clone();
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Skills").beginArray();
+        for(Skill s:sk)
+            s.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<Skill> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            Skill tmp = new Skill();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        sk = out.toArray(sk);
     }
 
     public static class SkillsAdap extends RecyclerView.Adapter<SkillsAdap.ViewHolder>{

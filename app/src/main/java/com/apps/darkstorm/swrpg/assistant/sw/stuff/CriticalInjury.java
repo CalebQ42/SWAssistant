@@ -3,16 +3,20 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class CriticalInjury{
+public class CriticalInjury implements JsonSavable {
     //Version 1 0-2
     public String name = "";
     public String desc = "";
@@ -47,6 +51,25 @@ public class CriticalInjury{
         out.desc = desc;
         out.severity = severity;
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException {
+        jw.beginObject();
+        jw.name("name").value(name);
+        jw.name("description").value(desc);
+        jw.name("severity").value(severity);
+        jw.endObject();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException {
+        jr.beginObject();
+        jr.skipValue();
+        name = jr.nextString();
+        jr.skipValue();
+        desc = jr.nextString();
+        jr.skipValue();
+        severity = jr.nextInt();
+        jr.endObject();
     }
 
     public static void editCritical(final Activity ac, final Editable c, final int pos, final boolean newCrit, final Skill.onSave os){

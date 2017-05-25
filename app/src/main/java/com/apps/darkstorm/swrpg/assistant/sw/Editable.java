@@ -9,8 +9,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.MainDrawer;
@@ -20,12 +23,26 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Notes;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveContents;
+import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Collections;
 
-public abstract class Editable {
+public abstract class Editable implements JsonSavable{
     public int ID;
     public String name = "";
     public Notes nts = new Notes();
@@ -41,13 +58,132 @@ public abstract class Editable {
 
     public abstract int cardNumber();
     public abstract void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos,Handler parentHandle);
-    public abstract void save(String filename);
-    public abstract void cloudSave(GoogleApiClient gac, DriveId fil, boolean async);
-    public abstract void reLoad(GoogleApiClient gac,DriveId fil);
-    public abstract void reLoad(String filename);
-    public abstract DriveId getFileId(Activity ac);
-    public abstract String getFileLocation(Activity ac);
+    public abstract void reLoadLegacy(GoogleApiClient gac, DriveId fil);
+    public abstract void reLoadLegacy(String filename);
     public abstract Editable clone();
+    public abstract String getFileExtension();
+    public String getFileLocation(Activity main){
+        if(main!= null) {
+            if(external)
+                return this.loc;
+            String loc = ((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
+                    ((SWrpg) main.getApplication()).defaultLoc);
+            File location = new File(loc);
+            if (!location.exists()) {
+                if (!location.mkdir()) {
+                    return "";
+                }
+            }
+            return location.getAbsolutePath() + "/" + Integer.toString(ID) + getFileExtension();
+        }else{
+            return "";
+        }
+    }
+    public DriveId getFileId(Activity main){
+        if(external)
+            return null;
+        String name = Integer.toString(ID) + getFileExtension();
+        DriveId fi = null;
+        DriveApi.MetadataBufferResult res = ((SWrpg)main.getApplication())
+                .charsFold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
+                        Filters.eq(SearchableField.TITLE,name)).build()).await();
+        for (Metadata met:res.getMetadataBuffer()){
+            if (!met.isTrashed()){
+                fi = met.getDriveId();
+                break;
+            }
+        }
+        res.release();
+        if (fi == null){
+            fi = ((SWrpg)main.getApplication()).charsFold.createFile
+                    (((SWrpg)main.getApplication())
+                            .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+                    .getDriveFile().getDriveId();
+        }
+        return fi;
+    }
+    public void save(String filename){
+        try {
+            File savFolder = null;
+            if(filename.contains("/")) {
+                savFolder = new File(filename.substring(0, filename.lastIndexOf("/")));
+            }
+            if(savFolder != null && !savFolder.exists())
+                savFolder.mkdirs();
+            File tmp = new File(filename);
+            tmp.renameTo(new File(filename+".bak"));
+            tmp = new File(filename + ".bak");
+            new File(filename).delete();
+            JsonWriter jw = new JsonWriter(new FileWriter(filename));
+            jw.setIndent("  ");
+            jw.beginObject();
+            saveJson(jw);
+            jw.endObject();
+            jw.close();
+            tmp.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void save(final GoogleApiClient gac, final DriveId fil){
+        if (fil != null) {
+            fil.asDriveFile().open(gac, DriveFile.MODE_WRITE_ONLY, new DriveFile
+                    .DownloadProgressListener() {public void onProgress(long l, long l1) {}}).setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
+                @Override
+                public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
+                    if(driveContentsResult.getStatus().isSuccess()){
+                        try {
+                            DriveFile file = fil.asDriveFile();
+                            DriveApi.DriveContentsResult contRes =
+                                    file.open(gac, DriveFile.MODE_WRITE_ONLY,
+                                            new DriveFile.DownloadProgressListener() {public void onProgress(long l, long l1) {}}).await();
+                            DriveContents cont = contRes.getDriveContents();
+                            OutputStreamWriter osw = new OutputStreamWriter(cont.getOutputStream(),"UTF-8");
+                            JsonWriter jw = new JsonWriter(osw);
+                            jw.beginObject();
+                            saveJson(jw);
+                            jw.endObject();
+                            cont.commit(gac,null).await();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+    }
+    public void load(String filename){
+        try {
+            JsonReader jr = new JsonReader(new FileReader(filename));
+            jr.beginObject();
+            loadJson(jr);
+            jr.endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void load(GoogleApiClient gac,DriveId fil){
+        if (fil != null) {
+            fil.asDriveFile().open(gac, DriveFile.MODE_READ_ONLY, new DriveFile
+                    .DownloadProgressListener() {public void onProgress(long l, long l1) {}}).setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
+                @Override
+                public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
+                    if(driveContentsResult.getStatus().isSuccess()){
+                        InputStreamReader isr = new InputStreamReader(driveContentsResult.getDriveContents().getInputStream());
+                        JsonReader jw = new JsonReader(isr);
+                        try {
+                            jw.beginObject();
+                            loadJson(jw);
+                            jw.endObject();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+    }
     public void startEditing(final Activity ac){
         if (!editing) {
             editing = true;
@@ -63,8 +199,8 @@ public abstract class Editable {
                             else
                                 addShortcut(ac);
                         }
-                        if(((SWrpg)ac.getApplication()).vehicFold!=null)
-                            cloudSave(((SWrpg) ac.getApplication()).gac, getFileId(ac), false);
+                        if(((SWrpg)ac.getApplication()).charsFold!=null)
+                            save(((SWrpg) ac.getApplication()).gac, getFileId(ac));
                         do {
                             if (!saving) {
                                 saving = true;
@@ -76,9 +212,9 @@ public abstract class Editable {
                                             addShortcut(ac);
                                     }
                                     save(getFileLocation(ac));
-                                    if(((SWrpg)ac.getApplication()).vehicFold!=null)
-                                        cloudSave(((SWrpg) ac.getApplication()).gac,
-                                                getFileId(ac), false);
+                                    if(((SWrpg)ac.getApplication()).charsFold!=null)
+                                        save(((SWrpg) ac.getApplication()).gac,
+                                                getFileId(ac));
                                     tmpChar = Editable.this.clone();
                                 }
                                 saving = false;
@@ -99,9 +235,9 @@ public abstract class Editable {
                                         addShortcut(ac);
                                 }
                                 save(getFileLocation(ac));
-                                if(((SWrpg)ac.getApplication()).vehicFold!=null)
-                                    cloudSave(((SWrpg) ac.getApplication()).gac,
-                                            getFileId(ac), false);
+                                if(((SWrpg)ac.getApplication()).charsFold!=null)
+                                    save(((SWrpg) ac.getApplication()).gac,
+                                            getFileId(ac));
                             }
                             saving = false;
                         }

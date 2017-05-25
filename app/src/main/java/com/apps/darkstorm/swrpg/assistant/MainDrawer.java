@@ -175,17 +175,17 @@ public class MainDrawer extends AppCompatActivity
                     String path = intent.getData().getPath();
                     if (path.endsWith(".char")) {
                         Character tmp = new Character();
-                        tmp.reLoad(path);
+                        tmp.reLoadLegacy(path);
                         tmp.external = true;
                         getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
                     } else if (path.endsWith(".vhcl")) {
                         Vehicle tmp = new Vehicle();
-                        tmp.reLoad(path);
+                        tmp.reLoadLegacy(path);
                         tmp.external = true;
                         getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
                     } else if (path.endsWith(".minion")) {
                         Minion tmp = new Minion();
-                        tmp.reLoad(path);
+                        tmp.reLoadLegacy(path);
                         tmp.external = true;
                         getFragmentManager().beginTransaction().replace(R.id.content_main, EditFragment.newInstance(tmp)).commit();
                     } else {

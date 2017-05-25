@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,12 +16,14 @@ import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Weapons{
+public class Weapons implements JsonSavable {
     Weapon[] w;
     public Weapons(){
         w = new Weapon[0];
@@ -104,6 +108,25 @@ public class Weapons{
         for (Weapon we:w)
             total += we.encum;
         return total;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Weapons").beginArray();
+        for(Weapon wp:w)
+            wp.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<Weapon> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            Weapon tmp = new Weapon();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        w = out.toArray(w);
     }
 
     public static class WeaponsAdap extends RecyclerView.Adapter<WeaponsAdap.ViewHolder>{

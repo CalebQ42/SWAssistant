@@ -11,6 +11,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -47,15 +49,10 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Talents;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.drive.query.Filters;
-import com.google.android.gms.drive.query.Query;
-import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -72,36 +69,36 @@ public class Character extends Editable{
     //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
     public int[] charVals = new int[6];
     public Skills skills = new Skills();
-    public String species = "";
+    private String species = "";
     public String career = "";
     public Specializations specializations = new Specializations();
     public Talents talents = new Talents();
     public Inventory inv = new Inventory();
     //public Weapons weapons = new Weapons();
     public ForcePowers forcePowers = new ForcePowers();
-    public String motivation = "";
+    private String motivation = "";
     //public CriticalInjuries critInjuries = new CriticalInjuries();
-    public String[] emotionalStr = new String[1];
-    public String[] emotionalWeak = new String[1];
+    private String[] emotionalStr = {""};
+    private String[] emotionalWeak = {""};
     public Dutys duty = new Dutys();
     public Obligations obligation = new Obligations();
-    public int woundThresh, woundCur;
-    public int strainThresh,strainCur;
-    public int xpTot,xpCur;
-    public int defMelee,defRanged;
-    public int soak;
+    private int woundThresh, woundCur;
+    private int strainThresh,strainCur;
+    private int xpTot,xpCur;
+    private int defMelee,defRanged;
+    private int soak;
     public int force;
-    public int credits;
-    public int morality,conflict;
+    private int credits;
+    private int morality,conflict;
     //public String desc = "";
     private boolean[] showCards = new boolean[16];
-    public boolean darkSide;
-    public int age;
+    private boolean darkSide;
+    private int age;
     //public Notes nts (From Editable)
     //
     // Character V2 Start (35)
     //
-    public int encumCapacity;
+    private int encumCapacity;
     //
     // Character v3 Start (36)
     //
@@ -111,6 +108,142 @@ public class Character extends Editable{
     //  |  Character End  |
     //  |                 |
     //
+
+    public static String fileExtension = ".swcharacter";
+
+    @Override
+    public void saveJson(JsonWriter jw) throws IOException {
+        jw.name("ID").value(ID);
+        jw.name("name").value(name);
+        jw.name("characteristics").beginArray();
+        for(int cv:charVals)
+            jw.value(cv);
+        jw.endArray();
+        skills.saveJson(jw);
+        jw.name("species").value(species);
+        jw.name("career").value(career);
+        specializations.saveJson(jw);
+        talents.saveJson(jw);
+        inv.saveJson(jw);
+        weapons.saveJson(jw);
+        forcePowers.saveJson(jw);
+        jw.name("motivation").value(motivation);
+        critInjuries.saveJson(jw);
+        if(emotionalStr[0]==null)
+            emotionalStr[0]= "";
+        jw.name("emotional strength").value(emotionalStr[0]);
+        if(emotionalWeak[0]==null)
+            emotionalWeak[0]= "";
+        jw.name("emotional weakness").value(emotionalWeak[0]);
+        duty.saveJson(jw);
+        obligation.saveJson(jw);
+        jw.name("wound threshold").value(woundThresh);
+        jw.name("wound current").value(woundCur);
+        jw.name("strain threshold").value(strainThresh);
+        jw.name("strain current").value(strainCur);
+        jw.name("xp total").value(xpTot);
+        jw.name("xp current").value(xpCur);
+        jw.name("melee defense").value(defMelee);
+        jw.name("ranged defense").value(defRanged);
+        jw.name("soak").value(soak);
+        jw.name("force rating").value(force);
+        jw.name("credits").value(credits);
+        jw.name("morality").value(morality);
+        jw.name("conflict").value(conflict);
+        jw.name("description").value(desc);
+        jw.name("show cards").beginArray();
+        for(boolean b:showCards)
+            jw.value(b);
+        jw.endArray();
+        jw.name("dark side").value(darkSide);
+        jw.name("age").value(age);
+        nts.saveJson(jw);
+        jw.name("encumbrance capacity").value(encumCapacity);
+        jw.name("category").value(category);
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        jr.skipValue();
+        ID = jr.nextInt();
+        jr.skipValue();
+        name = jr.nextString();
+        jr.skipValue();
+        jr.beginArray();
+        for(int i = 0;i<charVals.length;i++)
+            charVals[i] = jr.nextInt();
+        jr.endArray();
+        jr.skipValue();
+        skills.loadJson(jr);
+        jr.skipValue();
+        species = jr.nextString();
+        jr.skipValue();
+        career = jr.nextString();
+        jr.skipValue();
+        specializations.loadJson(jr);
+        jr.skipValue();
+        talents.loadJson(jr);
+        jr.skipValue();
+        inv.loadJson(jr);
+        jr.skipValue();
+        weapons.loadJson(jr);
+        jr.skipValue();
+        forcePowers.loadJson(jr);
+        jr.skipValue();
+        motivation = jr.nextString();
+        jr.skipValue();
+        critInjuries.loadJson(jr);
+        jr.skipValue();
+        emotionalStr[0] = jr.nextString();
+        jr.skipValue();
+        emotionalWeak[0] = jr.nextString();
+        jr.skipValue();
+        duty.loadJson(jr);
+        jr.skipValue();
+        obligation.loadJson(jr);
+        jr.skipValue();
+        woundThresh = jr.nextInt();
+        jr.skipValue();
+        woundCur = jr.nextInt();
+        jr.skipValue();
+        strainThresh = jr.nextInt();
+        jr.skipValue();
+        strainCur = jr.nextInt();
+        jr.skipValue();
+        xpTot = jr.nextInt();
+        jr.skipValue();
+        xpCur = jr.nextInt();
+        jr.skipValue();
+        defMelee = jr.nextInt();
+        jr.skipValue();
+        defRanged = jr.nextInt();
+        jr.skipValue();
+        soak = jr.nextInt();
+        jr.skipValue();
+        force = jr.nextInt();
+        jr.skipValue();
+        credits = jr.nextInt();
+        jr.skipValue();
+        morality = jr.nextInt();
+        jr.skipValue();
+        conflict = jr.nextInt();
+        jr.skipValue();
+        desc = jr.nextString();
+        jr.skipValue();
+        jr.beginArray();
+        for(int i = 0;i<showCards.length;i++)
+            showCards[i] = jr.nextBoolean();
+        jr.endArray();
+        jr.skipValue();
+        darkSide = jr.nextBoolean();
+        jr.skipValue();
+        age = jr.nextInt();
+        jr.skipValue();
+        nts.loadJson(jr);
+        jr.skipValue();
+        encumCapacity = jr.nextInt();
+        jr.skipValue();
+        category = jr.nextString();
+    }
 
     public Character(){
         morality = 50;
@@ -125,66 +258,7 @@ public class Character extends Editable{
             showCards[i] = true;
         }
     }
-    public String getFileLocation(Activity main){
-        if(main!= null) {
-            String loc = ((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
-                    ((SWrpg) main.getApplication()).defaultLoc);
-            File location = new File(loc);
-            if (!location.exists()) {
-                if (!location.mkdir()) {
-                    return "";
-                }
-            }
-            String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".char";
-            if(external)
-                return this.loc;
-            return def;
-        }else{
-            return "";
-        }
-    }
-    public void save(String filename){
-        SaveLoad sl = new SaveLoad(filename);
-        sl.addSave(ID);
-        sl.addSave(name);
-        sl.addSave(charVals);
-        sl.addSave(skills.serialObject());
-        sl.addSave(species);
-        sl.addSave(career);
-        sl.addSave(specializations.serialObject());
-        sl.addSave(talents.serialObject());
-        sl.addSave(inv.serialObject());
-        sl.addSave(weapons.serialObject());
-        sl.addSave(forcePowers.serialObject());
-        sl.addSave(motivation);
-        sl.addSave(critInjuries.serialObject());
-        sl.addSave(emotionalStr);
-        sl.addSave(emotionalWeak);
-        sl.addSave(duty.serialObject());
-        sl.addSave(obligation.serialObject());
-        sl.addSave(woundThresh);
-        sl.addSave(woundCur);
-        sl.addSave(strainThresh);
-        sl.addSave(strainCur);
-        sl.addSave(xpTot);
-        sl.addSave(xpCur);
-        sl.addSave(defMelee);
-        sl.addSave(defRanged);
-        sl.addSave(soak);
-        sl.addSave(force);
-        sl.addSave(credits);
-        sl.addSave(morality);
-        sl.addSave(conflict);
-        sl.addSave(desc);
-        sl.addSave(showCards);
-        sl.addSave(darkSide);
-        sl.addSave(age);
-        sl.addSave(nts.serialObject());
-        sl.addSave(encumCapacity);
-        sl.addSave(category);
-        sl.save();
-    }
-    public void reLoad(String filename){
+    public void reLoadLegacy(String filename){
         SaveLoad sl = new SaveLoad(filename);
         Object[] vals = sl.load();
         switch (vals.length){
@@ -243,71 +317,7 @@ public class Character extends Editable{
                 }
         }
     }
-    public DriveId getFileId(Activity main){
-        String name = Integer.toString(ID) + ".char";
-        DriveId fi = null;
-        DriveApi.MetadataBufferResult res = ((SWrpg)main.getApplication())
-                .charsFold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
-                Filters.eq(SearchableField.TITLE,name)).build()).await();
-        for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isTrashed()){
-                fi = met.getDriveId();
-                break;
-            }
-        }
-        res.release();
-        if (fi == null){
-            fi = ((SWrpg)main.getApplication()).charsFold.createFile
-                    (((SWrpg)main.getApplication())
-                            .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
-                    .getDriveFile().getDriveId();
-        }
-        return fi;
-    }
-    public void cloudSave(GoogleApiClient gac,DriveId fil, boolean async){
-        if (fil != null) {
-            DriveSaveLoad sl = new DriveSaveLoad(fil);
-            sl.addSave(ID);
-            sl.addSave(name);
-            sl.addSave(charVals);
-            sl.addSave(skills.serialObject());
-            sl.addSave(species);
-            sl.addSave(career);
-            sl.addSave(specializations.serialObject());
-            sl.addSave(talents.serialObject());
-            sl.addSave(inv.serialObject());
-            sl.addSave(weapons.serialObject());
-            sl.addSave(forcePowers.serialObject());
-            sl.addSave(motivation);
-            sl.addSave(critInjuries.serialObject());
-            sl.addSave(emotionalStr);
-            sl.addSave(emotionalWeak);
-            sl.addSave(duty.serialObject());
-            sl.addSave(obligation.serialObject());
-            sl.addSave(woundThresh);
-            sl.addSave(woundCur);
-            sl.addSave(strainThresh);
-            sl.addSave(strainCur);
-            sl.addSave(xpTot);
-            sl.addSave(xpCur);
-            sl.addSave(defMelee);
-            sl.addSave(defRanged);
-            sl.addSave(soak);
-            sl.addSave(force);
-            sl.addSave(credits);
-            sl.addSave(morality);
-            sl.addSave(conflict);
-            sl.addSave(desc);
-            sl.addSave(showCards);
-            sl.addSave(darkSide);
-            sl.addSave(age);
-            sl.addSave(nts.serialObject());
-            sl.addSave(encumCapacity);
-            sl.addSave(category);
-            sl.save(gac,async);
-        }
-    }
-    public void reLoad(GoogleApiClient gac,DriveId fil){
+    public void reLoadLegacy(GoogleApiClient gac, DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] vals = sl.load(gac);
         switch (vals.length){
@@ -412,7 +422,7 @@ public class Character extends Editable{
         tmp.category = category;
         return tmp;
     }
-    public void resolveConflict(){
+    private void resolveConflict(){
         if (!darkSide)
             morality += ((int)(Math.random()*10)+1)-conflict;
         else
@@ -440,97 +450,7 @@ public class Character extends Editable{
                 Arrays.equals(showCards, chara.showCards) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts) &&
                 encumCapacity == chara.encumCapacity && category.equals(chara.category);
     }
-    public Object serialObject(){
-        ArrayList<Object> out = new ArrayList<>();
-        out.add(ID);
-        out.add(name);
-        out.add(charVals);
-        out.add(skills.serialObject());
-        out.add(species);
-        out.add(career);
-        out.add(specializations.serialObject());
-        out.add(talents.serialObject());
-        out.add(inv.serialObject());
-        out.add(weapons.serialObject());
-        out.add(forcePowers.serialObject());
-        out.add(motivation);
-        out.add(critInjuries.serialObject());
-        out.add(emotionalStr);
-        out.add(emotionalWeak);
-        out.add(duty.serialObject());
-        out.add(obligation.serialObject());
-        out.add(woundThresh);
-        out.add(woundCur);
-        out.add(strainThresh);
-        out.add(strainCur);
-        out.add(xpTot);
-        out.add(xpCur);
-        out.add(defMelee);
-        out.add(defRanged);
-        out.add(soak);
-        out.add(force);
-        out.add(credits);
-        out.add(morality);
-        out.add(conflict);
-        out.add(desc);
-        out.add(showCards);
-        out.add(darkSide);
-        out.add(age);
-        out.add(nts.serialObject());
-        out.add(encumCapacity);
-        out.add(category);
-        return out.toArray();
-    }
-    public void loadFromObject(Object in){
-        Object[] vals = (Object[])in;
-        switch (vals.length){
-            //later versions go here and fallthrough
-            case 37:
-                category = (String)vals[36];
-            case 36:
-                encumCapacity = (int)vals[35];
-            case 35:
-                ID = (int)vals[0];
-                name = (String)vals[1];
-                charVals = (int[])vals[2];
-                skills.loadFromObject(vals[3]);
-                species = (String)vals[4];
-                career = (String)vals[5];
-                specializations.loadFromObject(vals[6]);
-                talents.loadFromObject(vals[7]);
-                inv.loadFromObject(vals[8]);
-                weapons.loadFromObject(vals[9]);
-                forcePowers.loadFromObject(vals[10]);
-                motivation = (String)vals[11];
-                critInjuries.loadFromObject(vals[12]);
-                emotionalStr = (String[])vals[13];
-                emotionalWeak = (String[])vals[14];
-                duty.loadFromObject(vals[15]);
-                obligation.loadFromObject(vals[16]);
-                woundThresh = (int)vals[17];
-                woundCur = (int)vals[18];
-                strainThresh = (int)vals[19];
-                strainCur = (int)vals[20];
-                xpTot = (int)vals[21];
-                xpCur = (int)vals[22];
-                defMelee = (int)vals[23];
-                defRanged = (int)vals[24];
-                soak = (int)vals[25];
-                force = (int)vals[26];
-                credits = (int)vals[27];
-                morality = (int)vals[28];
-                conflict = (int)vals[29];
-                desc = (String)vals[30];
-                showCards = (boolean[])vals[31];
-                darkSide = (boolean)vals[32];
-                age = (int)vals[33];
-                nts.loadFromObject(vals[34]);
-                if (nts == null){
-                    nts = new Notes();
-                }
-        }
-    }
-    public void exportTo(String folder){
+    private void exportTo(String folder){
         File fold = new File(folder);
         if(!fold.exists()) {
             if (!fold.mkdir())
@@ -542,6 +462,9 @@ public class Character extends Editable{
                 return;
         }
         save(folder+"/"+name+".char");
+    }
+    public String getFileExtension() {
+        return ".swcharacter";
     }
 
     public int cardNumber(){
@@ -1921,7 +1844,7 @@ public class Character extends Editable{
                         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... params) {
-                                ch.cloudSave(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac), true);
+                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac));
                                 return null;
                             }
                         };

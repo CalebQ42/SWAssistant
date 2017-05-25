@@ -22,9 +22,7 @@
   <string name="force_powers_text">Machtkräfte:</string>
   <string name="force_rating_text">Macht Rang:</string>
   <string name="xp_text">XP:</string>
-  <string name="current_text">Aktuell:</string>
-  <string name="total_text">Gesamt:</string>
-  <string name="inventory_text">Inventar:</string>
+    <string name="inventory_text">Inventar:</string>
   <string name="credits_text">Credits:</string>
   <string name="morality_text">Moral:</string>
   <string name="conflict_text">Konflikt:</string>
@@ -35,24 +33,19 @@
   <string name="dark_side_resolution_text">Konflikt der dunklen Seite lösen</string>
   <string name="duty_text">Pflicht:</string>
   <string name="obligation_text">Verpflichtungen:</string>
-  <string name="desc_text">Beschreibung:</string>
-  <string name="title_text">Titel:</string>
+    <string name="title_text">Titel:</string>
   <string name="note_text">Notiz:</string>
   <string name="wound_thresh_text">Wundenlimit:</string>
   <string name="strain_thresh_text">Erschöpfungslimit:</string>
   <string name="melee_defense_text">Nahkampfverteidigung:</string>
   <string name="ranged_defense_text">Fernkampfverteidigung:</string>
-  <string name="spec_text">Spezialisierung:</string>
-  <string name="force_power_text">Machtkraft:</string>
-  <string name="total_xp_text">Gesamte XP:</string>
+    <string name="total_xp_text">Gesamte XP:</string>
   <string name="current_xp_text">Aktuelle XP:</string>
   <string name="noted_delete">Willst du diese Notiz wirklich löschen?</string>
   <string name="encum_warning">ACHTUNG: Du bist über dem Lastenlimit!</string>
   <string name="load_text">Laden</string>
   <string name="clone_text">Klonen</string>
-  <string name="cloning_text">Wird geklont&#8230;</string>
-  <string name="cloning_done_text">Klonen abgeschlossen!</string>
-  <!--Characteristic strings -->
+    <!--Characteristic strings -->
   <string name="brawn_text">Stärke:</string>
   <string name="agility_text">Gewandtheit:</string>
   <string name="intellect_text">Intelligenz:</string>

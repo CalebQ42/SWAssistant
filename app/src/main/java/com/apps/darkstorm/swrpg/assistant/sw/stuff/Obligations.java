@@ -2,17 +2,21 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Obligations{
+public class Obligations implements JsonSavable {
     Obligation[] o;
     public Obligations(){
         o = new Obligation[0];
@@ -80,6 +84,25 @@ public class Obligations{
         for(int i = 0;i<o.length;i++)
             out.o[i] = o[i].clone();
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Obligations").beginArray();
+        for(Obligation ob:o)
+            ob.saveJson(jw);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<Obligation> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            Obligation tmp = new Obligation();
+            tmp.loadJson(jr);
+            out.add(tmp);
+        }
+        jr.endArray();
+        o = out.toArray(o);
     }
 
     public static class ObligationsAdap extends RecyclerView.Adapter<ObligationsAdap.ViewHolder>{

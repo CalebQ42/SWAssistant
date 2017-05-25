@@ -208,7 +208,7 @@ public class SettingsFragment extends Fragment {
                                                             ID++;
                                                         }
                                                         c.ID = ID;
-                                                        c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
+                                                        c.save(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()));
                                                         IDs.add(ID);
                                                     }
                                                     finished[0] = true;
@@ -236,7 +236,7 @@ public class SettingsFragment extends Fragment {
                                                             ID++;
                                                         }
                                                         c.ID = ID;
-                                                        c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
+                                                        c.save(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()));
                                                         IDs.add(ID);
                                                     }
                                                     finished[0] = true;
@@ -264,7 +264,7 @@ public class SettingsFragment extends Fragment {
                                                             ID++;
                                                         }
                                                         c.ID = ID;
-                                                        c.cloudSave(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()),false);
+                                                        c.save(((SWrpg)getActivity().getApplication()).gac,c.getFileId(getActivity()));
                                                         IDs.add(ID);
                                                     }
                                                     finished[0] = true;

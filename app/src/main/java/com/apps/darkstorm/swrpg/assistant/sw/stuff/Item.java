@@ -3,17 +3,21 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class Item{
+public class Item implements JsonSavable {
     //Version 1 0-2
     public String name = "";
     public String desc = "";
@@ -51,6 +55,28 @@ public class Item{
         out.desc = desc;
         out.count = count;
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.beginObject();
+        jw.name("name").value(name);
+        jw.name("description").value(desc);
+        jw.name("count").value(count);
+        jw.name("encumbrance").value(encum);
+        jw.endObject();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        jr.beginObject();
+        jr.skipValue();
+        name = jr.nextString();
+        jr.skipValue();
+        desc = jr.nextString();
+        jr.skipValue();
+        count = jr.nextInt();
+        jr.skipValue();
+        encum = jr.nextInt();
+        jr.endObject();
     }
 
     public static void editItem(final Activity ac, final Editable c, final int pos, final boolean newItem, final Skill.onSave os){

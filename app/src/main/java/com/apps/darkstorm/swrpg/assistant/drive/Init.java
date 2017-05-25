@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
+import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.drive.Drive;
@@ -32,6 +33,7 @@ public class Init {
                             ((SWrpg) main.getApplication()).driveFail = true;
                             break;
                         }
+                        System.out.println("GAAH");
                     default:
                         final DriveFolder root = Drive.DriveApi.getRootFolder(((SWrpg) main.getApplication()).gac);
                         root.queryChildren(((SWrpg) main.getApplication()).gac, new Query.Builder()
@@ -73,24 +75,30 @@ public class Init {
                                                                                             }
                                                                                         }
                                                                                         metBuf.release();
-                                                                                        if (shipFold[0] == null) {
-                                                                                            charsFold[0].createFolder(((SWrpg) main.getApplication()).gac,
-                                                                                                    new MetadataChangeSet.Builder().setTitle("SWShips").build())
-                                                                                                    .setResultCallback(new ResultCallback<DriveFolder.DriveFolderResult>() {
-                                                                                                        @Override
-                                                                                                        public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
-                                                                                                            if (driveFolderResult.getStatus().isSuccess()) {
-                                                                                                                shipFold[0] = driveFolderResult.getDriveFolder();
-                                                                                                                ((SWrpg) main.getApplication()).charsFold = charsFold[0];
-                                                                                                                ((SWrpg) main.getApplication()).vehicFold = shipFold[0];
-                                                                                                            } else {
-                                                                                                                if (number < 5)
-                                                                                                                    Init.connect(main, number + 1);
-                                                                                                                else
-                                                                                                                    ((SWrpg) main.getApplication()).driveFail = true;
+                                                                                        if (shipFold[0] != null) {
+                                                                                            shipFold[0].listChildren(((SWrpg)main.getApplication()).gac)
+                                                                                                    .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
+                                                                                                @Override
+                                                                                                public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                                                                                                    if(metadataBufferResult.getStatus().isSuccess()){
+                                                                                                        MetadataBuffer metBuffer = metadataBufferResult.getMetadataBuffer();
+                                                                                                        for(Metadata met:metBuffer){
+                                                                                                            if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
+                                                                                                                Vehicle tmp = new Vehicle();
+                                                                                                                tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
+                                                                                                                tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main));
                                                                                                             }
                                                                                                         }
-                                                                                                    });
+                                                                                                        metBuffer.release();
+                                                                                                        shipFold[0].delete(((SWrpg)main.getApplication()).gac);
+                                                                                                    } else {
+                                                                                                        if (number < 5)
+                                                                                                            Init.connect(main, number + 1);
+                                                                                                        else
+                                                                                                            ((SWrpg) main.getApplication()).driveFail = true;
+                                                                                                    }
+                                                                                                }
+                                                                                            });
                                                                                         }
                                                                                     } else {
                                                                                         if (number < 5)
@@ -117,23 +125,31 @@ public class Init {
                                                             public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
                                                                 if (metadataBufferResult.getStatus().isSuccess()) {
                                                                     MetadataBuffer mets = metadataBufferResult.getMetadataBuffer();
-                                                                    DriveFolder vehic = null;
+                                                                    final DriveFolder[] shipFold = {null};
                                                                     for (Metadata met : mets) {
                                                                         if (met.isFolder() && !met.isTrashed()) {
-                                                                            vehic = met.getDriveId().asDriveFolder();
+                                                                            shipFold[0] = met.getDriveId().asDriveFolder();
                                                                             break;
                                                                         }
                                                                     }
                                                                     mets.release();
-                                                                    if (vehic == null) {
-                                                                        charsFold[0].createFolder(((SWrpg) main.getApplication()).gac, new MetadataChangeSet.Builder()
-                                                                                .setTitle("SWShips").build())
-                                                                                .setResultCallback(new ResultCallback<DriveFolder.DriveFolderResult>() {
+                                                                    if (shipFold[0] != null) {
+                                                                        ((SWrpg) main.getApplication()).charsFold = charsFold[0];
+                                                                        shipFold[0].listChildren(((SWrpg)main.getApplication()).gac)
+                                                                                .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                                                                                     @Override
-                                                                                    public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
-                                                                                        if (driveFolderResult.getStatus().isSuccess()) {
-                                                                                            ((SWrpg) main.getApplication()).vehicFold = driveFolderResult.getDriveFolder();
-                                                                                            ((SWrpg) main.getApplication()).charsFold = charsFold[0];
+                                                                                    public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                                                                                        if(metadataBufferResult.getStatus().isSuccess()){
+                                                                                            MetadataBuffer metBuffer = metadataBufferResult.getMetadataBuffer();
+                                                                                            for(Metadata met:metBuffer){
+                                                                                                if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
+                                                                                                    Vehicle tmp = new Vehicle();
+                                                                                                    tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
+                                                                                                    tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main));
+                                                                                                }
+                                                                                            }
+                                                                                            metBuffer.release();
+                                                                                            shipFold[0].delete(((SWrpg)main.getApplication()).gac);
                                                                                         } else {
                                                                                             if (number < 5)
                                                                                                 Init.connect(main, number + 1);
@@ -142,9 +158,6 @@ public class Init {
                                                                                         }
                                                                                     }
                                                                                 });
-                                                                    } else {
-                                                                        ((SWrpg) main.getApplication()).vehicFold = vehic;
-                                                                        ((SWrpg) main.getApplication()).charsFold = charsFold[0];
                                                                     }
                                                                 } else {
                                                                     if (number < 5)

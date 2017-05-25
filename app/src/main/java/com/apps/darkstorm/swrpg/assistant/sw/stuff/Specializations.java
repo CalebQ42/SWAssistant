@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -12,10 +14,13 @@ import android.widget.TextView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Specializations {
+public class Specializations  implements JsonSavable {
     String[] specs;
     public Specializations(){
         specs = new String[0];
@@ -72,6 +77,23 @@ public class Specializations {
         Specializations out = new Specializations();
         out.specs = specs.clone();
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.name("Specializations").beginArray();
+        for(String s:specs)
+            jw.value(s);
+        jw.endArray();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        ArrayList<String> out = new ArrayList<>();
+        jr.beginArray();
+        while(jr.hasNext()){
+            out.add(jr.nextString());
+        }
+        jr.endArray();
+        specs = out.toArray(specs);
     }
 
     public static class SpecializationsAdapter extends RecyclerView.Adapter<SpecializationsAdapter.ViewHolder>{

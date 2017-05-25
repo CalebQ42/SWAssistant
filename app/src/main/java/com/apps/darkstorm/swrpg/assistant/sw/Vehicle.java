@@ -11,6 +11,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,15 +36,10 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Skill;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveId;
-import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.drive.query.Filters;
-import com.google.android.gms.drive.query.Query;
-import com.google.android.gms.drive.query.SearchableField;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -54,20 +51,20 @@ public class Vehicle extends Editable{
     //
     //public int ID;
     //public String name = "";
-    public int silhouette;
-    public int speed;
-    public int handling;
-    public int armor;
+    private int silhouette;
+    private int speed;
+    private int handling;
+    private int armor;
     //0-Fore,1-Port,2-Starboard,3-Aft;
-    public int[] defense = new int[4];
-    public int totalDefense;
-    public int hullTraumaThresh;
-    public int hullTraumaCur;
-    public int sysStressThresh;
-    public int sysStressCur;
-    public int encumCapacity;
-    public int passengerCapacity;
-    public int hp;
+    private int[] defense = new int[4];
+    private int totalDefense;
+    private int hullTraumaThresh;
+    private int hullTraumaCur;
+    private int sysStressThresh;
+    private int sysStressCur;
+    private int encumCapacity;
+    private int passengerCapacity;
+    private int hp;
     //public Weapons weapons = new Weapons();
     //public CriticalInjuries crits = new CriticalInjuries();
     private boolean[] showCards = new boolean[6];
@@ -84,10 +81,12 @@ public class Vehicle extends Editable{
     //  |               |
     //
 
-    public static int fore = 0;
-    public static int port = 1;
-    public static int starboard = 2;
-    public static int aft = 3;
+    public static String fileExtension = ".swvehicle";
+
+    private static int fore = 0;
+    private static int port = 1;
+    private static int starboard = 2;
+    private static int aft = 3;
 
 
     public Vehicle(){
@@ -139,62 +138,91 @@ public class Vehicle extends Editable{
         return tmp;
     }
 
-    public void save(String filename){
-        SaveLoad sl = new SaveLoad(filename);
-        sl.addSave(ID);
-        sl.addSave(name);
-        sl.addSave(silhouette);
-        sl.addSave(speed);
-        sl.addSave(handling);
-        sl.addSave(armor);
-        sl.addSave(defense);
-        sl.addSave(totalDefense);
-        sl.addSave(hullTraumaCur);
-        sl.addSave(hullTraumaThresh);
-        sl.addSave(sysStressCur);
-        sl.addSave(sysStressThresh);
-        sl.addSave(encumCapacity);
-        sl.addSave(passengerCapacity);
-        sl.addSave(hp);
-        sl.addSave(weapons.serialObject());
-        sl.addSave(critInjuries.serialObject());
-        sl.addSave(showCards);
-        sl.addSave(desc);
-        sl.addSave(model);
-        sl.addSave(category);
-        sl.addSave(nts.serialObject());
-        sl.save();
+    public void saveJson(JsonWriter jw) throws IOException {
+        jw.name("ID").value(ID);
+        jw.name("name").value(name);
+        jw.name("silhouette").value(silhouette);
+        jw.name("speed").value(speed);
+        jw.name("handling").value(handling);
+        jw.name("armor").value(armor);
+        jw.name("defense").beginArray();
+        for(int i:defense)
+            jw.value(i);
+        jw.endArray();
+        jw.name("total defense").value(totalDefense);
+        jw.name("hull trauma threshold").value(hullTraumaThresh);
+        jw.name("hull trauma current").value(hullTraumaCur);
+        jw.name("system stress threshold").value(sysStressThresh);
+        jw.name("system stress current").value(sysStressCur);
+        jw.name("encumbrance capacity").value(encumCapacity);
+        jw.name("passenger capacity").value(passengerCapacity);
+        jw.name("hard points").value(hp);
+        weapons.saveJson(jw);
+        critInjuries.saveJson(jw);
+        jw.name("show cards").beginArray();
+        for(boolean b:showCards)
+            jw.value(b);
+        jw.endArray();
+        jw.name("description").value(desc);
+        jw.name("model").value(model);
+        jw.name("category").value(category);
+        nts.saveJson(jw);
     }
-    public void cloudSave(GoogleApiClient gac, DriveId fil, boolean async){
-        if(fil != null){
-            DriveSaveLoad sl = new DriveSaveLoad(fil);
-            sl.setMime("swrpg/vhcl");
-            sl.addSave(ID);
-            sl.addSave(name);
-            sl.addSave(silhouette);
-            sl.addSave(speed);
-            sl.addSave(handling);
-            sl.addSave(armor);
-            sl.addSave(defense);
-            sl.addSave(totalDefense);
-            sl.addSave(hullTraumaCur);
-            sl.addSave(hullTraumaThresh);
-            sl.addSave(sysStressCur);
-            sl.addSave(sysStressThresh);
-            sl.addSave(encumCapacity);
-            sl.addSave(passengerCapacity);
-            sl.addSave(hp);
-            sl.addSave(weapons.serialObject());
-            sl.addSave(critInjuries.serialObject());
-            sl.addSave(showCards);
-            sl.addSave(desc);
-            sl.addSave(model);
-            sl.addSave(category);
-            sl.addSave(nts.serialObject());
-            sl.save(gac,async);
-        }
+
+    public void loadJson(JsonReader jw) throws IOException {
+        jw.skipValue();
+        ID = jw.nextInt();
+        jw.skipValue();
+        name = jw.nextString();
+        jw.skipValue();
+        silhouette = jw.nextInt();
+        jw.skipValue();
+        speed = jw.nextInt();
+        jw.skipValue();
+        handling = jw.nextInt();
+        jw.skipValue();
+        armor = jw.nextInt();
+        jw.skipValue();
+        jw.beginArray();
+        for(int i = 0;i<defense.length;i++)
+            defense[i] = jw.nextInt();
+        jw.endArray();
+        jw.skipValue();
+        totalDefense = jw.nextInt();
+        jw.skipValue();
+        hullTraumaThresh = jw.nextInt();
+        jw.skipValue();
+        hullTraumaCur = jw.nextInt();
+        jw.skipValue();
+        sysStressThresh = jw.nextInt();
+        jw.skipValue();
+        sysStressCur = jw.nextInt();
+        jw.skipValue();
+        encumCapacity = jw.nextInt();
+        jw.skipValue();
+        passengerCapacity = jw.nextInt();
+        jw.skipValue();
+        hp = jw.nextInt();
+        jw.skipValue();
+        weapons.loadJson(jw);
+        jw.skipValue();
+        critInjuries.loadJson(jw);
+        jw.skipValue();
+        jw.beginArray();
+        for(int i = 0;i<showCards.length;i++)
+            showCards[i] = jw.nextBoolean();
+        jw.endArray();
+        jw.skipValue();
+        desc = jw.nextString();
+        jw.skipValue();
+        model = jw.nextString();
+        jw.skipValue();
+        category = jw.nextString();
+        jw.skipValue();
+        nts.loadJson(jw);
     }
-    public void reLoad(String filename){
+
+    public void reLoadLegacy(String filename){
         loc = filename;
         SaveLoad sl = new SaveLoad(filename);
         Object[] val = sl.load();
@@ -236,7 +264,7 @@ public class Vehicle extends Editable{
                 }
         }
     }
-    public void reLoad(GoogleApiClient gac, DriveId fil){
+    public void reLoadLegacy(GoogleApiClient gac, DriveId fil){
         DriveSaveLoad sl = new DriveSaveLoad(fil);
         Object[] val = sl.load(gac);
         switch (val.length){
@@ -277,45 +305,6 @@ public class Vehicle extends Editable{
                 }
         }
     }
-    public String getFileLocation(Activity main){
-        if(main!= null) {
-            String loc = ((SWrpg) main.getApplication()).prefs.getString(main.getString(R.string.local_location_key),
-                    ((SWrpg) main.getApplication()).defaultLoc + "/SWShips");
-            File location = new File(loc);
-            if (!location.exists()) {
-                if (!location.mkdir()) {
-                    return "";
-                }
-            }
-            String def = location.getAbsolutePath() + "/" + Integer.toString(ID) + ".vhcl";
-            if(external)
-                return this.loc;
-            return def;
-        }else{
-            return "";
-        }
-    }
-    public DriveId getFileId(Activity main){
-        String name = Integer.toString(ID) + ".vhcl";
-        DriveId fi = null;
-        DriveApi.MetadataBufferResult res =
-                ((SWrpg)main.getApplication()).vehicFold.queryChildren
-                        (((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
-                Filters.eq(SearchableField.TITLE,name)).build()).await();
-        for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isTrashed()){
-                fi = met.getDriveId();
-                break;
-            }
-        }
-        res.release();
-        if (fi == null){
-            fi = ((SWrpg)main.getApplication()).vehicFold.createFile
-                    (((SWrpg)main.getApplication()).gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
-                    .getDriveFile().getDriveId();
-        }
-        return fi;
-    }
     public boolean equals(Object obj){
         if (!(obj instanceof Vehicle))
             return false;
@@ -342,6 +331,9 @@ public class Vehicle extends Editable{
     }
     public int cardNumber() {
         return 7;
+    }
+    public String getFileExtension() {
+        return ".swvehicle";
     }
     
     public void setupCards(final Activity ac, final EditGeneral.EditableAdap ea, final CardView c, final  int pos, final Handler parentHandle){
@@ -1109,7 +1101,7 @@ public class Vehicle extends Editable{
                         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... params) {
-                                ch.cloudSave(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac), true);
+                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac));
                                 return null;
                             }
                         };

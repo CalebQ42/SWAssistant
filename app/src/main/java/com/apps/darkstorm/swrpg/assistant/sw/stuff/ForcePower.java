@@ -5,15 +5,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
+import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class ForcePower{
+public class ForcePower implements JsonSavable{
     //Version 1 0-1
     public String name = "",desc = "";
     public Object serialObject(){
@@ -41,6 +45,22 @@ public class ForcePower{
         out.name = name;
         out.desc = desc;
         return out;
+    }
+
+    public void saveJson(JsonWriter jw) throws IOException{
+        jw.beginObject();
+        jw.name("name").value(name);
+        jw.name("description").value(desc);
+        jw.endObject();
+    }
+
+    public void loadJson(JsonReader jr) throws IOException{
+        jr.beginObject();
+        jr.skipValue();
+        name = jr.nextString();
+        jr.skipValue();
+        desc = jr.nextString();
+        jr.endObject();
     }
 
     public static void editForcePower(final Activity ac, final Character c, final int pos, final boolean newPower, final Skill.onSave os){

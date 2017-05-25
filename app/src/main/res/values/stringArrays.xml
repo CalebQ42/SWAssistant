@@ -12,13 +12,6 @@
         <item>Hard</item>
         <item>Daunting</item>
     </string-array>
-    <string-array name="range_bands">
-        <item>Engaged</item>
-        <item>Short</item>
-        <item>Medium</item>
-        <item>Long</item>
-        <item>Extreme</item>
-    </string-array>
     <string-array name="weapon_skills">
         <item>Brawl</item>
         <item>Gunnery</item>
