@@ -8,7 +8,6 @@
   <string name="dice">Würfel</string>
   <string name="guide">Anleitung</string>
   <string name="settings">Einstellungen</string>
-  <string name="show_ad">Werbung anzeigen (und mich unterstützen)</string>
   <string name="download">Download</string>
   <string name="other_group">Anderes Zeug</string>
 </resources>
