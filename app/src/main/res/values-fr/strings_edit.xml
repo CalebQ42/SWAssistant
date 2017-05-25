@@ -22,8 +22,6 @@
   <string name="force_powers_text">Pouvoir de Force:</string>
   <string name="force_rating_text">Valeur de Force:</string>
   <string name="xp_text">Exp:</string>
-  <string name="current_text">Actuelle:</string>
-  <string name="total_text">Totale:</string>
   <string name="inventory_text">Inventaire:</string>
   <string name="credits_text">Crédits:</string>
   <string name="morality_text">Moralité:</string>
@@ -35,23 +33,18 @@
   <string name="dark_side_resolution_text">Résolution de Conflit côté Obscure</string>
   <string name="duty_text">Devoir:</string>
   <string name="obligation_text">Obligation:</string>
-  <string name="desc_text">Description/Autres:</string>
   <string name="title_text">Titre:</string>
   <string name="note_text">Note:</string>
   <string name="wound_thresh_text">Seuil de blessures:</string>
   <string name="strain_thresh_text">Seuil de Stress:</string>
   <string name="melee_defense_text">Défense CàC:</string>
   <string name="ranged_defense_text">Défense à Distance:</string>
-  <string name="spec_text">Spécialisation:</string>
-  <string name="force_power_text">Pouvoir de Force:</string>
   <string name="total_xp_text">Exp Totale:</string>
   <string name="current_xp_text">Exp Actuelle:</string>
   <string name="noted_delete">Êtes-vous certains de vouloir supprimer cette note?</string>
   <string name="encum_warning">ATTENTION: Vous êtes à la limite de l\'encombrement!</string>
   <string name="load_text">Charger</string>
   <string name="clone_text">Clone</string>
-  <string name="cloning_text">Clonage&#8230;</string>
-  <string name="cloning_done_text">Clone terminé!</string>
   <!--Characteristic strings -->
   <string name="brawn_text">Vigueur:</string>
   <string name="agility_text">Agilité:</string>
