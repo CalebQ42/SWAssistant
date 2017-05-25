@@ -9,8 +9,6 @@
   <string name="setback_dice">Dés d\'Infortune:</string>
   <string name="force_dice">Dés de Force:</string>
   <string name="roll_text">Lancer</string>
-  <string name="dice_text">Dés</string>
-  <string name="clear_text">Effacer</string>
   <string name="instant_dice_text">Dés instantanés:</string>
   <string name="dhun_text">d100:</string>
   <string name="dten_text">d10:</string>
