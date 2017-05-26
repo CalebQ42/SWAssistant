@@ -86,7 +86,7 @@ public class WeapChars implements JsonSavable {
     }
 
     public void saveJson(JsonWriter jw) throws IOException{
-        jw.name("WeapChars").beginArray();
+        jw.name("Weapon Characteristics").beginArray();
         for(WeapChar w:wc)
             w.saveJson(jw);
         jw.endArray();

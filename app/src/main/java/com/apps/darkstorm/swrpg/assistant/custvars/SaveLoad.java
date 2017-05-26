@@ -14,13 +14,7 @@ import java.util.logging.Logger;
 
 public class SaveLoad implements Serializable{
     public SaveLoad(String filename){
-        if(filename.contains("/")) {
-            savFolder = new File(filename.substring(0, filename.lastIndexOf("/")));
-        }
         sav = new File(filename);
-    }
-    public void addSave(Object e){
-        saveItems.add(e);
     }
     public Object[] load(){
         if(sav.exists()){
@@ -41,31 +35,10 @@ public class SaveLoad implements Serializable{
         }
         return loadItems.toArray();
     }
-    public void save(){
-        try {
-            if(savFolder != null && !savFolder.exists())
-                savFolder.mkdirs();
-            File tmp = new File(sav.getAbsolutePath());
-            tmp.renameTo(new File(sav.getAbsoluteFile()+".bak"));
-            tmp = new File(sav.getAbsolutePath() + ".bak");
-            sav.delete();
-            tada=new FileOutputStream(sav);
-            toodoo = new ObjectOutputStream(tada);
-            toodoo.writeObject(saveItems);
-            toodoo.close();
-            tada.close();
-            tmp.delete();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
     //<editor-fold desc="Variables">
     private FileInputStream inF;
     private ObjectInputStream inO;
-    private FileOutputStream tada;
-    private ObjectOutputStream toodoo;
-    private File savFolder=null,sav;
-    private ArrayList<Object> saveItems = new ArrayList<>();
+    private File sav;
     private ArrayList<Object> loadItems = new ArrayList<>();
     //</editor-fold>
 }

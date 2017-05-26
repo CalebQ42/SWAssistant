@@ -170,56 +170,81 @@ public class Vehicle extends Editable{
     }
 
     public void loadJson(JsonReader jw) throws IOException {
-        jw.skipValue();
-        ID = jw.nextInt();
-        jw.skipValue();
-        name = jw.nextString();
-        jw.skipValue();
-        silhouette = jw.nextInt();
-        jw.skipValue();
-        speed = jw.nextInt();
-        jw.skipValue();
-        handling = jw.nextInt();
-        jw.skipValue();
-        armor = jw.nextInt();
-        jw.skipValue();
-        jw.beginArray();
-        for(int i = 0;i<defense.length;i++)
-            defense[i] = jw.nextInt();
-        jw.endArray();
-        jw.skipValue();
-        totalDefense = jw.nextInt();
-        jw.skipValue();
-        hullTraumaThresh = jw.nextInt();
-        jw.skipValue();
-        hullTraumaCur = jw.nextInt();
-        jw.skipValue();
-        sysStressThresh = jw.nextInt();
-        jw.skipValue();
-        sysStressCur = jw.nextInt();
-        jw.skipValue();
-        encumCapacity = jw.nextInt();
-        jw.skipValue();
-        passengerCapacity = jw.nextInt();
-        jw.skipValue();
-        hp = jw.nextInt();
-        jw.skipValue();
-        weapons.loadJson(jw);
-        jw.skipValue();
-        critInjuries.loadJson(jw);
-        jw.skipValue();
-        jw.beginArray();
-        for(int i = 0;i<showCards.length;i++)
-            showCards[i] = jw.nextBoolean();
-        jw.endArray();
-        jw.skipValue();
-        desc = jw.nextString();
-        jw.skipValue();
-        model = jw.nextString();
-        jw.skipValue();
-        category = jw.nextString();
-        jw.skipValue();
-        nts.loadJson(jw);
+        while(jw.hasNext()){
+            switch(jw.nextName()){
+                case "ID":
+                    ID = jw.nextInt();
+                    break;
+                case "name":
+                    name = jw.nextString();
+                    break;
+                case "silhouette":
+                    silhouette = jw.nextInt();
+                    break;
+                case "speed":
+                    speed = jw.nextInt();
+                    break;
+                case "handling":
+                    handling = jw.nextInt();
+                    break;
+                case "armor":
+                    armor = jw.nextInt();
+                    break;
+                case "defense":
+                    jw.beginArray();
+                    for(int i = 0;i<defense.length;i++)
+                        defense[i] = jw.nextInt();
+                    jw.endArray();
+                    break;
+                case "total defense":
+                    totalDefense = jw.nextInt();
+                    break;
+                case "hull trauma threshold":
+                    hullTraumaThresh = jw.nextInt();
+                    break;
+                case "hull trauma current":
+                    hullTraumaCur = jw.nextInt();
+                    break;
+                case "system stress threshold":
+                    sysStressThresh = jw.nextInt();
+                    break;
+                case "system stress current":
+                    sysStressCur = jw.nextInt();
+                    break;
+                case "encumbrance capacity":
+                    encumCapacity = jw.nextInt();
+                    break;
+                case "passenger capacity":
+                    passengerCapacity = jw.nextInt();
+                    break;
+                case "hard points":
+                    hp = jw.nextInt();
+                    break;
+                case "Weapons":
+                    weapons.loadJson(jw);
+                    break;
+                case "Critical Injuries":
+                    critInjuries.loadJson(jw);
+                    break;
+                case "show cards":
+                    jw.beginArray();
+                    for(int i = 0;i<showCards.length;i++)
+                        showCards[i] = jw.nextBoolean();
+                    jw.endArray();
+                    break;
+                case "description":
+                    desc = jw.nextString();
+                    break;
+                case "model":
+                    model = jw.nextString();
+                    break;
+                case "category":
+                    category = jw.nextString();
+                    break;
+                case "Notes":
+                    nts.loadJson(jw);
+            }
+        }
     }
 
     public void reLoadLegacy(String filename){
@@ -1101,7 +1126,7 @@ public class Vehicle extends Editable{
                         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... params) {
-                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac));
+                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac),false);
                                 return null;
                             }
                         };

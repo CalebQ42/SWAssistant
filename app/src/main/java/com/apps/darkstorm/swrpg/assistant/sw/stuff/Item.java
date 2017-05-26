@@ -68,14 +68,21 @@ public class Item implements JsonSavable {
 
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        desc = jr.nextString();
-        jr.skipValue();
-        count = jr.nextInt();
-        jr.skipValue();
-        encum = jr.nextInt();
+        while(jr.hasNext()){
+            switch(jr.nextName()){
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "description":
+                    desc = jr.nextString();
+                    break;
+                case "count":
+                    count = jr.nextInt();
+                    break;
+                case "encumbrance":
+                    encum = jr.nextInt();
+            }
+        }
         jr.endObject();
     }
 

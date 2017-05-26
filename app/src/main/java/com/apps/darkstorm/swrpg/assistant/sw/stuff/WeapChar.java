@@ -62,12 +62,18 @@ public class WeapChar implements JsonSavable {
 
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        val = jr.nextInt();
-        jr.skipValue();
-        adv = jr.nextInt();
+        while(jr.hasNext()) {
+            switch (jr.nextName()) {
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "value":
+                    val = jr.nextInt();
+                    break;
+                case "advantage":
+                    adv = jr.nextInt();
+            }
+        }
         jr.endObject();
     }
 

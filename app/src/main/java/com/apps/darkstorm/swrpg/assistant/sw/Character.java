@@ -163,86 +163,126 @@ public class Character extends Editable{
     }
 
     public void loadJson(JsonReader jr) throws IOException{
-        jr.skipValue();
-        ID = jr.nextInt();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        jr.beginArray();
-        for(int i = 0;i<charVals.length;i++)
-            charVals[i] = jr.nextInt();
-        jr.endArray();
-        jr.skipValue();
-        skills.loadJson(jr);
-        jr.skipValue();
-        species = jr.nextString();
-        jr.skipValue();
-        career = jr.nextString();
-        jr.skipValue();
-        specializations.loadJson(jr);
-        jr.skipValue();
-        talents.loadJson(jr);
-        jr.skipValue();
-        inv.loadJson(jr);
-        jr.skipValue();
-        weapons.loadJson(jr);
-        jr.skipValue();
-        forcePowers.loadJson(jr);
-        jr.skipValue();
-        motivation = jr.nextString();
-        jr.skipValue();
-        critInjuries.loadJson(jr);
-        jr.skipValue();
-        emotionalStr[0] = jr.nextString();
-        jr.skipValue();
-        emotionalWeak[0] = jr.nextString();
-        jr.skipValue();
-        duty.loadJson(jr);
-        jr.skipValue();
-        obligation.loadJson(jr);
-        jr.skipValue();
-        woundThresh = jr.nextInt();
-        jr.skipValue();
-        woundCur = jr.nextInt();
-        jr.skipValue();
-        strainThresh = jr.nextInt();
-        jr.skipValue();
-        strainCur = jr.nextInt();
-        jr.skipValue();
-        xpTot = jr.nextInt();
-        jr.skipValue();
-        xpCur = jr.nextInt();
-        jr.skipValue();
-        defMelee = jr.nextInt();
-        jr.skipValue();
-        defRanged = jr.nextInt();
-        jr.skipValue();
-        soak = jr.nextInt();
-        jr.skipValue();
-        force = jr.nextInt();
-        jr.skipValue();
-        credits = jr.nextInt();
-        jr.skipValue();
-        morality = jr.nextInt();
-        jr.skipValue();
-        conflict = jr.nextInt();
-        jr.skipValue();
-        desc = jr.nextString();
-        jr.skipValue();
-        jr.beginArray();
-        for(int i = 0;i<showCards.length;i++)
-            showCards[i] = jr.nextBoolean();
-        jr.endArray();
-        jr.skipValue();
-        darkSide = jr.nextBoolean();
-        jr.skipValue();
-        age = jr.nextInt();
-        jr.skipValue();
-        nts.loadJson(jr);
-        jr.skipValue();
-        encumCapacity = jr.nextInt();
-        jr.skipValue();
-        category = jr.nextString();
+        while(jr.hasNext()){
+            switch(jr.nextName()){
+                case "ID":
+                    ID = jr.nextInt();
+                    break;
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "characteristics":
+                    jr.beginArray();
+                    for(int i = 0;i<charVals.length;i++)
+                        charVals[i] = jr.nextInt();
+                    jr.endArray();
+                    break;
+                case "Skills":
+                    skills.loadJson(jr);
+                    break;
+                case "species":
+                    species = jr.nextString();
+                    break;
+                case "career":
+                    career = jr.nextString();
+                    break;
+                case "Specializations":
+                    specializations.loadJson(jr);
+                    break;
+                case "Talents":
+                    talents.loadJson(jr);
+                    break;
+                case "Inventory":
+                    inv.loadJson(jr);
+                    break;
+                case "Weapons":
+                    inv.loadJson(jr);
+                    break;
+                case "Force Powers":
+                    forcePowers.loadJson(jr);
+                    break;
+                case "motivation":
+                    motivation = jr.nextString();
+                    break;
+                case "Critical Injuries":
+                    critInjuries.loadJson(jr);
+                    break;
+                case "emotional strength":
+                    emotionalStr[0] = jr.nextString();
+                    break;
+                case "emotional weakness":
+                    emotionalWeak[0] = jr.nextString();
+                    break;
+                case "Dutys":
+                    duty.loadJson(jr);
+                    break;
+                case "Obligations":
+                    obligation.loadJson(jr);
+                    break;
+                case "wound threshold":
+                    woundThresh = jr.nextInt();
+                    break;
+                case "wound current":
+                    woundCur = jr.nextInt();
+                    break;
+                case "strain threshold":
+                    strainThresh = jr.nextInt();
+                    break;
+                case "strain current":
+                    strainCur = jr.nextInt();
+                    break;
+                case "xp total":
+                    xpTot = jr.nextInt();
+                    break;
+                case "xp current":
+                    xpCur = jr.nextInt();
+                    break;
+                case "melee defense":
+                    defMelee = jr.nextInt();
+                    break;
+                case "ranged defense":
+                    defRanged = jr.nextInt();
+                    break;
+                case "soak":
+                    soak = jr.nextInt();
+                    break;
+                case "force rating":
+                    force = jr.nextInt();
+                    break;
+                case "credits":
+                    credits = jr.nextInt();
+                    break;
+                case "morality":
+                    morality = jr.nextInt();
+                    break;
+                case "conflict":
+                    conflict = jr.nextInt();
+                    break;
+                case "description":
+                    desc = jr.nextString();
+                    break;
+                case "show cards":
+                    jr.beginArray();
+                    for(int i = 0;i<showCards.length;i++)
+                        showCards[i] = jr.nextBoolean();
+                    jr.endArray();
+                    break;
+                case "dark side":
+                    darkSide = jr.nextBoolean();
+                    break;
+                case "age":
+                    age = jr.nextInt();
+                    break;
+                case "Notes":
+                    nts.loadJson(jr);
+                    break;
+                case "encumbrance capacity":
+                    encumCapacity = jr.nextInt();
+                    break;
+                case "category":
+                    category = jr.nextString();
+            }
+        }
     }
 
     public Character(){
@@ -1844,7 +1884,7 @@ public class Character extends Editable{
                         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... params) {
-                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac));
+                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac),false);
                                 return null;
                             }
                         };

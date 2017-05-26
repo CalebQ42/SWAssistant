@@ -60,6 +60,7 @@ public class Init {
                                                             public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
                                                                 if (driveFolderResult.getStatus().isSuccess()) {
                                                                     charsFold[0] = driveFolderResult.getDriveFolder();
+                                                                    ((SWrpg) main.getApplication()).charsFold = charsFold[0];
                                                                     charsFold[0].queryChildren(((SWrpg) main.getApplication()).gac, new Query.Builder()
                                                                             .addFilter(Filters.eq(SearchableField.TITLE, "SWShips")).build())
                                                                             .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
@@ -86,7 +87,7 @@ public class Init {
                                                                                                             if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
                                                                                                                 Vehicle tmp = new Vehicle();
                                                                                                                 tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
-                                                                                                                tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main));
+                                                                                                                tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main),false);
                                                                                                             }
                                                                                                         }
                                                                                                         metBuffer.release();
@@ -118,6 +119,7 @@ public class Init {
                                                             }
                                                         });
                                             } else {
+                                                ((SWrpg) main.getApplication()).charsFold = charsFold[0];
                                                 charsFold[0].queryChildren(((SWrpg) main.getApplication()).gac, new Query.Builder()
                                                         .addFilter(Filters.eq(SearchableField.TITLE, "SWShips")).build())
                                                         .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
@@ -134,7 +136,6 @@ public class Init {
                                                                     }
                                                                     mets.release();
                                                                     if (shipFold[0] != null) {
-                                                                        ((SWrpg) main.getApplication()).charsFold = charsFold[0];
                                                                         shipFold[0].listChildren(((SWrpg)main.getApplication()).gac)
                                                                                 .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                                                                                     @Override
@@ -145,7 +146,7 @@ public class Init {
                                                                                                 if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
                                                                                                     Vehicle tmp = new Vehicle();
                                                                                                     tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
-                                                                                                    tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main));
+                                                                                                    tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main),false);
                                                                                                 }
                                                                                             }
                                                                                             metBuffer.release();
@@ -158,7 +159,8 @@ public class Init {
                                                                                         }
                                                                                     }
                                                                                 });
-                                                                    }
+                                                                    }else
+                                                                        ((SWrpg)main.getApplication()).charsFold = charsFold[0];
                                                                 } else {
                                                                     if (number < 5)
                                                                         Init.connect(main, number + 1);

@@ -89,14 +89,21 @@ public class Skill implements JsonSavable {
 
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        val = jr.nextInt();
-        jr.skipValue();
-        baseChar = jr.nextInt();
-        jr.skipValue();
-        career = jr.nextBoolean();
+        while(jr.hasNext()){
+            switch(jr.nextName()){
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "value":
+                    val = jr.nextInt();
+                    break;
+                case "base":
+                    baseChar = jr.nextInt();
+                    break;
+                case "career":
+                    career = jr.nextBoolean();
+            }
+        }
         jr.endObject();
     }
 

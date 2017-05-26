@@ -56,10 +56,15 @@ public class ForcePower implements JsonSavable{
 
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        desc = jr.nextString();
+        while(jr.hasNext()){
+            switch(jr.nextName()){
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "description":
+                    desc = jr.nextString();
+            }
+        }
         jr.endObject();
     }
 

@@ -230,7 +230,7 @@ public class DownloadFragment extends Fragment {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
                                                         ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()));
+                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
                                                     }
 
@@ -312,7 +312,7 @@ public class DownloadFragment extends Fragment {
                                                     protected Void doInBackground(Void... params) {
                                                         ch.reLoadLegacy(ch.getFileLocation(getActivity()));
                                                         System.out.println("DLN: "+ch.name);
-                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()));
+                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
                                                     }
 
@@ -389,7 +389,7 @@ public class DownloadFragment extends Fragment {
                                                     protected Void doInBackground(Void... params) {
                                                         ch.reLoadLegacy(ch.getFileLocation(getActivity()));
                                                         System.out.println("DLN: "+ch.name);
-                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()));
+                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
                                                     }
 

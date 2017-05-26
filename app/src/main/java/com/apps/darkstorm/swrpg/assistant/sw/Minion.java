@@ -119,57 +119,85 @@ public class Minion extends Editable{
     }
 
     public void loadJson(JsonReader jw) throws IOException {
-        jw.skipValue();
-        ID = jw.nextInt();
-        jw.skipValue();
-        name = jw.nextString();
-        jw.skipValue();
-        jw.beginArray();
-        for(int i = 0;i<charVals.length;i++)
-            charVals[i] = jw.nextInt();
-        jw.endArray();
-        jw.skipValue();
-        skills.loadJson(jw);
-        jw.skipValue();
-        talents.loadJson(jw);
-        jw.skipValue();
-        inv.loadJson(jw);
-        jw.skipValue();
-        weapons.loadJson(jw);
-        jw.skipValue();
-        woundThreshInd = jw.nextInt();
-        jw.skipValue();
-        woundThresh = jw.nextInt();
-        jw.skipValue();
-        woundCur = jw.nextInt();
-        jw.skipValue();
-        defMelee = jw.nextInt();
-        jw.skipValue();
-        defRanged = jw.nextInt();
-        jw.skipValue();
-        soak = jw.nextInt();
-        jw.skipValue();
-        minNum = jw.nextInt();
-        jw.skipValue();
-        desc = jw.nextString();
-        jw.skipValue();
-        jw.beginArray();
-        for(int i = 0;i<showCards.length;i++)
-            showCards[i] = jw.nextBoolean();
-        jw.endArray();
-        jw.skipValue();
-        critInjuries.loadJson(jw);
-        jw.skipValue();
-        jw.beginObject();
-        jw.skipValue();
-        origInv.loadJson(jw);
-        jw.skipValue();
-        origWeapons.loadJson(jw);
-        jw.endObject();
-        jw.skipValue();
-        category = jw.nextString();
-        jw.skipValue();
-        nts.loadJson(jw);
+        while(jw.hasNext()){
+            switch(jw.nextName()){
+                case "ID":
+                    ID = jw.nextInt();
+                    break;
+                case "name":
+                    name = jw.nextString();
+                    break;
+                case "characteristics":
+                    jw.beginArray();
+                    for(int i = 0;i<charVals.length;i++)
+                        charVals[i] = jw.nextInt();
+                    jw.endArray();
+                    break;
+                case "Skills":
+                    skills.loadJson(jw);
+                    break;
+                case "Talents":
+                    talents.loadJson(jw);
+                    break;
+                case "Inventory":
+                    inv.loadJson(jw);
+                    break;
+                case "Weapons":
+                    weapons.loadJson(jw);
+                    break;
+                case "wound threshold per minion":
+                    woundThreshInd = jw.nextInt();
+                    break;
+                case "wound threshold":
+                    woundThresh = jw.nextInt();
+                    break;
+                case "wound current":
+                    woundCur = jw.nextInt();
+                    break;
+                case "defense melee":
+                    defMelee = jw.nextInt();
+                    break;
+                case "defense ranged":
+                    defRanged = jw.nextInt();
+                    break;
+                case "soak":
+                    soak = jw.nextInt();
+                    break;
+                case "minion number":
+                    minNum = jw.nextInt();
+                    break;
+                case "description":
+                    desc = jw.nextString();
+                    break;
+                case "show cards":
+                    jw.beginArray();
+                    for(int i = 0;i<showCards.length;i++)
+                        showCards[i] = jw.nextBoolean();
+                    jw.endArray();
+                    break;
+                case "Critical Injuries":
+                    critInjuries.loadJson(jw);
+                    break;
+                case "Saved":
+                    jw.beginObject();
+                    while(jw.hasNext()){
+                        switch(jw.nextName()){
+                            case "Inventory":
+                                origInv.loadJson(jw);
+                                break;
+                            case "Weapons":
+                                origWeapons.loadJson(jw);
+                        }
+                    }
+                    jw.endObject();
+                    break;
+                case "category":
+                    category = jw.nextString();
+                    break;
+                case "Notes":
+                    nts.loadJson(jw);
+            }
+        }
     }
 
     @Override
@@ -1081,7 +1109,7 @@ public class Minion extends Editable{
                         AsyncTask<Void,Void,Void> async = new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... params) {
-                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac));
+                                ch.save(((SWrpg) ac.getApplication()).gac, ch.getFileId(ac),false);
                                 return null;
                             }
                         };

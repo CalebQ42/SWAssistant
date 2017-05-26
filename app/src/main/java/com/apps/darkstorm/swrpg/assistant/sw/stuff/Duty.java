@@ -56,10 +56,15 @@ public class Duty implements JsonSavable {
 
     public void loadJson(JsonReader jw) throws IOException {
         jw.beginObject();
-        jw.skipValue();
-        name = jw.nextString();
-        jw.skipValue();
-        val = jw.nextInt();
+        while(jw.hasNext()){
+            switch(jw.nextName()){
+                case "name":
+                    name = jw.nextString();
+                    break;
+                case "value":
+                    val = jw.nextInt();
+            }
+        }
         jw.endObject();
     }
 

@@ -66,12 +66,18 @@ public class Talent implements JsonSavable {
 
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        desc = jr.nextString();
-        jr.skipValue();
-        val = jr.nextInt();
+        while(jr.hasNext()){
+            switch(jr.nextName()){
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "description":
+                    desc = jr.nextString();
+                    break;
+                case "value":
+                    val = jr.nextInt();
+            }
+        }
         jr.endObject();
     }
 

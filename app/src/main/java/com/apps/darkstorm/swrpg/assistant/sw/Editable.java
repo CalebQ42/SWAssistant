@@ -24,6 +24,7 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Notes;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
@@ -34,11 +35,14 @@ import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Collections;
 
@@ -125,31 +129,51 @@ public abstract class Editable implements JsonSavable{
             e.printStackTrace();
         }
     }
-    public void save(final GoogleApiClient gac, final DriveId fil){
+    public void save(final GoogleApiClient gac, final DriveId fil,boolean blocking){
         if (fil != null) {
-            fil.asDriveFile().open(gac, DriveFile.MODE_WRITE_ONLY, new DriveFile
-                    .DownloadProgressListener() {public void onProgress(long l, long l1) {}}).setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
-                @Override
-                public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
-                    if(driveContentsResult.getStatus().isSuccess()){
-                        try {
-                            DriveFile file = fil.asDriveFile();
-                            DriveApi.DriveContentsResult contRes =
-                                    file.open(gac, DriveFile.MODE_WRITE_ONLY,
-                                            new DriveFile.DownloadProgressListener() {public void onProgress(long l, long l1) {}}).await();
-                            DriveContents cont = contRes.getDriveContents();
-                            OutputStreamWriter osw = new OutputStreamWriter(cont.getOutputStream(),"UTF-8");
-                            JsonWriter jw = new JsonWriter(osw);
-                            jw.beginObject();
-                            saveJson(jw);
-                            jw.endObject();
-                            cont.commit(gac,null).await();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+            if(!blocking){
+                fil.asDriveFile().open(gac, DriveFile.MODE_WRITE_ONLY,null).setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
+                    @Override
+                    public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
+                        if (driveContentsResult.getStatus().isSuccess()) {
+                            try {
+                                DriveContents cont = driveContentsResult.getDriveContents();
+                                OutputStream os = cont.getOutputStream();
+                                OutputStreamWriter osw = new OutputStreamWriter(os);
+                                JsonWriter jw = new JsonWriter(osw);
+                                jw.beginObject();
+                                saveJson(jw);
+                                jw.endObject();
+                                jw.close();
+                                osw.close();
+                                os.close();
+                                cont.commit(gac, null);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
+                });
+            }else{
+                DriveApi.DriveContentsResult dcr = fil.asDriveFile().open(gac, DriveFile.MODE_WRITE_ONLY,null).await();
+                if(dcr.getStatus().isSuccess()){
+                    try {
+                        DriveContents cont = dcr.getDriveContents();
+                        OutputStream os = cont.getOutputStream();
+                        OutputStreamWriter osw = new OutputStreamWriter(os);
+                        JsonWriter jw = new JsonWriter(osw);
+                        jw.beginObject();
+                        saveJson(jw);
+                        jw.endObject();
+                        jw.close();
+                        osw.close();
+                        os.close();
+                        cont.commit(gac, null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            });
+            }
         }
     }
     public void load(String filename){
@@ -158,30 +182,55 @@ public abstract class Editable implements JsonSavable{
             jr.beginObject();
             loadJson(jr);
             jr.endObject();
+            jr.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-    public void load(GoogleApiClient gac,DriveId fil){
+    public void load(GoogleApiClient gac,DriveId fil,boolean blocking){
         if (fil != null) {
-            fil.asDriveFile().open(gac, DriveFile.MODE_READ_ONLY, new DriveFile
-                    .DownloadProgressListener() {public void onProgress(long l, long l1) {}}).setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
-                @Override
-                public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
-                    if(driveContentsResult.getStatus().isSuccess()){
-                        InputStreamReader isr = new InputStreamReader(driveContentsResult.getDriveContents().getInputStream());
-                        JsonReader jw = new JsonReader(isr);
-                        try {
-                            jw.beginObject();
-                            loadJson(jw);
-                            jw.endObject();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+            if(!blocking) {
+                fil.asDriveFile().open(gac, DriveFile.MODE_READ_ONLY,null).setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
+                    @Override
+                    public void onResult(@NonNull DriveApi.DriveContentsResult driveContentsResult) {
+                        if (driveContentsResult.getStatus().isSuccess()) {
+                            try {
+                                DriveContents dc = driveContentsResult.getDriveContents();
+                                InputStream is = dc.getInputStream();
+                                InputStreamReader isr = new InputStreamReader(is);
+                                JsonReader jw = new JsonReader(isr);
+                                jw.beginObject();
+                                loadJson(jw);
+                                jw.endObject();
+                                jw.close();
+                                isr.close();
+                                is.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
+                });
+            }else{
+                DriveApi.DriveContentsResult dcr = fil.asDriveFile().open(gac,DriveFile.MODE_READ_ONLY,null).await();
+                if(dcr.getStatus().isSuccess()){
+                    try {
+                        DriveContents dc = dcr.getDriveContents();
+                        InputStream is = dc.getInputStream();
+                        InputStreamReader isr = new InputStreamReader(is);
+                        JsonReader jw = new JsonReader(isr);
+                        jw.beginObject();
+                        loadJson(jw);
+                        jw.endObject();
+                        jw.close();
+                        isr.close();
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            });
+            }
         }
     }
     public void startEditing(final Activity ac){
@@ -200,7 +249,7 @@ public abstract class Editable implements JsonSavable{
                                 addShortcut(ac);
                         }
                         if(((SWrpg)ac.getApplication()).charsFold!=null)
-                            save(((SWrpg) ac.getApplication()).gac, getFileId(ac));
+                            save(((SWrpg) ac.getApplication()).gac, getFileId(ac),true);
                         do {
                             if (!saving) {
                                 saving = true;
@@ -213,8 +262,7 @@ public abstract class Editable implements JsonSavable{
                                     }
                                     save(getFileLocation(ac));
                                     if(((SWrpg)ac.getApplication()).charsFold!=null)
-                                        save(((SWrpg) ac.getApplication()).gac,
-                                                getFileId(ac));
+                                        save(((SWrpg) ac.getApplication()).gac, getFileId(ac),true);
                                     tmpChar = Editable.this.clone();
                                 }
                                 saving = false;
@@ -236,8 +284,7 @@ public abstract class Editable implements JsonSavable{
                                 }
                                 save(getFileLocation(ac));
                                 if(((SWrpg)ac.getApplication()).charsFold!=null)
-                                    save(((SWrpg) ac.getApplication()).gac,
-                                            getFileId(ac));
+                                    save(((SWrpg) ac.getApplication()).gac, getFileId(ac),true);
                             }
                             saving = false;
                         }

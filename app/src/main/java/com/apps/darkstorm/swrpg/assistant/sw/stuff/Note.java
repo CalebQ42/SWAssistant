@@ -47,10 +47,15 @@ public class Note implements JsonSavable {
 
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
-        jr.skipValue();
-        title = jr.nextString();
-        jr.skipValue();
-        note = jr.nextString();
+        while(jr.hasNext()){
+            switch(jr.nextName()){
+                case "title":
+                    title = jr.nextString();
+                    break;
+                case "note":
+                    note = jr.nextString();
+            }
+        }
         jr.endObject();
     }
 }

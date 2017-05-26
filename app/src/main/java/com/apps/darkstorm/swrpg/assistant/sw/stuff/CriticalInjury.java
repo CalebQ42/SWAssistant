@@ -63,12 +63,18 @@ public class CriticalInjury implements JsonSavable {
 
     public void loadJson(JsonReader jr) throws IOException {
         jr.beginObject();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        desc = jr.nextString();
-        jr.skipValue();
-        severity = jr.nextInt();
+        while(jr.hasNext()){
+            switch(jr.nextName()){
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "description":
+                    desc = jr.nextString();
+                    break;
+                case "severity":
+                    severity = jr.nextInt();
+            }
+        }
         jr.endObject();
     }
 

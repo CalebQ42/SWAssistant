@@ -163,36 +163,56 @@ public class Weapon implements JsonSavable {
 
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
-        jr.skipValue();
-        name = jr.nextString();
-        jr.skipValue();
-        dmg = jr.nextInt();
-        jr.skipValue();
-        crit = jr.nextInt();
-        jr.skipValue();
-        hp = jr.nextInt();
-        jr.skipValue();
-        range = jr.nextInt();
-        jr.skipValue();
-        skill = jr.nextInt();
-        jr.skipValue();
-        skillBase = jr.nextInt();
-        jr.skipValue();
-        chars.loadJson(jr);
-        jr.skipValue();
-        addBrawn = jr.nextBoolean();
-        jr.skipValue();
-        loaded = jr.nextBoolean();
-        jr.skipValue();
-        limitedAmmo = jr.nextBoolean();
-        jr.skipValue();
-        itemState = jr.nextInt();
-        jr.skipValue();
-        ammo = jr.nextInt();
-        jr.skipValue();
-        firingArc = jr.nextString();
-        jr.skipValue();
-        encum = jr.nextInt();
+        while(jr.hasNext()){
+            switch (jr.nextString()){
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "damage":
+                    dmg = jr.nextInt();
+                    break;
+                case "critical rating":
+                    crit = jr.nextInt();
+                    break;
+                case "hard points":
+                    hp = jr.nextInt();
+                    break;
+                case "range":
+                    range = jr.nextInt();
+                    break;
+                case "skill":
+                    skill =jr.nextInt();
+                    break;
+                case "base":
+                    skillBase = jr.nextInt();
+                    break;
+                case "Weapon Characteristics":
+                    chars.loadJson(jr);
+                    break;
+                case "WeapChars":
+                    chars.loadJson(jr);
+                case "add brawn":
+                    addBrawn = jr.nextBoolean();
+                    break;
+                case "loaded":
+                    loaded = jr.nextBoolean();
+                    break;
+                case "limited ammo":
+                    limitedAmmo = jr.nextBoolean();
+                    break;
+                case "item state":
+                    itemState = jr.nextInt();
+                    break;
+                case "ammo":
+                    ammo = jr.nextInt();
+                    break;
+                case "firing arc":
+                    firingArc = jr.nextString();
+                    break;
+                case "encumbrance":
+                    encum = jr.nextInt();
+            }
+        }
         jr.endObject();
     }
 
