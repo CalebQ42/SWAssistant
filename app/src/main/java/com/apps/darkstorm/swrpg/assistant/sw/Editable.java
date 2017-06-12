@@ -24,10 +24,10 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Notes;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
+import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
@@ -35,7 +35,6 @@ import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -100,6 +99,28 @@ public abstract class Editable implements JsonSavable{
         res.release();
         if (fi == null){
             fi = ((SWrpg)main.getApplication()).charsFold.createFile
+                    (((SWrpg)main.getApplication())
+                            .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+                    .getDriveFile().getDriveId();
+        }
+        return fi;
+    }
+    public DriveId getFileId(Activity main,DriveFolder fold){
+        if(external)
+            return null;
+        String name = Integer.toString(ID) + getFileExtension();
+        DriveId fi = null;
+        DriveApi.MetadataBufferResult res = fold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
+                        Filters.eq(SearchableField.TITLE,name)).build()).await();
+        for (Metadata met:res.getMetadataBuffer()){
+            if (!met.isTrashed()){
+                fi = met.getDriveId();
+                break;
+            }
+        }
+        res.release();
+        if (fi == null){
+            fi = fold.createFile
                     (((SWrpg)main.getApplication())
                             .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
                     .getDriveFile().getDriveId();

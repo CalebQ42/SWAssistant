@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg.assistant.drive;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
@@ -60,7 +61,6 @@ public class Init {
                                                             public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
                                                                 if (driveFolderResult.getStatus().isSuccess()) {
                                                                     charsFold[0] = driveFolderResult.getDriveFolder();
-                                                                    ((SWrpg) main.getApplication()).charsFold = charsFold[0];
                                                                     charsFold[0].queryChildren(((SWrpg) main.getApplication()).gac, new Query.Builder()
                                                                             .addFilter(Filters.eq(SearchableField.TITLE, "SWShips")).build())
                                                                             .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
@@ -80,18 +80,26 @@ public class Init {
                                                                                             shipFold[0].listChildren(((SWrpg)main.getApplication()).gac)
                                                                                                     .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                                                                                                 @Override
-                                                                                                public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                                                                                                public void onResult(@NonNull final DriveApi.MetadataBufferResult metadataBufferResult) {
                                                                                                     if(metadataBufferResult.getStatus().isSuccess()){
-                                                                                                        MetadataBuffer metBuffer = metadataBufferResult.getMetadataBuffer();
-                                                                                                        for(Metadata met:metBuffer){
-                                                                                                            if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
-                                                                                                                Vehicle tmp = new Vehicle();
-                                                                                                                tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
-                                                                                                                tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main),false);
+                                                                                                        AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                                                                                                            @Override
+                                                                                                            protected Void doInBackground(Void... params) {
+                                                                                                                MetadataBuffer metBuffer = metadataBufferResult.getMetadataBuffer();
+                                                                                                                for(Metadata met:metBuffer){
+                                                                                                                    if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
+                                                                                                                        Vehicle tmp = new Vehicle();
+                                                                                                                        tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
+                                                                                                                        tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main,charsFold[0]),false);
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                metBuffer.release();
+                                                                                                                shipFold[0].delete(((SWrpg)main.getApplication()).gac);
+                                                                                                                ((SWrpg) main.getApplication()).charsFold = charsFold[0];
+                                                                                                                return null;
                                                                                                             }
-                                                                                                        }
-                                                                                                        metBuffer.release();
-                                                                                                        shipFold[0].delete(((SWrpg)main.getApplication()).gac);
+                                                                                                        };
+                                                                                                        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                                                                                                     } else {
                                                                                                         if (number < 5)
                                                                                                             Init.connect(main, number + 1);
@@ -100,7 +108,8 @@ public class Init {
                                                                                                     }
                                                                                                 }
                                                                                             });
-                                                                                        }
+                                                                                        }else
+                                                                                            ((SWrpg)main.getApplication()).charsFold = charsFold[0];
                                                                                     } else {
                                                                                         if (number < 5)
                                                                                             Init.connect(main, number + 1);
@@ -119,7 +128,6 @@ public class Init {
                                                             }
                                                         });
                                             } else {
-                                                ((SWrpg) main.getApplication()).charsFold = charsFold[0];
                                                 charsFold[0].queryChildren(((SWrpg) main.getApplication()).gac, new Query.Builder()
                                                         .addFilter(Filters.eq(SearchableField.TITLE, "SWShips")).build())
                                                         .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
@@ -139,18 +147,26 @@ public class Init {
                                                                         shipFold[0].listChildren(((SWrpg)main.getApplication()).gac)
                                                                                 .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                                                                                     @Override
-                                                                                    public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                                                                                    public void onResult(@NonNull final DriveApi.MetadataBufferResult metadataBufferResult) {
                                                                                         if(metadataBufferResult.getStatus().isSuccess()){
-                                                                                            MetadataBuffer metBuffer = metadataBufferResult.getMetadataBuffer();
-                                                                                            for(Metadata met:metBuffer){
-                                                                                                if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
-                                                                                                    Vehicle tmp = new Vehicle();
-                                                                                                    tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
-                                                                                                    tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main),false);
+                                                                                            AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                                                                                                @Override
+                                                                                                protected Void doInBackground(Void... params) {
+                                                                                                    MetadataBuffer metBuffer = metadataBufferResult.getMetadataBuffer();
+                                                                                                    for(Metadata met:metBuffer){
+                                                                                                        if(met.getTitle().endsWith(".vhcl")||met.getTitle().endsWith(".vhcl.bak")){
+                                                                                                            Vehicle tmp = new Vehicle();
+                                                                                                            tmp.reLoadLegacy(((SWrpg)main.getApplication()).gac,met.getDriveId());
+                                                                                                            tmp.save(((SWrpg)main.getApplication()).gac,tmp.getFileId(main,charsFold[0]),false);
+                                                                                                        }
+                                                                                                    }
+                                                                                                    metBuffer.release();
+                                                                                                    shipFold[0].delete(((SWrpg)main.getApplication()).gac);
+                                                                                                    ((SWrpg) main.getApplication()).charsFold = charsFold[0];
+                                                                                                    return null;
                                                                                                 }
-                                                                                            }
-                                                                                            metBuffer.release();
-                                                                                            shipFold[0].delete(((SWrpg)main.getApplication()).gac);
+                                                                                            };
+                                                                                            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                                                                                         } else {
                                                                                             if (number < 5)
                                                                                                 Init.connect(main, number + 1);
