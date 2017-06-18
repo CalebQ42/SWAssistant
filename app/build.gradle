@@ -37,11 +37,11 @@ android {
             minSdkVersion 19
             targetSdkVersion 25
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 117
+            versionCode 118
             versionName '2.0.0.6'
             applicationId 'com.apps.darkstorm.swrpg.assistant'
             signingConfig signingConfigs.config
-            versionNameSuffix 'rc2'
+            versionNameSuffix 'rc3'
         }
     }
 }

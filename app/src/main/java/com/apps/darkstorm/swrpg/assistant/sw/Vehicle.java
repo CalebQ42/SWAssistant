@@ -37,6 +37,7 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.File;
 import java.io.IOException;
@@ -169,81 +170,87 @@ public class Vehicle extends Editable{
         nts.saveJson(jw);
     }
 
-    public void loadJson(JsonReader jw) throws IOException {
-        while(jw.hasNext()){
-            switch(jw.nextName()){
-                case "ID":
-                    ID = jw.nextInt();
-                    break;
-                case "name":
-                    name = jw.nextString();
-                    break;
-                case "silhouette":
-                    silhouette = jw.nextInt();
-                    break;
-                case "speed":
-                    speed = jw.nextInt();
-                    break;
-                case "handling":
-                    handling = jw.nextInt();
-                    break;
-                case "armor":
-                    armor = jw.nextInt();
-                    break;
-                case "defense":
-                    jw.beginArray();
-                    for(int i = 0;i<defense.length;i++)
-                        defense[i] = jw.nextInt();
-                    jw.endArray();
-                    break;
-                case "total defense":
-                    totalDefense = jw.nextInt();
-                    break;
-                case "hull trauma threshold":
-                    hullTraumaThresh = jw.nextInt();
-                    break;
-                case "hull trauma current":
-                    hullTraumaCur = jw.nextInt();
-                    break;
-                case "system stress threshold":
-                    sysStressThresh = jw.nextInt();
-                    break;
-                case "system stress current":
-                    sysStressCur = jw.nextInt();
-                    break;
-                case "encumbrance capacity":
-                    encumCapacity = jw.nextInt();
-                    break;
-                case "passenger capacity":
-                    passengerCapacity = jw.nextInt();
-                    break;
-                case "hard points":
-                    hp = jw.nextInt();
-                    break;
-                case "Weapons":
-                    weapons.loadJson(jw);
-                    break;
-                case "Critical Injuries":
-                    critInjuries.loadJson(jw);
-                    break;
-                case "show cards":
-                    jw.beginArray();
-                    for(int i = 0;i<showCards.length;i++)
-                        showCards[i] = jw.nextBoolean();
-                    jw.endArray();
-                    break;
-                case "description":
-                    desc = jw.nextString();
-                    break;
-                case "model":
-                    model = jw.nextString();
-                    break;
-                case "category":
-                    category = jw.nextString();
-                    break;
-                case "Notes":
-                    nts.loadJson(jw);
+    public void loadJson(JsonReader jw) throws IOException {String prev = "starting";
+        try {
+            while (jw.hasNext()) {
+                String tmp = jw.nextName();
+                switch (tmp) {
+                    case "ID":
+                        ID = jw.nextInt();
+                        break;
+                    case "name":
+                        name = jw.nextString();
+                        break;
+                    case "silhouette":
+                        silhouette = jw.nextInt();
+                        break;
+                    case "speed":
+                        speed = jw.nextInt();
+                        break;
+                    case "handling":
+                        handling = jw.nextInt();
+                        break;
+                    case "armor":
+                        armor = jw.nextInt();
+                        break;
+                    case "defense":
+                        jw.beginArray();
+                        for(int i = 0;i<defense.length;i++)
+                            defense[i] = jw.nextInt();
+                        jw.endArray();
+                        break;
+                    case "total defense":
+                        totalDefense = jw.nextInt();
+                        break;
+                    case "hull trauma threshold":
+                        hullTraumaThresh = jw.nextInt();
+                        break;
+                    case "hull trauma current":
+                        hullTraumaCur = jw.nextInt();
+                        break;
+                    case "system stress threshold":
+                        sysStressThresh = jw.nextInt();
+                        break;
+                    case "system stress current":
+                        sysStressCur = jw.nextInt();
+                        break;
+                    case "encumbrance capacity":
+                        encumCapacity = jw.nextInt();
+                        break;
+                    case "passenger capacity":
+                        passengerCapacity = jw.nextInt();
+                        break;
+                    case "hard points":
+                        hp = jw.nextInt();
+                        break;
+                    case "Weapons":
+                        weapons.loadJson(jw);
+                        break;
+                    case "Critical Injuries":
+                        critInjuries.loadJson(jw);
+                        break;
+                    case "show cards":
+                        jw.beginArray();
+                        for(int i = 0;i<showCards.length;i++)
+                            showCards[i] = jw.nextBoolean();
+                        jw.endArray();
+                        break;
+                    case "description":
+                        desc = jw.nextString();
+                        break;
+                    case "model":
+                        model = jw.nextString();
+                        break;
+                    case "category":
+                        category = jw.nextString();
+                        break;
+                    case "Notes":
+                        nts.loadJson(jw);
+                }
             }
+        } catch (IOException ignored) {
+            FirebaseCrash.log("Vehicle load error: "+prev);
+            //TODO: show message to user
         }
     }
 

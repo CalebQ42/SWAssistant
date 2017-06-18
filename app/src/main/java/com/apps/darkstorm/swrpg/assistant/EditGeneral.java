@@ -110,7 +110,9 @@ public class EditGeneral extends Fragment {
 
         @Override
         public int getItemCount() {
-            return e.cardNumber();
+            if (e != null)
+                return e.cardNumber();
+            return 0;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{

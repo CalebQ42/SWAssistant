@@ -325,11 +325,23 @@ public class Weapon implements JsonSavable {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 w.get(pos).name = name.getText().toString();
-                w.get(pos).dmg = Integer.parseInt(dmg.getText().toString());
-                w.get(pos).crit = Integer.parseInt(crit.getText().toString());
-                w.get(pos).hp = Integer.parseInt(hp.getText().toString());
+                if (!dmg.getText().toString().equals(""))
+                    w.get(pos).dmg = Integer.parseInt(dmg.getText().toString());
+                else
+                    w.get(pos).dmg = 0;
+                if (!crit.getText().toString().equals(""))
+                    w.get(pos).crit = Integer.parseInt(crit.getText().toString());
+                else
+                    w.get(pos).crit = 0;
+                if (!hp.getText().toString().equals(""))
+                    w.get(pos).hp = Integer.parseInt(hp.getText().toString());
+                else
+                    w.get(pos).hp = 0;
                 w.get(pos).firingArc = arc.getText().toString();
-                w.get(pos).encum = Integer.parseInt(encum.getText().toString());
+                if (!encum.getText().toString().equals(""))
+                    w.get(pos).encum = Integer.parseInt(encum.getText().toString());
+                else
+                    w.get(pos).encum = 0;
                 w.get(pos).itemState = state.getSelectedItemPosition();
                 w.get(pos).skill = skill.getSelectedItemPosition();
                 w.get(pos).skillBase = base.getSelectedItemPosition();
@@ -337,7 +349,7 @@ public class Weapon implements JsonSavable {
                 w.get(pos).loaded = loaded.isChecked();
                 w.get(pos).ammo = ammo[0];
                 w.get(pos).limitedAmmo = limited.isChecked();
-                c.weapons = w;
+                c.weapons = w.clone();
                 os.save();
                 dialog.cancel();
             }
