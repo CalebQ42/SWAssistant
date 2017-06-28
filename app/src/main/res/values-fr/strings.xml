@@ -26,4 +26,13 @@
   <string name="downloading">Downloading...</string>
   <string name="general">General</string>
   <string name="notes">Notes</string>
+  <string name="donate_message">Though it is not necessary, it would be greatly appreciated
+        if you were to donate. This app will continue to be free, but the app making money WILL help
+    me to stay motivated.</string>
+  <string name="not_today">Not Today</string>
+  <string name="analytics_message">Do you wish to turn off analytics? This will impair my
+        ability to fix certain bugs, but I know many people don\'t trust Google.</string>
+  <string name="turn_off">Turn Off</string>
+  <string name="keep_on">Keep On</string>
+  <string name="analytics_switch">Analytics</string>
 </resources>
