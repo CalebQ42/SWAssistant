@@ -40,6 +40,7 @@ public class EditFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ((SWrpg)getActivity().getApplication()).logEvent("edit_start","");
         final FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
         TabLayout taby = (TabLayout)view.findViewById(R.id.tabLayout);
         ViewPager pager = (ViewPager)view.findViewById(R.id.pager);

@@ -23,6 +23,20 @@
         android:orientation="vertical" />
 
     <Switch
+        android:id="@+id/analytics_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/analytics_switch"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="@color/lineDivider"
+        android:orientation="vertical" />
+
+    <Switch
         android:text="@string/color_dice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

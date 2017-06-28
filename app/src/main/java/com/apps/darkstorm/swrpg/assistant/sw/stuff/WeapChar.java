@@ -93,7 +93,10 @@ public class WeapChar implements JsonSavable {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 c.chars.get(pos).name = name.getText().toString();
-                c.chars.get(pos).adv = Integer.parseInt(val.getText().toString());
+                if (val.getText().toString().equals(""))
+                    c.chars.get(pos).adv = 0;
+                else
+                    c.chars.get(pos).adv = Integer.parseInt(val.getText().toString());
                 os.save();
                 dialog.cancel();
             }

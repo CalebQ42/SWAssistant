@@ -71,6 +71,14 @@ public class SettingsFragment extends Fragment {
                 ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.dice_key),isChecked).apply();
             }
         });
+        Switch analytics = (Switch)view.findViewById(R.id.analytics_switch);
+        analytics.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.analytics),true));
+        analytics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.analytics),isChecked).apply();
+            }
+        });
         Switch diceColor = (Switch)view.findViewById(R.id.dice_color_switch);
         diceColor.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.color_dice_key),true));
         diceColor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

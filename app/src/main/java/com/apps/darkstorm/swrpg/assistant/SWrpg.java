@@ -2,6 +2,7 @@ package com.apps.darkstorm.swrpg.assistant;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,9 +20,18 @@ public class SWrpg extends Application{
     public FirebaseAnalytics fa = null;
 
     IInAppBillingService iaps;
-//    TODO
-//    public void logEvent(){
-//        if(fa == null)
-//            fa = FirebaseAnalytics.getInstance(this);
-//    }
+
+    public void logEvent(String name,String value){
+        if (value == null)
+            value = "";
+        if (!prefs.getBoolean(getString(R.string.analytics),true))
+            return;
+        if(fa == null)
+            fa = FirebaseAnalytics.getInstance(this);
+        Bundle bund = new Bundle();
+        bund.putString(FirebaseAnalytics.Param.ITEM_NAME,name);
+        if (!value.equals(""))
+            bund.putString(FirebaseAnalytics.Param.VALUE,value);
+        fa.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT,bund);
+    }
 }
