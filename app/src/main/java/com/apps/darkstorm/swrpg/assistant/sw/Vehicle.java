@@ -39,7 +39,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
 import com.google.firebase.crash.FirebaseCrash;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -347,19 +346,6 @@ public class Vehicle extends Editable{
                 && in.encumCapacity == encumCapacity && in.passengerCapacity == passengerCapacity && in.hp == hp && in.weapons.equals(weapons)
                 && in.critInjuries.equals(critInjuries) && Arrays.equals(in.showCards,showCards) && in.desc.equals(desc) && in.model.equals(model)
                 && in.category.equals(category);
-    }
-    public void exportTo(String folder){
-        File fold = new File(folder);
-        if(!fold.exists()) {
-            if (!fold.mkdir())
-                return;
-        }
-        File f = new File(folder+"/"+name+".vhcl");
-        if(f.exists()){
-            if(!f.delete())
-                return;
-        }
-        save(folder+"/"+name+".vhcl");
     }
     public int cardNumber() {
         return 7;

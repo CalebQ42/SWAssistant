@@ -42,6 +42,7 @@ public class LoadLocal {
             Character tmp = new Character();
             if(fil.getAbsolutePath().endsWith(".char")||fil.getAbsolutePath().endsWith(".char.bak")){
                 tmp.reLoadLegacy(fil.getAbsolutePath());
+                tmp.save(tmp.getFileLocation(ac));
                 fil.delete();
             }else
                 tmp.load(fil.getAbsolutePath());
@@ -81,6 +82,7 @@ public class LoadLocal {
             Minion tmp = new Minion();
             if(fil.getAbsolutePath().endsWith(".minion")||fil.getAbsolutePath().endsWith(".minion.bak")){
                 tmp.reLoadLegacy(fil.getAbsolutePath());
+                tmp.save(tmp.getFileLocation(ac));
                 fil.delete();
             }else
                 tmp.load(fil.getAbsolutePath());
@@ -126,6 +128,7 @@ public class LoadLocal {
             Vehicle tmp = new Vehicle();
             if(fil.getAbsolutePath().endsWith(".vhcl")||fil.getAbsolutePath().endsWith(".vhcl.bak")) {
                 tmp.reLoadLegacy(fil.getAbsolutePath());
+                tmp.save(tmp.getFileLocation(ac));
                 fil.delete();
             }else
                 tmp.load(fil.getAbsolutePath());

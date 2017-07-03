@@ -230,7 +230,9 @@ public class DownloadFragment extends Fragment {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
                                                         ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
+                                                        ch.save(ch.getFileLocation(getActivity()));
+                                                        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
+                                                            ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
                                                     }
 
@@ -266,6 +268,8 @@ public class DownloadFragment extends Fragment {
                                         .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
+                                        ch.save(ch.getFileLocation(getActivity()));
                                         loading.cancel();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -311,8 +315,9 @@ public class DownloadFragment extends Fragment {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
                                                         ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                                        System.out.println("DLN: "+ch.name);
-                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
+                                                        ch.save(ch.getFileLocation(getActivity()));
+                                                        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
+                                                            ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
                                                     }
 
@@ -348,6 +353,8 @@ public class DownloadFragment extends Fragment {
                                         .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
+                                        ch.save(ch.getFileLocation(getActivity()));
                                         loading.cancel();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -388,8 +395,9 @@ public class DownloadFragment extends Fragment {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
                                                         ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                                        System.out.println("DLN: "+ch.name);
-                                                        ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
+                                                        ch.save(ch.getFileLocation(getActivity()));
+                                                        if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
+                                                            ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
                                                     }
 
@@ -425,6 +433,8 @@ public class DownloadFragment extends Fragment {
                                         .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
+                                        ch.save(ch.getFileLocation(getActivity()));
                                         loading.cancel();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {

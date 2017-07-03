@@ -44,7 +44,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
 import com.google.firebase.crash.FirebaseCrash;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -360,19 +359,6 @@ public class Minion extends Editable{
                 Arrays.equals(tmp.showCards, showCards) && woundThreshInd == tmp.woundThreshInd && minNum == tmp.minNum &&
                 tmp.critInjuries.equals(critInjuries)&& tmp.category.equals(category)&& tmp.nts.equals(nts);
     }
-    private void exportTo(String folder){
-        File fold = new File(folder);
-        if(!fold.exists()) {
-            if (!fold.mkdir())
-                return;
-        }
-        File f = new File(folder+"/"+name+".minion");
-        if(f.exists()){
-            if(!f.delete())
-                return;
-        }
-        save(folder+"/"+name+".minion");
-    }
 
     public void setupCards(final Activity ac, final EditGeneral.EditableAdap ea, final CardView c, final int pos, final Handler parentHandle){
         if (pos!= 0){
@@ -590,7 +576,10 @@ public class Minion extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    charVals[0] = Integer.parseInt(et.getText().toString());
+                                    if (et.getText().toString().equals(""))
+                                        charVals[0] = 0;
+                                    else
+                                        charVals[0] = Integer.parseInt(et.getText().toString());
                                     brawnVal.setText(String.valueOf(charVals[0]));
                                     dialog.cancel();
                                 }
@@ -619,7 +608,10 @@ public class Minion extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    charVals[1] = Integer.parseInt(et.getText().toString());
+                                    if (et.getText().toString().equals(""))
+                                        charVals[1] = 0;
+                                    else
+                                        charVals[1] = Integer.parseInt(et.getText().toString());
                                     agilityVal.setText(String.valueOf(charVals[1]));
                                     dialog.cancel();
                                 }
@@ -648,7 +640,10 @@ public class Minion extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    charVals[2] = Integer.parseInt(et.getText().toString());
+                                    if (et.getText().toString().equals(""))
+                                        charVals[2] = 0;
+                                    else
+                                        charVals[2] = Integer.parseInt(et.getText().toString());
                                     intellectVal.setText(String.valueOf(charVals[2]));
                                     dialog.cancel();
                                 }
@@ -677,7 +672,10 @@ public class Minion extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    charVals[3] = Integer.parseInt(et.getText().toString());
+                                    if (et.getText().toString().equals(""))
+                                        charVals[3] = 0;
+                                    else
+                                        charVals[3] = Integer.parseInt(et.getText().toString());
                                     cunningVal.setText(String.valueOf(charVals[3]));
                                     dialog.cancel();
                                 }
@@ -706,7 +704,10 @@ public class Minion extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    charVals[4] = Integer.parseInt(et.getText().toString());
+                                    if (et.getText().toString().equals(""))
+                                        charVals[4] = 0;
+                                    else
+                                        charVals[4] = Integer.parseInt(et.getText().toString());
                                     willpowerVal.setText(String.valueOf(charVals[4]));
                                     dialog.cancel();
                                 }
@@ -735,7 +736,10 @@ public class Minion extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    charVals[5] = Integer.parseInt(et.getText().toString());
+                                    if (et.getText().toString().equals(""))
+                                        charVals[5] = 0;
+                                    else
+                                        charVals[5] = Integer.parseInt(et.getText().toString());
                                     presenceVal.setText(String.valueOf(charVals[5]));
                                     dialog.cancel();
                                 }

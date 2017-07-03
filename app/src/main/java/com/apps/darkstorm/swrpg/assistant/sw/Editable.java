@@ -65,6 +65,19 @@ public abstract class Editable implements JsonSavable{
     public abstract void reLoadLegacy(String filename);
     public abstract Editable clone();
     public abstract String getFileExtension();
+    public void exportTo(String folder){
+        File fold = new File(folder);
+        if(!fold.exists()) {
+            if (!fold.mkdir())
+                return;
+        }
+        File f = new File(folder+"/"+name+getFileExtension());
+        if(f.exists()){
+            if(!f.delete())
+                return;
+        }
+        save(folder+"/"+name+getFileExtension());
+    }
     public String getFileLocation(Activity main){
         if(main!= null) {
             if(external)
@@ -140,6 +153,7 @@ public abstract class Editable implements JsonSavable{
             tmp = new File(filename + ".bak");
             new File(filename).delete();
             JsonWriter jw = new JsonWriter(new FileWriter(filename));
+            jw.setLenient(true);
             jw.setIndent("  ");
             jw.beginObject();
             saveJson(jw);
@@ -162,6 +176,7 @@ public abstract class Editable implements JsonSavable{
                                 OutputStream os = cont.getOutputStream();
                                 OutputStreamWriter osw = new OutputStreamWriter(os);
                                 JsonWriter jw = new JsonWriter(osw);
+                                jw.setLenient(true);
                                 jw.beginObject();
                                 saveJson(jw);
                                 jw.endObject();
@@ -183,6 +198,7 @@ public abstract class Editable implements JsonSavable{
                         OutputStream os = cont.getOutputStream();
                         OutputStreamWriter osw = new OutputStreamWriter(os);
                         JsonWriter jw = new JsonWriter(osw);
+                        jw.setLenient(true);
                         jw.beginObject();
                         saveJson(jw);
                         jw.endObject();
@@ -200,6 +216,7 @@ public abstract class Editable implements JsonSavable{
     public void load(String filename){
         try {
             JsonReader jr = new JsonReader(new FileReader(filename));
+            jr.setLenient(true);
             jr.beginObject();
             loadJson(jr);
             jr.endObject();
@@ -221,6 +238,7 @@ public abstract class Editable implements JsonSavable{
                                 InputStream is = dc.getInputStream();
                                 InputStreamReader isr = new InputStreamReader(is);
                                 JsonReader jw = new JsonReader(isr);
+
                                 jw.beginObject();
                                 loadJson(jw);
                                 jw.endObject();

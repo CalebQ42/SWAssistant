@@ -164,7 +164,7 @@ public class Weapon implements JsonSavable {
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
         while(jr.hasNext()){
-            switch (jr.nextString()){
+            switch (jr.nextName()){
                 case "name":
                     name = jr.nextString();
                     break;

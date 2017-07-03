@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
@@ -69,18 +70,21 @@ public class Item implements JsonSavable {
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
         while(jr.hasNext()){
-            switch(jr.nextName()){
-                case "name":
-                    name = jr.nextString();
-                    break;
-                case "description":
-                    desc = jr.nextString();
-                    break;
-                case "count":
-                    count = jr.nextInt();
-                    break;
-                case "encumbrance":
-                    encum = jr.nextInt();
+            if (jr.peek().equals(JsonToken.NAME)) {
+                switch (jr.nextName()) {
+                    case "name":
+                        name = jr.nextString();
+                        break;
+                    case "description":
+                        desc = jr.nextString();
+                        break;
+                    case "count":
+                        count = jr.nextInt();
+                        break;
+                    case "encumbrance":
+                        encum = jr.nextInt();
+                        break;
+                }
             }
         }
         jr.endObject();
