@@ -107,7 +107,24 @@ public class WeapChars implements JsonSavable {
     public static class WeapCharsAdap extends RecyclerView.Adapter<WeapCharsAdap.ViewHolder>{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
+            final ViewHolder holder = new ViewHolder(ac.getLayoutInflater().inflate(R.layout.item_simple,parent,false));
+            holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    WeapChar.editWeapChar(ac,c,holder.getAdapterPosition(),false,new Skill.onSave(){
+                        public void save() {
+                            WeapCharsAdap.this.notifyItemChanged(holder.getAdapterPosition());
+                        }
+                        public void delete() {
+                            int ind = c.chars.remove(c.chars.get(holder.getAdapterPosition()));
+                            WeapCharsAdap.this.notifyItemRemoved(ind);
+                        }
+                        public void cancel() {}
+                    });
+                    return true;
+                }
+            });
+            return holder;
         }
 
         @Override

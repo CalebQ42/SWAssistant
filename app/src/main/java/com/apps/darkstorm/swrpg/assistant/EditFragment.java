@@ -110,8 +110,9 @@ public class EditFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (ed != null)
-            ed.stopEditing();
+        if (ed == null)
+            return;
+        ed.stopEditing();
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
+import android.text.InputType;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.view.View;
@@ -79,6 +80,7 @@ public class Duty implements JsonSavable {
         TextInputLayout valLay = (TextInputLayout)v.findViewById(R.id.second_lay);
         valLay.setHint(ac.getString(R.string.value_text));
         final EditText val = (EditText)v.findViewById(R.id.second_edit);
+        val.setInputType(InputType.TYPE_CLASS_NUMBER);
         val.setText(String.valueOf(c.duty.get(pos).val));
         b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override

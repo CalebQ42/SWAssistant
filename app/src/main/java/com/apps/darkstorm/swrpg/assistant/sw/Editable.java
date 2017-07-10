@@ -95,28 +95,44 @@ public abstract class Editable implements JsonSavable{
             return "";
         }
     }
-    public DriveId getFileId(Activity main){
+    public DriveId getFileId(final Activity main){
         if(external)
             return null;
-        String name = Integer.toString(ID) + getFileExtension();
-        DriveId fi = null;
-        DriveApi.MetadataBufferResult res = ((SWrpg)main.getApplication())
+        final boolean[] finished = {false};
+        final String name = Integer.toString(ID) + getFileExtension();
+        final DriveId[] fi = {null};
+        ((SWrpg)main.getApplication())
                 .charsFold.queryChildren(((SWrpg)main.getApplication()).gac,new Query.Builder().addFilter(
-                        Filters.eq(SearchableField.TITLE,name)).build()).await();
-        for (Metadata met:res.getMetadataBuffer()){
-            if (!met.isTrashed()){
-                fi = met.getDriveId();
-                break;
+                        Filters.eq(SearchableField.TITLE,name)).build()).setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
+                    @Override
+                    public void onResult(@NonNull DriveApi.MetadataBufferResult res) {
+                        if (res.getStatus().isSuccess()){
+                            for (Metadata met:res.getMetadataBuffer()){
+                                if (!met.isTrashed()){
+                                    fi[0] = met.getDriveId();
+                                    break;
+                                }
+                            }
+                            res.release();
+                            if (fi[0] == null){
+                                fi[0] = ((SWrpg)main.getApplication()).charsFold.createFile
+                                        (((SWrpg)main.getApplication())
+                                                .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
+                                        .getDriveFile().getDriveId();
+                            }
+                            finished[0] = true;
+                        }else
+                            finished[0] = true;
+                    }
+                });
+        while(!finished[0]){
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        res.release();
-        if (fi == null){
-            fi = ((SWrpg)main.getApplication()).charsFold.createFile
-                    (((SWrpg)main.getApplication())
-                            .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
-                    .getDriveFile().getDriveId();
-        }
-        return fi;
+        return fi[0];
     }
     public DriveId getFileId(Activity main,DriveFolder fold){
         if(external)

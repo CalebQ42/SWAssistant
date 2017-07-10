@@ -234,13 +234,14 @@ public class MinionList extends Fragment {
                             }
                             minionCats.get(0).add((Minion)ed);
                             if(sp.getSelectedItemPosition()==cats.indexOf(ed.category)||sp.getSelectedItemPosition()==0) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if(sp.getSelectedItemPosition()!=0)
-                                            adap.notifyItemInserted(minionCats.get(cats.indexOf(ed.category)).size() - 1);
-                                        else
-                                            adap.notifyItemInserted(minionCats.get(0).size()-1);
+                                if (getActivity()!=null)
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if(sp.getSelectedItemPosition()!=0)
+                                                adap.notifyItemInserted(minionCats.get(cats.indexOf(ed.category)).size() - 1);
+                                            else
+                                                adap.notifyItemInserted(minionCats.get(0).size()-1);
                                     }
                                 });
                             }

@@ -166,106 +166,110 @@ public class CharacterList extends Fragment {
             characterCats.removeAll(characterCats.subList(1,characterCats.size()-1));
         }
         if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false)){
-            AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected void onPreExecute() {
-                    srl.setRefreshing(true);
-                }
+            if(getActivity()!=null) {
+                AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        srl.setRefreshing(true);
+                    }
 
-                @Override
-                protected Void doInBackground(Void... params) {
-                    if(getActivity()==null)
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        if (getActivity() == null)
+                            return null;
+                        while (!((SWrpg) getActivity().getApplication()).driveFail && ((SWrpg) getActivity().getApplication()).charsFold == null) {
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         return null;
-                    while(!((SWrpg)getActivity().getApplication()).driveFail&&((SWrpg)getActivity().getApplication()).charsFold==null){
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
-                    return null;
-                }
 
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    if(getActivity()==null)
-                        return;
-                    if(((SWrpg)getActivity().getApplication()).driveFail) {
-                        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-                        b.setMessage(R.string.drive_fail);
-                        b.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ((SWrpg)getActivity().getApplication()).driveFail = false;
-                                ((MainDrawer)getActivity()).gacMaker();
-                                loadCharacters();
-                                dialog.cancel();
-                            }
-                        }).setNegativeButton(R.string.dice, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                getFragmentManager().beginTransaction().replace(R.id.content_main,DiceRollFragment.newInstance())
-                                        .setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out).commit();
-                                dialog.cancel();
-                            }
-                        });
-                        b.setCancelable(false);
-                        srl.setRefreshing(false);
-                        b.show();
-                        return;
-                    }
-                    final Load.Characters ch = new Load.Characters();
-                    ch.setOnFinish(new Load.OnLoad() {
-                        @Override
-                        public void onStart() {
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (getActivity() == null)
+                            return;
+                        if (((SWrpg) getActivity().getApplication()).driveFail) {
+                            AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                            b.setMessage(R.string.drive_fail);
+                            b.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ((SWrpg) getActivity().getApplication()).driveFail = false;
+                                    ((MainDrawer) getActivity()).gacMaker();
+                                    loadCharacters();
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(R.string.dice, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getFragmentManager().beginTransaction().replace(R.id.content_main, DiceRollFragment.newInstance())
+                                            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).commit();
+                                    dialog.cancel();
+                                }
+                            });
+                            b.setCancelable(false);
                             srl.setRefreshing(false);
-                            if(parentHandle==null)
-                                getActivity().findViewById(R.id.fab).setEnabled(false);
+                            b.show();
+                            return;
                         }
-
-                        @Override
-                        public boolean onLoad(final Editable ed) {
-                            if(cats.contains(ed.category))
-                                characterCats.get(cats.indexOf(ed.category)).add((Character)ed);
-                            else if(!ed.category.equals("")){
-                                cats.add(ed.category);
-                                characterCats.add(new ArrayList<Character>());
-                                characterCats.get(cats.size()-1).add((Character)ed);
+                        final Load.Characters ch = new Load.Characters();
+                        ch.setOnFinish(new Load.OnLoad() {
+                            @Override
+                            public void onStart() {
+                                srl.setRefreshing(false);
+                                if (parentHandle == null)
+                                    getActivity().findViewById(R.id.fab).setEnabled(false);
                             }
-                            characterCats.get(0).add((Character)ed);
-                            if(sp.getSelectedItemPosition()==cats.indexOf(ed.category)||sp.getSelectedItemPosition()==0) {
+
+                            @Override
+                            public boolean onLoad(final Editable ed) {
+                                if (cats.contains(ed.category))
+                                    characterCats.get(cats.indexOf(ed.category)).add((Character) ed);
+                                else if (!ed.category.equals("")) {
+                                    cats.add(ed.category);
+                                    characterCats.add(new ArrayList<Character>());
+                                    characterCats.get(cats.size() - 1).add((Character) ed);
+                                }
+                                characterCats.get(0).add((Character) ed);
+                                if(getActivity()!=null) {
+                                    if (sp.getSelectedItemPosition() == cats.indexOf(ed.category) || sp.getSelectedItemPosition() == 0) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (sp.getSelectedItemPosition() != 0)
+                                                    adap.notifyItemInserted(characterCats.get(cats.indexOf(ed.category)).size() - 1);
+                                                else
+                                                    adap.notifyItemInserted(characterCats.get(0).size() - 1);
+                                            }
+                                        });
+                                    }
+                                }
+                                return false;
+                            }
+
+                            @Override
+                            public void onFinish(ArrayList<Editable> characters) {
+                                CharacterList.this.characters.clear();
+                                for (Editable ed : characters)
+                                    CharacterList.this.characters.add((Character) ed);
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(sp.getSelectedItemPosition()!=0)
-                                            adap.notifyItemInserted(characterCats.get(cats.indexOf(ed.category)).size() - 1);
-                                        else
-                                            adap.notifyItemInserted(characterCats.get(0).size()-1);
+                                        if (parentHandle == null)
+                                            getActivity().findViewById(R.id.fab).setEnabled(true);
                                     }
                                 });
+                                ch.saveLocal(getActivity());
                             }
-                            return false;
-                        }
-
-                        @Override
-                        public void onFinish(ArrayList<Editable> characters) {
-                            CharacterList.this.characters.clear();
-                            for(Editable ed:characters)
-                                CharacterList.this.characters.add((Character)ed);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if(parentHandle==null)
-                                        getActivity().findViewById(R.id.fab).setEnabled(true);
-                                }
-                            });
-                            ch.saveLocal(getActivity());
-                        }
-                    });
-                    ch.load(getActivity());
-                }
-            };
-            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        });
+                        ch.load(getActivity());
+                    }
+                };
+                asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
         }else{
             srl.setRefreshing(true);
             characters = new ArrayList<>();
