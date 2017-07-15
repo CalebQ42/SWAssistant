@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 import android.view.View;
 import android.widget.AdapterView;
@@ -90,6 +91,10 @@ public class Skill implements JsonSavable {
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
         while(jr.hasNext()){
+            if(!jr.peek().equals(JsonToken.NAME)){
+                jr.skipValue();
+                continue;
+            }
             switch(jr.nextName()){
                 case "name":
                     name = jr.nextString();

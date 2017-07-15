@@ -51,7 +51,6 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
-import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -164,136 +163,133 @@ public class Character extends Editable{
     }
 
     public void loadJson(JsonReader jr){
-        String prev = "starting";
         try {
             while (jr.hasNext()) {
-                if(jr.peek().equals(JsonToken.NAME)) {
-                    String tmp = jr.nextName();
-                    switch (tmp) {
-                        case "ID":
-                            ID = jr.nextInt();
-                            break;
-                        case "name":
-                            name = jr.nextString();
-                            break;
-                        case "characteristics":
-                            jr.beginArray();
-                            for (int i = 0; i < charVals.length; i++)
-                                charVals[i] = jr.nextInt();
-                            jr.endArray();
-                            break;
-                        case "Skills":
-                            skills.loadJson(jr);
-                            break;
-                        case "species":
-                            species = jr.nextString();
-                            break;
-                        case "career":
-                            career = jr.nextString();
-                            break;
-                        case "Specializations":
-                            specializations.loadJson(jr);
-                            break;
-                        case "Talents":
-                            talents.loadJson(jr);
-                            break;
-                        case "Inventory":
-                            inv.loadJson(jr);
-                            break;
-                        case "Weapons":
-                            weapons.loadJson(jr);
-                            break;
-                        case "Force Powers":
-                            forcePowers.loadJson(jr);
-                            break;
-                        case "motivation":
-                            motivation = jr.nextString();
-                            break;
-                        case "Critical Injuries":
-                            critInjuries.loadJson(jr);
-                            break;
-                        case "emotional strength":
-                            emotionalStr[0] = jr.nextString();
-                            break;
-                        case "emotional weakness":
-                            emotionalWeak[0] = jr.nextString();
-                            break;
-                        case "Dutys":
-                            duty.loadJson(jr);
-                            break;
-                        case "Obligations":
-                            obligation.loadJson(jr);
-                            break;
-                        case "wound threshold":
-                            woundThresh = jr.nextInt();
-                            break;
-                        case "wound current":
-                            woundCur = jr.nextInt();
-                            break;
-                        case "strain threshold":
-                            strainThresh = jr.nextInt();
-                            break;
-                        case "strain current":
-                            strainCur = jr.nextInt();
-                            break;
-                        case "xp total":
-                            xpTot = jr.nextInt();
-                            break;
-                        case "xp current":
-                            xpCur = jr.nextInt();
-                            break;
-                        case "melee defense":
-                            defMelee = jr.nextInt();
-                            break;
-                        case "ranged defense":
-                            defRanged = jr.nextInt();
-                            break;
-                        case "soak":
-                            soak = jr.nextInt();
-                            break;
-                        case "force rating":
-                            force = jr.nextInt();
-                            break;
-                        case "credits":
-                            credits = jr.nextInt();
-                            break;
-                        case "morality":
-                            morality = jr.nextInt();
-                            break;
-                        case "conflict":
-                            conflict = jr.nextInt();
-                            break;
-                        case "description":
-                            desc = jr.nextString();
-                            break;
-                        case "show cards":
-                            jr.beginArray();
-                            for (int i = 0; i < showCards.length; i++)
-                                showCards[i] = jr.nextBoolean();
-                            jr.endArray();
-                            break;
-                        case "dark side":
-                            darkSide = jr.nextBoolean();
-                            break;
-                        case "age":
-                            age = jr.nextInt();
-                            break;
-                        case "Notes":
-                            nts.loadJson(jr);
-                            break;
-                        case "encumbrance capacity":
-                            encumCapacity = jr.nextInt();
-                            break;
-                        case "category":
-                            category = jr.nextString();
-                    }
-                }else{
+                if(!jr.peek().equals(JsonToken.NAME)){
                     jr.skipValue();
+                    continue;
+                }
+                switch (jr.nextName()) {
+                    case "ID":
+                        ID = jr.nextInt();
+                        break;
+                    case "name":
+                        name = jr.nextString();
+                        break;
+                    case "characteristics":
+                        jr.beginArray();
+                        for (int i = 0; i < charVals.length; i++)
+                            charVals[i] = jr.nextInt();
+                        jr.endArray();
+                        break;
+                    case "Skills":
+                        skills.loadJson(jr);
+                        break;
+                    case "species":
+                        species = jr.nextString();
+                        break;
+                    case "career":
+                        career = jr.nextString();
+                        break;
+                    case "Specializations":
+                        specializations.loadJson(jr);
+                        break;
+                    case "Talents":
+                        talents.loadJson(jr);
+                        break;
+                    case "Inventory":
+                        inv.loadJson(jr);
+                        break;
+                    case "Weapons":
+                        weapons.loadJson(jr);
+                        break;
+                    case "Force Powers":
+                        forcePowers.loadJson(jr);
+                        break;
+                    case "motivation":
+                        motivation = jr.nextString();
+                        break;
+                    case "Critical Injuries":
+                        critInjuries.loadJson(jr);
+                        break;
+                    case "emotional strength":
+                        emotionalStr[0] = jr.nextString();
+                        break;
+                    case "emotional weakness":
+                        emotionalWeak[0] = jr.nextString();
+                        break;
+                    case "Dutys":
+                        duty.loadJson(jr);
+                        break;
+                    case "Obligations":
+                        obligation.loadJson(jr);
+                        break;
+                    case "wound threshold":
+                        woundThresh = jr.nextInt();
+                        break;
+                    case "wound current":
+                        woundCur = jr.nextInt();
+                        break;
+                    case "strain threshold":
+                        strainThresh = jr.nextInt();
+                        break;
+                    case "strain current":
+                        strainCur = jr.nextInt();
+                        break;
+                    case "xp total":
+                        xpTot = jr.nextInt();
+                        break;
+                    case "xp current":
+                        xpCur = jr.nextInt();
+                        break;
+                    case "melee defense":
+                        defMelee = jr.nextInt();
+                        break;
+                    case "ranged defense":
+                        defRanged = jr.nextInt();
+                        break;
+                    case "soak":
+                        soak = jr.nextInt();
+                        break;
+                    case "force rating":
+                        force = jr.nextInt();
+                        break;
+                    case "credits":
+                        credits = jr.nextInt();
+                        break;
+                    case "morality":
+                        morality = jr.nextInt();
+                        break;
+                    case "conflict":
+                        conflict = jr.nextInt();
+                        break;
+                    case "description":
+                        desc = jr.nextString();
+                        break;
+                    case "show cards":
+                        jr.beginArray();
+                        for (int i = 0; i < showCards.length; i++)
+                            showCards[i] = jr.nextBoolean();
+                        jr.endArray();
+                        break;
+                    case "dark side":
+                        darkSide = jr.nextBoolean();
+                        break;
+                    case "age":
+                        age = jr.nextInt();
+                        break;
+                    case "Notes":
+                        nts.loadJson(jr);
+                        break;
+                    case "encumbrance capacity":
+                        encumCapacity = jr.nextInt();
+                        break;
+                    case "category":
+                        category = jr.nextString();
                 }
             }
-        } catch (IOException ignored) {
-            FirebaseCrash.log("Character load error: "+prev);
-            //TODO: show message to user
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
@@ -55,18 +56,22 @@ public class Duty implements JsonSavable {
         jw.endObject();
     }
 
-    public void loadJson(JsonReader jw) throws IOException {
-        jw.beginObject();
-        while(jw.hasNext()){
-            switch(jw.nextName()){
+    public void loadJson(JsonReader jr) throws IOException {
+        jr.beginObject();
+        while(jr.hasNext()){
+            if(!jr.peek().equals(JsonToken.NAME)){
+                jr.skipValue();
+                continue;
+            }
+            switch(jr.nextName()){
                 case "name":
-                    name = jw.nextString();
+                    name = jr.nextString();
                     break;
                 case "value":
-                    val = jw.nextInt();
+                    val = jr.nextInt();
             }
         }
-        jw.endObject();
+        jr.endObject();
     }
 
     public static void editDuty(final Activity ac, final Character c, final int pos, final boolean newDuty, final Skill.onSave os){

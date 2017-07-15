@@ -70,21 +70,23 @@ public class Item implements JsonSavable {
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
         while(jr.hasNext()){
-            if (jr.peek().equals(JsonToken.NAME)) {
-                switch (jr.nextName()) {
-                    case "name":
-                        name = jr.nextString();
-                        break;
-                    case "description":
-                        desc = jr.nextString();
-                        break;
-                    case "count":
-                        count = jr.nextInt();
-                        break;
-                    case "encumbrance":
-                        encum = jr.nextInt();
-                        break;
-                }
+            if(!jr.peek().equals(JsonToken.NAME)){
+                jr.skipValue();
+                continue;
+            }
+            switch (jr.nextName()) {
+                case "name":
+                    name = jr.nextString();
+                    break;
+                case "description":
+                    desc = jr.nextString();
+                    break;
+                case "count":
+                    count = jr.nextInt();
+                    break;
+                case "encumbrance":
+                    encum = jr.nextInt();
+                    break;
             }
         }
         jr.endObject();

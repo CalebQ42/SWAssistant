@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 import android.view.View;
 import android.view.animation.Animation;
@@ -42,7 +43,6 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
-import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,92 +118,94 @@ public class Minion extends Editable{
         nts.saveJson(jw);
     }
 
-    public void loadJson(JsonReader jw){
-        String prev = "starting";
+    public void loadJson(JsonReader jr){
         try {
-            while (jw.hasNext()) {
-                String tmp = jw.nextName();
+            while (jr.hasNext()) {
+                if(!jr.peek().equals(JsonToken.NAME)){
+                    jr.skipValue();
+                    continue;
+                }
+                String tmp = jr.nextName();
                 switch (tmp) {
                     case "ID":
-                        ID = jw.nextInt();
+                        ID = jr.nextInt();
                         break;
                     case "name":
-                        name = jw.nextString();
+                        name = jr.nextString();
                         break;
                     case "characteristics":
-                        jw.beginArray();
+                        jr.beginArray();
                         for(int i = 0;i<charVals.length;i++)
-                            charVals[i] = jw.nextInt();
-                        jw.endArray();
+                            charVals[i] = jr.nextInt();
+                        jr.endArray();
                         break;
                     case "Skills":
-                        skills.loadJson(jw);
+                        skills.loadJson(jr);
                         break;
                     case "Talents":
-                        talents.loadJson(jw);
+                        talents.loadJson(jr);
                         break;
                     case "Inventory":
-                        inv.loadJson(jw);
+                        inv.loadJson(jr);
                         break;
                     case "Weapons":
-                        weapons.loadJson(jw);
+                        weapons.loadJson(jr);
                         break;
                     case "wound threshold per minion":
-                        woundThreshInd = jw.nextInt();
+                        woundThreshInd = jr.nextInt();
                         break;
                     case "wound threshold":
-                        woundThresh = jw.nextInt();
+                        woundThresh = jr.nextInt();
                         break;
                     case "wound current":
-                        woundCur = jw.nextInt();
+                        woundCur = jr.nextInt();
                         break;
                     case "defense melee":
-                        defMelee = jw.nextInt();
+                        defMelee = jr.nextInt();
                         break;
                     case "defense ranged":
-                        defRanged = jw.nextInt();
+                        defRanged = jr.nextInt();
                         break;
                     case "soak":
-                        soak = jw.nextInt();
+                        soak = jr.nextInt();
                         break;
                     case "minion number":
-                        minNum = jw.nextInt();
+                        minNum = jr.nextInt();
                         break;
                     case "description":
-                        desc = jw.nextString();
+                        desc = jr.nextString();
                         break;
                     case "show cards":
-                        jw.beginArray();
+                        jr.beginArray();
                         for(int i = 0;i<showCards.length;i++)
-                            showCards[i] = jw.nextBoolean();
-                        jw.endArray();
+                            showCards[i] = jr.nextBoolean();
+                        jr.endArray();
                         break;
                     case "Critical Injuries":
-                        critInjuries.loadJson(jw);
+                        critInjuries.loadJson(jr);
                         break;
                     case "Saved":
-                        jw.beginObject();
-                        while(jw.hasNext()){
-                            switch(jw.nextName()){
+                        jr.beginObject();
+                        while(jr.hasNext()){
+                            switch(jr.nextName()){
                                 case "Inventory":
-                                    origInv.loadJson(jw);
+                                    origInv.loadJson(jr);
                                     break;
                                 case "Weapons":
-                                    origWeapons.loadJson(jw);
+                                    origWeapons.loadJson(jr);
                             }
                         }
-                        jw.endObject();
+                        jr.endObject();
                         break;
                     case "category":
-                        category = jw.nextString();
+                        category = jr.nextString();
                         break;
                     case "Notes":
-                        nts.loadJson(jw);
+                        nts.loadJson(jr);
                 }
             }
-        } catch (IOException ignored) {
-            FirebaseCrash.log("Minion load error: "+prev);
-            //TODO: show message to user
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

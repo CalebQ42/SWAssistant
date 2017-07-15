@@ -251,15 +251,17 @@ public class MinionList extends Fragment {
                         @Override
                         public void onFinish(ArrayList<Editable> minions) {
                             MinionList.this.minions.clear();
-                            for(Editable ed:minions)
-                                MinionList.this.minions.add((Minion)ed);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if(parentHandle==null)
-                                        getActivity().findViewById(R.id.fab).setEnabled(true);
-                                }
-                            });
+                            for (Editable ed : minions)
+                                MinionList.this.minions.add((Minion) ed);
+                            if (getActivity() != null){
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (parentHandle == null)
+                                            getActivity().findViewById(R.id.fab).setEnabled(true);
+                                    }
+                                });
+                            }
                             ch.saveLocal(getActivity());
                         }
                     });

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 import android.view.View;
 import android.widget.EditText;
@@ -58,6 +59,10 @@ public class Obligation implements JsonSavable {
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
         while(jr.hasNext()){
+            if(!jr.peek().equals(JsonToken.NAME)){
+                jr.skipValue();
+                continue;
+            }
             switch(jr.nextName()){
                 case "name":
                     name = jr.nextString();

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 import android.view.View;
 import android.view.animation.Animation;
@@ -48,23 +49,6 @@ public class Weapon implements JsonSavable {
     public String firingArc = "";
     //Version 3 14
     public int encum;
-    public void copyFrom(Weapon w){
-        name = w.name;
-        dmg = w.dmg;
-        crit = w.crit;
-        hp = w.hp;
-        range = w.range;
-        skill = w.skill;
-        skillBase = w.skillBase;
-        chars = w.chars.clone();
-        addBrawn = w.addBrawn;
-        loaded = w.loaded;
-        limitedAmmo = w.limitedAmmo;
-        itemState = w.itemState;
-        ammo = w.ammo;
-        firingArc = w.firingArc;
-        encum = w.encum;
-    }
     public Weapon clone(){
         Weapon tmp = new Weapon();
         tmp.name = name;
@@ -164,6 +148,10 @@ public class Weapon implements JsonSavable {
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
         while(jr.hasNext()){
+            if(!jr.peek().equals(JsonToken.NAME)){
+                jr.skipValue();
+                continue;
+            }
             switch (jr.nextName()){
                 case "name":
                     name = jr.nextString();

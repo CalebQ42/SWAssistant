@@ -255,14 +255,16 @@ public class CharacterList extends Fragment {
                                 CharacterList.this.characters.clear();
                                 for (Editable ed : characters)
                                     CharacterList.this.characters.add((Character) ed);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (parentHandle == null)
-                                            getActivity().findViewById(R.id.fab).setEnabled(true);
-                                    }
-                                });
-                                ch.saveLocal(getActivity());
+                                if(getActivity()!=null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (parentHandle == null)
+                                                getActivity().findViewById(R.id.fab).setEnabled(true);
+                                        }
+                                    });
+                                    ch.saveLocal(getActivity());
+                                }
                             }
                         });
                         ch.load(getActivity());

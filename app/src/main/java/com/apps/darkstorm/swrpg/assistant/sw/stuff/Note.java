@@ -1,6 +1,7 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 
 import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
@@ -48,6 +49,10 @@ public class Note implements JsonSavable {
     public void loadJson(JsonReader jr) throws IOException{
         jr.beginObject();
         while(jr.hasNext()){
+            if(!jr.peek().equals(JsonToken.NAME)){
+                jr.skipValue();
+                continue;
+            }
             switch(jr.nextName()){
                 case "title":
                     title = jr.nextString();

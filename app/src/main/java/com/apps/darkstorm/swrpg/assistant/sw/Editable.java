@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.JsonWriter;
 
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
@@ -115,10 +116,24 @@ public abstract class Editable implements JsonSavable{
                             }
                             res.release();
                             if (fi[0] == null){
-                                fi[0] = ((SWrpg)main.getApplication()).charsFold.createFile
+                                final boolean[] blocking = {true};
+                                ((SWrpg)main.getApplication()).charsFold.createFile
                                         (((SWrpg)main.getApplication())
-                                                .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null).await()
-                                        .getDriveFile().getDriveId();
+                                                .gac,new MetadataChangeSet.Builder().setTitle(name).build(),null)
+                                        .setResultCallback(new ResultCallback<DriveFolder.DriveFileResult>() {
+                                            @Override
+                                            public void onResult(@NonNull DriveFolder.DriveFileResult driveFileResult) {
+                                                fi[0] = driveFileResult.getDriveFile().getDriveId();
+                                                blocking[0]=false;
+                                            }
+                                        });
+                                while(blocking[0]){
+                                    try {
+                                        Thread.sleep(300);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                             finished[0] = true;
                         }else
@@ -233,10 +248,15 @@ public abstract class Editable implements JsonSavable{
         try {
             JsonReader jr = new JsonReader(new FileReader(filename));
             jr.setLenient(true);
-            jr.beginObject();
-            loadJson(jr);
-            jr.endObject();
-            jr.close();
+            if (jr.peek().equals(JsonToken.STRING)) {
+                jr.close();
+                reLoadLegacy(filename);
+            }else if (jr.peek().equals(JsonToken.BEGIN_OBJECT)) {
+                jr.beginObject();
+                loadJson(jr);
+                jr.endObject();
+                jr.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

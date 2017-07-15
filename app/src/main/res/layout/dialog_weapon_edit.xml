@@ -43,7 +43,7 @@
                 android:id="@+id/damage_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number|numberSigned" />
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -62,7 +62,7 @@
                 android:id="@+id/crit_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number|numberSigned" />
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -81,7 +81,7 @@
                 android:id="@+id/hp_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number|numberSigned" />
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -119,7 +119,7 @@
                 android:id="@+id/encum_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number|numberSigned" />
+                android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
