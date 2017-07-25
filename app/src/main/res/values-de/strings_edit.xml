@@ -45,6 +45,7 @@
   <string name="encum_warning">ACHTUNG: Du bist über dem Lastenlimit!</string>
   <string name="load_text">Laden</string>
   <string name="clone_text">Klonen</string>
+  <string name="range_text">Range:</string>
   <!--Characteristic strings -->
   <string name="brawn_text">Stärke:</string>
   <string name="agility_text">Gewandtheit:</string>
