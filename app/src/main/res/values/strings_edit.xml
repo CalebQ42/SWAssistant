@@ -44,6 +44,7 @@
     <string name="encum_warning">WARNING: You are over your encumbrance limit!</string>
     <string name="load_text">Load</string>
     <string name="clone_text">Clone</string>
+    <string name="range_text">Range:</string>
 
     <!--Characteristic strings -->
 

@@ -56,4 +56,5 @@
   <string name="minion_delete">Êtes-vous certains de vouloir supprimer ce sbire?</string>
 
   <string name="export_text">Export</string>
+  <string name="range_text">Range:</string>
 </resources>

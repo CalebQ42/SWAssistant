@@ -6,6 +6,13 @@
         <item>Moderate</item>
         <item>Major</item>
     </string-array>
+    <string-array name="range_bands">
+        <item>Engaged</item>
+        <item>Short</item>
+        <item>Medium</item>
+        <item>Long</item>
+        <item>Extreme</item>
+    </string-array>
     <string-array name="crit_injury_severities">
         <item>Easy</item>
         <item>Average</item>

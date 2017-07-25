@@ -88,8 +88,6 @@
             android:id="@+id/arc_lay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:hint="@string/arc_text"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -107,8 +105,6 @@
             android:id="@+id/encum_lay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:hint="@string/encum_text"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -123,6 +119,28 @@
         </android.support.design.widget.TextInputLayout>
 
         <TextView
+            android:id="@+id/range_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/range_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/encum_lay" />
+
+        <Spinner
+            android:id="@+id/range_spin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:entries="@array/range_bands"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/range_label" />
+
+        <TextView
             android:id="@+id/state_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,7 +149,7 @@
             android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/encum_lay" />
+            app:layout_constraintTop_toBottomOf="@+id/range_spin" />
 
         <Spinner
             android:id="@+id/state_spin"
@@ -223,17 +241,13 @@
             android:text="@string/add_text"
             android:visibility="visible"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/char_recycler" />
+            app:layout_constraintTop_toBottomOf="@+id/char_recycler"
+            android:layout_marginEnd="8dp" />
 
         <Switch
             android:id="@+id/add_brawn_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:text="@string/add_brawn_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:visibility="gone"
@@ -246,8 +260,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/loaded_text"
@@ -261,8 +275,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/slug_text"
@@ -275,11 +289,6 @@
             android:id="@+id/ammo_lay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -289,10 +298,6 @@
                 android:id="@+id/ammo_switch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/ammo_plus"
                 app:layout_constraintLeft_toRightOf="@+id/ammo_minus"
                 app:layout_constraintRight_toLeftOf="@+id/ammo_plus"
@@ -304,9 +309,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="0dp"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="8dp" />
 
             <Button
                 android:id="@+id/ammo_minus"
@@ -314,9 +319,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="0dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="8dp" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

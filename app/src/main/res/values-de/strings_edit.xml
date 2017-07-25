@@ -55,4 +55,5 @@
   <string name="character_delete">Willst du diesen Charakter wirklich löschen?</string>
   <string name="minion_delete">Willst du diesen Lakei wirklich löschen?</string>
   <string name="export_text">Export</string>
+  <string name="range_text">Range:</string>
 </resources>

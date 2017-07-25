@@ -7,6 +7,13 @@
     <item>Mittelschwer</item>
     <item>Schwer</item>
   </string-array>
+  <string-array name="range_bands">
+    <item>Engaged</item>
+    <item>Short</item>
+    <item>Medium</item>
+    <item>Long</item>
+    <item>Extreme</item>
+  </string-array>
   <string-array name="crit_injury_severities">
     <item>Einfach</item>
     <item>Mittelschwer</item>

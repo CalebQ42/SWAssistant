@@ -228,6 +228,8 @@ public class Weapon implements JsonSavable {
         arc.setText(w.get(pos).firingArc);
         final EditText encum = (EditText)ed.findViewById(R.id.encum_edit);
         encum.setText(String.valueOf(w.get(pos).encum));
+        final Spinner range = (Spinner)ed.findViewById(R.id.range_spin);
+        range.setSelection(w.get(pos).range);
         final Spinner state = (Spinner)ed.findViewById(R.id.state_spin);
         state.setSelection(w.get(pos).itemState);
         final Spinner skill = (Spinner)ed.findViewById(R.id.skill_spin);
@@ -330,6 +332,7 @@ public class Weapon implements JsonSavable {
                     w.get(pos).encum = Integer.parseInt(encum.getText().toString());
                 else
                     w.get(pos).encum = 0;
+                w.get(pos).range = range.getSelectedItemPosition();
                 w.get(pos).itemState = state.getSelectedItemPosition();
                 w.get(pos).skill = skill.getSelectedItemPosition();
                 w.get(pos).skillBase = base.getSelectedItemPosition();
