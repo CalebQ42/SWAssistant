@@ -45,6 +45,7 @@
   <string name="encum_warning">ATTENTION: Vous êtes à la limite de l\'encombrement!</string>
   <string name="load_text">Charger</string>
   <string name="clone_text">Clone</string>
+  <string name="range_text">Range:</string>
   <!--Characteristic strings -->
   <string name="brawn_text">Vigueur:</string>
   <string name="agility_text">Agilité:</string>
