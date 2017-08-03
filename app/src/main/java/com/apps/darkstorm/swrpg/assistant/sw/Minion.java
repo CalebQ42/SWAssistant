@@ -310,7 +310,10 @@ public class Minion extends Editable{
         minNum = num;
         woundThresh = woundThreshInd*minNum;
         woundCur = woundThresh;
-        if (minNum<=6) {
+        if (minNum == 0){
+            for (int i = 0; i < skills.size(); i++)
+                skills.get(i).val = 0;
+        }else if (minNum<=5) {
             for (int i = 0; i < skills.size(); i++)
                 skills.get(i).val = minNum - 1;
         }else{

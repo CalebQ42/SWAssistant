@@ -115,7 +115,9 @@ public class NotesListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return c.nts.size();
+            if (c.nts!=null)
+                return c.nts.size();
+            return 0;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{

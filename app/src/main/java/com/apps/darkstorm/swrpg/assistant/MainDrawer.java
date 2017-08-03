@@ -124,8 +124,9 @@ public class MainDrawer extends AppCompatActivity
                                     dialog.cancel();
                                 }
                             }).show();
-                            ((SWrpg)getApplication()).prefs.edit().putInt(getString(R.string.start_count),num).apply();
+                            num = 0;
                         }
+                        ((SWrpg)getApplication()).prefs.edit().putInt(getString(R.string.start_count),num).apply();
                     }
                 }
             };

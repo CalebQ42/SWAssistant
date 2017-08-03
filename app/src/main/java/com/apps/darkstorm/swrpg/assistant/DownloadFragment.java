@@ -141,7 +141,6 @@ public class DownloadFragment extends Fragment {
                             if(!c.equals("")) {
                                 dls.get(1).add(c);
                             }
-                            System.out.println("Mins: "+String.valueOf(dls.get(1).size()));
                         }
                         for(String c:vhcs){
                             if(!c.equals(""))
@@ -222,15 +221,13 @@ public class DownloadFragment extends Fragment {
                                             ID++;
                                         }
                                         final Character ch = new Character(ID);
-                                        sr.getRoot().child("Characters").child(dls.get(type).get(hdl.getAdapterPosition())+".char")
+                                        sr.getRoot().child("Characters").child(dls.get(type).get(hdl.getAdapterPosition())+Character.fileExtension)
                                                 .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                                 AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
-                                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                                        ch.save(ch.getFileLocation(getActivity()));
                                                         if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
                                                             ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
@@ -264,12 +261,10 @@ public class DownloadFragment extends Fragment {
                                     ID++;
                                 }
                                 final Character ch = new Character(ID);
-                                sr.getRoot().child("Characters").child(dls.get(type).get(hdl.getAdapterPosition())+".char")
+                                sr.getRoot().child("Characters").child(dls.get(type).get(hdl.getAdapterPosition())+Character.fileExtension)
                                         .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                        ch.save(ch.getFileLocation(getActivity()));
                                         loading.cancel();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -306,16 +301,13 @@ public class DownloadFragment extends Fragment {
                                             ID++;
                                         }
                                         final Minion ch = new Minion(ID);
-                                        System.out.println("DL: "+dls.get(type).get(hdl.getAdapterPosition()));
-                                        sr.getRoot().child("Minions").child(dls.get(type).get(hdl.getAdapterPosition())+".minion")
+                                        sr.getRoot().child("Minions").child(dls.get(type).get(hdl.getAdapterPosition())+Minion.fileExtension)
                                                 .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                                 AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
-                                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                                        ch.save(ch.getFileLocation(getActivity()));
                                                         if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
                                                             ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
@@ -349,12 +341,10 @@ public class DownloadFragment extends Fragment {
                                     ID++;
                                 }
                                 final Minion ch = new Minion(ID);
-                                sr.child("Minions").child(dls.get(type).get(hdl.getAdapterPosition())+".minion")
+                                sr.child("Minions").child(dls.get(type).get(hdl.getAdapterPosition())+Minion.fileExtension)
                                         .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                        ch.save(ch.getFileLocation(getActivity()));
                                         loading.cancel();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -387,15 +377,13 @@ public class DownloadFragment extends Fragment {
                                             ID++;
                                         }
                                         final Vehicle ch = new Vehicle(ID);
-                                        sr.getRoot().child("Vehicles").child(dls.get(type).get(hdl.getAdapterPosition())+".vhcl")
+                                        sr.getRoot().child("Vehicles").child(dls.get(type).get(hdl.getAdapterPosition())+Vehicle.fileExtension)
                                                 .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                                 AsyncTask<Void,Void,Void> asyncTask = new AsyncTask<Void, Void, Void>() {
                                                     @Override
                                                     protected Void doInBackground(Void... params) {
-                                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                                        ch.save(ch.getFileLocation(getActivity()));
                                                         if(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.google_drive_key),false))
                                                             ch.save(((SWrpg)getActivity().getApplication()).gac,ch.getFileId(getActivity()),true);
                                                         return null;
@@ -429,12 +417,10 @@ public class DownloadFragment extends Fragment {
                                     ID++;
                                 }
                                 final Vehicle ch = new Vehicle(ID);
-                                sr.child("Vehicles").child(dls.get(type).get(hdl.getAdapterPosition())+".vhcl")
+                                sr.child("Vehicles").child(dls.get(type).get(hdl.getAdapterPosition())+Vehicle.fileExtension)
                                         .getFile(new File(ch.getFileLocation(getActivity()))).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        ch.reLoadLegacy(ch.getFileLocation(getActivity()));
-                                        ch.save(ch.getFileLocation(getActivity()));
                                         loading.cancel();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
