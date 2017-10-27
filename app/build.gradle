@@ -9,15 +9,15 @@ android {
             storePassword 'intel_idle.max_cstate=1'
         }
     }
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     defaultConfig {
         vectorDrawables {
             useSupportLibrary true
         }
         applicationId "com.apps.darkstorm.swrpg.assistant"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,13 +32,15 @@ android {
             signingConfig signingConfigs.config
         }
     }
+    flavorDimensions("basic")
     productFlavors {
         Main {
-            minSdkVersion 19
-            targetSdkVersion 25
+            dimension "basic"
+            minSdkVersion 17
+            targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 127
-            versionName '2.0.2.0'
+            versionCode 128
+            versionName '2.0.2.1'
             applicationId 'com.apps.darkstorm.swrpg.assistant'
             signingConfig signingConfigs.config
         }
@@ -50,19 +52,19 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.google.firebase:firebase-storage:11.0.2'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.google.firebase:firebase-auth:11.0.2'
-    compile 'com.google.firebase:firebase-messaging:11.0.2'
-    compile 'com.google.firebase:firebase-ads:11.0.2'
-    compile 'com.google.android.gms:play-services-drive:11.0.2'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.google.firebase:firebase-storage:11.4.2'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.google.firebase:firebase-auth:11.4.2'
+    compile 'com.google.firebase:firebase-messaging:11.4.2'
+    compile 'com.google.firebase:firebase-ads:11.4.2'
+    compile 'com.google.android.gms:play-services-drive:11.4.2'
+    compile 'com.android.support:design:25.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v13:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.firebase:firebase-crash:11.0.2'
-    compile 'com.google.firebase:firebase-core:11.0.2'
+    compile 'com.android.support:support-v13:25.4.0'
+    compile 'com.android.support:cardview-v7:25.4.0'
+    compile 'com.android.support:support-v4:25.4.0'
+    compile 'com.google.firebase:firebase-crash:11.4.2'
+    compile 'com.google.firebase:firebase-core:11.4.2'
     testCompile 'junit:junit:4.12'
 }
 
