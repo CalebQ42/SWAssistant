@@ -591,7 +591,7 @@ public class Vehicle extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if(!et.getText().toString().equals(""))
+                                    if(!et.getText().toString().equals("") && !et.getText().toString().equals("-"))
                                         encumCapacity = Integer.parseInt(et.getText().toString());
                                     else
                                         encumCapacity = 0;

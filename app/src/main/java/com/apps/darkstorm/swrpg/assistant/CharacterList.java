@@ -177,7 +177,7 @@ public class CharacterList extends Fragment {
                     protected Void doInBackground(Void... params) {
                         if (getActivity() == null)
                             return null;
-                        while (!((SWrpg) getActivity().getApplication()).driveFail && ((SWrpg) getActivity().getApplication()).charsFold == null) {
+                        while ((getActivity()!= null) && !((SWrpg) getActivity().getApplication()).driveFail && ((SWrpg) getActivity().getApplication()).charsFold == null) {
                             try {
                                 Thread.sleep(500);
                             } catch (InterruptedException e) {

@@ -55,7 +55,6 @@ import com.google.android.gms.drive.DriveId;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class Character extends Editable{
 
@@ -494,7 +493,7 @@ public class Character extends Editable{
                 woundThresh == chara.woundThresh && woundCur == chara.woundCur && strainThresh == chara.strainThresh &&
                 strainCur == chara.strainCur && xpCur == chara.xpCur && xpTot == chara.xpTot && defMelee == chara.defMelee &&
                 defRanged == chara.defRanged && soak == chara.soak && force == chara.force && credits == chara.credits &&
-                morality == chara.morality && conflict == chara.conflict && Objects.equals(chara.desc, desc) &&
+                morality == chara.morality && conflict == chara.conflict && chara.desc.equals(desc) &&
                 Arrays.equals(showCards, chara.showCards) && darkSide == chara.darkSide && age == chara.age && chara.nts.equals(nts) &&
                 encumCapacity == chara.encumCapacity && category.equals(chara.category);
     }
@@ -576,7 +575,7 @@ public class Character extends Editable{
                             b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if(!et.getText().toString().equals(""))
+                                    if(!et.getText().toString().equals("") && !et.getText().toString().equals("-"))
                                         age = Integer.parseInt(et.getText().toString());
                                     else
                                         age = 0;

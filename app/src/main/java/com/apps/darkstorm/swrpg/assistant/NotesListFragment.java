@@ -115,7 +115,7 @@ public class NotesListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            if (c.nts!=null)
+            if (c!= null && c.nts!=null)
                 return c.nts.size();
             return 0;
         }
