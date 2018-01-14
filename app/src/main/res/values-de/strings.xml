@@ -17,12 +17,12 @@ Bei Abbrechen wechselt die App in den Nur-Würfel-Modus.</string>
   <string name="re_show">Neues Ergebnis</string>
   <string name="modify_results">Abändern</string>
   <string name="minions">Handlanger</string>
-  <string name="category_text">Category:</string>
+  <string name="category_text">Kategorie:</string>
   <string name="export_location">Exportspeicherort:</string>
-  <string name="donate">Donate</string>
+  <string name="donate">Spenden</string>
   <string name="thanks_toast_switch">Thank You Toast</string>
-  <string name="thanks_toast">Thanks for donating :)</string>
-  <string name="type">Type:</string>
+  <string name="thanks_toast">Vielen Dank für die Spende :)</string>
+  <string name="type">Typ:</string>
   <string name="downloading">Downloading...</string>
   <string name="general">General</string>
   <string name="notes">Notes</string>
