@@ -212,7 +212,7 @@ public class Weapons implements JsonSavable {
                     b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            dh.roll().showWeaponDialog(ac,c.weapons.get(holder.getAdapterPosition()));
+                            dh.roll().showWeaponDialog(ac,c.weapons.get(holder.getAdapterPosition()),c);
                             dialog.cancel();
                         }
                     }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

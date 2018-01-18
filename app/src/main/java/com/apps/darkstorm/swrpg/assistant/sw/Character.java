@@ -25,10 +25,12 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.apps.darkstorm.swrpg.assistant.DiceRollFragment;
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;
 import com.apps.darkstorm.swrpg.assistant.custvars.SaveLoad;
+import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.drive.DriveSaveLoad;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.CriticalInjuries;
@@ -880,6 +882,38 @@ public class Character extends Editable{
                             return true;
                         }
                     });
+                    chars.findViewById(R.id.brawn_lay).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            android.app.AlertDialog.Builder b = new android.app.AlertDialog.Builder(ac);
+                            final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                            b.setView(view);
+                            view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                            view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                            view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                            final DiceHolder dh = new DiceHolder();
+                            dh.ability = charVals[0];
+                            final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                            RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                            r.setAdapter(dl);
+                            r.setLayoutManager(new LinearLayoutManager(ac));
+                            b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dh.roll().showDialog(ac);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                        }
+                    });
                     final TextView agilityVal = (TextView)chars.findViewById(R.id.agility_num);
                     agilityVal.setText(String.valueOf(charVals[1]));
                     chars.findViewById(R.id.agility_lay).setOnLongClickListener(new View.OnLongClickListener() {
@@ -910,6 +944,38 @@ public class Character extends Editable{
                             });
                             b.show();
                             return true;
+                        }
+                    });
+                    chars.findViewById(R.id.agility_lay).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            android.app.AlertDialog.Builder b = new android.app.AlertDialog.Builder(ac);
+                            final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                            b.setView(view);
+                            view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                            view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                            view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                            final DiceHolder dh = new DiceHolder();
+                            dh.ability = charVals[1];
+                            final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                            RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                            r.setAdapter(dl);
+                            r.setLayoutManager(new LinearLayoutManager(ac));
+                            b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dh.roll().showDialog(ac);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
                         }
                     });
                     final TextView intellectVal = (TextView)chars.findViewById(R.id.intellect_num);
@@ -944,6 +1010,38 @@ public class Character extends Editable{
                             return true;
                         }
                     });
+                    chars.findViewById(R.id.agility_lay).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            android.app.AlertDialog.Builder b = new android.app.AlertDialog.Builder(ac);
+                            final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                            b.setView(view);
+                            view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                            view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                            view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                            final DiceHolder dh = new DiceHolder();
+                            dh.ability = charVals[1];
+                            final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                            RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                            r.setAdapter(dl);
+                            r.setLayoutManager(new LinearLayoutManager(ac));
+                            b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dh.roll().showDialog(ac);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                        }
+                    });
                     final TextView cunningVal = (TextView)chars.findViewById(R.id.cunning_num);
                     cunningVal.setText(String.valueOf(charVals[3]));
                     chars.findViewById(R.id.cunning_lay).setOnLongClickListener(new View.OnLongClickListener() {
@@ -974,6 +1072,38 @@ public class Character extends Editable{
                             });
                             b.show();
                             return true;
+                        }
+                    });
+                    chars.findViewById(R.id.cunning_lay).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            android.app.AlertDialog.Builder b = new android.app.AlertDialog.Builder(ac);
+                            final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                            b.setView(view);
+                            view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                            view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                            view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                            final DiceHolder dh = new DiceHolder();
+                            dh.ability = charVals[3];
+                            final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                            RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                            r.setAdapter(dl);
+                            r.setLayoutManager(new LinearLayoutManager(ac));
+                            b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dh.roll().showDialog(ac);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
                         }
                     });
                     final TextView willpowerVal = (TextView)chars.findViewById(R.id.willpower_num);
@@ -1008,6 +1138,38 @@ public class Character extends Editable{
                             return true;
                         }
                     });
+                    chars.findViewById(R.id.willpower_lay).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            android.app.AlertDialog.Builder b = new android.app.AlertDialog.Builder(ac);
+                            final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                            b.setView(view);
+                            view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                            view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                            view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                            final DiceHolder dh = new DiceHolder();
+                            dh.ability = charVals[4];
+                            final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                            RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                            r.setAdapter(dl);
+                            r.setLayoutManager(new LinearLayoutManager(ac));
+                            b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dh.roll().showDialog(ac);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
+                        }
+                    });
                     final TextView presenceVal = (TextView)chars.findViewById(R.id.presence_num);
                     presenceVal.setText(String.valueOf(charVals[5]));
                     chars.findViewById(R.id.presence_lay).setOnLongClickListener(new View.OnLongClickListener() {
@@ -1038,6 +1200,38 @@ public class Character extends Editable{
                             });
                             b.show();
                             return true;
+                        }
+                    });
+                    chars.findViewById(R.id.presence_lay).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            android.app.AlertDialog.Builder b = new android.app.AlertDialog.Builder(ac);
+                            final View view = ac.getLayoutInflater().inflate(R.layout.fragment_dice_roll, null);
+                            b.setView(view);
+                            view.findViewById(R.id.instant_recycler).setVisibility(View.GONE);
+                            view.findViewById(R.id.instant_dice_text).setVisibility(View.GONE);
+                            view.findViewById(R.id.fab_space).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_reset).setVisibility(View.GONE);
+                            view.findViewById(R.id.dice_label).setVisibility(View.GONE);
+                            final DiceHolder dh = new DiceHolder();
+                            dh.ability = charVals[5];
+                            final DiceRollFragment.DiceList dl = new DiceRollFragment.DiceList(ac, dh);
+                            RecyclerView r = (RecyclerView) view.findViewById(R.id.dice_recycler);
+                            r.setAdapter(dl);
+                            r.setLayoutManager(new LinearLayoutManager(ac));
+                            b.setPositiveButton(R.string.roll_text, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dh.roll().showDialog(ac);
+                                    dialog.cancel();
+                                }
+                            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            b.show();
                         }
                     });
                     break;
