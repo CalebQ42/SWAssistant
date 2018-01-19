@@ -259,11 +259,11 @@ public class DiceResults {
 
     public DiceResults simplify(){
         DiceResults hold = this.clone();
-        if (success>failure){
-            hold.success = success - failure;
+        if ((success+triumph)>(failure+despair)){
+            hold.success = (success + triumph) - (failure+despair);
             hold.failure = 0;
         }else{
-            hold.failure = failure-success;
+            hold.failure = (failure+despair)-(success+triumph);
             hold.success = 0;
         }
         if (advantage>threat){

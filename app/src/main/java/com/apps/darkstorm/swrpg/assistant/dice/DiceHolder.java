@@ -72,12 +72,10 @@ public class DiceHolder {
             while (res.contains(triumph)){
                 res = res.replaceFirst(triumph,"");
                 dr.triumph++;
-                dr.success++;
             }
             while (res.contains(despair)){
                 res = res.replaceFirst(despair,"");
                 dr.despair++;
-                dr.failure++;
             }
             while (res.contains(lightSide)){
                 res = res.replaceFirst(lightSide,"");
