@@ -5,12 +5,10 @@
   <string name="save_location_text">Emplacement d\'enregistrement</string>
   <string name="light_side_text">Côté Lumineux</string>
   <string name="save_warning">ATTENTION : Si l\'app est mal modifié elle peut planter. Pas de soucie, il suffit de \"effacer les données\"</string>
-    <string name="color_dice">Colorer les dés</string>
+  <string name="color_dice">Colorer les dés</string>
   <string name="ads_text">Activer les pubs</string>
-    <!--cloud strings-->
-    <string name="cloud_text">Enregistrer sur Google Drive ( devrait fonctionner)</string>
-
-    <string name="upload_question">Do you want to upload all local profiles?</string>
-
-  <string name="uploading">Uploading…</string>
+  <!--cloud strings-->
+  <string name="cloud_text">Enregistrer sur Google Drive ( devrait fonctionner)</string>
+  <string name="uploading">Uploading&#8230;</string>
+  <string name="upload_question">Do you want to upload all local profiles?</string>
 </resources>

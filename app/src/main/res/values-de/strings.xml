@@ -4,41 +4,32 @@
   <string name="app_name">SWAssistant</string>
   <string name="navigation_drawer_open">Navigationsmenü öffnen</string>
   <string name="navigation_drawer_close">Navigationsmenü schließen</string>
-    <string name="permission_error">Leider BRAUCHT diese App Datei-Lese- und -Schreibrechte. Mit OK wird die App nochmals um Erlaubnis bitten.
+  <string name="permission_error">Leider BRAUCHT diese App Datei-Lese- und -Schreibrechte. Mit OK wird die App nochmals um Erlaubnis bitten.
 Bei Abbrechen wechselt die App in den Nur-Würfel-Modus.</string>
-    <string name="retry">Erneut versuchen</string>
-    <string name="g_plus">G+ Community</string>
+  <string name="retry">Erneut versuchen</string>
+  <string name="g_plus">G+ Community</string>
   <string name="translate_text">Hilf beim Übersetzen!</string>
   <string name="still_loading">Lädt... Bitte warten</string>
   <string name="drive_loading">Verbinden mit Google Drive&#8230;</string>
-    <string name="drive_fail">Google Drive Verbindung fehlgeschlagen</string>
-    <string name="success">Erfolgreich</string>
+  <string name="drive_fail">Google Drive Verbindung fehlgeschlagen</string>
+  <string name="success">Erfolgreich</string>
   <string name="failure">Fehler</string>
-    <string name="re_show">Neues Ergebnis</string>
+  <string name="re_show">Neues Ergebnis</string>
   <string name="modify_results">Abändern</string>
-    <string name="category_text">Category:</string>
-  <string name="minions">Minions</string>
-    <string name="export_location">Export Location:</string>
-    <string name="donate">Donate</string>
-    <string name="thanks_toast">Thanks for donating :)</string>
+  <string name="minions">Handlanger</string>
+  <string name="category_text">Kategorie:</string>
+  <string name="export_location">Exportspeicherort:</string>
+  <string name="donate">Spenden</string>
   <string name="thanks_toast_switch">Thank You Toast</string>
-    <string name="type">Type:</string>
-    <string name="downloading">Downloading...</string>
-    <string name="general">General</string>
-  <string name="notes">Notes</string>
-
-  <string name="donate_message">Though it is not necessary, it would be greatly appreciated
-        if you were to donate. This app will continue to be free, but the app making money WILL help
-    me to stay motivated.</string>
-
-  <string name="not_today">Not Today</string>
-
-  <string name="analytics_message">Do you wish to turn off analytics? This will impair my
-        ability to fix certain bugs, but I know many people don\'t trust Google.</string>
-
-  <string name="turn_off">Turn Off</string>
-
+  <string name="thanks_toast">Vielen Dank für die Spende :)</string>
+  <string name="type">Typ:</string>
+  <string name="downloading">Lade herunter...</string>
+  <string name="general">Allgemein</string>
+  <string name="notes">Notizen</string>
+  <string name="donate_message">Obwohl es nicht notwendig ist, wäre es sehr willkommen wenn du spenden würdest. Diese App wird weiterhin kostenlos bleiben, aber Spenden helfen mir, motiviert zu bleiben.</string>
+  <string name="not_today">Nicht heute</string>
+  <string name="analytics_message">Möchten Sie Analytics deaktivieren? Dies beeinträchtigt meine Fähigkeit, bestimmte Fehler zu beheben, aber ich habe Verständnis dafür, dass viele Menschen kein Vertrauen in Google haben.</string>
+  <string name="turn_off">Ausschalten</string>
   <string name="keep_on">Keep On</string>
-
-  <string name="analytics_switch">Analytics</string>
+  <string name="analytics_switch">Statistik</string>
 </resources>

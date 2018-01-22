@@ -8,11 +8,11 @@
     <item>Schwer</item>
   </string-array>
   <string-array name="range_bands">
-    <item>Engaged</item>
-    <item>Short</item>
-    <item>Medium</item>
-    <item>Long</item>
-    <item>Extreme</item>
+    <item>Nahkampf</item>
+    <item>Kurz</item>
+    <item>Mittel</item>
+    <item>Groß</item>
+    <item>Sehr groß</item>
   </string-array>
   <string-array name="crit_injury_severities">
     <item>Einfach</item>
@@ -20,7 +20,7 @@
     <item>Schwierig</item>
     <item>Sehr schwierig</item>
   </string-array>
-    <string-array name="weapon_skills">
+  <string-array name="weapon_skills">
     <item>Handgemenge</item>
     <item>Artillerie</item>
     <item>Lichtschwert</item>

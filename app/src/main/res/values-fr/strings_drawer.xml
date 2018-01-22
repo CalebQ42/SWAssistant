@@ -8,6 +8,6 @@
   <string name="dice">Dés</string>
   <string name="guide">Guide</string>
   <string name="settings">Paramètres</string>
-    <string name="download">Download</string>
+  <string name="download">Download</string>
   <string name="other_group">Other Stuff</string>
 </resources>
