@@ -40,20 +40,20 @@
   <string name="melee_defense_text">Defensa cuerpo a cuerpo:</string>
   <string name="ranged_defense_text">Defensa a distancia:</string>
   <string name="total_xp_text">XP totales:</string>
-  <string name="current_xp_text">Current XP:</string>
-  <string name="noted_delete">Are you sure you want to delete this note?</string>
-  <string name="encum_warning">WARNING: You are over your encumbrance limit!</string>
-  <string name="load_text">Load</string>
+  <string name="current_xp_text">XP actuales:</string>
+  <string name="noted_delete">¿Estás seguro que quieres eliminar esta nota?</string>
+  <string name="encum_warning">ADVERTENCIA: ¡Estas por encima de tu límite de carga!</string>
+  <string name="load_text">Carga</string>
   <string name="clone_text">Clone</string>
-  <string name="range_text">Range:</string>
+  <string name="range_text">Alcance:</string>
   <!--Characteristic strings -->
-  <string name="brawn_text">Brawn:</string>
-  <string name="agility_text">Agility:</string>
-  <string name="intellect_text">Intellect:</string>
-  <string name="cunning_text">Cunning:</string>
-  <string name="willpower_text">Willpower:</string>
-  <string name="presence_text">Presence:</string>
-  <string name="character_delete">Are you sure you want to delete this character?</string>
-  <string name="minion_delete">Are you sure you want to delete this minion?</string>
-  <string name="export_text">Export</string>
+  <string name="brawn_text">Fortaleza:</string>
+  <string name="agility_text">Agilidad:</string>
+  <string name="intellect_text">Intelecto:</string>
+  <string name="cunning_text">Astucia:</string>
+  <string name="willpower_text">Voluntad:</string>
+  <string name="presence_text">Presencia:</string>
+  <string name="character_delete">¿Estás seguro de que deseas borrar este Personaje?</string>
+  <string name="minion_delete">¿Estás seguro de que quieres eliminar este Esbirro?</string>
+  <string name="export_text">Exportar</string>
 </resources>
