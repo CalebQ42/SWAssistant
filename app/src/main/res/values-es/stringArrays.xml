@@ -50,27 +50,27 @@
     <item>Mecánica</item>
     <item>Medicina</item>
     <item>Negociación</item>
-    <item>Perception</item>
-    <item>Piloting(Planetary)</item>
-    <item>Piloting(Space)</item>
-    <item>Resilience</item>
-    <item>Skulduggery</item>
-    <item>Stealth</item>
-    <item>Streetwise</item>
-    <item>Survival</item>
-    <item>Vigilance</item>
+    <item>Percepción</item>
+    <item>Pilotar (planetario)</item>
+    <item>Pilotar (Espacial)</item>
+    <item>Aguante</item>
+    <item>Actividad Criminal</item>
+    <item>Sigilo</item>
+    <item>Callejeo</item>
+    <item>Supervivencia</item>
+    <item>Alerta</item>
     <item>Pelea</item>
     <item>Artillería</item>
     <item>Sable de luz</item>
     <item>Armas cuerpo a cuerpo</item>
     <item>Armas a distancia (ligeras)</item>
     <item>Armas a distancia (pesadas)</item>
-    <item>Knowledge(Core Worlds)</item>
-    <item>Knowledge(Education)</item>
+    <item>Mundos del Núcleo</item>
+    <item>Educación</item>
     <item>Knowledge(Lore)</item>
-    <item>Knowledge(Outer Rim)</item>
-    <item>Knowledge(Underworld)</item>
-    <item>Knowledge(Xenology)</item>
+    <item>Borde Exterior</item>
+    <item>Bajos fondos</item>
+    <item>Xenología</item>
     <item>Other&#8230;</item>
   </string-array>
 </resources>
