@@ -16,11 +16,11 @@
   <string name="damage_text">Daño:</string>
   <string name="specials_text">Especial:</string>
   <string name="critical_text">Crítico</string>
-  <string name="hard_points_text">Hard Points:</string>
-  <string name="weapon_state_text">Weapon State:</string>
-  <string name="add_text">Add</string>
-  <string name="add_brawn_text">Add Brawn</string>
-  <string name="loaded_text">Loaded</string>
+  <string name="hard_points_text">Ensamblajes:</string>
+  <string name="weapon_state_text">Estado del arma:</string>
+  <string name="add_text">Añadir</string>
+  <string name="add_brawn_text">Añadir Fortaleza</string>
+  <string name="loaded_text">Cargada</string>
   <string name="slug_text">Slugthrower (needs ammo)</string>
-  <string name="encum_text">Encumbrance:</string>
+  <string name="encum_text">Impedimento:</string>
 </resources>
