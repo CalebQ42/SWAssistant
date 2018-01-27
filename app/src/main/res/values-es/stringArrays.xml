@@ -22,34 +22,34 @@
   </string-array>
   <string-array name="weapon_skills">
     <item>Pelea</item>
-    <item>Gunnery</item>
-    <item>Lightsaber</item>
-    <item>Melee</item>
-    <item>Ranged(Light)</item>
-    <item>Ranged(Heavy)</item>
+    <item>Artillería</item>
+    <item>Sable de luz</item>
+    <item>Armas cuerpo a cuerpo</item>
+    <item>Armas a distancia (ligeras)</item>
+    <item>Armas a distancia (pesadas)</item>
   </string-array>
   <string-array name="base_characteristics">
-    <item>Brawn</item>
-    <item>Agility</item>
-    <item>Intellect</item>
-    <item>Cunning</item>
-    <item>Willpower</item>
-    <item>Presence</item>
+    <item>Fortaleza</item>
+    <item>Agilidad</item>
+    <item>Intelecto</item>
+    <item>Astucia</item>
+    <item>Voluntad</item>
+    <item>Presencia</item>
   </string-array>
   <string-array name="skills_list">
-    <item>Astrogation</item>
-    <item>Athletics</item>
-    <item>Charm</item>
-    <item>Coercion</item>
-    <item>Computers</item>
-    <item>Cool</item>
-    <item>Coordination</item>
-    <item>Deception</item>
-    <item>Discipline</item>
-    <item>Leadership</item>
-    <item>Mechanics</item>
-    <item>Medicine</item>
-    <item>Negotiation</item>
+    <item>Astronavegación</item>
+    <item>Atletismo</item>
+    <item>Carisma</item>
+    <item>Coacción</item>
+    <item>Computadoras</item>
+    <item>Frialdad</item>
+    <item>Coordinación</item>
+    <item>Engaño</item>
+    <item>Disciplina</item>
+    <item>Liderazgo</item>
+    <item>Mecánica</item>
+    <item>Medicina</item>
+    <item>Negociación</item>
     <item>Perception</item>
     <item>Piloting(Planetary)</item>
     <item>Piloting(Space)</item>
@@ -60,11 +60,11 @@
     <item>Survival</item>
     <item>Vigilance</item>
     <item>Pelea</item>
-    <item>Gunnery</item>
-    <item>Lightsaber</item>
-    <item>Melee</item>
-    <item>Ranged(Light)</item>
-    <item>Ranged(Heavy)</item>
+    <item>Artillería</item>
+    <item>Sable de luz</item>
+    <item>Armas cuerpo a cuerpo</item>
+    <item>Armas a distancia (ligeras)</item>
+    <item>Armas a distancia (pesadas)</item>
     <item>Knowledge(Core Worlds)</item>
     <item>Knowledge(Education)</item>
     <item>Knowledge(Lore)</item>
