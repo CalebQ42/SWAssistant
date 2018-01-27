@@ -14,8 +14,8 @@
   <string name="hull_trauma_text">Daños en el casco:</string>
   <string name="sys_stress_text">Tensión de sistemas:</string>
   <string name="hull_trauma_thresh_text">Umbral de daños en el casco:</string>
-  <string name="sys_stress_thresh_text">System Stress Threshold:</string>
-  <string name="capacity_text">Capacity:</string>
+  <string name="sys_stress_thresh_text">Umbral de tensión de sistemas:</string>
+  <string name="capacity_text">Capacidad de impedimento:</string>
   <string name="passenger_text">Passenger:</string>
   <string name="passenger_capacity_text">Passenger Capacity:</string>
   <string name="encumbrance_capacity_text">Encumbrance Capacity:</string>
