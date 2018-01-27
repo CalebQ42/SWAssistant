@@ -4,10 +4,10 @@
   <string name="profiles">Perfiles</string>
   <string name="characters">Personajes</string>
   <string name="vehicles">Vehículos</string>
-  <string name="gm_mode">GM Mode</string>
-  <string name="dice">Dice</string>
-  <string name="guide">Guide</string>
-  <string name="settings">Settings</string>
-  <string name="download">Download</string>
-  <string name="other_group">Other Stuff</string>
+  <string name="gm_mode">Modo DJ</string>
+  <string name="dice">Dados</string>
+  <string name="guide">Guía</string>
+  <string name="settings">Configuración</string>
+  <string name="download">Descargar</string>
+  <string name="other_group">Otras cosas</string>
 </resources>
