@@ -5,11 +5,11 @@
   <string name="silhouette_text">Silueta:</string>
   <string name="armor_text">Armadura:</string>
   <string name="handling_text">Manejo:</string>
-  <string name="total_defense_text">Total Defense (For angling):</string>
-  <string name="fore_text">Fore:</string>
-  <string name="port_text">Port:</string>
-  <string name="starboard_text">Starboard:</string>
-  <string name="aft_text">Aft:</string>
+  <string name="total_defense_text">Defensa total (por àngulo):</string>
+  <string name="fore_text">Proa:</string>
+  <string name="port_text">Babor:</string>
+  <string name="starboard_text">Estribor:</string>
+  <string name="aft_text">Popa:</string>
   <string name="defense_warning">ADVERTENCIA: ¡Es posible que haya configurado una de sus zonas de defensa incorrectamente!</string>
   <string name="hull_trauma_text">Daños en el casco:</string>
   <string name="sys_stress_text">Tensión de sistemas:</string>
