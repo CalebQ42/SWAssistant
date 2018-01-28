@@ -7,16 +7,16 @@
   <string name="dice_pool_proficiency">= Menor número</string>
   <string name="dice_pool_difficulty">= Dificultad</string>
   <string name="dice_pool_boost">= Número de \"Beneficios\"</string>
-  <string name="dice_pool_setback">= Number of disadvantages</string>
+  <string name="dice_pool_setback">= Número de \"Complicaciones\"</string>
   <!--Difficulty Card-->
-  <string name="difficulty_text">Difficulty:</string>
+  <string name="difficulty_text">Dificultad:</string>
   <string name="easy_text">Fácil</string>
   <string name="average_text">Media</string>
   <string name="hard_text">Difícil</string>
   <string name="daunting_text">Desalentadora</string>
   <string name="formidable_text">Formidable</string>
   <!--Dice Descriptions-->
-  <string name="ability_dice_desc">Basic positive die used in most skill checks. Represents aptitude in a skill.</string>
+  <string name="ability_dice_desc">Dado positivo básico utilizado en la mayoría de los controles de habilidad. Representa la aptitud en una habilidad.</string>
   <string name="proficiency_dice_desc">A more powerful positive die used in most skill checks. Upgraded form of the
     ability die. Represents innate ability or training.</string>
   <string name="difficulty_dice_desc">Basic negative die used in most skill checks. Represents the difficulty of
