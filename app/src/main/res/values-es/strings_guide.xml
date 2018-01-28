@@ -6,7 +6,7 @@
   <string name="dice_pool_ability">= Mayor número - Menor número</string>
   <string name="dice_pool_proficiency">= Menor número</string>
   <string name="dice_pool_difficulty">= Dificultad</string>
-  <string name="dice_pool_boost">= Number of advantages</string>
+  <string name="dice_pool_boost">= Número de \"Beneficios\"</string>
   <string name="dice_pool_setback">= Number of disadvantages</string>
   <!--Difficulty Card-->
   <string name="difficulty_text">Difficulty:</string>
