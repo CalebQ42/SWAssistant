@@ -22,5 +22,5 @@
   <string name="challenge_dice_desc">Un dado negativo más poderoso. La forma mejorada del dado de dificultad. Representa una gran adversidad.</string>
   <string name="boost_dice_desc">Un dado positivo que representa un beneficio.</string>
   <string name="setback_dice_desc">Un dado negativo que representa una complicación.</string>
-  <string name="force_dice_desc">A die representing the force. Used only when a player calls upon the force.</string>
+  <string name="force_dice_desc">Un dado que representa la Fuerza. Se usa solo cuando un jugador utiliza el poder de la Fuerza.</string>
 </resources>
