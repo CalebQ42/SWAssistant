@@ -9,7 +9,7 @@
   <string name="setback_dice">Dados de complicación:</string>
   <string name="force_dice">Dados de Fuerza:</string>
   <string name="roll_text">Lanzar</string>
-  <string name="instant_dice_text">Instant Dice:</string>
+  <string name="instant_dice_text">Dados instantáneos:</string>
   <string name="dhun_text">d100:</string>
   <string name="dten_text">d10:</string>
   <string name="no_res_text">No hay resultados</string>
