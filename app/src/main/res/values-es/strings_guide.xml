@@ -17,13 +17,10 @@
   <string name="formidable_text">Formidable</string>
   <!--Dice Descriptions-->
   <string name="ability_dice_desc">Dado positivo básico utilizado en la mayoría de los controles de habilidad. Representa la aptitud en una habilidad.</string>
-  <string name="proficiency_dice_desc">A more powerful positive die used in most skill checks. Upgraded form of the
-    ability die. Represents innate ability or training.</string>
-  <string name="difficulty_dice_desc">Basic negative die used in most skill checks. Represents the difficulty of
-    a given task.</string>
-  <string name="challenge_dice_desc">A more powerful negative die. Upgraded form of
-    the difficulty die. Represents great adversity.</string>
-  <string name="boost_dice_desc">A positive die representing an advantage.</string>
-  <string name="setback_dice_desc">A negative die representing a disadvantage.</string>
+  <string name="proficiency_dice_desc">Un dado positivo más poderoso utilizado en la mayoría de los controles de habilidad. La forma mejorada del dado de habilidad. Representa la habilidad o entrenamiento innato.</string>
+  <string name="difficulty_dice_desc">Dado negativo básico usado en la mayoría de los controles de habilidad. Representa la dificultad de una tarea.</string>
+  <string name="challenge_dice_desc">Un dado negativo más poderoso. La forma mejorada del dado de dificultad. Representa una gran adversidad.</string>
+  <string name="boost_dice_desc">Un dado positivo que representa un beneficio.</string>
+  <string name="setback_dice_desc">Un dado negativo que representa una complicación.</string>
   <string name="force_dice_desc">A die representing the force. Used only when a player calls upon the force.</string>
 </resources>
