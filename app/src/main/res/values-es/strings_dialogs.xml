@@ -21,6 +21,6 @@
   <string name="add_text">Añadir</string>
   <string name="add_brawn_text">Añadir Fortaleza</string>
   <string name="loaded_text">Cargada</string>
-  <string name="slug_text">Slugthrower (needs ammo)</string>
+  <string name="slug_text">Proyectiles sólidos (necesita munición)</string>
   <string name="encum_text">Impedimento:</string>
 </resources>
