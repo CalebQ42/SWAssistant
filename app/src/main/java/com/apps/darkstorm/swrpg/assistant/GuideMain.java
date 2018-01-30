@@ -8,15 +8,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 
 public class GuideMain extends Fragment {
 
@@ -94,19 +88,19 @@ public class GuideMain extends Fragment {
             }
         };
         pager.setAdapter(adap);
-        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
-            AdView ads = new AdView(getActivity());
-            ads.setAdSize(AdSize.BANNER);
-            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            adLayout.weight = 0;
-            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
-            ads.setLayoutParams(adLayout);
-            ads.setAdUnitId(getString(R.string.free_banner_ad_id));
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
-            ads.loadAd(adRequest);
-            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
-            topLinLay.addView(ads,topLinLay.getChildCount());
-        }
+//        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
+//            AdView ads = new AdView(getActivity());
+//            ads.setAdSize(AdSize.BANNER);
+//            LinearLayout.LayoutParams adLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+//            adLayout.weight = 0;
+//            adLayout.gravity = Gravity.CENTER_HORIZONTAL;
+//            ads.setLayoutParams(adLayout);
+//            ads.setAdUnitId(getString(R.string.free_banner_ad_id));
+//            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
+//            ads.loadAd(adRequest);
+//            LinearLayout topLinLay = (LinearLayout)top.findViewById(R.id.top_lay);
+//            topLinLay.addView(ads,topLinLay.getChildCount());
+//        }
     }
 
     public interface OnGuideInteractionListener {}

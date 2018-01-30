@@ -323,14 +323,14 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-        Switch ads = (Switch)view.findViewById(R.id.ads_switch);
-        ads.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true));
-        ads.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.ads_key),isChecked).apply();
-            }
-        });
+//        Switch ads = (Switch)view.findViewById(R.id.ads_switch);
+//        ads.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true));
+//        ads.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                ((SWrpg)getActivity().getApplication()).prefs.edit().putBoolean(getString(R.string.ads_key),isChecked).apply();
+//            }
+//        });
         Switch t = (Switch)view.findViewById(R.id.theme_switch);
         t.setChecked(((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.light_side_key),false));
         t.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

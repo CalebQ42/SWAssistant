@@ -22,8 +22,6 @@ import android.widget.ViewSwitcher;
 
 import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.ui.upDownCard;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import java.util.Random;
 
@@ -65,12 +63,12 @@ public class DiceRollFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.dice);
-        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
-            AdView ads = (AdView)view.findViewById(R.id.ad_recycle);
-            ads.setVisibility(View.VISIBLE);
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
-            ads.loadAd(adRequest);
-        }
+//        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
+//            AdView ads = (AdView)view.findViewById(R.id.ad_recycle);
+//            ads.setVisibility(View.VISIBLE);
+//            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
+//            ads.loadAd(adRequest);
+//        }
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.show();
         fab.setOnClickListener(new View.OnClickListener() {

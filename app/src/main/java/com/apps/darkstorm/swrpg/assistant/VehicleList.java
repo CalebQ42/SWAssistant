@@ -28,8 +28,6 @@ import com.apps.darkstorm.swrpg.assistant.drive.Load;
 import com.apps.darkstorm.swrpg.assistant.local.LoadLocal;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,12 +66,12 @@ public class VehicleList extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         if(parentHandle == null) {
-            if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
-                AdView ads = (AdView)view.findViewById(R.id.adView);
-                ads.setVisibility(View.VISIBLE);
-                AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
-                ads.loadAd(adRequest);
-            }
+//            if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
+//                AdView ads = (AdView)view.findViewById(R.id.adView);
+//                ads.setVisibility(View.VISIBLE);
+//                AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
+//                ads.loadAd(adRequest);
+//            }
             FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
             fab.setImageResource(R.drawable.add);
             fab.show();

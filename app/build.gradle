@@ -31,8 +31,8 @@ android {
             minSdkVersion 17
             targetSdkVersion 27
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 132
-            versionName '2.0.2.5'
+            versionCode 134
+            versionName '2.0.4.0'
             applicationId 'com.apps.darkstorm.swrpg.assistant'
         }
     }

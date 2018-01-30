@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 public class EditGeneral extends Fragment {
     public EditGeneral() {}
@@ -46,12 +44,12 @@ public class EditGeneral extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        if(parentHandle==null&&((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)){
-            AdView adv = (AdView)view.findViewById(R.id.ad_recycle);
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
-            adv.loadAd(adRequest);
-            adv.setVisibility(View.VISIBLE);
-        }
+//        if(parentHandle==null&&((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)){
+//            AdView adv = (AdView)view.findViewById(R.id.ad_recycle);
+//            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").addKeyword("Tabletop Roleplay").addKeyword("RPG").build();
+//            adv.loadAd(adRequest);
+//            adv.setVisibility(View.VISIBLE);
+//        }
         RecyclerView r = (RecyclerView)view.findViewById(R.id.recycler);
         EditableAdap adap = new EditableAdap();
         adap.setHasStableIds(false);

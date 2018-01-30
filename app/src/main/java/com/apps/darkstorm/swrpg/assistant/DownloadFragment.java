@@ -28,8 +28,6 @@ import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
 import com.apps.darkstorm.swrpg.assistant.sw.Minion;
 import com.apps.darkstorm.swrpg.assistant.sw.Vehicle;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -66,12 +64,12 @@ public class DownloadFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
-            AdView ads = (AdView)view.findViewById(R.id.ad_recycle);
-            ads.setVisibility(View.VISIBLE);
-            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
-            ads.loadAd(adRequest);
-        }
+//        if (((SWrpg)getActivity().getApplication()).prefs.getBoolean(getString(R.string.ads_key),true)) {
+//            AdView ads = (AdView)view.findViewById(R.id.ad_recycle);
+//            ads.setVisibility(View.VISIBLE);
+//            AdRequest adRequest = new AdRequest.Builder().addKeyword("Star Wars").build();
+//            ads.loadAd(adRequest);
+//        }
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.download);
         ((FloatingActionButton)getActivity().findViewById(R.id.fab)).hide();
