@@ -42,7 +42,7 @@
   <string name="total_xp_text">XP totales:</string>
   <string name="current_xp_text">XP actuales:</string>
   <string name="noted_delete">¿Estás seguro que quieres eliminar esta nota?</string>
-  <string name="encum_warning">ADVERTENCIA: ¡Estas por encima de tu límite de carga!</string>
+  <string name="encum_warning">ADVERTENCIA: ¡Estas por encima de tu límite de impedimento!</string>
   <string name="load_text">Carga</string>
   <string name="clone_text">Clonar</string>
   <string name="range_text">Alcance:</string>
