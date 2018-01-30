@@ -14,7 +14,7 @@
 
 
     <application
-        android:name=".SWrpg"
+        android:name=".SW"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
