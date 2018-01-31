@@ -1,5 +1,6 @@
 # SWAssistant
-An app for the Star Wars RPG from Fantasy Flight Games  .
+An app for the Star Wars RPG from Fantasy Flight Games.  
+[Play Store](https://play.google.com/store/apps/details?id=com.apps.darkstorm.swrpg.assistant)
 ### Features:
 * Character Sheets
 * Minion Sheets
