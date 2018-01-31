@@ -1,6 +1,6 @@
 # SWAssistant
-An app for the Star Wars RPG from Fantasy Flight Games
-##Features:
+An app for the Star Wars RPG from Fantasy Flight Games  .
+### Features:
 * Character Sheets
 * Minion Sheets
 * Vehicle Sheets
