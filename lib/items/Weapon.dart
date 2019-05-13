@@ -3,7 +3,7 @@ import 'package:swassistant/profiles/utils/JsonSavable.dart';
 
 import 'WeaponCharacteristic.dart';
 
-class Weapon extends JsonSavable{
+class Weapon implements JsonSavable{
 
   String name;
   int damage;
@@ -30,25 +30,26 @@ class Weapon extends JsonSavable{
     }
   }
 
-  Weapon.fromJson(Map<String,dynamic> json){
-    name = json["name"];
-    damage = json["damage"];
-    critical = json["critical rating"];
-    hp = json["hard points"];
-    range = json["range"];
-    skill = json["skill"];
-    skillBase = json["base"];
-    characteristics = new List();
+  Weapon.fromJson(Map<String,dynamic> json) :
+      name = json["name"],
+      damage = json["damage"],
+      critical = json["critical rating"],
+      hp = json["hard points"],
+      range = json["range"],
+      skill = json["skill"],
+      skillBase = json["base"],
+      addBrawn = json["add brawn"],
+      loaded = json["loaded"],
+      limitedAmmo = json["limited ammo"],
+      itemState = json["item state"],
+      ammo = json["ammo"],
+      firingArc = json["firing arc"],
+      encumbrance = json["encumbrance"],
+      characteristics = new List()
+  {
     for(Map<String,dynamic> map in json["Weapon Characteristics"]){
       characteristics.add(WeaponCharacteristic.fromJson(map));
     }
-    addBrawn = json["add brawn"];
-    loaded = json["loaded"];
-    limitedAmmo = json["limited ammo"];
-    itemState = json["item state"];
-    ammo = json["ammo"];
-    firingArc = json["firing arc"];
-    encumbrance = json["encumbrance"];
   }
 
   Map<String,dynamic> toJson(){

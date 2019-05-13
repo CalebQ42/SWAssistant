@@ -1,6 +1,6 @@
 import 'package:swassistant/profiles/utils/JsonSavable.dart';
 
-class WeaponCharacteristic extends JsonSavable{
+class WeaponCharacteristic implements JsonSavable{
 
   String name;
   int value;
@@ -8,11 +8,10 @@ class WeaponCharacteristic extends JsonSavable{
 
   WeaponCharacteristic({this.name = "", this.value = 0, this.advantage = 0});
 
-  WeaponCharacteristic.fromJson(Map<String,dynamic> json){
-    name = json["name"];
-    value = json["value"];
-    advantage = json["advantage"];
-  }
+  WeaponCharacteristic.fromJson(Map<String,dynamic> json) :
+      name = json["name"],
+      value = json["value"],
+      advantage = json["advantage"];
 
   Map<String,dynamic> toJson() => {
     "name" : name,
