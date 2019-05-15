@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
 import 'package:swassistant/items/Note.dart';
@@ -29,8 +30,20 @@ abstract class Editable extends JsonSavable{
   String _loc;
   bool _external;
 
+  Editable({@required this.id, this.name = "", this.nts, this.weapons, this.category = "", this.criticalInjuries, this.desc = ""}){
+    if(nts == null){
+      nts = new List();
+    }
+    if(weapons == null){
+      weapons = new List();
+    }
+    if(criticalInjuries == null){
+      criticalInjuries = new List();
+    }
+  }
+
   Editable.fromJson(Map<String,dynamic> json){
-    //id = json["id"];
+    id = json["id"];
     name = json["name"];
     nts = new List<Note>();
     for (Map<String, dynamic> arrMap in json["Notes"]) {
@@ -48,8 +61,6 @@ abstract class Editable extends JsonSavable{
     desc = json["description"];
   }
 
-  @virtual
-  @mustCallSuper
   Map<String, dynamic> toJson(){
     if (!(this is Character || this is Vehicle || this is Minion)){
       throw("Must be overridden by child");
@@ -76,7 +87,24 @@ abstract class Editable extends JsonSavable{
     };
   }
 
-  void saving(){
-    print("Oh howdy yall");
+  int cardNumber();
+  List<Widget> cards();
+  String fileExtension();
+
+  void exportTo(String folder){}
+  String getFileLocation(){ return ""; }
+  void save(String filename){}
+  void cloudSave(){}
+  void load(String filename){}
+  void cloudLoad(){}
+  void startEditing(){}
+  void delete(){}
+  void stopEditing(){
+    _editing = false;
   }
+
+  void addShortcut(){}
+  bool hasShortcut(){ return false; }
+  void updateShortcut(){}
+  void deleteShortcut(){}
 }
