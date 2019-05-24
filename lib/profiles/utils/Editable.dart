@@ -23,6 +23,9 @@ abstract class Editable extends JsonSavable{
   List<CriticalInjury> criticalInjuries;
   String desc;
 
+  String get fileExtension;
+  int get cardNum;
+
   //Saving variables
 
   bool _editing = false;
@@ -61,6 +64,7 @@ abstract class Editable extends JsonSavable{
     desc = json["description"];
   }
 
+  @mustCallSuper
   Map<String, dynamic> toJson(){
     if (!(this is Character || this is Vehicle || this is Minion)){
       throw("Must be overridden by child");
@@ -87,9 +91,7 @@ abstract class Editable extends JsonSavable{
     };
   }
 
-  int cardNumber();
   List<Widget> cards();
-  String fileExtension();
 
   void exportTo(String folder){}
   String getFileLocation(){ return ""; }
