@@ -13,10 +13,9 @@ class EditingEditable extends StatelessWidget{
       appBar: AppBar(
         title: Text(profile.name)
       ),
-      body: Column(
+      body: ListView(
         children: profile.cards(),
       )
     );
   }
-
 }

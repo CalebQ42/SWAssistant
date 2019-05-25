@@ -14,11 +14,16 @@ class Character extends Editable with Creature{
   List<Widget> cards() {
     var cards = List<Widget>();
     for (int i = 0; i < cardNum; i++){
-      cards.add(Card(
-        child: Center(
-          child: Text("Card " + cardNum.toString())
+      cards.add(
+        Card(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: new Center(
+              child: Text("Card " + (i+1).toString()),
+            ),
+          )
         )
-      ));
+      );
     }
     return cards;
   }
