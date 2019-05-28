@@ -1,5 +1,46 @@
 import 'package:flutter/material.dart';
 
+class SWAppBar extends AppBar{
+
+  final List<PopupMenuItem> defPopup = [
+    PopupMenuItem(
+        value: "G+",
+        child: const Text("G+ Community")
+    ),
+    PopupMenuItem(
+        value: "Translate",
+        child: const Text("Help Translate!")
+    )
+  ];
+
+  SWAppBar({String title, List<Widget> additionalActions, List<Widget> additionalPopupActions}) :
+        super(title: Text(title), actions: _getActions(additionalActions, additionalPopupActions));
+
+  static List<Widget> _getActions(List<Widget> additionalActions, List<Widget> additionalPopupActions){
+    var actions = new List<Widget>();
+    actions.addAll(additionalActions);
+    actions.add(_getPopupMenu(additionalPopupActions));
+    return actions;
+  }
+
+  static PopupMenuButton _getPopupMenu(List<Widget> additionalPopupActions){
+    return PopupMenuButton(
+      itemBuilder: (context)=>additionalPopupActions,
+      onSelected:(t){
+        var txt = t;
+        switch(txt){
+          case "G+":
+            //_launchInBrowser("https://plus.google.com/communities/117741233533206107778");
+            break;
+          case "Translate":
+            //_launchInBrowser("https://crwd.in/customdiceroller");
+            break;
+        }
+      }
+    );
+  }
+}
+
 class SWDrawer extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -11,7 +52,7 @@ class SWDrawer extends StatelessWidget{
           DrawerHeader(
             child: Text("SW Assistant"),
             decoration: BoxDecoration(
-              color: Theme.of(context).appBarTheme.color
+              color: Colors.red
             )
           ),
           ListTile(
