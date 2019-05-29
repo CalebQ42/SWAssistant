@@ -22,7 +22,6 @@ class SWAppBar extends AppBar{
     actions.add(_getPopupMenu(additionalPopupActions));
     return actions;
   }
-
   static PopupMenuButton _getPopupMenu(List<Widget> additionalPopupActions){
     return PopupMenuButton(
       itemBuilder: (context)=>additionalPopupActions,
