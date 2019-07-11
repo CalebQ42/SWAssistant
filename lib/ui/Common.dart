@@ -14,7 +14,8 @@ class SWAppBar extends AppBar{
   ];
 
   SWAppBar({String title, List<Widget> additionalActions, List<Widget> additionalPopupActions}) :
-        super(title: Text(title), actions: _getActions(additionalActions, additionalPopupActions));
+        super(title: Text(title), actions: _getActions((additionalActions == null) ?
+            List() : additionalActions, (additionalPopupActions == null) ? List() : additionalPopupActions));
 
   static List<Widget> _getActions(List<Widget> additionalActions, List<Widget> additionalPopupActions){
     var actions = new List<Widget>();
