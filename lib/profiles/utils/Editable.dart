@@ -91,7 +91,23 @@ abstract class Editable extends JsonSavable{
     };
   }
 
-  List<Widget> cards();
+  List<Widget> cards(){
+    var cards = List<Widget>();
+    var contents = cardContents();
+    for (int i = 0; i < cardNum; i++){
+      cards.add(
+        Card(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: contents[i]
+          )
+        )
+      );
+    }
+    return cards;
+  }
+
+  List<Widget> cardContents();
 
   void exportTo(String folder){}
   String getFileLocation(){ return ""; }

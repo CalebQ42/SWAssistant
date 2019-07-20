@@ -11,18 +11,11 @@ class Character extends Editable with Creature{
 
   Character.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 
-  List<Widget> cards() {
+  List<Widget> cardContents() {
     var cards = List<Widget>();
     for (int i = 0; i < cardNum; i++){
-      cards.add(
-        Card(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: new Center(
-              child: Text("Card " + (i+1).toString()),
-            ),
-          )
-        )
+      new Center(
+        child: Text("Card " + (i+1).toString()),
       );
     }
     return cards;

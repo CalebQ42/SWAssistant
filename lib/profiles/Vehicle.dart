@@ -9,14 +9,12 @@ class Vehicle extends Editable{
 
   Vehicle.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 
-  List<Widget> cards() {
+  List<Widget> cardContents() {
     var cards = List<Widget>();
     for (int i = 0; i < cardNum; i++){
-      cards.add(Card(
-          child: Center(
-              child: Text("Card " + cardNum.toString())
-          )
-      ));
+      Center(
+        child: Text("Card " + cardNum.toString())
+      );
     }
     return cards;
   }
