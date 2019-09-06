@@ -5,12 +5,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +14,15 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
 import com.apps.darkstorm.swrpg.assistant.ui.upDownCard;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Random;
 
@@ -343,6 +344,8 @@ public class DiceRollFragment extends Fragment {
                         upDownCard.setColors(d.c,R.color.force_card,R.color.force_text);
                     }
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + position);
             }
         }
         public int getItemCount() {

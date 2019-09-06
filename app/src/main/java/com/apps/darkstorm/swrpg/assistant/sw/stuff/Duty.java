@@ -3,7 +3,6 @@ package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -14,6 +13,7 @@ import android.widget.EditText;
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Character;
 import com.apps.darkstorm.swrpg.assistant.sw.JsonSavable;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;

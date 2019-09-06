@@ -33,7 +33,7 @@ public class LoadLocal {
         for (File fil : chars) {
             if(fil.getName().endsWith(".char")){
                 for(File file:chars){
-                    if(Objects.equals(file.getName(), fil.getName() + ".bak")) {
+                    if(file.getName().equals( fil.getName() + ".bak")) {
                         fil.delete();
                         continue outer;
                     }
@@ -73,7 +73,7 @@ public class LoadLocal {
         for (File fil : chars) {
             if(fil.getName().endsWith(".minion")){
                 for(File file:chars){
-                    if(Objects.equals(file.getName(), fil.getName() + ".bak")) {
+                    if(file.getName().equals( fil.getName() + ".bak")) {
                         fil.delete();
                         continue outer;
                     }
@@ -119,7 +119,7 @@ public class LoadLocal {
         for (File fil : chars) {
             if(fil.getName().endsWith(".vhcl")){
                 for(File file:chars){
-                    if(Objects.equals(file.getName(), fil.getName() + ".bak")) {
+                    if(file.getName().equals(fil.getName() + ".bak")) {
                         fil.delete();
                         continue outer;
                     }

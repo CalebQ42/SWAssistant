@@ -5,11 +5,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -24,6 +19,11 @@ import android.widget.Switch;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.darkstorm.swrpg.assistant.DiceRollFragment;
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
@@ -53,6 +53,7 @@ import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapon;
 import com.apps.darkstorm.swrpg.assistant.sw.stuff.Weapons;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.DriveId;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -507,7 +508,6 @@ public class Character extends Editable{
         return 17;
     }
 
-    @Override
     public void setupCards(final Activity ac, final EditGeneral.EditableAdap ea, final CardView c, final int pos, final Handler parentHandle) {
         if (pos!= 0){
             final FrameLayout fl = (FrameLayout) c.findViewById(R.id.holder);

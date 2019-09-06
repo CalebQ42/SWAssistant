@@ -9,12 +9,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.JsonWriter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 
 import com.apps.darkstorm.swrpg.assistant.EditGeneral;
 import com.apps.darkstorm.swrpg.assistant.MainDrawer;
@@ -61,7 +62,7 @@ public abstract class Editable implements JsonSavable{
     public boolean external = false;
 
     public abstract int cardNumber();
-    public abstract void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos,Handler parentHandle);
+    public abstract void setupCards(Activity ac, EditGeneral.EditableAdap ea, CardView c, int pos, Handler parentHandle);
     public abstract void reLoadLegacy(GoogleApiClient gac, DriveId fil);
     public abstract void reLoadLegacy(String filename);
     public abstract Editable clone();

@@ -2,7 +2,8 @@ package com.apps.darkstorm.swrpg.assistant.drive;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.SWrpg;

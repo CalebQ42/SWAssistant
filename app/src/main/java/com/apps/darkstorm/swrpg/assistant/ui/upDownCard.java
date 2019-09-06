@@ -1,12 +1,13 @@
 package com.apps.darkstorm.swrpg.assistant.ui;
 
 import android.content.res.Resources;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 
@@ -17,7 +18,7 @@ public class upDownCard {
         public abstract String labelValue();
     }
 
-    public static void setUp(final CardView c,String title,final upDown ud){
+    public static void setUp(final CardView c, String title, final upDown ud){
         ((TextView)c.findViewById(R.id.up_down_label)).setText(title);
         final TextSwitcher ts = (TextSwitcher)c.findViewById(R.id.up_down_switcher);
         ts.setText(ud.labelValue());

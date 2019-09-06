@@ -18,23 +18,22 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.apps.darkstorm.swrpg.assistant.dice.DiceHolder;
@@ -49,6 +48,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -733,25 +734,27 @@ public class MainDrawer extends AppCompatActivity
     }
 
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
 
             case 5:
                 if (resultCode == RESULT_OK)
-                    ((SWrpg)getApplication()).gac.connect();
+                    ((SWrpg) getApplication()).gac.connect();
                 else
-                    ((SWrpg)getApplication()).driveFail = true;
+                    ((SWrpg) getApplication()).driveFail = true;
                 break;
             case 100:
-                if(data.getIntExtra("RESPONSE_CODE",0) == RESULT_OK){
+                if (data.getIntExtra("RESPONSE_CODE", 0) == RESULT_OK) {
                     String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
                     try {
                         JSONObject obj = new JSONObject(purchaseData);
                         String token = obj.getString("purchaseToken");
-                        ((SWrpg)getApplication()).iaps.consumePurchase(3,getPackageName(),token);
-                    } catch (JSONException|RemoteException ignored) {}
-                    Toast.makeText(this,R.string.thanks_toast,Toast.LENGTH_LONG).show();
+                        ((SWrpg) getApplication()).iaps.consumePurchase(3, getPackageName(), token);
+                    } catch (JSONException | RemoteException ignored) {
+                    }
+                    Toast.makeText(this, R.string.thanks_toast, Toast.LENGTH_LONG).show();
                     Fragment cur = getFragmentManager().findFragmentById(R.id.content_main);
-                    if(cur instanceof SettingsFragment) ((SettingsFragment)cur).showThanks();
+                    if (cur instanceof SettingsFragment) ((SettingsFragment) cur).showThanks();
                 }
         }
     }

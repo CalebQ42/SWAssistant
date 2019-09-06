@@ -1,12 +1,13 @@
 package com.apps.darkstorm.swrpg.assistant.sw.stuff;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.apps.darkstorm.swrpg.assistant.R;
 import com.apps.darkstorm.swrpg.assistant.sw.Editable;
