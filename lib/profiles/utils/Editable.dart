@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/items/Weapon.dart';
+import 'package:swassistant/ui/Card.dart';
 
 import '../Character.dart';
 import '../Minion.dart';
@@ -22,6 +23,8 @@ abstract class Editable extends JsonSavable{
   String category;
   List<CriticalInjury> criticalInjuries;
   String desc;
+
+  List<bool> cardHidden;
 
   String get fileExtension;
   int get cardNum;
@@ -43,6 +46,8 @@ abstract class Editable extends JsonSavable{
     if(criticalInjuries == null){
       criticalInjuries = new List();
     }
+    cardHidden = List.filled(cardNum, false);
+    print(cardHidden);
   }
 
   Editable.fromJson(Map<String,dynamic> json){
@@ -62,6 +67,7 @@ abstract class Editable extends JsonSavable{
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
     }
     desc = json["description"];
+    cardHidden = json["card hidden"];
   }
 
   @mustCallSuper
@@ -87,21 +93,19 @@ abstract class Editable extends JsonSavable{
       "Weapons" : weaponMap,
       "category" : category,
       "Critical Injuries" : criticalInjuryMap,
-      "description" : desc
+      "description" : desc,
+      "card hidden" : cardHidden
     };
   }
 
   List<Widget> cards(){
     var cards = List<Widget>();
     var contents = cardContents();
+    print(contents.length);
+    print(cardHidden.length);
     for (int i = 0; i < cardNum; i++){
       cards.add(
-        Card(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: contents[i]
-          )
-        )
+        InfoCard(hidden: cardHidden[i],contents: contents[i])
       );
     }
     return cards;
