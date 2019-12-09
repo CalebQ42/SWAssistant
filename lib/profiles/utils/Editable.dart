@@ -4,6 +4,7 @@ import 'package:swassistant/items/CriticalInjury.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/Card.dart';
+import 'package:swassistant/ui/EditableCards.dart';
 
 import '../Character.dart';
 import '../Minion.dart';
@@ -100,9 +101,8 @@ abstract class Editable extends JsonSavable{
 
   List<Widget> cards(){
     var cards = List<Widget>();
+    cards.add(EditableCards.NameCard(this));
     var contents = cardContents();
-    print(contents.length);
-    print(cardHidden.length);
     for (int i = 0; i < cardNum; i++){
       cards.add(
         InfoCard(hidden: cardHidden[i],contents: contents[i])

@@ -4,7 +4,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'utils/Creature.dart';
 
 class Character extends Editable with Creature{
-  int get cardNum => 17;
+  int get cardNum => 16;
   String get fileExtension => ".swcharacter";
 
   Character({@required int id, String name}) : super(id: id, name: name);

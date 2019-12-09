@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ui/EditingEditable.dart';
+import 'ui/Screens/EditingEditable.dart';
 import 'profiles/Character.dart';
 import 'profiles/Minion.dart';
 import 'profiles/Vehicle.dart';
