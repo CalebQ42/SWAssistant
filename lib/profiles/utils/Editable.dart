@@ -114,7 +114,13 @@ abstract class Editable extends JsonSavable{
   List<Widget> cardContents();
 
   void exportTo(String folder){}
-  String getFileLocation(){ return ""; }
+  String getFileLocation(){
+    if(_loc = null)
+      return null;
+    else
+      return _loc;
+  }
+  String getCloudFileLocation(){return null;}
   void save(String filename){}
   void cloudSave(){}
   void load(String filename){}

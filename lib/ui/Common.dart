@@ -4,10 +4,6 @@ class SWAppBar extends AppBar{
 
   final List<PopupMenuItem> defPopup = [
     PopupMenuItem(
-        value: "G+",
-        child: const Text("G+ Community")
-    ),
-    PopupMenuItem(
         value: "Translate",
         child: const Text("Help Translate!")
     )
@@ -29,9 +25,6 @@ class SWAppBar extends AppBar{
       onSelected:(t){
         var txt = t;
         switch(txt){
-          case "G+":
-            //_launchInBrowser("https://plus.google.com/communities/117741233533206107778");
-            break;
           case "Translate":
             //_launchInBrowser("https://crwd.in/customdiceroller");
             break;
