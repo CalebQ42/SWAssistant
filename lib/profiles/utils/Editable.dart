@@ -48,7 +48,6 @@ abstract class Editable extends JsonSavable{
       criticalInjuries = new List();
     }
     cardHidden = List.filled(cardNum, false);
-    print(cardHidden);
   }
 
   Editable.fromJson(Map<String,dynamic> json){
@@ -69,6 +68,10 @@ abstract class Editable extends JsonSavable{
     }
     desc = json["description"];
     cardHidden = json["card hidden"];
+  }
+
+  Editable.load(String filename){
+    //TODO: load!
   }
 
   @mustCallSuper

@@ -17,7 +17,11 @@ class Minion extends Editable with Creature{
 
   Minion({@required int id, String name}) : super(id: id, name: name);
 
-  Minion.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  Minion.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+    //TODO: load the above values
+  }
+
+  Minion.load(String filename) : super.load(filename);
 
   List<Widget> cardContents() {
     return List.filled(cardNum,Text("Card"));

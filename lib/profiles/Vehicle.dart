@@ -23,7 +23,11 @@ class Vehicle extends Editable{
 
   Vehicle({@required int id, String name}) : super(id: id, name: name);
 
-  Vehicle.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  Vehicle.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+    //TODO: load the above values
+  }
+
+  Vehicle.load(String filename) : super.load(filename);
 
   List<Widget> cardContents() {
     return List.filled(cardNum,Text("Card"));

@@ -30,7 +30,11 @@ class Character extends Editable with Creature{
 
   Character({@required int id, String name}) : super(id: id, name: name);
 
-  Character.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  Character.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+    //TODO: load the above values
+  }
+
+  Character.load(String filename) : super.load(filename);
 
   List<Widget> cardContents() {
     return List.filled(cardNum,Text("Card"));

@@ -31,14 +31,14 @@ class SW{
       var dir = await getExternalStorageDirectory();
       saveDir = dir.path+"SWChars";
     }
-    if(kDebugMode){
-
-    }
+    if(kDebugMode)
+      testing();
+    loadAll();
   }
   Future<void> loadPrefs() async{
     prefs = await SharedPreferences.getInstance();
   }
-  void loadAll(){
+  void loadAll() async{
     minions = List();
     minCats = List();
     characters = List();
@@ -46,6 +46,15 @@ class SW{
     vehicles = List();
     vehCats = List();
 
+    await Directory(saveDir).list().forEach((element) {
+      if(element.path.endsWith(".swcharacter")){
+        
+      }else if(element.path.endsWith(".swminion")){
+
+      }else if(element.path.endsWith(".swvehicle")){
+
+      }
+    });
   }
   void loadMinions(){
     minions = List();
