@@ -11,14 +11,20 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ThemeData theme;
+    //if(darkMode){
+      theme = ThemeData.dark().copyWith(
+          primaryColor: Colors.red,
+          accentColor: Colors.blueAccent,
+      );
+    //}else{
+    //theme = ThemeData.light().copyWith(
+    //    primaryColor: Colors.red,
+    //    accentColor: Colors.blueAccent,
+    //);
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        primaryColor: Colors.red,
-        accentColor: Colors.blueAccent,
-        brightness: Brightness.dark,
-      ),
+      theme: theme,
       home: Home(),
       routes: {
         "/characters" : EditingEditable(Character(name:"Character 1", id: 0)).build,
