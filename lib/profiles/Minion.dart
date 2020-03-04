@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 
 import 'utils/Creature.dart';
 
-class Minion extends Editable with Creature{
+class Minion extends Creature{
 
   int woundThreshInd;
   int minionNum;

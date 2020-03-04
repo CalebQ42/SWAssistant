@@ -15,6 +15,10 @@ abstract class Creature extends Editable{
   int defMelee,defRanged;
   int soak;
 
+  Creature({int id, String name}): super(id: id,name: name);
+  
+  Creature.load(String filename): super.load(filename);
+
   Creature.fromJson(Map<String,dynamic> json): super.fromJson(json){
     this.charVals = new List();
     for(dynamic dy in json["characteristics"])

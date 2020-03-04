@@ -7,4 +7,4 @@ String colorDice = "colorDice";
 String thankYou = "donateThankYou";
 String firstLaunch = "firstLaunchCheck";
 String analytics = "analytics";
-String startCound = "startCount";
+String startCount = "startCount";

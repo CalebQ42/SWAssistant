@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 
 import 'ui/Screens/EditingEditable.dart';
 import 'profiles/Character.dart';
@@ -6,9 +7,14 @@ import 'profiles/Minion.dart';
 import 'profiles/Vehicle.dart';
 import 'ui/Common.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  var app = SW();
+  app.initialize().whenComplete(() => runApp(SWApp(app)));
+}
 
-class MyApp extends StatelessWidget {
+class SWApp extends StatelessWidget {
+  SW app;
+  SWApp(this.app);
   @override
   Widget build(BuildContext context) {
     ThemeData theme;
