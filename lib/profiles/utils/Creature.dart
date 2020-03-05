@@ -3,9 +3,7 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
 
-import 'Editable.dart';
-
-abstract class Creature extends Editable{
+mixin Creature{
   List<int> charVals;
   List<Skill> skills;
   List<Talent> talents;
@@ -15,11 +13,7 @@ abstract class Creature extends Editable{
   int defMelee,defRanged;
   int soak;
 
-  Creature({int id, String name}): super(id: id,name: name);
-  
-  Creature.load(String filename): super.load(filename);
-
-  Creature.fromJson(Map<String,dynamic> json): super.fromJson(json){
+  void creatureLoadJson(Map<String,dynamic> json){
     this.charVals = new List();
     for(dynamic dy in json["characteristics"])
       this.charVals.add(dy);
@@ -37,6 +31,10 @@ abstract class Creature extends Editable{
     defMelee = json["melee defense"];
     defRanged = json["ranged defense"];
     soak = json["soak"];
+  }
+
+  void creatureSaveJson(Map<String,dynamic> json){
+    //TODO: save Json values
   }
 
   Card woundStrainCard(){

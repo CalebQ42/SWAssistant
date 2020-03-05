@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/Duty.dart';
 import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 
 import 'utils/Creature.dart';
 
-class Character extends Creature{
+class Character extends Editable with Creature{
 
   String species;
   String career;
@@ -30,6 +31,7 @@ class Character extends Creature{
   Character({@required int id, String name}) : super(id: id, name: name);
 
   Character.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+    this.creatureLoadJson(json);
     this.species = json["species"];
     this.career = json["career"];
     this.specializations = List();
