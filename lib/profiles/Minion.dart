@@ -19,7 +19,13 @@ class Minion extends Editable with Creature{
 
   Minion.fromJson(Map<String, dynamic> json) : super.fromJson(json){
     this.creatureLoadJson(json);
-    //TODO: load the above values
+    this.woundThreshInd = json["wound threshold individual"];
+    this.minionNum = json["minion number"];
+    this.origInv = new List();
+    for(dynamic d in json["original inventory"])
+      this.origInv.add(d);
+    for(dynamic d in json["orginal weapons"])
+      this.origWeapons.add(d);
   }
 
   Minion.load(String filename) : super.load(filename);
