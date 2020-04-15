@@ -54,18 +54,15 @@ abstract class Editable extends JsonSavable{
     id = json["id"];
     name = json["name"];
     nts = new List<Note>();
-    for (Map<String, dynamic> arrMap in json["Notes"]) {
+    for (Map<String, dynamic> arrMap in json["Notes"]) 
       nts.add(Note.fromJson(arrMap));
-    }
     weapons = new List<Weapon>();
-    for(Map<String,dynamic> arrMap in json["Weapons"]){
+    for(Map<String,dynamic> arrMap in json["Weapons"])
       weapons.add(Weapon.fromJson(arrMap));
-    }
     category = json["category"];
     criticalInjuries = new List<CriticalInjury>();
-    for(Map<String,dynamic> arrMap in json["Critical Injuries"]){
+    for(Map<String,dynamic> arrMap in json["Critical Injuries"])
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
-    }
     desc = json["description"];
     cardHidden = json["card hidden"];
   }
@@ -76,30 +73,17 @@ abstract class Editable extends JsonSavable{
 
   @mustCallSuper
   Map<String, dynamic> toJson(){
-    if (!(this is Character || this is Vehicle || this is Minion)){
+    if (!(this is Character || this is Vehicle || this is Minion))
       throw("Must be overridden by child");
-    }
-    var noteMap = new List<Map<String,dynamic>>();
-    for (Note nt in nts){
-      noteMap.add(nt.toJson());
-    }
-    var weaponMap = new List<Map<String,dynamic>>();
-    for (Weapon wp in weapons){
-      weaponMap.add(wp.toJson());
-    }
-    var criticalInjuryMap = new List<Map<String,dynamic>>();
-    for (CriticalInjury wp in criticalInjuries){
-      criticalInjuryMap.add(wp.toJson());
-    }
-    return {
-      "name" : name,
-      "Notes" : noteMap,
-      "Weapons" : weaponMap,
-      "category" : category,
-      "Critical Injuries" : criticalInjuryMap,
-      "description" : desc,
-      "card hidden" : cardHidden
-    };
+    var json = new Map<String,dynamic>();
+    json["Notes"] = List.generate(nts.length, (index) => nts[index].toJson());
+    json["Weapons"] = List.generate(weapons.length, (index) => weapons[index].toJson());
+    json["Critical Injuries"] = List.generate(criticalInjuries.length, (index) => criticalInjuries[index].toJson());
+    json["name"] = name;
+    json["category"] = category;
+    json["description"] = desc;
+    json["card hidden"] = cardHidden;
+    return json;
   }
 
   List<Widget> cards(){

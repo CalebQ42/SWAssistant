@@ -33,8 +33,18 @@ mixin Creature{
     soak = json["soak"];
   }
 
-  void creatureSaveJson(Map<String,dynamic> json){
-    //TODO: save Json values
+  Map<String,dynamic> creatureSaveJson(){
+    var json = new Map<String,dynamic>();
+    json["characteristics"] = charVals;
+    json["Skills"] = List.generate(skills.length, (index) => skills[index].toJson());
+    json["Talents"] = List.generate(talents.length, (index) => talents[index].toJson());
+    json["Inventory"] = List.generate(inventory.length, (index) => inventory[index].toJson());
+    json["wound threshold"] = woundThresh;
+    json["wound current"] = woundCur;
+    json["melee defense"] = defMelee;
+    json["ranged defense"] = defRanged;
+    json["soak"] = soak;
+    return json;
   }
 
   Card woundStrainCard(){
