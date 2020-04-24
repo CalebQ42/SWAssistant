@@ -34,19 +34,13 @@ class Character extends Editable with Creature{
     this.creatureLoadJson(json);
     this.species = json["species"];
     this.career = json["career"];
-    this.specializations = List();
-    for(dynamic dy in json["Specializations"])
-      this.specializations.add(dy);
+    this.specializations = json["Specializations"];
     this.forcePowers = List();
     for(dynamic dy in json["Force Powers"])
       this.forcePowers.add(ForcePower.fromJson(dy));
     this.motivation = json["motivation"];
-    this.emotionalStr = List();
-    for(dynamic dy in json["emotional strength"])
-      this.emotionalStr.add(dy);
-    this.emotionalWeak = List();
-    for(dynamic dy in json["emotional weakness"])
-      this.emotionalWeak.add(dy);
+    this.emotionalStr = json["emotional strength"];
+    this.emotionalWeak = json["emotional weakness"];
     this.duties = List();
     for(dynamic dy in json["Dutys"])
       this.duties.add(Duty.fromJson(dy));
@@ -67,6 +61,38 @@ class Character extends Editable with Creature{
   }
 
   Character.load(String filename) : super.load(filename);
+
+  Map<String,dynamic> toJson(){
+    var map = super.toJson();
+    map.addAll(creatureSaveJson());
+    map["species"] = species;
+    map["career"] = career;
+    map["Specializations"] = specializations;
+    var temp = new List<dynamic>();
+    forcePowers.forEach((element) {temp.add(element.toJson());});
+    map["Force Powers"] = temp;
+    map["motivation"] = motivation;
+    map["emotional strength"] = emotionalStr;
+    map["emotional weakness"] = emotionalWeak;
+    temp = new List<dynamic>();
+    duties.forEach((element) {temp.add(element.toJson());});
+    map["Dutys"] = temp;
+    temp = new List<dynamic>();
+    obligations.forEach((element) {temp.add(element.toJson);});
+    map["Obligations"] = temp;
+    map["strain threshold"] = strainThresh;
+    map["strain current"] = strainCur;
+    map["xp total"] = xpTot;
+    map["xp current"] = xpCur;
+    map["force rating"] = force;
+    map["credits"] = credits;
+    map["morality"] = morality;
+    map["conflict"] = conflict;
+    map["dark side"] = darkSide;
+    map["age"] = age;
+    map["encumbrance capacity"] = encumCap;
+    return map;
+  }
 
   List<Widget> cardContents() {
     return List.filled(cardNum,Text("Card"));
