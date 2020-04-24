@@ -13,7 +13,7 @@ void main(){
 }
 
 class SWApp extends StatelessWidget {
-  SW app;
+  final SW app;
   SWApp(this.app);
   @override
   Widget build(BuildContext context) {

@@ -43,7 +43,7 @@ class InfoCardState extends State{
                 });
               },
             ),
-            holder.contents
+            hidden ? holder.contents : new Column()
           ],
         )
       )
