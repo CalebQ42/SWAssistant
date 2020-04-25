@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
@@ -38,19 +41,28 @@ abstract class Editable extends JsonSavable{
   bool _external;
 
   Editable({@required this.id, this.name = "", this.nts, this.weapons, this.category = "", this.criticalInjuries, this.desc = ""}){
-    if(nts == null){
-      nts = new List();
-    }
-    if(weapons == null){
-      weapons = new List();
-    }
-    if(criticalInjuries == null){
-      criticalInjuries = new List();
-    }
+    nts ??= new List();
+    weapons ??= new List();
+    criticalInjuries ??= new List();
     cardHidden = List.filled(cardNum, false);
   }
 
   Editable.fromJson(Map<String,dynamic> json){
+    if (!(this is Character || this is Vehicle || this is Minion))
+      throw("Must be overridden by child");
+    this.loadJson(json);
+  }
+
+  Editable.load(FileSystemEntity file){
+    String json = File.fromUri(file.uri).readAsStringSync();
+    var jsonMap = JsonDecoder().convert(json);
+    loadJson(jsonMap);
+  }
+
+  @mustCallSuper
+  void loadJson(Map<String,dynamic> json){
+    if (!(this is Character || this is Vehicle || this is Minion))
+      throw("Must be overridden by child");
     id = json["id"];
     name = json["name"];
     nts = new List<Note>();
@@ -65,10 +77,6 @@ abstract class Editable extends JsonSavable{
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
     desc = json["description"];
     cardHidden = json["card hidden"];
-  }
-
-  Editable.load(String filename){
-    //TODO: load!
   }
 
   @mustCallSuper

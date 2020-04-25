@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
@@ -17,7 +19,10 @@ class Minion extends Editable with Creature{
 
   Minion({@required int id, String name}) : super(id: id, name: name);
 
-  Minion.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+  Minion.load(FileSystemEntity file) : super.load(file);
+
+  void loadJson(Map<String,dynamic> json){
+    super.loadJson(json);
     this.creatureLoadJson(json);
     this.woundThreshInd = json["wound threshold per minion"];
     this.minionNum = json["minion number"];
@@ -29,8 +34,6 @@ class Minion extends Editable with Creature{
     for(dynamic d in saved["Weapons"])
       this.savedWeapons.add(d);
   }
-
-  Minion.load(String filename) : super.load(filename);
 
   Map<String,dynamic> toJson(){
     var map = super.toJson();

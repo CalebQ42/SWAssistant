@@ -19,14 +19,15 @@ class InfoCardState extends State{
 
   InfoCardHolder holder;
 
-  bool hidden;
-
-  InfoCardState(this.holder){
-    hidden = holder.hidden;
-  }
+  InfoCardState(this.holder);
 
   @override
   Widget build(BuildContext context) {
+    var content;
+    if(holder.hidden)
+      content = Column();
+    else
+      content = holder.contents;
     return Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -34,16 +35,24 @@ class InfoCardState extends State{
           children: <Widget>[
             SwitchListTile(
               title: Text("Wolololo"),
-              value: !hidden,
+              value: !holder.hidden,
               onChanged: (bool b){
                 setState((){
                   holder.hidden = !b;
-                  hidden = !b;
-                  print("Yo");
                 });
               },
             ),
-            hidden ? holder.contents : new Column()
+            new AnimatedSwitcher(
+              duration: Duration(milliseconds:150),
+              transitionBuilder: (Widget wid,Animation<double> anim){
+                return SizeTransition(
+                  axis:Axis.vertical,
+                  sizeFactor: anim,
+                  child: wid,
+                );
+              },
+              child: content
+            )
           ],
         )
       )

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/Duty.dart';
 import 'package:swassistant/items/ForcePower.dart';
@@ -30,7 +32,10 @@ class Character extends Editable with Creature{
 
   Character({@required int id, String name}) : super(id: id, name: name);
 
-  Character.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+  Character.load(FileSystemEntity file) : super.load(file);
+
+  void loadJson(Map<String,dynamic> json){
+    super.loadJson(json);
     this.creatureLoadJson(json);
     this.species = json["species"];
     this.career = json["career"];
@@ -59,8 +64,6 @@ class Character extends Editable with Creature{
     this.age = json["age"];
     this.encumCap = json["encumbrance capacity"];
   }
-
-  Character.load(String filename) : super.load(filename);
 
   Map<String,dynamic> toJson(){
     var map = super.toJson();

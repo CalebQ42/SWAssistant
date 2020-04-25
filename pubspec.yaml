@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core: ^0.4.4+2
+  firebase_core: ^0.4.4+3
   shared_preferences: ^0.5.7
   path_provider: ^1.6.7
 

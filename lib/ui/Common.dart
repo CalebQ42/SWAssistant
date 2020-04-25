@@ -11,15 +11,15 @@ class SWAppBar extends AppBar{
 
   SWAppBar({String title, List<Widget> additionalActions, List<Widget> additionalPopupActions}) :
         super(title: Text(title), actions: _getActions((additionalActions == null) ?
-            List() : additionalActions, (additionalPopupActions == null) ? List() : additionalPopupActions));
+            List() : additionalActions, (additionalPopupActions == null) ? null : additionalPopupActions));
 
-  static List<Widget> _getActions(List<Widget> additionalActions, List<Widget> additionalPopupActions){
+  static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions){
     var actions = new List<Widget>();
     actions.addAll(additionalActions);
     actions.add(_getPopupMenu(additionalPopupActions));
     return actions;
   }
-  static PopupMenuButton _getPopupMenu(List<Widget> additionalPopupActions){
+  static PopupMenuButton _getPopupMenu(List<PopupMenuItem> additionalPopupActions){
     return PopupMenuButton(
       itemBuilder: (context)=>additionalPopupActions,
       onSelected:(t){

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
@@ -24,6 +26,12 @@ class Vehicle extends Editable{
   Vehicle({@required int id, String name}) : super(id: id, name: name);
 
   Vehicle.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+  }
+
+  Vehicle.load(FileSystemEntity file) : super.load(file);
+
+  void loadJson(Map<String,dynamic> json){
+    super.loadJson(json);
     this.silhouette = json["silhouette"];
     this.speed = json["speed"];
     this.handling = json["handling"];
@@ -39,8 +47,6 @@ class Vehicle extends Editable{
     this.hp = json["hard points"];
     this.model = json["model"];
   }
-
-  Vehicle.load(String filename) : super.load(filename);
 
   Map<String,dynamic> toJson(){
     var map = super.toJson();
