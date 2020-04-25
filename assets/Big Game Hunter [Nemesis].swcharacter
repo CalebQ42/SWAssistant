@@ -1,0 +1,194 @@
+{
+  "ID": 2,
+  "name": "Big Game Hunter [Nemesis]",
+  "characteristics": [
+    3,
+    3,
+    2,
+    3,
+    2,
+    2
+  ],
+  "Skills": [
+    {
+      "name": "Cool",
+      "value": 3,
+      "base": 5,
+      "career": false
+    },
+    {
+      "name": "Knowledge(Xenology)",
+      "value": 2,
+      "base": 2,
+      "career": false
+    },
+    {
+      "name": "Melee",
+      "value": 3,
+      "base": 0,
+      "career": false
+    },
+    {
+      "name": "Perception",
+      "value": 3,
+      "base": 3,
+      "career": false
+    },
+    {
+      "name": "Piloting(Planetary)",
+      "value": 2,
+      "base": 1,
+      "career": false
+    },
+    {
+      "name": "Ranged(Heavy)",
+      "value": 4,
+      "base": 1,
+      "career": false
+    },
+    {
+      "name": "Stealth",
+      "value": 3,
+      "base": 1,
+      "career": false
+    },
+    {
+      "name": "Survival",
+      "value": 4,
+      "base": 3,
+      "career": false
+    }
+  ],
+  "species": "Trandotian",
+  "career": "Big Game",
+  "Specializations": [
+    "Killing"
+  ],
+  "Talents": [
+    {
+      "name": "Adversary",
+      "description": "Upgrade difficulty of all combat checks against this target twice",
+      "value": 2
+    },
+    {
+      "name": "Hunter's Quarry",
+      "description": "take Hunter's Quary action: make a Hard Survival check to upgrade the ability of all attacks against one target at long range until the end of the big game hunter's next turn",
+      "value": 1
+    },
+    {
+      "name": "Natural Hunter",
+      "description": "Once per session, may reroll any one Perception or Vigilance check",
+      "value": 1
+    },
+    {
+      "name": "Animal Combatant",
+      "description": "Upgrade ability of checks when fighting wild creatures once",
+      "value": 1
+    },
+    {
+      "name": "Wilderness Valor",
+      "description": "Add two boost dice to resist fear against wild creatures",
+      "value": 1
+    }
+  ],
+  "Inventory": [
+    {
+      "name": "Utility belt",
+      "description": "",
+      "count": 1,
+      "encumbrance": 0
+    },
+    {
+      "name": "Extra reloads",
+      "description": "reloads for his rifle",
+      "count": 1,
+      "encumbrance": 0
+    },
+    {
+      "name": "Survival Kit",
+      "description": "A kit to help survival in harsh environments",
+      "count": 1,
+      "encumbrance": 0
+    }
+  ],
+  "Weapons": [
+    {
+      "name": "Scoped longe-range blaster rifle",
+      "damage": 9,
+      "critical rating": 3,
+      "hard points": 0,
+      "range": 4,
+      "skill": 5,
+      "base": 1,
+      "Weapon Characteristics": [],
+      "add brawn": false,
+      "loaded": true,
+      "limited ammo": false,
+      "item state": 0,
+      "ammo": 0,
+      "firing arc": "",
+      "encumbrance": 0
+    },
+    {
+      "name": "Oversized combat knife",
+      "damage": 5,
+      "critical rating": 3,
+      "hard points": 0,
+      "range": 0,
+      "skill": 3,
+      "base": 0,
+      "Weapon Characteristics": [],
+      "add brawn": false,
+      "loaded": true,
+      "limited ammo": false,
+      "item state": 0,
+      "ammo": 0,
+      "firing arc": "",
+      "encumbrance": 0
+    }
+  ],
+  "Force Powers": [],
+  "motivation": "",
+  "Critical Injuries": [],
+  "emotional strength": "",
+  "emotional weakness": "",
+  "Dutys": [],
+  "Obligations": [],
+  "wound threshold": 18,
+  "wound current": 18,
+  "strain threshold": 14,
+  "strain current": 14,
+  "xp total": 0,
+  "xp current": 0,
+  "melee defense": 1,
+  "ranged defense": 1,
+  "soak": 5,
+  "force rating": 0,
+  "credits": 0,
+  "morality": 50,
+  "conflict": 0,
+  "description": "From Force and Destiny Core rulebook",
+  "show cards": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+  ],
+  "dark side": false,
+  "age": 0,
+  "Notes": [],
+  "encumbrance capacity": 0,
+  "category": ""
+}

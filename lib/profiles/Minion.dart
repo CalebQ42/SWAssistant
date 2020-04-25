@@ -29,10 +29,10 @@ class Minion extends Editable with Creature{
     Map<String,dynamic> saved = json["Saved"];
     this.savedInv = new List();
     for(dynamic d in saved["Inventory"])
-      this.savedInv.add(d);
+      this.savedInv.add(Item.fromJson(d));
     this.savedWeapons = new List();
     for(dynamic d in saved["Weapons"])
-      this.savedWeapons.add(d);
+      this.savedWeapons.add(Weapon.fromJson(d));
   }
 
   Map<String,dynamic> toJson(){

@@ -33,9 +33,9 @@ class SWApp extends StatelessWidget {
       theme: theme,
       home: Home(),
       routes: {
-        "/characters" : EditingEditable(Character(name:"Character 1", id: 0)).build,
-        "/vehicles" : EditingEditable(Vehicle(name:"Vehicle 1", id: 0)).build,
-        "/minion" : EditingEditable(Minion(name:"Minion 1", id: 0)).build,
+        "/characters" : EditingEditable(app.characters[0]).build,
+        "/vehicles" : EditingEditable(app.vehicles[0]).build,
+        "/minion" : EditingEditable(app.minions[0]).build,
       },
     );
   }

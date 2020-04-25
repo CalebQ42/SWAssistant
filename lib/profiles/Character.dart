@@ -15,7 +15,7 @@ class Character extends Editable with Creature{
   List<String> specializations;
   List<ForcePower> forcePowers;
   String motivation;
-  List<String> emotionalStr, emotionalWeak;
+  String emotionalStr, emotionalWeak;
   List<Duty> duties;
   List<Obligation> obligations;
   int strainThresh, strainCur;
@@ -39,13 +39,15 @@ class Character extends Editable with Creature{
     this.creatureLoadJson(json);
     this.species = json["species"];
     this.career = json["career"];
-    this.specializations = json["Specializations"];
+    specializations = new List();
+    for(dynamic s in json["Specializations"])
+      specializations.add(s);
     this.forcePowers = List();
     for(dynamic dy in json["Force Powers"])
       this.forcePowers.add(ForcePower.fromJson(dy));
     this.motivation = json["motivation"];
-    this.emotionalStr = json["emotional strength"];
-    this.emotionalWeak = json["emotional weakness"];
+    emotionalStr = json["emotional strength"];
+    emotionalWeak = json["emotional weakness"];
     this.duties = List();
     for(dynamic dy in json["Dutys"])
       this.duties.add(Duty.fromJson(dy));

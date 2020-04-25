@@ -7,7 +7,6 @@ import 'package:swassistant/items/CriticalInjury.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/Card.dart';
-import 'package:swassistant/ui/EditableCards.dart';
 
 import '../Character.dart';
 import '../Minion.dart';
@@ -28,7 +27,7 @@ abstract class Editable extends JsonSavable{
   List<CriticalInjury> criticalInjuries;
   String desc;
 
-  List<bool> cardHidden;
+  List<bool> showCard;
 
   String get fileExtension;
   int get cardNum;
@@ -44,7 +43,7 @@ abstract class Editable extends JsonSavable{
     nts ??= new List();
     weapons ??= new List();
     criticalInjuries ??= new List();
-    cardHidden = List.filled(cardNum, false);
+    showCard = List.filled(cardNum, false);
   }
 
   Editable.fromJson(Map<String,dynamic> json){
@@ -54,8 +53,7 @@ abstract class Editable extends JsonSavable{
   }
 
   Editable.load(FileSystemEntity file){
-    String json = File.fromUri(file.uri).readAsStringSync();
-    var jsonMap = JsonDecoder().convert(json);
+    var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
   }
 
@@ -76,7 +74,9 @@ abstract class Editable extends JsonSavable{
     for(Map<String,dynamic> arrMap in json["Critical Injuries"])
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
     desc = json["description"];
-    cardHidden = json["card hidden"];
+    showCard = new List();
+    for(dynamic b in json["show cards"])
+      showCard.add(b);
   }
 
   @mustCallSuper
@@ -90,17 +90,16 @@ abstract class Editable extends JsonSavable{
     json["name"] = name;
     json["category"] = category;
     json["description"] = desc;
-    json["card hidden"] = cardHidden;
+    json["card hidden"] = showCard;
     return json;
   }
 
   List<Widget> cards(){
     var cards = List<Widget>();
-    cards.add(EditableCards.NameCard(this));
     var contents = cardContents();
     for (int i = 0; i < cardNum; i++){
       cards.add(
-        InfoCard(hidden: cardHidden[i],contents: contents[i])
+        InfoCard(shown: showCard[i],contents: contents[i], title: "Woolooloo")
       );
     }
     return cards;

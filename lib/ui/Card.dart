@@ -4,9 +4,10 @@ class InfoCard extends StatefulWidget{
 
   final InfoCardHolder holder = new InfoCardHolder();
 
-  InfoCard({hidden = true, @required Widget contents}){
-    holder.hidden = hidden;
+  InfoCard({shown = true, @required Widget contents, String title = ""}){
+    holder.shown = shown;
     holder.contents = contents;
+    holder.title = title;
   }
 
   @override
@@ -24,31 +25,32 @@ class InfoCardState extends State{
   @override
   Widget build(BuildContext context) {
     var content;
-    if(holder.hidden)
-      content = Column();
-    else
+    if(holder.shown)
       content = holder.contents;
+    else
+      content = Container();
     return Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Column(
           children: <Widget>[
             SwitchListTile(
-              title: Text("Wolololo"),
-              value: !holder.hidden,
+              title: Text(holder.title),
+              value: holder.shown,
               onChanged: (bool b){
                 setState((){
-                  holder.hidden = !b;
+                  holder.shown = b;
                 });
               },
             ),
             new AnimatedSwitcher(
-              duration: Duration(milliseconds:150),
+              duration: Duration(milliseconds:250),
               transitionBuilder: (Widget wid,Animation<double> anim){
                 return SizeTransition(
                   axis:Axis.vertical,
                   sizeFactor: anim,
                   child: wid,
+                  axisAlignment: -1.0
                 );
               },
               child: content
@@ -61,6 +63,7 @@ class InfoCardState extends State{
 }
 
 class InfoCardHolder{
-  bool hidden;
+  bool shown;
   Widget contents;
+  String title;
 }
