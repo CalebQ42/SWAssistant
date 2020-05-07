@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dice_on_launch_text">Dice on Launch</string>
-    <string name="save_location_text">Save Location</string>
-    <string name="light_side_text">Light Side</string>
-    <string name="save_warning">WARNING: If changed incorrectly the app could crash, no worries though, just clear data 😃</string>
-    <string name="color_dice">Color Dice Cards</string>
-    <string name="ads_text">Enable Ads</string>
+    <string name="dice_on_launch_text">Dadi all\'avvio</string>
+    <string name="save_location_text">Posizione di salvataggio</string>
+    <string name="light_side_text">Lato Chiaro</string>
+    <string name="save_warning">ATTENZIONE: Se la modifica non è corretta, l\'app potrebbe crashare, tuttavia, non preoccuparti, basta cancellare i dati 😃</string>
+    <string name="color_dice">Colore carte Dado</string>
+    <string name="ads_text">Abilita Ads</string>
     <!--cloud strings-->
-    <string name="cloud_text">Save to Google Drive (Should work)</string>
-    <string name="uploading">Uploading&#8230;</string>
-    <string name="upload_question">Do you want to upload all local profiles?</string>
+    <string name="cloud_text">Salva su Google Drive (Dovrebbe funzionare)</string>
+    <string name="uploading">Caricamento&#8230;</string>
+    <string name="upload_question">Vuoi caricare tutti i profili locali?</string>
 </resources>
