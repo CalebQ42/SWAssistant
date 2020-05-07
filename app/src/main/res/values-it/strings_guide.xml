@@ -9,9 +9,9 @@
     <string name="dice_pool_setback">= Number of disadvantages</string>
     <!--Difficulty Card-->
     <string name="difficulty_text">Difficulty:</string>
-    <string name="easy_text">Easy</string>
-    <string name="average_text">Average</string>
-    <string name="hard_text">Hard</string>
+    <string name="easy_text">Facile</string>
+    <string name="average_text">Moderato</string>
+    <string name="hard_text">Difficile</string>
     <string name="daunting_text">Daunting</string>
     <string name="formidable_text">Formidable</string>
     <!--Dice Descriptions-->
