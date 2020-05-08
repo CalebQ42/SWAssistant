@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 
 class SWAppBar extends AppBar{
 
@@ -9,8 +10,8 @@ class SWAppBar extends AppBar{
     )
   ];
 
-  SWAppBar({String title, List<Widget> additionalActions, List<Widget> additionalPopupActions}) :
-        super(title: Text(title), actions: _getActions((additionalActions == null) ?
+  SWAppBar({Widget title, List<Widget> additionalActions, List<Widget> additionalPopupActions}) :
+        super(title: title, actions: _getActions((additionalActions == null) ?
             List() : additionalActions, (additionalPopupActions == null) ? null : additionalPopupActions));
 
   static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions){

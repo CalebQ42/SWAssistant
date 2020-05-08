@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 
 class InfoCard extends StatefulWidget{
 
@@ -66,4 +67,23 @@ class InfoCardHolder{
   bool shown;
   Widget contents;
   String title;
+}
+
+class NameCardContent extends StatefulWidget{
+  final Editable editable;
+
+  const NameCardContent(this.editable);
+  @override
+  State<StatefulWidget> createState() {
+    return NameCardContentState(editable);
+  }
+}
+
+class NameCardContentState extends State{
+  Editable editable;
+
+  NameCardContentState(this.editable);
+  @override
+  Widget build(BuildContext context) {
+  }
 }

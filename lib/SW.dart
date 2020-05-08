@@ -73,14 +73,45 @@ class SW{
   void loadMinions(){
     minions = List();
     minCats = List();
+
+    Directory(saveDir).listSync().forEach((element) {
+      if(element.path.endsWith(".swminion")){
+        var temp = Minion.load(element);
+        minions.add(temp);
+        if(temp.category != "" && !minCats.contains(temp.category))
+          minCats.add(temp.category);
+      }
+    });
   }
   void loadCharacters(){
     characters = List();
     charCats = List();
+
+    Directory(saveDir).listSync().forEach((element) {
+      if(element.path.endsWith(".swcharacter")){
+        var temp = Character.load(element);
+        characters.add(temp);
+        if(temp.category != "" && !charCats.contains(temp.category))
+          charCats.add(temp.category);
+      }
+    });
   }
   void loadVehicles(){
     vehicles = List();
     vehCats = List();
+
+    Directory(saveDir).listSync().forEach((element) {
+      if(element.path.endsWith(".swvehicle")){
+        var temp = Vehicle.load(element);
+        vehicles.add(temp);
+        if(temp.category != "" && !vehCats.contains(temp.category))
+          vehCats.add(temp.category);
+      }
+    });
+  }
+
+  void syncCloud(){
+    //TODO: cload loading AND saving
   }
 
   void testing() async{

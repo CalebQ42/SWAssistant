@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/items/Weapon.dart';
@@ -44,12 +45,6 @@ abstract class Editable extends JsonSavable{
     weapons ??= new List();
     criticalInjuries ??= new List();
     showCard = List.filled(cardNum, false);
-  }
-
-  Editable.fromJson(Map<String,dynamic> json){
-    if (!(this is Character || this is Vehicle || this is Minion))
-      throw("Must be overridden by child");
-    this.loadJson(json);
   }
 
   Editable.load(FileSystemEntity file){
@@ -108,9 +103,9 @@ abstract class Editable extends JsonSavable{
   List<Widget> cardContents();
 
   void exportTo(String folder){}
-  String getFileLocation(){
-    if(_loc = null)
-      return null;
+  String getFileLocation(SW sw){
+    if(_loc == null || _loc == "")
+      return sw.saveDir + id.toString() + fileExtension;
     else
       return _loc;
   }

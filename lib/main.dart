@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/Preferences.dart';
 import 'package:swassistant/SW.dart';
 
 import 'ui/Screens/EditingEditable.dart';
-import 'profiles/Character.dart';
-import 'profiles/Minion.dart';
-import 'profiles/Vehicle.dart';
 import 'ui/Common.dart';
 
 void main(){
@@ -18,16 +16,17 @@ class SWApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme;
-    //if(darkMode){
+    if(app.prefs.getBool(light)!= null && app.prefs.getBool(light)){
+      theme = ThemeData.light().copyWith(
+        primaryColor: Colors.blue,
+        accentColor: Colors.redAccent,
+      );
+    }else{
       theme = ThemeData.dark().copyWith(
           primaryColor: Colors.red,
           accentColor: Colors.blueAccent,
       );
-    //}else{
-    //theme = ThemeData.light().copyWith(
-    //    primaryColor: Colors.red,
-    //    accentColor: Colors.blueAccent,
-    //);
+    }
     return MaterialApp(
       title: 'Flutter Demo',
       theme: theme,

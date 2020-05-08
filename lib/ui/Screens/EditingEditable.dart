@@ -14,7 +14,7 @@ class EditingEditable extends StatelessWidget{
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SWAppBar(title: profile.name),
+      appBar: SWAppBar(title: Text(profile.name)),
       body: ListView(
         children: profile.cards(),
       ),
