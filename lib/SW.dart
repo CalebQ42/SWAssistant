@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'profiles/Minion.dart';
 import 'profiles/Character.dart';
 import 'profiles/Vehicle.dart';
-import 'Preferences.dart';
+import 'Preferences.dart' as preferences;
 
 class SW{
   List<Minion> minions;
@@ -28,8 +28,8 @@ class SW{
   Future<void> initialize() async{
     WidgetsFlutterBinding.ensureInitialized();
     prefs = await SharedPreferences.getInstance();
-    if(prefs.containsKey(saveLocation)){
-      saveDir = prefs.getString(saveLocation);
+    if(prefs.containsKey(preferences.saveLocation)){
+      saveDir = prefs.getString(preferences.saveLocation);
     }else{
       var dir = await getExternalStorageDirectory();
       saveDir = dir.path+"/SWChars";
