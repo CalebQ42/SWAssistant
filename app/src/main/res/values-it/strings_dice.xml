@@ -9,8 +9,8 @@
     <string name="force_dice">Dado Forza:</string>
     <string name="roll_text">Roll</string>
     <string name="instant_dice_text">Dado Immediato:</string>
-    <string name="dhun_text">d100</string>
-    <string name="dten_text">d10</string>
+    <string name="dhun_text">d100:</string>
+    <string name="dten_text">d10:</string>
     <string name="no_res_text">Nessun risultato</string>
     <string name="success_text">Successo</string>
     <string name="fail_text">Fallimento</string>
