@@ -117,7 +117,7 @@ class SW{
   void testing() async{
     var testFiles = ["Big Game Hunter [Nemesis].swcharacter","Incom T-47 Airspeeder.swvehicle","Pirate Crew.swminion"];
     for(String st in testFiles){
-      String json = await rootBundle.loadString("assets/"+st);
+      String json = await rootBundle.loadString("assets/testing/"+st);
       File testFile = File(saveDir+"/"+st);
       if(testFile.existsSync())
         testFile.deleteSync();
