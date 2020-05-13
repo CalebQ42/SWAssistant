@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/Preferences.dart';
+import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 
 import 'ui/Screens/EditingEditable.dart';
@@ -16,7 +16,7 @@ class SWApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme;
-    if(app.prefs.getBool(light)!= null && app.prefs.getBool(light)){
+    if(app.prefs.getBool(preferences.light)!= null && app.prefs.getBool(preferences.light)){
       theme = ThemeData.light().copyWith(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
