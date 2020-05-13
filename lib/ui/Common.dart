@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 
 class SWAppBar extends AppBar{
 

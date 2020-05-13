@@ -92,6 +92,11 @@ abstract class Editable extends JsonSavable{
   List<Widget> cards(){
     var cards = List<Widget>();
     var contents = cardContents();
+    cards.add(Card(
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: NameCardContent(this)
+      )));
     for (int i = 0; i < cardNum; i++){
       cards.add(
         InfoCard(shown: showCard[i],contents: contents[i], title: "Woolooloo")

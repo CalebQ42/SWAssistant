@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/ui/EditableCommon.dart';
 
 class InfoCard extends StatefulWidget{
 
   final InfoCardHolder holder = new InfoCardHolder();
+  final Function onHide;
 
-  InfoCard({shown = true, @required Widget contents, String title = ""}){
+  InfoCard({shown = true, @required Widget contents, String title = "", this.onHide}){
     holder.shown = shown;
     holder.contents = contents;
     holder.title = title;
@@ -20,6 +22,7 @@ class InfoCard extends StatefulWidget{
 class InfoCardState extends State{
 
   InfoCardHolder holder;
+  Function onHide;
 
   InfoCardState(this.holder);
 
@@ -40,6 +43,7 @@ class InfoCardState extends State{
               value: holder.shown,
               onChanged: (bool b){
                 setState((){
+                  onHide();
                   holder.shown = b;
                 });
               },
@@ -80,10 +84,40 @@ class NameCardContent extends StatefulWidget{
 }
 
 class NameCardContentState extends State{
+
   Editable editable;
+  bool editing = false;
 
   NameCardContentState(this.editable);
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller;
+    if(editing){
+      controller = new TextEditingController(text: editable.name);
+      controller.addListener(() {
+        editable.name = controller.text;
+      });
+    }
+    return Column(
+      children: <Widget>[
+        EditingText(
+          editing: editing,
+          style: Theme.of(context).textTheme.headline5,
+          initialText: editable.name,
+          controller: controller),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            IconButton(
+              icon:Icon(Icons.edit),
+              iconSize: 25.0,
+              onPressed: (){
+                setState( ()=> editing = !editing);
+              }
+            )
+          ],
+        )
+      ],
+    );
   }
 }
