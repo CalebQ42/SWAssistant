@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/ui/EditableCommon.dart';
 
 class Vehicle extends Editable{
 
@@ -67,6 +68,11 @@ class Vehicle extends Editable{
   }
 
   List<Widget> cardContents() {
-    return List.filled(cardNum,Text("Card"));
+    return List.filled(cardNum,
+      EditableContent(builder: (bool b){
+          return Text("Yo. It's a card");
+        }
+      )
+    );
   }
 }

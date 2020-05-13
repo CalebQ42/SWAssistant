@@ -97,9 +97,9 @@ abstract class Editable extends JsonSavable{
         padding: EdgeInsets.all(10.0),
         child: NameCardContent(this)
       )));
-    for (int i = 0; i < cardNum; i++){
+    for (int i = 1; i < cardNum; i++){
       cards.add(
-        InfoCard(shown: showCard[i],contents: contents[i], title: "Woolooloo")
+        InfoCard(shown: showCard[i],contents: contents[i], title: "Woolooloo", onHide: (){})
       );
     }
     return cards;
