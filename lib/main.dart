@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 
-import 'ui/Screens/EditingEditable.dart';
+import 'ui/screens/EditingEditable.dart';
 import 'ui/Common.dart';
 
 void main(){
@@ -45,7 +45,7 @@ class Home extends StatelessWidget{
   Widget build(BuildContext context) {
     int index = 0;
     return Scaffold(
-      appBar: AppBar(title: Text("Hi Wold")),
+      appBar: AppBar(title: Text("Hi World")),
       drawer: SWDrawer(),
       floatingActionButton: FloatingActionButton(onPressed: (){
         switch(index){
@@ -59,15 +59,10 @@ class Home extends StatelessWidget{
             break;
           case 2:
             Navigator.pushNamed(context,"/minion");
-            index = 3;
-            break;
-          case 3:
-            Navigator.pushNamed(context,"/");
             index = 0;
             break;
         }
-      }),
+      })
     );
   }
-
 }

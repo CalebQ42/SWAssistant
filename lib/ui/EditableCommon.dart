@@ -57,7 +57,7 @@ class EditableContentState extends State{
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
-              color: editing ? Colors.white : Colors.white30,
+              color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
               onPressed: ()=>setState(()=>editing = !editing),
             )
           ],
