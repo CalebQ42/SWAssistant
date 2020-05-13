@@ -5,9 +5,9 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class InfoCard extends StatefulWidget{
 
   final InfoCardHolder holder = new InfoCardHolder();
-  final Function onHide;
+  final Function(bool b) onHideChange;
 
-  InfoCard({shown = true, @required Widget contents, String title = "", @required this.onHide}){
+  InfoCard({shown = true, @required Widget contents, String title = "", @required this.onHideChange}){
     holder.shown = shown;
     holder.contents = contents;
     holder.title = title;
@@ -15,24 +15,20 @@ class InfoCard extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    return InfoCardState(holder);
+    return InfoCardState(holder, onHideChange);
   }
 }
 
 class InfoCardState extends State{
 
   InfoCardHolder holder;
-  Function onHide;
+  Function(bool b) onHideChange;
 
-  InfoCardState(this.holder);
+  InfoCardState(this.holder, this.onHideChange);
 
   @override
   Widget build(BuildContext context) {
-    var content;
-    if(holder.shown)
-      content = holder.contents;
-    else
-      content = Container();
+    var content = holder.shown? holder.contents : Container();
     return Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -43,6 +39,7 @@ class InfoCardState extends State{
               value: holder.shown,
               onChanged: (bool b){
                 setState((){
+                  if(onHideChange!=null) onHideChange(b);
                   holder.shown = b;
                 });
               },

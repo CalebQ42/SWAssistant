@@ -58,9 +58,7 @@ class EditableContentState extends State{
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               color: editing ? Colors.white : Colors.white30,
-              onPressed: (){
-                setState(()=>editing = !editing);
-              },
+              onPressed: ()=>setState(()=>editing = !editing),
             )
           ],
         )
