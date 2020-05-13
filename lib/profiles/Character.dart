@@ -6,6 +6,7 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/CharacterInfo.dart';
 
 import 'utils/Creature.dart';
 
@@ -101,11 +102,18 @@ class Character extends Editable with Creature{
   }
 
   List<Widget> cardContents() {
-    return List.filled(cardNum,
-      EditableContent(builder: (bool b){
-          return Text("Yo. It's a card");
-        }
-      )
-    );
+    var out = new List<Widget>();
+    out.add(EditableContent(builder: (bool b, Editable editable){
+      return CharacterInfo(editing: b, character: editable);
+    }, editable: this));
+    for(int i = 2;i<cardNum;i++){
+      out.add(EditableContent(builder: (bool b,Editable editable){
+          return Text("card " + i.toString());
+        },
+        editable: this,
+      ));
+    }
+    print(out.length);
+    return out;
   }
 }

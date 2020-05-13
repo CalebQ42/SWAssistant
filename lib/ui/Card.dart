@@ -88,9 +88,9 @@ class NameCardContentState extends State{
   Widget build(BuildContext context) {
     TextEditingController controller;
     return EditableContent(
-      builder: (bool b){
+      builder: (bool b, Editable edit){
         if(b){
-          controller = new TextEditingController(text: editable.name);
+          controller = new TextEditingController(text: edit.name);
           controller.addListener(() {
             editable.name = controller.text;
           });
@@ -98,10 +98,11 @@ class NameCardContentState extends State{
         return EditingText(
           editing: b,
           style: Theme.of(context).textTheme.headline5,
-          initialText: editable.name,
+          initialText: edit.name,
           controller: controller,
         );
-      }
+      },
+      editable: editable,
     );
   }
 }

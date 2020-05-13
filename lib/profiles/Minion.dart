@@ -54,9 +54,9 @@ class Minion extends Editable with Creature{
 
   List<Widget> cardContents() {
     return List.filled(cardNum,
-      EditableContent(builder: (bool b){
+      EditableContent(builder: (bool b, Editable editable){
           return Text("Yo. It's a card");
-        }
+        }, editable: this
       )
     );
   }
