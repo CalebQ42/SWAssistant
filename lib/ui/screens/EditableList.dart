@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/Minion.dart';
+import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 
@@ -98,6 +101,32 @@ class EditableListState extends State{
             )
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: (){
+          var id = 0;
+          switch (type){
+            case 0:
+              while(app.characters.any((e)=>e.id==id)){
+                id++;
+              }
+              setState(() => app.characters.add(new Character(id: id)));
+              break;
+            case 1:
+              while(app.minions.any((e)=>e.id==id)){
+                id++;
+              }
+              setState(() => app.minions.add(new Minion(id: id)));
+              break;
+            case 2:
+              while(app.vehicles.any((e)=>e.id==id)){
+                id++;
+              }
+              setState(() => app.vehicles.add(new Vehicle(id: id)));
+              break;
+          }
+        }
       ),
     );
   }

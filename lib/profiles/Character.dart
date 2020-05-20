@@ -32,7 +32,7 @@ class Character extends Editable with Creature{
   int get cardNum => 16;
   String get fileExtension => ".swcharacter";
 
-  Character({@required int id, String name}) : super(id: id, name: name);
+  Character({@required int id, String name = "New Character"}) : super(id: id, name: name);
 
   Character.load(FileSystemEntity file) : super.load(file);
 

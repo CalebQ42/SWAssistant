@@ -18,7 +18,7 @@ class Minion extends Editable with Creature{
   int get cardNum => 9;
   String get fileExtension => ".swminion";
 
-  Minion({@required int id, String name}) : super(id: id, name: name);
+  Minion({@required int id, String name = "New Minion"}) : super(id: id, name: name);
 
   Minion.load(FileSystemEntity file) : super.load(file);
 

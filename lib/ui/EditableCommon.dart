@@ -49,7 +49,6 @@ class EditableContent extends StatefulWidget{
   State<StatefulWidget> createState() {
     return EditableContentState(builder: builder, editable: editable);
   }
-
 }
 
 class EditableContentState extends State{

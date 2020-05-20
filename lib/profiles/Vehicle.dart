@@ -24,7 +24,7 @@ class Vehicle extends Editable{
   int get cardNum => 6;
   String get fileExtension => ".swvehicle";
 
-  Vehicle({@required int id, String name}) : super(id: id, name: name);
+  Vehicle({@required int id, String name = "New Vehicle"}) : super(id: id, name: name);
 
   Vehicle.load(FileSystemEntity file) : super.load(file);
 

@@ -3,9 +3,6 @@ import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
 
-import 'ui/screens/EditingEditable.dart';
-import 'ui/Common.dart';
-
 void main(){
   var app = SW();
   app.initialize().whenComplete(() => runApp(SWApp(app)));
@@ -36,33 +33,6 @@ class SWApp extends StatelessWidget {
         "/vehicles" : (context)=>EditableList(app,EditableList.vehicle),
         "/minion" : (context)=>EditableList(app, EditableList.minion),
       },
-    );
-  }
-}
-
-class Home extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    int index = 0;
-    return Scaffold(
-      appBar: AppBar(title: Text("Hi World")),
-      drawer: SWDrawer(),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        switch(index){
-          case 0:
-            Navigator.pushNamed(context,"/characters");
-            index = 1;
-            break;
-          case 1:
-            Navigator.pushNamed(context,"/vehicles");
-            index = 2;
-            break;
-          case 2:
-            Navigator.pushNamed(context,"/minion");
-            index = 0;
-            break;
-        }
-      })
     );
   }
 }
