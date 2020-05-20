@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 
 import 'profiles/Minion.dart';
 import 'profiles/Character.dart';
@@ -52,27 +53,60 @@ class SW{
     vehCats = List<String>();
 
     Directory(saveDir).listSync().forEach((element) {
+      List<Editable> defered = new List();
       if(element.path.endsWith(".swcharacter")){
         var temp = Character.load(element);
-        //TODO: remove temp id workaround
-        temp.id=0;
-        characters.add(temp);
-        if(temp.category != "" && !charCats.contains(temp.category))
-          charCats.add(temp.category);
+        if(temp.id != null){
+          characters.add(temp);
+          if(temp.category != "" && !charCats.contains(temp.category))
+            charCats.add(temp.category);
+        }else
+          defered.add(temp);
       }else if(element.path.endsWith(".swminion")){
         var temp = Minion.load(element);
-        //TODO: remove temp id workaround
-        temp.id=0;
-        minions.add(temp);
-        if(temp.category != "" && !minCats.contains(temp.category))
-          minCats.add(temp.category);
+        if(temp.id != null){
+          minions.add(temp);
+          if(temp.category != "" && !minCats.contains(temp.category))
+            minCats.add(temp.category);
+        }else
+          defered.add(temp);
       }else if(element.path.endsWith(".swvehicle")){
         var temp = Vehicle.load(element);
-        //TODO: remove temp id workaround
-        temp.id=0;
-        vehicles.add(temp);
-        if(temp.category != "" && !vehCats.contains(temp.category))
-          vehCats.add(temp.category);
+        if(temp.id != null){
+          vehicles.add(temp);
+          if(temp.category != "" && !vehCats.contains(temp.category))
+            vehCats.add(temp.category);
+        }else
+          defered.add(temp);
+      }
+      if(defered.length >0){
+        var charId = 0;
+        var minId = 0;
+        var vehId = 0;
+        defered.forEach((temp) {
+          if(temp is Character){
+            while(defered.any((e)=>e.id==charId)){
+              charId++;
+            }
+            characters.add(temp);
+            if(temp.category != "" && !charCats.contains(temp.category))
+              charCats.add(temp.category);
+          }else if (temp is Minion){
+            while(defered.any((e)=>e.id==minId)){
+              minId++;
+            }
+            minions.add(temp);
+            if(temp.category != "" && !minCats.contains(temp.category))
+              minCats.add(temp.category);
+          }else if (temp is Vehicle){
+            while(defered.any((e)=>e.id==vehId)){
+              vehId++;
+            }
+            vehicles.add(temp);
+            if(temp.category != "" && !vehCats.contains(temp.category))
+              vehCats.add(temp.category);
+          }
+        });
       }
     });
   }
