@@ -51,9 +51,16 @@ class SW{
     charCats = List<String>();
     vehicles = List<Vehicle>();
     vehCats = List<String>();
-
+    List<Editable> defered = new List();
     Directory(saveDir).listSync().forEach((element) {
-      List<Editable> defered = new List();
+      if(element.path.endsWith(".backup"))
+        return;
+      var backup = File(element.path+".backup");
+      if(backup.existsSync()){
+        File(element.path).deleteSync();
+        backup.copySync(element.path);
+        backup.deleteSync();
+      }
       if(element.path.endsWith(".swcharacter")){
         var temp = Character.load(element);
         if(temp.id != null){
@@ -79,36 +86,36 @@ class SW{
         }else
           defered.add(temp);
       }
-      if(defered.length >0){
-        var charId = 0;
-        var minId = 0;
-        var vehId = 0;
-        defered.forEach((temp) {
-          if(temp is Character){
-            while(defered.any((e)=>e.id==charId)){
-              charId++;
-            }
-            characters.add(temp);
-            if(temp.category != "" && !charCats.contains(temp.category))
-              charCats.add(temp.category);
-          }else if (temp is Minion){
-            while(defered.any((e)=>e.id==minId)){
-              minId++;
-            }
-            minions.add(temp);
-            if(temp.category != "" && !minCats.contains(temp.category))
-              minCats.add(temp.category);
-          }else if (temp is Vehicle){
-            while(defered.any((e)=>e.id==vehId)){
-              vehId++;
-            }
-            vehicles.add(temp);
-            if(temp.category != "" && !vehCats.contains(temp.category))
-              vehCats.add(temp.category);
-          }
-        });
-      }
     });
+    if(defered.length >0){
+      var charId = 0;
+      var minId = 0;
+      var vehId = 0;
+      defered.forEach((temp) {
+        if(temp is Character){
+          while(defered.any((e)=>e.id==charId)){
+            charId++;
+          }
+          characters.add(temp);
+          if(temp.category != "" && !charCats.contains(temp.category))
+            charCats.add(temp.category);
+        }else if (temp is Minion){
+          while(defered.any((e)=>e.id==minId)){
+            minId++;
+          }
+          minions.add(temp);
+          if(temp.category != "" && !minCats.contains(temp.category))
+            minCats.add(temp.category);
+        }else if (temp is Vehicle){
+          while(defered.any((e)=>e.id==vehId)){
+            vehId++;
+          }
+          vehicles.add(temp);
+          if(temp.category != "" && !vehCats.contains(temp.category))
+            vehCats.add(temp.category);
+        }
+      });
+    }
   }
   void loadMinions(){
     minions = List();
