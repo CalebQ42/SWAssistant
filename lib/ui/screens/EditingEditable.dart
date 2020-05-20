@@ -19,9 +19,7 @@ class EditingEditable extends StatelessWidget{
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(title: Text(profile.name)),
-      body: ListView(
-        children: profile.cards(refreshList),
-      ),
+      body: ListView.builder(itemBuilder: (context,i) => profile.cards(refreshList)[i]),
       floatingActionButton: FloatingActionButton(
          onPressed: null,
          child: (profile is Character) ? Icon(Icons.face) :

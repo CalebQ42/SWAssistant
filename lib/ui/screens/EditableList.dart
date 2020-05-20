@@ -71,12 +71,30 @@ class EditableListState extends State{
           return Card(
             child: InkResponse(
               onTap: (){
-                Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],app, refreshCallback),fullscreenDialog: true));
+                Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],app, refreshCallback),fullscreenDialog: false));
               },
               child:Padding(
                 padding: EdgeInsets.all(10.0),
-                child: Text(list[index].name, style: Theme.of(c).textTheme.headline4)
-              ),
+                child: Hero(
+                  transitionOnUserGestures: true,
+                  tag: (){
+                    String out = "";
+                    switch(type){
+                      case 0:
+                        out = "character/";
+                        break;
+                      case 1:
+                        out = "minion/";
+                        break;
+                      case 2:
+                        out = "vehicle/";
+                        break;
+                    }
+                    return out + list[index].id.toString();
+                  }(),
+                  child:Text(list[index].name, style: Theme.of(c).textTheme.headline5)
+                ),
+              )
             )
           );
         },

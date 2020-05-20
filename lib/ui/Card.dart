@@ -1,6 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/Minion.dart';
+import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
@@ -100,11 +103,23 @@ class NameCardContentState extends State{
             refresh();
           });
         }
-        return EditingText(
-          editing: b,
-          style: Theme.of(context).textTheme.headline5,
-          initialText: edit.name,
-          controller: controller,
+        return Hero(
+          transitionOnUserGestures: true,
+          tag: (){
+            String out = "";
+            if(editable is Character)
+              out = "character/";
+            else if (editable is Minion)
+              out = "minion/";
+            else if (editable is Vehicle)
+              out = "vehicle/";
+            return out + editable.id.toString();
+          }(),child:EditingText(
+            editing: b,
+            style: Theme.of(context).textTheme.headline5,
+            initialText: edit.name,
+            controller: controller,
+          )
         );
       },
       editable: editable,
