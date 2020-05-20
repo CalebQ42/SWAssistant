@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
 class EditingText extends StatelessWidget{
@@ -12,12 +13,23 @@ class EditingText extends StatelessWidget{
 
   final TextEditingController controller;
 
-  EditingText({@required this.editing, this.style, this.initialText = "", this.controller, this.textType, this.fieldInsets = const EdgeInsets.all(4.0), this.textInsets = const EdgeInsets.all(4.0)}){
+  final bool defaultSave;
+  final Editable editable;
+  final SW app;
+
+  EditingText({@required this.editing, this.style, this.initialText = "", this.controller, this.textType,
+      this.fieldInsets = const EdgeInsets.all(4.0), this.textInsets = const EdgeInsets.all(4.0),
+      this.defaultSave = false, this.editable, this.app}){
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
+    if(editing && defaultSave && (editable == null || app == null))
+      throw "default save needs an editable and SW app";
   }
   Widget build(BuildContext context) {
-    if(editing)
+    if(editing){
+      controller.addListener(() {
+        editable.save(editable.getFileLocation(app));
+      });
       return Padding(
         padding: fieldInsets,
         child: Container(
@@ -26,7 +38,7 @@ class EditingText extends StatelessWidget{
           child:TextField(controller: controller, keyboardType: textType,)
         ),
       );
-    else
+    }else
       return Padding(
         padding: textInsets,
         child: Container(

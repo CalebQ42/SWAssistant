@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
@@ -77,11 +76,12 @@ class InfoCardHolder{
 class NameCardContent extends StatefulWidget{
   final Editable editable;
   final Function refresh;
+  final SW app;
 
-  const NameCardContent(this.editable, this.refresh);
+  const NameCardContent(this.editable, this.refresh, this.app);
   @override
   State<StatefulWidget> createState() {
-    return NameCardContentState(editable, refresh);
+    return NameCardContentState(editable, refresh, app);
   }
 }
 
@@ -89,8 +89,9 @@ class NameCardContentState extends State{
 
   Editable editable;
   Function refresh;
+  SW app;
 
-  NameCardContentState(this.editable, this.refresh);
+  NameCardContentState(this.editable, this.refresh, this.app);
   @override
   Widget build(BuildContext context) {
     TextEditingController controller;
@@ -114,11 +115,14 @@ class NameCardContentState extends State{
             else if (editable is Vehicle)
               out = "vehicle/";
             return out + editable.id.toString();
-          }(),child:EditingText(
+          }(),child: EditingText(
             editing: b,
             style: Theme.of(context).textTheme.headline5,
             initialText: edit.name,
             controller: controller,
+            defaultSave: true,
+            editable: editable,
+            app: app
           )
         );
       },

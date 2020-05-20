@@ -13,7 +13,7 @@ class EditingEditable extends StatelessWidget{
   EditingEditable(this.profile, this.app, this.refreshList);
 
   Widget build(BuildContext context) {
-    var cards = profile.cards(refreshList);
+    var cards = profile.cards(refreshList,app);
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(title: Text(profile.name)),

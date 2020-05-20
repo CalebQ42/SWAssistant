@@ -34,10 +34,9 @@ abstract class Editable extends JsonSavable{
   int get cardNum;
 
   //Saving variables
-
-  bool _editing = false;
   bool _saving = false;
   String _loc;
+  bool _defered = false;
   bool _external;
 
   Editable({@required this.id, this.name = "", this.nts, this.weapons, this.category = "", this.criticalInjuries, this.desc = ""}){
@@ -89,13 +88,13 @@ abstract class Editable extends JsonSavable{
     return json;
   }
 
-  List<Widget> cards(Function refresh){
+  List<Widget> cards(Function refresh, SW app){
     var cards = List<Widget>();
     var contents = cardContents();
     cards.add(Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: NameCardContent(this, refresh)
+        child: NameCardContent(this, refresh, app)
       )
     ));
     for (int i = 0; i < contents.length; i++){
@@ -116,15 +115,35 @@ abstract class Editable extends JsonSavable{
       return _loc;
   }
   String getCloudFileLocation(){return null;}
-  void save(String filename){}
-  void cloudSave(){}
-  void load(String filename){}
-  void cloudLoad(){}
-  void startEditing(){}
-  void delete(){}
-  void stopEditing(){
-    _editing = false;
+  void save(String filename) async{
+    if(!_saving){
+      _saving = true;
+      var file = File(filename);
+      var name = file.path.substring(file.parent.path.length);
+      var backup = file.renameSync(file.parent.path + name+".backup");
+      file.createSync();
+      file.writeAsStringSync(jsonEncode(toJson()));
+      backup.deleteSync();
+      _saving = false;
+    }else{
+      if(!_defered){
+        _defered = true;
+        while(_saving){
+          sleep(Duration(milliseconds: 500));
+        }
+        save(filename);
+        _defered = false;
+      }
+    }
   }
+
+  void cloudSave(){}
+  void load(String filename){
+    var file = File(filename);
+    loadJson(jsonDecode(file.readAsStringSync()));
+  }
+  void cloudLoad(){}
+  void delete(){}
 
   void addShortcut(){}
   bool hasShortcut(){ return false; }

@@ -21,8 +21,8 @@ class SWApp extends StatelessWidget {
       );
     else
       theme = ThemeData.dark().copyWith(
-          primaryColor: Colors.red,
-          accentColor: Colors.blueAccent,
+        primaryColor: Colors.red,
+        accentColor: Colors.blueAccent,
       );
     return MaterialApp(
       title: 'SWAssistant',
