@@ -89,13 +89,13 @@ abstract class Editable extends JsonSavable{
     return json;
   }
 
-  List<Widget> cards(){
+  List<Widget> cards(Function refresh){
     var cards = List<Widget>();
     var contents = cardContents();
     cards.add(Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: NameCardContent(this)
+        child: NameCardContent(this, refresh)
       )));
     for (int i = 0; i < contents.length; i++){
       cards.add(

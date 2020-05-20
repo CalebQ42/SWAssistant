@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
@@ -71,19 +73,21 @@ class InfoCardHolder{
 
 class NameCardContent extends StatefulWidget{
   final Editable editable;
+  final Function refresh;
 
-  const NameCardContent(this.editable);
+  const NameCardContent(this.editable, this.refresh);
   @override
   State<StatefulWidget> createState() {
-    return NameCardContentState(editable);
+    return NameCardContentState(editable, refresh);
   }
 }
 
 class NameCardContentState extends State{
 
   Editable editable;
+  Function refresh;
 
-  NameCardContentState(this.editable);
+  NameCardContentState(this.editable, this.refresh);
   @override
   Widget build(BuildContext context) {
     TextEditingController controller;
@@ -93,6 +97,7 @@ class NameCardContentState extends State{
           controller = new TextEditingController(text: edit.name);
           controller.addListener(() {
             editable.name = controller.text;
+            refresh();
           });
         }
         return EditingText(

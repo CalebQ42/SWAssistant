@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/ui/screens/EditableList.dart';
 
 import 'ui/screens/EditingEditable.dart';
 import 'ui/Common.dart';
@@ -16,25 +17,24 @@ class SWApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme;
-    if(app.prefs.getBool(preferences.light)!= null && app.prefs.getBool(preferences.light)){
+    if(app.prefs.getBool(preferences.light)!= null && app.prefs.getBool(preferences.light))
       theme = ThemeData.light().copyWith(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
       );
-    }else{
+    else
       theme = ThemeData.dark().copyWith(
           primaryColor: Colors.red,
           accentColor: Colors.blueAccent,
       );
-    }
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'SWAssistant',
       theme: theme,
-      home: Home(),
+      home: EditableList(app,EditableList.character),
       routes: {
-        "/characters" : EditingEditable(app.characters[0]).build,
-        "/vehicles" : EditingEditable(app.vehicles[0]).build,
-        "/minion" : EditingEditable(app.minions[0]).build,
+        "/characters" : (context)=>EditableList(app, EditableList.character),
+        "/vehicles" : (context)=>EditableList(app,EditableList.vehicle),
+        "/minion" : (context)=>EditableList(app, EditableList.minion),
       },
     );
   }

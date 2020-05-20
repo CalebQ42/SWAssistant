@@ -37,7 +37,7 @@ class SW{
     if(!Directory(saveDir).existsSync())
       Directory(saveDir).createSync();
     if(kDebugMode)
-      testing();
+      await testing();
     loadAll();
   }
 
@@ -54,16 +54,22 @@ class SW{
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swcharacter")){
         var temp = Character.load(element);
+        //TODO: remove temp id workaround
+        temp.id=0;
         characters.add(temp);
         if(temp.category != "" && !charCats.contains(temp.category))
           charCats.add(temp.category);
       }else if(element.path.endsWith(".swminion")){
         var temp = Minion.load(element);
+        //TODO: remove temp id workaround
+        temp.id=0;
         minions.add(temp);
         if(temp.category != "" && !minCats.contains(temp.category))
           minCats.add(temp.category);
       }else if(element.path.endsWith(".swvehicle")){
         var temp = Vehicle.load(element);
+        //TODO: remove temp id workaround
+        temp.id=0;
         vehicles.add(temp);
         if(temp.category != "" && !vehCats.contains(temp.category))
           vehCats.add(temp.category);
@@ -114,7 +120,7 @@ class SW{
     //TODO: cload loading AND saving
   }
 
-  void testing() async{
+  Future<void> testing() async{
     var testFiles = ["Big Game Hunter [Nemesis].swcharacter","Incom T-47 Airspeeder.swvehicle","Pirate Crew.swminion"];
     for(String st in testFiles){
       String json = await rootBundle.loadString("assets/testing/"+st);

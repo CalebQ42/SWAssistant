@@ -41,7 +41,6 @@ class EditingText extends StatelessWidget{
 class EditableContent extends StatefulWidget{
 
   final Editable editable;
-
   final Widget Function(bool editing, Editable editable) builder;
 
   EditableContent({@required this.builder, @required this.editable});
@@ -64,20 +63,16 @@ class EditableContentState extends State{
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         builder(editing, editable),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit),
-              iconSize: 20.0,
-              padding: EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(Size.square(30.0)),
-              color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
-              onPressed: ()=>setState(()=>editing = !editing),
-            )
-          ],
+        IconButton(
+          icon: Icon(Icons.edit),
+          iconSize: 20.0,
+          padding: EdgeInsets.all(5.0),
+          constraints: BoxConstraints.tight(Size.square(30.0)),
+          color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
+          onPressed: ()=>setState(()=>editing = !editing),
         )
       ],
     );
