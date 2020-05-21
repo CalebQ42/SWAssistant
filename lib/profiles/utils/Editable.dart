@@ -90,7 +90,7 @@ abstract class Editable extends JsonSavable{
 
   List<Widget> cards(Function refresh, SW app){
     var cards = List<Widget>();
-    var contents = cardContents();
+    var contents = cardContents(app);
     cards.add(Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -105,7 +105,7 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  List<Widget> cardContents();
+  List<Widget> cardContents(SW app);
 
   void exportTo(String folder){}
   String getFileLocation(SW sw){

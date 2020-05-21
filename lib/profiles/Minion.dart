@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
@@ -52,7 +53,7 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents() {
+  List<Widget> cardContents(SW app) {
     return List.filled(cardNum,
       EditableContent(builder: (bool b, Editable editable){
           return Text("Yo. It's a card");

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/items/Duty.dart';
 import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
@@ -101,10 +102,10 @@ class Character extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents() {
+  List<Widget> cardContents(SW app) {
     var out = new List<Widget>();
     out.add(EditableContent(builder: (bool b, Editable editable){
-      return CharacterInfo(editing: b, character: editable);
+      return CharacterInfo(editing: b, character: editable,app: app);
     }, editable: this));
     for(int i = 2;i<cardNum;i++){
       out.add(EditableContent(builder: (bool b,Editable editable){
@@ -113,7 +114,6 @@ class Character extends Editable with Creature{
         editable: this,
       ));
     }
-    print(out.length);
     return out;
   }
 }
