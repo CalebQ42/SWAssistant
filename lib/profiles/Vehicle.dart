@@ -27,7 +27,7 @@ class Vehicle extends Editable{
 
   Vehicle({@required int id, String name = "New Vehicle"}) : super(id: id, name: name);
 
-  Vehicle.load(FileSystemEntity file) : super.load(file);
+  Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app);
 
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);

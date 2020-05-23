@@ -53,6 +53,7 @@ class SW{
     vehCats = List<String>();
     List<Editable> defered = new List();
     Directory(saveDir).listSync().forEach((element) {
+      print(element.path);
       if(element.path.endsWith(".backup"))
         return;
       var backup = File(element.path+".backup");
@@ -62,7 +63,7 @@ class SW{
         backup.deleteSync();
       }
       if(element.path.endsWith(".swcharacter")){
-        var temp = Character.load(element);
+        var temp = Character.load(element, this);
         if(temp.id != null){
           characters.add(temp);
           if(temp.category != "" && !charCats.contains(temp.category))
@@ -70,7 +71,7 @@ class SW{
         }else
           defered.add(temp);
       }else if(element.path.endsWith(".swminion")){
-        var temp = Minion.load(element);
+        var temp = Minion.load(element, this);
         if(temp.id != null){
           minions.add(temp);
           if(temp.category != "" && !minCats.contains(temp.category))
@@ -78,7 +79,7 @@ class SW{
         }else
           defered.add(temp);
       }else if(element.path.endsWith(".swvehicle")){
-        var temp = Vehicle.load(element);
+        var temp = Vehicle.load(element, this);
         if(temp.id != null){
           vehicles.add(temp);
           if(temp.category != "" && !vehCats.contains(temp.category))
@@ -88,6 +89,7 @@ class SW{
       }
     });
     if(defered.length >0){
+      print("defered profiles");
       var charId = 0;
       var minId = 0;
       var vehId = 0;
@@ -96,6 +98,7 @@ class SW{
           while(defered.any((e)=>e.id==charId)){
             charId++;
           }
+          temp.id = charId;
           characters.add(temp);
           if(temp.category != "" && !charCats.contains(temp.category))
             charCats.add(temp.category);
@@ -103,6 +106,7 @@ class SW{
           while(defered.any((e)=>e.id==minId)){
             minId++;
           }
+          temp.id = minId;
           minions.add(temp);
           if(temp.category != "" && !minCats.contains(temp.category))
             minCats.add(temp.category);
@@ -110,6 +114,7 @@ class SW{
           while(defered.any((e)=>e.id==vehId)){
             vehId++;
           }
+          temp.id = vehId;
           vehicles.add(temp);
           if(temp.category != "" && !vehCats.contains(temp.category))
             vehCats.add(temp.category);
@@ -123,7 +128,7 @@ class SW{
 
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swminion")){
-        var temp = Minion.load(element);
+        var temp = Minion.load(element, this);
         minions.add(temp);
         if(temp.category != "" && !minCats.contains(temp.category))
           minCats.add(temp.category);
@@ -136,7 +141,7 @@ class SW{
 
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swcharacter")){
-        var temp = Character.load(element);
+        var temp = Character.load(element, this);
         characters.add(temp);
         if(temp.category != "" && !charCats.contains(temp.category))
           charCats.add(temp.category);
@@ -149,7 +154,7 @@ class SW{
 
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swvehicle")){
-        var temp = Vehicle.load(element);
+        var temp = Vehicle.load(element, this);
         vehicles.add(temp);
         if(temp.category != "" && !vehCats.contains(temp.category))
           vehCats.add(temp.category);

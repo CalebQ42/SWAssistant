@@ -35,7 +35,7 @@ class Character extends Editable with Creature{
 
   Character({@required int id, String name = "New Character"}) : super(id: id, name: name);
 
-  Character.load(FileSystemEntity file) : super.load(file);
+  Character.load(FileSystemEntity file, SW app) : super.load(file, app);
 
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);

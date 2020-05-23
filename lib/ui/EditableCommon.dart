@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
@@ -18,7 +19,7 @@ class EditingText extends StatelessWidget{
   final SW app;
 
   EditingText({@required this.editing, this.style, this.initialText = "", this.controller, this.textType,
-      this.fieldInsets = const EdgeInsets.all(4.0), this.textInsets = const EdgeInsets.all(4.0),
+      this.fieldInsets = const EdgeInsets.symmetric(horizontal:1.0), this.textInsets = const EdgeInsets.all(4.0),
       this.defaultSave = false, this.editable, this.app}){
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
@@ -27,26 +28,29 @@ class EditingText extends StatelessWidget{
   }
   Widget build(BuildContext context) {
     if(editing){
-      controller.addListener(() {
-        editable.save(editable.getFileLocation(app));
-      });
-      return Padding(
-        padding: fieldInsets,
-        child: Container(
-          height: style.fontSize+5,
-          alignment: Alignment.center,
-          child:TextField(controller: controller, keyboardType: textType,)
-        ),
+      if(defaultSave){
+        controller.addListener(() {
+          editable.save(editable.getFileLocation(app));
+        });
+      }
+      return AnimatedSwitcher(
+        duration: Duration(milliseconds: 150),
+        transitionBuilder: (wid, anim){
+          return FadeScaleTransition(animation: anim, child:wid);
+        },
+        child: TextField(controller: controller, keyboardType: textType,
+          decoration: InputDecoration().applyDefaults(Theme.of(context).inputDecorationTheme).copyWith(contentPadding: fieldInsets)
+        )
       );
-    }else
-      return Padding(
-        padding: textInsets,
-        child: Container(
-          height: style.fontSize+5,
-          alignment: Alignment.center,
-          child: Text(initialText, style:style)
-        ),
+    }else{
+      return AnimatedSwitcher(
+        duration: const Duration(milliseconds: 150),
+        transitionBuilder: (wid, anim){
+          return FadeScaleTransition(animation: anim, child:wid);
+        },
+        child: Text(initialText, style: style)
       );
+    }
   }
 }
 

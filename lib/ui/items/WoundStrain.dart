@@ -14,11 +14,23 @@ class WoundStrain extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    var wound = Expanded(
+      child:Column(
+        children: <Widget>[
+          (){
+            if(editing){
+            }
+          }()
+        ],
+      )
+    );
     return Column(
       children: <Widget>[
         SizedBox.fromSize(
           size: Size.fromWidth(100),
           child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Text("Soak:"),
               EditingText(
@@ -40,7 +52,8 @@ class WoundStrain extends StatelessWidget{
             ],
           ),
         ),
-        
+        Row(
+        )
       ],
     );
   }

@@ -37,7 +37,6 @@ abstract class Editable extends JsonSavable{
   bool _saving = false;
   String _loc;
   bool _defered = false;
-  bool _external;
 
   Editable({@required this.id, this.name = "", this.nts, this.weapons, this.category = "", this.criticalInjuries, this.desc = ""}){
     nts ??= new List();
@@ -46,9 +45,11 @@ abstract class Editable extends JsonSavable{
     showCard = List.filled(cardNum, false);
   }
 
-  Editable.load(FileSystemEntity file){
+  Editable.load(FileSystemEntity file, SW app){
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
+    if(getFileLocation(app)!= file.path)
+      _loc = file.path;
   }
 
   @mustCallSuper
@@ -110,7 +111,7 @@ abstract class Editable extends JsonSavable{
   void exportTo(String folder){}
   String getFileLocation(SW sw){
     if(_loc == null || _loc == "")
-      return sw.saveDir + id.toString() + fileExtension;
+      return sw.saveDir+ "/" + id.toString() + fileExtension;
     else
       return _loc;
   }
@@ -119,17 +120,17 @@ abstract class Editable extends JsonSavable{
     if(!_saving){
       _saving = true;
       var file = File(filename);
-      var name = file.path.substring(file.parent.path.length);
-      var backup = file.renameSync(file.parent.path + name+".backup");
+      var backup = file.renameSync(filename +".backup");
       file.createSync();
       file.writeAsStringSync(jsonEncode(toJson()));
       backup.deleteSync();
       _saving = false;
     }else{
+      print("defering save");
       if(!_defered){
         _defered = true;
         while(_saving){
-          sleep(Duration(milliseconds: 500));
+          sleep(Duration(milliseconds: 250));
         }
         save(filename);
         _defered = false;

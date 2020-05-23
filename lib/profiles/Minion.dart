@@ -21,7 +21,7 @@ class Minion extends Editable with Creature{
 
   Minion({@required int id, String name = "New Minion"}) : super(id: id, name: name);
 
-  Minion.load(FileSystemEntity file) : super.load(file);
+  Minion.load(FileSystemEntity file, SW app) : super.load(file, app);
 
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
