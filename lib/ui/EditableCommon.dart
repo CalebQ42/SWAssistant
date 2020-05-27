@@ -19,7 +19,7 @@ class EditingText extends StatelessWidget{
   final SW app;
 
   EditingText({@required this.editing, this.style, this.initialText = "", this.controller, this.textType,
-      this.fieldInsets = const EdgeInsets.symmetric(horizontal:1.0), this.textInsets = const EdgeInsets.all(4.0),
+      this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
       this.defaultSave = false, this.editable, this.app}){
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
@@ -33,24 +33,42 @@ class EditingText extends StatelessWidget{
           editable.save(editable.getFileLocation(app));
         });
       }
-      return AnimatedSwitcher(
-        duration: Duration(milliseconds: 150),
-        transitionBuilder: (wid, anim){
-          return FadeScaleTransition(animation: anim, child:wid);
-        },
-        child: TextField(controller: controller, keyboardType: textType,
-          decoration: InputDecoration().applyDefaults(Theme.of(context).inputDecorationTheme).copyWith(contentPadding: fieldInsets)
-        )
+    }
+    Widget text;
+    if(editing){
+      text = Padding(
+        key: Key("textField"),
+        padding: fieldInsets,
+        child: TextField(controller: controller, keyboardType: textType)
       );
     }else{
-      return AnimatedSwitcher(
-        duration: const Duration(milliseconds: 150),
-        transitionBuilder: (wid, anim){
-          return FadeScaleTransition(animation: anim, child:wid);
-        },
+      text = Padding(
+        key: Key("text"),
+        padding: textInsets,
         child: Text(initialText, style: style)
       );
     }
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 300),
+      child: text,
+      transitionBuilder: (wid, anim){
+        Tween<Offset> slide;
+        if(wid.key == Key("text")){
+          slide = Tween(begin: Offset(-1.0,0.0),end: Offset(0.0,0.0));
+        }else{
+          slide = Tween(begin: Offset(1.0,0.0), end: Offset(0.0,0.0));
+        }
+        return ClipRect(
+          child: SlideTransition(
+            position: slide.animate(anim),
+            child: SizeTransition(
+              sizeFactor: anim,
+              child: Center(child: wid),
+            )
+          )
+        );
+      },
+    );
   }
 }
 

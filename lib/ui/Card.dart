@@ -32,7 +32,7 @@ class InfoCardState extends State{
 
   @override
   Widget build(BuildContext context) {
-    var content = holder.shown? holder.contents : Container();
+    var content = holder.shown? holder.contents : SizedBox();
     return Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
