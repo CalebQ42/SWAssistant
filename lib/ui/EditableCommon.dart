@@ -61,6 +61,7 @@ class EditingText extends StatelessWidget{
           child: SlideTransition(
             position: slide.animate(anim),
             child: SizeTransition(
+              axisAlignment: -1.0,
               sizeFactor: anim,
               child: Center(child: wid),
             )
