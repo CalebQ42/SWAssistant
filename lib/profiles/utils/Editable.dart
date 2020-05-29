@@ -69,9 +69,7 @@ abstract class Editable extends JsonSavable{
     for(Map<String,dynamic> arrMap in json["Critical Injuries"])
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
     desc = json["description"];
-    showCard = new List();
-    for(dynamic b in json["show cards"])
-      showCard.add(b);
+    showCard = json["show cards"].cast<bool>();
   }
 
   @mustCallSuper
@@ -85,7 +83,7 @@ abstract class Editable extends JsonSavable{
     json["name"] = name;
     json["category"] = category;
     json["description"] = desc;
-    json["card hidden"] = showCard;
+    json["show cards"] = showCard;
     return json;
   }
 

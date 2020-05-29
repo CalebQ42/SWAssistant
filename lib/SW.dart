@@ -37,7 +37,7 @@ class SW{
     }
     if(!Directory(saveDir).existsSync())
       Directory(saveDir).createSync();
-    if(kDebugMode)
+    if(kDebugMode || kProfileMode)
       await testing();
     loadAll();
   }
@@ -89,7 +89,6 @@ class SW{
       }
     });
     if(defered.length >0){
-      print("defered profiles");
       var charId = 0;
       var minId = 0;
       var vehId = 0;
