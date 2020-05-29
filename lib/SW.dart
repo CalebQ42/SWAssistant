@@ -53,7 +53,6 @@ class SW{
     vehCats = List<String>();
     List<Editable> defered = new List();
     Directory(saveDir).listSync().forEach((element) {
-      print(element.path);
       if(element.path.endsWith(".backup"))
         return;
       var backup = File(element.path+".backup");
