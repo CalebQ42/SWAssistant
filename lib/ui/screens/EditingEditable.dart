@@ -17,7 +17,7 @@ class EditingEditable extends StatelessWidget{
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(title: Text(profile.name)),
-      body: ListView.builder(itemBuilder: (context,i) => cards[i]),
+      body: ListView.builder(itemCount: profile.cardNum,itemBuilder: (context,i) => cards[i]),
     );
   }
 }
