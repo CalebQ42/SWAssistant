@@ -31,7 +31,7 @@ abstract class Editable extends JsonSavable{
   List<bool> showCard;
 
   String get fileExtension;
-  int get cardNum;
+  List<String> get cardNames;
 
   //Saving variables
   bool _saving = false;
@@ -42,7 +42,7 @@ abstract class Editable extends JsonSavable{
     nts ??= new List();
     weapons ??= new List();
     criticalInjuries ??= new List();
-    showCard = List.filled(cardNum, false);
+    showCard = List.filled(cardNames.length, false);
   }
 
   Editable.load(FileSystemEntity file, SW app){
@@ -98,7 +98,7 @@ abstract class Editable extends JsonSavable{
     ));
     for (int i = 0; i < contents.length; i++){
       cards.add(
-        InfoCard(shown: showCard[i],contents: contents[i], title: "Woolooloo", onHideChange: (bool b){showCard[i]=b;})
+        InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b){showCard[i]=b;})
       );
     }
     return cards;

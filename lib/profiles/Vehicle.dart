@@ -22,8 +22,15 @@ class Vehicle extends Editable{
   int hp;
   String model;
 
-  int get cardNum => 6;
   String get fileExtension => ".swvehicle";
+  List<String> get cardNames => [
+    "Basic Information:",
+    "Defense:",
+    "Damage:",
+    "Weapons:",
+    "Critical Injuries:",
+    "Description:"
+  ];
 
   Vehicle({@required int id, String name = "New Vehicle"}) : super(id: id, name: name);
 
@@ -69,7 +76,7 @@ class Vehicle extends Editable{
   }
 
   List<Widget> cardContents(SW app) {
-    return List.filled(cardNum,
+    return List.filled(cardNames.length,
       EditableContent(builder: (bool b, Editable editable){
           return Text("Yo. It's a card");
         }, editable: this

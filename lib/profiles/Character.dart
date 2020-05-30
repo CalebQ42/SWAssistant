@@ -31,8 +31,25 @@ class Character extends Editable with Creature{
   int age;
   int encumCap;
 
-  int get cardNum => 16;
   String get fileExtension => ".swcharacter";
+  List<String> get cardNames => [
+    "Basic Information:",
+    "Wound and Strain:",
+    "Characteristics:",
+    "Skill:",
+    "Defense:",
+    "Weapons:",
+    "Critical Injuries:",
+    "Specializations:",
+    "Talents:",
+    "Force Powers:",
+    "XP:",
+    "Inventory:",
+    "Morality:",
+    "Duty:",
+    "Obligation:",
+    "Description:"
+  ];
 
   Character({@required int id, String name = "New Character"}) : super(id: id, name: name);
 
@@ -111,7 +128,7 @@ class Character extends Editable with Creature{
     out.add(EditableContent(builder: (b, editable){
       return WoundStrain(editing: b, character: editable, app: app);
     }, editable: this,));
-    for(int i = 2;i<cardNum;i++){
+    for(int i = 2;i<cardNames.length;i++){
       out.add(EditableContent(builder: (bool b,Editable editable){
           return Text("card " + i.toString());
         },

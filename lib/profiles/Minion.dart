@@ -16,8 +16,18 @@ class Minion extends Editable with Creature{
   List<Item> savedInv;
   List<Weapon> savedWeapons;
 
-  int get cardNum => 9;
   String get fileExtension => ".swminion";
+  List<String> get cardNames => [
+    "Number of Minions:",
+    "Wound:",
+    "Characteristics:",
+    "Skill:",
+    "Defense:",
+    "Weapons:",
+    "Talents:",
+    "Inventory:",
+    "Critical Injuries:"
+  ];
 
   Minion({@required int id, String name = "New Minion"}) : super(id: id, name: name);
 
@@ -54,7 +64,7 @@ class Minion extends Editable with Creature{
   }
 
   List<Widget> cardContents(SW app) {
-    return List.filled(cardNum,
+    return List.filled(cardNames.length,
       EditableContent(builder: (bool b, Editable editable){
           return Text("Yo. It's a card");
         }, editable: this

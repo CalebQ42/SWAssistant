@@ -15,11 +15,6 @@ class WoundStrain extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    var wound = Expanded(
-      child:Column(
-
-      )
-    );
     return Column(
       children: <Widget>[
         Row(
@@ -44,7 +39,27 @@ class WoundStrain extends StatelessWidget{
             )
           ],
         ),
-        wound,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Text("Wound:"),
+                  WoundStrainSwitcher(editing: editing,character: character, wound: true, app: app)
+                ],
+              )
+            ),
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Text("Strain:"),
+                  WoundStrainSwitcher(editing: editing,character: character, strain: true, app: app)
+                ],
+              )
+            ),
+          ],
+        )
       ],
     );
   }
@@ -64,9 +79,7 @@ class WoundStrainSwitcher extends StatefulWidget{
   }
 
   @override
-  State<StatefulWidget> createState() {
-
-  }
+  State<StatefulWidget> createState() => WoundStrainSwitcherState(editing: editing, character: character, wound: wound, strain: strain, app: app);
 }
 
 class WoundStrainSwitcherState extends State{
@@ -76,10 +89,12 @@ class WoundStrainSwitcherState extends State{
   final bool wound;
   final bool strain;
   final SW app;
+  int prevCur;
 
   WoundStrainSwitcherState({this.editing,this.character, this.wound = false, this.strain = false, this.app}){
     if((wound & strain) || (!wound && !strain))
       throw("Needs to be set to EITHER wound or strain");
+    prevCur = wound ? character.woundCur : character.strainCur;
   }
 
   @override
@@ -113,29 +128,6 @@ class WoundStrainSwitcherState extends State{
       meat = Row(
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
-            onPressed: (){
-              if(wound){
-                if(character.woundCur<character.woundThresh){
-                  setState(()=>character.woundCur++);
-                  character.save(character.getFileLocation(app));
-                }
-              }else if(strain){
-                if(character.strainCur<character.strainThresh){
-                  setState(()=>character.strainCur++);
-                  character.save(character.getFileLocation(app));
-                }
-              }
-            },
-          ),
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 200),
-            child: Text(
-              wound ? character.woundCur.toString() : character.strainCur.toString(),
-              key: ValueKey(wound ? character.woundCur.toString() : character.strainCur.toString())
-            )
-          ),
-          IconButton(
             icon: Icon(Icons.remove),
             onPressed: (){
               if(wound){
@@ -151,29 +143,66 @@ class WoundStrainSwitcherState extends State{
               }
             },
           ),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 200),
+            child: Text(
+              wound ? character.woundCur.toString() : character.strainCur.toString(),
+              key: ValueKey(wound ? character.woundCur.toString() : character.strainCur.toString())
+            ),
+            transitionBuilder: (wid, anim){
+              Tween<Offset> slide;
+              if(prevCur < (wound ? character.woundCur : character.strainCur)){
+                slide = Tween(begin: Offset(-1.0,0.0),end: Offset(0.0,0.0));
+                print("up");
+              }else
+                slide = Tween(begin: Offset(-1.0,0.0), end: Offset(0.0,0.0));
+              prevCur = wound ? character.woundCur : character.strainCur;
+              return ClipRect(
+                child: SlideTransition(
+                  position: slide.animate(anim),
+                  child: wid
+                )
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: (){
+              if(wound){
+                if(character.woundCur<character.woundThresh){
+                  setState(()=>character.woundCur++);
+                  character.save(character.getFileLocation(app));
+                }
+              }else if(strain){
+                if(character.strainCur<character.strainThresh){
+                  setState(()=>character.strainCur++);
+                  character.save(character.getFileLocation(app));
+                }
+              }
+            },
+          ),
         ],
       );
     }
     return AnimatedSwitcher(
       duration: Duration(milliseconds: 300),
-      transitionBuilder: (wid, anim){
-        Tween<Offset> slide;
-        if(wid.key == Key("text")){
-          slide = Tween(begin: Offset(-1.0,0.0),end: Offset(0.0,0.0));
-        }else{
-          slide = Tween(begin: Offset(1.0,0.0), end: Offset(0.0,0.0));
-        }
-        return ClipRect(
-          child: SlideTransition(
-            position: slide.animate(anim),
-            child: SizeTransition(
-              axisAlignment: -1.0,
-              sizeFactor: anim,
-              child: Center(child: wid),
-            )
-          )
-        );
-      },
+      // transitionBuilder: (wid, anim){
+      //   Tween<Offset> slide;
+      //   if(wid.key == Key("text"))
+      //     slide = Tween(begin: Offset(-1.0,0.0),end: Offset(0.0,0.0));
+      //   else
+      //     slide = Tween(begin: Offset(1.0,0.0), end: Offset(0.0,0.0));
+      //   return ClipRect(
+      //     child: SlideTransition(
+      //       position: slide.animate(anim),
+      //       child: SizeTransition(
+      //         axisAlignment: -1.0,
+      //         sizeFactor: anim,
+      //         child: Center(child: wid),
+      //       )
+      //     )
+      //   );
+      // },
       child: meat
     );
   }
