@@ -7,8 +7,8 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/items/CharacterInfo.dart';
-import 'package:swassistant/ui/items/WoundStrain.dart';
+import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
+import 'package:swassistant/ui/items/characters/WoundStrain.dart';
 
 import 'utils/Creature.dart';
 
