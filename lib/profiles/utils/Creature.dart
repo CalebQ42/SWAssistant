@@ -3,6 +3,7 @@ import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
 
 mixin Creature{
+  //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   List<int> charVals;
   List<Skill> skills;
   List<Talent> talents;
