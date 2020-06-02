@@ -4,6 +4,8 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 
 class EditingText extends StatelessWidget{
 
+  final Key key;
+
   final TextStyle style;
   final String initialText;
   final bool editing;
@@ -17,7 +19,7 @@ class EditingText extends StatelessWidget{
   final Editable editable;
   final SW app;
 
-  EditingText({@required this.editing, this.style, this.initialText = "", this.controller, this.textType,
+  EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
       this.defaultSave = false, this.editable, this.app}){
     if(editing && this.controller == null)
@@ -36,13 +38,13 @@ class EditingText extends StatelessWidget{
     Widget text;
     if(editing){
       text = Padding(
-        key: Key("textField"),
+        key: ValueKey("textField"),
         padding: fieldInsets,
         child: TextField(controller: controller, keyboardType: textType)
       );
     }else{
       text = Padding(
-        key: Key("text"),
+        key: ValueKey("text"),
         padding: textInsets,
         child: Text(initialText, style: style)
       );
@@ -52,16 +54,15 @@ class EditingText extends StatelessWidget{
       child: text,
       transitionBuilder: (wid, anim){
         Tween<Offset> slide;
-        if(wid.key == Key("text")){
-          slide = Tween(begin: Offset(-1.0,0.0),end: Offset(0.0,0.0));
+        if(wid.key == ValueKey("text")){
+          slide = Tween(begin: Offset(0.0,-1.0),end: Offset(0.0,0.0));
         }else{
-          slide = Tween(begin: Offset(1.0,0.0), end: Offset(0.0,0.0));
+          slide = Tween(begin: Offset(0.0,1.0), end: Offset(0.0,0.0));
         }
         return ClipRect(
           child: SlideTransition(
             position: slide.animate(anim),
             child: SizeTransition(
-              axisAlignment: -1.0,
               sizeFactor: anim,
               child: Center(child: wid),
             )

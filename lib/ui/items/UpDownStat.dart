@@ -11,16 +11,11 @@ class UpDownStat extends StatefulWidget{
   final int Function() getMax;
   final Widget editMax;
 
-  UpDownStat({this.key,this.editing, this.title, this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.editMax});
+  UpDownStat({this.key,this.editing, this.title = "", this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.editMax});
 
   @override
-  State<StatefulWidget> createState(){
-      print("editing?");
-      print(editing);
-    return UpDownStatState(editing: editing, title: title,onUpPressed: onUpPressed,
+  State<StatefulWidget> createState()=>UpDownStatState(editing: editing, title: title,onUpPressed: onUpPressed,
       onDownPressed: onDownPressed, getValue: getValue, getMax: getMax, editMax: editMax);
-
-      }
 }
 
 class UpDownStatState extends State{
@@ -38,7 +33,7 @@ class UpDownStatState extends State{
 
   @override
   Widget build(BuildContext context) {
-    Widget meat = Row(
+    Widget meat = !editing ? Row(
       key: ValueKey("UpDownStat"),
       children: <Widget>[
         Expanded(
@@ -85,11 +80,11 @@ class UpDownStatState extends State{
           )
         )
       ],
-    );
+    ) : editMax;
     return Column(
       children: <Widget>[
-        Text(title),
-        meat
+        if(title != "") Text(title),
+        meat,
       ],
     );
   }
