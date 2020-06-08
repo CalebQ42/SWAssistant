@@ -6,6 +6,7 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/Characteristics.dart';
 
 import 'utils/Creature.dart';
 
@@ -64,11 +65,15 @@ class Minion extends Editable with Creature{
   }
 
   List<Widget> cardContents(SW app) {
-    return List.filled(cardNames.length,
+    var out = List.filled(cardNames.length,
       EditableContent(builder: (bool b, Editable editable){
           return Text("Yo. It's a card");
         }, editable: this
       )
     );
+    out[2] = EditableContent(builder: (b , editable){
+      return Characteristics(editing: b, creature: editable, app: app);
+    }, editable: this);
+    return out;
   }
 }

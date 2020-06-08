@@ -46,30 +46,36 @@ class Characteristics extends StatelessWidget{
       ],
     );
   }
-//0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
+  //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   Widget charBuilder(int charNum, TextStyle style){
     return Expanded(
-      child: Column(
-        children: <Widget>[
-          Text(chars[charNum]),
-          EditingText(
-            editing: editing,
-            initialText: (creature as Creature).charVals[charNum].toString(),
-            controller: (){
-              var controller = TextEditingController(text: (creature as Creature).charVals[charNum].toString());
-              if(controller.text == "")
-                (creature as Creature).charVals[charNum] = 0;
-              else
-                (creature as Creature).charVals[charNum] = int.parse(controller.text);
-              return controller;
-            }(),
-            style: style,
-            textType: TextInputType.number,
-            defaultSave: true,
-            editable: creature,
-            app: app
-          )
-        ],
+      child: InkResponse(
+        containedInkWell: true,
+        onTap:(){
+          //TODO: Roll characteristic
+        },
+        child:Column(
+          children: <Widget>[
+            Text(chars[charNum]),
+            EditingText(
+              editing: editing,
+              initialText: (creature as Creature).charVals[charNum].toString(),
+              controller: (){
+                var controller = TextEditingController(text: (creature as Creature).charVals[charNum].toString());
+                if(controller.text == "")
+                  (creature as Creature).charVals[charNum] = 0;
+                else
+                  (creature as Creature).charVals[charNum] = int.parse(controller.text);
+                return controller;
+              }(),
+              style: style,
+              textType: TextInputType.number,
+              defaultSave: true,
+              editable: creature,
+              app: app
+            )
+          ],
+        )
       )
     );
   }

@@ -56,7 +56,7 @@ class SWDrawer extends StatelessWidget{
             }
           ),
           Divider(),
-          Text("Profiles"),
+          Padding(padding: EdgeInsets.only(left:5.0),child:Text("Profiles")),
           ListTile(
             title: Text("Characters"),
             leading: Icon(Icons.face),
@@ -86,7 +86,7 @@ class SWDrawer extends StatelessWidget{
             }
           ),
           Divider(),
-          Text("Other Stuff"),
+          Padding(padding: EdgeInsets.only(left:5.0),child:Text("Other Stuff")),
           ListTile(
             title: Text("Dice"),
             leading: Icon(Icons.casino),
