@@ -89,3 +89,26 @@ Die force = Die.withSides("force",[
     ComplexSide(parts: [ComplexSidePart(name:lig,value:2)]),
     ComplexSide(parts: [ComplexSidePart(name:dar,value:2)]),
 ]);
+
+class SWDiceValueHolder{
+  int abi, dif, prof, chal, boo, setb, forc;
+  SWDiceValueHolder({this.abi=0, this.dif=0, this.prof=0, this.chal=0, this.boo=0, this.setb=0, this.forc=0});
+  Dice getDice(){
+    var dice = new Dice("SW Dice");
+    for(var i = 0; i<abi;i++)
+      dice.dice.add(ability);
+    for(var i = 0; i<dif;i++)
+      dice.dice.add(difficulty);
+    for(var i = 0; i<prof;i++)
+      dice.dice.add(proficiency);
+    for(var i = 0; i<chal;i++)
+      dice.dice.add(challenge);
+    for(var i = 0; i<boo;i++)
+      dice.dice.add(boost);
+    for(var i = 0; i<setb;i++)
+      dice.dice.add(setback);
+    for(var i = 0; i<forc;i++)
+      dice.dice.add(force);
+    return dice;
+  }
+}
