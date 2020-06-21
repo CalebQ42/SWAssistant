@@ -79,11 +79,11 @@ class WoundStrain extends StatelessWidget{
                 },
                 child: !editing ? UpDownStat(
                   key: ValueKey("UpDownWound"),
-                  editing: editing,
                   onUpPressed: () => character.woundCur++,
                   onDownPressed: ()=>character.woundCur--,
                   getValue: ()=>character.woundCur,
                   getMax: ()=>character.woundThresh,
+                  getMin: ()=>0,
                 ) : (){
                   var controll = TextEditingController(text: character.woundThresh.toString());
                   controll.addListener(() {
@@ -118,11 +118,11 @@ class WoundStrain extends StatelessWidget{
                 },
                 child: !editing ? UpDownStat(
                   key: ValueKey("UpDownStrain"),
-                  editing: editing,
                   onUpPressed: () => character.strainCur++,
                   onDownPressed: ()=>character.strainCur--,
                   getValue: ()=>character.strainCur,
-                  getMax: ()=>character.strainThresh
+                  getMax: ()=>character.strainThresh,
+                  getMin: ()=>0,
                 ) : (){
                   var controll = TextEditingController(text: character.strainThresh.toString());
                   controll.addListener(() {
