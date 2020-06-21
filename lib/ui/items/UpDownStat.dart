@@ -3,44 +3,40 @@ import 'package:flutter/material.dart';
 class UpDownStat extends StatefulWidget{
 
   final Key key;
-  final bool editing;
-  final String title;
   final Function onUpPressed;
   final Function onDownPressed;
   final int Function() getValue;
   final int Function() getMax;
-  final Widget editMax;
+  final int Function() getMin;
 
-  UpDownStat({this.key,this.editing, this.title = "", this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.editMax});
+  UpDownStat({this.key,this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.getMin});
 
   @override
-  State<StatefulWidget> createState()=>UpDownStatState(editing: editing, title: title,onUpPressed: onUpPressed,
-      onDownPressed: onDownPressed, getValue: getValue, getMax: getMax, editMax: editMax);
+  State<StatefulWidget> createState()=>UpDownStatState(onUpPressed: onUpPressed,
+      onDownPressed: onDownPressed, getValue: getValue, getMax: getMax);
 }
 
 class UpDownStatState extends State{
 
-  final bool editing;
-  final String title;
   final Function onUpPressed;
   final Function onDownPressed;
   final int Function() getValue;
   final int Function() getMax;
-  final Widget editMax;
+  final int Function() getMin;
   bool up = false;
 
-  UpDownStatState({this.editing, this.title, this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.editMax});
+  UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.getMin});
 
   @override
   Widget build(BuildContext context) {
-    Widget meat = !editing ? Row(
+    return Row(
       key: ValueKey("UpDownStat"),
       children: <Widget>[
         Expanded(
           child: IconButton(
             icon:Icon(Icons.remove),
             onPressed: (){
-              if(getValue()>0){
+              if(getMin == null || getValue()>0){
                 up = false;
                 onDownPressed();
                 setState((){});
@@ -71,7 +67,7 @@ class UpDownStatState extends State{
           child: IconButton(
             icon: Icon(Icons.add),
             onPressed: (){
-              if(getValue()<getMax()){
+              if(getMax == null || getValue()<getMax()){
                 up = true;
                 onUpPressed();
                 setState((){});
@@ -79,12 +75,6 @@ class UpDownStatState extends State{
             },
           )
         )
-      ],
-    ) : editMax;
-    return Column(
-      children: <Widget>[
-        if(title != "") Text(title),
-        meat,
       ],
     );
   }

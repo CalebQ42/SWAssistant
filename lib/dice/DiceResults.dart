@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
+
+import 'package:swassistant/Preferences.dart' as Preferences;
 
 class DiceResults{
   int _number = 0;
@@ -47,9 +50,11 @@ class DiceResults{
     }
   }
   bool isNumOnly() => resList.length == 0;
-  void showResultDialog(BuildContext bc, String problemMessage){
-    //TODO: option to get individual dialog first
-    showCombinedDialog(bc);
+  void showResultDialog({SW app, BuildContext context, String problemMessage = ""}){
+    if(app.prefs.getBool(Preferences.dice)!=null && app.prefs.getBool(Preferences.dice))
+      showIndividualDialog(context);
+    else
+      showCombinedDialog(context);
   }
   void showCombinedDialog(BuildContext bc){
     var children = new List<Widget>();
