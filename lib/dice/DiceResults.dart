@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 
 import 'package:swassistant/Preferences.dart' as Preferences;
+import 'package:swassistant/dice/Sides.dart';
 
 class DiceResults{
   int _number = 0;
@@ -10,22 +11,30 @@ class DiceResults{
   var problem = false;
   var resList = new List();
   var diceNames = new List();
-  void add(Result res, String diceName){
-    if(subtractMode)
-      res.value *= -1;
-    resList.add(new Result(res.name,res.value));
+
+  void addSimpleSide(SimpleSide ss, String diceName){
     diceNames.add(diceName);
-    if (has(res.name))
-      _reses[indexOf(res.name)].value += res.value;
-    else
-      _reses.add(res);
+    resList.add(ss);
+    if(ss.isInt()){
+      _number += subtractMode ? -ss.intSide() : ss.intSide();
+    }else if(ss.stringSide() !=""){
+      if(has(ss.stringSide()))
+        _reses[indexOf(ss.stringSide())].value += subtractMode ? -1 : 1;
+      else
+        _reses.add(Result(ss.stringSide(), subtractMode ? -1: 1));
+    }
   }
-  void addNum(int i, String diceName){
-    if (subtractMode)
-      i*=-1;
-    _number += i;
-    resList.add(i);
+  void addComplexSide(ComplexSide cs, String diceName){
     diceNames.add(diceName);
+    resList.add(cs);
+    if(cs.number != null)
+      _number += subtractMode ? -cs.number : cs.number;
+    for(ComplexSidePart csp in cs.parts){
+      if(has(csp.name))
+        _reses[indexOf(csp.name)].value += subtractMode ? -csp.value : csp.value;
+      else
+        _reses.add(Result(csp.name, subtractMode ? -csp.value: csp.value));
+    }
   }
   bool has(String name) => _reses.any((r)=>r.name == name);
   int indexOf(String name){
@@ -43,13 +52,16 @@ class DiceResults{
   int getNum() => _number;
   void combineWith(DiceResults dr){
     for(int i = 0; i<dr.resList.length;i++){
-      if(dr.resList[i] is int)
-        addNum(dr.resList[i], dr.diceNames[i]);
-      else if(dr.resList[i] is Result)
-        add(dr.resList[i], dr.diceNames[i]);
+      if(dr.resList[i] is SimpleSide)
+        addSimpleSide(dr.resList[i], dr.diceNames[i]);
+      else if(dr.resList[i] is ComplexSide)
+        addComplexSide(dr.resList[i], dr.diceNames[i]);
     }
   }
-  bool isNumOnly() => resList.length == 0;
+  bool isNumOnly() => _reses.length == 0;
+  bool hasNumRes() => resList.any((element){
+    return (element is int) || (element is ComplexSide && element.number != null) ? true : false;
+  });
   void showResultDialog({SW app, BuildContext context, String problemMessage = ""}){
     if(app.prefs.getBool(Preferences.dice)!=null && app.prefs.getBool(Preferences.dice))
       showIndividualDialog(context);
@@ -58,18 +70,20 @@ class DiceResults{
   }
   void showCombinedDialog(BuildContext bc){
     var children = new List<Widget>();
-    children.add(
-      new Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          new Text("Number:"),
-          new Text(
-            _number.toString(),
-            style: Theme.of(bc).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
-          )
-        ],
-      )
-    );
+    if(hasNumRes()){
+      children.add(
+        new Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Text("Number:"),
+            new Text(
+              _number.toString(),
+              style: Theme.of(bc).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
+            )
+          ],
+        )
+      );
+    }
     for(var r in _reses){
       children.add(new Row(
         mainAxisSize: MainAxisSize.max,

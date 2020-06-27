@@ -1,34 +1,18 @@
 import 'package:swassistant/dice/Dice.dart';
 import 'package:swassistant/dice/Sides.dart';
 
-const String suc = "success";
-const String fai = "failure";
-const String adv = "advantage";
-const String thr = "threat";
-const String tri = "triumpth";
-const String des = "despair";
+const String suc = "Success";
+const String fai = "Failure";
+const String adv = "Advantage";
+const String thr = "Threat";
+const String tri = "Triumpth";
+const String des = "Despair";
 //Force die sides
-const String lig = "light";
-const String dar = "dark";
+const String lig = "Light Side";
+const String dar = "Dark Side";
 
 const List<String> SWDice = ["Ability", "Proficiency", "Difficulty", "Challenge", "Boost", "Setback", "Force"];
 
-Die boost = Die.withSides(SWDice[4],[
-    SimpleSide(""),
-    SimpleSide(""),
-    SimpleSide(adv),
-    SimpleSide(suc),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)])
-]);
-Die setback = Die.withSides(SWDice[5],[
-    SimpleSide(""),
-    SimpleSide(""),
-    SimpleSide(fai),
-    SimpleSide(fai),
-    SimpleSide(thr),
-    SimpleSide(thr)
-]);
 Die ability = Die.withSides(SWDice[0],[
     SimpleSide(""),
     SimpleSide(adv),
@@ -38,16 +22,6 @@ Die ability = Die.withSides(SWDice[0],[
     ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)]),
     ComplexSide(parts:[ComplexSidePart(name:suc,value:2)]),
     ComplexSide(parts:[ComplexSidePart(name:adv,value:2)])
-]);
-Die difficulty = Die.withSides(SWDice[2],[
-    SimpleSide(""),
-    SimpleSide(thr),
-    SimpleSide(thr),
-    SimpleSide(thr),
-    SimpleSide(fai),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:1),ComplexSidePart(name:fai,value:1)]),
-    ComplexSide(parts:[ComplexSidePart(name:fai,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:2)])
 ]);
 Die proficiency = Die.withSides(SWDice[1],[
     SimpleSide(""),
@@ -63,6 +37,16 @@ Die proficiency = Die.withSides(SWDice[1],[
     ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)]),
     ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)]),
 ]);
+Die difficulty = Die.withSides(SWDice[2],[
+    SimpleSide(""),
+    SimpleSide(thr),
+    SimpleSide(thr),
+    SimpleSide(thr),
+    SimpleSide(fai),
+    ComplexSide(parts:[ComplexSidePart(name:thr,value:1),ComplexSidePart(name:fai,value:1)]),
+    ComplexSide(parts:[ComplexSidePart(name:fai,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:thr,value:2)])
+]);
 Die challenge = Die.withSides(SWDice[3],[
     SimpleSide(""),
     SimpleSide(fai),
@@ -76,6 +60,22 @@ Die challenge = Die.withSides(SWDice[3],[
     ComplexSide(parts:[ComplexSidePart(name:thr,value:2)]),
     ComplexSide(parts:[ComplexSidePart(name:thr,value:1),ComplexSidePart(name:fai,value:1)]),
     ComplexSide(parts:[ComplexSidePart(name:thr,value:1),ComplexSidePart(name:fai,value:1)]),
+]);
+Die boost = Die.withSides(SWDice[4],[
+    SimpleSide(""),
+    SimpleSide(""),
+    SimpleSide(adv),
+    SimpleSide(suc),
+    ComplexSide(parts:[ComplexSidePart(name:adv,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)])
+]);
+Die setback = Die.withSides(SWDice[5],[
+    SimpleSide(""),
+    SimpleSide(""),
+    SimpleSide(fai),
+    SimpleSide(fai),
+    SimpleSide(thr),
+    SimpleSide(thr)
 ]);
 Die force = Die.withSides(SWDice[6],[
     SimpleSide(dar),

@@ -51,17 +51,10 @@ class Dice{
     dice.forEach((d){
       if(d.sides.length>0){
         var i = d.rollIndex();
-        if(d.isComplex(i)){
-          var c = d.getComplex(i);
-          c.parts.forEach((p)=>dr.add(new Result(p.name,p.value), d.name));
-          dr.addNum(c.number, d.name);
-        }else{
-          var s = d.getSimple(i);
-          if(s.isInt())
-            dr.addNum(s.intSide(), d.name);
-          else
-            dr.add(new Result(s.stringSide(),1), d.name);
-        }
+        if(d.isComplex(i))
+          dr.addComplexSide(d.getComplex(i), d.name);
+        else
+          dr.addSimpleSide(d.getSimple(i), d.name);
       }
     });
     return dr;

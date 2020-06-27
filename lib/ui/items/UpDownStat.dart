@@ -13,7 +13,7 @@ class UpDownStat extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState()=>UpDownStatState(onUpPressed: onUpPressed,
-      onDownPressed: onDownPressed, getValue: getValue, getMax: getMax);
+      onDownPressed: onDownPressed, getValue: getValue, getMax: getMax, getMin: getMin);
 }
 
 class UpDownStatState extends State{
@@ -36,7 +36,7 @@ class UpDownStatState extends State{
           child: IconButton(
             icon:Icon(Icons.remove),
             onPressed: (){
-              if(getMin == null || getValue()>0){
+              if(getMin == null || getValue()>getMin()){
                 up = false;
                 onDownPressed();
                 setState((){});
