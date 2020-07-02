@@ -20,4 +20,42 @@ class Skill implements JsonSavable{
     "base" : base,
     "career" : career
   };
+
+
+  static Map<String, String> SkillsList = {
+    "Astrogation" : "Intellect",
+    "Athletics" : "Brawn",
+    "Brawl" : "Brawn",
+    "Charm" : "Presence",
+    "Coercion" : "Willpower",
+    "Computers" : "Intellect",
+    "Cool" : "Presence",
+    "Coordination" : "Agility",
+    "Deception" : "Cunning",
+    "Discipline" : "Willpower",
+    "Gunnery" : "Agility",
+    "Leadership" : "Presence",
+    "Lightsaber" : "Brawn",
+    "Mechanics" : "Intellect",
+    "Medicine" : "Intellect",
+    "Melee" : "Brawn",
+    "Negotiation" : "Presence",
+    "Perception" : "Cunning",
+    "Piloting (Planetary)" : "Agility",
+    "Piloting (Space)" : "Agility",
+    "Ranged (Heavy)" : "Agility",
+    "Ranged (Light)" : "Agility",
+    "Resilience" : "Brawn",
+    "Skulduggery" : "Cunning",
+    "Stealth" : "Agility",
+    "Streetwise" : "Cunning",
+    "Survival" : "Cunning",
+    "Vigilance" : "Willpower",
+    "Knowledge (Core Worlds)" : "Intellect",
+    "Knowledge (Education)" : "Intellect",
+    "Knowledge (Lore)" : "Intellect",
+    "Knowledge (Outer Rim)" : "Intellect",
+    "Knowledge (Underworld)" : "Intellect",
+    "Knowledge (Xenology)" : "intellect",
+  };
 }

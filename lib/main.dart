@@ -29,9 +29,9 @@ class SWApp extends StatelessWidget {
       theme: theme,
       home: EditableList(app,EditableList.character),
       routes: {
-        "/characters" : (context)=>EditableList(app, EditableList.character),
-        "/vehicles" : (context)=>EditableList(app,EditableList.vehicle),
-        "/minions" : (context)=>EditableList(app, EditableList.minion),
+        "/characters" : (context) => EditableList(app, EditableList.character),
+        "/vehicles" : (context) => EditableList(app, EditableList.vehicle),
+        "/minions" : (context) => EditableList(app, EditableList.minion),
       },
     );
   }
