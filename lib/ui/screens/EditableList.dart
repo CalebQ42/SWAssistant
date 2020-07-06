@@ -23,16 +23,16 @@ class EditableList extends StatefulWidget{
   }
 
   @override
-  State<StatefulWidget> createState() => EditableListState(app, type);
+  State<StatefulWidget> createState() => _EditableListState(app, type);
 }
 
-class EditableListState extends State{
+class _EditableListState extends State{
 
   SW app;
   Function refreshCallback;
   int type;
 
-  EditableListState(this.app, this.type){
+  _EditableListState(this.app, this.type){
     refreshCallback = () => setState((){});
   }
 

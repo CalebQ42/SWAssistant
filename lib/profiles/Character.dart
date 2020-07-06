@@ -10,6 +10,7 @@ import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
 import 'package:swassistant/ui/items/characters/WoundStrain.dart';
+import 'package:swassistant/ui/items/creatures/Skills.dart';
 
 import 'utils/Creature.dart';
 
@@ -129,15 +130,16 @@ class Character extends Editable with Creature{
     out.add(EditableContent(builder: (b, editable){
       return WoundStrain(editing: b, character: editable, app: app);
     }, editable: this,));
-    out.add(EditableContent(builder: (b,editable){
+    out.add(EditableContent(builder: (b, editable){
       return Characteristics(editing: b, creature: editable, app: app);
     }, editable: this));
-    for(int i = 3;i<cardNames.length;i++){
+    out.add(EditableContent(builder: (b, editable){
+      return Skills();
+    }, editable: this));
+    for(int i = out.length;i<cardNames.length;i++){
       out.add(EditableContent(builder: (bool b,Editable editable){
-          return Text("card " + i.toString());
-        },
-        editable: this,
-      ));
+        return Text("card " + i.toString());
+      }, editable: this,));
     }
     return out;
   }

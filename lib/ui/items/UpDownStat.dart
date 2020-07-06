@@ -12,11 +12,11 @@ class UpDownStat extends StatefulWidget{
   UpDownStat({this.key,this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.getMin});
 
   @override
-  State<StatefulWidget> createState()=>UpDownStatState(onUpPressed: onUpPressed,
+  State<StatefulWidget> createState()=>_UpDownStatState(onUpPressed: onUpPressed,
       onDownPressed: onDownPressed, getValue: getValue, getMax: getMax, getMin: getMin);
 }
 
-class UpDownStatState extends State{
+class _UpDownStatState extends State{
 
   final Function onUpPressed;
   final Function onDownPressed;
@@ -25,7 +25,7 @@ class UpDownStatState extends State{
   final int Function() getMin;
   bool up = false;
 
-  UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.getMin});
+  _UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.getMin});
 
   @override
   Widget build(BuildContext context) {

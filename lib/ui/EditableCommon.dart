@@ -82,17 +82,17 @@ class EditableContent extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    return EditableContentState(builder: builder, editable: editable);
+    return _EditableContentState(builder: builder, editable: editable);
   }
 }
 
-class EditableContentState extends State{
+class _EditableContentState extends State{
 
   Widget Function(bool editing, Editable editable) builder;
   bool editing = false;
   Editable editable;
 
-  EditableContentState({@required this.builder, this.editable});
+  _EditableContentState({@required this.builder, this.editable});
 
   @override
   Widget build(BuildContext context) {

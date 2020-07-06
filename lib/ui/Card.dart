@@ -19,16 +19,16 @@ class InfoCard extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    return InfoCardState(holder, onHideChange);
+    return _InfoCardState(holder, onHideChange);
   }
 }
 
-class InfoCardState extends State{
+class _InfoCardState extends State{
 
   InfoCardHolder holder;
   Function(bool b) onHideChange;
 
-  InfoCardState(this.holder, this.onHideChange);
+  _InfoCardState(this.holder, this.onHideChange);
 
   @override
   Widget build(BuildContext context) {
@@ -81,17 +81,17 @@ class NameCardContent extends StatefulWidget{
   const NameCardContent(this.editable, this.refresh, this.app);
   @override
   State<StatefulWidget> createState() {
-    return NameCardContentState(editable, refresh, app);
+    return _NameCardContentState(editable, refresh, app);
   }
 }
 
-class NameCardContentState extends State{
+class _NameCardContentState extends State{
 
   Editable editable;
   Function refresh;
   SW app;
 
-  NameCardContentState(this.editable, this.refresh, this.app);
+  _NameCardContentState(this.editable, this.refresh, this.app);
   @override
   Widget build(BuildContext context) {
     TextEditingController controller;
