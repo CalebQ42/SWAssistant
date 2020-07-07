@@ -21,6 +21,10 @@ class Skill implements JsonSavable{
     "career" : career
   };
 
+  String toString(){
+    return name + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
+  }
+
 
   static Map<String, String> SkillsList = {
     "Astrogation" : "Intellect",

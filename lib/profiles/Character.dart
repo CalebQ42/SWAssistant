@@ -134,7 +134,7 @@ class Character extends Editable with Creature{
       return Characteristics(editing: b, creature: editable, app: app);
     }, editable: this));
     out.add(EditableContent(builder: (b, editable){
-      return Skills();
+      return Skills(editing:b, editable: editable, app: app);
     }, editable: this));
     for(int i = out.length;i<cardNames.length;i++){
       out.add(EditableContent(builder: (bool b,Editable editable){
