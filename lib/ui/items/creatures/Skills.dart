@@ -4,44 +4,82 @@ import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
-class Skills extends StatefulWidget{
+class Skills extends StatelessWidget{
   final Editable editable;
   final bool editing;
   final SW app;
 
   Skills({this.editable, this.editing, this.app});
 
-  @override
-  State<StatefulWidget> createState() {
-    return _SkillsState(editable: editable, editing: editing, app: app);
-  }
-}
-
-class _SkillsState extends State{
-  Editable editable;
-  bool editing;
-  SW app;
-
-  _SkillsState({this.editable, this.editing, this.app});
-  @override
-  Widget build(BuildContext context) {
-    var skillDisplays = List.generate(
-      (editable as Creature).skills.length,
-      (index) => _SkillDisplay(creature: editable as Creature,skill: index, editing: editing)
-    );
+  Widget build(BuildContext context){
+    var skillList = List.generate((editable as Creature).skills.length, (index){
+      return InkResponse(
+        containedInkWell: true,
+        onTap: (){
+          //TODO: skill tap
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text((editable as Creature).skills[index].name),
+              flex: 7
+            ),
+            AnimatedSwitcher(
+              child: !editing ? Text((editable as Creature).skills[index].value.toString())
+                : IconButton(
+                  icon: Icon(Icons.delete_forever),
+                  onPressed: (){
+                    //TODO: delete skill
+                  }
+                ),
+              duration: Duration(milliseconds: 300),
+              transitionBuilder: (child, anim){
+                return ClipRect(
+                  child:SlideTransition(
+                    position: Tween<Offset>(
+                      begin: (editing && child is IconButton) || (!editing && child is Text) ? Offset(-1.0,0):Offset(1.0,0.0),
+                      end: Offset.zero
+                    ).animate(anim),
+                    child: child,
+                  )
+                );
+              },
+            ),
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 300),
+              child:editing ? IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: (){
+                  //TODO: edit skill
+                }
+              ) : Padding(padding: EdgeInsets.symmetric(vertical: 24.0),),
+              transitionBuilder: (child, animation) {
+                return SizeTransition(
+                  axis: Axis.horizontal,
+                  axisAlignment: 1.0,
+                  sizeFactor: animation,
+                  child: child,
+                );
+              },
+            )
+          ]
+        )
+      );
+    });
     return Column(
       children: <Widget>[
         Column(
-          key: ValueKey(editing.toString() + skillDisplays.toString()),
-          children: skillDisplays
+          children: skillList
         ),
         AnimatedSwitcher(
           duration: Duration(milliseconds: 300),
-          child: editing ? IconButton(
-            icon: Icon(Icons.add),
-            onPressed: (){
-              //TODO: add skill
-            },
+          child: editing ? Center(
+            child: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: (){
+                //TODO: add skill
+              },
+            )
           ) : Container(),
           transitionBuilder: (wid,anim){
             return SizeTransition(
@@ -52,47 +90,6 @@ class _SkillsState extends State{
           },
         )
       ],
-    );
-  }
-}
-
-class _SkillDisplay extends StatelessWidget{
-  final bool editing;
-  final int skill;
-  final Creature creature;
-
-  _SkillDisplay({this.editing, this.skill, this.creature});
-
-  Widget build(BuildContext context){
-    return Row(
-      children: [
-        Expanded(
-          child: Text(creature.skills[skill].name),
-          flex: 7
-        ),
-        Expanded(
-          child: AnimatedSwitcher(
-            child: !editing ? Text(creature.skills[skill].value.toString()):
-            IconButton(
-              icon: Icon(Icons.delete_forever),
-              onPressed: (){
-                //TODO: delete skill
-              }
-            ),
-            duration: Duration(milliseconds: 300),
-          ),
-          flex: 1
-        ),
-        Expanded(
-          child: IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: (){
-              //TODO: edit skill
-            }
-          ),
-          flex: 1
-        )
-      ]
     );
   }
 }
