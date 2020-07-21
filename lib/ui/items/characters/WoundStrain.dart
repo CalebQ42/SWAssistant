@@ -10,9 +10,8 @@ class WoundStrain extends StatelessWidget{
 
   final bool editing;
   final Character character;
-  final SW app;
 
-  WoundStrain({this.editing,this.character, this.app});
+  WoundStrain({this.editing,this.character});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,6 @@ class WoundStrain extends StatelessWidget{
                 textType: TextInputType.number,
                 defaultSave: true,
                 editable: character,
-                app: app
               )
             )
           ],
@@ -88,7 +86,7 @@ class WoundStrain extends StatelessWidget{
                   var controll = TextEditingController(text: character.woundThresh.toString());
                   controll.addListener(() {
                     character.woundThresh = int.parse(controll.text);
-                    character.save(character.getFileLocation(app));
+                    character.save(character.getFileLocation(SW.of(context)));
                   });
                   return Padding(
                     child:TextField(controller: controll, keyboardType: TextInputType.number,),
@@ -127,7 +125,7 @@ class WoundStrain extends StatelessWidget{
                   var controll = TextEditingController(text: character.strainThresh.toString());
                   controll.addListener(() {
                     character.strainThresh = int.parse(controll.text);
-                    character.save(character.getFileLocation(app));
+                    character.save(character.getFileLocation(SW.of(context)));
                   });
                   return Padding(
                     child:TextField(controller: controll, keyboardType: TextInputType.number,),

@@ -122,19 +122,19 @@ class Character extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(SW app) {
+  List<Widget> cardContents() {
     var out = new List<Widget>();
     out.add(EditableContent(builder: (b, editable){
-      return CharacterInfo(editing: b, character: editable,app: app);
+      return CharacterInfo(editing: b, character: editable);
     }, editable: this));
     out.add(EditableContent(builder: (b, editable){
-      return WoundStrain(editing: b, character: editable, app: app);
+      return WoundStrain(editing: b, character: editable);
     }, editable: this,));
     out.add(EditableContent(builder: (b, editable){
-      return Characteristics(editing: b, creature: editable, app: app);
+      return Characteristics(editing: b, creature: editable);
     }, editable: this));
     out.add(EditableContent(builder: (b, editable){
-      return Skills(editing:b, editable: editable, app: app);
+      return Skills(editing:b, creature: editable);
     }, editable: this));
     for(int i = out.length;i<cardNames.length;i++){
       out.add(EditableContent(builder: (bool b,Editable editable){

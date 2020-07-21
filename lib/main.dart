@@ -3,18 +3,17 @@ import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
 
-void main(){
-  var app = SW();
-  app.initialize().whenComplete(() => runApp(SWApp(app)));
+void main() async{
+  var app = await SW.initialize(SWApp());
+  runApp(app);
 }
 
 class SWApp extends StatelessWidget {
-  final SW app;
-  SWApp(this.app);
+  SWApp();
   @override
   Widget build(BuildContext context) {
     ThemeData theme;
-    if(app.prefs.getBool(preferences.light)!= null && app.prefs.getBool(preferences.light))
+    if(SW.of(context).prefs.getBool(preferences.light)!= null && SW.of(context).prefs.getBool(preferences.light))
       theme = ThemeData.light().copyWith(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
@@ -27,11 +26,11 @@ class SWApp extends StatelessWidget {
     return MaterialApp(
       title: 'SWAssistant',
       theme: theme,
-      home: EditableList(app,EditableList.character),
+      home: EditableList(EditableList.character),
       routes: {
-        "/characters" : (context) => EditableList(app, EditableList.character),
-        "/vehicles" : (context) => EditableList(app, EditableList.vehicle),
-        "/minions" : (context) => EditableList(app, EditableList.minion),
+        "/characters" : (context) => EditableList(EditableList.character),
+        "/vehicles" : (context) => EditableList(EditableList.vehicle),
+        "/minions" : (context) => EditableList(EditableList.minion),
       },
     );
   }

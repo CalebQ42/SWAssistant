@@ -87,13 +87,13 @@ abstract class Editable extends JsonSavable{
     return json;
   }
 
-  List<Widget> cards(Function refresh, SW app){
+  List<Widget> cards(Function refresh, BuildContext context){
     var cards = List<Widget>();
-    var contents = cardContents(app);
+    var contents = cardContents();
     cards.add(Card(
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: NameCardContent(this, refresh, app)
+        child: NameCardContent(this, refresh)
       )
     ));
     for (int i = 0; i < contents.length; i++){
@@ -104,7 +104,7 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  List<Widget> cardContents(SW app);
+  List<Widget> cardContents();
 
   void exportTo(String folder){}
   String getFileLocation(SW sw){

@@ -14,25 +14,23 @@ class EditableList extends StatefulWidget{
   static final minion = 1;
   static final vehicle = 2;
 
-  final SW app;
   final int type;
 
-  EditableList(this.app, this.type){
+  EditableList(this.type){
     if(this.type <0 || this.type > 2)
       throw("Invlid type");
   }
 
   @override
-  State<StatefulWidget> createState() => _EditableListState(app, type);
+  State<StatefulWidget> createState() => _EditableListState(type);
 }
 
 class _EditableListState extends State{
 
-  SW app;
   Function refreshCallback;
   int type;
 
-  _EditableListState(this.app, this.type){
+  _EditableListState(this.type){
     refreshCallback = () => setState((){});
   }
 
@@ -40,13 +38,13 @@ class _EditableListState extends State{
     List list;
     switch(type){
       case 0:
-        list = app.characters;
+        list = SW.of(context).characters;
         break;
       case 1:
-        list = app.minions;
+        list = SW.of(context).minions;
         break;
       case 2:
-        list = app.vehicles;
+        list = SW.of(context).vehicles;
         break;
       default:
         throw("invalid list type");
@@ -74,7 +72,7 @@ class _EditableListState extends State{
           return Card(
             child: InkResponse(
               onTap: (){
-                Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],app, refreshCallback),fullscreenDialog: false));
+                Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],refreshCallback),fullscreenDialog: false));
               },
               child:Padding(
                 padding: EdgeInsets.all(10.0),
@@ -108,22 +106,22 @@ class _EditableListState extends State{
           var id = 0;
           switch (type){
             case 0:
-              while(app.characters.any((e)=>e.id==id)){
+              while(SW.of(context).characters.any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => app.characters.add(new Character(id: id)));
+              setState(() => SW.of(context).characters.add(new Character(id: id)));
               break;
             case 1:
-              while(app.minions.any((e)=>e.id==id)){
+              while(SW.of(context).minions.any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => app.minions.add(new Minion(id: id)));
+              setState(() => SW.of(context).minions.add(new Minion(id: id)));
               break;
             case 2:
-              while(app.vehicles.any((e)=>e.id==id)){
+              while(SW.of(context).vehicles.any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => app.vehicles.add(new Vehicle(id: id)));
+              setState(() => SW.of(context).vehicles.add(new Vehicle(id: id)));
               break;
           }
         }

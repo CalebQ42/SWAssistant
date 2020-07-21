@@ -1,43 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/dice/SWDiceDialog.dart';
+import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
-class Skills extends StatelessWidget{
-  final Editable editable;
+class Skills extends StatefulWidget{
+  final Editable creature;
   final bool editing;
-  final SW app;
 
-  Skills({this.editable, this.editing, this.app});
+  Skills({this.creature, this.editing}){
+    if(!(creature is Creature))
+      throw("Skills card must be a creature");
+  }
+
+  @override
+  State<StatefulWidget> createState() => _SkillsState(creature: creature as Creature, editing: editing);
+}
+
+class _SkillsState extends State{
+  final Creature creature;
+  final bool editing;
+
+  _SkillsState({this.creature, this.editing});
 
   Widget build(BuildContext context){
-    var skillList = List.generate((editable as Creature).skills.length, (index){
+    print("SkillState:" + editing.toString());
+    var skillList = List.generate(creature.skills.length, (index){
       return InkResponse(
         containedInkWell: true,
         onTap: (){
-          //TODO: skill tap
+          var ability = (creature.charVals[creature.skills[index].base] - creature.skills[index].value).abs();
+          var proficiency = creature.charVals[creature.skills[index].base] < creature.skills[index].value ?
+            creature.skills[index].value :
+            creature.charVals[creature.skills[index].base];
+          showDialog(context: context,
+            child: SWDiceDialog(
+              holder: SWDiceHolder(ability:ability, proficiency: proficiency),
+              context: context
+            )
+          );
         },
         child: Row(
           children: [
             Expanded(
-              child: Text((editable as Creature).skills[index].name),
+              child: Text(creature.skills[index].name),
               flex: 7
             ),
             AnimatedSwitcher(
-              child: !editing ? Text((editable as Creature).skills[index].value.toString())
+              child: !editing ? Text(creature.skills[index].value.toString())
                 : IconButton(
                   icon: Icon(Icons.delete_forever),
                   onPressed: (){
                     //TODO: delete skill
                   }
                 ),
-              duration: Duration(milliseconds: 300),
+              duration: Duration(milliseconds: 150),
               transitionBuilder: (child, anim){
                 return ClipRect(
-                  child:SlideTransition(
+                  child: SlideTransition(
                     position: Tween<Offset>(
-                      begin: (editing && child is IconButton) || (!editing && child is Text) ? Offset(-1.0,0):Offset(1.0,0.0),
+                      begin: (editing && child is IconButton) || (!editing && child is Text) ? Offset(-1.0,0) : Offset(1.0,0.0),
                       end: Offset.zero
                     ).animate(anim),
                     child: child,
@@ -46,13 +70,13 @@ class Skills extends StatelessWidget{
               },
             ),
             AnimatedSwitcher(
-              duration: Duration(milliseconds: 300),
-              child:editing ? IconButton(
+              duration: Duration(milliseconds: 150),
+              child: editing ? IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: (){
                   //TODO: edit skill
                 }
-              ) : Padding(padding: EdgeInsets.symmetric(vertical: 24.0),),
+              ) : Container(height: 48),
               transitionBuilder: (child, animation) {
                 return SizeTransition(
                   axis: Axis.horizontal,

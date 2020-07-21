@@ -1,19 +1,17 @@
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
 
 class EditingEditable extends StatelessWidget{
 
   final Editable profile;
-  final SW app;
   final Function refreshList;
 
-  EditingEditable(this.profile, this.app, this.refreshList);
+  EditingEditable(this.profile,this.refreshList);
 
   Widget build(BuildContext context) {
-    var cards = profile.cards(refreshList,app);
+    var cards = profile.cards(refreshList, context);
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(title: Text(profile.name)),

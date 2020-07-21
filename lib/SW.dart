@@ -12,45 +12,29 @@ import 'profiles/Character.dart';
 import 'profiles/Vehicle.dart';
 import 'Preferences.dart' as preferences;
 
-class SW{
-  List<Minion> minions;
-  List<String> minCats;
+class SW extends InheritedWidget{
+  final List<Minion> minions = new List();
+  final List<String> minCats = new List();
 
-  List<Character> characters;
-  List<String> charCats;
+  final List<Character> characters = new List();
+  final List<String> charCats = new List();
 
-  List<Vehicle> vehicles;
-  List<String> vehCats;
+  final List<Vehicle> vehicles = new List();
+  final List<String> vehCats = new List();
 
-  SharedPreferences prefs;
+  final SharedPreferences prefs;
 
-  String saveDir;
+  final String saveDir;
 
-  Future<void> initialize() async{
-    WidgetsFlutterBinding.ensureInitialized();
-    prefs = await SharedPreferences.getInstance();
-    if(prefs.containsKey(preferences.saveLocation)){
-      saveDir = prefs.getString(preferences.saveLocation);
-    }else{
-      var dir = await getExternalStorageDirectory();
-      saveDir = dir.path+"/SWChars";
-    }
-    if(!Directory(saveDir).existsSync())
-      Directory(saveDir).createSync();
-    if(kDebugMode || kProfileMode)
-      await testing();
-    loadAll();
-  }
-
-  Future<void> loadPrefs() async => prefs = await SharedPreferences.getInstance();
+  SW({Widget child, this.prefs, this.saveDir}): super(child: child);
 
   void loadAll(){
-    minions = List<Minion>();
-    minCats = List<String>();
-    characters = List<Character>();
-    charCats = List<String>();
-    vehicles = List<Vehicle>();
-    vehCats = List<String>();
+    minions.clear();
+    minCats.clear();
+    characters.clear();
+    charCats.clear();
+    vehicles.clear();
+    vehCats.clear();
     List<Editable> defered = new List();
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".backup"))
@@ -121,8 +105,8 @@ class SW{
     }
   }
   void loadMinions(){
-    minions = List();
-    minCats = List();
+    minions.clear();
+    minCats.clear();
 
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swminion")){
@@ -134,8 +118,8 @@ class SW{
     });
   }
   void loadCharacters(){
-    characters = List();
-    charCats = List();
+    characters.clear();
+    charCats.clear();
 
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swcharacter")){
@@ -147,8 +131,8 @@ class SW{
     });
   }
   void loadVehicles(){
-    vehicles = List();
-    vehCats = List();
+    vehicles.clear();
+    vehCats.clear();
 
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swvehicle")){
@@ -164,7 +148,29 @@ class SW{
     //TODO: cload loading AND saving
   }
 
-  Future<void> testing() async{
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) => false;
+
+  static Future<SW> initialize(Widget child) async{
+    WidgetsFlutterBinding.ensureInitialized();
+    var prefs = await SharedPreferences.getInstance();
+    String saveDir;
+    if(prefs.containsKey(preferences.saveLocation)){
+      saveDir = prefs.getString(preferences.saveLocation);
+    }else{
+      var dir = await getExternalStorageDirectory();
+      saveDir = dir.path+"/SWChars";
+    }
+    if(!Directory(saveDir).existsSync())
+      Directory(saveDir).createSync();
+    if(kDebugMode || kProfileMode)
+      await testing(saveDir);
+    SW out = SW(child: child, prefs: prefs, saveDir: saveDir);
+    out.loadAll();
+    return out;
+  }
+
+  static Future<void> testing(String saveDir) async{
     var testFiles = ["Big Game Hunter [Nemesis].swcharacter","Incom T-47 Airspeeder.swvehicle","Pirate Crew.swminion"];
     for(String st in testFiles){
       String json = await rootBundle.loadString("assets/testing/"+st);
@@ -174,4 +180,6 @@ class SW{
       testFile.writeAsStringSync(json);
     }
   }
+
+  static SW of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: SW);
 }

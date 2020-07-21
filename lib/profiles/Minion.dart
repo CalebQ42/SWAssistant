@@ -64,7 +64,7 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(SW app) {
+  List<Widget> cardContents() {
     var out = List.filled(cardNames.length,
       EditableContent(builder: (bool b, Editable editable){
           return Text("Yo. It's a card");
@@ -72,7 +72,7 @@ class Minion extends Editable with Creature{
       )
     );
     out[2] = EditableContent(builder: (b , editable){
-      return Characteristics(editing: b, creature: editable, app: app);
+      return Characteristics(editing: b, creature: editable);
     }, editable: this);
     return out;
   }

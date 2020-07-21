@@ -75,7 +75,7 @@ class Vehicle extends Editable{
     return map;
   }
 
-  List<Widget> cardContents(SW app) {
+  List<Widget> cardContents() {
     return List.filled(cardNames.length,
       EditableContent(builder: (bool b, Editable editable){
           return Text("Yo. It's a card");

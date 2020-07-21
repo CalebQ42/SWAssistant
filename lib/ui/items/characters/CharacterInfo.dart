@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
@@ -7,9 +6,8 @@ class CharacterInfo extends StatelessWidget{
 
   final bool editing;
   final Character character;
-  final SW app;
 
-  CharacterInfo({this.editing, this.character, this.app});
+  CharacterInfo({this.editing, this.character});
   @override
   Widget build(BuildContext context) {
     var species = new Column(
@@ -22,7 +20,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
           editable: character,
-          app: app,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.species);
@@ -44,7 +41,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
           editable: character,
-          app: app,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.age.toString());
@@ -72,7 +68,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
           editable: character,
-          app: app,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.motivation);
@@ -94,7 +89,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
           editable: character,
-          app: app,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.career);
@@ -118,7 +112,6 @@ class CharacterInfo extends StatelessWidget{
           textInsets: EdgeInsets.all(2.0),
           defaultSave: true,
           editable: character,
-          app: app,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.category);

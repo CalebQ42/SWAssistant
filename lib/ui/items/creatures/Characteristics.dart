@@ -10,12 +10,11 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class Characteristics extends StatelessWidget{
 
   final Editable creature;
-  final SW app;
   final bool editing;
 
   final List<String> chars = ["Brawn:", "Agility:", "Intellect:", "Cunning:", "Willpower:", "Presence:"];
 
-  Characteristics({this.editing, this.creature, this.app}){
+  Characteristics({this.editing, this.creature}){
     if(!(creature is Creature))
       throw("Characteristics card needs to be a creature");
   }
@@ -57,8 +56,7 @@ class Characteristics extends StatelessWidget{
           showDialog(context: context,
             child: SWDiceDialog(
               holder: SWDiceHolder(ability:(creature as Creature).charVals[charNum]),
-              context: context,
-              app: app
+              context: context
             )
           );
         },
@@ -79,8 +77,7 @@ class Characteristics extends StatelessWidget{
               style: style,
               textType: TextInputType.number,
               defaultSave: true,
-              editable: creature,
-              app: app
+              editable: creature
             )
           ],
         )

@@ -9,8 +9,8 @@ import 'package:swassistant/ui/items/UpDownStat.dart';
 class SWDiceDialog extends AlertDialog{
   final SWDiceHolder holder;
   final BuildContext context;
-  final SW app;
-  SWDiceDialog({@required this.holder, @required this.context, @required this.app}) : super(
+
+  SWDiceDialog({@required this.holder, @required this.context}) : super(
     content: SingleChildScrollView(
       child: Column(
         children: List.generate(SWDice.SWDice.length, (index) => Row(
@@ -103,7 +103,7 @@ class SWDiceDialog extends AlertDialog{
           var res = holder.getDice().roll();
           print(res);
           print(res.resList);
-          res.showResultDialog(app: app,context:context);
+          res.showResultDialog(context:context);
         },
       ),
       FlatButton(

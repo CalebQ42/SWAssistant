@@ -76,12 +76,11 @@ class InfoCardHolder{
 class NameCardContent extends StatefulWidget{
   final Editable editable;
   final Function refresh;
-  final SW app;
 
-  const NameCardContent(this.editable, this.refresh, this.app);
+  const NameCardContent(this.editable, this.refresh);
   @override
   State<StatefulWidget> createState() {
-    return _NameCardContentState(editable, refresh, app);
+    return _NameCardContentState(editable, refresh);
   }
 }
 
@@ -89,9 +88,8 @@ class _NameCardContentState extends State{
 
   Editable editable;
   Function refresh;
-  SW app;
 
-  _NameCardContentState(this.editable, this.refresh, this.app);
+  _NameCardContentState(this.editable, this.refresh);
   @override
   Widget build(BuildContext context) {
     TextEditingController controller;
@@ -121,8 +119,7 @@ class _NameCardContentState extends State{
             initialText: edit.name,
             controller: controller,
             defaultSave: true,
-            editable: editable,
-            app: app
+            editable: editable
           )
         );
       },

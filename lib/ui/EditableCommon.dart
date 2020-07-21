@@ -17,21 +17,20 @@ class EditingText extends StatelessWidget{
 
   final bool defaultSave;
   final Editable editable;
-  final SW app;
 
   EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
-      this.defaultSave = false, this.editable, this.app}){
+      this.defaultSave = false, this.editable}){
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
-    if(editing && defaultSave && (editable == null || app == null))
-      throw "default save needs an editable and SW app";
+    if(editing && defaultSave && editable == null)
+      throw "default save needs an editable";
   }
   Widget build(BuildContext context) {
     if(editing){
       if(defaultSave){
         controller.addListener(() {
-          editable.save(editable.getFileLocation(app));
+          editable.save(editable.getFileLocation(SW.of(context)));
         });
       }
     }
