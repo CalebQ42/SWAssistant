@@ -135,7 +135,7 @@ class Character extends Editable with Creature{
       return Characteristics(editing: b);
     }));
     out.add(EditableContent(builder: (b, refresh){
-      return Skills(editing:b);
+      return Skills(editing:b, refresh: refresh,);
     }));
     for(int i = out.length;i<cardNames.length;i++){
       out.add(EditableContent(builder: (bool b, refresh){

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:swassistant/SW.dart';
 import 'package:swassistant/dice/SWDiceDialog.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 
 class Skills extends StatefulWidget{
   final bool editing;
@@ -19,10 +17,17 @@ class Skills extends StatefulWidget{
 class _SkillsState extends State{
   bool editing;
   Function refresh;
+  bool editingPrev = false;
 
   _SkillsState({this.editing, this.refresh});
 
   Widget build(BuildContext context){
+    print(editing);
+    if(editing != editingPrev){
+      refresh();
+      editingPrev = editing;
+      print("refreshing!");
+    }
     var creature = Creature.of(context);
     var skillList = List.generate(creature.skills.length, (index){
       return InkResponse(
