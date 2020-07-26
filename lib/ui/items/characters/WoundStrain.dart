@@ -9,12 +9,12 @@ import 'package:swassistant/ui/items/UpDownStat.dart';
 class WoundStrain extends StatelessWidget{
 
   final bool editing;
-  final Character character;
 
-  WoundStrain({this.editing,this.character});
+  WoundStrain({this.editing});
 
   @override
   Widget build(BuildContext context) {
+    var character = Character.of(context);
     return Column(
       children: <Widget>[
         Row(
@@ -38,7 +38,6 @@ class WoundStrain extends StatelessWidget{
                 }(),
                 textType: TextInputType.number,
                 defaultSave: true,
-                editable: character,
               )
             )
           ],

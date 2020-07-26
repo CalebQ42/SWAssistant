@@ -9,15 +9,12 @@ import 'package:swassistant/ui/EditableCommon.dart';
 
 class Characteristics extends StatelessWidget{
 
-  final Editable creature;
   final bool editing;
 
   final List<String> chars = ["Brawn:", "Agility:", "Intellect:", "Cunning:", "Willpower:", "Presence:"];
 
-  Characteristics({this.editing, this.creature}){
-    if(!(creature is Creature))
-      throw("Characteristics card needs to be a creature");
-  }
+  Characteristics({this.editing});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,13 +46,14 @@ class Characteristics extends StatelessWidget{
   }
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   Widget charBuilder(int charNum, TextStyle style, BuildContext context){
+    var creature = Creature.of(context);
     return Expanded(
       child: InkResponse(
         containedInkWell: true,
         onTap:(){
           showDialog(context: context,
             child: SWDiceDialog(
-              holder: SWDiceHolder(ability:(creature as Creature).charVals[charNum]),
+              holder: SWDiceHolder(ability:creature.charVals[charNum]),
               context: context
             )
           );
@@ -65,19 +63,18 @@ class Characteristics extends StatelessWidget{
             Text(chars[charNum]),
             EditingText(
               editing: editing,
-              initialText: (creature as Creature).charVals[charNum].toString(),
+              initialText: creature.charVals[charNum].toString(),
               controller: (){
-                var controller = TextEditingController(text: (creature as Creature).charVals[charNum].toString());
+                var controller = TextEditingController(text: creature.charVals[charNum].toString());
                 if(controller.text == "")
-                  (creature as Creature).charVals[charNum] = 0;
+                  creature.charVals[charNum] = 0;
                 else
-                  (creature as Creature).charVals[charNum] = int.parse(controller.text);
+                  creature.charVals[charNum] = int.parse(controller.text);
                 return controller;
               }(),
               style: style,
               textType: TextInputType.number,
-              defaultSave: true,
-              editable: creature
+              defaultSave: true
             )
           ],
         )

@@ -15,7 +15,19 @@ class EditingEditable extends StatelessWidget{
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(title: Text(profile.name)),
-      body: ListView.builder(itemCount: profile.cardNames.length,itemBuilder: (context,i) => cards[i]),
+      body: InheritedEditable(
+        child: ListView.builder(itemCount: profile.cardNames.length,itemBuilder: (context,i) => cards[i]),
+        editable: profile,
+      )
     );
   }
+}
+
+class InheritedEditable extends InheritedWidget{
+  final Editable editable;
+
+  InheritedEditable({Widget child, this.editable}): super(child: child);
+
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) => false;
 }

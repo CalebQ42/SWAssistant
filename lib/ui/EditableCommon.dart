@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
-class EditingText extends StatelessWidget{
+class EditingText extends StatelessWidget {
 
   final Key key;
 
@@ -16,17 +16,15 @@ class EditingText extends StatelessWidget{
   final TextEditingController controller;
 
   final bool defaultSave;
-  final Editable editable;
 
   EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
-      this.defaultSave = false, this.editable}){
+      this.defaultSave = false}){
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
-    if(editing && defaultSave && editable == null)
-      throw "default save needs an editable";
   }
   Widget build(BuildContext context) {
+    var editable = Editable.of(context);
     if(editing){
       if(defaultSave){
         controller.addListener(() {
@@ -74,31 +72,29 @@ class EditingText extends StatelessWidget{
 
 class EditableContent extends StatefulWidget{
 
-  final Editable editable;
-  final Widget Function(bool editing, Editable editable) builder;
+  final Widget Function(bool editing) builder;
 
-  EditableContent({@required this.builder, @required this.editable});
+  EditableContent({@required this.builder});
 
   @override
   State<StatefulWidget> createState() {
-    return _EditableContentState(builder: builder, editable: editable);
+    return _EditableContentState(builder: builder);
   }
 }
 
 class _EditableContentState extends State{
 
-  Widget Function(bool editing, Editable editable) builder;
+  Widget Function(bool editing) builder;
   bool editing = false;
-  Editable editable;
 
-  _EditableContentState({@required this.builder, this.editable});
+  _EditableContentState({@required this.builder});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        builder(editing, editable),
+        builder(editing),
         Align(
           alignment: Alignment.centerRight,
           child: IconButton(

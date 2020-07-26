@@ -124,23 +124,25 @@ class Character extends Editable with Creature{
 
   List<Widget> cardContents() {
     var out = new List<Widget>();
-    out.add(EditableContent(builder: (b, editable){
-      return CharacterInfo(editing: b, character: editable);
-    }, editable: this));
-    out.add(EditableContent(builder: (b, editable){
-      return WoundStrain(editing: b, character: editable);
-    }, editable: this,));
-    out.add(EditableContent(builder: (b, editable){
-      return Characteristics(editing: b, creature: editable);
-    }, editable: this));
-    out.add(EditableContent(builder: (b, editable){
-      return Skills(editing:b, creature: editable);
-    }, editable: this));
+    out.add(EditableContent(builder: (b){
+      return CharacterInfo(editing: b);
+    }));
+    out.add(EditableContent(builder: (b){
+      return WoundStrain(editing: b);
+    }));
+    out.add(EditableContent(builder: (b){
+      return Characteristics(editing: b);
+    }));
+    out.add(EditableContent(builder: (b){
+      return Skills(editing:b);
+    }));
     for(int i = out.length;i<cardNames.length;i++){
-      out.add(EditableContent(builder: (bool b,Editable editable){
+      out.add(EditableContent(builder: (bool b){
         return Text("card " + i.toString());
-      }, editable: this,));
+      }));
     }
     return out;
   }
+
+  static Character of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: Editable) as Character;
 }

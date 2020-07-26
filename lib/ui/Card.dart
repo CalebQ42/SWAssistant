@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
@@ -94,9 +93,9 @@ class _NameCardContentState extends State{
   Widget build(BuildContext context) {
     TextEditingController controller;
     return EditableContent(
-      builder: (bool b, Editable edit){
+      builder: (bool b){
         if(b){
-          controller = new TextEditingController(text: edit.name);
+          controller = new TextEditingController(text: Editable.of(context).name);
           controller.addListener(() {
             editable.name = controller.text;
             refresh();
@@ -116,14 +115,12 @@ class _NameCardContentState extends State{
           }(),child: EditingText(
             editing: b,
             style: Theme.of(context).textTheme.headline5,
-            initialText: edit.name,
+            initialText: Editable.of(context).name,
             controller: controller,
             defaultSave: true,
-            editable: editable
           )
         );
       },
-      editable: editable,
     );
   }
 }

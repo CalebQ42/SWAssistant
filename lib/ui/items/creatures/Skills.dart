@@ -7,26 +7,21 @@ import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
 class Skills extends StatefulWidget{
-  final Editable creature;
   final bool editing;
 
-  Skills({this.creature, this.editing}){
-    if(!(creature is Creature))
-      throw("Skills card must be a creature");
-  }
+  Skills({this.editing});
 
   @override
-  State<StatefulWidget> createState() => _SkillsState(creature: creature as Creature, editing: editing);
+  State<StatefulWidget> createState() => _SkillsState(editing: editing);
 }
 
 class _SkillsState extends State{
-  final Creature creature;
   final bool editing;
 
-  _SkillsState({this.creature, this.editing});
+  _SkillsState({this.editing});
 
   Widget build(BuildContext context){
-    print("SkillState:" + editing.toString());
+    var creature = Creature.of(context);
     var skillList = List.generate(creature.skills.length, (index){
       return InkResponse(
         containedInkWell: true,

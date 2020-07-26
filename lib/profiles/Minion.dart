@@ -66,14 +66,16 @@ class Minion extends Editable with Creature{
 
   List<Widget> cardContents() {
     var out = List.filled(cardNames.length,
-      EditableContent(builder: (bool b, Editable editable){
+      EditableContent(builder: (bool b){
           return Text("Yo. It's a card");
-        }, editable: this
+        }
       )
     );
-    out[2] = EditableContent(builder: (b , editable){
-      return Characteristics(editing: b, creature: editable);
-    }, editable: this);
+    out[2] = EditableContent(builder: (b){
+      return Characteristics(editing: b);
+    });
     return out;
   }
+
+  static Minion of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: Editable) as Minion;
 }

@@ -148,4 +148,6 @@ abstract class Editable extends JsonSavable{
   bool hasShortcut(){ return false; }
   void updateShortcut(){}
   void deleteShortcut(){}
+
+  static Editable of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: Editable);
 }
