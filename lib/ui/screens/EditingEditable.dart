@@ -12,13 +12,13 @@ class EditingEditable extends StatelessWidget{
 
   Widget build(BuildContext context) {
     var cards = profile.cards(refreshList, context);
-    return Scaffold(
-      drawer: SWDrawer(),
-      appBar: SWAppBar(title: Text(profile.name)),
-      body: InheritedEditable(
-        child: ListView.builder(itemCount: profile.cardNames.length,itemBuilder: (context,i) => cards[i]),
-        editable: profile,
-      )
+    return InheritedEditable(
+      child: Scaffold(
+        drawer: SWDrawer(),
+        appBar: SWAppBar(title: Text(profile.name)),
+        body: ListView.builder(itemCount: profile.cardNames.length,itemBuilder: (context,i) => cards[i]),
+      ),
+      editable: profile
     );
   }
 }
@@ -30,4 +30,5 @@ class InheritedEditable extends InheritedWidget{
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;
+  
 }

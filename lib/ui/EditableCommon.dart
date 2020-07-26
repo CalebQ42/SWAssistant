@@ -72,7 +72,7 @@ class EditingText extends StatelessWidget {
 
 class EditableContent extends StatefulWidget{
 
-  final Widget Function(bool editing) builder;
+  final Widget Function(bool editing, Function refresh) builder;
 
   EditableContent({@required this.builder});
 
@@ -84,7 +84,7 @@ class EditableContent extends StatefulWidget{
 
 class _EditableContentState extends State{
 
-  Widget Function(bool editing) builder;
+  Widget Function(bool editing, Function refresh) builder;
   bool editing = false;
 
   _EditableContentState({@required this.builder});
@@ -94,7 +94,10 @@ class _EditableContentState extends State{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        builder(editing),
+        builder(
+          editing,
+          ()=>setState((){}),
+        ),
         Align(
           alignment: Alignment.centerRight,
           child: IconButton(

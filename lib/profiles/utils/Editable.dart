@@ -8,6 +8,7 @@ import 'package:swassistant/items/CriticalInjury.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/Card.dart';
+import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 import '../Character.dart';
 import '../Minion.dart';
@@ -90,15 +91,17 @@ abstract class Editable extends JsonSavable{
   List<Widget> cards(Function refresh, BuildContext context){
     var cards = List<Widget>();
     var contents = cardContents();
-    cards.add(Card(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: NameCardContent(this, refresh)
+    cards.add(
+      Card(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: NameCardContent(refresh)
+        )
       )
-    ));
+    );
     for (int i = 0; i < contents.length; i++){
       cards.add(
-        InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b){showCard[i]=b;})
+        InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b, refresh){showCard[i]=b;})
       );
     }
     return cards;
@@ -124,7 +127,6 @@ abstract class Editable extends JsonSavable{
       backup.deleteSync();
       _saving = false;
     }else{
-      print("defering save");
       if(!_defered){
         _defered = true;
         while(_saving){
@@ -149,5 +151,5 @@ abstract class Editable extends JsonSavable{
   void updateShortcut(){}
   void deleteShortcut(){}
 
-  static Editable of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: Editable);
+  static Editable of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable;
 }

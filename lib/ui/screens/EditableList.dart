@@ -69,34 +69,38 @@ class _EditableListState extends State{
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext c, int index){
-          return Card(
-            child: InkResponse(
-              onTap: (){
-                Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],refreshCallback),fullscreenDialog: false));
-              },
-              child:Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Hero(
-                  transitionOnUserGestures: true,
-                  tag: (){
-                    String out = "";
-                    switch(type){
-                      case 0:
-                        out = "character/";
-                        break;
-                      case 1:
-                        out = "minion/";
-                        break;
-                      case 2:
-                        out = "vehicle/";
-                        break;
-                    }
-                    return out + list[index].id.toString();
-                  }(),
-                  child:Text(list[index].name, style: Theme.of(c).textTheme.headline5)
-                ),
+          return 
+          InheritedEditable(
+            child:Card(
+              child: InkResponse(
+                onTap: (){
+                  Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],refreshCallback),fullscreenDialog: false));
+                },
+                child:Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Hero(
+                    transitionOnUserGestures: true,
+                    tag: (){
+                      String out = "";
+                      switch(type){
+                        case 0:
+                          out = "character/";
+                          break;
+                        case 1:
+                          out = "minion/";
+                          break;
+                        case 2:
+                          out = "vehicle/";
+                          break;
+                      }
+                      return out + list[index].id.toString();
+                    }(),
+                    child:Text(list[index].name, style: Theme.of(c).textTheme.headline5)
+                  ),
+                )
               )
-            )
+            ),
+            editable: list[index]
           );
         },
       ),

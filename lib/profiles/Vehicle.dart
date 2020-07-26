@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 class Vehicle extends Editable{
 
@@ -77,12 +78,12 @@ class Vehicle extends Editable{
 
   List<Widget> cardContents() {
     return List.filled(cardNames.length,
-      EditableContent(builder: (bool b){
+      EditableContent(builder: (bool b, refresh){
           return Text("Yo. It's a card");
         }
       )
     );
   }
 
-  static Vehicle of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: Editable) as Vehicle;
+  static Vehicle of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable;
 }

@@ -10,6 +10,7 @@ class CharacterInfo extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
+    print(character);
     var species = new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[

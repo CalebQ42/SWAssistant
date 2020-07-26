@@ -3,6 +3,7 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 mixin Creature{
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
@@ -49,5 +50,5 @@ mixin Creature{
     return json;
   }
 
-  static Creature of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: Editable) as Creature;
+  static Creature of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable as Creature;
 }

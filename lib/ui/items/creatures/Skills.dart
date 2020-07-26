@@ -8,17 +8,19 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 
 class Skills extends StatefulWidget{
   final bool editing;
+  final Function refresh;
 
-  Skills({this.editing});
+  Skills({this.editing, this.refresh});
 
   @override
-  State<StatefulWidget> createState() => _SkillsState(editing: editing);
+  State<StatefulWidget> createState() => _SkillsState(editing: editing, refresh: refresh);
 }
 
 class _SkillsState extends State{
-  final bool editing;
+  bool editing;
+  Function refresh;
 
-  _SkillsState({this.editing});
+  _SkillsState({this.editing, this.refresh});
 
   Widget build(BuildContext context){
     var creature = Creature.of(context);

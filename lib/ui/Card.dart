@@ -8,7 +8,7 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class InfoCard extends StatefulWidget{
 
   final InfoCardHolder holder = new InfoCardHolder();
-  final Function(bool b) onHideChange;
+  final Function(bool b, Function refresh) onHideChange;
 
   InfoCard({shown = true, @required Widget contents, String title = "", @required this.onHideChange}){
     holder.shown = shown;
@@ -25,7 +25,7 @@ class InfoCard extends StatefulWidget{
 class _InfoCardState extends State{
 
   InfoCardHolder holder;
-  Function(bool b) onHideChange;
+  Function(bool b, Function refresh) onHideChange;
 
   _InfoCardState(this.holder, this.onHideChange);
 
@@ -42,7 +42,7 @@ class _InfoCardState extends State{
               value: holder.shown,
               onChanged: (bool b){
                 setState((){
-                  if(onHideChange!=null) onHideChange(b);
+                  if(onHideChange!=null) onHideChange(b,()=>setState((){}));
                   holder.shown = b;
                 });
               },
@@ -73,29 +73,27 @@ class InfoCardHolder{
 }
 
 class NameCardContent extends StatefulWidget{
-  final Editable editable;
   final Function refresh;
 
-  const NameCardContent(this.editable, this.refresh);
+  const NameCardContent(this.refresh);
   @override
   State<StatefulWidget> createState() {
-    return _NameCardContentState(editable, refresh);
+    return _NameCardContentState(refresh);
   }
 }
 
 class _NameCardContentState extends State{
-
-  Editable editable;
   Function refresh;
 
-  _NameCardContentState(this.editable, this.refresh);
+  _NameCardContentState(this.refresh);
   @override
   Widget build(BuildContext context) {
+    var editable = Editable.of(context);
     TextEditingController controller;
     return EditableContent(
-      builder: (bool b){
+      builder: (bool b, refresh){
         if(b){
-          controller = new TextEditingController(text: Editable.of(context).name);
+          controller = new TextEditingController(text: editable.name);
           controller.addListener(() {
             editable.name = controller.text;
             refresh();
@@ -115,7 +113,7 @@ class _NameCardContentState extends State{
           }(),child: EditingText(
             editing: b,
             style: Theme.of(context).textTheme.headline5,
-            initialText: Editable.of(context).name,
+            initialText: editable.name,
             controller: controller,
             defaultSave: true,
           )
