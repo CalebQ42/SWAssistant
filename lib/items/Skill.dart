@@ -26,7 +26,7 @@ class Skill implements JsonSavable{
   }
 
 
-  static Map<String, String> SkillsList = {
+  static Map<String, String> skillsList = {
     "Astrogation" : "Intellect",
     "Athletics" : "Brawn",
     "Brawl" : "Brawn",

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 mixin Creature{
