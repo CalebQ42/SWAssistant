@@ -17,19 +17,14 @@ class Skills extends StatefulWidget{
 class _SkillsState extends State{
   bool editing;
   Function refresh;
-  bool editingPrev = false;
+
+  List<Widget> _skillList;
 
   _SkillsState({this.editing, this.refresh});
 
   Widget build(BuildContext context){
-    print(editing);
-    if(editing != editingPrev){
-      refresh();
-      editingPrev = editing;
-      print("refreshing!");
-    }
     var creature = Creature.of(context);
-    var skillList = List.generate(creature.skills.length, (index){
+    _skillList = List.generate(creature.skills.length, (index){
       return InkResponse(
         containedInkWell: true,
         onTap: (){
@@ -95,7 +90,7 @@ class _SkillsState extends State{
     return Column(
       children: <Widget>[
         Column(
-          children: skillList
+          children: _skillList
         ),
         AnimatedSwitcher(
           duration: Duration(milliseconds: 300),
