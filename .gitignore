@@ -28,7 +28,9 @@
 .packages
 .pub-cache/
 .pub/
+pubspec.lock
 /build/
+ios/Flutter/flutter_export_environment.sh
 
 # Web related
 lib/generated_plugin_registrant.dart
