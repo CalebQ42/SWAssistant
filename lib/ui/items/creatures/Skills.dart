@@ -31,7 +31,9 @@ class Skills extends StatelessWidget{
         child: Row(
           children: [
             Expanded(
-              child: Text(creature.skills[index].name),
+              child: Text(creature.skills[index].name,
+                style: TextStyle(fontWeight: creature.skills[index].career ? FontWeight.bold : FontWeight.normal)
+              ),
               flex: 7
             ),
             AnimatedSwitcher(
@@ -52,12 +54,21 @@ class Skills extends StatelessWidget{
                     }
                   ),
                   IconButton(
-                    iconSize: 24.0,
                     constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: Icon(Icons.edit),
                     onPressed: (){
-                      //TODO: edit skill dialog
-                      refresh();
+                      showDialog(
+                        context: context,
+                        builder: (context){
+                          return SkillEditDialog(
+                            onClose: (skill){
+                              creature.skills[index] = skill;
+                              refresh();
+                            },
+                            skill: creature.skills[index]
+                          );
+                        }
+                      );
                     }
                   )
                 ]
@@ -97,14 +108,15 @@ class Skills extends StatelessWidget{
             child: IconButton(
               icon: Icon(Icons.add),
               onPressed: (){
-                creature.skills.add(
-                  Skill(
-                    name: "Testing Skill",
-                    value: 3
-                  )
+                showDialog(
+                  context: context,
+                  builder: (context){
+                    return SkillEditDialog(onClose: (skill){
+                      creature.skills.add(skill);
+                      refresh();
+                    },skill: null);
+                  }
                 );
-                //TODO: Skills add dialog
-                refresh();
               },
             )
           ) : Container(),
@@ -114,6 +126,56 @@ class Skills extends StatelessWidget{
               child: wid,
               axisAlignment: -1.0,
             );
+          },
+        )
+      ],
+    );
+  }
+}
+
+class SkillEditDialog extends StatefulWidget{
+  //onClose Skill argument is the edited Skill (or new Skill). Skill argument is null if dialog is cancelled.
+  //Doesn't get called when dialog is cancelled.
+  final Function(Skill) onClose;
+  final Skill skill;
+
+  SkillEditDialog({this.onClose, skill}) :
+      this.skill = skill == null ? Skill() : Skill.from(skill);
+
+  @override
+  State<StatefulWidget> createState() => _SkillEditDialogState(onClose: onClose, skill: skill);
+}
+
+class _SkillEditDialogState extends State{
+  final Function(Skill) onClose;
+  final Skill skill;
+
+  _SkillEditDialogState({this.onClose, this.skill});
+  
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Column(
+        children: [
+          //TODO: Actually editing everything
+          SwitchListTile(
+            title: Text("Career"),
+            value: skill.career,
+            onChanged: (b)=>setState(()=>skill.career = b),
+          )
+        ],
+      ),
+      actions: [
+        FlatButton(
+          child: Text("Save"),
+          onPressed: (){
+            onClose(skill);
+            Navigator.of(context).pop();
+          },
+        ),
+        FlatButton(
+          child: Text("Cancel"),
+          onPressed: (){
+            Navigator.of(context).pop();
           },
         )
       ],

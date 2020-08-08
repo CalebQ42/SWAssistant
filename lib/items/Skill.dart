@@ -14,6 +14,12 @@ class Skill implements JsonSavable{
       base = json["base"],
       career = json["career"];
 
+  Skill.from(Skill skill) :
+      name = skill.name,
+      value = skill.value,
+      base = skill.base,
+      career = skill.career;
+
   Map<String, dynamic> toJson() => {
     "name" : name,
     "value" : value,

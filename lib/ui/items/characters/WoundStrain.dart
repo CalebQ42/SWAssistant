@@ -46,10 +46,10 @@ class WoundStrain extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: Center(child: Text("Wound:"))
+              child: Center(child: editing ? Text("Max Wound:") : Text("Wound:"))
             ),
             Expanded(
-              child: Center(child: Text("Strain:"))
+              child: Center(child: editing ? Text("Max Strain:") : Text("Strain:"))
             )
           ],
         ),
