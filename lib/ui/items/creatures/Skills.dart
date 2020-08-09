@@ -153,10 +153,28 @@ class _SkillEditDialogState extends State{
   _SkillEditDialogState({this.onClose, this.skill});
   
   Widget build(BuildContext context) {
+    if(skill.name == ""){
+      skill.name = Skill.skillsList.keys.first;
+      skill.base = Skill.skillsList[Skill.skillsList.keys.first];
+    }
     return AlertDialog(
       content: Column(
         children: [
           //TODO: Actually editing everything
+          PopupMenuButton(
+            initialValue: Skill.skillsList.containsValue(skill.name) ? skill.name : Skill.skillsList.keys.last,
+            itemBuilder: (context){
+              return List.generate(
+                Skill.skillsList.length,
+                (i){
+                  return PopupMenuItem(
+                    value: Skill.skillsList.keys.elementAt(i),
+                    child: Text(Skill.skillsList.keys.elementAt(i))
+                  );
+                }
+              );
+            },
+          ),
           SwitchListTile(
             title: Text("Career"),
             value: skill.career,
