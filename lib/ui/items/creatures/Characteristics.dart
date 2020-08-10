@@ -9,8 +9,6 @@ class Characteristics extends StatelessWidget{
 
   final bool editing;
 
-  final List<String> chars = ["Brawn:", "Agility:", "Intellect:", "Cunning:", "Willpower:", "Presence:"];
-
   Characteristics({this.editing});
 
   @override
@@ -58,7 +56,7 @@ class Characteristics extends StatelessWidget{
         },
         child:Column(
           children: <Widget>[
-            Text(chars[charNum]),
+            Text(Creature.characteristics[charNum]),
             EditingText(
               editing: editing,
               initialText: creature.charVals[charNum].toString(),

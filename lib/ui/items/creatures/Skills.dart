@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/dice/SWDiceDialog.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
@@ -97,38 +98,41 @@ class Skills extends StatelessWidget{
         )
       );
     });
-    return Column(
-      children: <Widget>[
-        Column(
-          children: children
-        ),
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          child: editing ? Center(
-            child: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: (){
-                showDialog(
-                  context: context,
-                  builder: (context){
-                    return SkillEditDialog(onClose: (skill){
-                      creature.skills.add(skill);
-                      refresh();
-                    },skill: null);
-                  }
-                );
-              },
-            )
-          ) : Container(),
-          transitionBuilder: (wid,anim){
-            return SizeTransition(
-              sizeFactor: anim,
-              child: wid,
-              axisAlignment: -1.0,
-            );
-          },
-        )
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      child: Column(
+        children: <Widget>[
+          Column(
+            children: children
+          ),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            child: editing ? Center(
+              child: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: (){
+                  showDialog(
+                    context: context,
+                    builder: (context){
+                      return SkillEditDialog(onClose: (skill){
+                        creature.skills.add(skill);
+                        refresh();
+                      },skill: null);
+                    }
+                  );
+                },
+              )
+            ) : Container(),
+            transitionBuilder: (wid,anim){
+              return SizeTransition(
+                sizeFactor: anim,
+                child: wid,
+                axisAlignment: -1.0,
+              );
+            },
+          )
+        ],
+      )
     );
   }
 }
@@ -140,7 +144,7 @@ class SkillEditDialog extends StatefulWidget{
   final Skill skill;
 
   SkillEditDialog({this.onClose, skill}) :
-      this.skill = skill == null ? Skill() : Skill.from(skill);
+      this.skill = skill == null ? Skill(name: null, base: null, value: null) : Skill.from(skill);
 
   @override
   State<StatefulWidget> createState() => _SkillEditDialogState(onClose: onClose, skill: skill);
@@ -149,46 +153,118 @@ class SkillEditDialog extends StatefulWidget{
 class _SkillEditDialogState extends State{
   final Function(Skill) onClose;
   final Skill skill;
+  bool manual = false;
+  TextSelection prevSelection;
 
-  _SkillEditDialogState({this.onClose, this.skill});
+  _SkillEditDialogState({this.onClose, this.skill}){
+    if(skill.name != null && !Skill.skillsList.containsKey(skill.name))
+      manual = true;
+  }
   
   Widget build(BuildContext context) {
-    if(skill.name == ""){
-      skill.name = Skill.skillsList.keys.first;
-      skill.base = Skill.skillsList[Skill.skillsList.keys.first];
-    }
     return AlertDialog(
-      content: Column(
-        children: [
-          //TODO: Actually editing everything
-          PopupMenuButton(
-            initialValue: Skill.skillsList.containsValue(skill.name) ? skill.name : Skill.skillsList.keys.last,
-            itemBuilder: (context){
-              return List.generate(
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            DropdownButton<String>(
+              underline: null,
+              isExpanded: true,
+              onChanged: (value) {
+                setState((){
+                  if(value != "Other..."){
+                    manual = false;
+                    skill.name = value;
+                    skill.base = Skill.skillsList[value];
+                  }else{
+                    manual = true;
+                    skill.name = "";
+                  }
+                });
+              },
+              value: (Skill.skillsList.containsKey(skill.name) || skill.name == null) ? skill.name : Skill.skillsList.keys.last,
+              hint: Text("Skill"),
+              items: List.generate(
                 Skill.skillsList.length,
                 (i){
-                  return PopupMenuItem(
+                  return DropdownMenuItem<String>(
                     value: Skill.skillsList.keys.elementAt(i),
                     child: Text(Skill.skillsList.keys.elementAt(i))
                   );
                 }
-              );
-            },
-          ),
-          SwitchListTile(
-            title: Text("Career"),
-            value: skill.career,
-            onChanged: (b)=>setState(()=>skill.career = b),
-          )
-        ],
+              ),
+            ),
+            AnimatedSwitcher(
+              child: !manual ? Container() :
+                  TextField(
+                    onChanged: (value) => skill.name = value,
+                    autofillHints: Skill.skillsList.keys,
+                    controller: TextEditingController(text: skill.name),
+                  ),
+              duration: Duration(milliseconds: 150),
+              transitionBuilder: (child, anim) {
+                return SizeTransition(
+                  sizeFactor: anim,
+                  child: child,
+                );
+              }, 
+            ),
+            DropdownButton<int>(
+              isExpanded: true,
+              hint: Text("Characteristic"),
+              items: List.generate(
+                Creature.characteristics.length,
+                (i) => DropdownMenuItem(
+                  child: Text(Creature.characteristics[i]),
+                  value: i
+                )
+              ),
+              value: skill.base,
+              onChanged: (value) => setState(() => skill.base = value),
+            ),
+            TextField(
+              maxLength: 1,
+              maxLengthEnforced: false,
+              decoration: InputDecoration(
+                hintText: "Skill Value"
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
+              controller: (){
+                var cont = TextEditingController(text: skill.value != null ? skill.value.toString() : "");
+                if(prevSelection != null){
+                  cont.selection = prevSelection;
+                  prevSelection = null;
+                }
+                cont.addListener((){
+                  var val = int.tryParse(cont.text);
+                  if((skill.value == null && val != null) || (skill.value != null && val == null)){
+                    prevSelection = cont.selection;
+                    setState(() => skill.value = val);
+                  }else{
+                    skill.value = val;
+                  }
+                });
+                return cont;
+              }(),
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text("Career"),
+              value: skill.career,
+              onChanged: (b)=>setState(()=>skill.career = b),
+            ),
+          ],
+        ),
       ),
       actions: [
         FlatButton(
           child: Text("Save"),
-          onPressed: (){
+          onPressed: (skill.name != null && skill.base != null && skill.value != null) ? (){
             onClose(skill);
             Navigator.of(context).pop();
-          },
+          } : null,
         ),
         FlatButton(
           child: Text("Cancel"),

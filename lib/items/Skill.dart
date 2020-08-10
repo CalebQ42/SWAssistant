@@ -67,5 +67,6 @@ class Skill implements JsonSavable{
     "Knowledge (Outer Rim)" : 2,
     "Knowledge (Underworld)" : 2,
     "Knowledge (Xenology)" : 2,
+    "Other..." : 0
   };
 }

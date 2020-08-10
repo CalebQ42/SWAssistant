@@ -5,7 +5,8 @@ import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 mixin Creature{
-  //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
+  static final List<String> characteristics = ["Brawn", "Agility", "Intellect", "Cunning", "Willpower", "Presence"];
+
   List<int> charVals;
   List<Skill> skills;
   List<Talent> talents;
