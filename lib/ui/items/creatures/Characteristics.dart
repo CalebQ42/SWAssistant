@@ -62,10 +62,12 @@ class Characteristics extends StatelessWidget{
               initialText: creature.charVals[charNum].toString(),
               controller: (){
                 var controller = TextEditingController(text: creature.charVals[charNum].toString());
-                if(controller.text == "")
-                  creature.charVals[charNum] = 0;
-                else
-                  creature.charVals[charNum] = int.parse(controller.text);
+                controller.addListener((){
+                  if(controller.text == "")
+                    creature.charVals[charNum] = 0;
+                  else
+                    creature.charVals[charNum] = int.parse(controller.text);
+                });
                 return controller;
               }(),
               style: style,

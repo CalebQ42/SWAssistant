@@ -10,8 +10,8 @@ import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
 import 'package:swassistant/ui/items/characters/WoundStrain.dart';
+import 'package:swassistant/ui/items/creatures/Defense.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
-import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 import 'utils/Creature.dart';
 
@@ -137,6 +137,9 @@ class Character extends Editable with Creature{
     out.add(EditableContent(builder: (b, refresh){
       return Skills(editing:b, refresh: refresh,);
     }));
+    out.add(EditableContent(builder: (b, refresh){
+      return Defense(editing: b);
+    }));
     for(int i = out.length;i<cardNames.length;i++){
       out.add(EditableContent(builder: (bool b, refresh){
         return Text("card " + i.toString());
@@ -145,5 +148,5 @@ class Character extends Editable with Creature{
     return out;
   }
 
-  static Character of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable;
+  static Character of(BuildContext context) => Editable.of(context);
 }

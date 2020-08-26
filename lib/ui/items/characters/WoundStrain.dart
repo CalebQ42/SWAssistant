@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
@@ -88,7 +89,11 @@ class WoundStrain extends StatelessWidget{
                     character.save(character.getFileLocation(SW.of(context)));
                   });
                   return Padding(
-                    child:TextField(controller: controll, keyboardType: TextInputType.number,),
+                    child:TextField(
+                      controller: controll,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly]
+                    ),
                     padding: EdgeInsets.symmetric(horizontal: 2.0)
                   ); 
                 }()
@@ -127,7 +132,11 @@ class WoundStrain extends StatelessWidget{
                     character.save(character.getFileLocation(SW.of(context)));
                   });
                   return Padding(
-                    child:TextField(controller: controll, keyboardType: TextInputType.number,),
+                    child: TextField(
+                      controller: controll,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly]
+                    ),
                     padding: EdgeInsets.symmetric(horizontal: 2.0)
                   ); 
                 }()

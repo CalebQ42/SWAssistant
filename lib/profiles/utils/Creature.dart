@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
-import 'package:swassistant/ui/screens/EditingEditable.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 
 mixin Creature{
   static final List<String> characteristics = ["Brawn", "Agility", "Intellect", "Cunning", "Willpower", "Presence"];
@@ -50,5 +50,5 @@ mixin Creature{
     return json;
   }
 
-  static Creature of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable as Creature;
+  static Creature of(BuildContext context) => Editable.of(context) as Creature;
 }

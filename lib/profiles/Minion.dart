@@ -7,7 +7,6 @@ import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
-import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 import 'utils/Creature.dart';
 
@@ -78,5 +77,5 @@ class Minion extends Editable with Creature{
     return out;
   }
 
-  static Minion of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable;
+  static Minion of(BuildContext context) => Editable.of(context);
 }
