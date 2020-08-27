@@ -23,7 +23,7 @@ class Skills extends StatelessWidget{
             creature.skills[index].value :
             creature.charVals[creature.skills[index].base];
           showDialog(context: context,
-            child: SWDiceDialog(
+            builder: (b) => SWDiceDialog(
               holder: SWDiceHolder(ability:ability, proficiency: proficiency),
               context: context
             )
