@@ -81,6 +81,46 @@ class Weapons extends StatelessWidget{
         )
       );
     });
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        children: [
+          Column(children: weaponsList),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            transitionBuilder: (wid,anim){
+              return SizeTransition(
+                sizeFactor: anim,
+                child: wid,
+                axisAlignment: -1.0,
+              );
+            },
+            child: editing ? Center(
+              child: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: (){
+                  showModalBottomSheet(
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0)
+                      )
+                    ),
+                    builder: (context){
+                      return WeaponEditDialog(onClose: (weapon){
+                        editable.weapons.add(weapon);
+                        refresh();
+                      },weapon: null);
+                    }
+                  );
+                },
+              )
+            ) : Container(),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -102,5 +142,6 @@ class _WeaponEditDialogState extends State{
 
   @override
   Widget build(BuildContext context) {
+    //TODO
   }
 }
