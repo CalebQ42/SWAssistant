@@ -39,11 +39,13 @@ abstract class Editable extends JsonSavable{
   String _loc;
   bool _defered = false;
 
-  Editable({@required this.id, this.name = "", this.notes, this.weapons, this.category = "", this.criticalInjuries, this.desc = ""}){
+  Editable({@required this.id, this.name = "", bool saveOnCreation = false, SW app}){
     notes ??= new List();
     weapons ??= new List();
     criticalInjuries ??= new List();
     showCard = List.filled(cardNames.length, false);
+    if(saveOnCreation)
+      this.save(getFileLocation(app));
   }
 
   Editable.load(FileSystemEntity file, SW app){
@@ -145,7 +147,11 @@ abstract class Editable extends JsonSavable{
     loadJson(jsonDecode(file.readAsStringSync()));
   }
   void cloudLoad(){}
-  void delete(){}
+  void delete(SW app){
+    app.characters.remove(this);
+    var fil = File(getFileLocation(app));
+    fil.deleteSync();
+  }
 
   void addShortcut(){}
   bool hasShortcut(){ return false; }
