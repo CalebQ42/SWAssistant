@@ -11,7 +11,7 @@ class Vehicle extends Editable{
   int speed;
   int handling;
   int armor;
-  List<int> defense;
+  List<int> defense = new List();
   int totalDefense;
   int hullTraumaThresh;
   int hullTraumaCur;
@@ -32,7 +32,8 @@ class Vehicle extends Editable{
     "Description:"
   ];
 
-  Vehicle({@required int id, String name = "New Vehicle"}) : super(id: id, name: name);
+  Vehicle({@required int id, String name = "New Vehicle", bool saveOnCreation = false, SW app}) :
+      super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
   Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app);
 

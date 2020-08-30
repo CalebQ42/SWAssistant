@@ -102,7 +102,6 @@ abstract class Editable extends JsonSavable{
       )
     );
     for (int i = 0; i < contents.length; i++){
-      print(i);
       cards.add(
         InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b, refresh){showCard[i]=b;})
       );
@@ -124,10 +123,13 @@ abstract class Editable extends JsonSavable{
     if(!_saving){
       _saving = true;
       var file = File(filename);
-      var backup = file.renameSync(filename +".backup");
+      File backup;
+      if(file.existsSync())
+        backup = file.renameSync(filename +".backup");
       file.createSync();
       file.writeAsStringSync(jsonEncode(toJson()));
-      backup.deleteSync();
+      if(backup!=null)
+        backup.deleteSync();
       _saving = false;
     }else{
       if(!_defered){

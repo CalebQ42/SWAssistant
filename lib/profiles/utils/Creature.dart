@@ -7,10 +7,10 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 mixin Creature{
   static final List<String> characteristics = ["Brawn", "Agility", "Intellect", "Cunning", "Willpower", "Presence"];
 
-  List<int> charVals;
-  List<Skill> skills;
-  List<Talent> talents;
-  List<Item> inventory;
+  List<int> charVals = new List();
+  List<Skill> skills = new List();
+  List<Talent> talents = new List();
+  List<Item> inventory = new List();
   int woundThresh;
   int woundCur;
   int defMelee,defRanged;

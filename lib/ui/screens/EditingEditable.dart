@@ -38,7 +38,7 @@ class _EditingEditableState extends State{
           },
           currentIndex: _index,
         ),
-        appBar: SWAppBar(title: Text(profile.name)),
+        appBar: SWAppBar(),
         body: _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes()
       ),
       editable: profile

@@ -19,12 +19,12 @@ class Character extends Editable with Creature{
 
   String species;
   String career;
-  List<String> specializations;
-  List<ForcePower> forcePowers;
+  List<String> specializations = new List();
+  List<ForcePower> forcePowers = new List();
   String motivation;
   String emotionalStr, emotionalWeak;
-  List<Duty> duties;
-  List<Obligation> obligations;
+  List<Duty> duties = new List();
+  List<Obligation> obligations = new List();
   int strainThresh, strainCur;
   int xpTot, xpCur;
   int force;
@@ -54,7 +54,8 @@ class Character extends Editable with Creature{
     "Description:"
   ];
 
-  Character({@required int id, String name = "New Character"}) : super(id: id, name: name);
+  Character({@required int id, String name = "New Character", bool saveOnCreation = false, SW app}) :
+      super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
   Character.load(FileSystemEntity file, SW app) : super.load(file, app);
 

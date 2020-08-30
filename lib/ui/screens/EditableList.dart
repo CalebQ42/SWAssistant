@@ -34,7 +34,6 @@ class _EditableListState extends State{
 
   _EditableListState(this.type){
     refreshCallback = () => setState((){});
-    
   }
 
   Widget build(BuildContext context) {
@@ -76,7 +75,17 @@ class _EditableListState extends State{
           return Dismissible(
             key: UniqueKey(),
             onDismissed: (direction) => setState((){
+              var temp = list[index];
               (list[index] as Editable).delete(SW.of(context));
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text((list[index] as Editable).name + " Deleted"),
+                  action: SnackBarAction(
+                    label: "Undo",
+                    onPressed: () => list.insert(index, temp),
+                  ),
+                )
+              );
             }),
             child: InheritedEditable(
               child:Card(
@@ -122,19 +131,19 @@ class _EditableListState extends State{
               while(SW.of(context).characters.any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => SW.of(context).characters.add(new Character(id: id)));
+              setState(() => SW.of(context).characters.add(new Character(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
             case 1:
               while(SW.of(context).minions.any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => SW.of(context).minions.add(new Minion(id: id)));
+              setState(() => SW.of(context).minions.add(new Minion(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
             case 2:
               while(SW.of(context).vehicles.any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => SW.of(context).vehicles.add(new Vehicle(id: id)));
+              setState(() => SW.of(context).vehicles.add(new Vehicle(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
           }
         }

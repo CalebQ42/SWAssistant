@@ -14,8 +14,8 @@ class Minion extends Editable with Creature{
 
   int woundThreshInd;
   int minionNum;
-  List<Item> savedInv;
-  List<Weapon> savedWeapons;
+  List<Item> savedInv = new List();
+  List<Weapon> savedWeapons = new List();
 
   String get fileExtension => ".swminion";
   List<String> get cardNames => [
@@ -30,7 +30,8 @@ class Minion extends Editable with Creature{
     "Critical Injuries:"
   ];
 
-  Minion({@required int id, String name = "New Minion"}) : super(id: id, name: name);
+  Minion({@required int id, String name = "New Minion", bool saveOnCreation = false, SW app}) :
+      super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
   Minion.load(FileSystemEntity file, SW app) : super.load(file, app);
 

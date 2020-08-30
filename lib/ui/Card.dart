@@ -110,11 +110,11 @@ class _NameCardContentState extends State{
               var cont = new TextEditingController(text: editable.name);
               cont.addListener(() {
                 editable.name = cont.text;
-                refresh();
               });
               return cont;
             }(),
             defaultSave: true,
+            textCapitalization: TextCapitalization.words,
           )
         );
       },
