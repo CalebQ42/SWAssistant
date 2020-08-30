@@ -4,6 +4,7 @@ import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 
@@ -29,25 +30,28 @@ class _EditableListState extends State{
 
   Function refreshCallback;
   int type;
+  List list;
 
   _EditableListState(this.type){
     refreshCallback = () => setState((){});
+    
   }
 
   Widget build(BuildContext context) {
-    List list;
-    switch(type){
-      case 0:
-        list = SW.of(context).characters;
-        break;
-      case 1:
-        list = SW.of(context).minions;
-        break;
-      case 2:
-        list = SW.of(context).vehicles;
-        break;
-      default:
-        throw("invalid list type");
+    if(list == null){
+      switch(type){
+        case 0:
+          list = SW.of(context).characters;
+          break;
+        case 1:
+          list = SW.of(context).minions;
+          break;
+        case 2:
+          list = SW.of(context).vehicles;
+          break;
+        default:
+          throw("invalid list type");
+      }
     }
     return Scaffold(
       drawer: SWDrawer(),
@@ -69,38 +73,43 @@ class _EditableListState extends State{
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext c, int index){
-          return 
-          InheritedEditable(
-            child:Card(
-              child: InkResponse(
-                onTap: (){
-                  Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],refreshCallback),fullscreenDialog: false));
-                },
-                child:Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Hero(
-                    transitionOnUserGestures: true,
-                    tag: (){
-                      String out = "";
-                      switch(type){
-                        case 0:
-                          out = "character/";
-                          break;
-                        case 1:
-                          out = "minion/";
-                          break;
-                        case 2:
-                          out = "vehicle/";
-                          break;
-                      }
-                      return out + list[index].id.toString();
-                    }(),
-                    child:Text(list[index].name, style: Theme.of(c).textTheme.headline5)
-                  ),
+          return Dismissible(
+            key: UniqueKey(),
+            onDismissed: (direction) => setState((){
+              (list[index] as Editable).delete(SW.of(context));
+            }),
+            child: InheritedEditable(
+              child:Card(
+                child: InkResponse(
+                  onTap: (){
+                    Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],refreshCallback),fullscreenDialog: false));
+                  },
+                  child:Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Hero(
+                      transitionOnUserGestures: true,
+                      tag: (){
+                        String out = "";
+                        switch(type){
+                          case 0:
+                            out = "character/";
+                            break;
+                          case 1:
+                            out = "minion/";
+                            break;
+                          case 2:
+                            out = "vehicle/";
+                            break;
+                        }
+                        return out + list[index].id.toString();
+                      }(),
+                      child: Text(list[index].name, style: Theme.of(c).textTheme.headline5)
+                    ),
+                  )
                 )
-              )
-            ),
-            editable: list[index]
+              ),
+              editable: list[index]
+            )
           );
         },
       ),
