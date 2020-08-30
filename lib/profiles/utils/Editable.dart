@@ -23,7 +23,7 @@ abstract class Editable extends JsonSavable{
 
   int id = 0;
   String name;
-  List<Note> nts;
+  List<Note> notes;
   List<Weapon> weapons;
   String category;
   List<CriticalInjury> criticalInjuries;
@@ -39,8 +39,8 @@ abstract class Editable extends JsonSavable{
   String _loc;
   bool _defered = false;
 
-  Editable({@required this.id, this.name = "", this.nts, this.weapons, this.category = "", this.criticalInjuries, this.desc = ""}){
-    nts ??= new List();
+  Editable({@required this.id, this.name = "", this.notes, this.weapons, this.category = "", this.criticalInjuries, this.desc = ""}){
+    notes ??= new List();
     weapons ??= new List();
     criticalInjuries ??= new List();
     showCard = List.filled(cardNames.length, false);
@@ -59,9 +59,9 @@ abstract class Editable extends JsonSavable{
       throw("Must be overridden by child");
     id = json["id"];
     name = json["name"];
-    nts = new List<Note>();
+    notes = new List<Note>();
     for (Map<String, dynamic> arrMap in json["Notes"]) 
-      nts.add(Note.fromJson(arrMap));
+      notes.add(Note.fromJson(arrMap));
     weapons = new List<Weapon>();
     for(Map<String,dynamic> arrMap in json["Weapons"])
       weapons.add(Weapon.fromJson(arrMap));
@@ -78,7 +78,7 @@ abstract class Editable extends JsonSavable{
     if (!(this is Character || this is Vehicle || this is Minion))
       throw("Must be overridden by child");
     var json = new Map<String,dynamic>();
-    json["Notes"] = List.generate(nts.length, (index) => nts[index].toJson());
+    json["Notes"] = List.generate(notes.length, (index) => notes[index].toJson());
     json["Weapons"] = List.generate(weapons.length, (index) => weapons[index].toJson());
     json["Critical Injuries"] = List.generate(criticalInjuries.length, (index) => criticalInjuries[index].toJson());
     json["name"] = name;
@@ -100,6 +100,7 @@ abstract class Editable extends JsonSavable{
       )
     );
     for (int i = 0; i < contents.length; i++){
+      print(i);
       cards.add(
         InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b, refresh){showCard[i]=b;})
       );

@@ -89,16 +89,8 @@ class _NameCardContentState extends State{
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
-    TextEditingController controller;
     return EditableContent(
       builder: (bool b, refresh){
-        if(b){
-          controller = new TextEditingController(text: editable.name);
-          controller.addListener(() {
-            editable.name = controller.text;
-            refresh();
-          });
-        }
         return Hero(
           transitionOnUserGestures: true,
           tag: (){
@@ -114,7 +106,14 @@ class _NameCardContentState extends State{
             editing: b,
             style: Theme.of(context).textTheme.headline5,
             initialText: editable.name,
-            controller: controller,
+            controller: (){
+              var cont = new TextEditingController(text: editable.name);
+              cont.addListener(() {
+                editable.name = cont.text;
+                refresh();
+              });
+              return cont;
+            }(),
             defaultSave: true,
           )
         );

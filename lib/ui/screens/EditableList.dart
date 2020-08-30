@@ -95,7 +95,7 @@ class _EditableListState extends State{
                       }
                       return out + list[index].id.toString();
                     }(),
-                    child:Text(list[index].name, style: Theme.of(c).textTheme.headline5)
+                    child: Text(list[index].name, style: Theme.of(c).textTheme.headline5)
                   ),
                 )
               )

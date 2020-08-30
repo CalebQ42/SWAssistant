@@ -13,6 +13,8 @@ class EditingText extends StatelessWidget {
   final TextInputType textType;
   final EdgeInsets fieldInsets;
   final EdgeInsets textInsets;
+  final bool multiline;
+  final TextCapitalization textCapitalization;
 
   final TextEditingController controller;
 
@@ -20,7 +22,7 @@ class EditingText extends StatelessWidget {
 
   EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
-      this.defaultSave = false}){
+      this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none}){
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
   }
@@ -39,9 +41,11 @@ class EditingText extends StatelessWidget {
         key: ValueKey("textField"),
         padding: fieldInsets,
         child: TextField(
+          maxLines: multiline ? null : 1,
           controller: controller,
           keyboardType: textType,
           inputFormatters: textType == TextInputType.number ? [WhitelistingTextInputFormatter.digitsOnly] : null,
+          textCapitalization: textCapitalization,
         )
       );
     }else{
