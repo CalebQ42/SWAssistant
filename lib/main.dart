@@ -17,11 +17,27 @@ class SWApp extends StatelessWidget {
       theme = ThemeData.light().copyWith(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
+        bottomSheetTheme: BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0)
+            )
+          )
+        )
       );
     else
       theme = ThemeData.dark().copyWith(
         primaryColor: Colors.red,
         accentColor: Colors.blueAccent,
+        bottomSheetTheme: BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0)
+            )
+          )
+        )
       );
     return MaterialApp(
       title: 'SWAssistant',

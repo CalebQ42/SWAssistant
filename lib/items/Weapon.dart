@@ -30,6 +30,23 @@ class Weapon implements JsonSavable{
     }
   }
 
+  Weapon.nulled() : 
+      name = null,
+      damage = null,
+      critical = null,
+      hp = null,
+      range = null,
+      skill = null,
+      skillBase = null,
+      addBrawn = null,
+      loaded = null,
+      limitedAmmo = null,
+      itemState = null,
+      ammo = null,
+      firingArc = null,
+      encumbrance = null,
+      characteristics = new List();
+
   Weapon.fromJson(Map<String,dynamic> json) :
       name = json["name"],
       damage = json["damage"],
@@ -51,6 +68,23 @@ class Weapon implements JsonSavable{
       characteristics.add(WeaponCharacteristic.fromJson(map));
     }
   }
+
+  Weapon.from(Weapon from) : 
+      name = from.name,
+      damage = from.damage,
+      critical = from.critical, 
+      hp = from.hp,
+      range = from.range,
+      skill = from.skill,
+      skillBase = from.skillBase,
+      addBrawn = from.addBrawn,
+      loaded = from.loaded,
+      limitedAmmo = from.limitedAmmo,
+      itemState = from.itemState,
+      ammo = from.ammo,
+      firingArc = from.firingArc,
+      encumbrance = from.encumbrance,
+      characteristics = List.from(from.characteristics);
 
   Map<String,dynamic> toJson(){
     var characteristicsMap = new List<Map<String,dynamic>>();

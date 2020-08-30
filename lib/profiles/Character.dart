@@ -5,8 +5,10 @@ import 'package:swassistant/SW.dart';
 import 'package:swassistant/items/Duty.dart';
 import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
+import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/common/Weapons.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
 import 'package:swassistant/ui/items/characters/WoundStrain.dart';
@@ -140,6 +142,9 @@ class Character extends Editable with Creature{
     }));
     out.add(EditableContent(builder: (b, refresh){
       return Defense(editing: b);
+    }));
+    out.add(EditableContent(builder: (b, refresh){
+      return Weapons(editing: b, refresh: refresh,);
     }));
     for(int i = out.length;i<cardNames.length;i++){
       out.add(EditableContent(builder: (bool b, refresh){

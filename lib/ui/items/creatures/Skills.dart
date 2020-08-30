@@ -18,7 +18,6 @@ class Skills extends StatelessWidget{
       return InkResponse(
         containedInkWell: true,
         onTap: (){
-          print(creature.charVals[creature.skills[index].base].toString() + ", " + creature.skills[index].value.toString());
           var ability = (creature.charVals[creature.skills[index].base] - creature.skills[index].value).abs();
           var proficiency = creature.charVals[creature.skills[index].base] < creature.skills[index].value ?
             creature.charVals[creature.skills[index].base] :
@@ -62,12 +61,6 @@ class Skills extends StatelessWidget{
                     onPressed: (){
                       showModalBottomSheet(
                         context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20.0),
-                            topRight: Radius.circular(20.0)
-                          )
-                        ),
                         builder: (context){
                           return SkillEditDialog(
                             onClose: (skill){
@@ -121,12 +114,6 @@ class Skills extends StatelessWidget{
                 onPressed: (){
                   showModalBottomSheet(
                     context: context,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0)
-                      )
-                    ),
                     builder: (context){
                       return SkillEditDialog(onClose: (skill){
                         creature.skills.add(skill);
@@ -157,8 +144,8 @@ class SkillEditDialog extends StatefulWidget{
   final Function(Skill) onClose;
   final Skill skill;
 
-  SkillEditDialog({this.onClose, skill}) :
-      this.skill = skill == null ? Skill(name: null, base: null, value: null) : Skill.from(skill);
+  SkillEditDialog({this.onClose, Skill skill}) :
+      this.skill = skill == null ? Skill.nulled() : Skill.from(skill);
 
   @override
   State<StatefulWidget> createState() => _SkillEditDialogState(onClose: onClose, skill: skill);
@@ -177,120 +164,117 @@ class _SkillEditDialogState extends State{
   
   Widget build(BuildContext context) {
     return Padding(
-      padding: MediaQuery.of(context).viewInsets,
+      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
       child: Wrap(
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-          child: Column(
-            children: [
-              DropdownButton<String>(
-                underline: null,
-                isExpanded: true,
-                onChanged: (value) {
-                  setState((){
-                    if(value != "Other..."){
-                      manual = false;
-                      skill.name = value;
-                      skill.base = Skill.skillsList[value];
-                    }else{
-                      manual = true;
-                      skill.name = "";
-                    }
-                  });
-                },
-                value: (Skill.skillsList.containsKey(skill.name) || skill.name == null) ? skill.name : Skill.skillsList.keys.last,
-                hint: Text("Skill"),
-                items: List.generate(
-                  Skill.skillsList.length,
-                  (i){
-                    return DropdownMenuItem<String>(
-                      value: Skill.skillsList.keys.elementAt(i),
-                      child: Text(Skill.skillsList.keys.elementAt(i))
-                    );
+        Column(
+          children: [
+            DropdownButton<String>(
+              underline: null,
+              isExpanded: true,
+              onChanged: (value) {
+                setState((){
+                  if(value != "Other..."){
+                    manual = false;
+                    skill.name = value;
+                    skill.base = Skill.skillsList[value];
+                  }else{
+                    manual = true;
+                    skill.name = "";
                   }
-                ),
-              ),
-              AnimatedSwitcher(
-                child: !manual ? Container() :
-                    TextField(
-                      onChanged: (value) => skill.name = value,
-                      autofillHints: Skill.skillsList.keys,
-                      controller: TextEditingController(text: skill.name),
-                    ),
-                duration: Duration(milliseconds: 150),
-                transitionBuilder: (child, anim) {
-                  return SizeTransition(
-                    sizeFactor: anim,
-                    child: child,
+                });
+              },
+              value: (Skill.skillsList.containsKey(skill.name) || skill.name == null) ? skill.name : Skill.skillsList.keys.last,
+              hint: Text("Skill"),
+              items: List.generate(
+                Skill.skillsList.length,
+                (i){
+                  return DropdownMenuItem<String>(
+                    value: Skill.skillsList.keys.elementAt(i),
+                    child: Text(Skill.skillsList.keys.elementAt(i))
                   );
-                }, 
+                }
               ),
-              DropdownButton<int>(
-                isExpanded: true,
-                hint: Text("Characteristic"),
-                items: List.generate(
-                  Creature.characteristics.length,
-                  (i) => DropdownMenuItem(
-                    child: Text(Creature.characteristics[i]),
-                    value: i
-                  )
+            ),
+            AnimatedSwitcher(
+              child: !manual ? Container() :
+                TextField(
+                  onChanged: (value) => skill.name = value,
+                  autofillHints: Skill.skillsList.keys,
+                  controller: TextEditingController(text: skill.name),
                 ),
-                value: skill.base,
-                onChanged: (value) => setState(() => skill.base = value),
+              duration: Duration(milliseconds: 150),
+              transitionBuilder: (child, anim) {
+                return SizeTransition(
+                  sizeFactor: anim,
+                  child: child,
+                );
+              }, 
+            ),
+            DropdownButton<int>(
+              isExpanded: true,
+              hint: Text("Characteristic"),
+              items: List.generate(
+                Creature.characteristics.length,
+                (i) => DropdownMenuItem(
+                  child: Text(Creature.characteristics[i]),
+                  value: i
+                )
               ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Skill Value"
-                ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  WhitelistingTextInputFormatter.digitsOnly
-                ],
-                controller: (){
-                  var cont = TextEditingController(text: skill.value != null ? skill.value.toString() : "");
-                  if(prevSelection != null){
-                    cont.selection = prevSelection;
-                    prevSelection = null;
+              value: skill.base,
+              onChanged: (value) => setState(() => skill.base = value),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Skill Value"
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
+              controller: (){
+                var cont = TextEditingController(text: skill.value != null ? skill.value.toString() : "");
+                if(prevSelection != null){
+                  cont.selection = prevSelection;
+                  prevSelection = null;
+                }
+                cont.addListener((){
+                  var val = int.tryParse(cont.text);
+                  if((skill.value == null && val != null) || (skill.value != null && val == null)){
+                    prevSelection = cont.selection;
+                    setState(() => skill.value = val);
+                  }else{
+                    skill.value = val;
                   }
-                  cont.addListener((){
-                    var val = int.tryParse(cont.text);
-                    if((skill.value == null && val != null) || (skill.value != null && val == null)){
-                      prevSelection = cont.selection;
-                      setState(() => skill.value = val);
-                    }else{
-                      skill.value = val;
-                    }
-                  });
-                  return cont;
-                }(),
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text("Career"),
-                value: skill.career,
-                onChanged: (b)=>setState(()=>skill.career = b),
-              ),
-              ButtonBar(
-                children: [
-                  FlatButton(
-                    child: Text("Save"),
-                    onPressed: (skill.name != null && skill.base != null && skill.value != null) ? (){
-                      onClose(skill);
-                      Navigator.of(context).pop();
-                    } : null,
-                  ),
-                  FlatButton(
-                    child: Text("Cancel"),
-                    onPressed: (){
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ]
-              )
-            ],
-          ),
-        )
+                });
+                return cont;
+              }(),
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text("Career"),
+              value: skill.career,
+              onChanged: (b)=>setState(()=>skill.career = b),
+            ),
+            ButtonBar(
+              children: [
+                FlatButton(
+                  child: Text("Save"),
+                  onPressed: (skill.name != null && skill.base != null && skill.value != null) ? (){
+                    onClose(skill);
+                    Navigator.of(context).pop();
+                  } : null,
+                ),
+                FlatButton(
+                  child: Text("Cancel"),
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
+                )
+              ]
+            )
+          ],
+        ),
       ]
     ));
   }
