@@ -28,13 +28,10 @@ class EditableList extends StatefulWidget{
 
 class _EditableListState extends State{
 
-  Function refreshCallback;
   int type;
   List list;
 
-  _EditableListState(this.type){
-    refreshCallback = () => setState((){});
-  }
+  _EditableListState(this.type);
 
   Widget build(BuildContext context) {
     if(list == null){
@@ -72,7 +69,7 @@ class _EditableListState extends State{
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext c, int index){
-          return EditableCard(editable: list[index], refreshCallback: refreshCallback);
+          return EditableCard(editable: list[index], refreshCallback: () => setState((){}), upperContext: c,);
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -108,16 +105,17 @@ class _EditableListState extends State{
 class EditableCard extends StatelessWidget{
   final Editable editable;
   final Function refreshCallback;
+  final BuildContext upperContext;
 
-  EditableCard({this.editable, this.refreshCallback});
+  EditableCard({this.editable, this.refreshCallback, this.upperContext});
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: UniqueKey(),
       onDismissed: (direction){
         var tmp = editable;
-        editable.delete(SW.of(context));
-        SW.of(context).remove(editable);
+        editable.delete(SW.of(upperContext));
+        SW.of(upperContext).remove(editable);
         String msg;
         if(editable is Character)
           msg = "Character Deleted";
@@ -125,14 +123,14 @@ class EditableCard extends StatelessWidget{
           msg = "Minion Deleted";
         else if (editable is Vehicle)
           msg = "Vehicle Deleted";
-        Scaffold.of(context).showSnackBar(
+        Scaffold.of(upperContext).showSnackBar(
           SnackBar(
             content: Text(msg),
             action: SnackBarAction(
               label: "Undo",
               onPressed: (){
-                SW.of(context).add(tmp);
-                tmp.save(tmp.getFileLocation(SW.of(context)));
+                SW.of(upperContext).add(tmp);
+                tmp.save(tmp.getFileLocation(SW.of(upperContext)));
                 refreshCallback();
               }
             ),

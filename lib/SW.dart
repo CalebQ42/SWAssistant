@@ -140,11 +140,11 @@ class SW extends InheritedWidget{
     if(search == "" && category == "")
       return _characters;
     if(search == "")
-      return _characters.where((element) => element.category == category);
+      return _characters.where((element) => element.category == category).toList();
     if(category == "")
-      return _characters.where((element) => element.name.contains(search));
+      return _characters.where((element) => element.name.contains(search)).toList();
     return _characters.where((element) => element.category == category)
-        .where((element) => element.name.contains(search));
+        .where((element) => element.name.contains(search)).toList();
   }
 
   bool removeCharacter({int id, Character character}){
@@ -177,11 +177,11 @@ class SW extends InheritedWidget{
     if(search == "" && category == "")
       return _minions;
     if(search == "")
-      return _minions.where((element) => element.category == category);
+      return _minions.where((element) => element.category == category).toList();
     if(category == "")
-      return _minions.where((element) => element.name.contains(search));
+      return _minions.where((element) => element.name.contains(search)).toList();
     return _minions.where((element) => element.category == category)
-        .where((element) => element.name.contains(search));
+        .where((element) => element.name.contains(search)).toList();
   }
 
   bool removeMinion({int id, Minion minion}){
@@ -214,11 +214,11 @@ class SW extends InheritedWidget{
     if(search == "" && category == "")
       return _vehicles;
     if(search == "")
-      return _vehicles.where((element) => element.category == category);
+      return _vehicles.where((element) => element.category == category).toList();
     if(category == "")
-      return _vehicles.where((element) => element.name.contains(search));
+      return _vehicles.where((element) => element.name.contains(search)).toList();
     return _vehicles.where((element) => element.category == category)
-        .where((element) => element.name.contains(search));
+        .where((element) => element.name.contains(search)).toList();
   }
 
   bool removeVehicle({int id, Vehicle vehicle}){

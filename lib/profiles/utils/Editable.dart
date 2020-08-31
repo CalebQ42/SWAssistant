@@ -23,10 +23,10 @@ abstract class Editable extends JsonSavable{
 
   int id = 0;
   String name;
-  List<Note> notes;
-  List<Weapon> weapons;
+  List<Note> notes = new List();
+  List<Weapon> weapons = new List();
   String category;
-  List<CriticalInjury> criticalInjuries;
+  List<CriticalInjury> criticalInjuries = new List();
   String desc;
 
   List<bool> showCard;
@@ -40,9 +40,6 @@ abstract class Editable extends JsonSavable{
   bool _defered = false;
 
   Editable({@required this.id, this.name = "", bool saveOnCreation = false, SW app}){
-    notes ??= new List();
-    weapons ??= new List();
-    criticalInjuries ??= new List();
     showCard = List.filled(cardNames.length, false);
     if(saveOnCreation)
       this.save(getFileLocation(app));
@@ -90,20 +87,20 @@ abstract class Editable extends JsonSavable{
     return json;
   }
 
-  List<Widget> cards(Function refresh, BuildContext context){
+  List<Widget> cards(Function refreshList, BuildContext context){
     var cards = List<Widget>();
     var contents = cardContents();
     cards.add(
       Card(
         child: Padding(
           padding: EdgeInsets.all(10.0),
-          child: NameCardContent(refresh)
+          child: NameCardContent(refreshList)
         )
       )
     );
     for (int i = 0; i < contents.length; i++){
       cards.add(
-        InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b, refresh){showCard[i]=b;})
+        InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b, refresh) => showCard[i]=b)
       );
     }
     return cards;

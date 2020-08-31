@@ -23,65 +23,66 @@ class Weapons extends StatelessWidget{
         child: Row(
           children: [
             Expanded(
-              child: Text(editable.weapons[i].name)
-            ),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 250),
-                child: !editing ? Container(height: 24,)
-                : ButtonBar(
-                  children: [
-                    IconButton(
-                      iconSize: 24.0,
-                      constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                      icon: Icon(Icons.delete_forever),
-                      onPressed: (){
-                        editable.weapons.removeAt(i);
-                        refresh();
-                      }
-                    ),
-                    IconButton(
-                      constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                      icon: Icon(Icons.edit),
-                      onPressed: (){
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context){
-                            return WeaponEditDialog(
-                              editable: editable,
-                              onClose: (weapon){
-                                if(weapon != null){
-                                  editable.weapons[i] = weapon;
-                                  refresh();
-                                }
-                              },
-                              weapon: editable.weapons[i]
-                            );
-                          }
-                        );
-                      }
-                    )
-                  ]
-                ),
-                transitionBuilder: (child, anim){
-                  var offset = Offset(1,0);
-                  if((!editing && child is ButtonBar) || (editing && child is Container))
-                    offset = Offset(-1,0);
-                  return ClipRect(
-                    child: SizeTransition(
-                      sizeFactor: anim,
-                      axis: Axis.horizontal,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: offset,
-                          end: Offset.zero
-                        ).animate(anim),
-                        child: child,
-                      )
-                    )
-                  );
-                },
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Text(editable.weapons[i].name)
               )
+            ),
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 250),
+              child: !editing ? Container(height: 24,)
+              : ButtonBar(
+                children: [
+                  IconButton(
+                    iconSize: 24.0,
+                    constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                    icon: Icon(Icons.delete_forever),
+                    onPressed: (){
+                      editable.weapons.removeAt(i);
+                      refresh();
+                    }
+                  ),
+                  IconButton(
+                    constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                    icon: Icon(Icons.edit),
+                    onPressed: (){
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context){
+                          return WeaponEditDialog(
+                            editable: editable,
+                            onClose: (weapon){
+                              if(weapon != null){
+                                editable.weapons[i] = weapon;
+                                refresh();
+                              }
+                            },
+                            weapon: editable.weapons[i]
+                          );
+                        }
+                      );
+                    }
+                  )
+                ]
+              ),
+              transitionBuilder: (child, anim){
+                var offset = Offset(1,0);
+                if((!editing && child is ButtonBar) || (editing && child is Container))
+                  offset = Offset(-1,0);
+                return ClipRect(
+                  child: SizeTransition(
+                    sizeFactor: anim,
+                    axis: Axis.horizontal,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: offset,
+                        end: Offset.zero
+                      ).animate(anim),
+                      child: child,
+                    )
+                  )
+                );
+              },
             )
           ],
         )
@@ -109,10 +110,15 @@ class Weapons extends StatelessWidget{
                     isScrollControlled: true,
                     context: context,
                     builder: (context){
-                      return WeaponEditDialog(onClose: (weapon){
-                        editable.weapons.add(weapon);
-                        refresh();
-                      },weapon: null);
+                      return WeaponEditDialog(
+                        onClose: (weapon){
+                          if(weapon != null){
+                            editable.weapons.add(weapon);
+                            refresh();
+                          }
+                        },
+                        weapon: null
+                      );
                     }
                   );
                 },
@@ -141,9 +147,54 @@ class _WeaponEditDialogState extends State{
   final Function(Weapon) onClose;
   final Weapon weapon;
   final Editable editable;
-  TextSelection prevSelection;
 
-  _WeaponEditDialogState({this.onClose, this.weapon, this.editable});
+  TextEditingController nameController;
+  TextEditingController damageController;
+  TextEditingController criticalController;
+  TextEditingController hpController;
+  TextEditingController encumbranceController;
+
+  _WeaponEditDialogState({this.onClose, this.weapon, this.editable}){
+    nameController = TextEditingController(text: weapon.name)
+        ..addListener(() {
+          if((weapon.name == "" && nameController.text != "") || (weapon.name != "" && nameController.text == ""))
+            setState(() => weapon.name = nameController.text);
+          else
+            weapon.name = nameController.text;
+        });
+    damageController = TextEditingController(text: weapon.damage.toString())
+        ..addListener(() {
+          var val = int.tryParse(damageController.text);
+          if((weapon.damage == null && val != null) || (weapon.damage != null && val == null))
+            setState(() => weapon.damage = val);
+          else
+            weapon.damage = val;
+        });
+    criticalController = TextEditingController(text: weapon.critical.toString())
+        ..addListener(() {
+          var val = int.tryParse(criticalController.text);
+          if((weapon.critical == null && val != null) || (weapon.critical != null && val == null)){
+            setState(() => weapon.critical = val);
+          }else
+            weapon.critical = val;
+        });
+    hpController = TextEditingController(text: weapon.hp.toString())
+        ..addListener(() {
+          var val = int.tryParse(hpController.text);
+          if((weapon.hp == null && val != null) || (weapon.hp != null && val == null))
+            setState(() => weapon.hp = val);
+          else
+            weapon.hp = val;
+        });
+    encumbranceController = TextEditingController(text: weapon.encumbrance.toString())
+        ..addListener(() {
+          var val = int.tryParse(encumbranceController.text);
+          if((weapon.encumbrance == null && val != null) || (weapon.encumbrance != null && val == null))
+            setState(() => weapon.encumbrance = val);
+          else
+            weapon.encumbrance = val;
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,122 +205,48 @@ class _WeaponEditDialogState extends State{
           children: [
             //Name
             TextField(
-              controller: (){
-                var cont = TextEditingController(text: weapon.name);
-                if(prevSelection != null){
-                  cont.selection = prevSelection;
-                  prevSelection = null;
-                }
-                cont.addListener(() {
-                  if((weapon.name == "" && cont.text != "") || (weapon.name != "" && cont.text == "")){
-                    prevSelection = cont.selection;
-                    setState(() => weapon.name = cont.text);
-                  }else
-                    weapon.name = cont.text;
-                });
-                return cont;
-              }(),
+              controller: nameController,
               decoration: InputDecoration(
-                prefix: Text("Name: "),
-                hintText: "Name"
+                prefixIcon: Text("Name: ", style: TextStyle(color:Theme.of(context).hintColor),),
+                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
               ),
             ),
             //Damage
             TextField(
-              controller: (){
-                var cont = TextEditingController(text: weapon.damage != null ? weapon.damage.toString() : "");
-                if(prevSelection != null){
-                  cont.selection = prevSelection;
-                  prevSelection = null;
-                }
-                cont.addListener(() {
-                  var val = int.tryParse(cont.text);
-                  if((weapon.damage == null && val != null) || weapon.damage != null && val == null){
-                    prevSelection = cont.selection;
-                    setState(() => weapon.damage = val);
-                  }else
-                    weapon.damage = val;
-                });
-                return cont;
-              }(),
+              controller: damageController,
               decoration: InputDecoration(
-                prefix: Text("Damage: "),
-                hintText: "Damage"
+                prefixIcon: Text("Damage: ", style: TextStyle(color:Theme.of(context).hintColor),),
+                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
             ),
             //Critical
             TextField(
-              controller: (){
-                var cont = TextEditingController(text: weapon.critical != null ? weapon.critical.toString() : "");
-                if(prevSelection != null){
-                  cont.selection = prevSelection;
-                  prevSelection = null;
-                }
-                cont.addListener(() {
-                  var val = int.tryParse(cont.text);
-                  if((weapon.critical == null && val != null) || weapon.critical != null && val == null){
-                    prevSelection = cont.selection;
-                    setState(() => weapon.critical = val);
-                  }else
-                    weapon.critical = val;
-                });
-                return cont;
-              }(),
+              controller: criticalController,
               decoration: InputDecoration(
-                prefix: Text("Critical: "),
-                hintText: "Critical"
+                prefixIcon: Text("Critical: ", style: TextStyle(color:Theme.of(context).hintColor),),
+                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
             ),
             //Hard Points
             TextField(
-              controller: (){
-                var cont = TextEditingController(text: weapon.hp != null ? weapon.hp.toString() : "");
-                if(prevSelection != null){
-                  cont.selection = prevSelection;
-                  prevSelection = null;
-                }
-                cont.addListener(() {
-                  var val = int.tryParse(cont.text);
-                  if((weapon.hp == null && val != null) || weapon.hp != null && val == null){
-                    prevSelection = cont.selection;
-                    setState(() => weapon.hp = val);
-                  }else
-                    weapon.hp = val;
-                });
-                return cont;
-              }(),
+              controller: hpController,
               decoration: InputDecoration(
-                prefix: Text("Hard Points: "),
-                hintText: "Hard Points"
+                prefixIcon: Text("Hard Points: ", style: TextStyle(color:Theme.of(context).hintColor),),
+                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
             ),
             //Encumbrance
             if(editable is Character) TextField(
-              controller: (){
-                var cont = TextEditingController(text: weapon.encumbrance != null ? weapon.encumbrance.toString() : "");
-                if(prevSelection != null){
-                  cont.selection = prevSelection;
-                  prevSelection = null;
-                }
-                cont.addListener(() {
-                  var val = int.tryParse(cont.text);
-                  if((weapon.encumbrance == null && val != null) || weapon.encumbrance != null && val == null){
-                    prevSelection = cont.selection;
-                    setState(() => weapon.encumbrance = val);
-                  }else
-                    weapon.encumbrance = val;
-                });
-                return cont;
-              }(),
+              controller: encumbranceController,
               decoration: InputDecoration(
-                prefix: Text("Encumbrance: "),
-                hintText: "Encumbrance"
+                prefixIcon: Text("Encumbrance: ", style: TextStyle(color:Theme.of(context).hintColor),),
+                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -278,11 +255,18 @@ class _WeaponEditDialogState extends State{
               children: [
                 FlatButton(
                   child: Text("Cancel"),
-                  onPressed: () => onClose(null),
+                  onPressed: (){
+                    onClose(null);
+                    Navigator.of(context).pop();
+                  },
                 ),
                 FlatButton(
                   child: Text("Save"),
-                  onPressed: () => onClose(weapon)
+                  onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null && weapon.hp != null
+                      && weapon.encumbrance != null ? (){
+                    onClose(weapon);
+                    Navigator.of(context).pop();
+                  } : null
                 )
               ],
             )

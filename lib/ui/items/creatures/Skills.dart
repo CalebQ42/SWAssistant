@@ -157,9 +157,20 @@ class _SkillEditDialogState extends State{
   bool manual = false;
   TextSelection prevSelection;
 
+  TextEditingController valueController;
+
   _SkillEditDialogState({this.onClose, this.skill}){
     if(skill.name != null && !Skill.skillsList.containsKey(skill.name))
       manual = true;
+    valueController = new TextEditingController(text: skill.value.toString())
+        ..addListener(() {
+          var val = int.tryParse(valueController.text);
+          if((skill.value == null && val != null) || (skill.value != null && val == null)){
+            setState(() => skill.value = val);
+          }else{
+            skill.value = val;
+          }
+        });
   }
   
   Widget build(BuildContext context) {
@@ -232,23 +243,7 @@ class _SkillEditDialogState extends State{
               inputFormatters: [
                 WhitelistingTextInputFormatter.digitsOnly
               ],
-              controller: (){
-                var cont = TextEditingController(text: skill.value != null ? skill.value.toString() : "");
-                if(prevSelection != null){
-                  cont.selection = prevSelection;
-                  prevSelection = null;
-                }
-                cont.addListener((){
-                  var val = int.tryParse(cont.text);
-                  if((skill.value == null && val != null) || (skill.value != null && val == null)){
-                    prevSelection = cont.selection;
-                    setState(() => skill.value = val);
-                  }else{
-                    skill.value = val;
-                  }
-                });
-                return cont;
-              }(),
+              controller: valueController,
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,

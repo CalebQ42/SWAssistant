@@ -8,7 +8,7 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class InfoCard extends StatefulWidget{
 
   final InfoCardHolder holder = new InfoCardHolder();
-  final Function(bool b, Function refresh) onHideChange;
+  final Function(bool b, Function refreshList) onHideChange;
 
   InfoCard({shown = true, @required Widget contents, String title = "", @required this.onHideChange}){
     holder.shown = shown;
@@ -25,7 +25,7 @@ class InfoCard extends StatefulWidget{
 class _InfoCardState extends State{
 
   InfoCardHolder holder;
-  Function(bool b, Function refresh) onHideChange;
+  Function(bool b, Function refreshList) onHideChange;
 
   _InfoCardState(this.holder, this.onHideChange);
 
@@ -73,25 +73,26 @@ class InfoCardHolder{
 }
 
 class NameCardContent extends StatefulWidget{
-  final Function refresh;
+  final Function refreshList;
 
-  const NameCardContent(this.refresh);
+  const NameCardContent(this.refreshList);
   @override
   State<StatefulWidget> createState() {
-    return _NameCardContentState(refresh);
+    return _NameCardContentState(refreshList);
   }
 }
 
 class _NameCardContentState extends State{
-  Function refresh;
+  Function refreshList;
 
-  _NameCardContentState(this.refresh);
+  _NameCardContentState(this.refreshList);
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
     return EditableContent(
       builder: (bool b, refresh){
-        return Hero(
+        //TODO: fix hero!
+        return /*Hero(
           transitionOnUserGestures: true,
           tag: (){
             String out = "";
@@ -102,7 +103,7 @@ class _NameCardContentState extends State{
             else if (editable is Vehicle)
               out = "vehicle/";
             return out + editable.id.toString();
-          }(),child: EditingText(
+          }(),child: */EditingText(
             editing: b,
             style: Theme.of(context).textTheme.headline5,
             initialText: editable.name,
@@ -110,12 +111,13 @@ class _NameCardContentState extends State{
               var cont = new TextEditingController(text: editable.name);
               cont.addListener(() {
                 editable.name = cont.text;
+                refreshList();
               });
               return cont;
             }(),
             defaultSave: true,
             textCapitalization: TextCapitalization.words,
-          )
+          //)
         );
       },
     );
