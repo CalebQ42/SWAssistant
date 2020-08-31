@@ -40,13 +40,13 @@ class _EditableListState extends State{
     if(list == null){
       switch(type){
         case 0:
-          list = SW.of(context).characters;
+          list = SW.of(context).characters();
           break;
         case 1:
-          list = SW.of(context).minions;
+          list = SW.of(context).minions();
           break;
         case 2:
-          list = SW.of(context).vehicles;
+          list = SW.of(context).vehicles();
           break;
         default:
           throw("invalid list type");
@@ -72,54 +72,7 @@ class _EditableListState extends State{
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext c, int index){
-          return Dismissible(
-            key: UniqueKey(),
-            onDismissed: (direction) => setState((){
-              var temp = list[index];
-              (list[index] as Editable).delete(SW.of(context));
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text((list[index] as Editable).name + " Deleted"),
-                  action: SnackBarAction(
-                    label: "Undo",
-                    onPressed: () => list.insert(index, temp),
-                  ),
-                )
-              );
-            }),
-            child: InheritedEditable(
-              child:Card(
-                child: InkResponse(
-                  onTap: (){
-                    Navigator.push(c,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(list[index],refreshCallback),fullscreenDialog: false));
-                  },
-                  child:Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Hero(
-                      transitionOnUserGestures: true,
-                      tag: (){
-                        String out = "";
-                        switch(type){
-                          case 0:
-                            out = "character/";
-                            break;
-                          case 1:
-                            out = "minion/";
-                            break;
-                          case 2:
-                            out = "vehicle/";
-                            break;
-                        }
-                        return out + list[index].id.toString();
-                      }(),
-                      child: Text(list[index].name, style: Theme.of(c).textTheme.headline5)
-                    ),
-                  )
-                )
-              ),
-              editable: list[index]
-            )
-          );
+          return EditableCard(editable: list[index], refreshCallback: refreshCallback);
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -128,26 +81,93 @@ class _EditableListState extends State{
           var id = 0;
           switch (type){
             case 0:
-              while(SW.of(context).characters.any((e)=>e.id==id)){
+              while(SW.of(context).characters().any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => SW.of(context).characters.add(new Character(id: id, saveOnCreation: true, app: SW.of(context))));
+              setState(() => SW.of(context).add(new Character(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
             case 1:
-              while(SW.of(context).minions.any((e)=>e.id==id)){
+              while(SW.of(context).minions().any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => SW.of(context).minions.add(new Minion(id: id, saveOnCreation: true, app: SW.of(context))));
+              setState(() => SW.of(context).add(new Minion(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
             case 2:
-              while(SW.of(context).vehicles.any((e)=>e.id==id)){
+              while(SW.of(context).vehicles().any((e)=>e.id==id)){
                 id++;
               }
-              setState(() => SW.of(context).vehicles.add(new Vehicle(id: id, saveOnCreation: true, app: SW.of(context))));
+              setState(() => SW.of(context).add(new Vehicle(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
           }
         }
       ),
+    );
+  }
+}
+
+class EditableCard extends StatelessWidget{
+  final Editable editable;
+  final Function refreshCallback;
+
+  EditableCard({this.editable, this.refreshCallback});
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction){
+        var tmp = editable;
+        editable.delete(SW.of(context));
+        SW.of(context).remove(editable);
+        String msg;
+        if(editable is Character)
+          msg = "Character Deleted";
+        else if (editable is Minion)
+          msg = "Minion Deleted";
+        else if (editable is Vehicle)
+          msg = "Vehicle Deleted";
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(msg),
+            action: SnackBarAction(
+              label: "Undo",
+              onPressed: (){
+                SW.of(context).add(tmp);
+                tmp.save(tmp.getFileLocation(SW.of(context)));
+                refreshCallback();
+              }
+            ),
+          )
+        );
+        refreshCallback();
+      },
+      child: InheritedEditable(
+        child:Card(
+          child: InkResponse(
+            onTap: (){
+              Navigator.push(context,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(editable,refreshCallback),fullscreenDialog: false));
+            },
+            child:Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Hero(
+                transitionOnUserGestures: true,
+                tag: (){
+                  String out;
+                  if(editable is Character)
+                    out = "character/";
+                  else if(editable is Minion)
+                    out = "minion/";
+                  else if(editable is Vehicle)
+                    out = "vehicle/";
+                  
+                  return out + editable.id.toString();
+                }(),
+                child: Text(editable.name, style: Theme.of(context).textTheme.headline5)
+              ),
+            )
+          )
+        ),
+        editable: editable
+      )
     );
   }
 }

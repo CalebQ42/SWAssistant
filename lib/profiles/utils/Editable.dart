@@ -150,7 +150,6 @@ abstract class Editable extends JsonSavable{
   }
   void cloudLoad(){}
   void delete(SW app){
-    app.characters.remove(this);
     var fil = File(getFileLocation(app));
     fil.deleteSync();
   }

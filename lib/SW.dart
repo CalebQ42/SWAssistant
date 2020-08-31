@@ -13,13 +13,13 @@ import 'profiles/Vehicle.dart';
 import 'Preferences.dart' as preferences;
 
 class SW extends InheritedWidget{
-  final List<Minion> minions = new List();
+  final List<Minion> _minions = new List();
   final List<String> minCats = new List();
 
-  final List<Character> characters = new List();
+  final List<Character> _characters = new List();
   final List<String> charCats = new List();
 
-  final List<Vehicle> vehicles = new List();
+  final List<Vehicle> _vehicles = new List();
   final List<String> vehCats = new List();
 
   final SharedPreferences prefs;
@@ -29,12 +29,9 @@ class SW extends InheritedWidget{
   SW({Widget child, this.prefs, this.saveDir}): super(child: child);
 
   void loadAll(){
-    minions.clear();
-    minCats.clear();
-    characters.clear();
-    charCats.clear();
-    vehicles.clear();
-    vehCats.clear();
+    _minions.clear();
+    _characters.clear();
+    _vehicles.clear();
     List<Editable> defered = new List();
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".backup"))
@@ -48,25 +45,19 @@ class SW extends InheritedWidget{
       if(element.path.endsWith(".swcharacter")){
         var temp = Character.load(element, this);
         if(temp.id != null){
-          characters.add(temp);
-          if(temp.category != "" && !charCats.contains(temp.category))
-            charCats.add(temp.category);
+          _characters.add(temp);
         }else
           defered.add(temp);
       }else if(element.path.endsWith(".swminion")){
         var temp = Minion.load(element, this);
         if(temp.id != null){
-          minions.add(temp);
-          if(temp.category != "" && !minCats.contains(temp.category))
-            minCats.add(temp.category);
+          _minions.add(temp);
         }else
           defered.add(temp);
       }else if(element.path.endsWith(".swvehicle")){
         var temp = Vehicle.load(element, this);
         if(temp.id != null){
-          vehicles.add(temp);
-          if(temp.category != "" && !vehCats.contains(temp.category))
-            vehCats.add(temp.category);
+          _vehicles.add(temp);
         }else
           defered.add(temp);
       }
@@ -81,69 +72,181 @@ class SW extends InheritedWidget{
             charId++;
           }
           temp.id = charId;
-          characters.add(temp);
-          if(temp.category != "" && !charCats.contains(temp.category))
-            charCats.add(temp.category);
+          _characters.add(temp);
         }else if (temp is Minion){
           while(defered.any((e)=>e.id==minId)){
             minId++;
           }
           temp.id = minId;
-          minions.add(temp);
-          if(temp.category != "" && !minCats.contains(temp.category))
-            minCats.add(temp.category);
+          _minions.add(temp);
         }else if (temp is Vehicle){
           while(defered.any((e)=>e.id==vehId)){
             vehId++;
           }
           temp.id = vehId;
-          vehicles.add(temp);
-          if(temp.category != "" && !vehCats.contains(temp.category))
-            vehCats.add(temp.category);
+          _vehicles.add(temp);
         }
       });
     }
   }
   void loadMinions(){
-    minions.clear();
-    minCats.clear();
-
+    _minions.clear();
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swminion")){
         var temp = Minion.load(element, this);
-        minions.add(temp);
-        if(temp.category != "" && !minCats.contains(temp.category))
-          minCats.add(temp.category);
+        _minions.add(temp);
       }
     });
   }
   void loadCharacters(){
-    characters.clear();
-    charCats.clear();
-
+    _characters.clear();
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swcharacter")){
         var temp = Character.load(element, this);
-        characters.add(temp);
-        if(temp.category != "" && !charCats.contains(temp.category))
-          charCats.add(temp.category);
+        _characters.add(temp);
       }
     });
   }
   void loadVehicles(){
-    vehicles.clear();
-    vehCats.clear();
-
+    _vehicles.clear();
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".swvehicle")){
         var temp = Vehicle.load(element, this);
-        vehicles.add(temp);
-        if(temp.category != "" && !vehCats.contains(temp.category))
-          vehCats.add(temp.category);
+        _vehicles.add(temp);
       }
     });
   }
 
+  void add(Editable editable){
+    if(editable is Character)
+      addCharacter(editable);
+    if(editable is Minion)
+      addMinion(editable);
+    if(editable is Vehicle)
+      addVehicle(editable);
+  }
+
+  bool remove(Editable editable){
+    if(editable is Character)
+      return removeCharacter(character: editable);
+    if(editable is Minion)
+      return removeMinion(minion: editable);
+    if(editable is Vehicle)
+      return removeVehicle(vehicle: editable);
+    return false;
+  }
+  
+  List<Character> characters({String search = "", String category = ""}){
+    if(search == "" && category == "")
+      return _characters;
+    if(search == "")
+      return _characters.where((element) => element.category == category);
+    if(category == "")
+      return _characters.where((element) => element.name.contains(search));
+    return _characters.where((element) => element.category == category)
+        .where((element) => element.name.contains(search));
+  }
+
+  bool removeCharacter({int id, Character character}){
+    var success = false;
+    if(character != null)
+      success = _characters.remove(character);
+    if(id != null){
+      character = _characters.firstWhere((element) => element.id == id, orElse: ()=>null);
+      success = _characters.remove(character);
+    }
+    if(success && character != null && characters(category: character.category).length == 0)
+      updateCharacterCategories();
+    return success;
+  }
+
+  void addCharacter(Character character){
+    _characters.add(character);
+    updateCharacterCategories();
+  }
+
+  void updateCharacterCategories(){
+    charCats.clear();
+    _characters.forEach((element) {
+      if(!charCats.contains(element.category))
+        charCats.add(element.category);
+    });
+  }
+
+  List<Minion> minions({String search = "", String category = ""}){
+    if(search == "" && category == "")
+      return _minions;
+    if(search == "")
+      return _minions.where((element) => element.category == category);
+    if(category == "")
+      return _minions.where((element) => element.name.contains(search));
+    return _minions.where((element) => element.category == category)
+        .where((element) => element.name.contains(search));
+  }
+
+  bool removeMinion({int id, Minion minion}){
+    var success = false;
+    if(minion != null)
+      success = _minions.remove(minion);
+    if(id != null){
+      minion = _minions.firstWhere((element) => element.id == id, orElse: ()=>null);
+      success = _minions.remove(minion);
+    }
+    if(success && minion != null && minions(category: minion.category).length == 0)
+      updateMinionCategories();
+    return success;
+  }
+
+  void addMinion(Minion minion){
+    _minions.add(minion);
+    updateMinionCategories();
+  }
+
+  void updateMinionCategories(){
+    minCats.clear();
+    _minions.forEach((element) {
+      if(!minCats.contains(element.category))
+        minCats.add(element.category);
+    });
+  }
+
+  List<Vehicle> vehicles({String search = "", String category = ""}){
+    if(search == "" && category == "")
+      return _vehicles;
+    if(search == "")
+      return _vehicles.where((element) => element.category == category);
+    if(category == "")
+      return _vehicles.where((element) => element.name.contains(search));
+    return _vehicles.where((element) => element.category == category)
+        .where((element) => element.name.contains(search));
+  }
+
+  bool removeVehicle({int id, Vehicle vehicle}){
+    var success = false;
+    if(vehicle != null)
+      success = _vehicles.remove(vehicle);
+    if(id != null){
+      vehicle = _vehicles.firstWhere((element) => element.id == id, orElse: ()=>null);
+      success = _vehicles.remove(vehicle);
+    }
+    if(success && vehicle != null && vehicles(category: vehicle.category).length == 0)
+      updateVehicleCategories();
+    return success;
+  }
+
+  void addVehicle(Vehicle vehicle){
+    _vehicles.add(vehicle);
+    updateVehicleCategories();
+  }
+  
+  void updateVehicleCategories(){
+    vehCats.clear();
+    _vehicles.forEach((element) {
+      if(!vehCats.contains(element.category))
+        vehCats.add(element.category);
+    });
+  }
+  
   void syncCloud(){
     //TODO: cload loading AND saving
   }
