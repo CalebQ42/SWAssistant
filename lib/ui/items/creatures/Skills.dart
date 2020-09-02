@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:swassistant/dice/SWDiceDialog.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/items/Skill.dart';
+import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 
 class Skills extends StatelessWidget{
@@ -39,11 +40,11 @@ class Skills extends StatelessWidget{
               flex: 7
             ),
             AnimatedSwitcher(
-              child: !editing ? Padding(
+              child: !editing && creature is Character ? Padding(
                 child:Text(creature.skills[index].value.toString()),
                 padding: EdgeInsets.all(12)
               )
-              : ButtonBar(
+              : !editing ? Container() : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   IconButton(
@@ -144,10 +145,12 @@ class SkillEditDialog extends StatefulWidget{
   //onClose Skill argument is the edited Skill (or new Skill). Skill argument is null if dialog is cancelled.
   //Doesn't get called when dialog is cancelled.
   final void Function(Skill) onClose;
+  final Creature creature;
   final Skill skill;
 
-  SkillEditDialog({this.onClose, Skill skill}) :
-      this.skill = skill == null ? Skill.nulled() : Skill.from(skill);
+  SkillEditDialog({this.onClose, Skill skill, this.creature}) :
+      this.skill = skill == null ? Skill.nulled() : 
+      creature is Character ? Skill.from(skill) : Skill.from(skill..value = 0);
 
   @override
   State<StatefulWidget> createState() => _SkillEditDialogState(onClose: onClose, skill: skill);
@@ -156,12 +159,12 @@ class SkillEditDialog extends StatefulWidget{
 class _SkillEditDialogState extends State{
   final Function(Skill) onClose;
   final Skill skill;
+  final Creature creature;
   bool manual = false;
-  TextSelection prevSelection;
 
   TextEditingController valueController;
 
-  _SkillEditDialogState({this.onClose, this.skill}){
+  _SkillEditDialogState({this.onClose, this.skill, this.creature}){
     if(skill.name != null && !Skill.skillsList.containsKey(skill.name))
       manual = true;
     valueController = new TextEditingController(text: skill.value != null ? skill.value.toString() : "")
@@ -236,7 +239,7 @@ class _SkillEditDialogState extends State{
               value: skill.base,
               onChanged: (value) => setState(() => skill.base = value),
             ),
-            TextField(
+            if(creature is Character) TextField(
               keyboardType: TextInputType.number,
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               controller: valueController,

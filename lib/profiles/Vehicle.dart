@@ -7,20 +7,20 @@ import 'package:swassistant/ui/EditableCommon.dart';
 
 class Vehicle extends Editable{
 
-  int silhouette;
-  int speed;
-  int handling;
-  int armor;
+  int silhouette = 0;
+  int speed = 0;
+  int handling = 0;
+  int armor = 0;
   List<int> defense = new List();
-  int totalDefense;
-  int hullTraumaThresh;
-  int hullTraumaCur;
-  int sysStressThresh;
-  int sysStressCur;
-  int encumCapacity;
-  int passengerCapacity;
-  int hp;
-  String model;
+  int totalDefense = 0;
+  int hullTraumaThresh = 0;
+  int hullTraumaCur = 0;
+  int sysStressThresh = 0;
+  int sysStressCur = 0;
+  int encumCapacity = 0;
+  int passengerCapacity = 0;
+  int hp = 0;
+  String model = "";
 
   String get fileExtension => ".swvehicle";
   List<String> get cardNames => [

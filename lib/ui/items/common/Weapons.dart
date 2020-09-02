@@ -452,7 +452,6 @@ class _WeaponEditDialogState extends State{
                 FlatButton(
                   child: Text("Cancel"),
                   onPressed: (){
-                    onClose(null);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -564,7 +563,6 @@ class _WeaponCharacteristicDialogState extends State{
         ),
         FlatButton(
           onPressed: (){
-            onClose(null);
             Navigator.of(context).pop();
           },
           child: Text("Cancel")

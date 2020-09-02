@@ -18,22 +18,23 @@ import 'utils/Creature.dart';
 
 class Character extends Editable with Creature{
 
-  String species;
-  String career;
+  String species = "";
+  String career = "";
   List<String> specializations = new List();
   List<ForcePower> forcePowers = new List();
-  String motivation;
-  String emotionalStr, emotionalWeak;
+  String motivation = "";
+  String emotionalStr = "";
+  String emotionalWeak = "";
   List<Duty> duties = new List();
   List<Obligation> obligations = new List();
-  int strainThresh, strainCur;
-  int xpTot, xpCur;
-  int force;
-  int credits;
-  int morality, conflict;
-  bool darkSide;
-  int age;
-  int encumCap;
+  int strainThresh = 0, strainCur = 0;
+  int xpTot = 0, xpCur = 0;
+  int force = 0;
+  int credits = 0;
+  int morality = 0, conflict = 0;
+  bool darkSide = false;
+  int age = 0;
+  int encumCap = 0;
 
   String get fileExtension => ".swcharacter";
   List<String> get cardNames => [

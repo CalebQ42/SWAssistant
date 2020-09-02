@@ -12,8 +12,8 @@ import 'utils/Creature.dart';
 
 class Minion extends Editable with Creature{
 
-  int woundThreshInd;
-  int minionNum;
+  int woundThreshInd = 0;
+  int minionNum = 0;
   List<Item> savedInv = new List();
   List<Weapon> savedWeapons = new List();
 

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/dice/SWDice.dart' as SWDice;
-import 'package:swassistant/ui/items/UpDownStat.dart';
+import 'package:swassistant/ui/UpDownStat.dart';
 
 class SWDiceDialog extends AlertDialog{
   final SWDiceHolder holder;
@@ -100,10 +100,7 @@ class SWDiceDialog extends AlertDialog{
         child: Text("Roll"),
         onPressed: (){
           Navigator.of(context).pop();
-          print(SWDice.ability);
           var res = holder.getDice().roll();
-          print(res);
-          print(res.resList);
           res.showResultDialog(context:context);
         },
       ),
