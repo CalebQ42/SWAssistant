@@ -169,7 +169,7 @@ class _WeaponEditDialogState extends State{
           else
             weapon.name = nameController.text;
         });
-    damageController = TextEditingController(text: weapon.damage.toString())
+    damageController = TextEditingController(text: weapon.damage != null ? weapon.damage.toString() : "")
         ..addListener(() {
           var val = int.tryParse(damageController.text);
           if((weapon.damage == null && val != null) || (weapon.damage != null && val == null))
@@ -177,7 +177,7 @@ class _WeaponEditDialogState extends State{
           else
             weapon.damage = val;
         });
-    criticalController = TextEditingController(text: weapon.critical.toString())
+    criticalController = TextEditingController(text: weapon.critical != null ? weapon.critical.toString() : "")
         ..addListener(() {
           var val = int.tryParse(criticalController.text);
           if((weapon.critical == null && val != null) || (weapon.critical != null && val == null)){
@@ -185,7 +185,7 @@ class _WeaponEditDialogState extends State{
           }else
             weapon.critical = val;
         });
-    hpController = TextEditingController(text: weapon.hp.toString())
+    hpController = TextEditingController(text: weapon.hp != null ? weapon.hp.toString() : "")
         ..addListener(() {
           var val = int.tryParse(hpController.text);
           if((weapon.hp == null && val != null) || (weapon.hp != null && val == null))
@@ -193,7 +193,7 @@ class _WeaponEditDialogState extends State{
           else
             weapon.hp = val;
         });
-    encumbranceController = TextEditingController(text: weapon.encumbrance.toString())
+    encumbranceController = TextEditingController(text: weapon.encumbrance != null ? weapon.encumbrance.toString() : "")
         ..addListener(() {
           var val = int.tryParse(encumbranceController.text);
           if((weapon.encumbrance == null && val != null) || (weapon.encumbrance != null && val == null))
@@ -223,7 +223,7 @@ class _WeaponEditDialogState extends State{
     return SingleChildScrollView(
       child: Padding(
         padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
-        child: Wrap(
+        child: Column(
           children: [
             //Name
             TextField(
@@ -283,6 +283,7 @@ class _WeaponEditDialogState extends State{
             ),
             //Range
             DropdownButton<int>(
+              isExpanded: true,
               hint: Text("Weapon Range"),
               items: [
                 DropdownMenuItem(
@@ -312,6 +313,7 @@ class _WeaponEditDialogState extends State{
             //Damage
             Center(child: Text("Weapon damage")),
             DropdownButton<int>(
+              isExpanded: true,
               items: [
                 DropdownMenuItem(
                   child: Text("None"),
@@ -335,6 +337,7 @@ class _WeaponEditDialogState extends State{
             ),
             //Skill
             DropdownButton<int>(
+              isExpanded: true,
               items: List.generate(
                 Weapon.weaponSkills.length,
                 (i) => DropdownMenuItem(
@@ -345,11 +348,13 @@ class _WeaponEditDialogState extends State{
               value: weapon.skill,
               onChanged: (value) => setState((){
                 weapon.skill = value;
-                weapon.skillBase = Skill.skillsList[value];
+                weapon.skillBase = Skill.skillsList[Weapon.weaponSkills[value]];
               }),
+              hint: Text("Skill"),
             ),
             //SkillBase
             DropdownButton<int>(
+              isExpanded: true,
               items: List.generate(
                 Creature.characteristics.length,
                 (i) => DropdownMenuItem(
@@ -357,12 +362,14 @@ class _WeaponEditDialogState extends State{
                   value: i
                 )
               ),
-              value: weapon.skill,
+              value: weapon.skillBase,
               onChanged: (value) => setState(() => weapon.skillBase = value),
+              hint: Text("Skill Base"),
             ),
             //Characteristics
-            ListView.builder(
-              itemBuilder: (context, i){
+            Center(child: Text("Characteristics"),),
+            Column(
+              children: List.generate(weapon.characteristics.length,(i){
                 return InkResponse(
                   containedInkWell: true,
                   onTap: () => showDialog(
@@ -384,7 +391,7 @@ class _WeaponEditDialogState extends State{
                     ],
                   )
                 );
-              }
+              })
             ),
             IconButton(
               icon: Icon(Icons.add),
@@ -416,6 +423,8 @@ class _WeaponEditDialogState extends State{
               onChanged: (value) => setState((){
                 weapon.limitedAmmo = value;
                 weapon.ammo = 0;
+                if(value)
+                  ammoController.text = "0";
               }),
               title: Text("Slugthrower (Needs Ammo)")
             ),
@@ -516,6 +525,7 @@ class _WeaponCharacteristicDialogState extends State{
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: nameController,

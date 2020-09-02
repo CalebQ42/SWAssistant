@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -19,9 +21,7 @@ class Skills extends StatelessWidget{
         containedInkWell: true,
         onTap: (){
           var ability = (creature.charVals[creature.skills[index].base] - creature.skills[index].value).abs();
-          var proficiency = creature.charVals[creature.skills[index].base] < creature.skills[index].value ?
-            creature.charVals[creature.skills[index].base] :
-            creature.skills[index].value;
+          var proficiency = min(creature.charVals[creature.skills[index].base],creature.skills[index].value);
           showDialog(
             context: context,
             builder: (b) => SWDiceDialog(
@@ -116,8 +116,10 @@ class Skills extends StatelessWidget{
                     context: context,
                     builder: (context){
                       return SkillEditDialog(onClose: (skill){
-                        creature.skills.add(skill);
-                        refresh();
+                        if(skill != null){
+                          creature.skills.add(skill);
+                          refresh();
+                        }
                       },skill: null);
                     }
                   );
@@ -162,14 +164,13 @@ class _SkillEditDialogState extends State{
   _SkillEditDialogState({this.onClose, this.skill}){
     if(skill.name != null && !Skill.skillsList.containsKey(skill.name))
       manual = true;
-    valueController = new TextEditingController(text: skill.value.toString())
+    valueController = new TextEditingController(text: skill.value != null ? skill.value.toString() : "")
         ..addListener(() {
           var val = int.tryParse(valueController.text);
-          if((skill.value == null && val != null) || (skill.value != null && val == null)){
+          if((skill.value == null && val != null) || (skill.value != null && val == null))
             setState(() => skill.value = val);
-          }else{
+          else
             skill.value = val;
-          }
         });
   }
   

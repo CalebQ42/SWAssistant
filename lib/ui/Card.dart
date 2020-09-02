@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/Minion.dart';
-import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
@@ -106,6 +103,7 @@ class _NameCardContentState extends State{
           }(),child: */EditingText(
             editing: b,
             style: Theme.of(context).textTheme.headline5,
+            textAlign: TextAlign.center,
             initialText: editable.name,
             controller: (){
               var cont = new TextEditingController(text: editable.name);

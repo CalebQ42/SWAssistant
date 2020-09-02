@@ -5,7 +5,6 @@ import 'package:swassistant/SW.dart';
 import 'package:swassistant/items/Duty.dart';
 import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
-import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/common/Weapons.dart';

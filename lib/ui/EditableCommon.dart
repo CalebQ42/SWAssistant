@@ -15,6 +15,8 @@ class EditingText extends StatelessWidget {
   final EdgeInsets textInsets;
   final bool multiline;
   final TextCapitalization textCapitalization;
+  final TextAlign textAlign;
+  final TextAlign fieldAlign;
 
   final TextEditingController controller;
 
@@ -22,7 +24,8 @@ class EditingText extends StatelessWidget {
 
   EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
-      this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none}){
+      this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
+      this.fieldAlign = TextAlign.start}){
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
   }
@@ -46,13 +49,14 @@ class EditingText extends StatelessWidget {
           keyboardType: textType,
           inputFormatters: textType == TextInputType.number ? [WhitelistingTextInputFormatter.digitsOnly] : null,
           textCapitalization: textCapitalization,
+          textAlign: fieldAlign,
         )
       );
     }else{
       text = Padding(
         key: ValueKey("text"),
         padding: textInsets,
-        child: Text(initialText, style: style)
+        child: Text(initialText, style: style, textAlign: textAlign,)
       );
     }
     return AnimatedSwitcher(
