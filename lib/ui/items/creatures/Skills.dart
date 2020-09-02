@@ -141,7 +141,7 @@ class Skills extends StatelessWidget{
 class SkillEditDialog extends StatefulWidget{
   //onClose Skill argument is the edited Skill (or new Skill). Skill argument is null if dialog is cancelled.
   //Doesn't get called when dialog is cancelled.
-  final Function(Skill) onClose;
+  final void Function(Skill) onClose;
   final Skill skill;
 
   SkillEditDialog({this.onClose, Skill skill}) :
@@ -236,14 +236,13 @@ class _SkillEditDialogState extends State{
               onChanged: (value) => setState(() => skill.base = value),
             ),
             TextField(
-              decoration: InputDecoration(
-                hintText: "Skill Value"
-              ),
               keyboardType: TextInputType.number,
-              inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly
-              ],
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               controller: valueController,
+              decoration: InputDecoration(
+                prefixIcon: Text("Skill Value: ", style: TextStyle(color:Theme.of(context).hintColor),),
+                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
+              ),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,

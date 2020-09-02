@@ -9,13 +9,16 @@ class Weapon implements JsonSavable{
   int damage;
   int critical;
   int hp;
+  //0-Engaged, 1-Short, 2-Medium, 3-Long, 4-Extreme
   int range;
+  //0-Brawl, 1-Gunner, 2-Lightsaber, 3-Melee, 4-Ranged(Light), 5-Ranged(Heavy)
   int skill;
   int skillBase;
   List<WeaponCharacteristic> characteristics;
   bool addBrawn;
   bool loaded;
   bool limitedAmmo;
+  //0-None, 1-Minor, 2-Major, 3-Maor
   int itemState;
   int ammo;
   String firingArc;
@@ -38,11 +41,11 @@ class Weapon implements JsonSavable{
       range = null,
       skill = null,
       skillBase = null,
-      addBrawn = null,
-      loaded = null,
-      limitedAmmo = null,
-      itemState = null,
-      ammo = null,
+      addBrawn = false,
+      loaded = true,
+      limitedAmmo = false,
+      itemState = 0,
+      ammo = 0,
       firingArc = null,
       encumbrance = null,
       characteristics = new List();
@@ -62,8 +65,7 @@ class Weapon implements JsonSavable{
       ammo = json["ammo"],
       firingArc = json["firing arc"],
       encumbrance = json["encumbrance"],
-      characteristics = new List()
-  {
+      characteristics = new List() {
     for(Map<String,dynamic> map in json["Weapon Characteristics"]){
       characteristics.add(WeaponCharacteristic.fromJson(map));
     }
@@ -105,8 +107,17 @@ class Weapon implements JsonSavable{
       "limited ammo" : limitedAmmo,
       "item state" : itemState,
       "ammo" : ammo,
-      "firing arc" : firingArc,
-      "encumbrance" : encumbrance
+      if(firingArc != null) "firing arc" : firingArc,
+      if(encumbrance != null) "encumbrance" : encumbrance
     };
   }
+
+  static List<String> weaponSkills = [
+    "Brawl",
+    "Gunnery",
+    "Lightsaber",
+    "Melee",
+    "Ranged (Light)",
+    "Ranged (Heavy)",
+  ];
 }

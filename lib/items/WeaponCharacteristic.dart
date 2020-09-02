@@ -8,6 +8,16 @@ class WeaponCharacteristic implements JsonSavable{
 
   WeaponCharacteristic({this.name = "", this.value = 0, this.advantage = 0});
 
+  WeaponCharacteristic.from(WeaponCharacteristic wc) :
+      name = wc.name,
+      value = wc.value,
+      advantage = wc.advantage;
+
+  WeaponCharacteristic.nulled() :
+      name = null,
+      value = null,
+      advantage = null;
+
   WeaponCharacteristic.fromJson(Map<String,dynamic> json) :
       name = json["name"],
       value = json["value"],
