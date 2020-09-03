@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:swassistant/dice/SWDiceDialog.dart';
+import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
