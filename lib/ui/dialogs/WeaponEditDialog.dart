@@ -94,252 +94,306 @@ class _WeaponEditDialogState extends State{
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
-        child: Column(
-          children: [
-            //Name
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                prefixIcon: Text("Name: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
-              ),
-            ),
-            //Damage
-            TextField(
-              controller: damageController,
-              decoration: InputDecoration(
-                prefixIcon: Text("Damage: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-            ),
-            //Critical
-            TextField(
-              controller: criticalController,
-              decoration: InputDecoration(
-                prefixIcon: Text("Critical: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-            ),
-            //Hard Points
-            TextField(
-              controller: hpController,
-              decoration: InputDecoration(
-                prefixIcon: Text("Hard Points: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-            ),
-            //Encumbrance
-            if(editable is Character) TextField(
-              controller: encumbranceController,
-              decoration: InputDecoration(
-                prefixIcon: Text("Encumbrance: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-            ),
-            //Firing Arc
-            if(editable is Vehicle) TextField(
-              controller: arcController,
-              decoration: InputDecoration(
-                prefixIcon: Text("Firing Arc: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
-              ),
-            ),
-            //Range
-            DropdownButton<int>(
-              isExpanded: true,
-              hint: Text("Weapon Range"),
-              items: [
-                DropdownMenuItem(
-                  child: Text("Engaged"),
-                  value: 0,
-                ),
-                DropdownMenuItem(
-                  child: Text("Short"),
-                  value: 1,
-                ),
-                DropdownMenuItem(
-                  child: Text("Medium"),
-                  value: 2,
-                ),
-                DropdownMenuItem(
-                  child: Text("Long"),
-                  value: 3,
-                ),
-                DropdownMenuItem(
-                  child: Text("Extreme"),
-                  value: 4,
-                )
-              ],
-              value: weapon.range,
-              onChanged: (value) => setState(()=>weapon.range = value),
-            ),
-            //Damage
-            Center(child: Text("Weapon damage")),
-            DropdownButton<int>(
-              isExpanded: true,
-              items: [
-                DropdownMenuItem(
-                  child: Text("None"),
-                  value: 0,
-                ),
-                DropdownMenuItem(
-                  child: Text("Short"),
-                  value: 1,
-                ),
-                DropdownMenuItem(
-                  child: Text("Medium"),
-                  value: 2,
-                ),
-                DropdownMenuItem(
-                  child: Text("Long"),
-                  value: 3,
-                ),
-              ],
-              value: weapon.itemState,
-              onChanged: (value) => setState(() => weapon.itemState = value),
-            ),
-            //Skill
-            DropdownButton<int>(
-              isExpanded: true,
-              items: List.generate(
-                Weapon.weaponSkills.length,
-                (i) => DropdownMenuItem(
-                  child: Text(Weapon.weaponSkills[i]),
-                  value: i
-                )
-              ),
-              value: weapon.skill,
-              onChanged: (value) => setState((){
-                weapon.skill = value;
-                weapon.skillBase = Skill.skillsList[Weapon.weaponSkills[value]];
-              }),
-              hint: Text("Skill"),
-            ),
-            //SkillBase
-            DropdownButton<int>(
-              isExpanded: true,
-              items: List.generate(
-                Creature.characteristics.length,
-                (i) => DropdownMenuItem(
-                  child: Text(Creature.characteristics[i]),
-                  value: i
-                )
-              ),
-              value: weapon.skillBase,
-              onChanged: (value) => setState(() => weapon.skillBase = value),
-              hint: Text("Skill Base"),
-            ),
-            //Characteristics
-            Center(child: Text("Characteristics"),),
-            Column(
-              children: List.generate(weapon.characteristics.length,(i){
-                return InkResponse(
-                  containedInkWell: true,
-                  onTap: () => showDialog(
-                    context: context,
-                    child: WeaponCharacteristicDialog(
-                      wc: weapon.characteristics[i],
-                      onClose: (wc){
-                        if(wc != null)
-                          setState(() => weapon.characteristics[i] = wc);
-                      }
-                    )
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(weapon.characteristics[i].name),
-                      ),
-                      Text(weapon.characteristics[i].value.toString())
-                    ],
-                  )
-                );
-              })
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: (){
-                showDialog(
-                  context: context,
-                  child: WeaponCharacteristicDialog(onClose: (wc){
-                    if(wc != null)
-                      weapon.characteristics.add(wc);
-                  })
-                );
-              },
-            ),
-            //Add Brawn
-            if(editable is Character || editable is Minion) SwitchListTile(
-              value: weapon.addBrawn,
-              onChanged: (value) => setState(() => weapon.addBrawn = value),
-              title: Text("Add Brawn to Damage"),
-            ),
-            //Loaded
-            SwitchListTile(
-              value: weapon.loaded,
-              onChanged: (value) => setState(() => weapon.loaded = value),
-              title: Text("Loaded")
-            ),
-            //Limited Ammo
-            SwitchListTile(
-              value: weapon.limitedAmmo,
-              onChanged: (value) => setState((){
-                weapon.limitedAmmo = value;
-                weapon.ammo = 0;
-                if(value)
-                  ammoController.text = "0";
-              }),
-              title: Text("Slugthrower (Needs Ammo)")
-            ),
-            //Ammo
-            AnimatedSwitcher(
-              duration: Duration(milliseconds: 300),
-              transitionBuilder: (child, anim){
-                return SizeTransition(
-                  sizeFactor: anim,
-                  child: child
-                );
-              },
-              child: weapon.limitedAmmo ? TextField(
-                controller: ammoController,
+      child: DropdownButtonHideUnderline(
+        child: Padding(
+          padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
+          child: Column(
+            children: [
+              //Name
+              TextField(
+                controller: nameController,
                 decoration: InputDecoration(
-                  prefixIcon: Text("Ammo: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                  prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
+                  prefixText: "Name: ",
+                  labelText: "Name: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+              ),
+              Container(height: 10),
+              //Damage
+              TextField(
+                controller: damageController,
+                decoration: InputDecoration(
+                  prefixText: "Damage: ",
+                  labelText: "Damage: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-              ) : Container(),
-            ),
-            ButtonBar(
-              children: [
-                FlatButton(
-                  child: Text("Cancel"),
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                  },
+              ),
+              Container(height: 10),
+              //Critical
+              TextField(
+                controller: criticalController,
+                decoration: InputDecoration(
+                  prefixText: "Critical: ",
+                  labelText: "Critical: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
                 ),
-                FlatButton(
-                  child: Text("Save"),
-                  onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null && weapon.hp != null
-                      && (editable is Character && weapon.encumbrance != null) && (editable is Vehicle && weapon.firingArc != null)
-                      && weapon.range != null && weapon.damage != null && weapon.skill != null && weapon.skillBase != null ? (){
-                    onClose(weapon);
-                    Navigator.of(context).pop();
-                  } : null
+                keyboardType: TextInputType.number,
+                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              ),
+              Container(height: 10),
+              //Hard Points
+              TextField(
+                controller: hpController,
+                decoration: InputDecoration(
+                  prefixText: "Hard Points: ",
+                  labelText: "Hard Points: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              ),
+              //Encumbrance
+              if(editable is Character) Container(height: 10),
+              if(editable is Character) TextField(
+                controller: encumbranceController,
+                decoration: InputDecoration(
+                  prefixText: "Encumbrance: ",
+                  labelText: "Encumbrance: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              ),
+              //Firing Arc
+              if(editable is Vehicle) Container(height: 10),
+              if(editable is Vehicle) TextField(
+                controller: arcController,
+                decoration: InputDecoration(
+                  prefixText: "Firing Arc: ",
+                  labelText: "Firing Arc: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+              ),
+              //Range
+              Container(height: 10),
+              InputDecorator(
+                decoration: InputDecoration(
+                  prefixText: "Range: ",
+                  labelText: "Range: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+                child: DropdownButton<int>(
+                  isDense: true,
+                  isExpanded: true,
+                  hint: Text("Weapon Range"),
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  items: [
+                    DropdownMenuItem(
+                      child: Text("Engaged"),
+                      value: 0,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Short"),
+                      value: 1,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Medium"),
+                      value: 2,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Long"),
+                      value: 3,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Extreme"),
+                      value: 4,
+                    )
+                  ],
+                  value: weapon.range,
+                  onChanged: (value) => setState(()=>weapon.range = value),
                 )
-              ],
-            )
-          ],
+              ),
+              //Damage
+              Container(height: 10),
+              InputDecorator(
+                decoration: InputDecoration(
+                  prefixText: "Item Damage: ",
+                  labelText: "Item Damage: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+                child: DropdownButton<int>(
+                  isDense: true,
+                  isExpanded: true,
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  items: [
+                    DropdownMenuItem(
+                      child: Text("None"),
+                      value: 0,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Short"),
+                      value: 1,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Medium"),
+                      value: 2,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Long"),
+                      value: 3,
+                    ),
+                  ],
+                  value: weapon.itemState,
+                  onChanged: (value) => setState(() => weapon.itemState = value),
+                )
+              ),
+              //Skill
+              Container(height: 10),
+              InputDecorator(
+                decoration: InputDecoration(
+                  prefixText: "Skill: ",
+                  labelText: "Skill: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+                child: DropdownButton<int>(
+                  isDense: true,
+                  isExpanded: true,
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  items: List.generate(
+                    Weapon.weaponSkills.length,
+                    (i) => DropdownMenuItem(
+                      child: Text(Weapon.weaponSkills[i]),
+                      value: i
+                    )
+                  ),
+                  value: weapon.skill,
+                  onChanged: (value) => setState((){
+                    weapon.skill = value;
+                    weapon.skillBase = Skill.skillsList[Weapon.weaponSkills[value]];
+                  }),
+                  hint: Text("Skill"),
+                )
+              ),
+              //SkillBase
+              Container(height: 10),
+              InputDecorator(
+                decoration: InputDecoration(
+                  prefixText: "Skill Base: ",
+                  labelText: "Skill Base: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+                child: DropdownButton<int>(
+                  isDense: true,
+                  isExpanded: true,
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  items: List.generate(
+                    Creature.characteristics.length,
+                    (i) => DropdownMenuItem(
+                      child: Text(Creature.characteristics[i]),
+                      value: i
+                    )
+                  ),
+                  value: weapon.skillBase,
+                  onChanged: (value) => setState(() => weapon.skillBase = value),
+                  hint: Text("Skill Base"),
+                )
+              ),
+              //Characteristics
+              Container(height: 10),
+              Column(
+                children: List.generate(weapon.characteristics.length,(i){
+                  return InkResponse(
+                    containedInkWell: true,
+                    onTap: () => showDialog(
+                      context: context,
+                      child: WeaponCharacteristicDialog(
+                        wc: weapon.characteristics[i],
+                        onClose: (wc){
+                          if(wc != null)
+                            setState(() => weapon.characteristics[i] = wc);
+                        }
+                      )
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(weapon.characteristics[i].name),
+                        ),
+                        Text(weapon.characteristics[i].value.toString())
+                      ],
+                    )
+                  );
+                })
+              ),
+              FlatButton.icon(
+                label: Text("Add Characteristic"),
+                icon: Icon(Icons.add),
+                onPressed: (){
+                  showDialog(
+                    context: context,
+                    child: WeaponCharacteristicDialog(onClose: (wc){
+                      if(wc != null)
+                        weapon.characteristics.add(wc);
+                    })
+                  );
+                },
+              ),
+              //Add Brawn
+              if(editable is Character || editable is Minion) SwitchListTile(
+                value: weapon.addBrawn,
+                onChanged: (value) => setState(() => weapon.addBrawn = value),
+                title: Text("Add Brawn to Damage"),
+              ),
+              //Loaded
+              SwitchListTile(
+                value: weapon.loaded,
+                onChanged: (value) => setState(() => weapon.loaded = value),
+                title: Text("Loaded")
+              ),
+              //Limited Ammo
+              SwitchListTile(
+                value: weapon.limitedAmmo,
+                onChanged: (value) => setState((){
+                  weapon.limitedAmmo = value;
+                  weapon.ammo = 0;
+                  if(value)
+                    ammoController.text = "0";
+                }),
+                title: Text("Slugthrower (Needs Ammo)")
+              ),
+              //Ammo
+              if(weapon.limitedAmmo) Container(height: 10),
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                transitionBuilder: (child, anim){
+                  return SizeTransition(
+                    sizeFactor: anim,
+                    child: child
+                  );
+                },
+                child: weapon.limitedAmmo ? TextField(
+                  controller: ammoController,
+                  decoration: InputDecoration(
+                    prefixIcon: Text("Ammo: ", style: TextStyle(color:Theme.of(context).hintColor),),
+                    prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                ) : Container(),
+              ),
+              ButtonBar(
+                children: [
+                  FlatButton(
+                    child: Text("Cancel"),
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("Save"),
+                    onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null && weapon.hp != null
+                        && (editable is Character && weapon.encumbrance != null) && (editable is Vehicle && weapon.firingArc != null)
+                        && weapon.range != null && weapon.damage != null && weapon.skill != null && weapon.skillBase != null ? (){
+                      onClose(weapon);
+                      Navigator.of(context).pop();
+                    } : null
+                  )
+                ],
+              )
+            ],
+          )
         )
       )
     );

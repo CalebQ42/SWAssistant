@@ -61,8 +61,9 @@ class Skills extends StatelessWidget{
                     onPressed: (){
                       showModalBottomSheet(
                         context: context,
-                        builder: (context){
+                        builder: (innerContext){
                           return SkillEditDialog(
+                            creature: creature,
                             onClose: (skill){
                               creature.skills[index] = skill;
                               refresh();
@@ -114,13 +115,16 @@ class Skills extends StatelessWidget{
                 onPressed: (){
                   showModalBottomSheet(
                     context: context,
-                    builder: (context){
-                      return SkillEditDialog(onClose: (skill){
-                        if(skill != null){
-                          creature.skills.add(skill);
-                          refresh();
-                        }
-                      },skill: null);
+                    builder: (innerContext){
+                      return SkillEditDialog(
+                        creature: creature,
+                        onClose: (skill){
+                          if(skill != null){
+                            creature.skills.add(skill);
+                            refresh();
+                          }
+                        },
+                      );
                     }
                   );
                 },

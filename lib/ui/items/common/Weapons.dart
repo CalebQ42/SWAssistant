@@ -30,9 +30,9 @@ class Weapons extends StatelessWidget{
               duration: Duration(milliseconds: 250),
               child: !editing ? Container(height: 24,)
               : ButtonBar(
+                buttonPadding: EdgeInsets.zero,
                 children: [
                   IconButton(
-                    iconSize: 24.0,
                     constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: Icon(Icons.delete_forever),
                     onPressed: (){
@@ -48,7 +48,6 @@ class Weapons extends StatelessWidget{
                         context: context,
                         builder: (context){
                           return WeaponEditDialog(
-                            editable: editable,
                             onClose: (weapon){
                               if(weapon != null){
                                 editable.weapons[i] = weapon;
@@ -114,8 +113,7 @@ class Weapons extends StatelessWidget{
                             editable.weapons.add(weapon);
                             refresh();
                           }
-                        },
-                        weapon: null
+                        }
                       );
                     }
                   );

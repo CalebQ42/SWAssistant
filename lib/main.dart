@@ -24,7 +24,10 @@ class SWApp extends StatelessWidget {
               topRight: Radius.circular(20.0)
             )
           )
-        )
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder()
+        ),
       );
     else
       theme = ThemeData.dark().copyWith(
@@ -37,6 +40,9 @@ class SWApp extends StatelessWidget {
               topRight: Radius.circular(20.0)
             )
           )
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder()
         )
       );
     return MaterialApp(

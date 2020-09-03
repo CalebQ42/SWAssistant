@@ -31,7 +31,7 @@ class _WeaponCharacteristicDialogState extends State{
           else
             wc.name = nameController.text;
         });
-    valueController = TextEditingController(text: wc.value.toString())
+    valueController = TextEditingController(text: wc.value != null ? wc.value.toString() : "")
         ..addListener(() {
           var val = int.tryParse(valueController.text);
           if((wc.value == null && val != null) || (wc.value != null && val == null))
@@ -39,7 +39,7 @@ class _WeaponCharacteristicDialogState extends State{
           else
             wc.value = val;
         });
-    advantageController = TextEditingController(text: wc.advantage.toString())
+    advantageController = TextEditingController(text: wc.advantage != null ? wc.advantage.toString() : "")
         ..addListener(() {
           var val = int.tryParse(advantageController.text);
           if((wc.advantage == null && val != null) || (wc.advantage != null && val == null))
@@ -58,24 +58,29 @@ class _WeaponCharacteristicDialogState extends State{
           TextField(
             controller: nameController,
             decoration: InputDecoration(
-              prefixIcon: Text("Name: ", style: TextStyle(color:Theme.of(context).hintColor),),
-              prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
+                  prefixText: "Name: ",
+                  labelText: "Name: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
             ),
           ),
+          Container(height: 10),
           TextField(
             controller: valueController,
             decoration: InputDecoration(
-              prefixIcon: Text("Value: ", style: TextStyle(color:Theme.of(context).hintColor),),
-              prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
+                  prefixText: "Rank: ",
+                  labelText: "Rank: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
           ),
+          Container(height: 10),
           TextField(
-            controller: nameController,
+            controller: advantageController,
             decoration: InputDecoration(
-              prefixIcon: Text("Advantage Needed: ", style: TextStyle(color:Theme.of(context).hintColor),),
-              prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
+                  prefixText: "Advantage Needed: ",
+                  labelText: "Advantage Needed: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],

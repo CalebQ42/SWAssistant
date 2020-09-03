@@ -53,5 +53,4 @@ class InheritedEditable extends InheritedWidget{
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;
-  
 }

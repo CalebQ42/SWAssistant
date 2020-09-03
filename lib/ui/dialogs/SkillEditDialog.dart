@@ -16,7 +16,7 @@ class SkillEditDialog extends StatefulWidget{
       creature is Character ? Skill.from(skill) : Skill.from(skill..value = 0);
 
   @override
-  State<StatefulWidget> createState() => _SkillEditDialogState(onClose: onClose, skill: skill);
+  State<StatefulWidget> createState() => _SkillEditDialogState(onClose: onClose, skill: skill, creature: creature);
 }
 
 class _SkillEditDialogState extends State{
@@ -41,102 +41,123 @@ class _SkillEditDialogState extends State{
   }
   
   Widget build(BuildContext context) {
-    return Padding(
-      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
-      child: Wrap(
-      children: [
-        Column(
-          children: [
-            DropdownButton<String>(
-              underline: null,
-              isExpanded: true,
-              onChanged: (value) {
-                setState((){
-                  if(value != "Other..."){
-                    manual = false;
-                    skill.name = value;
-                    skill.base = Skill.skillsList[value];
-                  }else{
-                    manual = true;
-                    skill.name = "";
-                  }
-                });
-              },
-              value: (Skill.skillsList.containsKey(skill.name) || skill.name == null) ? skill.name : Skill.skillsList.keys.last,
-              hint: Text("Skill"),
-              items: List.generate(
-                Skill.skillsList.length,
-                (i){
-                  return DropdownMenuItem<String>(
-                    value: Skill.skillsList.keys.elementAt(i),
-                    child: Text(Skill.skillsList.keys.elementAt(i))
-                  );
-                }
-              ),
-            ),
-            AnimatedSwitcher(
-              child: !manual ? Container() :
-                TextField(
-                  onChanged: (value) => skill.name = value,
-                  autofillHints: Skill.skillsList.keys,
-                  controller: TextEditingController(text: skill.name),
+    return DropdownButtonHideUnderline(
+      child: Padding(
+        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
+        child: Wrap(
+        children: [
+          Column(
+            children: [
+              InputDecorator(
+                decoration: InputDecoration(
+                  prefixText: "Skill: ",
+                  labelText: "Skill: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
                 ),
-              duration: Duration(milliseconds: 150),
-              transitionBuilder: (child, anim) {
-                return SizeTransition(
-                  sizeFactor: anim,
-                  child: child,
-                );
-              }, 
-            ),
-            DropdownButton<int>(
-              isExpanded: true,
-              hint: Text("Characteristic"),
-              items: List.generate(
-                Creature.characteristics.length,
-                (i) => DropdownMenuItem(
-                  child: Text(Creature.characteristics[i]),
-                  value: i
-                )
-              ),
-              value: skill.base,
-              onChanged: (value) => setState(() => skill.base = value),
-            ),
-            if(creature is Character) TextField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-              controller: valueController,
-              decoration: InputDecoration(
-                prefixIcon: Text("Skill Value: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
-              ),
-            ),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text("Career"),
-              value: skill.career,
-              onChanged: (b)=>setState(()=>skill.career = b),
-            ),
-            ButtonBar(
-              children: [
-                FlatButton(
-                  child: Text("Save"),
-                  onPressed: (skill.name != null && skill.base != null && skill.value != null) ? (){
-                    onClose(skill);
-                    Navigator.of(context).pop();
-                  } : null,
-                ),
-                FlatButton(
-                  child: Text("Cancel"),
-                  onPressed: (){
-                    Navigator.of(context).pop();
+                child: DropdownButton<String>(
+                  isDense: true,
+                  isExpanded: true,
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  onChanged: (value) {
+                    setState((){
+                      if(value != "Other..."){
+                        manual = false;
+                        skill.name = value;
+                        skill.base = Skill.skillsList[value];
+                      }else{
+                        manual = true;
+                        skill.name = "";
+                      }
+                    });
                   },
+                  value: (Skill.skillsList.containsKey(skill.name) || skill.name == null) ? skill.name : Skill.skillsList.keys.last,
+                  items: List.generate(
+                    Skill.skillsList.length,
+                    (i){
+                      return DropdownMenuItem<String>(
+                        value: Skill.skillsList.keys.elementAt(i),
+                        child: Text(Skill.skillsList.keys.elementAt(i))
+                      );
+                    }
+                  ),
                 )
-              ]
-            )
-          ],
-        ),
-      ]
+              ),
+              if(manual) Container(height: 10,),
+              AnimatedSwitcher(
+                child: !manual ? Container() :
+                  TextField(
+                    onChanged: (value) => skill.name = value,
+                    autofillHints: Skill.skillsList.keys,
+                    controller: TextEditingController(text: skill.name),
+                  ),
+                duration: Duration(milliseconds: 150),
+                transitionBuilder: (child, anim) {
+                  return SizeTransition(
+                    sizeFactor: anim,
+                    child: child,
+                  );
+                }, 
+              ),
+              Container(height: 10),
+              InputDecorator(
+                decoration: InputDecoration(
+                  prefixText: "Characteristic: ",
+                  labelText: "Characteristic: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+                child: DropdownButton<int>(
+                  isDense: true,
+                  isExpanded: true,
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  items: List.generate(
+                    Creature.characteristics.length,
+                    (i) => DropdownMenuItem(
+                      child: Text(Creature.characteristics[i]),
+                      value: i
+                    )
+                  ),
+                  value: skill.base,
+                  onChanged: (value) => setState(() => skill.base = value),
+                )
+              ),
+              if(creature is Character) Container(height: 10),
+              if(creature is Character) TextField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                controller: valueController,
+                decoration: InputDecoration(
+                  prefixText: "Skill Value: ",
+                  labelText: "Skill Value: ",
+                  floatingLabelBehavior: FloatingLabelBehavior.never
+                ),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text("Career"),
+                value: skill.career,
+                onChanged: (b)=>setState(()=>skill.career = b),
+              ),
+              ButtonBar(
+                children: [
+                  FlatButton(
+                    child: Text("Save"),
+                    onPressed: (skill.name != null && skill.base != null && skill.value != null) ? (){
+                      onClose(skill);
+                      Navigator.of(context).pop();
+                    } : null,
+                  ),
+                  FlatButton(
+                    child: Text("Cancel"),
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ]
+              )
+            ],
+          ),
+        ]
+      )
     ));
   }
 }
