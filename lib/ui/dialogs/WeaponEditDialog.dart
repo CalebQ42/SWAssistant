@@ -96,7 +96,7 @@ class _WeaponEditDialogState extends State{
     return SingleChildScrollView(
       child: DropdownButtonHideUnderline(
         child: Padding(
-          padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
+          padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
           child: Column(
             children: [
               //Name
@@ -291,7 +291,8 @@ class _WeaponEditDialogState extends State{
                 )
               ),
               //Characteristics
-              Container(height: 10),
+              Container(height: 15),
+              Center(child: Text("Characteristics", style: Theme.of(context).textTheme.headline6),),
               Column(
                 children: List.generate(weapon.characteristics.length,(i){
                   return InkResponse(
@@ -306,13 +307,16 @@ class _WeaponEditDialogState extends State{
                         }
                       )
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(weapon.characteristics[i].name),
-                        ),
-                        Text(weapon.characteristics[i].value.toString())
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(weapon.characteristics[i].name + " " +weapon.characteristics[i].value.toString()),
+                          ),
+                          Text(weapon.characteristics[i].advantage.toString())
+                        ],
+                      )
                     )
                   );
                 })

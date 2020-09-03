@@ -48,6 +48,7 @@ class Weapons extends StatelessWidget{
                         context: context,
                         builder: (context){
                           return WeaponEditDialog(
+                            editable: editable,
                             onClose: (weapon){
                               if(weapon != null){
                                 editable.weapons[i] = weapon;
@@ -104,10 +105,10 @@ class Weapons extends StatelessWidget{
                 icon: Icon(Icons.add),
                 onPressed: (){
                   showModalBottomSheet(
-                    isScrollControlled: true,
                     context: context,
                     builder: (context){
                       return WeaponEditDialog(
+                        editable: editable,
                         onClose: (weapon){
                           if(weapon != null){
                             editable.weapons.add(weapon);

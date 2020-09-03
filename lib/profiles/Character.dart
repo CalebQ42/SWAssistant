@@ -38,22 +38,22 @@ class Character extends Editable with Creature{
 
   String get fileExtension => ".swcharacter";
   List<String> get cardNames => [
-    "Basic Information:",
-    "Wound and Strain:",
-    "Characteristics:",
-    "Skill:",
-    "Defense:",
-    "Weapons:",
-    "Critical Injuries:",
-    "Specializations:",
-    "Talents:",
-    "Force Powers:",
-    "XP:",
-    "Inventory:",
-    "Morality:",
-    "Duty:",
-    "Obligation:",
-    "Description:"
+    "Basic Information",
+    "Wound and Strain",
+    "Characteristics",
+    "Skill",
+    "Defense",
+    "Weapons",
+    "Critical Injuries",
+    "Specializations",
+    "Talents",
+    "Force Powers",
+    "XP",
+    "Inventory",
+    "Morality",
+    "Duty",
+    "Obligation",
+    "Description"
   ];
 
   Character({@required int id, String name = "New Character", bool saveOnCreation = false, SW app}) :

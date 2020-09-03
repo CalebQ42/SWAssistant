@@ -19,15 +19,15 @@ class Minion extends Editable with Creature{
 
   String get fileExtension => ".swminion";
   List<String> get cardNames => [
-    "Number of Minions:",
-    "Wound:",
-    "Characteristics:",
-    "Skill:",
-    "Defense:",
-    "Weapons:",
-    "Talents:",
-    "Inventory:",
-    "Critical Injuries:"
+    "Number of Minions",
+    "Wound",
+    "Characteristics",
+    "Skill",
+    "Defense",
+    "Weapons",
+    "Talents",
+    "Inventory",
+    "Critical Injuries"
   ];
 
   Minion({@required int id, String name = "New Minion", bool saveOnCreation = false, SW app}) :

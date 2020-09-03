@@ -24,12 +24,12 @@ class Vehicle extends Editable{
 
   String get fileExtension => ".swvehicle";
   List<String> get cardNames => [
-    "Basic Information:",
-    "Defense:",
-    "Damage:",
-    "Weapons:",
-    "Critical Injuries:",
-    "Description:"
+    "Basic Information",
+    "Defense",
+    "Damage",
+    "Weapons",
+    "Critical Injuries",
+    "Description"
   ];
 
   Vehicle({@required int id, String name = "New Vehicle", bool saveOnCreation = false, SW app}) :

@@ -28,37 +28,22 @@ class _InfoCardState extends State{
 
   @override
   Widget build(BuildContext context) {
-    var content = holder.shown? holder.contents : SizedBox();
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          children: <Widget>[
-            SwitchListTile(
-              title: Text(holder.title),
-              value: holder.shown,
-              onChanged: (bool b){
-                setState((){
-                  if(onHideChange!=null) onHideChange(b,()=>setState((){}));
-                  holder.shown = b;
-                });
-              },
-            ),
-            new AnimatedSwitcher(
-              duration: Duration(milliseconds:250),
-              transitionBuilder: (Widget wid,Animation<double> anim){
-                return SizeTransition(
-                  axis:Axis.vertical,
-                  sizeFactor: anim,
-                  child: wid,
-                  axisAlignment: -1.0
-                );
-              },
-              child: content
-            )
-          ],
-        )
-      )
+    return ExpansionTile(
+      childrenPadding: EdgeInsets.all(10),
+      title: AnimatedAlign(
+        curve: Curves.easeOutBack,
+        duration: Duration(milliseconds: 500),
+        alignment: holder.shown ? Alignment.center : Alignment.centerLeft,
+        child: Text(holder.title, style: TextStyle(color: Theme.of(context).primaryTextTheme.bodyText1.color),),
+      ),
+      children: [holder.contents],
+      onExpansionChanged: (b){
+        setState((){
+          onHideChange(b, () => setState((){}));
+          holder.shown = b;
+        });
+      },
+      initiallyExpanded: holder.shown,
     );
   }
 }

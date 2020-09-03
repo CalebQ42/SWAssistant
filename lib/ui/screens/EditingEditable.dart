@@ -29,6 +29,7 @@ class _EditingEditableState extends State{
       child: Scaffold(
         drawer: SWDrawer(),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Theme.of(context).cardColor,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.info), title: Text("Stats")),
             BottomNavigationBarItem(icon: Icon(Icons.note), title: Text("Notes"))
@@ -37,6 +38,8 @@ class _EditingEditableState extends State{
             setState(()=>_index = value);
           },
           currentIndex: _index,
+          elevation: 8.0,
+          showSelectedLabels: true,
         ),
         appBar: SWAppBar(),
         body: _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes()

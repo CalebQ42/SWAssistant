@@ -14,7 +14,7 @@ class SWApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme;
     if(SW.of(context).prefs.getBool(preferences.light)!= null && SW.of(context).prefs.getBool(preferences.light))
-      theme = ThemeData.light().copyWith(
+      theme = ThemeData(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
         bottomSheetTheme: BottomSheetThemeData(
@@ -28,11 +28,12 @@ class SWApp extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder()
         ),
+        brightness: Brightness.light
       );
     else
-      theme = ThemeData.dark().copyWith(
+      theme = ThemeData(
         primaryColor: Colors.red,
-        accentColor: Colors.blueAccent,
+        accentColor: Colors.lightBlue,
         bottomSheetTheme: BottomSheetThemeData(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -43,7 +44,8 @@ class SWApp extends StatelessWidget {
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder()
-        )
+        ),
+        brightness: Brightness.dark
       );
     return MaterialApp(
       title: 'SWAssistant',
