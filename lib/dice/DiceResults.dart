@@ -62,8 +62,8 @@ class DiceResults{
   bool hasNumRes() => resList.any((element){
     return (element is int) || (element is ComplexSide && element.number != null) ? true : false;
   });
-  void showResultDialog({SW app, BuildContext context, String problemMessage = ""}){
-    if(app.prefs.getBool(Preferences.dice)!=null && app.prefs.getBool(Preferences.dice))
+  void showResultDialog({BuildContext context, String problemMessage = ""}){
+    if(SW.of(context).prefs.getBool(Preferences.dice)!=null && SW.of(context).prefs.getBool(Preferences.dice))
       showIndividualDialog(context);
     else
       showCombinedDialog(context);

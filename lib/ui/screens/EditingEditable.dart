@@ -34,9 +34,7 @@ class _EditingEditableState extends State{
             BottomNavigationBarItem(icon: Icon(Icons.info), title: Text("Stats")),
             BottomNavigationBarItem(icon: Icon(Icons.note), title: Text("Notes"))
           ],
-          onTap: (value) {
-            setState(()=>_index = value);
-          },
+          onTap: (value) => setState(() => _index = value),
           currentIndex: _index,
           elevation: 8.0,
           showSelectedLabels: true,
