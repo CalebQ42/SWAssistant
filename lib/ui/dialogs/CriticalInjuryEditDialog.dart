@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 
 class CriticalInjuryEditDialog extends StatefulWidget{
   final CriticalInjury criticalInjury;
@@ -40,57 +38,84 @@ class _CriticalInjuryEditState extends State{
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: nameController,
-        ),
-        Container(height: 10),
-        TextField(
-          controller: descController,
-          maxLines: 3,
-          keyboardType: TextInputType.number,
-          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-        ),
-        Container(height: 10),
-        InputDecorator(
-          decoration: InputDecoration(),
-          child: DropdownButton<int>(
-            isDense: true,
-            isExpanded: true,
-            items: [
-              //TODO
-              DropdownMenuItem(
-                child: Text(""),
-              )
-            ],
-            onChanged: (value){
-              if(criticalInjury.severity == null)
-                setState(() => criticalInjury.severity = value);
-              else
-                criticalInjury.severity = value;
-            },
-            onTap: () => FocusScope.of(context).unfocus(),
-          )
-        ),
-        ButtonBar(
+    return DropdownButtonHideUnderline(
+      child: Padding(
+        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
+        child: Wrap(
           children: [
-            FlatButton(
-              child: Text("Save"),
-              onPressed: (){
-                Navigator.of(context).pop();
-                onClose(criticalInjury);
-              },
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                    prefixText: "Injury: ",
+                    labelText: "Injury: ",
+                    floatingLabelBehavior: FloatingLabelBehavior.never
+              ),
             ),
-            FlatButton(
-              child: Text("Cancel"),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
+            Container(height: 10),
+            TextField(
+              controller: descController,
+              maxLines: 3,
+              minLines: 1,
+              decoration: InputDecoration(
+                    prefixText: "Description: ",
+                    labelText: "Description: ",
+                    floatingLabelBehavior: FloatingLabelBehavior.never
+              ),
+            ),
+            Container(height: 10),
+            InputDecorator(
+              decoration: InputDecoration(
+                    prefixText: "Severity: ",
+                    labelText: "Severity: ",
+                    floatingLabelBehavior: FloatingLabelBehavior.never
+              ),
+              child: DropdownButton<int>(
+                isDense: true,
+                isExpanded: true,
+                items: [
+                  DropdownMenuItem(
+                    child: Text("Easy"),
+                    value: 0,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Average"),
+                    value: 1,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Hard"),
+                    value: 2,
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Daunting"),
+                    value: 3,
+                  ),
+                ],
+                onChanged: (value) =>
+                  setState(() => criticalInjury.severity = value),
+                value: criticalInjury.severity,
+                onTap: () => FocusScope.of(context).unfocus(),
+              )
+            ),
+            ButtonBar(
+              children: [
+                FlatButton(
+                  child: Text("Save"),
+                  onPressed: criticalInjury.name != null || criticalInjury.desc != null || criticalInjury.severity != null ? (){
+                    Navigator.of(context).pop();
+                    onClose(criticalInjury);
+                  } : null,
+                ),
+                FlatButton(
+                  child: Text("Cancel"),
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
             )
           ],
         )
-      ],
+      )
     );
   }
 }

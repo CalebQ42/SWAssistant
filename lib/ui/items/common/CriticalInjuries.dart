@@ -11,8 +11,8 @@ class CriticalInjuries extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
-    var criticalinjuriesList = List.generate(editable.criticalInjuries.length, (i){
-      return Row(
+    var criticalinjuriesList = List.generate(editable.criticalInjuries.length, (i) =>
+      Row(
         children: [
           Expanded(
             child: Padding(
@@ -76,8 +76,8 @@ class CriticalInjuries extends StatelessWidget{
             },
           )
         ],
-      );
-    });
+      )
+    );
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(

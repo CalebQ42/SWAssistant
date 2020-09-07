@@ -86,21 +86,24 @@ class EditingText extends StatelessWidget {
 class EditableContent extends StatefulWidget{
 
   final Widget Function(bool editing, Function refresh) builder;
+  final bool defaultEditingState;
 
-  EditableContent({@required this.builder});
+  EditableContent({@required this.builder, this.defaultEditingState = false});
 
   @override
   State<StatefulWidget> createState() {
-    return _EditableContentState(builder: builder);
+    return _EditableContentState(builder: builder, defaultEditingState: defaultEditingState);
   }
 }
 
 class _EditableContentState extends State{
 
   Widget Function(bool editing, Function refresh) builder;
-  bool editing = false;
+  bool editing;
+  bool defaultEditingState;
 
-  _EditableContentState({@required this.builder});
+  _EditableContentState({@required this.builder, this.defaultEditingState}) :
+    editing = defaultEditingState == null ? false : defaultEditingState;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +112,7 @@ class _EditableContentState extends State{
       children: <Widget>[
         builder(
           editing,
-          ()=>setState((){}),
+          () => setState((){}),
         ),
         Align(
           alignment: Alignment.centerRight,
@@ -119,7 +122,7 @@ class _EditableContentState extends State{
             padding: EdgeInsets.all(5.0),
             constraints: BoxConstraints.tight(Size.square(30.0)),
             color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
-            onPressed: ()=>setState(()=>editing = !editing),
+            onPressed: () => setState(() => editing = !editing),
           )
         )
       ],

@@ -7,6 +7,7 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/common/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/common/Weapons.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
@@ -128,28 +129,31 @@ class Character extends Editable with Creature{
 
   List<Widget> cardContents() {
     var out = new List<Widget>();
-    out.add(EditableContent(builder: (b, refresh){
-      return CharacterInfo(editing: b);
-    }));
-    out.add(EditableContent(builder: (b, refresh){
-      return WoundStrain(editing: b);
-    }));
-    out.add(EditableContent(builder: (b, refresh){
-      return Characteristics(editing: b);
-    }));
-    out.add(EditableContent(builder: (b, refresh){
-      return Skills(editing:b, refresh: refresh,);
-    }));
-    out.add(EditableContent(builder: (b, refresh){
-      return Defense(editing: b);
-    }));
-    out.add(EditableContent(builder: (b, refresh){
-      return Weapons(editing: b, refresh: refresh,);
-    }));
+    out.add(EditableContent(builder: (b, refresh) =>
+      CharacterInfo(editing: b)
+    ));
+    out.add(EditableContent(builder: (b, refresh) =>
+      WoundStrain(editing: b)
+    ));
+    out.add(EditableContent(builder: (b, refresh) =>
+      Characteristics(editing: b)
+    ));
+    out.add(EditableContent(builder: (b, refresh) =>
+      Skills(editing:b, refresh: refresh)
+    , defaultEditingState: skills.length == 0));
+    out.add(EditableContent(builder: (b, refresh) =>
+      Defense(editing: b)
+    ));
+    out.add(EditableContent(builder: (b, refresh) =>
+      Weapons(editing: b, refresh: refresh)
+    , defaultEditingState: weapons.length == 0));
+    out.add(EditableContent(builder: (b, refresh) =>
+      CriticalInjuries(editing: b, refresh: refresh)
+    , defaultEditingState: criticalInjuries.length == 0));
     for(int i = out.length;i<cardNames.length;i++){
-      out.add(EditableContent(builder: (bool b, refresh){
-        return Text("card " + i.toString());
-      }));
+      out.add(EditableContent(builder: (b, refresh) =>
+        Text("card " + i.toString())
+      ));
     }
     return out;
   }
