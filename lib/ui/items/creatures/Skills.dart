@@ -22,12 +22,13 @@ class Skills extends StatelessWidget{
         onTap: (){
           var ability = (creature.charVals[creature.skills[index].base] - creature.skills[index].value).abs();
           var proficiency = min(creature.charVals[creature.skills[index].base],creature.skills[index].value);
-          showDialog(
+          showModalBottomSheet(
             context: context,
-            builder: (b) => SWDiceDialog(
-              holder: SWDiceHolder(ability: ability, proficiency: proficiency),
-              context: context
-            )
+            builder: (context) =>
+              SWDiceDialog(
+                holder: SWDiceHolder(ability: ability, proficiency: proficiency),
+                context: context
+              )
           );
         },
         child: Row(

@@ -1,15 +1,18 @@
 
 //Displays a dialog to roll a specified number of SW Dice
 import 'package:flutter/material.dart';
+import 'package:swassistant/dice/DiceResults.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/dice/SWDice.dart' as SWDice;
+import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 
-class SWDiceDialog extends StatelessWidget{
+class SWWeaponDialog extends StatelessWidget{
   final SWDiceHolder holder;
   final BuildContext context;
+  final Weapon weapon;
 
-  SWDiceDialog({@required this.holder, @required this.context});
+  SWWeaponDialog({@required this.holder, @required this.context, @required this.weapon});
 
   @override
   Widget build(BuildContext context) =>
@@ -97,7 +100,7 @@ class SWDiceDialog extends StatelessWidget{
       )..add(ButtonBar(
         children: [
           FlatButton(
-            child: Text("Roll"),
+            child: Text("Fire!"),
             onPressed: (){
               Navigator.of(context).pop();
               var res = holder.getDice().roll();
@@ -111,4 +114,26 @@ class SWDiceDialog extends StatelessWidget{
         ],
       )
     ));
+}
+
+class _WeaponResults extends StatelessWidget{
+  final Weapon weapon;
+  final DiceResults results;
+
+  _WeaponResults({this.weapon, this.results});
+
+  @override
+  Widget build(BuildContext context){} //TODO
+}
+
+class _WeaponResultsEdit extends StatelessWidget{
+  final Weapon weapon;
+  final DiceResults results;
+
+  _WeaponResultsEdit({this.weapon, this.results});
+
+  @override
+  Widget build(BuildContext context) {
+    //TODO
+  }
 }

@@ -47,11 +47,13 @@ class Characteristics extends StatelessWidget{
       child: InkResponse(
         containedInkWell: true,
         onTap:(){
-          showDialog(context: context,
-            child: SWDiceDialog(
-              holder: SWDiceHolder(ability:creature.charVals[charNum]),
-              context: context
-            )
+          showModalBottomSheet(
+            context: context,
+            builder: (context) =>
+              SWDiceDialog(
+                holder: SWDiceHolder(ability:creature.charVals[charNum]),
+                context: context
+              )
           );
         },
         child:Column(
