@@ -1,6 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:swassistant/dice/SWDiceHolder.dart';
+import 'package:swassistant/items/Skill.dart';
+import 'package:swassistant/items/Weapon.dart';
+import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/ui/dialogs/SWWeaponDialog.dart';
 import 'package:swassistant/ui/dialogs/WeaponEditDialog.dart';
 
 class Weapons extends StatelessWidget{
@@ -16,7 +23,31 @@ class Weapons extends StatelessWidget{
       return InkResponse(
         containedInkWell: true,
         onTap: (){
-          //TODO: weapon tap!
+          showModalBottomSheet(
+            context: context,
+            builder: (contet) =>
+            SWWeaponDialog(
+              holder: (){
+                if(editable is Creature){
+                  var creature = editable as Creature;
+                  var skill = creature.skills.firstWhere(
+                    (element) => element.name == Weapon.weaponSkills[editable.weapons[i].skill],
+                    orElse: () => Skill()
+                  );
+                  if(skill.name != "" && skill.base == editable.weapons[i].skillBase)
+                    return skill.getDice(creature);
+                  else
+                    return SWDiceHolder(
+                      ability: min(skill.value, creature.charVals[editable.weapons[i].skillBase]),
+                      proficiency: (skill.value - creature.charVals[editable.weapons[i].skillBase]).abs()
+                    );
+                }else
+                  return SWDiceHolder();
+              }(),
+              context: context,
+              weapon: editable.weapons[i]
+            )
+          );
         },
         child: Row(
           children: [

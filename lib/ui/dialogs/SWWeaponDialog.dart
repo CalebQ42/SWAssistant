@@ -114,6 +114,13 @@ class SWWeaponDialog extends StatelessWidget{
         ],
       )
     ));
+  
+  void show(BuildContext context) =>
+    showModalBottomSheet(
+      context: context,
+      builder: (context) =>
+        this
+    );
 }
 
 class _WeaponResults extends StatelessWidget{

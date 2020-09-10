@@ -117,7 +117,7 @@ class Weapon implements JsonSavable{
     "Gunnery",
     "Lightsaber",
     "Melee",
-    "Ranged (Light)",
-    "Ranged (Heavy)",
+    "Ranged(Light)",
+    "Ranged(Heavy)",
   ];
 }

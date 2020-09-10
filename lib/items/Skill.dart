@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:swassistant/dice/SWDiceHolder.dart';
+import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/JsonSavable.dart';
 
 class Skill implements JsonSavable{
@@ -33,6 +37,12 @@ class Skill implements JsonSavable{
     "career" : career
   };
 
+  SWDiceHolder getDice(Creature creature) =>
+    SWDiceHolder(
+      ability: (creature.charVals[base] - value).abs(),
+      proficiency: min(creature.charVals[base],value)
+    );
+
   String toString(){
     return name + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
   }
@@ -57,22 +67,22 @@ class Skill implements JsonSavable{
     "Melee" : 0,
     "Negotiation" : 5,
     "Perception" : 3,
-    "Piloting (Planetary)" : 1,
-    "Piloting (Space)" : 1,
-    "Ranged (Heavy)" : 1,
-    "Ranged (Light)" : 1,
+    "Piloting(Planetary)" : 1,
+    "Piloting(Space)" : 1,
+    "Ranged(Heavy)" : 1,
+    "Ranged(Light)" : 1,
     "Resilience" : 0,
     "Skulduggery" : 3,
     "Stealth" : 1,
     "Streetwise" : 3,
     "Survival" : 3,
     "Vigilance" : 4,
-    "Knowledge (Core Worlds)" : 2,
-    "Knowledge (Education)" : 2,
-    "Knowledge (Lore)" : 2,
-    "Knowledge (Outer Rim)" : 2,
-    "Knowledge (Underworld)" : 2,
-    "Knowledge (Xenology)" : 2,
+    "Knowledge(Core Worlds)" : 2,
+    "Knowledge(Education)" : 2,
+    "Knowledge(Lore)" : 2,
+    "Knowledge(Outer Rim)" : 2,
+    "Knowledge(Underworld)" : 2,
+    "Knowledge(Xenology)" : 2,
     "Other..." : 0
   };
 }

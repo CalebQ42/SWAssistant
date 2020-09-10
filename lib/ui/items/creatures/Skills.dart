@@ -20,13 +20,11 @@ class Skills extends StatelessWidget{
       return InkResponse(
         containedInkWell: true,
         onTap: (){
-          var ability = (creature.charVals[creature.skills[index].base] - creature.skills[index].value).abs();
-          var proficiency = min(creature.charVals[creature.skills[index].base],creature.skills[index].value);
           showModalBottomSheet(
             context: context,
             builder: (context) =>
               SWDiceDialog(
-                holder: SWDiceHolder(ability: ability, proficiency: proficiency),
+                holder: creature.skills[index].getDice(creature),
                 context: context
               )
           );
