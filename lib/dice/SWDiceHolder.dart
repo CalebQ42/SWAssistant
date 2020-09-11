@@ -20,6 +20,6 @@ class SWDiceHolder{
         dice.addAll(List.filled(setback, SW.setback));
       if(force>0)
         dice.addAll(List.filled(force, SW.force));
-      return Dice.withDice("SW Dice", dice);
+      return Dice(name: "SW Dice", dies: dice);
     }
 }

@@ -20,7 +20,6 @@ import 'JsonSavable.dart';
 abstract class Editable extends JsonSavable{
 
   //Common components
-
   int id = 0;
   String name;
   List<Note> notes = new List();

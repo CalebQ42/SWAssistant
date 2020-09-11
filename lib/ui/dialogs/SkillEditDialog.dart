@@ -43,7 +43,7 @@ class _SkillEditDialogState extends State{
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: Padding(
-        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
+        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
         child: Wrap(
           children: [
             InputDecorator(

@@ -1,62 +1,33 @@
 import 'dart:math';
 
-import 'DiceResults.dart';
-import 'Sides.dart';
+import 'package:flutter/material.dart';
+import 'package:swassistant/dice/DiceResults.dart';
+import 'package:swassistant/dice/Sides.dart';
 
 class Die{
-  static Die numberDie(int sides){
-    var d = Die("D"+sides.toString());
-    for(int i = 1;i<=sides;i++){
-      d.sides.add(SimpleSide(i.toString()));
-    }
-    return d;
-  }
 
-  List sides;
   String name;
+  List<dynamic> sides;
 
-  Die([this.name = "New Die"]){
-    sides = new List();
+  Die({@required this.name, List sides}) : this.sides = sides ?? List() {
+    if(sides.any((element) => element is !SimpleSide && element is !ComplexSide))
+      throw("All sides MUST be SimpleSide or ComplexSide");
   }
-  Die.withSides([this.name,this.sides]);
 
-  Die clone() => Die.withSides(name,new List.from(sides));
-  bool isComplex(int i) => sides[i] is ComplexSide;
-  ComplexSide getComplex(int i) => sides[i];
-  SimpleSide getSimple(int i) => sides[i];
-  int rollIndex() => new Random().nextInt(sides.length);
-  String toString() => name + " " + sides.toString();
+  dynamic roll({Random random}) => sides[(random ?? Random()).nextInt(sides.length)];
 }
 
 class Dice{
-  static var fileExtension = ".dice";
-  static Dice numberDice(int number,int sides){
-    var d = Dice(number.toString()+"D"+sides.toString());
-    for(var i = 0;i<number;i++)
-      d.dice.add(Die.numberDie(sides));
-    return d;
-  }
 
-  List<Die> dice;
   String name;
+  List<Die> dies;
 
-  Dice([this.name = "New Dice"]){
-    dice = new List<Die>();
-  }
-  Dice.withDice(this.name,this.dice);
+  Dice({@required this.name, List dies}) : this.dies = dies ?? List();
 
-  Dice clone() => Dice.withDice(name,new List<Die>.from(dice));
   DiceResults roll(){
-    var dr = DiceResults();
-    dice.forEach((d){
-      if(d.sides.length>0){
-        var i = d.rollIndex();
-        if(d.isComplex(i))
-          dr.addComplexSide(d.getComplex(i), d.name);
-        else
-          dr.addSimpleSide(d.getSimple(i), d.name);
-      }
-    });
-    return dr;
+    Random random = Random();
+    DiceResults results = DiceResults();
+    dies.forEach((element) => results.add(element.roll(random: random)));
+    return results;
   }
 }
