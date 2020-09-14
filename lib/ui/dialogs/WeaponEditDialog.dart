@@ -19,6 +19,17 @@ class WeaponEditDialog extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => _WeaponEditDialogState(onClose: onClose, weapon: weapon, editable: editable);
+
+  void show(BuildContext context) =>
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) =>
+        Container(
+          child: this,
+          height: MediaQuery.of(context).size.height * 0.60,
+        )
+    );
 }
 
 class _WeaponEditDialogState extends State{
@@ -388,11 +399,11 @@ class _WeaponEditDialogState extends State{
                   FlatButton(
                     child: Text("Save"),
                     onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null && weapon.hp != null
-                        && (editable is Character && weapon.encumbrance != null) && (editable is Vehicle && weapon.firingArc != null)
-                        && weapon.range != null && weapon.damage != null && weapon.skill != null && weapon.skillBase != null ? (){
+                        && (editable is Character ?  weapon.encumbrance != null : true) && (editable is Vehicle ? weapon.firingArc != null : true)
+                        && weapon.range != null && weapon.skill != null && weapon.skillBase != null ? (){
                       onClose(weapon);
                       Navigator.of(context).pop();
-                    } : null
+                    } : null,
                   )
                 ],
               )

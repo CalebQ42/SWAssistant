@@ -37,22 +37,16 @@ class CriticalInjuries extends StatelessWidget{
                 IconButton(
                   constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                   icon: Icon(Icons.edit),
-                  onPressed: (){
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context){
-                        return CriticalInjuryEditDialog(
-                          onClose: (criticalinjury){
-                            if(criticalinjury != null){
-                              editable.criticalInjuries[i] = criticalinjury;
-                              refresh();
-                            }
-                          },
-                          criticalInjury: editable.criticalInjuries[i]
-                        );
-                      }
-                    );
-                  }
+                  onPressed: () =>
+                    CriticalInjuryEditDialog(
+                      onClose: (criticalinjury){
+                        if(criticalinjury != null){
+                          editable.criticalInjuries[i] = criticalinjury;
+                          refresh();
+                        }
+                      },
+                      criticalInjury: editable.criticalInjuries[i]
+                    ).show(context)
                 )
               ]
             ),
@@ -95,21 +89,15 @@ class CriticalInjuries extends StatelessWidget{
             child: editing ? Center(
               child: IconButton(
                 icon: Icon(Icons.add),
-                onPressed: (){
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context){
-                      return CriticalInjuryEditDialog(
-                        onClose: (criticalinjury){
-                          if(criticalinjury != null){
-                            editable.criticalInjuries.add(criticalinjury);
-                            refresh();
-                          }
-                        }
-                      );
+                onPressed: () =>
+                  CriticalInjuryEditDialog(
+                    onClose: (criticalinjury){
+                      if(criticalinjury != null){
+                        editable.criticalInjuries.add(criticalinjury);
+                        refresh();
+                      }
                     }
-                  );
-                },
+                  ).show(context)
               )
             ) : Container(),
           )

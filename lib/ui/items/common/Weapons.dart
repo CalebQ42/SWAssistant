@@ -22,33 +22,28 @@ class Weapons extends StatelessWidget{
     var weaponsList = List.generate(editable.weapons.length, (i){
       return InkResponse(
         containedInkWell: true,
-        onTap: (){
-          showModalBottomSheet(
-            context: context,
-            builder: (contet) =>
-            SWWeaponDialog(
-              holder: (){
-                if(editable is Creature){
-                  var creature = editable as Creature;
-                  var skill = creature.skills.firstWhere(
-                    (element) => element.name == Weapon.weaponSkills[editable.weapons[i].skill],
-                    orElse: () => Skill()
+        onTap: () =>
+          SWWeaponDialog(
+            holder: (){
+              if(editable is Creature){
+                var creature = editable as Creature;
+                var skill = creature.skills.firstWhere(
+                  (element) => element.name == Weapon.weaponSkills[editable.weapons[i].skill],
+                  orElse: () => Skill()
+                );
+                if(skill.name != "" && skill.base == editable.weapons[i].skillBase)
+                  return skill.getDice(creature);
+                else
+                  return SWDiceHolder(
+                    ability: min(skill.value, creature.charVals[editable.weapons[i].skillBase]),
+                    proficiency: (skill.value - creature.charVals[editable.weapons[i].skillBase]).abs()
                   );
-                  if(skill.name != "" && skill.base == editable.weapons[i].skillBase)
-                    return skill.getDice(creature);
-                  else
-                    return SWDiceHolder(
-                      ability: min(skill.value, creature.charVals[editable.weapons[i].skillBase]),
-                      proficiency: (skill.value - creature.charVals[editable.weapons[i].skillBase]).abs()
-                    );
-                }else
-                  return SWDiceHolder();
-              }(),
-              context: context,
-              weapon: editable.weapons[i]
-            )
-          );
-        },
+              }else
+                return SWDiceHolder();
+            }(),
+            context: context,
+            weapon: editable.weapons[i]
+          ).show(context),
         child: Row(
           children: [
             Expanded(
@@ -74,23 +69,17 @@ class Weapons extends StatelessWidget{
                   IconButton(
                     constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: Icon(Icons.edit),
-                    onPressed: (){
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context){
-                          return WeaponEditDialog(
-                            editable: editable,
-                            onClose: (weapon){
-                              if(weapon != null){
-                                editable.weapons[i] = weapon;
-                                refresh();
-                              }
-                            },
-                            weapon: editable.weapons[i]
-                          );
-                        }
-                      );
-                    }
+                    onPressed: () =>
+                      WeaponEditDialog(
+                        editable: editable,
+                        onClose: (weapon){
+                          if(weapon != null){
+                            editable.weapons[i] = weapon;
+                            refresh();
+                          }
+                        },
+                        weapon: editable.weapons[i]
+                      ).show(context)
                   )
                 ]
               ),
@@ -134,22 +123,16 @@ class Weapons extends StatelessWidget{
             child: editing ? Center(
               child: IconButton(
                 icon: Icon(Icons.add),
-                onPressed: (){
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context){
-                      return WeaponEditDialog(
-                        editable: editable,
-                        onClose: (weapon){
-                          if(weapon != null){
-                            editable.weapons.add(weapon);
-                            refresh();
-                          }
-                        }
-                      );
+                onPressed: () =>
+                  WeaponEditDialog(
+                    editable: editable,
+                    onClose: (weapon){
+                      if(weapon != null){
+                        editable.weapons.add(weapon);
+                        refresh();
+                      }
                     }
-                  );
-                },
+                  ).show(context),
               )
             ) : Container(),
           )

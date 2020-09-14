@@ -17,6 +17,13 @@ class SkillEditDialog extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => _SkillEditDialogState(onClose: onClose, skill: skill, creature: creature);
+  
+  void show(BuildContext context) =>
+    showModalBottomSheet(
+      context: context,
+      builder: (context) =>
+        this
+    );
 }
 
 class _SkillEditDialogState extends State{
@@ -137,7 +144,7 @@ class _SkillEditDialogState extends State{
               children: [
                 FlatButton(
                   child: Text("Save"),
-                  onPressed: (skill.name != null && skill.base != null && skill.value != null) ? (){
+                  onPressed: (skill.name != null && skill.base != null && (creature is Character ? skill.value != null : true)) ? (){
                     onClose(skill);
                     Navigator.of(context).pop();
                   } : null,

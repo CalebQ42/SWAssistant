@@ -54,21 +54,15 @@ class Skills extends StatelessWidget{
                   IconButton(
                     constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: Icon(Icons.edit),
-                    onPressed: (){
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (innerContext){
-                          return SkillEditDialog(
-                            creature: creature,
-                            onClose: (skill){
-                              creature.skills[index] = skill;
-                              refresh();
-                            },
-                            skill: creature.skills[index]
-                          );
-                        }
-                      );
-                    }
+                    onPressed: () =>
+                      SkillEditDialog(
+                        creature: creature,
+                        onClose: (skill){
+                          creature.skills[index] = skill;
+                          refresh();
+                        },
+                        skill: creature.skills[index]
+                      ).show(context)
                   )
                 ]
               ),
@@ -108,22 +102,16 @@ class Skills extends StatelessWidget{
             child: editing ? Center(
               child: IconButton(
                 icon: Icon(Icons.add),
-                onPressed: (){
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (innerContext){
-                      return SkillEditDialog(
-                        creature: creature,
-                        onClose: (skill){
-                          if(skill != null){
-                            creature.skills.add(skill);
-                            refresh();
-                          }
-                        },
-                      );
-                    }
-                  );
-                },
+                onPressed: () =>
+                  SkillEditDialog(
+                    creature: creature,
+                    onClose: (skill){
+                      if(skill != null){
+                        creature.skills.add(skill);
+                        refresh();
+                      }
+                    },
+                  ).show(context)
               )
             ) : Container(),
             transitionBuilder: (wid,anim){

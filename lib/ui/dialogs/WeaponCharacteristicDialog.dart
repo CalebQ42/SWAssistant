@@ -96,9 +96,9 @@ class _WeaponCharacteristicDialogState extends State{
           child: Text("Save")
         ),
         FlatButton(
-          onPressed: (){
+          onPressed: wc.name != "" && wc.value != null && wc.advantage != null ? (){
             Navigator.of(context).pop();
-          },
+          } : null,
           child: Text("Cancel")
         )
       ],

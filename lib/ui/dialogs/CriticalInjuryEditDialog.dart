@@ -10,6 +10,13 @@ class CriticalInjuryEditDialog extends StatefulWidget{
   
   @override
   State<StatefulWidget> createState() => _CriticalInjuryEditState(criticalInjury: criticalInjury);
+  
+  void show(BuildContext context) =>
+    showModalBottomSheet(
+      context: context,
+      builder: (context) =>
+        this
+    );
 }
 
 class _CriticalInjuryEditState extends State{
@@ -100,7 +107,7 @@ class _CriticalInjuryEditState extends State{
               children: [
                 FlatButton(
                   child: Text("Save"),
-                  onPressed: criticalInjury.name != null || criticalInjury.desc != null || criticalInjury.severity != null ? (){
+                  onPressed: criticalInjury.name != null && criticalInjury.desc != null && criticalInjury.severity != null ? (){
                     Navigator.of(context).pop();
                     onClose(criticalInjury);
                   } : null,

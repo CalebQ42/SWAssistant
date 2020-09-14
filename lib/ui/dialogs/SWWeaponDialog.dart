@@ -2,6 +2,7 @@
 //Displays a dialog to roll a specified number of SW Dice
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/DiceResults.dart';
+import 'package:swassistant/dice/SWDice.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/dice/SWDice.dart' as SWDice;
 import 'package:swassistant/items/Weapon.dart';
@@ -105,7 +106,7 @@ class SWWeaponDialog extends StatelessWidget{
               child: Text("Fire!"),
               onPressed: (){
                 Navigator.of(context).pop();
-                _WeaponResults(weapon: weapon, results: holder.getDice().roll());
+                _WeaponResults(weapon: weapon, results: holder.getDice().roll()).show(context);
               },
             ),
             FlatButton(
@@ -132,14 +133,112 @@ class _WeaponResults extends StatelessWidget{
   _WeaponResults({this.weapon, this.results});
 
   @override
-  Widget build(BuildContext context) =>
-    Padding(
+  Widget build(BuildContext context){
+    bool isSuccess = true;
+    var success = (results.getResult(suc) + results.getResult(tri)) - (results.getResult(fai) + results.getResult(des));
+    if(success <= 0){
+      isSuccess = false;
+      success = success.abs();
+    }
+    bool isAdvantaged = true;
+    var advantage = results.getResult(adv) - results.getResult(thr);
+    if(advantage < 0){
+      isAdvantaged = false;
+      advantage = advantage.abs();
+    }
+    return Padding(
       padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
       child: Wrap(
         children: [
+          Center(
+            child: Text(success.toString() + (isSuccess ? " Success" : " Failure"),
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          if(advantage != 0) Center(
+            child: Text(advantage.toString() + (isAdvantaged ? " Advantage" : " Threat"),
+              style: Theme.of(context).textTheme.headline6,
+            )
+          ),
+          if(results.getResult(tri) > 0) Center(
+            child: Text(results.getResult(tri).toString() + " Triumph",
+              style: Theme.of(context).textTheme.headline6,
+            )
+          ),
+          if(results.getResult(des)> 0) Center(
+            child: Text(results.getResult(des).toString() + " Despair",
+              style: Theme.of(context).textTheme.headline6,
+            )
+          ),
+          if(results.getResult(lig) > 0) Center(
+            child: Text(results.getResult(lig).toString() + " Light Side",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          if(results.getResult(dar) > 0) Center(
+            child: Text(results.getResult(dar).toString() + " Dark Side",
+              style: Theme.of(context).textTheme.headline6,
+            )
+          ),
+          if(weapon.critical > 0 || weapon.characteristics.length > 0) Column(
+            children: [
+              Container(height: 15,),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text("Characteristic"),
+                    flex: 4
+                  ),
+                  Expanded(
+                    child: Center(child: Text("Adv")),
+                  )
+                ]
+              ),
+              Divider(),
+              if(weapon.critical > 0) Row(
+                children: [
+                  Expanded(
+                    child: Text("Critical"),
+                    flex: 4
+                  ),
+                  Expanded(
+                    child: Center(child: Text(weapon.critical.toString())),
+                  )
+                ],
+              )
+            ]..addAll((){
+              if(weapon.characteristics.length == 0)
+                return List<Widget>();
+              return List<Widget>.generate(weapon.characteristics.length,
+                (index) => Row(
+                  children: [
+                    Expanded(
+                      child: Text(weapon.characteristics[index].name + weapon.characteristics[index].value.toString()),
+                      flex: 4,
+                    ),
+                    Expanded(
+                      child: Center(child: Text(weapon.characteristics[index].advantage.toString())),
+                    )
+                  ],
+                )
+              );
+            }())
+          ),
+          ButtonBar(
+            children: [
+              FlatButton(
+                child: Text("Edit"),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                  _WeaponResultsEdit(weapon: weapon, results: results,).show(context);
+                },
+              ),
+            ],
+          )
         ],
       )
     );
+  }
 
   void show(BuildContext context) =>
     showModalBottomSheet(
@@ -155,12 +254,127 @@ class _WeaponResultsEdit extends StatelessWidget{
 
   _WeaponResultsEdit({this.weapon, this.results});
 
-  @override
   Widget build(BuildContext context) =>
     Padding(
       padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
-      child: Wrap(
-        children: [],
+        child: Wrap(
+        children: [
+          Row(
+            children: [
+              Expanded(child: Text("Success:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[suc]++,
+                  onDownPressed: () => results.results[suc] --,
+                  getValue: () => results.results[suc],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          Row(
+            children: [
+              Expanded(child: Text("Failure:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[fai]++,
+                  onDownPressed: () => results.results[fai] --,
+                  getValue: () => results.results[fai],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          Row(
+            children: [
+              Expanded(child: Text("Advantage:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[adv]++,
+                  onDownPressed: () => results.results[adv] --,
+                  getValue: () => results.results[adv],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          Row(
+            children: [
+              Expanded(child: Text("Threat:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[thr]++,
+                  onDownPressed: () => results.results[thr] --,
+                  getValue: () => results.results[thr],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          Row(
+            children: [
+              Expanded(child: Text("Triumph:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[tri]++,
+                  onDownPressed: () => results.results[tri] --,
+                  getValue: () => results.results[tri],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          Row(
+            children: [
+              Expanded(child: Text("Despair:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[des]++,
+                  onDownPressed: () => results.results[des] --,
+                  getValue: () => results.results[des],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          Row(
+            children: [
+              Expanded(child: Text("Light Side:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[lig]++,
+                  onDownPressed: () => results.results[lig] --,
+                  getValue: () => results.results[lig],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          Row(
+            children: [
+              Expanded(child: Text("Dark Side:")),
+              Expanded(
+                child: UpDownStat(
+                  onUpPressed: () => results.results[dar]++,
+                  onDownPressed: () => results.results[dar] --,
+                  getValue: () => results.results[dar],
+                  getMin: () => 0,
+                )
+              )
+            ]
+          ),
+          ButtonBar(
+            children: [
+              FlatButton(
+                child: Text("Return"),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                  _WeaponResults(weapon: weapon, results: results).show(context);
+                },
+              )
+            ],
+          )
+        ],
       )
     );
 
