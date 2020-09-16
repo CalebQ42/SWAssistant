@@ -19,7 +19,7 @@ class Talent implements JsonSavable{
 
   Talent.nulled() :
       name = null,
-      desc = null,
+      desc = "",
       value = 1;
 
   Map<String, dynamic> toJson() => {

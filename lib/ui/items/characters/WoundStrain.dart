@@ -54,6 +54,7 @@ class WoundStrain extends StatelessWidget{
             )
           ],
         ),
+        if(editing) Container(height: 10), 
         Row(
           children: <Widget>[
             Expanded(

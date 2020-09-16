@@ -47,16 +47,15 @@ class _CriticalInjuryEditState extends State{
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: Padding(
-        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 5)),
+        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
         child: Wrap(
           children: [
+            Container(height: 15),
             TextField(
               textCapitalization: TextCapitalization.words,
               controller: nameController,
               decoration: InputDecoration(
-                    prefixText: "Injury: ",
-                    labelText: "Injury: ",
-                    floatingLabelBehavior: FloatingLabelBehavior.never
+                    labelText: "Injury",
               ),
             ),
             Container(height: 10),
@@ -66,17 +65,13 @@ class _CriticalInjuryEditState extends State{
               maxLines: 3,
               minLines: 1,
               decoration: InputDecoration(
-                    prefixText: "Description: ",
-                    labelText: "Description: ",
-                    floatingLabelBehavior: FloatingLabelBehavior.never
+                    labelText: "Description",
               ),
             ),
             Container(height: 10),
             InputDecorator(
               decoration: InputDecoration(
-                    prefixText: "Severity: ",
-                    labelText: "Severity: ",
-                    floatingLabelBehavior: FloatingLabelBehavior.never
+                    labelText: "Severity",
               ),
               child: DropdownButton<int>(
                 isDense: true,

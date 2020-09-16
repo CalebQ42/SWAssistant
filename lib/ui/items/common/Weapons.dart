@@ -7,7 +7,7 @@ import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/SWWeaponDialog.dart';
-import 'package:swassistant/ui/dialogs/WeaponEditDialog.dart';
+import 'package:swassistant/ui/dialogs/editable/WeaponEditDialog.dart';
 
 class Weapons extends StatelessWidget{
   final bool editing;
@@ -21,6 +21,7 @@ class Weapons extends StatelessWidget{
     var weaponsList = List.generate(editable.weapons.length, (i){
       return InkResponse(
         containedInkWell: true,
+        highlightShape: BoxShape.rectangle,
         onTap: () =>
           SWWeaponDialog(
             holder: (){

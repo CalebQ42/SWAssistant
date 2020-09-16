@@ -50,14 +50,13 @@ class _SkillEditDialogState extends State{
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: Padding(
-        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
+        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
         child: Wrap(
           children: [
+            Container(height: 15),
             InputDecorator(
               decoration: InputDecoration(
-                prefixText: "Skill: ",
-                labelText: "Skill: ",
-                floatingLabelBehavior: FloatingLabelBehavior.never
+                labelText: "Skill",
               ),
               child: DropdownButton<String>(
                 isDense: true,
@@ -105,9 +104,7 @@ class _SkillEditDialogState extends State{
             Container(height: 10),
             InputDecorator(
               decoration: InputDecoration(
-                prefixText: "Characteristic: ",
-                labelText: "Characteristic: ",
-                floatingLabelBehavior: FloatingLabelBehavior.never
+                labelText: "Characteristic",
               ),
               child: DropdownButton<int>(
                 isDense: true,
@@ -130,9 +127,7 @@ class _SkillEditDialogState extends State{
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               controller: valueController,
               decoration: InputDecoration(
-                prefixText: "Skill Value: ",
-                labelText: "Skill Value: ",
-                floatingLabelBehavior: FloatingLabelBehavior.never
+                labelText: "Value",
               ),
             ),
             SwitchListTile(

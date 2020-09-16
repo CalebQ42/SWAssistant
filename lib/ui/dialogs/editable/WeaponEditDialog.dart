@@ -7,7 +7,7 @@ import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
-import 'package:swassistant/ui/dialogs/WeaponCharacteristicDialog.dart';
+import 'package:swassistant/ui/dialogs/editable/WeaponCharacteristicDialog.dart';
 
 class WeaponEditDialog extends StatefulWidget{
   final Function(Weapon) onClose;
@@ -107,17 +107,16 @@ class _WeaponEditDialogState extends State{
     return SingleChildScrollView(
       child: DropdownButtonHideUnderline(
         child: Padding(
-          padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
+          padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
           child: Column(
             children: [
               //Name
+              Container(height: 15),
               TextField(
                 controller: nameController,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  prefixText: "Name: ",
-                  labelText: "Name: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Name",
                 ),
               ),
               Container(height: 10),
@@ -125,9 +124,7 @@ class _WeaponEditDialogState extends State{
               TextField(
                 controller: damageController,
                 decoration: InputDecoration(
-                  prefixText: "Damage: ",
-                  labelText: "Damage: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Damage",
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -137,9 +134,7 @@ class _WeaponEditDialogState extends State{
               TextField(
                 controller: criticalController,
                 decoration: InputDecoration(
-                  prefixText: "Critical: ",
-                  labelText: "Critical: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Critical",
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -149,9 +144,7 @@ class _WeaponEditDialogState extends State{
               TextField(
                 controller: hpController,
                 decoration: InputDecoration(
-                  prefixText: "Hard Points: ",
-                  labelText: "Hard Points: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Hard Points",
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -161,9 +154,7 @@ class _WeaponEditDialogState extends State{
               if(editable is Character) TextField(
                 controller: encumbranceController,
                 decoration: InputDecoration(
-                  prefixText: "Encumbrance: ",
-                  labelText: "Encumbrance: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Encumbrance",
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -174,18 +165,14 @@ class _WeaponEditDialogState extends State{
                 controller: arcController,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  prefixText: "Firing Arc: ",
-                  labelText: "Firing Arc: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Firing Arc",
                 ),
               ),
               //Range
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  prefixText: "Range: ",
-                  labelText: "Range: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Range",
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -222,9 +209,7 @@ class _WeaponEditDialogState extends State{
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  prefixText: "Item Damage: ",
-                  labelText: "Item Damage: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Item Damage",
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -256,9 +241,7 @@ class _WeaponEditDialogState extends State{
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  prefixText: "Skill: ",
-                  labelText: "Skill: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Skill",
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -283,9 +266,7 @@ class _WeaponEditDialogState extends State{
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  prefixText: "Skill Base: ",
-                  labelText: "Skill Base: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Skill Base",
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -383,8 +364,7 @@ class _WeaponEditDialogState extends State{
                 child: weapon.limitedAmmo ? TextField(
                   controller: ammoController,
                   decoration: InputDecoration(
-                    prefixIcon: Text("Ammo: ", style: TextStyle(color:Theme.of(context).hintColor),),
-                    prefixIconConstraints: BoxConstraints(minHeight: 0, minWidth: 0)
+                    labelText: "Ammo"
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:swassistant/profiles/Character.dart';
 
 class SpecializationEditDialog extends StatefulWidget{
 
@@ -15,7 +14,6 @@ class SpecializationEditDialog extends StatefulWidget{
   void show(BuildContext context) =>
     showModalBottomSheet(
       context: context,
-      isScrollControlled: false,
       builder: (context) =>
         this
     );
@@ -41,16 +39,15 @@ class _SpecializationState extends State{
   @override
   Widget build(BuildContext context) =>
     Padding(
-      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
+      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
       child: Wrap(
         children: [
+          Container(height: 15),
           TextField(
             controller: specCont,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              prefixText: "Specialization: ",
-              labelText: "Specialization: ",
-              floatingLabelBehavior: FloatingLabelBehavior.never
+              labelText: "Specialization",
             ),
           ),
           ButtonBar(

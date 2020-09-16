@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swassistant/items/Talent.dart';
 
 class TalentEditDialog extends StatefulWidget{
@@ -7,10 +8,16 @@ class TalentEditDialog extends StatefulWidget{
   final Function(Talent) onClose;
 
   TalentEditDialog({Talent talent, this.onClose}) :
-    this.talent = talent == null ? Talent.nulled() : talent;
+    this.talent = talent == null ? Talent.nulled() : Talent.from(talent);
 
   @override
   State<StatefulWidget> createState() => _TalentEditState(talent: talent, onClose: onClose);
+
+  void show(BuildContext context) => 
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => this
+    );
 }
 
 class _TalentEditState extends State{
@@ -50,11 +57,51 @@ class _TalentEditState extends State{
   @override
   Widget build(BuildContext context) =>
     Padding(
-      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
+      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
       child: Wrap(
         children: [
+          Container(height: 15),
           TextField(
-            
+            controller: nameController,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(
+              labelText: "Talent",
+            ),
+          ),
+          Container(height: 10),
+          TextField(
+            controller: valueController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+            decoration: InputDecoration(
+              labelText: "Rank",
+            ),
+          ),
+          Container(height: 10,),
+          TextField(
+            controller: descController,
+            textCapitalization: TextCapitalization.sentences,
+            maxLines: 3,
+            minLines: 1,
+            decoration: InputDecoration(
+              labelText: "Description",
+            ),
+          ),
+          ButtonBar(
+            children: [
+              FlatButton(
+                child: Text("Save"),
+                onPressed: talent.name != "" && talent.value != null ? (){
+                  onClose(talent);
+                  Navigator.of(context).pop();
+                } : null,
+              ),
+              FlatButton(
+                child: Text("Cancel"),
+                onPressed: () =>
+                  Navigator.of(context).pop(),
+              )
+            ],
           )
         ],
       ),

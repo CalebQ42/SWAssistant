@@ -149,7 +149,13 @@
   ],
   "Force Powers": [],
   "motivation": "",
-  "Critical Injuries": [],
+  "Critical Injuries": [
+    {
+      "name": "Broken Arm",
+      "description": "A BROKEN ARM. What more is there to say?",
+      "severity": 2
+    }
+  ],
   "emotional strength": "",
   "emotional weakness": "",
   "Dutys": [],

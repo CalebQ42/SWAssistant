@@ -59,18 +59,14 @@ class _WeaponCharacteristicDialogState extends State{
             controller: nameController,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-                  prefixText: "Name: ",
-                  labelText: "Name: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Name",
             ),
           ),
           Container(height: 10),
           TextField(
             controller: valueController,
             decoration: InputDecoration(
-                  prefixText: "Rank: ",
-                  labelText: "Rank: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Rank",
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -79,9 +75,7 @@ class _WeaponCharacteristicDialogState extends State{
           TextField(
             controller: advantageController,
             decoration: InputDecoration(
-                  prefixText: "Advantage Needed: ",
-                  labelText: "Advantage Needed: ",
-                  floatingLabelBehavior: FloatingLabelBehavior.never
+                  labelText: "Advantage Needed",
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
