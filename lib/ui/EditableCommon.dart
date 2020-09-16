@@ -86,9 +86,9 @@ class EditingText extends StatelessWidget {
 class EditableContent extends StatefulWidget{
 
   final Widget Function(bool editing, Function refresh) builder;
-  final bool defaultEditingState;
+  final bool Function() defaultEditingState;
 
-  EditableContent({@required this.builder, this.defaultEditingState = false});
+  EditableContent({@required this.builder, this.defaultEditingState});
 
   @override
   State<StatefulWidget> createState() {
@@ -100,10 +100,10 @@ class _EditableContentState extends State{
 
   Widget Function(bool editing, Function refresh) builder;
   bool editing;
-  bool defaultEditingState;
+  final bool Function() defaultEditingState;
 
   _EditableContentState({@required this.builder, this.defaultEditingState}) :
-    editing = defaultEditingState == null ? false : defaultEditingState;
+    editing = defaultEditingState == null ? false : defaultEditingState();
 
   @override
   Widget build(BuildContext context) {

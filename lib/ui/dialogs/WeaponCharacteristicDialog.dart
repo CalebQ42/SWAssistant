@@ -57,6 +57,7 @@ class _WeaponCharacteristicDialogState extends State{
         children: [
           TextField(
             controller: nameController,
+            textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
                   prefixText: "Name: ",
                   labelText: "Name: ",

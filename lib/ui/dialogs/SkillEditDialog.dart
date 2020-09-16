@@ -90,6 +90,7 @@ class _SkillEditDialogState extends State{
             AnimatedSwitcher(
               child: !manual ? Container() :
                 TextField(
+                  textCapitalization: TextCapitalization.words,
                   onChanged: (value) => skill.name = value,
                   autofillHints: Skill.skillsList.keys,
                   controller: TextEditingController(text: skill.name),

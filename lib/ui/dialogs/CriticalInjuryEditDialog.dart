@@ -51,6 +51,7 @@ class _CriticalInjuryEditState extends State{
         child: Wrap(
           children: [
             TextField(
+              textCapitalization: TextCapitalization.words,
               controller: nameController,
               decoration: InputDecoration(
                     prefixText: "Injury: ",
@@ -60,6 +61,7 @@ class _CriticalInjuryEditState extends State{
             ),
             Container(height: 10),
             TextField(
+              textCapitalization: TextCapitalization.sentences,
               controller: descController,
               maxLines: 3,
               minLines: 1,

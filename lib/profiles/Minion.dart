@@ -72,9 +72,9 @@ class Minion extends Editable with Creature{
         }
       )
     );
-    out[2] = EditableContent(builder: (b, refresh){
-      return Characteristics(editing: b);
-    });
+    out[2] = EditableContent(builder: (b, refresh) =>
+      Characteristics(editing: b)
+    );
     return out;
   }
 

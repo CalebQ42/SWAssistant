@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
-import 'package:swassistant/ui/dialogs/SpecializationEditDialog.dart';
 
-class Specializations extends StatelessWidget{
+class Talents extends StatelessWidget{
 
   final bool editing;
   final Function refresh;
 
-  Specializations({this.editing, this.refresh});
+  Talents({this.editing, this.refresh});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,11 @@ class Specializations extends StatelessWidget{
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: List.generate(
-          character.specializations.length,
+          character.talents.length,
           (index) => Row(
             children: [
               Expanded(
-                child: Text(character.specializations[index])
+                child: Text(character.talents[index].name + " " + character.talents[index].value.toString()),
               ),
               AnimatedSwitcher(
                 child: editing ? ButtonBar(
@@ -32,32 +32,15 @@ class Specializations extends StatelessWidget{
                       iconSize: 24.0,
                       constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                       onPressed: (){
-                        var temp = character.specializations[index];
-                        character.specializations.removeAt(index);
-                        refresh();
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Deleted Specialization"),
-                            action: SnackBarAction(
-                              label: "Undo",
-                              onPressed: (){
-                                character.specializations.insert(index,temp);
-                                refresh();
-                              },
-                            ),
-                          )
-                        );
+                        //TODO: delete
                       },
                     ),
                     IconButton(
                       icon: Icon(Icons.edit),
                       iconSize: 24.0,
                       constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                      onPressed: () =>
-                        SpecializationEditDialog(onClose: (specialization){
-                          character.specializations[index] = specialization;
-                          refresh();
-                        }, specialization: character.specializations[index]).show(context)
+                      onPressed: () {}
+                        //TODO: edit
                     )
                   ],
                 ) : Container(height: 40),
@@ -89,11 +72,8 @@ class Specializations extends StatelessWidget{
             child: editing ? Center(
               child: IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () =>
-                  SpecializationEditDialog(onClose: (specialization){
-                    character.specializations.add(specialization);
-                    refresh();
-                  }, specialization: "").show(context)
+                onPressed: () {}
+                  //TODO: add
               )
             ) : Container(),
             transitionBuilder: (wid,anim){
@@ -105,7 +85,7 @@ class Specializations extends StatelessWidget{
             },
           )
         ),
-      )
+      ),
     );
   }
 }

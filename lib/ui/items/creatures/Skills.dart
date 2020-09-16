@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
@@ -47,8 +48,21 @@ class Skills extends StatelessWidget{
                     constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: Icon(Icons.delete_forever),
                     onPressed: (){
+                      var temp = Skill.from(creature.skills[index]);
                       creature.skills.removeAt(index);
                       refresh();
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Skill Deleted"),
+                          action: SnackBarAction(
+                            label: "Undo",
+                            onPressed: (){
+                              creature.skills.insert(index, temp);
+                              refresh();
+                            }
+                          ),
+                        )
+                      );
                     }
                   ),
                   IconButton(

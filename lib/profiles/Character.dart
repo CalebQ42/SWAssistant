@@ -7,7 +7,9 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/characters/Specializations.dart';
 import 'package:swassistant/ui/items/common/CriticalInjuries.dart';
+import 'package:swassistant/ui/items/common/Description.dart';
 import 'package:swassistant/ui/items/common/Weapons.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
@@ -140,21 +142,27 @@ class Character extends Editable with Creature{
     ));
     out.add(EditableContent(builder: (b, refresh) =>
       Skills(editing:b, refresh: refresh)
-    , defaultEditingState: skills.length == 0));
+    , defaultEditingState: () => skills.length == 0));
     out.add(EditableContent(builder: (b, refresh) =>
       Defense(editing: b)
     ));
     out.add(EditableContent(builder: (b, refresh) =>
       Weapons(editing: b, refresh: refresh)
-    , defaultEditingState: weapons.length == 0));
+    , defaultEditingState: () => weapons.length == 0));
     out.add(EditableContent(builder: (b, refresh) =>
       CriticalInjuries(editing: b, refresh: refresh)
-    , defaultEditingState: criticalInjuries.length == 0));
-    for(int i = out.length;i<cardNames.length;i++){
+    , defaultEditingState: () => criticalInjuries.length == 0));
+    out.add(EditableContent(builder: (b, refresh) =>
+      Specializations(editing: b, refresh: refresh,)
+    , defaultEditingState: () => specializations.length == 0,));
+    for(int i = out.length;i<cardNames.length-1;i++){
       out.add(EditableContent(builder: (b, refresh) =>
         Text("card " + i.toString())
       ));
     }
+    out.add(EditableContent(builder: (b, refresh) =>
+      Description(editing: b)
+    , defaultEditingState: () => desc == "",));
     return out;
   }
 

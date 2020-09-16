@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Weapon.dart';
@@ -62,8 +61,21 @@ class Weapons extends StatelessWidget{
                     constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: Icon(Icons.delete_forever),
                     onPressed: (){
+                      var temp = Weapon.from(editable.weapons[i]);
                       editable.weapons.removeAt(i);
                       refresh();
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Deleted Weapon"),
+                          action: SnackBarAction(
+                            label: "Undo",
+                            onPressed: (){
+                              editable.weapons.insert(i, temp);
+                              refresh();
+                            },
+                          ),
+                        )
+                      );
                     }
                   ),
                   IconButton(

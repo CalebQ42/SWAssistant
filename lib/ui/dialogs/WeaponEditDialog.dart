@@ -113,6 +113,7 @@ class _WeaponEditDialogState extends State{
               //Name
               TextField(
                 controller: nameController,
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   prefixText: "Name: ",
                   labelText: "Name: ",
@@ -171,6 +172,7 @@ class _WeaponEditDialogState extends State{
               if(editable is Vehicle) Container(height: 10),
               if(editable is Vehicle) TextField(
                 controller: arcController,
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   prefixText: "Firing Arc: ",
                   labelText: "Firing Arc: ",
