@@ -33,7 +33,7 @@ class DiceResults{
 
   int getResult(String name) => results[name];
 
-  void showCombinedResults(BuildContext context){
+  void showCombinedResults(BuildContext context,{bool noSuccess = true}){
     bool isSuccess = true;
     var success = (results[suc] + results[tri]) - (results[fai] + results[des]);
     if(success <= 0){
@@ -53,7 +53,7 @@ class DiceResults{
           padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
           child: Wrap(
             children: [
-              Center(
+              if(!noSuccess) Center(
                 child: Text(success.toString() + (isSuccess ? " Success" : " Failure"),
                   style: Theme.of(context).textTheme.headline6,
                 ),
@@ -89,7 +89,7 @@ class DiceResults{
                     child: Text("Edit"),
                     onPressed: (){
                       Navigator.of(context).pop();
-                      showResultsEdit(context);
+                      showResultsEdit(context, noSuccess: noSuccess);
                     },
                   ),
                 ],
@@ -100,7 +100,7 @@ class DiceResults{
     );
   }
 
-  void showResultsEdit(BuildContext context) =>
+  void showResultsEdit(BuildContext context,{bool noSuccess = true}) =>
     showModalBottomSheet(
       context: context,
       builder: (context) =>
@@ -217,8 +217,10 @@ class DiceResults{
                 FlatButton(
                   child: Text("Return"),
                   onPressed: (){
+                    if(!noSuccess && results[suc] == 0 && results[fai] == 0)
+                      noSuccess = false;
                     Navigator.of(context).pop();
-                    showCombinedResults(context);
+                    showCombinedResults(context, noSuccess: noSuccess);
                   },
                 )
               ],

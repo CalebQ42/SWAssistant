@@ -101,9 +101,13 @@ class SWDiceDialog extends StatelessWidget{
             FlatButton(
               child: Text("Roll"),
               onPressed: (){
+                
                 Navigator.of(context).pop();
                 var res = holder.getDice().roll();
-                res.showCombinedResults(context);
+                res.showCombinedResults(context,
+                  noSuccess: holder.ability == 0 && holder.challenge == 0 && holder.difficulty == 0 &&
+                    holder.proficiency == 0 && holder.boost == 0 && holder.setback == 0
+                );
               },
             ),
             FlatButton(

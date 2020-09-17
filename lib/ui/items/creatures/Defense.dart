@@ -18,6 +18,7 @@ class Defense extends StatelessWidget{
           child: Column(
             children: [
               Text("Melee:"),
+              if(editing) Container(height: 5,),
               EditingText(
                 editing: editing,
                 initialText: creature.defMelee.toString(),
@@ -32,6 +33,7 @@ class Defense extends StatelessWidget{
           child: Column(
             children: [
               Text("Ranged:"),
+              if(editing) Container(height: 5,),
               EditingText(
                 editing: editing,
                 initialText: creature.defRanged.toString(),

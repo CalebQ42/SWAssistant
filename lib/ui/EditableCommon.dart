@@ -34,7 +34,7 @@ class EditingText extends StatelessWidget {
     if(editing){
       if(defaultSave){
         controller.addListener(() {
-          editable.save(editable.getFileLocation(SW.of(context)));
+          editable.save(context: context);
         });
       }
     }

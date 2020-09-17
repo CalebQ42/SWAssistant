@@ -56,9 +56,11 @@ class Characteristics extends StatelessWidget{
               )
           );
         },
-        child:Column(
+        child: Column(
           children: <Widget>[
+            if(editing) Container(height: 5),
             Text(Creature.characteristics[charNum]),
+            if(editing) Container(height: 5),
             EditingText(
               editing: editing,
               initialText: creature.charVals[charNum].toString(),

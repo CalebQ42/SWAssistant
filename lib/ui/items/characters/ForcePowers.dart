@@ -1,28 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/items/Talent.dart';
+import 'package:swassistant/dice/SWDice.dart';
+import 'package:swassistant/dice/SWDiceHolder.dart';
+import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
-import 'package:swassistant/ui/dialogs/character/TalentEditDialog.dart';
+import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
+import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
 
-class Talents extends StatelessWidget{
+class ForcePowers extends StatelessWidget{
 
   final bool editing;
   final Function refresh;
 
-  Talents({this.editing, this.refresh});
-
+  ForcePowers({this.editing, this.refresh});
   @override
   Widget build(BuildContext context) {
     var character = Editable.of(context) as Character;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
-        children: List.generate(
-          character.talents.length,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("Force Rating:"),
+              SizedBox(
+                width: 50,
+                child: EditingText(
+                  editing: editing,
+                  initialText: character.force.toString(),
+                  controller: (){
+                    var controller = new TextEditingController(text: character.force.toString());
+                    controller.addListener(() {
+                      if(controller.text =="")
+                        character.force = 0;
+                      else
+                        character.force = int.parse(controller.text);
+                    });
+                    return controller;
+                  }(),
+                  textType: TextInputType.number,
+                  defaultSave: true,
+                )
+              )
+            ],
+          )
+        ]..addAll(List.generate(
+          character.forcePowers.length,
           (index) => InkResponse(
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
             onTap: () =>
+              showModalBottomSheet(
+                context: context,
+                builder: (context) =>
+                  SWDiceDialog(
+                    holder: SWDiceHolder(force: character.force),
+                    context: context
+                  ),
+              ),
+            onLongPress: () =>
               showModalBottomSheet(
                 context: context,
                 builder: (context) =>
@@ -34,20 +72,13 @@ class Talents extends StatelessWidget{
                         Container(height: 15),
                         Center(
                           child: Text(
-                            character.talents[index].name,
+                            character.forcePowers[index].name,
                             style: Theme.of(context).textTheme.headline5,
                             textAlign: TextAlign.justify,
                           )
                         ),
-                        Container(height: 5),
-                        Center(
-                          child: Text(
-                            "Rank: " + character.talents[index].value.toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ),
                         Container(height: 10),
-                        Text(character.talents[index].desc)
+                        Text(character.forcePowers[index].desc)
                       ],
                     )
                   )
@@ -55,7 +86,7 @@ class Talents extends StatelessWidget{
             child: Row(
               children: [
                 Expanded(
-                  child: Text(character.talents[index].name + (character.talents[index].value > 1 ? " " + character.talents[index].value.toString() : "")),
+                  child: Text(character.forcePowers[index].name),
                 ),
                 AnimatedSwitcher(
                   child: editing ? ButtonBar(
@@ -66,17 +97,17 @@ class Talents extends StatelessWidget{
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
-                          var temp = Talent.from(character.talents[index]);
-                          character.talents.removeAt(index);
+                          var temp = ForcePower.from(character.forcePowers[index]);
+                          character.forcePowers.removeAt(index);
                           refresh();
                           character.save(context: context);
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Talent Deleted"),
+                              content: Text("Force Power Deleted"),
                               action: SnackBarAction(
                                 label: "Undo",
                                 onPressed: (){
-                                  character.talents.insert(index, temp);
+                                  character.forcePowers.insert(index, temp);
                                   refresh();
                                   character.save(context: context);
                                 },
@@ -90,13 +121,13 @@ class Talents extends StatelessWidget{
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: () =>
-                          TalentEditDialog(
-                            onClose: (talent){
-                              character.talents[index] = talent;
+                          ForcePowerEditDialog(
+                            onClose: (forcePower){
+                              character.forcePowers[index] = forcePower;
                               refresh();
                               character.save(context: context);
                             },
-                            talent: character.talents[index],
+                            power: character.forcePowers[index],
                           ).show(context)
                       )
                     ],
@@ -124,16 +155,16 @@ class Talents extends StatelessWidget{
               ],
             )
           )
-        )..add(
+        ))..add(
           AnimatedSwitcher(
             duration: Duration(milliseconds: 300),
             child: editing ? Center(
               child: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () =>
-                  TalentEditDialog(
-                    onClose: (talent){
-                      character.talents.add(talent);
+                  ForcePowerEditDialog(
+                    onClose: (forcePower){
+                      character.forcePowers.add(forcePower);
                       refresh();
                       character.save(context: context);
                     },

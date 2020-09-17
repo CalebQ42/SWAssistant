@@ -65,6 +65,7 @@ class Weapons extends StatelessWidget{
                       var temp = Weapon.from(editable.weapons[i]);
                       editable.weapons.removeAt(i);
                       refresh();
+                      editable.save(context: context);
                       Scaffold.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Deleted Weapon"),
@@ -73,6 +74,7 @@ class Weapons extends StatelessWidget{
                             onPressed: (){
                               editable.weapons.insert(i, temp);
                               refresh();
+                              editable.save(context: context);
                             },
                           ),
                         )
@@ -86,10 +88,9 @@ class Weapons extends StatelessWidget{
                       WeaponEditDialog(
                         editable: editable,
                         onClose: (weapon){
-                          if(weapon != null){
-                            editable.weapons[i] = weapon;
-                            refresh();
-                          }
+                          editable.weapons[i] = weapon;
+                          refresh();
+                          editable.save(context: context);
                         },
                         weapon: editable.weapons[i]
                       ).show(context)
@@ -140,10 +141,9 @@ class Weapons extends StatelessWidget{
                   WeaponEditDialog(
                     editable: editable,
                     onClose: (weapon){
-                      if(weapon != null){
-                        editable.weapons.add(weapon);
-                        refresh();
-                      }
+                      editable.weapons.add(weapon);
+                      refresh();
+                      editable.save(context: context);
                     }
                   ).show(context),
               )

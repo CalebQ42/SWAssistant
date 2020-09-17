@@ -35,6 +35,7 @@ class Specializations extends StatelessWidget{
                         var temp = character.specializations[index];
                         character.specializations.removeAt(index);
                         refresh();
+                        character.save(context: context);
                         Scaffold.of(context).showSnackBar(
                           SnackBar(
                             content: Text("Deleted Specialization"),
@@ -43,6 +44,7 @@ class Specializations extends StatelessWidget{
                               onPressed: (){
                                 character.specializations.insert(index,temp);
                                 refresh();
+                                character.save(context: context);
                               },
                             ),
                           )
@@ -54,10 +56,14 @@ class Specializations extends StatelessWidget{
                       iconSize: 24.0,
                       constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                       onPressed: () =>
-                        SpecializationEditDialog(onClose: (specialization){
-                          character.specializations[index] = specialization;
-                          refresh();
-                        }, specialization: character.specializations[index]).show(context)
+                        SpecializationEditDialog(
+                          onClose: (specialization){
+                            character.specializations[index] = specialization;
+                            refresh();
+                            character.save(context: context);
+                          },
+                          specialization: character.specializations[index]
+                        ).show(context)
                     )
                   ],
                 ) : Container(height: 40),
@@ -90,10 +96,14 @@ class Specializations extends StatelessWidget{
               child: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () =>
-                  SpecializationEditDialog(onClose: (specialization){
-                    character.specializations.add(specialization);
-                    refresh();
-                  }, specialization: "").show(context)
+                  SpecializationEditDialog(
+                    onClose: (specialization){
+                      character.specializations.add(specialization);
+                      refresh();
+                      character.save(context: context);
+                    },
+                    specialization: ""
+                  ).show(context)
               )
             ) : Container(),
             transitionBuilder: (wid,anim){

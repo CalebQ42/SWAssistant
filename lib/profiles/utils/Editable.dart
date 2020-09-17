@@ -41,7 +41,7 @@ abstract class Editable extends JsonSavable{
   Editable({@required this.id, this.name = "", bool saveOnCreation = false, SW app}){
     showCard = List.filled(cardNames.length, false);
     if(saveOnCreation)
-      this.save(getFileLocation(app));
+      this.save(filename: getFileLocation(app));
   }
 
   Editable.load(FileSystemEntity file, SW app){
@@ -113,7 +113,11 @@ abstract class Editable extends JsonSavable{
       return _loc;
   }
   String getCloudFileLocation(){return null;}
-  void save(String filename) async{
+  void save({String filename, BuildContext context}) async{
+    if(filename == null && context != null)
+      filename = getFileLocation(SW.of(context));
+    if(filename == null)
+      throw("Either filename or context needs to be given");
     if(!_saving){
       _saving = true;
       var file = File(filename);
@@ -131,7 +135,7 @@ abstract class Editable extends JsonSavable{
         while(_saving){
           sleep(Duration(milliseconds: 250));
         }
-        save(filename);
+        save(filename: filename);
         _defered = false;
       }
     }

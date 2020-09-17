@@ -7,6 +7,8 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/dialogs/character/XP.dart';
+import 'package:swassistant/ui/items/characters/ForcePowers.dart';
 import 'package:swassistant/ui/items/characters/Specializations.dart';
 import 'package:swassistant/ui/items/characters/Talents.dart';
 import 'package:swassistant/ui/items/common/CriticalInjuries.dart';
@@ -159,6 +161,12 @@ class Character extends Editable with Creature{
     out.add(EditableContent(builder: (b, refresh) =>
       Talents(editing: b, refresh: refresh,)
     , defaultEditingState: () => talents.length == 0,));
+    out.add(EditableContent(builder: (b, refresh) =>
+      ForcePowers(editing: b, refresh: refresh,)
+    , defaultEditingState: () => forcePowers.length == 0,));
+    out.add(EditableContent(builder: (b, refresh) =>
+      XP(editing: b,)
+    ));
     for(int i = out.length;i<cardNames.length-1;i++){
       out.add(EditableContent(builder: (b, refresh) =>
         Text("card " + i.toString())

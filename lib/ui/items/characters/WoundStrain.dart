@@ -47,10 +47,10 @@ class WoundStrain extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: Center(child: editing ? Text("Max Wound:") : Text("Wound:"))
+              child: Center(child: Text(editing ? "Max Wound:" : "Wound:"))
             ),
             Expanded(
-              child: Center(child: editing ? Text("Max Strain:") : Text("Strain:"))
+              child: Center(child: Text(editing ? "Max Strain:" : "Strain:"))
             )
           ],
         ),
@@ -78,8 +78,14 @@ class WoundStrain extends StatelessWidget{
                 },
                 child: !editing ? UpDownStat(
                   key: ValueKey("UpDownWound"),
-                  onUpPressed: () => character.woundCur++,
-                  onDownPressed: ()=>character.woundCur--,
+                  onUpPressed: () {
+                    character.woundCur++;
+                    character.save(context: context);
+                  },
+                  onDownPressed: (){
+                    character.woundCur--;
+                    character.save(context: context);
+                  },
                   getValue: ()=>character.woundCur,
                   getMax: ()=>character.woundThresh,
                   getMin: ()=>0,
@@ -87,7 +93,7 @@ class WoundStrain extends StatelessWidget{
                   var controll = TextEditingController(text: character.woundThresh.toString());
                   controll.addListener(() {
                     character.woundThresh = int.parse(controll.text);
-                    character.save(character.getFileLocation(SW.of(context)));
+                    character.save(context: context);
                   });
                   return Padding(
                     child:TextField(
@@ -121,8 +127,14 @@ class WoundStrain extends StatelessWidget{
                 },
                 child: !editing ? UpDownStat(
                   key: ValueKey("UpDownStrain"),
-                  onUpPressed: () => character.strainCur++,
-                  onDownPressed: ()=>character.strainCur--,
+                  onUpPressed: (){
+                    character.strainCur++;
+                    character.save(context: context);
+                  },
+                  onDownPressed: (){
+                    character.strainCur--;
+                    character.save(context: context);
+                  },
                   getValue: ()=>character.strainCur,
                   getMax: ()=>character.strainThresh,
                   getMin: ()=>0,
@@ -130,7 +142,7 @@ class WoundStrain extends StatelessWidget{
                   var controll = TextEditingController(text: character.strainThresh.toString());
                   controll.addListener(() {
                     character.strainThresh = int.parse(controll.text);
-                    character.save(character.getFileLocation(SW.of(context)));
+                    character.save(context: context);
                   });
                   return Padding(
                     child: TextField(

@@ -65,6 +65,7 @@ class CriticalInjuries extends StatelessWidget{
                     onPressed: (){
                       editable.criticalInjuries.removeAt(i);
                       refresh();
+                      editable.save(context: context);
                     }
                   ),
                   IconButton(
@@ -73,10 +74,9 @@ class CriticalInjuries extends StatelessWidget{
                     onPressed: () =>
                       CriticalInjuryEditDialog(
                         onClose: (criticalinjury){
-                          if(criticalinjury != null){
-                            editable.criticalInjuries[i] = criticalinjury;
-                            refresh();
-                          }
+                          editable.criticalInjuries[i] = criticalinjury;
+                          refresh();
+                          editable.save(context: context);
                         },
                         criticalInjury: editable.criticalInjuries[i]
                       ).show(context)
@@ -126,10 +126,9 @@ class CriticalInjuries extends StatelessWidget{
                 onPressed: () =>
                   CriticalInjuryEditDialog(
                     onClose: (criticalinjury){
-                      if(criticalinjury != null){
-                        editable.criticalInjuries.add(criticalinjury);
-                        refresh();
-                      }
+                      editable.criticalInjuries.add(criticalinjury);
+                      refresh();
+                      editable.save(context: context);
                     }
                   ).show(context)
               )

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/items/Skill.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
@@ -52,6 +54,7 @@ class Skills extends StatelessWidget{
                       var temp = Skill.from(creature.skills[index]);
                       creature.skills.removeAt(index);
                       refresh();
+                      (creature as Editable).save(context: context);
                       Scaffold.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Skill Deleted"),
@@ -60,6 +63,7 @@ class Skills extends StatelessWidget{
                             onPressed: (){
                               creature.skills.insert(index, temp);
                               refresh();
+                              (creature as Editable).save(context: context);
                             }
                           ),
                         )
@@ -75,6 +79,7 @@ class Skills extends StatelessWidget{
                         onClose: (skill){
                           creature.skills[index] = skill;
                           refresh();
+                          (creature as Editable).save(context: context);
                         },
                         skill: creature.skills[index]
                       ).show(context)
@@ -121,10 +126,9 @@ class Skills extends StatelessWidget{
                   SkillEditDialog(
                     creature: creature,
                     onClose: (skill){
-                      if(skill != null){
-                        creature.skills.add(skill);
-                        refresh();
-                      }
+                      creature.skills.add(skill);
+                      refresh();
+                      (creature as Editable).save(context: context);
                     },
                   ).show(context)
               )

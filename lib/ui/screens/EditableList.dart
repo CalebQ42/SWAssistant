@@ -130,7 +130,7 @@ class EditableCard extends StatelessWidget{
               label: "Undo",
               onPressed: (){
                 SW.of(upperContext).add(tmp);
-                tmp.save(tmp.getFileLocation(SW.of(upperContext)));
+                tmp.save(context: context);
                 refreshCallback();
               }
             ),
