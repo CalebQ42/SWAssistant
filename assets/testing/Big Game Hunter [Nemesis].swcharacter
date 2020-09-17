@@ -72,7 +72,7 @@
     },
     {
       "name": "Hunter's Quarry",
-      "description": "take Hunter's Quary action: make a Hard Survival check to upgrade the ability of all attacks against one target at long range until the end of the big game hunter's next turn",
+      "description": "Take Hunter's Quary action: make a Hard Survival check to upgrade the ability of all attacks against one target at long range until the end of the big game hunter's next turn",
       "value": 1
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "name": "Extra reloads",
-      "description": "reloads for his rifle",
+      "description": "Reloads for his rifle",
       "count": 1,
       "encumbrance": 0
     },

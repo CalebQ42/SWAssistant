@@ -22,9 +22,36 @@ class Talents extends StatelessWidget{
           (index) => InkResponse(
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
-            onTap: (){
-              //TODO: Talent tap (show info)
-            },
+            onTap: () =>
+              showModalBottomSheet(
+                context: context,
+                builder: (context) =>
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 20, right: 10, left: 10),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Container(height: 15),
+                        Center(
+                          child: Text(
+                            character.talents[index].name,
+                            style: Theme.of(context).textTheme.headline5,
+                            textAlign: TextAlign.justify,
+                          )
+                        ),
+                        Container(height: 5),
+                        Center(
+                          child: Text(
+                            "Rank: " + character.talents[index].value.toString(),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        Container(height: 10),
+                        Text(character.talents[index].desc)
+                      ],
+                    )
+                  )
+              ),
             child: Row(
               children: [
                 Expanded(

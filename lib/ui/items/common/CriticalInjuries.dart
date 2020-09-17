@@ -15,9 +15,36 @@ class CriticalInjuries extends StatelessWidget{
       InkResponse(
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
-        onTap: (){
-          //TODO: Critical tap (show info)
-        },
+        onTap: () =>
+          showModalBottomSheet(
+            context: context,
+            builder: (context) =>
+              Padding(
+                padding: EdgeInsets.only(bottom: 20, right: 10, left: 10),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  children: [
+                    Container(height: 15),
+                    Center(
+                      child: Text(
+                        editable.criticalInjuries[i].name,
+                        style: Theme.of(context).textTheme.headline5,
+                        textAlign: TextAlign.justify,
+                      )
+                    ),
+                    Container(height: 5,),
+                    Center(
+                      child: Text(
+                        "Severity: " + <String>["Easy", "Average", "Hard", "Daunting"][editable.criticalInjuries[i].severity],
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                    Container(height: 10),
+                    Text(editable.criticalInjuries[i].desc, textAlign: TextAlign.justify)
+                  ],
+                )
+              )
+          ),
         child: Row(
           children: [
             Expanded(
