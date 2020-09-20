@@ -1,41 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/dice/SWDiceHolder.dart';
-import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
-import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
 
-class ForcePowers extends StatelessWidget{
+class Inventory extends StatelessWidget{
 
   final bool editing;
   final Function refresh;
 
-  ForcePowers({this.editing, this.refresh});
+  Inventory({this.editing, this.refresh});
+
   @override
   Widget build(BuildContext context) {
-    var character = Editable.of(context) as Character;
+    var creature = Creature.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
-          Row(
+          if(creature is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("Force Rating:"),
+              Text("Credits:"),
               SizedBox(
                 width: 50,
                 child: EditingText(
                   editing: editing,
-                  initialText: character.force.toString(),
+                  initialText: creature.credits.toString(),
                   controller: (){
-                    var controller = new TextEditingController(text: character.force.toString());
+                    var controller = new TextEditingController(text: creature.credits.toString());
                     controller.addListener(() {
                       if(controller.text =="")
-                        character.force = 0;
+                        creature.credits = 0;
                       else
-                        character.force = int.parse(controller.text);
+                        creature.credits = int.parse(controller.text);
                     });
                     return controller;
                   }(),
@@ -44,22 +41,14 @@ class ForcePowers extends StatelessWidget{
                 )
               )
             ],
-          )
+          ),
+          //TODO: encumbrance capacity
         ]..addAll(List.generate(
-          character.forcePowers.length,
+          creature.inventory.length,
           (index) => InkResponse(
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
             onTap: () =>
-              showModalBottomSheet(
-                context: context,
-                builder: (context) =>
-                  SWDiceDialog(
-                    holder: SWDiceHolder(force: character.force),
-                    context: context
-                  ),
-              ),
-            onLongPress: () =>
               showModalBottomSheet(
                 context: context,
                 builder: (context) =>
@@ -71,13 +60,27 @@ class ForcePowers extends StatelessWidget{
                         Container(height: 15),
                         Center(
                           child: Text(
-                            character.forcePowers[index].name,
+                            creature.inventory[index].name,
                             style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.justify,
+                            textAlign: TextAlign.center,
                           )
                         ),
+                        Container(height: 5,),
+                        Center(
+                          child: Text(
+                            "Count: " + creature.inventory[index].count.toString(),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        if(creature is Character) Container(height: 5,),
+                        if(creature is Character) Center(
+                          child: Text(
+                            "Encumbrance: " + creature.inventory[index].encum.toString(),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
                         Container(height: 10),
-                        Text(character.forcePowers[index].desc)
+                        Text(creature.inventory[index].desc)
                       ],
                     )
                   )
@@ -85,7 +88,7 @@ class ForcePowers extends StatelessWidget{
             child: Row(
               children: [
                 Expanded(
-                  child: Text(character.forcePowers[index].name),
+                  child: Text(creature.inventory[index].name),
                 ),
                 AnimatedSwitcher(
                   child: editing ? ButtonBar(
@@ -96,38 +99,15 @@ class ForcePowers extends StatelessWidget{
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
-                          var temp = ForcePower.from(character.forcePowers[index]);
-                          character.forcePowers.removeAt(index);
-                          refresh();
-                          character.save(context: context);
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Force Power Deleted"),
-                              action: SnackBarAction(
-                                label: "Undo",
-                                onPressed: (){
-                                  character.forcePowers.insert(index, temp);
-                                  refresh();
-                                  character.save(context: context);
-                                },
-                              ),
-                            )
-                          );
+                          //TODO: delete
                         },
                       ),
                       IconButton(
                         icon: Icon(Icons.edit),
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                        onPressed: () =>
-                          ForcePowerEditDialog(
-                            onClose: (forcePower){
-                              character.forcePowers[index] = forcePower;
-                              refresh();
-                              character.save(context: context);
-                            },
-                            power: character.forcePowers[index],
-                          ).show(context)
+                        onPressed: () {}
+                          //TODO: edit
                       )
                     ],
                   ) : Container(height: 40),
@@ -160,14 +140,8 @@ class ForcePowers extends StatelessWidget{
             child: editing ? Center(
               child: IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () =>
-                  ForcePowerEditDialog(
-                    onClose: (forcePower){
-                      character.forcePowers.add(forcePower);
-                      refresh();
-                      character.save(context: context);
-                    },
-                  ).show(context)
+                onPressed: () {}
+                  //TODO: add
               )
             ) : Container(),
             transitionBuilder: (wid,anim){

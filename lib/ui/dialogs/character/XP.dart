@@ -4,7 +4,7 @@ import 'package:swassistant/ui/EditableCommon.dart';
 
 class XP extends StatelessWidget{
 
-  bool editing;
+  final bool editing;
 
   XP({this.editing});
   @override
