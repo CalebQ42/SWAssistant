@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wound_ind_text">Ferita per mostro</string>
+    <string name="min_num_text">Numero di mostri:</string>
+</resources>
