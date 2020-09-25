@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SWAssistant</string>
+    <string name="navigation_drawer_open">Apri pannello di navigazione</string>
+    <string name="navigation_drawer_close">Chiudi pannello di navigazione</string>
+    <string name="permission_error">Purtroppo questa app richiede permessi di lettura e scrittura. Se clicchi su OK l\'app chiederà di nuovo il permesso.
+    Se fai clic su annulla il passaggio all’app solo ai dadi.</string>
+    <string name="retry">Riprova</string>
+    <string name="g_plus">Comunità G+</string>
+    <string name="translate_text">Aiuta a tradurre!</string>
+    <string name="still_loading">Caricamento in corso…Attendere prego</string>
+    <string name="drive_loading">Connessione a Google Drive…</string>
+    <string name="drive_fail">Impossibile connettersi a Google Drive</string>
+    <string name="success">Successo</string>
+    <string name="failure">Fallimento</string>
+    <string name="re_show">Rimostra </string>
+    <string name="modify_results">Modifica</string>
+    <string name="minions">Servitori</string>
+    <string name="category_text">Categoria:</string>
+    <string name="export_location">Posizione esportazione</string>
+    <string name="donate">Effettua una donazione</string>
+    <string name="thanks_toast_switch">Grazie mille</string>
+    <string name="thanks_toast">Grazie per aver donato :)</string>
+    <string name="type">Type:</string>
+    <string name="downloading">Download in corso...</string>
+    <string name="general">Generale</string>
+    <string name="notes">Note</string>
+    <string name="donate_message">Anche se non è necessario, sarebbe molto apprezzato
+        se tu dovessi donare. Questa app continuerà ad essere gratuita, ma l\'app che guadagna mi aiuta
+    a rimanere motivato.</string>
+    <string name="not_today">Non Oggi</string>
+    <string name="analytics_message">Vuoi disattivare l\'analisi? Questo comprometterà la mia
+        capacità di correggere alcuni bug, ma so che molte persone non si fidano di Google.</string>
+    <string name="turn_off">Spegni</string>
+    <string name="keep_on">Mantieni Attivo</string>
+    <string name="analytics_switch">Statistiche</string>
+</resources>
