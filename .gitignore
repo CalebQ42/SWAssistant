@@ -46,3 +46,7 @@ app.*.map.json
 
 # Keyfile Info
 android/key.properties
+
+# Old Android stuff
+.gradle/
+local.properties
