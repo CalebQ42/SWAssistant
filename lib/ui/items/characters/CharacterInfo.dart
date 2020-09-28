@@ -5,8 +5,9 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class CharacterInfo extends StatelessWidget{
 
   final bool editing;
+  final EditableContentState state;
 
-  CharacterInfo({this.editing});
+  CharacterInfo({this.editing, this.state});
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
@@ -19,6 +20,10 @@ class CharacterInfo extends StatelessWidget{
           initialText: character.species,
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
+          collapsed: true,
+          fieldAlign: TextAlign.center,
+          fieldInsets: EdgeInsets.all(3),
+          state: state,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.species);
@@ -39,6 +44,10 @@ class CharacterInfo extends StatelessWidget{
           initialText: character.age.toString(),
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
+          collapsed: true,
+          fieldAlign: TextAlign.center,
+          fieldInsets: EdgeInsets.all(3),
+          state: state,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.age.toString());
@@ -65,6 +74,10 @@ class CharacterInfo extends StatelessWidget{
           initialText: character.motivation,
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
+          collapsed: true,
+          fieldAlign: TextAlign.center,
+          fieldInsets: EdgeInsets.all(3),
+          state: state,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.motivation);
@@ -85,6 +98,10 @@ class CharacterInfo extends StatelessWidget{
           initialText: character.career,
           style: Theme.of(context).textTheme.subtitle2,
           defaultSave: true,
+          collapsed: true,
+          fieldAlign: TextAlign.center,
+          fieldInsets: EdgeInsets.all(3),
+          state: state,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.career);
@@ -104,9 +121,11 @@ class CharacterInfo extends StatelessWidget{
           editing: editing, 
           initialText: character.category,
           style: Theme.of(context).textTheme.subtitle2,
-          fieldInsets: EdgeInsets.all(2.0),
-          textInsets: EdgeInsets.all(2.0),
           defaultSave: true,
+          collapsed: true,
+          fieldAlign: TextAlign.center,
+          fieldInsets: EdgeInsets.all(3),
+          state: state,
           controller: (){
             if(editing){
               var controller = TextEditingController(text:character.category);

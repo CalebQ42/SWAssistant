@@ -7,7 +7,7 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/dialogs/character/XP.dart';
+import 'package:swassistant/ui/items/characters/XP.dart';
 import 'package:swassistant/ui/items/characters/ForcePowers.dart';
 import 'package:swassistant/ui/items/characters/Specializations.dart';
 import 'package:swassistant/ui/items/characters/Talents.dart';
@@ -18,6 +18,7 @@ import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
 import 'package:swassistant/ui/items/characters/WoundStrain.dart';
 import 'package:swassistant/ui/items/creatures/Defense.dart';
+import 'package:swassistant/ui/items/creatures/Inventory.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
 
 import 'utils/Creature.dart';
@@ -134,45 +135,48 @@ class Character extends Editable with Creature{
 
   List<Widget> cardContents() {
     var out = new List<Widget>();
-    out.add(EditableContent(builder: (b, refresh) =>
-      CharacterInfo(editing: b)
+    out.add(EditableContent(builder: (b, refresh, state) =>
+      CharacterInfo(editing: b, state: state)
     ));
-    out.add(EditableContent(builder: (b, refresh) =>
-      WoundStrain(editing: b)
+    out.add(EditableContent(builder: (b, refresh, state) =>
+      WoundStrain(editing: b, state: state)
     ));
-    out.add(EditableContent(builder: (b, refresh) =>
-      Characteristics(editing: b)
+    out.add(EditableContent(builder: (b, refresh, state) =>
+      Characteristics(editing: b, state: state)
     ));
-    out.add(EditableContent(builder: (b, refresh) =>
+    out.add(EditableContent(builder: (b, refresh, state) =>
       Skills(editing:b, refresh: refresh)
     , defaultEditingState: () => skills.length == 0));
-    out.add(EditableContent(builder: (b, refresh) =>
-      Defense(editing: b)
+    out.add(EditableContent(builder: (b, refresh, state) =>
+      Defense(editing: b, state: state)
     ));
-    out.add(EditableContent(builder: (b, refresh) =>
+    out.add(EditableContent(builder: (b, refresh, state) =>
       Weapons(editing: b, refresh: refresh)
     , defaultEditingState: () => weapons.length == 0));
-    out.add(EditableContent(builder: (b, refresh) =>
+    out.add(EditableContent(builder: (b, refresh, state) =>
       CriticalInjuries(editing: b, refresh: refresh)
     , defaultEditingState: () => criticalInjuries.length == 0));
-    out.add(EditableContent(builder: (b, refresh) =>
+    out.add(EditableContent(builder: (b, refresh, state) =>
       Specializations(editing: b, refresh: refresh,)
     , defaultEditingState: () => specializations.length == 0,));
-    out.add(EditableContent(builder: (b, refresh) =>
+    out.add(EditableContent(builder: (b, refresh, state) =>
       Talents(editing: b, refresh: refresh,)
     , defaultEditingState: () => talents.length == 0,));
-    out.add(EditableContent(builder: (b, refresh) =>
-      ForcePowers(editing: b, refresh: refresh,)
+    out.add(EditableContent(builder: (b, refresh, state) =>
+      ForcePowers(editing: b, refresh: refresh, state: state)
     , defaultEditingState: () => forcePowers.length == 0,));
-    out.add(EditableContent(builder: (b, refresh) =>
-      XP(editing: b,)
+    out.add(EditableContent(builder: (b, refresh, state) =>
+      XP(editing: b, refresh: refresh, state: state)
+    ));
+    out.add(EditableContent(builder: (b, refresh, state) =>
+      Inventory(editing: b, refresh: refresh, state: state)
     ));
     for(int i = out.length;i<cardNames.length-1;i++){
-      out.add(EditableContent(builder: (b, refresh) =>
+      out.add(EditableContent(builder: (b, refresh, state) =>
         Text("card " + i.toString())
       ));
     }
-    out.add(EditableContent(builder: (b, refresh) =>
+    out.add(EditableContent(builder: (b, refresh, state) =>
       Description(editing: b)
     , defaultEditingState: () => desc == "",));
     return out;

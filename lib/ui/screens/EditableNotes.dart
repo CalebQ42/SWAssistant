@@ -74,7 +74,7 @@ class _NoteCardState extends State{
         child: Padding(
           padding: EdgeInsets.all(10.0),
           child: EditableContent(
-            builder: (b,refresh){
+            builder: (b,refresh, state){
               return EditingText(
                 editing: b,
                 initialText: Editable.of(context).notes[index].note,

@@ -72,7 +72,7 @@ class _NameCardContentState extends State{
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
     return EditableContent(
-      builder: (bool b, refresh){
+      builder: (bool b, refresh, state){
         //TODO: fix hero!
         return /*Hero(
           transitionOnUserGestures: true,

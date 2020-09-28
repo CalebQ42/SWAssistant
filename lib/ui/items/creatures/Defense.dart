@@ -5,8 +5,9 @@ import 'package:swassistant/ui/EditableCommon.dart';
 
 class Defense extends StatelessWidget{
   final bool editing;
+  final EditableContentState state;
 
-  Defense({this.editing});
+  Defense({this.editing, this.state});
   
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class Defense extends StatelessWidget{
                 editing: editing,
                 initialText: creature.defMelee.toString(),
                 defaultSave: true,
+                state: state,
                 textType: TextInputType.number,
                 controller: TextEditingController(text: creature.defMelee.toString()),
               )
@@ -38,6 +40,7 @@ class Defense extends StatelessWidget{
                 editing: editing,
                 initialText: creature.defRanged.toString(),
                 defaultSave: true,
+                state: state,
                 textType: TextInputType.number,
                 controller: TextEditingController(text: creature.defRanged.toString()),
               )

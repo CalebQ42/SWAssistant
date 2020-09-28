@@ -78,7 +78,7 @@ class Vehicle extends Editable{
 
   List<Widget> cardContents() {
     return List.filled(cardNames.length,
-      EditableContent(builder: (bool b, refresh){
+      EditableContent(builder: (bool b, refresh, state){
         return Text("Yo. It's a card");
       })
     );

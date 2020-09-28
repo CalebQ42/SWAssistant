@@ -8,8 +8,9 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class Characteristics extends StatelessWidget{
 
   final bool editing;
+  final EditableContentState state;
 
-  Characteristics({this.editing});
+  Characteristics({this.editing, this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +65,7 @@ class Characteristics extends StatelessWidget{
             EditingText(
               editing: editing,
               initialText: creature.charVals[charNum].toString(),
+              state: state,
               controller: (){
                 var controller = TextEditingController(text: creature.charVals[charNum].toString());
                 controller.addListener((){

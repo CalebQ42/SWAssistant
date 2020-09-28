@@ -11,8 +11,9 @@ class ForcePowers extends StatelessWidget{
 
   final bool editing;
   final Function refresh;
+  final EditableContentState state;
 
-  ForcePowers({this.editing, this.refresh});
+  ForcePowers({this.editing, this.refresh, this.state});
   @override
   Widget build(BuildContext context) {
     var character = Editable.of(context) as Character;
@@ -29,6 +30,10 @@ class ForcePowers extends StatelessWidget{
                 child: EditingText(
                   editing: editing,
                   initialText: character.force.toString(),
+                  collapsed: true,
+                  fieldAlign: TextAlign.center,
+                  fieldInsets: EdgeInsets.all(3),
+                  state: state,
                   controller: (){
                     var controller = new TextEditingController(text: character.force.toString());
                     controller.addListener(() {

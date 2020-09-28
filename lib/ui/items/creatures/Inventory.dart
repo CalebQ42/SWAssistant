@@ -7,8 +7,9 @@ class Inventory extends StatelessWidget{
 
   final bool editing;
   final Function refresh;
+  final EditableContentState state;
 
-  Inventory({this.editing, this.refresh});
+  Inventory({this.editing, this.refresh, this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +23,14 @@ class Inventory extends StatelessWidget{
             children: <Widget>[
               Text("Credits:"),
               SizedBox(
-                width: 50,
+                width: 75,
                 child: EditingText(
                   editing: editing,
                   initialText: creature.credits.toString(),
+                  collapsed: true,
+                  fieldAlign: TextAlign.center,
+                  fieldInsets: EdgeInsets.all(3),
+                  state: state,
                   controller: (){
                     var controller = new TextEditingController(text: creature.credits.toString());
                     controller.addListener(() {
@@ -42,7 +47,35 @@ class Inventory extends StatelessWidget{
               )
             ],
           ),
-          //TODO: encumbrance capacity
+          if(creature is Character) Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("Encumbrance Capacity:"),
+              SizedBox(
+                width: 50,
+                child: EditingText(
+                  editing: editing,
+                  initialText: creature.encumCap.toString(),
+                  collapsed: true,
+                  fieldAlign: TextAlign.center,
+                  fieldInsets: EdgeInsets.all(3),
+                  state: state,
+                  controller: (){
+                    var controller = new TextEditingController(text: creature.encumCap.toString());
+                    controller.addListener(() {
+                      if(controller.text =="")
+                        creature.encumCap = 0;
+                      else
+                        creature.encumCap = int.parse(controller.text);
+                    });
+                    return controller;
+                  }(),
+                  textType: TextInputType.number,
+                  defaultSave: true,
+                )
+              )
+            ],
+          ),
         ]..addAll(List.generate(
           creature.inventory.length,
           (index) => InkResponse(
