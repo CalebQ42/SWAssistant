@@ -6,7 +6,14 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/characters/Talents.dart';
+import 'package:swassistant/ui/items/common/CriticalInjuries.dart';
+import 'package:swassistant/ui/items/common/Description.dart';
+import 'package:swassistant/ui/items/common/Weapons.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
+import 'package:swassistant/ui/items/creatures/Defense.dart';
+import 'package:swassistant/ui/items/creatures/Inventory.dart';
+import 'package:swassistant/ui/items/creatures/Skills.dart';
 
 import 'utils/Creature.dart';
 
@@ -27,7 +34,8 @@ class Minion extends Editable with Creature{
     "Weapons",
     "Talents",
     "Inventory",
-    "Critical Injuries"
+    "Critical Injuries",
+    "Description"
   ];
 
   Minion({@required int id, String name = "New Minion", bool saveOnCreation = false, SW app}) :
@@ -65,18 +73,41 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents() {
-    var out = List.filled(cardNames.length,
-      EditableContent(builder: (bool b, refresh, state){
-          return Text("Yo. It's a card");
-        }
-      )
-    );
-    out[2] = EditableContent(builder: (b, refresh, state) =>
-      Characteristics(editing: b)
-    );
-    return out;
-  }
+  List<Widget> cardContents() =>
+    <Widget> [
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Minion Numbers")
+        //TODO: MinionNumber(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Wound")
+        //TODO: MinionWound(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Characteristics(editing: b, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Skills(editing: b, refresh: refresh)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Defense(editing: b, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Weapons(editing: b, refresh: refresh)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Talents(editing: b, refresh: refresh)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Inventory(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        CriticalInjuries(editing: b, refresh: refresh)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Description(editing: b, state: state)
+      ),
+    ];
 
   static Minion of(BuildContext context) => Editable.of(context);
 }

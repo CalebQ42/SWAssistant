@@ -133,54 +133,60 @@ class Character extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents() {
-    var out = new List<Widget>();
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      CharacterInfo(editing: b, state: state)
-    ));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      WoundStrain(editing: b, state: state)
-    ));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Characteristics(editing: b, state: state)
-    ));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Skills(editing:b, refresh: refresh)
-    , defaultEditingState: () => skills.length == 0));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Defense(editing: b, state: state)
-    ));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Weapons(editing: b, refresh: refresh)
-    , defaultEditingState: () => weapons.length == 0));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      CriticalInjuries(editing: b, refresh: refresh)
-    , defaultEditingState: () => criticalInjuries.length == 0));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Specializations(editing: b, refresh: refresh,)
-    , defaultEditingState: () => specializations.length == 0,));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Talents(editing: b, refresh: refresh,)
-    , defaultEditingState: () => talents.length == 0,));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      ForcePowers(editing: b, refresh: refresh, state: state)
-    , defaultEditingState: () => forcePowers.length == 0,));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      XP(editing: b, refresh: refresh, state: state)
-    ));
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Inventory(editing: b, refresh: refresh, state: state)
-    ));
-    for(int i = out.length;i<cardNames.length-1;i++){
-      out.add(EditableContent(builder: (b, refresh, state) =>
-        Text("card " + i.toString())
-      ));
-    }
-    out.add(EditableContent(builder: (b, refresh, state) =>
-      Description(editing: b)
-    , defaultEditingState: () => desc == "",));
-    return out;
-  }
+  List<Widget> cardContents() => 
+    <Widget>[
+      EditableContent(builder: (b, refresh, state) =>
+        CharacterInfo(editing: b, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        WoundStrain(editing: b, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Characteristics(editing: b, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Skills(editing:b, refresh: refresh)
+      , defaultEditingState: () => skills.length == 0),
+      EditableContent(builder: (b, refresh, state) =>
+        Defense(editing: b, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Weapons(editing: b, refresh: refresh)
+      , defaultEditingState: () => weapons.length == 0),
+      EditableContent(builder: (b, refresh, state) =>
+        CriticalInjuries(editing: b, refresh: refresh)
+      , defaultEditingState: () => criticalInjuries.length == 0),
+      EditableContent(builder: (b, refresh, state) =>
+        Specializations(editing: b, refresh: refresh,)
+      , defaultEditingState: () => specializations.length == 0,),
+      EditableContent(builder: (b, refresh, state) =>
+        Talents(editing: b, refresh: refresh,)
+      , defaultEditingState: () => talents.length == 0,),
+      EditableContent(builder: (b, refresh, state) =>
+        ForcePowers(editing: b, refresh: refresh, state: state)
+      , defaultEditingState: () => forcePowers.length == 0,),
+      EditableContent(builder: (b, refresh, state) =>
+        XP(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Inventory(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Morality")
+        //TODO: Morality(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Duty")
+        //TODO: Duties(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Obligation")
+        //TODO: Obligations(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Description(editing: b, state: state)
+      , defaultEditingState: () => desc == "",)
+    ];
 
   static Character of(BuildContext context) => Editable.of(context);
 }

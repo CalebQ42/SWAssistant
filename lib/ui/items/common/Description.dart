@@ -5,8 +5,9 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class Description extends StatelessWidget{
 
   final bool editing;
+  final EditableContentState state;
 
-  Description({this.editing});
+  Description({this.editing, this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class Description extends StatelessWidget{
       initialText: Editable.of(context).desc,
       textCapitalization: TextCapitalization.sentences,
       multiline: true,
+      state: state,
       controller: (){
         var controller = TextEditingController(text: Editable.of(context).desc);
         controller.addListener(() => 

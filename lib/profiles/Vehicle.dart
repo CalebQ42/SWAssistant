@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/common/CriticalInjuries.dart';
+import 'package:swassistant/ui/items/common/Description.dart';
+import 'package:swassistant/ui/items/common/Weapons.dart';
 
 class Vehicle extends Editable{
 
@@ -76,13 +79,30 @@ class Vehicle extends Editable{
     return map;
   }
 
-  List<Widget> cardContents() {
-    return List.filled(cardNames.length,
-      EditableContent(builder: (bool b, refresh, state){
-        return Text("Yo. It's a card");
-      })
-    );
-  }
+  List<Widget> cardContents() =>
+    <Widget>[
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Info")
+        //TODO: VehicleInfo(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Defense")
+        //TODO: VehicleDefese(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Text("Damage")
+        //TODO: VehicleDamage(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Weapons(editing: b, refresh: refresh)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        CriticalInjuries(editing: b, refresh: refresh)
+      ),
+      EditableContent(builder: (b, refresh, state) =>
+        Description(editing: b, state: state)
+      ),
+    ];
 
   static Vehicle of(BuildContext context) => Editable.of(context);
 }

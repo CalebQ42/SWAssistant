@@ -68,11 +68,10 @@ class EditingText extends StatelessWidget {
       child: text,
       transitionBuilder: (wid, anim){
         Tween<Offset> slide;
-        if(wid.key == ValueKey("text")){
-          slide = Tween(begin: Offset(0.0,-1.0),end: Offset(0.0,0.0));
-        }else{
-          slide = Tween(begin: Offset(0.0,1.0), end: Offset(0.0,0.0));
-        }
+        if((editing && wid.key == ValueKey("text")) || (!editing && wid.key == ValueKey("textField")))
+          slide = Tween(begin: Offset(0.0,-1.0),end: Offset.zero);
+        else
+          slide = Tween(begin: Offset(0.0,1.0), end: Offset.zero);
         return ClipRect(
           child: SlideTransition(
             position: slide.animate(anim),
