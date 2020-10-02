@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/items/common/CriticalInjuries.dart';
-import 'package:swassistant/ui/items/common/Description.dart';
-import 'package:swassistant/ui/items/common/Weapons.dart';
+import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
+import 'package:swassistant/ui/items/editable/Description.dart';
+import 'package:swassistant/ui/items/editable/Weapons.dart';
 
 class Vehicle extends Editable{
 

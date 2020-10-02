@@ -8,6 +8,18 @@ class Item implements JsonSavable{
 
   Item({this.name = "", this.desc = "", this.count = 0, this.encum = 0});
 
+  Item.from(Item item) :
+      name = item.name,
+      desc = item.desc,
+      count = item.count,
+      encum = item.encum;
+
+  Item.nulled() :
+      name = null,
+      desc = "",
+      count = 1,
+      encum = 0;
+
   Item.fromJson(Map<String, dynamic> json) :
       name = json["name"],
       desc = json["description"],

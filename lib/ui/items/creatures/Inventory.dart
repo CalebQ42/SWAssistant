@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/dialogs/creature/ItemEditDialog.dart';
 
 class Inventory extends StatelessWidget{
 
@@ -14,6 +17,17 @@ class Inventory extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var creature = Creature.of(context);
+    var overEncumbered = false;
+    var encumTot = 0;
+    if(creature is Character && creature.inventory.length > 0){
+      for(Item item in creature.inventory){
+        encumTot += item.encum;
+        if(encumTot > creature.encumCap){
+          overEncumbered = true;
+          break;
+        }
+      }
+    }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -76,6 +90,11 @@ class Inventory extends StatelessWidget{
               )
             ],
           ),
+          if(overEncumbered) Text(
+            "You are overencumbered! Add a setback die to all Agility and Brawn checks.",
+            style: TextStyle(color: Theme.of(context).errorColor),
+            textAlign: TextAlign.center,
+          )
         ]..addAll(List.generate(
           creature.inventory.length,
           (index) => InkResponse(
@@ -132,15 +151,39 @@ class Inventory extends StatelessWidget{
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
-                          //TODO: delete
+                          var temp = Item.from(creature.inventory[index]);
+                          creature.inventory.removeAt(index);
+                          refresh();
+                          (creature as Editable).save(context: context);
+                          Scaffold.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Item Deleted"),
+                              action: SnackBarAction(
+                                label: "Undo",
+                                onPressed: (){
+                                  creature.inventory.insert(index, temp);
+                                  refresh();
+                                  (creature as Editable).save(context: context);
+                                }
+                              ),
+                            )
+                          );
                         },
                       ),
                       IconButton(
                         icon: Icon(Icons.edit),
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                        onPressed: () {}
-                          //TODO: edit
+                        onPressed: () =>
+                          ItemEditDialog(
+                            item: creature.inventory[index],
+                            creature: creature,
+                            onClose: (item){
+                              creature.inventory[index] = item;
+                              refresh();
+                              (creature as Editable).save(context: context);
+                            },
+                          ).show(context)
                       )
                     ],
                   ) : Container(height: 40),
@@ -173,8 +216,15 @@ class Inventory extends StatelessWidget{
             child: editing ? Center(
               child: IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () {}
-                  //TODO: add
+                onPressed: () =>
+                  ItemEditDialog(
+                    creature: creature,
+                    onClose: (item){
+                      creature.inventory.add(item);
+                      refresh();
+                      (creature as Editable).save(context: context);
+                    },
+                  ).show(context)
               )
             ) : Container(),
             transitionBuilder: (wid,anim){
