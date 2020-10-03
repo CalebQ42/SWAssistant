@@ -35,7 +35,7 @@ class EditingText extends StatelessWidget {
       throw "text controller MUST be specified when in editing mode";
   }
   Widget build(BuildContext context) {
-    var editable = Editable.of(context) ?? editableBackup;
+    var editable = editableBackup ?? Editable.of(context);
     if(editing){
       if(defaultSave){
         controller.addListener(() {
