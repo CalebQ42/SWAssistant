@@ -13,6 +13,7 @@ import 'profiles/Vehicle.dart';
 import 'Preferences.dart' as preferences;
 
 class SW extends InheritedWidget{
+
   final List<Minion> _minions = new List();
   final List<String> minCats = new List();
 
@@ -26,7 +27,9 @@ class SW extends InheritedWidget{
 
   final String saveDir;
 
-  SW({Widget child, this.prefs, this.saveDir}): super(child: child);
+  bool devMode;
+
+  SW({Widget child, this.prefs, this.saveDir, this.devMode}): super(child: child);
 
   void loadAll(){
     _minions.clear();
@@ -258,17 +261,20 @@ class SW extends InheritedWidget{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
     String saveDir;
-    if(prefs.containsKey(preferences.saveLocation)){
+    if(prefs.containsKey(preferences.saveLocation))
       saveDir = prefs.getString(preferences.saveLocation);
-    }else{
+    else{
       var dir = await getExternalStorageDirectory();
       saveDir = dir.path+"/SWChars";
     }
+    bool devMode = false;
     if(!Directory(saveDir).existsSync())
       Directory(saveDir).createSync();
-    if(kDebugMode || kProfileMode)
+    if((prefs.containsKey(preferences.dev) && prefs.getBool(preferences.dev)) || kDebugMode || kProfileMode){
+      devMode = true;
       await testing(saveDir);
-    SW out = SW(child: child, prefs: prefs, saveDir: saveDir);
+    }
+    SW out = SW(child: child, prefs: prefs, saveDir: saveDir, devMode: devMode,);
     out.loadAll();
     return out;
   }

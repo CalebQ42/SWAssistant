@@ -22,6 +22,7 @@ class EditableCards extends StatelessWidget{
             alignment: WrapAlignment.spaceEvenly,
             children: List<Widget>.generate(cards.length-1, (index){
               return ConstrainedBox(
+                key: ValueKey(Editable.of(context).cardNames[index]),
                 constraints: BoxConstraints(
                   maxWidth: min(MediaQuery.of(context).size.height, 500)
                 ),

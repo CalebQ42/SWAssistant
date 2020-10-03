@@ -1,38 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SWAppBar extends AppBar{
 
-  final List<PopupMenuItem> defPopup = [
+  static List<PopupMenuItem> defPopup = [
     PopupMenuItem(
-        value: "Translate",
-        child: const Text("Help Translate!")
+        value: "translate",
+        child: const Text("Help Translate!"),
     )
   ];
 
-  SWAppBar({Widget title, List<Widget> additionalActions, List<Widget> additionalPopupActions}) :
-        super(title: title, actions: _getActions((additionalActions == null) ?
-            List() : additionalActions, (additionalPopupActions == null) ? null : additionalPopupActions));
+  static Map<String, Function> defFunctions = {
+    "translate" : () => _launchURL("https://crwd.in/customdiceroller")
+  };
 
-  static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions){
-    var actions = new List<Widget>();
-    actions.addAll(additionalActions);
-    actions.add(_getPopupMenu(additionalPopupActions));
-    return actions;
-  }
-  static PopupMenuButton _getPopupMenu(List<PopupMenuItem> additionalPopupActions){
+  SWAppBar({Widget title, List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions}) :
+        super(title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions));
+
+  static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions) =>
+    List<Widget>()
+      ..addAll(additionalActions ?? List())
+      ..add(_getPopupMenu(additionalPopupActions, popupFunctions));
+  
+  static PopupMenuButton _getPopupMenu(List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions){
+    popupFunctions ??= Map();
+    popupFunctions.addAll(defFunctions);
+    additionalPopupActions ??= List();
+    additionalPopupActions.addAll(defPopup);
     return PopupMenuButton(
-      itemBuilder: (context)=>additionalPopupActions,
-      onSelected:(t){
-        var txt = t;
-        switch(txt){
-          case "Translate":
-            //_launchInBrowser("https://crwd.in/customdiceroller");
-            break;
-        }
+      itemBuilder: (context) => additionalPopupActions,
+      onSelected:(t) {
+        if(popupFunctions[t] != null)
+          popupFunctions[t]();
       }
     );
   }
+
+  static void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 }
+
+
 
 class SWDrawer extends StatelessWidget{
   @override

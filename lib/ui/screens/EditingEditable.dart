@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
+import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/screens/EditableCards.dart';
@@ -39,7 +41,35 @@ class _EditingEditableState extends State{
           elevation: 8.0,
           showSelectedLabels: true,
         ),
-        appBar: SWAppBar(),
+        appBar: SWAppBar(
+          additionalPopupActions: [
+            if(profile is Character) CheckedPopupMenuItem(
+              checked: (profile as Character).disableForce,
+              child: Text("Disable Force"),
+              value: "disableForce"
+            ),
+            if(profile is Character) CheckedPopupMenuItem(
+              checked: (profile as Character).disableDuty,
+              child: Text("Disable Duty"),
+              value: "disableDuty"
+            ),
+            if(profile is Character) CheckedPopupMenuItem(
+              checked: (profile as Character).disableObligation,
+              child: Text("Disable Obligation"),
+              value: "disableObligation"
+            ),
+            if(SW.of(context).devMode) PopupMenuItem(
+              child: Text("Export"),
+              value: "export"
+            ),
+          ],
+          popupFunctions: {
+            "disableForce" : () => setState(() => (profile as Character).disableForce = !(profile as Character).disableForce),
+            "disableDuty" : () => setState(() => (profile as Character).disableDuty = !(profile as Character).disableDuty),
+            "disableObligation" : () => setState(() => (profile as Character).disableObligation = !(profile as Character).disableObligation),
+            "export" : (){}//TODO: export profile
+          },
+        ),
         body: _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes()
       ),
       editable: profile

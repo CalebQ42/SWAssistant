@@ -8,3 +8,4 @@ String thankYou = "donateThankYou";
 String firstLaunch = "firstLaunchCheck";
 String analytics = "analytics";
 String startCount = "startCount";
+String dev = "devMode";

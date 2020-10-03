@@ -43,6 +43,10 @@ class Character extends Editable with Creature{
   int age = 0;
   int encumCap = 0;
 
+  bool disableForce = false;
+  bool disableDuty = false;
+  bool disableObligation = false;
+
   String get fileExtension => ".swcharacter";
   List<String> get cardNames => [
     "Basic Information",
@@ -54,12 +58,12 @@ class Character extends Editable with Creature{
     "Critical Injuries",
     "Specializations",
     "Talents",
-    "Force Powers",
+    if(!disableForce) "Force Powers",
     "XP",
     "Inventory",
     "Morality",
-    "Duty",
-    "Obligation",
+    if(!disableDuty) "Duty",
+    if(!disableObligation) "Obligation",
     "Description"
   ];
 
@@ -99,6 +103,9 @@ class Character extends Editable with Creature{
     this.darkSide = json["dark side"];
     this.age = json["age"];
     this.encumCap = json["encumbrance capacity"];
+    this.disableDuty = json["disable duty"] ?? false;
+    this.disableForce = json["disable force"] ?? false;
+    this.disableObligation = json["disable obligation"] ?? false;
   }
 
   Map<String,dynamic> toJson(){
@@ -130,6 +137,9 @@ class Character extends Editable with Creature{
     map["dark side"] = darkSide;
     map["age"] = age;
     map["encumbrance capacity"] = encumCap;
+    map["disable force"] = disableForce;
+    map["disable duty"] = disableDuty;
+    map["disable obligation"] = disableObligation;
     return map;
   }
 
@@ -162,7 +172,7 @@ class Character extends Editable with Creature{
       EditableContent(builder: (b, refresh, state) =>
         Talents(editing: b, refresh: refresh,)
       , defaultEditingState: () => talents.length == 0,),
-      EditableContent(builder: (b, refresh, state) =>
+      if(!disableForce) EditableContent(builder: (b, refresh, state) =>
         ForcePowers(editing: b, refresh: refresh, state: state)
       , defaultEditingState: () => forcePowers.length == 0,),
       EditableContent(builder: (b, refresh, state) =>
@@ -175,11 +185,11 @@ class Character extends Editable with Creature{
         Text("Morality")
         //TODO: Morality(editing: b, refresh: refresh, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
+      if(!disableDuty) EditableContent(builder: (b, refresh, state) =>
         Text("Duty")
         //TODO: Duties(editing: b, refresh: refresh, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
+      if(!disableObligation) EditableContent(builder: (b, refresh, state) =>
         Text("Obligation")
         //TODO: Obligations(editing: b, refresh: refresh, state: state)
       ),
