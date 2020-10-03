@@ -35,8 +35,8 @@ class _EditingEditableState extends State{
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).cardColor,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.info), title: Text("Stats")),
-            BottomNavigationBarItem(icon: Icon(Icons.note), title: Text("Notes"))
+            BottomNavigationBarItem(icon: Icon(Icons.info), label: "Stats"),
+            BottomNavigationBarItem(icon: Icon(Icons.note), label: "Notes")
           ],
           onTap: (value) => setState(() => _index = value),
           currentIndex: _index,

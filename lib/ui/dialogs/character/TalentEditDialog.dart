@@ -72,7 +72,7 @@ class _TalentEditState extends State{
           TextField(
             controller: valueController,
             keyboardType: TextInputType.number,
-            inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               labelText: "Rank",
             ),

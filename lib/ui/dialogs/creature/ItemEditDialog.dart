@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/Item.dart';
-import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 
 class ItemEditDialog extends StatefulWidget{
@@ -85,7 +84,7 @@ class _ItemEditDialogState extends State{
             ),
             Container(height: 5),
             TextField(
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
               controller: countController,
               decoration: InputDecoration(
@@ -94,7 +93,7 @@ class _ItemEditDialogState extends State{
             ),
             Container(height: 5),
             TextField(
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
               controller: encumController,
               decoration: InputDecoration(

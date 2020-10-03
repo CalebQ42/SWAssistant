@@ -124,7 +124,7 @@ class _SkillEditDialogState extends State{
             if(creature is Character) Container(height: 10),
             if(creature is Character) TextField(
               keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               controller: valueController,
               decoration: InputDecoration(
                 labelText: "Value",

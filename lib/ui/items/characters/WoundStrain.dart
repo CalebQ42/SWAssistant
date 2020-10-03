@@ -97,7 +97,7 @@ class WoundStrain extends StatelessWidget{
                       child: TextField(
                         controller: controll,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         decoration: InputDecoration(labelText: "Max Wound",),
                       ),
                       padding: EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
@@ -153,7 +153,7 @@ class WoundStrain extends StatelessWidget{
                       child: TextField(
                         controller: controll,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         decoration: InputDecoration(labelText: "Max Strain"),
                       ),
                       padding: EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)

@@ -139,7 +139,7 @@ class EditableCard extends StatelessWidget{
         refreshCallback();
       },
       child: InheritedEditable(
-        child:Card(
+        child: Card(
           child: InkResponse(
             onTap: (){
               Navigator.push(context,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(editable,refreshCallback),fullscreenDialog: false));
@@ -159,7 +159,7 @@ class EditableCard extends StatelessWidget{
                   
                   return out + editable.id.toString();
                 }(),
-                child: Text(editable.name, style: Theme.of(context).textTheme.headline5)
+                child: Text(editable.name, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,)
               ),
             )
           )

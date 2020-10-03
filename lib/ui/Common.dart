@@ -11,7 +11,7 @@ class SWAppBar extends AppBar{
   ];
 
   static Map<String, Function> defFunctions = {
-    "translate" : () => _launchURL("https://crwd.in/customdiceroller")
+    "translate" : () => _launchURL("https://crowdin.com/project/swrpg")
   };
 
   SWAppBar({Widget title, List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions}) :

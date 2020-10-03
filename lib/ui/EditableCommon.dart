@@ -25,15 +25,17 @@ class EditingText extends StatelessWidget {
 
   final bool defaultSave;
 
+  final Editable editableBackup;
+
   EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
       this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
-      this.fieldAlign = TextAlign.start, this.collapsed = false, this.state}){
+      this.fieldAlign = TextAlign.start, this.collapsed = false, this.state, this.editableBackup}) {
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
   }
   Widget build(BuildContext context) {
-    var editable = Editable.of(context);
+    var editable = Editable.of(context) ?? editableBackup;
     if(editing){
       if(defaultSave){
         controller.addListener(() {
@@ -50,7 +52,7 @@ class EditingText extends StatelessWidget {
           maxLines: multiline ? null : 1,
           controller: controller,
           keyboardType: textType,
-          inputFormatters: textType == TextInputType.number ? [WhitelistingTextInputFormatter.digitsOnly] : null,
+          inputFormatters: textType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
           textCapitalization: textCapitalization,
           textAlign: fieldAlign,
           decoration: InputDecoration(isCollapsed: collapsed),

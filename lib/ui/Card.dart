@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/Minion.dart';
+import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
@@ -73,8 +76,7 @@ class _NameCardContentState extends State{
     var editable = Editable.of(context);
     return EditableContent(
       builder: (bool b, refresh, state){
-        //TODO: fix hero!
-        return /*Hero(
+        return Hero(
           transitionOnUserGestures: true,
           tag: (){
             String out = "";
@@ -85,8 +87,9 @@ class _NameCardContentState extends State{
             else if (editable is Vehicle)
               out = "vehicle/";
             return out + editable.id.toString();
-          }(),child: */EditingText(
+          }(),child: EditingText(
             editing: b,
+            editableBackup: editable,
             style: Theme.of(context).textTheme.headline5,
             textAlign: TextAlign.center,
             initialText: editable.name,
@@ -100,7 +103,7 @@ class _NameCardContentState extends State{
             }(),
             defaultSave: true,
             textCapitalization: TextCapitalization.words,
-          //)
+          )
         );
       },
     );

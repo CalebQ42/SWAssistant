@@ -127,7 +127,7 @@ class _WeaponEditDialogState extends State{
                   labelText: "Damage",
                 ),
                 keyboardType: TextInputType.number,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               Container(height: 10),
               //Critical
@@ -137,7 +137,7 @@ class _WeaponEditDialogState extends State{
                   labelText: "Critical",
                 ),
                 keyboardType: TextInputType.number,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               Container(height: 10),
               //Hard Points
@@ -147,7 +147,7 @@ class _WeaponEditDialogState extends State{
                   labelText: "Hard Points",
                 ),
                 keyboardType: TextInputType.number,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               //Encumbrance
               if(editable is Character) Container(height: 10),
@@ -157,7 +157,7 @@ class _WeaponEditDialogState extends State{
                   labelText: "Encumbrance",
                 ),
                 keyboardType: TextInputType.number,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               //Firing Arc
               if(editable is Vehicle) Container(height: 10),
@@ -367,7 +367,7 @@ class _WeaponEditDialogState extends State{
                     labelText: "Ammo"
                   ),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ) : Container(),
               ),
               ButtonBar(

@@ -3,10 +3,10 @@ import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
 
-void main() async{
-  var app = await SW.initialize(SWApp());
-  runApp(app);
-}
+void main() =>
+  SW.initialize().then((value) =>
+    runApp(SWWidget(child: SWApp(), app: value))
+  );
 
 class SWApp extends StatelessWidget {
   SWApp();

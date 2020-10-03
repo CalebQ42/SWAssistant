@@ -12,7 +12,7 @@ import 'profiles/Character.dart';
 import 'profiles/Vehicle.dart';
 import 'Preferences.dart' as preferences;
 
-class SW extends InheritedWidget{
+class SW{
 
   final List<Minion> _minions = new List();
   final List<String> minCats = new List();
@@ -25,11 +25,11 @@ class SW extends InheritedWidget{
 
   final SharedPreferences prefs;
 
-  final String saveDir;
+  String saveDir;
 
   bool devMode;
 
-  SW({Widget child, this.prefs, this.saveDir, this.devMode}): super(child: child);
+  SW({this.prefs, this.saveDir, this.devMode});
 
   void loadAll(){
     _minions.clear();
@@ -254,10 +254,7 @@ class SW extends InheritedWidget{
     //TODO: cload loading AND saving
   }
 
-  @override
-  bool updateShouldNotify(InheritedWidget oldWidget) => false;
-
-  static Future<SW> initialize(Widget child) async{
+  static Future<SW> initialize() async{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
     String saveDir;
@@ -274,7 +271,7 @@ class SW extends InheritedWidget{
       devMode = true;
       await testing(saveDir);
     }
-    SW out = SW(child: child, prefs: prefs, saveDir: saveDir, devMode: devMode,);
+    SW out = SW(prefs: prefs, saveDir: saveDir, devMode: devMode,);
     out.loadAll();
     return out;
   }
@@ -290,5 +287,14 @@ class SW extends InheritedWidget{
     }
   }
 
-  static SW of(BuildContext context) => context.dependOnInheritedWidgetOfExactType(aspect: SW);
+  static SW of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<SWWidget>().app;
+}
+
+class SWWidget extends InheritedWidget{
+  final SW app;
+
+  SWWidget({Widget child, this.app}) : super(child: child);
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 }

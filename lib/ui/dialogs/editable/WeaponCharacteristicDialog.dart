@@ -69,7 +69,7 @@ class _WeaponCharacteristicDialogState extends State{
                   labelText: "Rank",
             ),
             keyboardType: TextInputType.number,
-            inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
           Container(height: 10),
           TextField(
@@ -78,7 +78,7 @@ class _WeaponCharacteristicDialogState extends State{
                   labelText: "Advantage Needed",
             ),
             keyboardType: TextInputType.number,
-            inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
         ],
       ),

@@ -81,7 +81,7 @@ class XP extends StatelessWidget{
               child: TextField(
                 controller: xpAddController,
                 keyboardType: TextInputType.number,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
                 onSubmitted: (text){
                   if(text != ""){
