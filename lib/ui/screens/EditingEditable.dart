@@ -1,5 +1,7 @@
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
@@ -67,7 +69,24 @@ class _EditingEditableState extends State{
             "disableForce" : () => setState(() => (profile as Character).disableForce = !(profile as Character).disableForce),
             "disableDuty" : () => setState(() => (profile as Character).disableDuty = !(profile as Character).disableDuty),
             "disableObligation" : () => setState(() => (profile as Character).disableObligation = !(profile as Character).disableObligation),
-            "export" : (){}//TODO: export profile
+            "export" : (){
+              Permission.storage.status.then((value) {
+                if(value.isUndetermined || value.isDenied)
+                  Permission.storage.request().then((value){
+                    if(value.isGranted)
+                      FilePicker.platform.getDirectoryPath().then((value){
+                        profile.save(filename: value + profile.name + profile.fileExtension);
+                      });
+                  });
+                else if(value.isGranted)
+                  FilePicker.platform.getDirectoryPath().then((value){
+                    if(value != null)
+                      profile.save(filename: value + "/" + profile.name + profile.fileExtension);
+                  });
+                else
+                  print(value);
+              });
+            }
           },
         ),
         body: _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes()
