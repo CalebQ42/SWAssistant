@@ -4,7 +4,7 @@ import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
-mixin Creature{
+mixin Creature on Editable{
   static final List<String> characteristics = ["Brawn", "Agility", "Intellect", "Cunning", "Willpower", "Presence"];
 
   List<int> charVals = new List();

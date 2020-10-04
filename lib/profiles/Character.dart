@@ -7,6 +7,7 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/items/characters/Morality.dart';
 import 'package:swassistant/ui/items/characters/XP.dart';
 import 'package:swassistant/ui/items/characters/ForcePowers.dart';
 import 'package:swassistant/ui/items/characters/Specializations.dart';
@@ -181,10 +182,7 @@ class Character extends Editable with Creature{
       EditableContent(builder: (b, refresh, state) =>
         Inventory(editing: b, refresh: refresh, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Text("Morality")
-        //TODO: Morality(editing: b, refresh: refresh, state: state)
-      ),
+      EditableContent(stateful: Morality(), defaultEditingState: () => true,),
       if(!disableDuty) EditableContent(builder: (b, refresh, state) =>
         Text("Duty")
         //TODO: Duties(editing: b, refresh: refresh, state: state)

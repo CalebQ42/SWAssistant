@@ -55,7 +55,7 @@ class EditingText extends StatelessWidget {
           inputFormatters: textType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
           textCapitalization: textCapitalization,
           textAlign: fieldAlign,
-          decoration: InputDecoration(isCollapsed: collapsed),
+          decoration: InputDecoration(isCollapsed: collapsed, contentPadding: EdgeInsets.symmetric(horizontal: 5)),
         )
       );
     }else{
@@ -95,11 +95,13 @@ class EditableContent extends StatefulWidget{
   final Widget Function(bool editing, Function refresh, EditableContentState state) builder;
   final bool Function() defaultEditingState;
 
-  EditableContent({@required this.builder, this.defaultEditingState});
+  final StatefulCard stateful;
+
+  EditableContent({this.builder, this.stateful, this.defaultEditingState});
 
   @override
   State<EditableContent> createState() {
-    return EditableContentState(builder: builder, defaultEditingState: defaultEditingState);
+    return EditableContentState(builder: builder, defaultEditingState: defaultEditingState, stateful: stateful);
   }
 }
 
@@ -107,21 +109,30 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
 
   Widget Function(bool editing, Function refresh, EditableContentState state) builder;
   bool editing;
+
+  StatefulCard stateful;
+
   final bool Function() defaultEditingState;
 
-  EditableContentState({@required this.builder, this.defaultEditingState}) :
-    editing = defaultEditingState == null ? false : defaultEditingState();
+  EditableContentState({this.builder, this.stateful, this.defaultEditingState}) :
+    editing = defaultEditingState == null ? false : defaultEditingState(){
+      if(builder == null && stateful == null)
+        throw("Either a builder or stateful MUST be provided");
+      if(stateful != null)
+        editing = stateful.getHolder().editing;
+    }
 
   @override
   Widget build(BuildContext context) {
+    if (stateful != null) stateful.getHolder().editing = editing;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        builder(
+        builder != null ? builder(
           editing,
           () => setState((){}),
           this
-        ),
+        ) : stateful,
         Align(
           alignment: Alignment.centerRight,
           child: IconButton(
@@ -130,10 +141,29 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
             padding: EdgeInsets.all(5.0),
             constraints: BoxConstraints.tight(Size.square(30.0)),
             color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
-            onPressed: () => setState(() => editing = !editing),
+            onPressed: () {
+              if(stateful == null)
+                setState(() => editing = !editing);
+              else{
+                editing = !editing;
+                stateful.getHolder().editing = editing;
+                stateful.getHolder().reloadFunction();
+                setState(() {});
+              }
+            }
           )
         )
       ],
     );
   }
+}
+
+class EditableContentStatefulHolder{
+  Function reloadFunction = () =>
+    throw("THIS NEEDS TO BE OVERWRITTEN");
+  bool editing = false;
+}
+
+mixin StatefulCard on StatefulWidget{
+  EditableContentStatefulHolder getHolder();
 }

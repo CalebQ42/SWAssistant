@@ -105,17 +105,17 @@ abstract class Editable extends JsonSavable{
 
   List<Widget> cardContents();
 
-  void exportTo(String folder){}
   String getFileLocation(SW sw){
     if(_loc == null || _loc == "")
       return sw.saveDir+ "/" + id.toString() + fileExtension;
     else
       return _loc;
   }
-  String getCloudFileLocation(){return null;}
-  void save({String filename, BuildContext context}) async{
-    if(filename == null && context != null)
-      filename = getFileLocation(SW.of(context));
+  String getCloudFileLocation() => null;
+  
+  void save({String filename, BuildContext context, SW app}) async{
+    if(filename == null && (context != null || app != null))
+      filename = getFileLocation(app ?? SW.of(context));
     if(filename == null)
       throw("Either filename or context needs to be given");
     if(!_saving){

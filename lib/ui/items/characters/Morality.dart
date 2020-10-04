@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
-class Morality extends StatelessWidget{
+class Morality extends StatefulWidget with StatefulCard{
 
-  final Function refresh;
-  final bool editing;
-  final EditableContentState state;
+  final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
 
-  Morality({this.refresh, this.editing, this.state});
+  Morality(){
+    holder.editing = true;
+  }
+
+  @override
+  State<StatefulWidget> createState() => MoralityState(holder: holder);
+
+  @override
+  EditableContentStatefulHolder getHolder() => holder;
+}
+
+class MoralityState extends State with TickerProviderStateMixin{
+
+  bool editing = false;
+
+  EditableContentStatefulHolder holder;
+
+  MoralityState({this.holder}){
+    editing = holder.editing;
+  }
 
   @override
   Widget build(BuildContext context) {
+    holder.reloadFunction = () => setState(() =>
+      editing = holder.editing
+    );
     var character = Character.of(context);
     var moralityController = new TextEditingController(text: character.morality.toString());
     moralityController.addListener(() =>
@@ -27,10 +48,10 @@ class Morality extends StatelessWidget{
         Row(
           children: [
             Expanded(
-              child: Text("Morality"),
+              child: Text("Morality", textAlign: TextAlign.center,),
             ),
             Expanded(
-              child: Text("Conflict"),
+              child: Text("Conflict", textAlign: TextAlign.center),
             )
           ],
         ),
@@ -46,17 +67,28 @@ class Morality extends StatelessWidget{
                   defaultSave: true,
                   textAlign: TextAlign.center,
                   fieldAlign: TextAlign.center,
-                  state: state
+                  state: this
                 )
               )
             ),
             Expanded(
               child: TextField(
-
+                controller: conflictController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
+                textAlign: TextAlign.center,
               )
             )
           ],
+        ),
+        FlatButton(
+          child: Text("Resolve Conflict"),
+          onPressed: (){
+            //TODO
+          },
         )
+        //TODO: emotional strength and weakness
       ],
     );
   }

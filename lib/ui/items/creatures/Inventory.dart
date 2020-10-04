@@ -35,9 +35,10 @@ class Inventory extends StatelessWidget{
           if(creature is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("Credits:"),
+              Center(child: Text("Credits:")),
               SizedBox(
                 width: 75,
+                height: 25,
                 child: EditingText(
                   editing: editing,
                   initialText: creature.credits.toString(),
@@ -64,9 +65,10 @@ class Inventory extends StatelessWidget{
           if(creature is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("Encumbrance Capacity:"),
+              Center(child: Text("Encumbrance Capacity:")),
               SizedBox(
                 width: 50,
+                height: 25,
                 child: EditingText(
                   editing: editing,
                   initialText: creature.encumCap.toString(),
