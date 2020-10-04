@@ -53,7 +53,7 @@ class _FPState extends State{
             ),
             textCapitalization: TextCapitalization.words,
           ),
-          Container(height: 10,),
+          Container(height: 10),
           TextField(
             controller: descController,
             decoration: InputDecoration(

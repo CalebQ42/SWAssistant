@@ -91,7 +91,7 @@ class Inventory extends StatelessWidget{
             ],
           ),
           if(overEncumbered) Text(
-            "You are overencumbered! Add a setback die to all Agility and Brawn checks.",
+            "You are over-encumbered! Add a setback die to all Agility and Brawn checks.",
             style: TextStyle(color: Theme.of(context).errorColor),
             textAlign: TextAlign.center,
           )

@@ -77,7 +77,7 @@ class _TalentEditState extends State{
               labelText: "Rank",
             ),
           ),
-          Container(height: 10,),
+          Container(height: 10),
           TextField(
             controller: descController,
             textCapitalization: TextCapitalization.sentences,

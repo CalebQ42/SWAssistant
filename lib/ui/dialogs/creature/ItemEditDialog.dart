@@ -82,7 +82,7 @@ class _ItemEditDialogState extends State{
                 labelText: "Name"
               ),
             ),
-            Container(height: 5),
+            Container(height: 10),
             TextField(
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
@@ -91,16 +91,16 @@ class _ItemEditDialogState extends State{
                 labelText: "Count"
               ),
             ),
-            Container(height: 5),
+            Container(height: 10),
             TextField(
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
               controller: encumController,
               decoration: InputDecoration(
-                labelText: "Encumbrance"
+                labelText: "Encumbrance (Total)"
               ),
             ),
-            Container(height: 5),
+            Container(height: 10),
             TextField(
               textCapitalization: TextCapitalization.sentences,
               controller: nameController,
