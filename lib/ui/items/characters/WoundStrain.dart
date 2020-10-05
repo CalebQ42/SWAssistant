@@ -24,6 +24,7 @@ class WoundStrain extends StatelessWidget{
             Text("Soak:"),
             SizedBox(
               width: 50,
+              height: 25,
               child: EditingText(
                 editing: editing,
                 initialText: character.soak.toString(),
@@ -47,18 +48,17 @@ class WoundStrain extends StatelessWidget{
             )
           ],
         ),
-        if(editing) Container(height: 10), 
+        Container(height: 10), 
         Row(
           children: <Widget>[
             Expanded(
-              child: AnimatedSize(
-                duration: Duration(milliseconds: 250),
-                vsync: state,
+              child: SizedBox(
+                height: 65,
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
                     Tween<Offset> offset;
-                    if(wid.key == ValueKey("UpDownWound"))
+                    if((!editing && wid is Padding) || (editing && wid is Column))
                       offset = Tween(begin: Offset(0.0,-1.0), end: Offset.zero);
                     else
                       offset = Tween(begin: Offset(0.0,1.0), end: Offset.zero);
@@ -107,14 +107,13 @@ class WoundStrain extends StatelessWidget{
               )
             ),
             Expanded(
-              child: AnimatedSize(
-                duration: Duration(milliseconds: 250),
-                vsync: state,
+              child: SizedBox(
+                height: 65,
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
                     Tween<Offset> offset;
-                    if(wid.key == ValueKey("UpDownStrain"))
+                    if((!editing && wid is Padding) || (editing && wid is Column))
                       offset = Tween(begin: Offset(0.0,-1.0), end: Offset.zero);
                     else
                       offset = Tween(begin: Offset(0.0,1.0), end: Offset.zero);
@@ -143,7 +142,7 @@ class WoundStrain extends StatelessWidget{
                         getMin: ()=>0,
                       )
                     ]
-                    ) : (){
+                  ) : (){
                     var controll = TextEditingController(text: character.strainThresh.toString());
                     controll.addListener(() {
                       character.strainThresh = int.parse(controll.text);

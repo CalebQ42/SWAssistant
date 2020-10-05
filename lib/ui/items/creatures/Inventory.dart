@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/Item.dart';
+import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/creature/ItemEditDialog.dart';
 
@@ -22,6 +22,15 @@ class Inventory extends StatelessWidget{
     if(creature is Character && creature.inventory.length > 0){
       for(Item item in creature.inventory){
         encumTot += item.encum;
+        if(encumTot > creature.encumCap){
+          overEncumbered = true;
+          break;
+        }
+      }
+    }
+    if(creature is Character && creature.inventory.length > 0){
+      for(Weapon weap in creature.weapons){
+        encumTot += weap.encumbrance;
         if(encumTot > creature.encumCap){
           overEncumbered = true;
           break;
@@ -126,15 +135,15 @@ class Inventory extends StatelessWidget{
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
-                        if(creature is Character) Container(height: 5,),
-                        if(creature is Character) Center(
+                        Container(height: 5),
+                        Center(
                           child: Text(
                             "Encumbrance: " + creature.inventory[index].encum.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         Container(height: 10),
-                        Text(creature.inventory[index].desc)
+                        if(creature.inventory[index].desc != "") Text(creature.inventory[index].desc)
                       ],
                     )
                   )
@@ -156,7 +165,7 @@ class Inventory extends StatelessWidget{
                           var temp = Item.from(creature.inventory[index]);
                           creature.inventory.removeAt(index);
                           refresh();
-                          (creature as Editable).save(context: context);
+                          creature.save(context: context);
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Item Deleted"),
@@ -165,7 +174,7 @@ class Inventory extends StatelessWidget{
                                 onPressed: (){
                                   creature.inventory.insert(index, temp);
                                   refresh();
-                                  (creature as Editable).save(context: context);
+                                  creature.save(context: context);
                                 }
                               ),
                             )
@@ -183,7 +192,7 @@ class Inventory extends StatelessWidget{
                             onClose: (item){
                               creature.inventory[index] = item;
                               refresh();
-                              (creature as Editable).save(context: context);
+                              creature.save(context: context);
                             },
                           ).show(context)
                       )
@@ -224,18 +233,17 @@ class Inventory extends StatelessWidget{
                     onClose: (item){
                       creature.inventory.add(item);
                       refresh();
-                      (creature as Editable).save(context: context);
+                      creature.save(context: context);
                     },
                   ).show(context)
               )
             ) : Container(),
-            transitionBuilder: (wid,anim){
-              return SizeTransition(
+            transitionBuilder: (wid,anim) =>
+              SizeTransition(
                 sizeFactor: anim,
                 child: wid,
                 axisAlignment: -1.0,
-              );
-            },
+              ),
           )
         ),
       ),

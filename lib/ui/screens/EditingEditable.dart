@@ -51,6 +51,11 @@ class _EditingEditableState extends State{
               value: "disableForce"
             ),
             if(profile is Character) CheckedPopupMenuItem(
+              checked: (profile as Character).disableObligation,
+              child: Text("Disable Morality"),
+              value: "disableMorality"
+            ),
+            if(profile is Character) CheckedPopupMenuItem(
               checked: (profile as Character).disableDuty,
               child: Text("Disable Duty"),
               value: "disableDuty"
@@ -69,6 +74,7 @@ class _EditingEditableState extends State{
             "disableForce" : () => setState(() => (profile as Character).disableForce = !(profile as Character).disableForce),
             "disableDuty" : () => setState(() => (profile as Character).disableDuty = !(profile as Character).disableDuty),
             "disableObligation" : () => setState(() => (profile as Character).disableObligation = !(profile as Character).disableObligation),
+            "disableMorality" : () => setState(() => (profile as Character).disableMorality = !(profile as Character).disableMorality),
             "export" : (){
               Permission.storage.status.then((value) {
                 if(value.isUndetermined || value.isDenied)

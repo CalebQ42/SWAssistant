@@ -26,17 +26,16 @@ class Weapons extends StatelessWidget{
           SWWeaponDialog(
             holder: (){
               if(editable is Creature){
-                var creature = editable as Creature;
-                var skill = creature.skills.firstWhere(
+                var skill = editable.skills.firstWhere(
                   (element) => element.name == Weapon.weaponSkills[editable.weapons[i].skill],
                   orElse: () => Skill()
                 );
                 if(skill.name != "" && skill.base == editable.weapons[i].skillBase)
-                  return skill.getDice(creature);
+                  return skill.getDice(editable);
                 else
                   return SWDiceHolder(
-                    ability: min(skill.value, creature.charVals[editable.weapons[i].skillBase]),
-                    proficiency: (skill.value - creature.charVals[editable.weapons[i].skillBase]).abs()
+                    ability: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
+                    proficiency: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs()
                   );
               }else
                 return SWDiceHolder();

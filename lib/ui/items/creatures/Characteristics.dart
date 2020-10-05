@@ -76,6 +76,7 @@ class Characteristics extends StatelessWidget{
                 });
                 return controller;
               }(),
+              fieldAlign: TextAlign.center,
               style: style,
               textType: TextInputType.number,
               defaultSave: true
