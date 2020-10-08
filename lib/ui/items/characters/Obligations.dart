@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:swassistant/items/Duty.dart';
+import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/ui/dialogs/character/DutyEditDialog.dart';
+import 'package:swassistant/ui/dialogs/character/ObligationEditDialog.dart';
 
-class Duties extends StatelessWidget{
+class Obligations extends StatelessWidget{
 
   final Function refresh;
   final bool editing;
 
-  Duties({this.refresh, this.editing});
+  Obligations({this.refresh, this.editing});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +18,14 @@ class Duties extends StatelessWidget{
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: List.generate(
-          character.duties.length,
+          character.obligations.length,
           (index) => InkResponse(
               containedInkWell: true,
               highlightShape: BoxShape.rectangle,
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(character.duties[index].name)
+                    child: Text(character.obligations[index].name)
                   ),
                   AnimatedSwitcher(
                     child: editing ? ButtonBar(
@@ -36,16 +36,16 @@ class Duties extends StatelessWidget{
                           iconSize: 24.0,
                           constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                           onPressed: (){
-                            var tmp = Duty.from(character.duties[index]);
-                            character.duties.removeAt(index);
+                            var tmp = Obligation.from(character.obligations[index]);
+                            character.obligations.removeAt(index);
                             refresh();
                             character.save(context: context);
                             Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text("Deleted Duty"),
+                              content: Text("Deleted Obligation"),
                               action: SnackBarAction(
                                 label: "Undo",
                                 onPressed: (){
-                                  character.duties.insert(index, tmp);
+                                  character.obligations.insert(index, tmp);
                                   refresh();
                                   character.save(context: context);
                                 },
@@ -58,10 +58,10 @@ class Duties extends StatelessWidget{
                           iconSize: 24.0,
                           constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                           onPressed: () =>
-                            DutyEditDialog(
-                              duty: character.duties[index],
-                              onClose: (duty){
-                                character.duties[index] = duty;
+                            ObligationEditDialog(
+                              obligation: character.obligations[index],
+                              onClose: (obligation){
+                                character.obligations[index] = obligation;
                                 refresh();
                                 character.save(context: context);
                               },
@@ -69,7 +69,7 @@ class Duties extends StatelessWidget{
                         )
                       ],
                     ) : Padding(
-                      child:Text(character.duties[index].value.toString()),
+                      child:Text(character.obligations[index].value.toString()),
                       padding: EdgeInsets.all(12)
                     ),
                     duration: Duration(milliseconds: 250),
@@ -105,18 +105,18 @@ class Duties extends StatelessWidget{
                         children: [
                           Container(height: 15),
                           Text(
-                            character.duties[index].name,
+                            character.obligations[index].name,
                             style: Theme.of(context).textTheme.headline5,
                             textAlign: TextAlign.center
                           ),
                           Container(height: 5),
                           Text(
-                            character.duties[index].value.toString() + " Duty",
+                            character.obligations[index].value.toString() + " Obligation",
                             style: Theme.of(context).textTheme.bodyText1,
                             textAlign: TextAlign.center,
                           ),
                           Container(height: 10),
-                          if(character.duties[index].desc != "") Text(character.duties[index].desc)
+                          if(character.obligations[index].desc != "") Text(character.obligations[index].desc)
                         ],
                       )
                     )
@@ -135,9 +135,9 @@ class Duties extends StatelessWidget{
               child: IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () =>
-                  DutyEditDialog(
-                    onClose: (duty){
-                      character.duties.add(duty);
+                  ObligationEditDialog(
+                    onClose: (obligation){
+                      character.obligations.add(obligation);
                       refresh();
                       character.save(context: context);
                     }

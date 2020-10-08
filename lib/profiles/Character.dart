@@ -9,6 +9,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/characters/Duties.dart';
 import 'package:swassistant/ui/items/characters/Morality.dart';
+import 'package:swassistant/ui/items/characters/Obligations.dart';
 import 'package:swassistant/ui/items/characters/XP.dart';
 import 'package:swassistant/ui/items/characters/ForcePowers.dart';
 import 'package:swassistant/ui/items/characters/Specializations.dart';
@@ -152,13 +153,13 @@ class Character extends Editable with Creature{
     <Widget>[
       EditableContent(builder: (b, refresh, state) =>
         CharacterInfo(editing: b, state: state)
-      ),
+      ,),
       EditableContent(builder: (b, refresh, state) =>
         WoundStrain(editing: b, state: state)
-      ),
+      , defaultEditingState: () => soak == 0 && woundThresh == 0 && strainThresh == 0,),
       EditableContent(builder: (b, refresh, state) =>
         Characteristics(editing: b, state: state)
-      ),
+      , defaultEditingState: () => charVals.every((element) => element == 0),),
       EditableContent(builder: (b, refresh, state) =>
         Skills(editing:b, refresh: refresh)
       , defaultEditingState: () => skills.length == 0),
@@ -186,14 +187,13 @@ class Character extends Editable with Creature{
       EditableContent(builder: (b, refresh, state) =>
         Inventory(editing: b, refresh: refresh, state: state)
       , defaultEditingState: () => inventory.length == 0,),
-      if(!disableMorality) EditableContent(stateful: Morality(), defaultEditingState: () => true,),
+      if(!disableMorality) EditableContent(stateful: Morality()),
       if(!disableDuty) EditableContent(builder: (b, refresh, state) =>
         Duties(editing: b, refresh: refresh)
       , defaultEditingState: () => duties.length == 0,),
       if(!disableObligation) EditableContent(builder: (b, refresh, state) =>
-        Text("Obligation")
-        //TODO: Obligations(editing: b, refresh: refresh, state: state)
-      ),
+        Obligations(editing: b, refresh: refresh)
+      , defaultEditingState: () => obligations.length == 0,),
       EditableContent(builder: (b, refresh, state) =>
         Description(editing: b, state: state)
       , defaultEditingState: () => desc == "",)

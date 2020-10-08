@@ -50,5 +50,5 @@ mixin Creature on Editable{
     return json;
   }
 
-  static Creature of(BuildContext context) => Editable.of(context) as Creature;
+  static Creature of(BuildContext context) => Editable.of(context);
 }
