@@ -51,6 +51,19 @@ abstract class Editable extends JsonSavable{
       _loc = file.path;
   }
 
+  Editable.from(Editable editable, {int id = 0}) :
+      this.id = id,
+      name = editable.name,
+      notes = List.from(editable.notes),
+      weapons = List.from(editable.weapons),
+      category = editable.category,
+      criticalInjuries = List.from(editable.criticalInjuries),
+      desc = editable.desc {
+    showCard = List.filled(cardNames.length, false);
+    if (!(this is Character || this is Vehicle || this is Minion))
+      throw("Must be overridden by child");
+  }
+
   @mustCallSuper
   void loadJson(Map<String,dynamic> json){
     if (!(this is Character || this is Vehicle || this is Minion))

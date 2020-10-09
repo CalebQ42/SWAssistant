@@ -95,7 +95,7 @@ class SWWeaponDialog extends StatelessWidget{
                           return holder.force;
                       }
                     },
-                    getMin: ()=>0,
+                    min: 0,
                   )
                 )
               ],
@@ -267,7 +267,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[suc]++,
                   onDownPressed: () => results.results[suc] --,
                   getValue: () => results.results[suc],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]
@@ -280,7 +280,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[fai]++,
                   onDownPressed: () => results.results[fai] --,
                   getValue: () => results.results[fai],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]
@@ -293,7 +293,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[adv]++,
                   onDownPressed: () => results.results[adv] --,
                   getValue: () => results.results[adv],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]
@@ -306,7 +306,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[thr]++,
                   onDownPressed: () => results.results[thr] --,
                   getValue: () => results.results[thr],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]
@@ -319,7 +319,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[tri]++,
                   onDownPressed: () => results.results[tri] --,
                   getValue: () => results.results[tri],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]
@@ -332,7 +332,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[des]++,
                   onDownPressed: () => results.results[des] --,
                   getValue: () => results.results[des],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]
@@ -345,7 +345,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[lig]++,
                   onDownPressed: () => results.results[lig] --,
                   getValue: () => results.results[lig],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]
@@ -358,7 +358,7 @@ class _WeaponResultsEdit extends StatelessWidget{
                   onUpPressed: () => results.results[dar]++,
                   onDownPressed: () => results.results[dar] --,
                   getValue: () => results.results[dar],
-                  getMin: () => 0,
+                  min: 0,
                 )
               )
             ]

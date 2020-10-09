@@ -16,6 +16,18 @@ mixin Creature on Editable{
   int defMelee,defRanged;
   int soak;
 
+  void creatureFrom(Creature creature){
+    charVals = List.from(creature.charVals);
+    skills = List.from(creature.skills);
+    talents = List.from(creature.talents);
+    inventory = List.from(creature.inventory);
+    woundThresh = creature.woundThresh;
+    woundCur = creature.woundCur;
+    defMelee = creature.defMelee;
+    defRanged = creature.defRanged;
+    soak = creature.soak;
+  }
+
   void creatureLoadJson(Map<String,dynamic> json){
     this.charVals = new List();
     for(dynamic dy in json["characteristics"])

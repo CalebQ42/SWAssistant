@@ -83,8 +83,7 @@ class WoundStrain extends StatelessWidget{
                           character.save(context: context);
                         },
                         getValue: ()=>character.woundCur,
-                        getMax: ()=>character.woundThresh,
-                        getMin: ()=>0,
+                        max: character.woundThresh,
                       )
                     ]
                   ) : (){
@@ -138,8 +137,7 @@ class WoundStrain extends StatelessWidget{
                           character.save(context: context);
                         },
                         getValue: ()=>character.strainCur,
-                        getMax: ()=>character.strainThresh,
-                        getMin: ()=>0,
+                        max: character.strainThresh,
                       )
                     ]
                   ) : (){

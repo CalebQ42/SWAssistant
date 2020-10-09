@@ -6,14 +6,15 @@ class UpDownStat extends StatefulWidget{
   final Function onUpPressed;
   final Function onDownPressed;
   final int Function() getValue;
-  final int Function() getMax;
-  final int Function() getMin;
+  final int max;
+  final int min;
+  final bool allowNegative;
 
-  UpDownStat({this.key,this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.getMin});
+  UpDownStat({this.key,this.onUpPressed, this.onDownPressed, this.getValue, this.max, this.min, this.allowNegative = false});
 
   @override
   State<StatefulWidget> createState()=>_UpDownStatState(onUpPressed: onUpPressed,
-      onDownPressed: onDownPressed, getValue: getValue, getMax: getMax, getMin: getMin);
+      onDownPressed: onDownPressed, getValue: getValue, max: max, min: min, allowNegative: allowNegative);
 }
 
 class _UpDownStatState extends State{
@@ -21,11 +22,13 @@ class _UpDownStatState extends State{
   final Function onUpPressed;
   final Function onDownPressed;
   final int Function() getValue;
-  final int Function() getMax;
-  final int Function() getMin;
+  final int max;
+  final int min;
+  final bool allowNegative;
   bool up = false;
 
-  _UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.getMax, this.getMin});
+  _UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.max, int min, this.allowNegative = false}) :
+    this.min = min ?? allowNegative ? null : 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class _UpDownStatState extends State{
           child: IconButton(
             icon:Icon(Icons.remove),
             onPressed: (){
-              if(getMin == null || getValue()>getMin()){
+              if(min == null || getValue() > min){
                 up = false;
                 onDownPressed();
                 setState((){});
@@ -67,7 +70,7 @@ class _UpDownStatState extends State{
           child: IconButton(
             icon: Icon(Icons.add),
             onPressed: (){
-              if(getMax == null || getValue()<getMax()){
+              if(max == null || getValue() < max){
                 up = true;
                 onUpPressed();
                 setState((){});
@@ -79,4 +82,3 @@ class _UpDownStatState extends State{
     );
   }
 }
-

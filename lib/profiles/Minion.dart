@@ -43,6 +43,15 @@ class Minion extends Editable with Creature{
 
   Minion.load(FileSystemEntity file, SW app) : super.load(file, app);
 
+  Minion.from(Minion minion, {int id}) :
+      woundThreshInd = minion.woundThreshInd,
+      minionNum = minion.minionNum,
+      savedInv = List.from(minion.savedInv),
+      savedWeapons = List.from(minion.savedWeapons),
+      super.from(minion, id: id){
+    creatureFrom(minion);
+  }
+
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
     this.creatureLoadJson(json);

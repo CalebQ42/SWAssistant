@@ -91,7 +91,7 @@ class SWDiceDialog extends StatelessWidget{
                           return holder.force;
                       }
                     },
-                    getMin: ()=>0,
+                    min: 0,
                   )
                 )
               ],
@@ -101,7 +101,6 @@ class SWDiceDialog extends StatelessWidget{
             FlatButton(
               child: Text("Roll"),
               onPressed: (){
-                
                 Navigator.of(context).pop();
                 var res = holder.getDice().roll();
                 res.showCombinedResults(context,

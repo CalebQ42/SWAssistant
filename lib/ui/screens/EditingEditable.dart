@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/Minion.dart';
+import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/screens/EditableCards.dart';
@@ -65,6 +67,10 @@ class _EditingEditableState extends State{
               child: Text("Disable Obligation"),
               value: "disableObligation"
             ),
+            PopupMenuItem(
+              child: Text("Clone"),
+              value: "clone"
+            ),
             if(SW.of(context).devMode) PopupMenuItem(
               child: Text("Export"),
               value: "export"
@@ -75,6 +81,61 @@ class _EditingEditableState extends State{
             "disableDuty" : () => setState(() => (profile as Character).disableDuty = !(profile as Character).disableDuty),
             "disableObligation" : () => setState(() => (profile as Character).disableObligation = !(profile as Character).disableObligation),
             "disableMorality" : () => setState(() => (profile as Character).disableMorality = !(profile as Character).disableMorality),
+            "clone" : () =>
+              showModalBottomSheet(
+                context: context,
+                builder: (context){
+                  var nameController = TextEditingController(text: "Copy of " + profile.name);
+                  return Padding(
+                    padding: MediaQuery.of(context).viewPadding.add(EdgeInsets.only(left: 5, right: 5, bottom: 10)),
+                    child: Wrap(
+                      children: [
+                        Container(height: 10),
+                        TextField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            labelText: "Name"
+                          ),
+                        ),
+                        ButtonBar(
+                          children: [
+                            FlatButton(
+                              child: Text("Save"),
+                              onPressed: (){
+                                Editable out;
+                                if(profile is Character){
+                                  var id = 0;
+                                  while(SW.of(context).characters().any((element) => element.id == id))
+                                    id++;
+                                  out = Character.from(profile, id: id);
+                                }else if (profile is Minion){
+                                  var id = 0;
+                                  while(SW.of(context).minions().any((element) => element.id == id))
+                                    id++;
+                                  out = Minion.from(profile, id: id);
+                                }else if (profile is Vehicle){
+                                  var id = 0;
+                                  while(SW.of(context).vehicles().any((element) => element.id == id))
+                                    id++;
+                                  out = Vehicle.from(profile, id: id);
+                                }
+                                out.name = nameController.text;
+                                SW.of(context).add(out);
+                                out.save(context: context);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            FlatButton(
+                              child: Text("Cancel"),
+                              onPressed: () => Navigator.of(context).pop()
+                            )
+                          ],
+                        )
+                      ],
+                    )
+                  );
+                }
+              ),
             "export" : (){
               Permission.storage.status.then((value) {
                 if(value.isUndetermined || value.isDenied)

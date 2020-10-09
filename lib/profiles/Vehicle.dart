@@ -40,6 +40,23 @@ class Vehicle extends Editable{
 
   Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app);
 
+  Vehicle.from(Vehicle vehicle, {int id}) :
+      silhouette = vehicle.silhouette,
+      speed = vehicle.speed,
+      handling = vehicle.handling,
+      armor = vehicle.armor,
+      defense = List.from(vehicle.defense),
+      totalDefense = vehicle.totalDefense,
+      hullTraumaThresh = vehicle.hullTraumaThresh,
+      hullTraumaCur = vehicle.hullTraumaCur,
+      sysStressThresh = vehicle.sysStressThresh,
+      sysStressCur = vehicle.sysStressCur,
+      encumCapacity = vehicle.encumCapacity,
+      passengerCapacity = vehicle.passengerCapacity,
+      hp = vehicle.hp,
+      model = vehicle.model,
+      super.from(vehicle, id: id);
+
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
     this.silhouette = json["silhouette"];

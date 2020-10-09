@@ -116,7 +116,6 @@ class DiceResults{
                     onUpPressed: () => results[suc]++,
                     onDownPressed: () => results[suc] --,
                     getValue: () => results[suc],
-                    getMin: () => 0,
                   )
                 )
               ]
@@ -129,7 +128,6 @@ class DiceResults{
                     onUpPressed: () => results[fai]++,
                     onDownPressed: () => results[fai] --,
                     getValue: () => results[fai],
-                    getMin: () => 0,
                   )
                 )
               ]
@@ -142,7 +140,6 @@ class DiceResults{
                     onUpPressed: () => results[adv]++,
                     onDownPressed: () => results[adv] --,
                     getValue: () => results[adv],
-                    getMin: () => 0,
                   )
                 )
               ]
@@ -155,7 +152,6 @@ class DiceResults{
                     onUpPressed: () => results[thr]++,
                     onDownPressed: () => results[thr] --,
                     getValue: () => results[thr],
-                    getMin: () => 0,
                   )
                 )
               ]
@@ -168,7 +164,6 @@ class DiceResults{
                     onUpPressed: () => results[tri]++,
                     onDownPressed: () => results[tri] --,
                     getValue: () => results[tri],
-                    getMin: () => 0,
                   )
                 )
               ]
@@ -181,7 +176,6 @@ class DiceResults{
                     onUpPressed: () => results[des]++,
                     onDownPressed: () => results[des] --,
                     getValue: () => results[des],
-                    getMin: () => 0,
                   )
                 )
               ]
@@ -194,7 +188,6 @@ class DiceResults{
                     onUpPressed: () => results[lig]++,
                     onDownPressed: () => results[lig] --,
                     getValue: () => results[lig],
-                    getMin: () => 0,
                   )
                 )
               ]
@@ -207,7 +200,6 @@ class DiceResults{
                     onUpPressed: () => results[dar]++,
                     onDownPressed: () => results[dar] --,
                     getValue: () => results[dar],
-                    getMin: () => 0,
                   )
                 )
               ]

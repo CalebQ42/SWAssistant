@@ -76,6 +76,35 @@ class Character extends Editable with Creature{
 
   Character.load(FileSystemEntity file, SW app) : super.load(file, app);
 
+  Character.from(Character character, {int id}) :
+      species = character.species,
+      career = character.career,
+      specializations = List.from(character.specializations),
+      forcePowers = List.from(character.forcePowers),
+      motivation = character.motivation,
+      emotionalStr = character.emotionalStr,
+      emotionalWeak = character.emotionalWeak,
+      duties = List.from(character.duties),
+      obligations = List.from(character.obligations),
+      strainThresh = character.strainThresh,
+      strainCur = character.strainCur,
+      xpTot = character.xpTot,
+      xpCur = character.xpCur,
+      force = character.force,
+      credits = character.credits,
+      morality = character.morality,
+      conflict = character.conflict,
+      darkSide = character.darkSide,
+      age = character.age,
+      encumCap = character.encumCap,
+      disableDuty = character.disableDuty,
+      disableForce = character.disableForce,
+      disableObligation = character.disableObligation,
+      disableMorality = character.disableMorality,
+      super.from(character, id: id){
+    creatureFrom(character);
+  }
+
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
     this.creatureLoadJson(json);
