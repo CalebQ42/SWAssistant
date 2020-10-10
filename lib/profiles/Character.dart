@@ -74,7 +74,7 @@ class Character extends Editable with Creature{
   Character({@required int id, String name = "New Character", bool saveOnCreation = false, SW app}) :
       super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
-  Character.load(FileSystemEntity file, SW app) : super.load(file, app);
+  Character.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
   Character.from(Character character, {int id}) :
       species = character.species,

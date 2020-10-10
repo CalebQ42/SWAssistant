@@ -292,7 +292,7 @@ class SW{
 
 class SWWidget extends InheritedWidget{
   final SW app;
-
+  
   SWWidget({Widget child, this.app}) : super(child: child);
 
   @override

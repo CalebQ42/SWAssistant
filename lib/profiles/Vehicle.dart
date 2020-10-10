@@ -38,7 +38,7 @@ class Vehicle extends Editable{
   Vehicle({@required int id, String name = "New Vehicle", bool saveOnCreation = false, SW app}) :
       super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
-  Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app);
+  Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
   Vehicle.from(Vehicle vehicle, {int id}) :
       silhouette = vehicle.silhouette,

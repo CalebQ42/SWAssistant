@@ -37,11 +37,10 @@ class SWAppBar extends AppBar{
   }
 
   static void _launchURL(String url) async {
-    if (await canLaunch(url)) {
+    if (await canLaunch(url))
       await launch(url);
-    } else {
+    else
       throw 'Could not launch $url';
-    }
   }
 }
 
@@ -49,8 +48,8 @@ class SWAppBar extends AppBar{
 
 class SWDrawer extends StatelessWidget{
   @override
-  Widget build(BuildContext context) {
-    return Drawer(
+  Widget build(BuildContext context) =>
+    Drawer(
       key: Key("SWDrawerKey"),
       child: ListView(
         padding: EdgeInsets.zero,
@@ -124,5 +123,4 @@ class SWDrawer extends StatelessWidget{
         ],
       )
     );
-  }
 }

@@ -44,7 +44,8 @@ abstract class Editable extends JsonSavable{
       this.save(filename: getFileLocation(app));
   }
 
-  Editable.load(FileSystemEntity file, SW app){
+  Editable.load(FileSystemEntity file, {SW app, BuildContext context}){
+    app ??= SW.of(context);
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
     if(getFileLocation(app)!= file.path)
@@ -108,11 +109,10 @@ abstract class Editable extends JsonSavable{
           child: NameCardContent(refreshList)
         )
     );
-    for (int i = 0; i < contents.length; i++){
+    for (int i = 0; i < contents.length; i++)
       cards.add(
         InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b, refresh) => showCard[i]=b)
       );
-    }
     return cards;
   }
 
@@ -145,9 +145,8 @@ abstract class Editable extends JsonSavable{
     }else{
       if(!_defered){
         _defered = true;
-        while(_saving){
+        while(_saving)
           sleep(Duration(milliseconds: 250));
-        }
         save(filename: filename);
         _defered = false;
       }

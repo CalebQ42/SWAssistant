@@ -41,7 +41,7 @@ class Minion extends Editable with Creature{
   Minion({@required int id, String name = "New Minion", bool saveOnCreation = false, SW app}) :
       super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
-  Minion.load(FileSystemEntity file, SW app) : super.load(file, app);
+  Minion.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
   Minion.from(Minion minion, {int id}) :
       woundThreshInd = minion.woundThreshInd,

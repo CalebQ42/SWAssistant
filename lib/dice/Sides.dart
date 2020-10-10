@@ -24,6 +24,6 @@ class ComplexSidePart{
 
   ComplexSidePart({this.name = "", this.value = 0});
 
-  ComplexSidePart clone() => ComplexSidePart(name: name,value:value);
+  ComplexSidePart clone() => ComplexSidePart(name: name, value:value);
   String toString() => value != 1 ? value.toString() + " " + name : name;
 }
