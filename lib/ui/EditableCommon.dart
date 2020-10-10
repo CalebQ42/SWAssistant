@@ -94,37 +94,42 @@ class EditableContent extends StatefulWidget{
 
   final Widget Function(bool editing, Function refresh, EditableContentState state) builder;
   final bool Function() defaultEditingState;
+  final bool editButton;
+  final List<Widget> additonalButtons;
 
   final StatefulCard stateful;
 
-  EditableContent({this.builder, this.stateful, this.defaultEditingState});
+  EditableContent({this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additonalButtons});
 
   @override
-  State<EditableContent> createState() {
-    return EditableContentState(builder: builder, defaultEditingState: defaultEditingState, stateful: stateful);
-  }
+  State<EditableContent> createState() =>
+    EditableContentState(builder: builder, defaultEditingState: defaultEditingState,
+        stateful: stateful, editButton: editButton, additionalButtons: additonalButtons);
 }
 
 class EditableContentState extends State<EditableContent> with TickerProviderStateMixin{
 
   Widget Function(bool editing, Function refresh, EditableContentState state) builder;
   bool editing;
+  final bool editButton;
+  List<Widget> additionalButtons;
 
   StatefulCard stateful;
 
   final bool Function() defaultEditingState;
 
-  EditableContentState({this.builder, this.stateful, this.defaultEditingState}) :
-    editing = defaultEditingState == null ? false : defaultEditingState(){
-      if(builder == null && stateful == null)
-        throw("Either a builder or stateful MUST be provided");
-      if(stateful != null)
-        editing = stateful.getHolder().editing;
-    }
+  EditableContentState({this.builder, this.stateful, this.defaultEditingState, this.editButton, this.additionalButtons}) :
+      editing = defaultEditingState == null ? false : defaultEditingState(){
+    if(builder == null && stateful == null)
+      throw("Either a builder or stateful MUST be provided");
+    if(stateful != null)
+      editing = stateful.getHolder().editing;
+    additionalButtons ??= List();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (stateful != null) stateful.getHolder().editing = editing;
+    //TODO: put editbutton before addtional buttons
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -133,25 +138,30 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
           () => setState((){}),
           this
         ) : stateful,
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            icon: Icon(Icons.edit),
-            iconSize: 20.0,
-            padding: EdgeInsets.all(5.0),
-            constraints: BoxConstraints.tight(Size.square(30.0)),
-            color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
-            onPressed: () {
-              if(stateful == null)
-                setState(() => editing = !editing);
-              else{
-                editing = !editing;
-                stateful.getHolder().editing = editing;
-                stateful.getHolder().reloadFunction();
-                setState(() {});
-              }
-            }
-          )
+        if(editButton || additionalButtons != null) ButtonBar(
+          buttonPadding: EdgeInsets.only(left: 5, right: 5),
+          children: [
+            if(editButton) Tooltip(
+              message: "Edit",
+              child: IconButton(
+                iconSize: 20.0,
+                padding: EdgeInsets.all(5.0),
+                constraints: BoxConstraints.tight(Size.square(30.0)),
+                icon: Icon(Icons.edit),
+                color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
+                onPressed: () {
+                  if(stateful == null)
+                    setState(() => editing = !editing);
+                  else{
+                    editing = !editing;
+                    stateful.getHolder().editing = editing;
+                    stateful.getHolder().reloadFunction();
+                    setState(() {});
+                  }
+                }
+              )
+            )
+          ]..addAll(additionalButtons)
         )
       ],
     );

@@ -82,41 +82,119 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents() =>
-    <Widget> [
+  List<Widget> cardContents() {
+    Function weaponsRefresh;
+    Function invRefresh;
+    return [
       EditableContent(builder: (b, refresh, state) =>
-        Text("Minion Numbers")
-        //TODO: MinionNumber(editing: b, refresh: refresh, state: state)
+          Text("Minion Numbers")
+          //TODO: MinionNumber(editing: b, refresh: refresh, state: state)
+        ),
+      EditableContent(builder: (b, refresh, state) =>
+          Text("Wound")
+          //TODO: MinionWound(editing: b, refresh: refresh, state: state)
+        ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Characteristics(editing: b, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Text("Wound")
-        //TODO: MinionWound(editing: b, refresh: refresh, state: state)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Skills(editing: b, refresh: refresh),
+        defaultEditingState: () => skills.length == 0
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Characteristics(editing: b, state: state)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Defense(editing: b, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Skills(editing: b, refresh: refresh)
+      EditableContent(
+        builder: (b, refresh, state){
+          weaponsRefresh = refresh;
+          return Weapons(editing: b, refresh: refresh);
+        },
+        defaultEditingState: () => weapons.length == 0,
+        additonalButtons: [
+          Tooltip(
+            message: savedWeapons == null ? "Save weapons first!" : "Restore saved weapons",
+            child: IconButton(
+              iconSize: 20.0,
+              padding: EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(Size.square(30.0)),
+              icon: Icon(Icons.restore),
+              onPressed: savedWeapons == null ? null : (){
+                weapons = savedWeapons;
+                weaponsRefresh();
+              }
+            )
+          ),
+          Tooltip(
+            message: savedWeapons == null ? "Save weapons" : "Overwrite saved weapons",
+            child: IconButton(
+              iconSize: 20.0,
+              padding: EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(Size.square(30.0)),
+              icon: Icon(savedWeapons == null ? Icons.save_outlined : Icons.save),
+              onPressed: savedWeapons == null ? null : (){
+                savedWeapons = List.from(weapons);
+                if(savedWeapons == null)
+                  weaponsRefresh();
+              }
+            )
+          ),
+        ]
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Defense(editing: b, state: state)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Talents(editing: b, refresh: refresh),
+        defaultEditingState: () => talents.length == 0,
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Weapons(editing: b, refresh: refresh)
+      EditableContent(
+        builder: (b, refresh, state) {
+          invRefresh = refresh;
+          return Inventory(editing: b, refresh: refresh, state: state);
+        },
+        defaultEditingState: () => inventory.length == 0,
+        additonalButtons: [
+          Tooltip(
+            message: savedInv == null ? "Save inventory first!" : "Restore saved inventory",
+            child: IconButton(
+              iconSize: 20.0,
+              padding: EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(Size.square(30.0)),
+              icon: Icon(Icons.restore),
+              onPressed: savedInv == null ? null : (){
+                inventory = savedInv;
+                invRefresh();
+              }
+            )
+          ),
+          Tooltip(
+            message: savedInv == null ? "Save inventory" : "Overwrite saved inventory",
+            child: IconButton(
+              iconSize: 20.0,
+              padding: EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(Size.square(30.0)),
+              icon: Icon(savedInv == null ? Icons.save_outlined : Icons.save),
+              onPressed: savedInv == null ? null : (){
+                savedInv = List.from(inventory);
+                if(savedInv == null)
+                  invRefresh();
+              }
+            )
+          ),],
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Talents(editing: b, refresh: refresh)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          CriticalInjuries(editing: b, refresh: refresh),
+        defaultEditingState: () => criticalInjuries.length == 0
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Inventory(editing: b, refresh: refresh, state: state)
-      ),
-      EditableContent(builder: (b, refresh, state) =>
-        CriticalInjuries(editing: b, refresh: refresh)
-      ),
-      EditableContent(builder: (b, refresh, state) =>
-        Description(editing: b, state: state)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Description(editing: b, state: state),
+        defaultEditingState: () => desc == ""
       ),
     ];
+  }
 
   static Minion of(BuildContext context) => Editable.of(context);
 }
