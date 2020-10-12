@@ -129,7 +129,30 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
 
   @override
   Widget build(BuildContext context) {
-    //TODO: put editbutton before addtional buttons
+    var bottomButtons = List.from(additionalButtons);
+    if(editButton)
+      bottomButtons.add(
+        Tooltip(
+          message: "Edit",
+          child: IconButton(
+            iconSize: 20.0,
+            padding: EdgeInsets.all(5.0),
+            constraints: BoxConstraints.tight(Size.square(30.0)),
+            icon: Icon(Icons.edit),
+            color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
+            onPressed: () {
+              if(stateful == null)
+                setState(() => editing = !editing);
+              else{
+                editing = !editing;
+                stateful.getHolder().editing = editing;
+                stateful.getHolder().reloadFunction();
+                setState(() {});
+              }
+            }
+          )
+        )
+      );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -138,30 +161,9 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
           () => setState((){}),
           this
         ) : stateful,
-        if(editButton || additionalButtons != null) ButtonBar(
+        if(editButton || additionalButtons.length > 0) ButtonBar(
           buttonPadding: EdgeInsets.only(left: 5, right: 5),
-          children: [
-            if(editButton) Tooltip(
-              message: "Edit",
-              child: IconButton(
-                iconSize: 20.0,
-                padding: EdgeInsets.all(5.0),
-                constraints: BoxConstraints.tight(Size.square(30.0)),
-                icon: Icon(Icons.edit),
-                color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
-                onPressed: () {
-                  if(stateful == null)
-                    setState(() => editing = !editing);
-                  else{
-                    editing = !editing;
-                    stateful.getHolder().editing = editing;
-                    stateful.getHolder().reloadFunction();
-                    setState(() {});
-                  }
-                }
-              )
-            )
-          ]..addAll(additionalButtons)
+          children: bottomButtons
         )
       ],
     );
@@ -172,6 +174,8 @@ class EditableContentStatefulHolder{
   Function reloadFunction = () =>
     throw("THIS NEEDS TO BE OVERWRITTEN");
   bool editing = false;
+
+  EditableContentStatefulHolder({this.reloadFunction, this.editing});
 }
 
 mixin StatefulCard on StatefulWidget{

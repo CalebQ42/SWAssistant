@@ -7,14 +7,15 @@ class UpDownStat extends StatefulWidget{
   final Function onDownPressed;
   final int Function() getValue;
   final int max;
+  final Function getMax;
   final int min;
   final bool allowNegative;
 
-  UpDownStat({this.key,this.onUpPressed, this.onDownPressed, this.getValue, this.max, this.min, this.allowNegative = false});
+  UpDownStat({this.key,this.onUpPressed, this.onDownPressed, this.getValue, this.max, this.getMax, this.min, this.allowNegative = false});
 
   @override
   State<StatefulWidget> createState()=>_UpDownStatState(onUpPressed: onUpPressed,
-      onDownPressed: onDownPressed, getValue: getValue, max: max, min: min, allowNegative: allowNegative);
+      onDownPressed: onDownPressed, getValue: getValue, max: max, min: min, allowNegative: allowNegative, getMax: getMax);
 }
 
 class _UpDownStatState extends State{
@@ -23,11 +24,12 @@ class _UpDownStatState extends State{
   final Function onDownPressed;
   final int Function() getValue;
   final int max;
+  final Function getMax;
   final int min;
   final bool allowNegative;
   bool up = false;
 
-  _UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.max, int min, this.allowNegative = false}) :
+  _UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.max, int min, this.allowNegative = false, this.getMax}) :
     this.min = min ?? allowNegative ? null : 0;
 
   @override
@@ -70,7 +72,7 @@ class _UpDownStatState extends State{
           child: IconButton(
             icon: Icon(Icons.add),
             onPressed: (){
-              if(max == null || getValue() < max){
+              if((max == null && getMax == null) || getValue() < (getMax == null ? max : getMax())){
                 up = true;
                 onUpPressed();
                 setState((){});

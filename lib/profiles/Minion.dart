@@ -6,6 +6,7 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:swassistant/ui/items/characters/Talents.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
@@ -14,6 +15,8 @@ import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/creatures/Defense.dart';
 import 'package:swassistant/ui/items/creatures/Inventory.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
+import 'package:swassistant/ui/items/minion/MinNum.dart';
+import 'package:swassistant/ui/items/minion/MinionWound.dart';
 
 import 'utils/Creature.dart';
 
@@ -85,15 +88,19 @@ class Minion extends Editable with Creature{
   List<Widget> cardContents() {
     Function weaponsRefresh;
     Function invRefresh;
+    EditableContentStatefulHolder woundHolder;
+    Function numRefresh;
     return [
-      EditableContent(builder: (b, refresh, state) =>
-          Text("Minion Numbers")
-          //TODO: MinionNumber(editing: b, refresh: refresh, state: state)
-        ),
-      EditableContent(builder: (b, refresh, state) =>
-          Text("Wound")
-          //TODO: MinionWound(editing: b, refresh: refresh, state: state)
-        ),
+      EditableContent(
+        builder: (b, refresh, state){
+          numRefresh = refresh;
+          return MinNum(woundRefresh: woundHolder.reloadFunction);
+        },
+        editButton: false
+      ),
+      EditableContent(
+        stateful: MinionWound(holder: woundHolder, numRefresh: numRefresh),
+      ),
       EditableContent(
         builder: (b, refresh, state) =>
           Characteristics(editing: b, state: state)
@@ -121,7 +128,7 @@ class Minion extends Editable with Creature{
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(Icons.restore),
-              onPressed: savedWeapons == null ? null : (){
+              onPressed: savedWeapons.length == 0 ? null : (){
                 weapons = savedWeapons;
                 weaponsRefresh();
               }
@@ -133,10 +140,10 @@ class Minion extends Editable with Creature{
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
-              icon: Icon(savedWeapons == null ? Icons.save_outlined : Icons.save),
-              onPressed: savedWeapons == null ? null : (){
+              icon: Icon(savedWeapons.length == 0 ? Icons.save_outlined : Icons.save),
+              onPressed: savedWeapons.length == 0 ? null : (){
                 savedWeapons = List.from(weapons);
-                if(savedWeapons == null)
+                if(savedWeapons.length == 0)
                   weaponsRefresh();
               }
             )
@@ -161,8 +168,8 @@ class Minion extends Editable with Creature{
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
-              icon: Icon(Icons.restore),
-              onPressed: savedInv == null ? null : (){
+              icon: Icon(savedInv.length == 0 ? Icons.restore_outlined : Icons.restore),
+              onPressed: savedInv.length == 0 ? null : (){
                 inventory = savedInv;
                 invRefresh();
               }
@@ -174,14 +181,15 @@ class Minion extends Editable with Creature{
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
-              icon: Icon(savedInv == null ? Icons.save_outlined : Icons.save),
-              onPressed: savedInv == null ? null : (){
+              icon: Icon(savedInv.length == 0 ? Icons.save_outlined : Icons.save),
+              onPressed: savedInv.length == 0 ? null : (){
                 savedInv = List.from(inventory);
-                if(savedInv == null)
+                if(savedInv.length == 0)
                   invRefresh();
               }
             )
-          ),],
+          )
+        ],
       ),
       EditableContent(
         builder: (b, refresh, state) =>

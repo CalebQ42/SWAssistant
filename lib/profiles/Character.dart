@@ -180,52 +180,81 @@ class Character extends Editable with Creature{
 
   List<Widget> cardContents() => 
     <Widget>[
-      EditableContent(builder: (b, refresh, state) =>
-        CharacterInfo(editing: b, state: state)
-      ,),
-      EditableContent(builder: (b, refresh, state) =>
-        WoundStrain(editing: b, state: state)
-      , defaultEditingState: () => soak == 0 && woundThresh == 0 && strainThresh == 0,),
-      EditableContent(builder: (b, refresh, state) =>
-        Characteristics(editing: b, state: state)
-      , defaultEditingState: () => charVals.every((element) => element == 0),),
-      EditableContent(builder: (b, refresh, state) =>
-        Skills(editing:b, refresh: refresh)
-      , defaultEditingState: () => skills.length == 0),
-      EditableContent(builder: (b, refresh, state) =>
-        Defense(editing: b, state: state)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          CharacterInfo(editing: b, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Weapons(editing: b, refresh: refresh)
-      , defaultEditingState: () => weapons.length == 0),
-      EditableContent(builder: (b, refresh, state) =>
-        CriticalInjuries(editing: b, refresh: refresh)
-      , defaultEditingState: () => criticalInjuries.length == 0),
-      EditableContent(builder: (b, refresh, state) =>
-        Specializations(editing: b, refresh: refresh,)
-      , defaultEditingState: () => specializations.length == 0,),
-      EditableContent(builder: (b, refresh, state) =>
-        Talents(editing: b, refresh: refresh,)
-      , defaultEditingState: () => talents.length == 0,),
-      if(!disableForce) EditableContent(builder: (b, refresh, state) =>
-        ForcePowers(editing: b, refresh: refresh, state: state)
-      , defaultEditingState: () => forcePowers.length == 0 && force == 0,),
-      EditableContent(builder: (b, refresh, state) =>
-        XP(editing: b, refresh: refresh, state: state)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          WoundStrain(editing: b, state: state),
+        defaultEditingState: () => soak == 0 && woundThresh == 0 && strainThresh == 0
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Inventory(editing: b, refresh: refresh, state: state)
-      , defaultEditingState: () => inventory.length == 0,),
-      if(!disableMorality) EditableContent(stateful: Morality()),
-      if(!disableDuty) EditableContent(builder: (b, refresh, state) =>
-        Duties(editing: b, refresh: refresh)
-      , defaultEditingState: () => duties.length == 0,),
-      if(!disableObligation) EditableContent(builder: (b, refresh, state) =>
-        Obligations(editing: b, refresh: refresh)
-      , defaultEditingState: () => obligations.length == 0,),
-      EditableContent(builder: (b, refresh, state) =>
-        Description(editing: b, state: state)
-      , defaultEditingState: () => desc == "",)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Characteristics(editing: b, state: state),
+        defaultEditingState: () => charVals.every((element) => element == 0)
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Skills(editing:b, refresh: refresh),
+        defaultEditingState: () => skills.length == 0
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Defense(editing: b, state: state)
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Weapons(editing: b, refresh: refresh),
+        defaultEditingState: () => weapons.length == 0
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          CriticalInjuries(editing: b, refresh: refresh),
+        defaultEditingState: () => criticalInjuries.length == 0
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Specializations(editing: b, refresh: refresh,),
+        defaultEditingState: () => specializations.length == 0
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Talents(editing: b, refresh: refresh,),
+        defaultEditingState: () => talents.length == 0
+      ),
+      if(!disableForce) EditableContent(
+        builder: (b, refresh, state) =>
+          ForcePowers(editing: b, refresh: refresh, state: state),
+        defaultEditingState: () => forcePowers.length == 0 && force == 0
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          XP(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Inventory(editing: b, refresh: refresh, state: state),
+        defaultEditingState: () => inventory.length == 0
+      ),
+      if(!disableMorality) EditableContent(
+        stateful: Morality()
+      ),
+      if(!disableDuty) EditableContent(
+        builder: (b, refresh, state) =>
+          Duties(editing: b, refresh: refresh),
+        defaultEditingState: () => duties.length == 0
+      ),
+      if(!disableObligation) EditableContent(
+        builder: (b, refresh, state) =>
+          Obligations(editing: b, refresh: refresh),
+        defaultEditingState: () => obligations.length == 0
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Description(editing: b, state: state),
+        defaultEditingState: () => desc == ""
+      )
     ];
 
   static Character of(BuildContext context) => Editable.of(context);

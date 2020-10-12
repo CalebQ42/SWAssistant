@@ -98,26 +98,32 @@ class Vehicle extends Editable{
 
   List<Widget> cardContents() =>
     <Widget>[
-      EditableContent(builder: (b, refresh, state) =>
-        Text("Info")
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Text("Info")
         //TODO: VehicleInfo(editing: b, refresh: refresh, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Text("Defense")
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Text("Defense")
         //TODO: VehicleDefese(editing: b, refresh: refresh, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Text("Damage")
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Text("Damage")
         //TODO: VehicleDamage(editing: b, refresh: refresh, state: state)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Weapons(editing: b, refresh: refresh)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Weapons(editing: b, refresh: refresh)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        CriticalInjuries(editing: b, refresh: refresh)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          CriticalInjuries(editing: b, refresh: refresh)
       ),
-      EditableContent(builder: (b, refresh, state) =>
-        Description(editing: b, state: state)
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Description(editing: b, state: state)
       ),
     ];
 
