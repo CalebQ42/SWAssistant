@@ -6,7 +6,6 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:swassistant/ui/items/characters/Talents.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
@@ -88,18 +87,15 @@ class Minion extends Editable with Creature{
   List<Widget> cardContents() {
     Function weaponsRefresh;
     Function invRefresh;
-    EditableContentStatefulHolder woundHolder;
-    Function numRefresh;
+    EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
+    EditableContentStatefulHolder numHolder;
     return [
       EditableContent(
-        builder: (b, refresh, state){
-          numRefresh = refresh;
-          return MinNum(woundRefresh: woundHolder.reloadFunction);
-        },
+        stateful: MinNum(woundHolder: woundHolder, holder: numHolder),
         editButton: false
       ),
       EditableContent(
-        stateful: MinionWound(holder: woundHolder, numRefresh: numRefresh),
+        stateful: MinionWound(holder: woundHolder, numHolder: numHolder),
       ),
       EditableContent(
         builder: (b, refresh, state) =>

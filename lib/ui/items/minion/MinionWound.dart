@@ -6,12 +6,12 @@ import 'package:swassistant/ui/UpDownStat.dart';
 class MinionWound extends StatefulWidget with StatefulCard{
 
   final EditableContentStatefulHolder holder;
-  final Function numRefresh;
+  final EditableContentStatefulHolder numHolder;
 
-  MinionWound({this.holder, this.numRefresh});
+  MinionWound({this.holder, this.numHolder});
 
   @override
-  State<StatefulWidget> createState() => MinionWoundState(holder: holder);
+  State<StatefulWidget> createState() => MinionWoundState(holder: holder, numHolder: numHolder);
 
   @override
   EditableContentStatefulHolder getHolder() => holder;
@@ -20,11 +20,11 @@ class MinionWound extends StatefulWidget with StatefulCard{
 class MinionWoundState extends State with TickerProviderStateMixin{
 
   final EditableContentStatefulHolder holder;
-  final Function numRefresh;
+  final EditableContentStatefulHolder numHolder;
 
   TextEditingController indWoundController;
 
-  MinionWoundState({this.holder, this.numRefresh}){
+  MinionWoundState({this.holder, this.numHolder}){
     holder.reloadFunction = () => setState((){});
   }
 
@@ -100,6 +100,14 @@ class MinionWoundState extends State with TickerProviderStateMixin{
           onDownPressed: (){
             minion.woundCur--;
             woundCurTemp = minion.woundCur;
+            int minNum = minion.woundCur / minion.woundThreshInd as int;
+            if(minion.woundCur % minion.woundThreshInd > 0)
+              minNum ++;
+            if(minion.minionNum != minNum){
+              minion.minionNum = minNum;
+              if(minion.showCard[minion.cardNames.indexOf("Number of Minions")])
+                numHolder.reloadFunction();
+            }
             minion.save(context: context);
           },
           getValue: () => minion.woundCur,

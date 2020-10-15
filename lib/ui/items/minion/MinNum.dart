@@ -2,11 +2,28 @@ import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 
-class MinNum extends StatelessWidget{
+import '../../EditableCommon.dart';
 
-  final Function woundRefresh;
+class MinNum extends StatefulWidget with StatefulCard{
 
-  MinNum({this.woundRefresh});
+  final EditableContentStatefulHolder holder;
+  final EditableContentStatefulHolder woundHolder;
+
+  MinNum({this.holder, this.woundHolder});
+
+  @override
+  State<StatefulWidget> createState() => MinNumState(holder: holder, woundHolder: woundHolder);
+
+  @override
+  EditableContentStatefulHolder getHolder() => holder;
+}
+
+class MinNumState extends State{
+
+  final EditableContentStatefulHolder holder;
+  final EditableContentStatefulHolder woundHolder;
+
+  MinNumState({this.woundHolder, this.holder});
 
   @override
   Widget build(BuildContext context){
@@ -19,8 +36,8 @@ class MinNum extends StatelessWidget{
           minion.woundCur = 0;
         minion.woundThresh = minion.minionNum * minion.woundThresh;
         minion.save(context: context);
-        if(woundRefresh != null && minion.showCard[minion.cardNames.indexOf("Wound")])
-          woundRefresh();
+        if(minion.showCard[minion.cardNames.indexOf("Wound")])
+          woundHolder.reloadFunction();
       },
     );
   }
