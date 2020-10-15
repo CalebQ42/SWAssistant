@@ -39,6 +39,17 @@ class MinNumState extends State{
         if(minion.showCard[minion.cardNames.indexOf("Wound")])
           woundHolder.reloadFunction();
       },
+      onUpPressed: (){
+        minion.minionNum++;
+        minion.woundCur += minion.woundThreshInd;
+        if(minion.woundCur > 0)
+          minion.woundCur = 0;
+        minion.woundThresh = minion.minionNum * minion.woundThresh;
+        minion.save(context: context);
+        if(minion.showCard[minion.cardNames.indexOf("Wound")])
+          woundHolder.reloadFunction();
+      },
+      getValue: () => minion.minionNum,
     );
   }
 }

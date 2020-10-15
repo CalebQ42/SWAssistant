@@ -87,8 +87,8 @@ class Minion extends Editable with Creature{
   List<Widget> cardContents() {
     Function weaponsRefresh;
     Function invRefresh;
-    EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
-    EditableContentStatefulHolder numHolder;
+    EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder(editing: false);
+    EditableContentStatefulHolder numHolder = EditableContentStatefulHolder(editing: false);
     return [
       EditableContent(
         stateful: MinNum(woundHolder: woundHolder, holder: numHolder),

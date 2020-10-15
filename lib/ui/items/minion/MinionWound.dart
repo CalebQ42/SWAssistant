@@ -50,10 +50,12 @@ class MinionWoundState extends State with TickerProviderStateMixin{
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Soak:"),
             SizedBox(
               width: 50,
+              height: 25,
               child: EditingText(
                 editing: holder.editing,
                 state: this,
@@ -66,9 +68,11 @@ class MinionWoundState extends State with TickerProviderStateMixin{
                       minion.soak = 0;
                     else
                       minion.soak = tmp;
-                    return tmp;
                   });
+                  return controller;
                 }(),
+                textAlign: TextAlign.center,
+                fieldAlign: TextAlign.center,
                 collapsed: true,
                 defaultSave: true,
               ),
@@ -76,10 +80,12 @@ class MinionWoundState extends State with TickerProviderStateMixin{
           ]
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Wound per Minion:"),
             SizedBox(
               width: 50,
+              height: 25,
               child: EditingText(
                 editing: holder.editing,
                 state: this,
@@ -87,6 +93,8 @@ class MinionWoundState extends State with TickerProviderStateMixin{
                 controller: indWoundController,
                 collapsed: true,
                 defaultSave: true,
+                textAlign: TextAlign.center,
+                fieldAlign: TextAlign.center,
               ),
             )
           ],
@@ -111,7 +119,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
             minion.save(context: context);
           },
           getValue: () => minion.woundCur,
-          getMax: () => minion.woundThresh,
+          getMax: () => minion.woundThreshInd * minion.minionNum,
         )
       ],
     );

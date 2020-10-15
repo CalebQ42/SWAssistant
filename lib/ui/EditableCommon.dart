@@ -129,7 +129,7 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
 
   @override
   Widget build(BuildContext context) {
-    var bottomButtons = List.from(additionalButtons);
+    var bottomButtons = List<Widget>.from(additionalButtons);
     if(editButton)
       bottomButtons.add(
         Tooltip(
@@ -173,9 +173,9 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
 class EditableContentStatefulHolder{
   Function reloadFunction = () =>
     throw("THIS NEEDS TO BE OVERWRITTEN");
-  bool editing = false;
+  bool editing;
 
-  EditableContentStatefulHolder({this.reloadFunction, this.editing});
+  EditableContentStatefulHolder({this.reloadFunction, this.editing = false});
 }
 
 mixin StatefulCard on StatefulWidget{
