@@ -102,7 +102,7 @@ abstract class Editable extends JsonSavable{
 
   List<Widget> cards(Function refreshList, BuildContext context){
     var cards = List<Widget>();
-    var contents = cardContents();
+    var contents = cardContents(context);
     cards.add(
       Padding(
         padding: EdgeInsets.all(10.0),
@@ -116,7 +116,7 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  List<Widget> cardContents();
+  List<Widget> cardContents(BuildContext context);
 
   String getFileLocation(SW sw){
     if(_loc == null || _loc == "")

@@ -26,6 +26,8 @@ class Minion extends Editable with Creature{
   List<Item> savedInv = new List();
   List<Weapon> savedWeapons = new List();
 
+  int woundCurTemp = 0;
+
   String get fileExtension => ".swminion";
   List<String> get cardNames => [
     "Number of Minions",
@@ -84,11 +86,12 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents() {
+  List<Widget> cardContents(BuildContext context) {
     Function weaponsRefresh;
     Function invRefresh;
-    EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder(editing: false);
-    EditableContentStatefulHolder numHolder = EditableContentStatefulHolder(editing: false);
+    EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
+    EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();
+    woundCurTemp = woundCur;
     return [
       EditableContent(
         stateful: MinNum(woundHolder: woundHolder, holder: numHolder),
@@ -125,8 +128,21 @@ class Minion extends Editable with Creature{
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(Icons.restore),
               onPressed: savedWeapons.length == 0 ? null : (){
+                var tmp = List.of(weapons);
                 weapons = savedWeapons;
                 weaponsRefresh();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Weapons Restored"),
+                    action: SnackBarAction(
+                      label: "Undo",
+                      onPressed: (){
+                        weapons = tmp;
+                        weaponsRefresh();
+                      },
+                    ),
+                  )
+                );
               }
             )
           ),
@@ -138,9 +154,15 @@ class Minion extends Editable with Creature{
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedWeapons.length == 0 ? Icons.save_outlined : Icons.save),
               onPressed: savedWeapons.length == 0 ? null : (){
+                var reload = (savedWeapons.length == 0 && weapons.length != 0) || (savedWeapons.length != 0 && weapons.length == 0);
                 savedWeapons = List.from(weapons);
-                if(savedWeapons.length == 0)
+                if(reload)
                   weaponsRefresh();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Weapons Saved"),
+                  )
+                );
               }
             )
           ),
@@ -166,8 +188,21 @@ class Minion extends Editable with Creature{
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedInv.length == 0 ? Icons.restore_outlined : Icons.restore),
               onPressed: savedInv.length == 0 ? null : (){
+                var tmp = List.of(inventory);
                 inventory = savedInv;
                 invRefresh();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Inventory Restored"),
+                    action: SnackBarAction(
+                      label: "Undo",
+                      onPressed: (){
+                        inventory = tmp;
+                        invRefresh();
+                      },
+                    ),
+                  )
+                );
               }
             )
           ),
@@ -179,9 +214,15 @@ class Minion extends Editable with Creature{
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedInv.length == 0 ? Icons.save_outlined : Icons.save),
               onPressed: savedInv.length == 0 ? null : (){
+                var refresh = (savedInv.length == 0 && inventory.length != 0) || (savedInv.length != 0 && inventory.length == 0);
                 savedInv = List.from(inventory);
-                if(savedInv.length == 0)
+                if(refresh)
                   invRefresh();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Inventory Saved"),
+                  )
+                );
               }
             )
           )

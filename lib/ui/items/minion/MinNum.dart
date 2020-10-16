@@ -23,7 +23,9 @@ class MinNumState extends State{
   final EditableContentStatefulHolder holder;
   final EditableContentStatefulHolder woundHolder;
 
-  MinNumState({this.woundHolder, this.holder});
+  MinNumState({this.woundHolder, this.holder}){
+    holder.reloadFunction = () => setState((){});
+  }
 
   @override
   Widget build(BuildContext context){
@@ -32,8 +34,9 @@ class MinNumState extends State{
       onDownPressed: (){
         minion.minionNum--;
         minion.woundCur -= minion.woundThreshInd;
-        if(minion.woundCur > 0)
+        if(minion.woundCur < 0)
           minion.woundCur = 0;
+        minion.woundCurTemp = minion.woundCur;
         minion.woundThresh = minion.minionNum * minion.woundThresh;
         minion.save(context: context);
         if(minion.showCard[minion.cardNames.indexOf("Wound")])
@@ -42,8 +45,7 @@ class MinNumState extends State{
       onUpPressed: (){
         minion.minionNum++;
         minion.woundCur += minion.woundThreshInd;
-        if(minion.woundCur > 0)
-          minion.woundCur = 0;
+        minion.woundCurTemp = minion.woundCur;
         minion.woundThresh = minion.minionNum * minion.woundThresh;
         minion.save(context: context);
         if(minion.showCard[minion.cardNames.indexOf("Wound")])

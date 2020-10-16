@@ -30,7 +30,7 @@ class _UpDownStatState extends State{
   bool up = false;
 
   _UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.max, int min, this.allowNegative = false, this.getMax}) :
-    this.min = min ?? allowNegative ? null : 0;
+    this.min = min ?? (allowNegative ? null : 0);
 
   @override
   Widget build(BuildContext context) {

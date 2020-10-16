@@ -31,21 +31,22 @@ class MinionWoundState extends State with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     var minion = Minion.of(context);
-    var woundCurTemp = minion.woundCur;
     if(indWoundController == null)
       indWoundController = TextEditingController(text: minion.woundThreshInd.toString())
           ..addListener(() {
         var tmp = int.tryParse(indWoundController.text);
+        var orig = minion.woundCur;
         if(tmp == null)
           minion.woundThreshInd = 0;
         else
           minion.woundThreshInd = tmp;
         minion.woundThresh = minion.woundThreshInd * minion.minionNum;
-        if(minion.woundCur < woundCurTemp)
-          minion.woundCur = woundCurTemp;
+        if(minion.woundCur < minion.woundCurTemp)
+          minion.woundCur = minion.woundCurTemp;
         if(minion.woundCur > minion.woundThresh)
           minion.woundCur = minion.woundThresh;
-        return tmp;
+        if(minion.woundCur != orig)
+          setState((){});
       });
     return Column(
       children: [
@@ -73,6 +74,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
                 }(),
                 textAlign: TextAlign.center,
                 fieldAlign: TextAlign.center,
+                textType: TextInputType.number,
                 collapsed: true,
                 defaultSave: true,
               ),
@@ -91,6 +93,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
                 state: this,
                 initialText: minion.woundThreshInd.toString(),
                 controller: indWoundController,
+                textType: TextInputType.number,
                 collapsed: true,
                 defaultSave: true,
                 textAlign: TextAlign.center,
@@ -102,13 +105,13 @@ class MinionWoundState extends State with TickerProviderStateMixin{
         UpDownStat(
           onUpPressed: (){
             minion.woundCur++;
-            woundCurTemp = minion.woundCur;
+            minion.woundCurTemp = minion.woundCur;
             minion.save(context: context);
           },
           onDownPressed: (){
             minion.woundCur--;
-            woundCurTemp = minion.woundCur;
-            int minNum = minion.woundCur / minion.woundThreshInd as int;
+            minion.woundCurTemp = minion.woundCur;
+            int minNum = minion.woundCur ~/ minion.woundThreshInd;
             if(minion.woundCur % minion.woundThreshInd > 0)
               minNum ++;
             if(minion.minionNum != minNum){

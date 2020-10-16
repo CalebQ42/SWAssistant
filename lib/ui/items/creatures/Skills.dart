@@ -41,7 +41,7 @@ class Skills extends StatelessWidget{
                 child:Text(creature.skills[index].value.toString()),
                 padding: EdgeInsets.all(12)
               )
-              : !editing ? Container() : ButtonBar(
+              : !editing ? Container(height: 40,) : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   IconButton(

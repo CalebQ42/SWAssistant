@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:swassistant/dice/SWDiceHolder.dart';
+import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/JsonSavable.dart';
 
@@ -37,11 +39,19 @@ class Skill implements JsonSavable{
     "career" : career
   };
 
-  SWDiceHolder getDice(Creature creature) =>
-    SWDiceHolder(
-      ability: (creature.charVals[base] - value).abs(),
-      proficiency: min(creature.charVals[base],value)
-    );
+  SWDiceHolder getDice(Creature creature) {
+    if(creature is Character)
+      return SWDiceHolder(
+        ability: (creature.charVals[base] - value).abs(),
+        proficiency: min(creature.charVals[base], value)
+      );
+    else if(creature is Minion)
+      return SWDiceHolder(
+        ability: (creature.charVals[base] - creature.minionNum).abs(),
+        proficiency: min(creature.charVals[base], creature.minionNum)
+      );
+    return SWDiceHolder();
+  }
 
   String toString(){
     return name + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
