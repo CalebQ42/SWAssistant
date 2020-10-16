@@ -115,12 +115,12 @@
     }
   ],
   "wound threshold per minion": 5,
-  "wound threshold": 0,
-  "wound current": 0,
+  "wound threshold": 25,
+  "wound current": 25,
   "defense melee": 0,
   "defense ranged": 0,
   "soak": 4,
-  "minion number": 0,
+  "minion number": 5,
   "description": "",
   "show cards": [
     false,
