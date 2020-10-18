@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,8 @@ class SW{
   final List<String> vehCats = new List();
 
   final SharedPreferences prefs;
+
+  bool firebaseAvailable = false;
 
   String saveDir;
 
@@ -273,6 +276,13 @@ class SW{
     }
     SW out = SW(prefs: prefs, saveDir: saveDir, devMode: devMode,);
     out.loadAll();
+    try{
+      await Firebase.initializeApp();
+      out.firebaseAvailable = true;
+    }catch (e){
+      print(e);
+      out.firebaseAvailable = false;
+    }
     return out;
   }
 

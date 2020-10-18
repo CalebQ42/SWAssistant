@@ -9,7 +9,6 @@ void main() =>
   );
 
 class SWApp extends StatelessWidget {
-  SWApp();
   @override
   Widget build(BuildContext context) {
     ThemeData theme;

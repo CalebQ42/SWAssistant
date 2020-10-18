@@ -47,6 +47,9 @@ app.*.map.json
 # Keyfile Info
 android/key.properties
 
+# Firebase
+android/app/google-services.json
+
 # Old Android stuff
 .gradle/
 local.properties
