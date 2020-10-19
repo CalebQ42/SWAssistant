@@ -14,7 +14,7 @@ class Vehicle extends Editable{
   int speed = 0;
   int handling = 0;
   int armor = 0;
-  List<int> defense = new List();
+  List<int> defense = new List.filled(4, 0, growable: false);
   int totalDefense = 0;
   int hullTraumaThresh = 0;
   int hullTraumaCur = 0;

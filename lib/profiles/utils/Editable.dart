@@ -24,9 +24,9 @@ abstract class Editable extends JsonSavable{
   String name;
   List<Note> notes = new List();
   List<Weapon> weapons = new List();
-  String category;
+  String category = "";
   List<CriticalInjury> criticalInjuries = new List();
-  String desc;
+  String desc = "";
 
   List<bool> showCard;
 
@@ -39,7 +39,7 @@ abstract class Editable extends JsonSavable{
   bool _defered = false;
 
   Editable({@required this.id, this.name = "", bool saveOnCreation = false, SW app}){
-    showCard = List.filled(cardNames.length, false);
+    showCard = List.filled(cardNames.length, false, growable: false);
     if(saveOnCreation)
       this.save(filename: getFileLocation(app));
   }

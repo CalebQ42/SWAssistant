@@ -30,6 +30,7 @@ class _EditableListState extends State{
 
   int type;
   List list;
+  String category = "";
 
   _EditableListState(this.type);
 
@@ -51,21 +52,62 @@ class _EditableListState extends State{
     }
     return Scaffold(
       drawer: SWDrawer(),
-      appBar: SWAppBar(title: Text((){
-        switch(type){
-          case 0:
-            return "Characters";
-            break;
-          case 1:
-            return "Minions";
-            break;
-          case 2:
-            return "Vehicles";
-            break;
-          default:
-            return "";
-        }
-      }())),
+      appBar: SWAppBar(
+        title: Text(
+          (){
+            switch(type){
+              case 0:
+                return "Characters";
+                break;
+              case 1:
+                return "Minions";
+                break;
+              case 2:
+                return "Vehicles";
+                break;
+              default:
+                return "";
+            }
+          }(),
+        ),
+        bottom: PreferredSize(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                items: (){
+                  List<String> cats;
+                  switch(type){
+                    case 0:
+                      cats = SW.of(context).charCats;
+                      break;
+                    case 1:
+                      cats = SW.of(context).minCats;
+                      break;
+                    case 2:
+                      cats =  SW.of(context).vehCats;
+                      break;
+                  }
+                  List<DropdownMenuItem> out = List();
+                  cats.forEach((element) {
+                    out.add(DropdownMenuItem(
+                      child: Text(element),
+                      value: element
+                    ));
+                  });
+                  return out;
+                }(),
+                hint: Text("Categories"),
+                onChanged: (value){
+                  setState(() => category = value);
+                },
+                isExpanded: true,
+              )
+            )
+          ),
+          preferredSize: Size.fromHeight(50),
+        ),
+      ),
       body: ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext c, int index){

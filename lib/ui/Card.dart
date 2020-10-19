@@ -37,7 +37,7 @@ class _InfoCardState extends State{
         curve: Curves.easeOutBack,
         duration: Duration(milliseconds: 500),
         alignment: holder.shown ? Alignment.center : Alignment.centerLeft,
-        child: Text(holder.title, style: TextStyle(color: Theme.of(context).primaryTextTheme.bodyText1.color),),
+        child: Text(holder.title),
       ),
       children: [holder.contents],
       onExpansionChanged: (b){

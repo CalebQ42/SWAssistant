@@ -14,8 +14,9 @@ class SWAppBar extends AppBar{
     "translate" : () => _launchURL("https://crowdin.com/project/swrpg")
   };
 
-  SWAppBar({Widget title, List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions}) :
-        super(title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions));
+  SWAppBar({Widget title, List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions,
+      Map<String, Function> popupFunctions, PreferredSizeWidget bottom}) :
+        super(title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
 
   static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions) =>
     List<Widget>()
@@ -57,7 +58,7 @@ class SWDrawer extends StatelessWidget{
           DrawerHeader(
             child: Text("SW Assistant"),
             decoration: BoxDecoration(
-              color: Colors.red
+              color: Theme.of(context).primaryColor
             )
           ),
           ListTile(
