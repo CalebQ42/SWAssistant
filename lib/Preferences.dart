@@ -9,3 +9,5 @@ String firstLaunch = "firstLaunchCheck";
 String analytics = "analytics";
 String startCount = "startCount";
 String dev = "devMode";
+String crashlytics = "crashlytics";
+String firebase = "firebase";

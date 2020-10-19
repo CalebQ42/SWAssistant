@@ -1,18 +1,31 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
+import 'package:swassistant/ui/screens/Settings.dart';
 
 void main() =>
-  SW.initialize().then((value) =>
-    runApp(SWWidget(child: SWApp(), app: value))
+  //TODO: On first start, show an onboarding UI with options for analytics & restore profiles from old versions.
+  SW.initialize().then(
+    (value) {
+      if(value.firebaseAvailable && value.getPreference(preferences.crashlytics, true) == true &&
+          value.getPreference(preferences.firebase, true))
+        FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+      runApp(SWWidget(child: SWApp(), app: value));
+    }
   );
 
-class SWApp extends StatelessWidget {
+class SWApp extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => SWAppState();
+}
+
+class SWAppState extends State {
   @override
   Widget build(BuildContext context) {
     ThemeData theme;
-    if(SW.of(context).prefs.getBool(preferences.light)!= null && SW.of(context).prefs.getBool(preferences.light))
+    if(SW.of(context).getPreference(preferences.light, false))
       theme = ThemeData(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
@@ -54,6 +67,7 @@ class SWApp extends StatelessWidget {
         "/characters" : (context) => EditableList(EditableList.character),
         "/vehicles" : (context) => EditableList(EditableList.vehicle),
         "/minions" : (context) => EditableList(EditableList.minion),
+        "/settings" : (context) => Settings(updateTopLevel: () => setState((){}),)
       },
     );
   }

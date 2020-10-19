@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -257,6 +258,9 @@ class SW{
     //TODO: cload loading AND saving
   }
 
+  dynamic getPreference(String preference, dynamic defaultValue) =>
+    prefs.get(preference) ?? defaultValue;
+
   static Future<SW> initialize() async{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
@@ -276,13 +280,19 @@ class SW{
     }
     SW out = SW(prefs: prefs, saveDir: saveDir, devMode: devMode,);
     out.loadAll();
-    try{
-      await Firebase.initializeApp();
-      out.firebaseAvailable = true;
-    }catch (e){
-      print(e);
-      out.firebaseAvailable = false;
+    if(out.getPreference(preferences.crashlytics, true)){
+      try{
+        await Firebase.initializeApp();
+        out.firebaseAvailable = true;
+      }catch (e){
+        print(e);
+        out.firebaseAvailable = false;
+      }
     }
+    if(out.getPreference(preferences.crashlytics, true) && kDebugMode == false)
+      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    else
+      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     return out;
   }
 

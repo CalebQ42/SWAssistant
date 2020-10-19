@@ -75,24 +75,22 @@ class _EditableListState extends State{
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
+          //TODO: fix profile creation (It doesn't work at all for Characters and Minions)
           var id = 0;
           switch (type){
             case 0:
-              while(SW.of(context).characters().any((e)=>e.id==id)){
+              while(SW.of(context).characters().any((e)=>e.id==id))
                 id++;
-              }
               setState(() => SW.of(context).add(new Character(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
             case 1:
-              while(SW.of(context).minions().any((e)=>e.id==id)){
+              while(SW.of(context).minions().any((e)=>e.id==id))
                 id++;
-              }
               setState(() => SW.of(context).add(new Minion(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
             case 2:
-              while(SW.of(context).vehicles().any((e)=>e.id==id)){
+              while(SW.of(context).vehicles().any((e)=>e.id==id))
                 id++;
-              }
               setState(() => SW.of(context).add(new Vehicle(id: id, saveOnCreation: true, app: SW.of(context))));
               break;
           }

@@ -30,8 +30,8 @@ class _EditingEditableState extends State{
 
   _EditingEditableState(this.profile,this.refreshList);
 
-  Widget build(BuildContext context) {
-    return InheritedEditable(
+  Widget build(BuildContext context) =>
+    InheritedEditable(
       child: Scaffold(
         drawer: SWDrawer(),
         bottomNavigationBar: BottomNavigationBar(
@@ -161,7 +161,6 @@ class _EditingEditableState extends State{
       editable: profile
     );
   }
-}
 
 class InheritedEditable extends InheritedWidget{
   final Editable editable;

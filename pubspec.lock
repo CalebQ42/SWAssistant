@@ -84,7 +84,7 @@ packages:
       name: firebase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.3.0"
+    version: "7.3.2"
   firebase_core:
     dependency: "direct main"
     description:
@@ -106,6 +106,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  firebase_crashlytics:
+    dependency: "direct main"
+    description:
+      name: firebase_crashlytics
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1+1"
+  firebase_crashlytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_crashlytics_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -197,7 +211,7 @@ packages:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+3"
+    version: "0.0.4+4"
   path_provider_platform_interface:
     dependency: transitive
     description:
@@ -218,7 +232,7 @@ packages:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.0"
+    version: "1.9.2"
   permission_handler:
     dependency: "direct main"
     description:
@@ -246,7 +260,7 @@ packages:
       name: plugin_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   process:
     dependency: transitive
     description:
@@ -274,7 +288,7 @@ packages:
       name: shared_preferences_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2+1"
+    version: "0.0.2+2"
   shared_preferences_macos:
     dependency: transitive
     description:
@@ -419,7 +433,7 @@ packages:
       name: xdg_directories
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.2"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"
   flutter: ">=1.12.13+hotfix.5 <2.0.0"
