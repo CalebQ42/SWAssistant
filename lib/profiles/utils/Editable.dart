@@ -29,6 +29,7 @@ abstract class Editable extends JsonSavable{
   String desc = "";
 
   List<bool> showCard;
+  Route route;
 
   String get fileExtension;
   List<String> get cardNames;
@@ -102,7 +103,7 @@ abstract class Editable extends JsonSavable{
 
   List<Widget> cards(Function refreshList, BuildContext context){
     var cards = List<Widget>();
-    var contents = cardContents(context);
+    var contents = cardContents(context, refreshList);
     cards.add(
       Padding(
         padding: EdgeInsets.all(10.0),
@@ -116,7 +117,10 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  List<Widget> cardContents(BuildContext context);
+  Route setRoute(Function refreshCallback){
+    route = MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(this,refreshCallback),fullscreenDialog: false);
+    return route;
+  }
 
   String getFileLocation(SW sw){
     if(_loc == null || _loc == "")
@@ -168,6 +172,8 @@ abstract class Editable extends JsonSavable{
   bool hasShortcut(){ return false; }
   void updateShortcut(){}
   void deleteShortcut(){}
+
+  List<Widget> cardContents(BuildContext context, Function listUpdate);
 
   static Editable of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable;
 }

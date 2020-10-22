@@ -65,7 +65,8 @@ class SWDrawer extends StatelessWidget{
             title: Text("GM Mode"),
             leading: Icon(Icons.contacts),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/gm");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/gm");
             }
           ),
           Divider(),
@@ -74,28 +75,32 @@ class SWDrawer extends StatelessWidget{
             title: Text("Characters"),
             leading: Icon(Icons.face),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/characters");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/characters");
             }
           ),
           ListTile(
             title: Text("Minions"),
             leading: Icon(Icons.supervisor_account),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/minions");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/minions");
             }
           ),
           ListTile(
             title: Text("Vehicles"),
             leading: Icon(Icons.motorcycle),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/vehicles");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/vehicles");
             }
           ),
           ListTile(
             title: Text("Download"),
             leading: Icon(Icons.cloud_download),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/download");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/download");
             }
           ),
           Divider(),
@@ -104,21 +109,24 @@ class SWDrawer extends StatelessWidget{
             title: Text("Dice"),
             leading: Icon(Icons.casino),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/dice");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/dice");
             }
           ),
           ListTile(
             title: Text("Guide"),
             leading: Icon(Icons.book),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/guide");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/guide");
             }
           ),
           ListTile(
             title: Text("Settings"),
             leading: Icon(Icons.settings),
             onTap: (){
-              Navigator.of(context).popAndPushNamed("/settings");
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed("/settings");
             }
           )
         ],

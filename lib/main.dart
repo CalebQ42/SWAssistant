@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -61,14 +60,14 @@ class SWAppState extends State {
         ),
         brightness: Brightness.dark
       );
+    
     return MaterialApp(
       title: 'SWAssistant',
       theme: theme,
       navigatorObservers: [
-        // if(SW.of(context).getPreference(preferences.analytics, true) && SW.of(context).getPreference(preferences.firebase, true) &&
-        //     SW.of(context).firebaseAvailable)
-        //   FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
-        // Observatory()
+        if(SW.of(context).getPreference(preferences.analytics, true) && SW.of(context).firebaseAvailable)
+          FirebaseAnalyticsObserver(analytics: SW.of(context).analytics),
+        SW.of(context).observatory
       ],
       initialRoute: "/characters",
       routes: {
@@ -81,42 +80,40 @@ class SWAppState extends State {
   }
 }
 
-// class Observatory extends NavigatorObserver{
 
-//   List<Route> routeHistory = List();
+class Observatory extends NavigatorObserver{
 
-//   @override
-//   void didPush(Route route, Route previousRoute) {
-//     var oldIndex = routeHistory.indexWhere(
-//       (element) =>
-//         element.settings.name == route.settings.name &&
-//         element.settings.arguments == route.settings.name
-//     );
-//     if(oldIndex != -1){
-//       print("Old Route Found");
-//       navigator.removeRoute(routeHistory[oldIndex]);
-//       routeHistory.removeAt(oldIndex);
-//     }
-//     routeHistory.add(route);
-//     super.didPush(route, previousRoute);
-//   }
+  List<Route> routeHistory = List();
 
-//   @override
-//   void didPop(Route route, Route previousRoute) {
-//     routeHistory.removeLast();
-//     super.didPop(route, previousRoute);
-//   }
+  @override
+  void didPush(Route route, Route previousRoute) {
+    routeHistory.add(route);
+    super.didPush(route, previousRoute);
+  }
 
-//   @override
-//   void didRemove(Route route, Route previousRoute) {
-//     routeHistory.remove(route);
-//     super.didRemove(route, previousRoute);
-//   }
+  @override
+  void didPop(Route route, Route previousRoute) {
+    routeHistory.removeLast();
+    super.didPop(route, previousRoute);
+  }
 
-//   @override
-//   void didReplace({Route newRoute, Route oldRoute}) {
-//     if(routeHistory.contains(oldRoute))
-//       routeHistory[routeHistory.indexOf(oldRoute)] = newRoute;
-//     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-//   }
-// }
+  @override
+  void didRemove(Route route, Route previousRoute) {
+    var beginIndex = routeHistory.indexOf(route);
+    var endIndex = routeHistory.indexOf(previousRoute);
+    if((endIndex == -1 && beginIndex != -1) || beginIndex -1 == endIndex)
+      routeHistory.remove(route);
+    else if(endIndex != -1 && beginIndex != -1)
+      routeHistory.removeRange(beginIndex,endIndex);
+    super.didRemove(route, previousRoute);
+  }
+
+  @override
+  void didReplace({Route newRoute, Route oldRoute}) {
+    if(routeHistory.contains(oldRoute))
+      routeHistory[routeHistory.indexOf(oldRoute)] = newRoute;
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+  }
+
+  bool containsRoute(Route route) => routeHistory.contains(route);
+}

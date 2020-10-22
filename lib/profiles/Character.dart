@@ -178,11 +178,11 @@ class Character extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context) => 
+  List<Widget> cardContents(BuildContext context, Function updateList) => 
     <Widget>[
       EditableContent(
         builder: (b, refresh, state) =>
-          CharacterInfo(editing: b, state: state)
+          CharacterInfo(editing: b, state: state, updateList: updateList,)
       ),
       EditableContent(
         builder: (b, refresh, state) =>

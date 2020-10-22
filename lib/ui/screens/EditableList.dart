@@ -30,26 +30,26 @@ class _EditableListState extends State{
 
   int type;
   List list;
-  String category = "";
+  String category;
 
   _EditableListState(this.type);
 
   Widget build(BuildContext context) {
-    if(list == null){
-      switch(type){
-        case 0:
-          list = SW.of(context).characters();
-          break;
-        case 1:
-          list = SW.of(context).minions();
-          break;
-        case 2:
-          list = SW.of(context).vehicles();
-          break;
-        default:
-          throw("invalid list type");
-      }
+    print(category);
+    switch(type){
+      case 0:
+        list = SW.of(context).characters(category: category);
+        break;
+      case 1:
+        list = SW.of(context).minions(category: category);
+        break;
+      case 2:
+        list = SW.of(context).vehicles(category: category);
+        break;
+      default:
+        throw("invalid list type");
     }
+    
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(
@@ -74,7 +74,7 @@ class _EditableListState extends State{
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton(
+              child: DropdownButton<String>(
                 items: (){
                   List<String> cats;
                   switch(type){
@@ -88,9 +88,17 @@ class _EditableListState extends State{
                       cats =  SW.of(context).vehCats;
                       break;
                   }
-                  List<DropdownMenuItem> out = List();
+                  List<DropdownMenuItem<String>> out = List();
+                  out.add(DropdownMenuItem(
+                    child: Text("All"),
+                    value: null
+                  ));
+                  out.add(DropdownMenuItem(
+                    child: Text("Uncategorized"),
+                    value: ""
+                  ));
                   cats.forEach((element) {
-                    out.add(DropdownMenuItem(
+                    out.add(DropdownMenuItem<String>(
                       child: Text(element),
                       value: element
                     ));
@@ -98,9 +106,10 @@ class _EditableListState extends State{
                   return out;
                 }(),
                 hint: Text("Categories"),
-                onChanged: (value){
+                onChanged: (String value) {
                   setState(() => category = value);
                 },
+                value: category,
                 isExpanded: true,
               )
             )
@@ -110,14 +119,12 @@ class _EditableListState extends State{
       ),
       body: ListView.builder(
         itemCount: list.length,
-        itemBuilder: (BuildContext c, int index){
-          return EditableCard(editable: list[index], refreshCallback: () => setState((){}), upperContext: c,);
-        },
+        itemBuilder: (BuildContext c, int index) => 
+          EditableCard(editable: list[index], refreshCallback: () => setState((){}), upperContext: c,),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
-          //TODO: fix profile creation (It doesn't work at all for Characters and Minions)
           var id = 0;
           switch (type){
             case 0:
@@ -143,19 +150,20 @@ class _EditableListState extends State{
 }
 
 class EditableCard extends StatelessWidget{
+  final Key key;
   final Editable editable;
   final Function refreshCallback;
   final BuildContext upperContext;
 
-  EditableCard({this.editable, this.refreshCallback, this.upperContext});
+  EditableCard({this.key, this.editable, this.refreshCallback, this.upperContext});
   @override
-  Widget build(BuildContext context) {
-    return Dismissible(
+  Widget build(BuildContext context) =>
+    Dismissible(
       key: UniqueKey(),
       onDismissed: (direction){
         var tmp = editable;
         editable.delete(SW.of(upperContext));
-        SW.of(upperContext).remove(editable);
+        SW.of(upperContext).remove(editable, context);
         String msg;
         if(editable is Character)
           msg = "Character Deleted";
@@ -182,7 +190,10 @@ class EditableCard extends StatelessWidget{
         child: Card(
           child: InkResponse(
             onTap: (){
-              Navigator.push(context,MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(editable,refreshCallback),fullscreenDialog: false));
+              if(editable.route != null && SW.of(context).observatory.containsRoute(editable.route))
+                Navigator.replace(context, oldRoute: editable.route, newRoute: editable.setRoute(refreshCallback));
+              else
+                Navigator.push(context, editable.setRoute(refreshCallback));
             },
             child:Padding(
               padding: EdgeInsets.all(10.0),
@@ -207,5 +218,4 @@ class EditableCard extends StatelessWidget{
         editable: editable
       )
     );
-  }
 }

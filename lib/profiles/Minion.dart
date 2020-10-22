@@ -86,7 +86,7 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context) {
+  List<Widget> cardContents(BuildContext context, Function updateList) {
     Function weaponsRefresh;
     Function invRefresh;
     EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();

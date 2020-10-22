@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/ui/Common.dart';
@@ -40,7 +43,32 @@ class SettingsState extends State{
           SwitchListTile(
             value: app.getPreference(preferences.firebase, true),
             onChanged: (b){
-              //TODO: show dialog first about restarting app
+              if(b = false)
+                showDialog(
+                  context: context,
+                  builder: (context) => 
+                    AlertDialog(
+                      content: Text("Turning off firebase will remove the ability to download profiles and any bugs you encounter CANNOT be fixed. Additionally the app needs to be restarted for this to take effect. Continue?"),
+                      actions: [
+                        FlatButton(
+                          onPressed: (){
+                            app.prefs.setBool(preferences.firebase, b);
+                            if(Platform.isIOS)
+                              exit(0);
+                            else
+                              SystemNavigator.pop();
+                          },
+                          child: Text("Continue")
+                        ),
+                        FlatButton(
+                          child: Text("Cancel"),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          }
+                        )
+                      ],
+                    )
+                );
             },
             title: Text("Firebase"),
             subtitle: Text("WARNING: Needed for crash reporting and downloads"),

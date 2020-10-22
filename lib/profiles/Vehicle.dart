@@ -96,7 +96,7 @@ class Vehicle extends Editable{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context) =>
+  List<Widget> cardContents(BuildContext context, Function updateList) =>
     <Widget>[
       EditableContent(
         builder: (b, refresh, state) =>

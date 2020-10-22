@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
@@ -6,8 +7,9 @@ class CharacterInfo extends StatelessWidget{
 
   final bool editing;
   final EditableContentState state;
+  final Function updateList;
 
-  CharacterInfo({this.editing, this.state});
+  CharacterInfo({this.editing, this.state, this.updateList});
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
@@ -23,13 +25,11 @@ class CharacterInfo extends StatelessWidget{
           fieldAlign: TextAlign.center,
           fieldInsets: EdgeInsets.all(3),
           state: state,
+          textCapitalization: TextCapitalization.words,
           controller: (){
-            if(editing){
-              var controller = TextEditingController(text:character.species);
-              controller.addListener(()=>character.species = controller.text);
-              return controller;
-            }else
-              return null;
+            var controller = TextEditingController(text:character.species);
+            controller.addListener(()=>character.species = controller.text);
+            return controller;
           }(),
         )
       ],
@@ -47,17 +47,14 @@ class CharacterInfo extends StatelessWidget{
           fieldInsets: EdgeInsets.all(3),
           state: state,
           controller: (){
-            if(editing){
-              var controller = TextEditingController(text:character.age.toString());
-              controller.addListener((){
-                if(controller.text == "")
-                  character.age = 0;
-                else
-                  character.age = int.parse(controller.text);
-              });
-              return controller;
-            }else
-              return null;
+            var controller = TextEditingController(text: character.age.toString());
+            controller.addListener((){
+              if(controller.text == "")
+                character.age = 0;
+              else
+                character.age = int.parse(controller.text);
+            });
+            return controller;
           }(),
           textType: TextInputType.number,
         )
@@ -75,13 +72,11 @@ class CharacterInfo extends StatelessWidget{
           fieldAlign: TextAlign.center,
           fieldInsets: EdgeInsets.all(3),
           state: state,
+          textCapitalization: TextCapitalization.words,
           controller: (){
-            if(editing){
-              var controller = TextEditingController(text:character.motivation);
-              controller.addListener(()=>character.motivation = controller.text);
-              return controller;
-            }else
-              return null;
+            var controller = TextEditingController(text: character.motivation);
+            controller.addListener(() => character.motivation = controller.text);
+            return controller;
           }(),
         )
       ],
@@ -98,13 +93,11 @@ class CharacterInfo extends StatelessWidget{
           fieldAlign: TextAlign.center,
           fieldInsets: EdgeInsets.all(3),
           state: state,
+          textCapitalization: TextCapitalization.words,
           controller: (){
-            if(editing){
-              var controller = TextEditingController(text:character.career);
-              controller.addListener(()=>character.career = controller.text);
-              return controller;
-            }else
-              return null;
+            var controller = TextEditingController(text:character.career);
+            controller.addListener(()=>character.career = controller.text);
+            return controller;
           }(),
         )
       ],
@@ -121,13 +114,15 @@ class CharacterInfo extends StatelessWidget{
           fieldAlign: TextAlign.center,
           fieldInsets: EdgeInsets.all(3),
           state: state,
+          textCapitalization: TextCapitalization.words,
           controller: (){
-            if(editing){
-              var controller = TextEditingController(text:character.category);
-              controller.addListener(()=>character.category = controller.text);
-              return controller;
-            }else
-              return null;
+            var controller = TextEditingController(text:character.category);
+            controller.addListener((){
+              character.category = controller.text;
+              SW.of(context).updateCharacterCategories();
+              updateList();
+            });
+            return controller;
           }(),
         )
       ],

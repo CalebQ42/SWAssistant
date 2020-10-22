@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
 import 'profiles/Minion.dart';
@@ -28,6 +30,8 @@ class SW{
   final SharedPreferences prefs;
 
   bool firebaseAvailable = false;
+  FirebaseAnalytics analytics;
+  Observatory observatory;
 
   String saveDir;
 
@@ -95,7 +99,11 @@ class SW{
         }
       });
     }
+    updateCharacterCategories();
+    updateVehicleCategories();
+    updateMinionCategories();
   }
+
   void loadMinions(){
     _minions.clear();
     Directory(saveDir).listSync().forEach((element) {
@@ -104,7 +112,9 @@ class SW{
         _minions.add(temp);
       }
     });
+    updateMinionCategories();
   }
+
   void loadCharacters(){
     _characters.clear();
     Directory(saveDir).listSync().forEach((element) {
@@ -113,7 +123,9 @@ class SW{
         _characters.add(temp);
       }
     });
+    updateCharacterCategories();
   }
+
   void loadVehicles(){
     _vehicles.clear();
     Directory(saveDir).listSync().forEach((element) {
@@ -122,6 +134,7 @@ class SW{
         _vehicles.add(temp);
       }
     });
+    updateVehicleCategories();
   }
 
   void add(Editable editable){
@@ -133,7 +146,9 @@ class SW{
       addVehicle(editable);
   }
 
-  bool remove(Editable editable){
+  bool remove(Editable editable, BuildContext context){
+    if(editable.route != null && observatory.containsRoute(editable.route))
+      Navigator.removeRoute(context, editable.route);
     if(editable is Character)
       return removeCharacter(character: editable);
     if(editable is Minion)
@@ -143,15 +158,16 @@ class SW{
     return false;
   }
   
-  List<Character> characters({String search = "", String category = ""}){
-    if(search == "" && category == "")
+  List<Character> characters({String search = "", String category}){
+    if(search == "" && category == null)
       return _characters;
-    if(search == "")
+    else if(search == "")
       return _characters.where((element) => element.category == category).toList();
-    if(category == "")
+    else if(category == null)
       return _characters.where((element) => element.name.contains(search)).toList();
-    return _characters.where((element) => element.category == category)
-        .where((element) => element.name.contains(search)).toList();
+    else
+      return _characters.where((element) => element.category == category)
+          .where((element) => element.name.contains(search)).toList();
   }
 
   bool removeCharacter({int id, Character character}){
@@ -175,20 +191,21 @@ class SW{
   void updateCharacterCategories(){
     charCats.clear();
     _characters.forEach((element) {
-      if(!charCats.contains(element.category))
+      if(element.category != "" && !charCats.contains(element.category))
         charCats.add(element.category);
     });
   }
 
-  List<Minion> minions({String search = "", String category = ""}){
-    if(search == "" && category == "")
+  List<Minion> minions({String search = "", String category}){
+    if(search == "" && category == null)
       return _minions;
-    if(search == "")
+    else if(search == "")
       return _minions.where((element) => element.category == category).toList();
-    if(category == "")
+    else if(category == null)
       return _minions.where((element) => element.name.contains(search)).toList();
-    return _minions.where((element) => element.category == category)
-        .where((element) => element.name.contains(search)).toList();
+    else
+      return _minions.where((element) => element.category == category)
+          .where((element) => element.name.contains(search)).toList();
   }
 
   bool removeMinion({int id, Minion minion}){
@@ -212,20 +229,21 @@ class SW{
   void updateMinionCategories(){
     minCats.clear();
     _minions.forEach((element) {
-      if(!minCats.contains(element.category))
+      if(element.category != "" && !minCats.contains(element.category))
         minCats.add(element.category);
     });
   }
 
-  List<Vehicle> vehicles({String search = "", String category = ""}){
-    if(search == "" && category == "")
+  List<Vehicle> vehicles({String search = "", String category}){
+    if(search == "" && category == null)
       return _vehicles;
-    if(search == "")
+    else if(search == "")
       return _vehicles.where((element) => element.category == category).toList();
-    if(category == "")
+    else if(category == null)
       return _vehicles.where((element) => element.name.contains(search)).toList();
-    return _vehicles.where((element) => element.category == category)
-        .where((element) => element.name.contains(search)).toList();
+    else
+      return _vehicles.where((element) => element.category == category)
+          .where((element) => element.name.contains(search)).toList();
   }
 
   bool removeVehicle({int id, Vehicle vehicle}){
@@ -249,7 +267,7 @@ class SW{
   void updateVehicleCategories(){
     vehCats.clear();
     _vehicles.forEach((element) {
-      if(!vehCats.contains(element.category))
+      if(element.category != "" && !vehCats.contains(element.category))
         vehCats.add(element.category);
     });
   }
@@ -278,21 +296,27 @@ class SW{
       devMode = true;
       await testing(saveDir);
     }
-    SW out = SW(prefs: prefs, saveDir: saveDir, devMode: devMode,);
+    SW out = SW(prefs: prefs, saveDir: saveDir, devMode: devMode);
+    out.observatory = Observatory();
     out.loadAll();
     if(out.getPreference(preferences.crashlytics, true)){
       try{
         await Firebase.initializeApp();
         out.firebaseAvailable = true;
+        if(out.getPreference(preferences.crashlytics, true) && kDebugMode == false)
+          FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+        else
+          FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+        if(out.getPreference(preferences.analytics, true)){
+          out.analytics = FirebaseAnalytics();
+          out.analytics.setAnalyticsCollectionEnabled(true);
+        }else
+          FirebaseAnalytics().setAnalyticsCollectionEnabled(false);
       }catch (e){
         print(e);
         out.firebaseAvailable = false;
       }
     }
-    if(out.getPreference(preferences.crashlytics, true) && kDebugMode == false)
-      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-    else
-      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     return out;
   }
 
