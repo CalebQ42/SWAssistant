@@ -12,7 +12,7 @@ import 'package:swassistant/ui/items/editable/Description.dart';
 import 'package:swassistant/ui/items/editable/Weapons.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/creatures/Defense.dart';
-import 'package:swassistant/ui/items/creatures/Inventory.dart';
+import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
 import 'package:swassistant/ui/items/minion/MinNum.dart';
 import 'package:swassistant/ui/items/minion/MinionWound.dart';

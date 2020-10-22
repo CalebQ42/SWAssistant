@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
@@ -10,7 +9,6 @@ mixin Creature on Editable{
   List<int> charVals = new List.filled(6, 0, growable: false);
   List<Skill> skills = new List();
   List<Talent> talents = new List();
-  List<Item> inventory = new List();
   int woundThresh = 0;
   int woundCur = 0;
   int defMelee = 0, defRanged = 0;
@@ -20,7 +18,6 @@ mixin Creature on Editable{
     charVals = List.from(creature.charVals);
     skills = List.from(creature.skills);
     talents = List.from(creature.talents);
-    inventory = List.from(creature.inventory);
     woundThresh = creature.woundThresh;
     woundCur = creature.woundCur;
     defMelee = creature.defMelee;
@@ -38,9 +35,6 @@ mixin Creature on Editable{
     this.talents = new List();
     for(dynamic dy in json["Talents"])
       this.talents.add(Talent.fromJson(dy));
-    this.inventory = new List();
-    for(dynamic dy in json["Inventory"])
-      this.inventory.add(Item.fromJson(dy));
     woundThresh = json["wound threshold"];
     woundCur = json["wound current"];
     defMelee = json["melee defense"];
@@ -53,7 +47,6 @@ mixin Creature on Editable{
     json["characteristics"] = charVals;
     json["Skills"] = List.generate(skills.length, (index) => skills[index].toJson());
     json["Talents"] = List.generate(talents.length, (index) => talents[index].toJson());
-    json["Inventory"] = List.generate(inventory.length, (index) => inventory[index].toJson());
     json["wound threshold"] = woundThresh;
     json["wound current"] = woundCur;
     json["melee defense"] = defMelee;

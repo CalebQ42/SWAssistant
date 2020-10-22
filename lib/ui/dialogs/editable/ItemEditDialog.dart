@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 
 class ItemEditDialog extends StatefulWidget{
 
   final void Function(Item) onClose;
-  final Creature creature;
+  final Editable editable;
   final Item item;
 
-  ItemEditDialog({this.onClose, Item item, this.creature}) :
+  ItemEditDialog({this.onClose, Item item, this.editable}) :
       this.item = item == null ? Item.nulled() : Item.from(item);
 
   @override
-  State<StatefulWidget> createState() => _ItemEditDialogState(onClose: onClose, item: item, creature: creature);
+  State<StatefulWidget> createState() => _ItemEditDialogState(onClose: onClose, item: item, editable: editable);
   
   void show(BuildContext context) =>
     showModalBottomSheet(
@@ -26,7 +27,7 @@ class ItemEditDialog extends StatefulWidget{
 class _ItemEditDialogState extends State{
 
   final void Function(Item) onClose;
-  final Creature creature;
+  final Creature editable;
   final Item item;
 
   TextEditingController nameController;
@@ -34,7 +35,7 @@ class _ItemEditDialogState extends State{
   TextEditingController encumController;
   TextEditingController descController;
 
-  _ItemEditDialogState({this.onClose, this.creature, this.item}){
+  _ItemEditDialogState({this.onClose, this.editable, this.item}){
     nameController = TextEditingController(text: item.name)
       ..addListener(() {
         if((nameController.text == null && item.name != null) || (nameController.text != null && item.name == null))

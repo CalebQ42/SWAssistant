@@ -14,6 +14,7 @@
         <meta-data
           android:name="firebase_crashlytics_collection_enabled"
           android:value="false" />
+        <!--IDK if below actually does anything, but it's there just in case it is needed-->
         <meta-data
           android:name="firebase_analytics_collection_enabled"
           android:value="false" />

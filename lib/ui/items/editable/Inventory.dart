@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/profiles/Minion.dart';
+import 'package:swassistant/profiles/Vehicle.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/dialogs/creature/ItemEditDialog.dart';
+import 'package:swassistant/ui/dialogs/editable/ItemEditDialog.dart';
 
 class Inventory extends StatelessWidget{
 
@@ -16,32 +18,50 @@ class Inventory extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    var creature = Creature.of(context);
+    var editable = Editable.of(context);
     var overEncumbered = false;
     var encumTot = 0;
-    if(creature is Character && creature.inventory.length > 0){
-      for(Item item in creature.inventory){
-        encumTot += item.encum;
-        if(encumTot > creature.encumCap){
-          overEncumbered = true;
-          break;
+    if(editable is !Minion && editable.inventory.length > 0){
+      if(editable is Character)
+        for(Item item in editable.inventory){
+          encumTot += item.encum;
+          if(encumTot > editable.encumCap){
+            overEncumbered = true;
+            break;
+          }
         }
-      }
+      else if(editable is Vehicle)
+        for(Item item in editable.inventory){
+          encumTot += item.encum;
+          if(encumTot > editable.encumCapacity){
+            overEncumbered = true;
+            break;
+          }
+        }
     }
-    if(creature is Character && creature.inventory.length > 0){
-      for(Weapon weap in creature.weapons){
-        encumTot += weap.encumbrance;
-        if(encumTot > creature.encumCap){
-          overEncumbered = true;
-          break;
+    if(editable is !Minion && editable.inventory.length > 0){
+      if(editable is Character)
+        for(Weapon weap in editable.weapons){
+          encumTot += weap.encumbrance;
+          if(encumTot > editable.encumCap){
+            overEncumbered = true;
+            break;
+          }
         }
-      }
+      else if(editable is Vehicle)
+        for(Weapon weap in editable.weapons){
+          encumTot += weap.encumbrance;
+          if(encumTot > editable.encumCapacity){
+            overEncumbered = true;
+            break;
+          }
+        }
     }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
-          if(creature is Character) Row(
+          if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(child: Text("Credits:")),
@@ -50,18 +70,18 @@ class Inventory extends StatelessWidget{
                 height: 25,
                 child: EditingText(
                   editing: editing,
-                  initialText: creature.credits.toString(),
+                  initialText: editable.credits.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
                   fieldInsets: EdgeInsets.all(3),
                   state: state,
                   controller: (){
-                    var controller = new TextEditingController(text: creature.credits.toString());
+                    var controller = new TextEditingController(text: editable.credits.toString());
                     controller.addListener(() {
                       if(controller.text =="")
-                        creature.credits = 0;
+                        editable.credits = 0;
                       else
-                        creature.credits = int.parse(controller.text);
+                        editable.credits = int.parse(controller.text);
                     });
                     return controller;
                   }(),
@@ -71,7 +91,7 @@ class Inventory extends StatelessWidget{
               )
             ],
           ),
-          if(creature is Character) Row(
+          if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(child: Text("Encumbrance Capacity:")),
@@ -80,18 +100,18 @@ class Inventory extends StatelessWidget{
                 height: 25,
                 child: EditingText(
                   editing: editing,
-                  initialText: creature.encumCap.toString(),
+                  initialText: editable.encumCap.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
                   fieldInsets: EdgeInsets.all(3),
                   state: state,
                   controller: (){
-                    var controller = new TextEditingController(text: creature.encumCap.toString());
+                    var controller = new TextEditingController(text: editable.encumCap.toString());
                     controller.addListener(() {
                       if(controller.text =="")
-                        creature.encumCap = 0;
+                        editable.encumCap = 0;
                       else
-                        creature.encumCap = int.parse(controller.text);
+                        editable.encumCap = int.parse(controller.text);
                     });
                     return controller;
                   }(),
@@ -107,7 +127,7 @@ class Inventory extends StatelessWidget{
             textAlign: TextAlign.center,
           )
         ]..addAll(List.generate(
-          creature.inventory.length,
+          editable.inventory.length,
           (index) => InkResponse(
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
@@ -123,7 +143,7 @@ class Inventory extends StatelessWidget{
                         Container(height: 15),
                         Center(
                           child: Text(
-                            creature.inventory[index].name,
+                            editable.inventory[index].name,
                             style: Theme.of(context).textTheme.headline5,
                             textAlign: TextAlign.center,
                           )
@@ -131,19 +151,19 @@ class Inventory extends StatelessWidget{
                         Container(height: 5,),
                         Center(
                           child: Text(
-                            "Count: " + creature.inventory[index].count.toString(),
+                            "Count: " + editable.inventory[index].count.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         Container(height: 5),
                         Center(
                           child: Text(
-                            "Encumbrance: " + creature.inventory[index].encum.toString(),
+                            "Encumbrance: " + editable.inventory[index].encum.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         Container(height: 10),
-                        if(creature.inventory[index].desc != "") Text(creature.inventory[index].desc)
+                        if(editable.inventory[index].desc != "") Text(editable.inventory[index].desc)
                       ],
                     )
                   )
@@ -151,7 +171,7 @@ class Inventory extends StatelessWidget{
             child: Row(
               children: [
                 Expanded(
-                  child: Text(creature.inventory[index].name),
+                  child: Text(editable.inventory[index].name),
                 ),
                 AnimatedSwitcher(
                   child: editing ? ButtonBar(
@@ -162,19 +182,19 @@ class Inventory extends StatelessWidget{
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
-                          var temp = Item.from(creature.inventory[index]);
-                          creature.inventory.removeAt(index);
+                          var temp = Item.from(editable.inventory[index]);
+                          editable.inventory.removeAt(index);
                           refresh();
-                          creature.save(context: context);
+                          editable.save(context: context);
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Item Deleted"),
                               action: SnackBarAction(
                                 label: "Undo",
                                 onPressed: (){
-                                  creature.inventory.insert(index, temp);
+                                  editable.inventory.insert(index, temp);
                                   refresh();
-                                  creature.save(context: context);
+                                  editable.save(context: context);
                                 }
                               ),
                             )
@@ -187,12 +207,12 @@ class Inventory extends StatelessWidget{
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: () =>
                           ItemEditDialog(
-                            item: creature.inventory[index],
-                            creature: creature,
+                            item: editable.inventory[index],
+                            editable: editable,
                             onClose: (item){
-                              creature.inventory[index] = item;
+                              editable.inventory[index] = item;
                               refresh();
-                              creature.save(context: context);
+                              editable.save(context: context);
                             },
                           ).show(context)
                       )
@@ -229,11 +249,11 @@ class Inventory extends StatelessWidget{
                 icon: Icon(Icons.add),
                 onPressed: () =>
                   ItemEditDialog(
-                    creature: creature,
+                    editable: editable,
                     onClose: (item){
-                      creature.inventory.add(item);
+                      editable.inventory.add(item);
                       refresh();
-                      creature.save(context: context);
+                      editable.save(context: context);
                     },
                   ).show(context)
               )

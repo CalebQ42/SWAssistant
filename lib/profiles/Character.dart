@@ -21,7 +21,7 @@ import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/characters/CharacterInfo.dart';
 import 'package:swassistant/ui/items/characters/WoundStrain.dart';
 import 'package:swassistant/ui/items/creatures/Defense.dart';
-import 'package:swassistant/ui/items/creatures/Inventory.dart';
+import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
 
 import 'utils/Creature.dart';

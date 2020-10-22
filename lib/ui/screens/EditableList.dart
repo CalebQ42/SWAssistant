@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
@@ -31,11 +34,11 @@ class _EditableListState extends State{
   int type;
   List list;
   String category;
+  // bool open = false;
 
   _EditableListState(this.type);
 
   Widget build(BuildContext context) {
-    print(category);
     switch(type){
       case 0:
         list = SW.of(context).characters(category: category);
@@ -49,7 +52,6 @@ class _EditableListState extends State{
       default:
         throw("invalid list type");
     }
-    
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(
@@ -122,6 +124,45 @@ class _EditableListState extends State{
         itemBuilder: (BuildContext c, int index) => 
           EditableCard(editable: list[index], refreshCallback: () => setState((){}), upperContext: c,),
       ),
+      //TODO: implement profile creator
+      // floatingActionButton: SpeedDial(
+      //   child: Icon(Icons.add),
+      //   onClose: () => setState(() => open = false),
+      //   onOpen: () => setState(() => open = true),
+      //   children: [
+      //     SpeedDialChild(
+      //       label: "Blank",
+      //       child: Icon(Icons.add),
+      //       onTap: (){
+      //         var id = 0;
+      //         switch (type){
+      //           case 0:
+      //             while(SW.of(context).characters().any((e)=>e.id==id))
+      //               id++;
+      //             setState(() => SW.of(context).add(new Character(id: id, saveOnCreation: true, app: SW.of(context))));
+      //             break;
+      //           case 1:
+      //             while(SW.of(context).minions().any((e)=>e.id==id))
+      //               id++;
+      //             setState(() => SW.of(context).add(new Minion(id: id, saveOnCreation: true, app: SW.of(context))));
+      //             break;
+      //           case 2:
+      //             while(SW.of(context).vehicles().any((e)=>e.id==id))
+      //               id++;
+      //             setState(() => SW.of(context).add(new Vehicle(id: id, saveOnCreation: true, app: SW.of(context))));
+      //             break;
+      //         }
+      //       }
+      //     ),
+      //     SpeedDialChild(
+      //       label: "Creator",
+      //       child: Icon(Icons.build),
+      //       onTap: (){
+      //         //TODO: character creator
+      //       }
+      //     )
+      //   ],
+      // ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){

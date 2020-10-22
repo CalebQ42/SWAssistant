@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
+import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/Card.dart';
@@ -27,6 +28,7 @@ abstract class Editable extends JsonSavable{
   String category = "";
   List<CriticalInjury> criticalInjuries = new List();
   String desc = "";
+  List<Item> inventory = new List();
 
   List<bool> showCard;
   Route route;
@@ -60,7 +62,8 @@ abstract class Editable extends JsonSavable{
       weapons = List.from(editable.weapons),
       category = editable.category,
       criticalInjuries = List.from(editable.criticalInjuries),
-      desc = editable.desc {
+      desc = editable.desc,
+      inventory = editable.inventory {
     showCard = List.filled(cardNames.length, false);
     if (!(this is Character || this is Vehicle || this is Minion))
       throw("Must be overridden by child");
@@ -84,6 +87,10 @@ abstract class Editable extends JsonSavable{
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
     desc = json["description"];
     showCard = json["show cards"].cast<bool>();
+    inventory = new List();
+    if(json["Inventory"] != null)
+      for(Map<String, dynamic> arrMap in json["Inventory"])
+        inventory.add(Item.fromJson(arrMap));
   }
 
   @mustCallSuper
@@ -98,6 +105,7 @@ abstract class Editable extends JsonSavable{
     json["category"] = category;
     json["description"] = desc;
     json["show cards"] = showCard;
+    json["Inventory"] = List.generate(inventory.length, (index) => inventory[index].toJson());
     return json;
   }
 

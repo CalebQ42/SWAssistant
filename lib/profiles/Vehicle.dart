@@ -6,6 +6,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
+import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/editable/Weapons.dart';
 
 class Vehicle extends Editable{
@@ -31,6 +32,7 @@ class Vehicle extends Editable{
     "Defense",
     "Damage",
     "Weapons",
+    "Inventory",
     "Critical Injuries",
     "Description"
   ];
@@ -115,15 +117,23 @@ class Vehicle extends Editable{
       ),
       EditableContent(
         builder: (b, refresh, state) =>
-          Weapons(editing: b, refresh: refresh)
+          Weapons(editing: b, refresh: refresh),
+        defaultEditingState: () => weapons.length == 0,
       ),
       EditableContent(
         builder: (b, refresh, state) =>
-          CriticalInjuries(editing: b, refresh: refresh)
+          Inventory(editing: b, refresh: refresh, state: state),
+        defaultEditingState: () => inventory.length == 0,
       ),
       EditableContent(
         builder: (b, refresh, state) =>
-          Description(editing: b, state: state)
+          CriticalInjuries(editing: b, refresh: refresh),
+        defaultEditingState: () => criticalInjuries.length == 0,
+      ),
+      EditableContent(
+        builder: (b, refresh, state) =>
+          Description(editing: b, state: state),
+        defaultEditingState: () => desc == "",
       ),
     ];
 
