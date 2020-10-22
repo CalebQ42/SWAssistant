@@ -87,6 +87,8 @@ abstract class Editable extends JsonSavable{
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
     desc = json["description"];
     showCard = json["show cards"].cast<bool>();
+    if(showCard.length != cardNames.length)
+      showCard.addAll(List.filled(cardNames.length - showCard.length, false));
     inventory = new List();
     if(json["Inventory"] != null)
       for(Map<String, dynamic> arrMap in json["Inventory"])

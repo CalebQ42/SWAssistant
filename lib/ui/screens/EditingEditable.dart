@@ -87,7 +87,7 @@ class _EditingEditableState extends State{
                 builder: (context){
                   var nameController = TextEditingController(text: "Copy of " + profile.name);
                   return Padding(
-                    padding: MediaQuery.of(context).viewPadding.add(EdgeInsets.only(left: 5, right: 5, bottom: 10)),
+                    padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 5, right: 5, bottom: 10)),
                     child: Wrap(
                       children: [
                         Container(height: 10),

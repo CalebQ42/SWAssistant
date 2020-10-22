@@ -8,6 +8,7 @@ import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
 import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/editable/Weapons.dart';
+import 'package:swassistant/ui/items/vehicle/VehicleDamage.dart';
 
 class Vehicle extends Editable{
 
@@ -112,8 +113,7 @@ class Vehicle extends Editable{
       ),
       EditableContent(
         builder: (b, refresh, state) =>
-          Text("Damage")
-        //TODO: VehicleDamage(editing: b, refresh: refresh, state: state)
+          VehicleDamage(editing: b, state: state)
       ),
       EditableContent(
         builder: (b, refresh, state) =>
