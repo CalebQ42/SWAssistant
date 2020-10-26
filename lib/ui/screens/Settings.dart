@@ -43,12 +43,38 @@ class SettingsState extends State{
           SwitchListTile(
             value: app.getPreference(preferences.firebase, true),
             onChanged: (b){
-              if(b = false)
+              if(!b)
                 showDialog(
                   context: context,
                   builder: (context) => 
                     AlertDialog(
                       content: Text("Turning off firebase will remove the ability to download profiles and any bugs you encounter CANNOT be fixed. Additionally the app needs to be restarted for this to take effect. Continue?"),
+                      actions: [
+                        FlatButton(
+                          onPressed: (){
+                            app.prefs.setBool(preferences.firebase, b);
+                            if(Platform.isIOS)
+                              exit(0);
+                            else
+                              SystemNavigator.pop();
+                          },
+                          child: Text("Continue")
+                        ),
+                        FlatButton(
+                          child: Text("Cancel"),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          }
+                        )
+                      ],
+                    )
+                );
+              else
+                showDialog(
+                  context: context,
+                  builder: (context) => 
+                    AlertDialog(
+                      content: Text("Turning on Firebase requires an app restart. Continue?"),
                       actions: [
                         FlatButton(
                           onPressed: (){
@@ -78,7 +104,8 @@ class SettingsState extends State{
             value: app.getPreference(preferences.crashlytics, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b){
               FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b);
-              setState(() => app.prefs.setBool(preferences.firebase, b));
+              app.prefs.setBool(preferences.crashlytics, b);
+              setState((){});
             } : null,
             title: Text("Crash Reporting"),
             subtitle: Text("Anonymous crash reporting provided by Firebase Crashlytics")
@@ -87,7 +114,9 @@ class SettingsState extends State{
           SwitchListTile(
             value: app.getPreference(preferences.analytics, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b){
-              setState(() => app.prefs.setBool(preferences.firebase, b));
+              app.analytics.setAnalyticsCollectionEnabled(b);
+              app.prefs.setBool(preferences.analytics, b);
+              setState((){});
             } : null,
             title: Text("Anonymous Usage Data"),
             subtitle: Text("Analytics provided by Firebase (Google)"),

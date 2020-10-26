@@ -17,7 +17,7 @@ import '../Vehicle.dart';
 import 'JsonSavable.dart';
 
 //Editable holds all common components of Vehicles, Minions, and Characters and
-//provides a framework on how to display, load, and save profiles
+//provides a framework on how to display, load, and save them.
 abstract class Editable extends JsonSavable{
 
   //Common components

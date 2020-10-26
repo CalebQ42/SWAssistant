@@ -131,6 +131,7 @@ class Minion extends Editable with Creature{
                 var tmp = List.of(weapons);
                 weapons = savedWeapons;
                 weaponsRefresh();
+                print("restored");
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Restored"),
@@ -158,6 +159,7 @@ class Minion extends Editable with Creature{
                 savedWeapons = List.from(weapons);
                 if(reload)
                   weaponsRefresh();
+                print("saved");
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Saved"),
