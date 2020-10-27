@@ -41,6 +41,15 @@ class SettingsState extends State{
           ),
           Divider(),
           SwitchListTile(
+            value: app.getPreference(preferences.amoled, false),
+            onChanged: (b){
+              app.prefs.setBool(preferences.amoled, b);
+              updateTopLevel();
+            },
+            title: Text("Amoled Dark Theme"),
+          ),
+          Divider(),
+          SwitchListTile(
             value: app.getPreference(preferences.firebase, true),
             onChanged: (b){
               if(!b)
@@ -62,9 +71,8 @@ class SettingsState extends State{
                         ),
                         FlatButton(
                           child: Text("Cancel"),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          }
+                          onPressed: () =>
+                            Navigator.pop(context)
                         )
                       ],
                     )

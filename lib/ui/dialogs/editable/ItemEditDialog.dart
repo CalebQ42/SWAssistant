@@ -104,7 +104,7 @@ class _ItemEditDialogState extends State{
             Container(height: 10),
             TextField(
               textCapitalization: TextCapitalization.sentences,
-              controller: nameController,
+              controller: descController,
               decoration: InputDecoration(
                 labelText: "Description"
               ),

@@ -50,8 +50,8 @@ class Minion extends Editable with Creature{
   Minion.from(Minion minion, {int id}) :
       woundThreshInd = minion.woundThreshInd,
       minionNum = minion.minionNum,
-      savedInv = List.from(minion.savedInv),
-      savedWeapons = List.from(minion.savedWeapons),
+      savedInv = List.of(minion.savedInv),
+      savedWeapons = List.of(minion.savedWeapons),
       super.from(minion, id: id){
     creatureFrom(minion);
   }
@@ -119,7 +119,7 @@ class Minion extends Editable with Creature{
           return Weapons(editing: b, refresh: refresh);
         },
         defaultEditingState: () => weapons.length == 0,
-        additonalButtons: [
+        additonalButtons: () => [
           Tooltip(
             message: savedWeapons == null ? "Save weapons first!" : "Restore saved weapons",
             child: IconButton(
@@ -129,9 +129,8 @@ class Minion extends Editable with Creature{
               icon: Icon(Icons.restore),
               onPressed: savedWeapons.length == 0 ? null : (){
                 var tmp = List.of(weapons);
-                weapons = savedWeapons;
+                weapons = List.of(savedWeapons);
                 weaponsRefresh();
-                print("restored");
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Restored"),
@@ -154,12 +153,11 @@ class Minion extends Editable with Creature{
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedWeapons.length == 0 ? Icons.save_outlined : Icons.save),
-              onPressed: savedWeapons.length == 0 ? null : (){
+              onPressed: (){
                 var reload = (savedWeapons.length == 0 && weapons.length != 0) || (savedWeapons.length != 0 && weapons.length == 0);
-                savedWeapons = List.from(weapons);
+                savedWeapons = List.of(weapons);
                 if(reload)
                   weaponsRefresh();
-                print("saved");
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Saved"),
@@ -181,7 +179,7 @@ class Minion extends Editable with Creature{
           return Inventory(editing: b, refresh: refresh, state: state);
         },
         defaultEditingState: () => inventory.length == 0,
-        additonalButtons: [
+        additonalButtons: () => [
           Tooltip(
             message: savedInv == null ? "Save inventory first!" : "Restore saved inventory",
             child: IconButton(
@@ -191,7 +189,7 @@ class Minion extends Editable with Creature{
               icon: Icon(savedInv.length == 0 ? Icons.restore_outlined : Icons.restore),
               onPressed: savedInv.length == 0 ? null : (){
                 var tmp = List.of(inventory);
-                inventory = savedInv;
+                inventory = List.of(savedInv);
                 invRefresh();
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
@@ -215,9 +213,9 @@ class Minion extends Editable with Creature{
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedInv.length == 0 ? Icons.save_outlined : Icons.save),
-              onPressed: savedInv.length == 0 ? null : (){
+              onPressed: (){
                 var refresh = (savedInv.length == 0 && inventory.length != 0) || (savedInv.length != 0 && inventory.length == 0);
-                savedInv = List.from(inventory);
+                savedInv = List.of(inventory);
                 if(refresh)
                   invRefresh();
                 Scaffold.of(context).showSnackBar(

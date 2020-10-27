@@ -38,29 +38,70 @@ class SWAppState extends State {
             )
           )
         ),
+        snackBarTheme: SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder()
         ),
         brightness: Brightness.light
       );
-    else
-      theme = ThemeData(
-        primaryColor: Colors.red,
-        accentColor: Colors.lightBlue,
-        bottomSheetTheme: BottomSheetThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10.0),
-              topRight: Radius.circular(10.0)
+    else{
+      if(SW.of(context).getPreference(preferences.amoled, false))
+        theme = ThemeData(
+          backgroundColor: Colors.black,
+          canvasColor: Colors.black,
+          shadowColor: Colors.grey.shade800,
+          scaffoldBackgroundColor: Colors.black,
+          cardColor: Color.fromARGB(255, 15, 15, 15),
+          snackBarTheme: SnackBarThemeData(
+            backgroundColor: Color.fromARGB(255, 15, 15, 15),
+            actionTextColor: Colors.amberAccent,
+            contentTextStyle: TextStyle(
+              color: Colors.white
+            ),
+            shape: RoundedRectangleBorder(),
+            behavior: SnackBarBehavior.floating
+          ),
+          primaryColor: Colors.red,
+          accentColor: Colors.lightBlue,
+          bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)
+              )
             )
-          )
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder()
-        ),
-        brightness: Brightness.dark
-      );
-    
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder()
+          ),
+          brightness: Brightness.dark
+        );
+      else
+        theme = ThemeData(
+          primaryColor: Colors.red,
+          accentColor: Colors.lightBlue,
+          snackBarTheme: SnackBarThemeData(
+            shape: RoundedRectangleBorder(),
+            behavior: SnackBarBehavior.floating
+          ),
+          bottomSheetTheme: BottomSheetThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)
+              )
+            )
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder()
+          ),
+          brightness: Brightness.dark
+        );
+    }
     return MaterialApp(
       title: 'SWAssistant',
       theme: theme,

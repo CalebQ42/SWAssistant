@@ -217,20 +217,24 @@ class _WeaponEditDialogState extends State{
                   onTap: () => FocusScope.of(context).unfocus(),
                   items: [
                     DropdownMenuItem(
-                      child: Text("None"),
+                      child: Text("Undamaged"),
                       value: 0,
                     ),
                     DropdownMenuItem(
-                      child: Text("Short"),
+                      child: Text("Minor"),
                       value: 1,
                     ),
                     DropdownMenuItem(
-                      child: Text("Medium"),
+                      child: Text("Moderate"),
                       value: 2,
                     ),
                     DropdownMenuItem(
-                      child: Text("Long"),
+                      child: Text("Major"),
                       value: 3,
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Broken"),
+                      value: 4,
                     ),
                   ],
                   value: weapon.itemState,

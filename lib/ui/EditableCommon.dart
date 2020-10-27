@@ -95,7 +95,7 @@ class EditableContent extends StatefulWidget{
   final Widget Function(bool editing, Function refresh, EditableContentState state) builder;
   final bool Function() defaultEditingState;
   final bool editButton;
-  final List<Widget> additonalButtons;
+  final List<Widget> Function() additonalButtons;
 
   final StatefulCard stateful;
 
@@ -112,7 +112,7 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
   Widget Function(bool editing, Function refresh, EditableContentState state) builder;
   bool editing;
   final bool editButton;
-  List<Widget> additionalButtons;
+  List<Widget> Function() additionalButtons;
 
   StatefulCard stateful;
 
@@ -124,12 +124,13 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
       throw("Either a builder or stateful MUST be provided");
     if(stateful != null)
       editing = stateful.getHolder().editing;
-    additionalButtons ??= List();
+    additionalButtons ??= () => List();
   }
 
   @override
   Widget build(BuildContext context) {
-    var bottomButtons = List<Widget>.from(additionalButtons);
+    var addButtons = additionalButtons();
+    var bottomButtons = List<Widget>.from(addButtons);
     if(editButton)
       bottomButtons.add(
         Tooltip(
@@ -161,7 +162,7 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
           () => setState((){}),
           this
         ) : stateful,
-        if(editButton || additionalButtons.length > 0) ButtonBar(
+        if(editButton || addButtons.length > 0) ButtonBar(
           buttonPadding: EdgeInsets.only(left: 5, right: 5),
           children: bottomButtons
         )

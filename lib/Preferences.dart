@@ -11,3 +11,4 @@ String startCount = "startCount";
 String dev = "devMode";
 String crashlytics = "crashlytics";
 String firebase = "firebase";
+String amoled = "amoledTheme";

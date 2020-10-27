@@ -22,27 +22,41 @@ class Weapons extends StatelessWidget{
       return InkResponse(
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
-        onTap: () =>
-          SWWeaponDialog(
-            holder: (){
-              if(editable is Creature){
-                var skill = editable.skills.firstWhere(
-                  (element) => element.name == Weapon.weaponSkills[editable.weapons[i].skill],
-                  orElse: () => Skill()
-                );
-                if(skill.name != "" && skill.base == editable.weapons[i].skillBase)
-                  return skill.getDice(editable);
-                else
-                  return SWDiceHolder(
-                    ability: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
-                    proficiency: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs()
+        onTap: (){
+          if(editable.weapons[i].damage == 4)
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Weapon is broken and cannot fire!"),
+              )
+            );
+          else if ((editable.weapons[i].limitedAmmo && editable.weapons[i].ammo != 0) || !editable.weapons[i].loaded)
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Weapon is out of ammo!"),
+              )
+            );
+          else
+            SWWeaponDialog(
+              holder: (){
+                if(editable is Creature){
+                  var skill = editable.skills.firstWhere(
+                    (element) => element.name == Weapon.weaponSkills[editable.weapons[i].skill],
+                    orElse: () => Skill()
                   );
-              }else
-                return SWDiceHolder();
-            }(),
-            context: context,
-            weapon: editable.weapons[i]
-          ).show(context),
+                  if(skill.name != "" && skill.base == editable.weapons[i].skillBase)
+                    return skill.getDice(editable);
+                  else
+                    return SWDiceHolder(
+                      ability: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
+                      proficiency: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs()
+                    );
+                }else
+                  return SWDiceHolder();
+              }(),
+              context: context,
+              weapon: editable.weapons[i]
+            ).show(context);
+        },
         child: Row(
           children: [
             Expanded(
