@@ -31,20 +31,32 @@ class _EditableListState extends State{
   int type;
   List list;
   String category;
+  String search = "";
+  bool searching = false;
+  FocusNode searchFocus = FocusNode();
   // bool open = false;
 
-  _EditableListState(this.type);
+  TextEditingController searchController;
+
+  _EditableListState(this.type){
+    searchController = TextEditingController()
+        ..addListener(() =>
+          setState(() => search = searchController.text)
+        );
+  }
 
   Widget build(BuildContext context) {
+    if(searching)
+      FocusScope.of(context).requestFocus(searchFocus);
     switch(type){
       case 0:
-        list = SW.of(context).characters(category: category);
+        list = SW.of(context).characters(category: category, search: search);
         break;
       case 1:
-        list = SW.of(context).minions(category: category);
+        list = SW.of(context).minions(category: category, search: search);
         break;
       case 2:
-        list = SW.of(context).vehicles(category: category);
+        list = SW.of(context).vehicles(category: category, search: search);
         break;
       default:
         throw("invalid list type");
@@ -52,23 +64,68 @@ class _EditableListState extends State{
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(
-        title: Text(
-          (){
-            switch(type){
-              case 0:
-                return "Characters";
-                break;
-              case 1:
-                return "Minions";
-                break;
-              case 2:
-                return "Vehicles";
-                break;
-              default:
-                return "";
-            }
-          }(),
+        title: AnimatedSwitcher(
+          transitionBuilder: (child, anim){
+            Tween<Offset> offset;
+            if(child is Row)
+              offset = Tween<Offset>(begin: Offset(0, -1), end: Offset.zero);
+            else
+              offset = Tween<Offset>(begin: Offset(0, 1), end: Offset.zero);
+            return ClipRect(
+              child: SlideTransition(
+                position: offset.animate(anim),
+                child: child
+              )
+            );
+          },
+          duration: Duration(milliseconds: 300),
+          child: searching ? TextField(
+            focusNode: searchFocus,
+            controller: searchController,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(
+              focusColor: Colors.white,
+              border: UnderlineInputBorder(),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: (){
+                  if(search == "")
+                    setState(() => searching = false);
+                  else
+                    searchController.text = "";
+                },
+              )
+            ),
+          ) : Row(
+            children: [
+              Text(
+                (){
+                  switch(type){
+                    case 0:
+                      return "Characters";
+                      break;
+                    case 1:
+                      return "Minions";
+                      break;
+                    case 2:
+                      return "Vehicles";
+                      break;
+                    default:
+                      return "";
+                  }
+                }(),
+                textAlign: TextAlign.left,
+              )
+            ]
+          )
         ),
+        additionalActions: [
+          if(!searching) IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () =>
+              setState(() => searching = true)
+          )
+        ],
         bottom: PreferredSize(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -105,9 +162,8 @@ class _EditableListState extends State{
                   return out;
                 }(),
                 hint: Text("Categories"),
-                onChanged: (String value) {
-                  setState(() => category = value);
-                },
+                onChanged: (String value) =>
+                  setState(() => category = value),
                 value: category,
                 isExpanded: true,
               )
