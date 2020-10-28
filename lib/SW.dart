@@ -147,7 +147,7 @@ class SW{
   }
 
   bool remove(Editable editable, BuildContext context){
-    if(editable.route != null && observatory.containsRoute(editable.route))
+    if(editable.route != null && observatory.containsRoute(route: editable.route) != null)
       Navigator.removeRoute(context, editable.route);
     if(editable is Character)
       return removeCharacter(character: editable);

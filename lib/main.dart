@@ -156,5 +156,15 @@ class Observatory extends NavigatorObserver{
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 
-  bool containsRoute(Route route) => routeHistory.contains(route);
+  //containsRoute return the route if is in history, otherwise it return null
+  Route containsRoute({Route route, String name}){
+    if(route == null && name == null)
+      return null;
+    if(route != null)
+      return routeHistory.contains(route) ? route : null;
+    return routeHistory.firstWhere(
+      (element) => element.settings.name == name,
+      orElse: () => null
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SWAppBar extends AppBar{
@@ -66,7 +67,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.contacts),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/gm");
+              var out = SW.of(context).observatory.containsRoute(name: "/gm");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/gm");
+              }else
+                Navigator.of(context).pushNamed("/gm");
             }
           ),
           Divider(),
@@ -76,7 +82,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.face),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/characters");
+              var out = SW.of(context).observatory.containsRoute(name: "/characters");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/characters");
+              }else
+                Navigator.of(context).pushNamed("/characters");
             }
           ),
           ListTile(
@@ -84,7 +95,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.supervisor_account),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/minions");
+              var out = SW.of(context).observatory.containsRoute(name: "/minions");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/minions");
+              }else
+                Navigator.of(context).pushNamed("/minions");
             }
           ),
           ListTile(
@@ -92,7 +108,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.motorcycle),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/vehicles");
+              var out = SW.of(context).observatory.containsRoute(name: "/vehicles");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/vehicles");
+              }else
+                Navigator.of(context).pushNamed("/vehicles");
             }
           ),
           ListTile(
@@ -100,7 +121,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.cloud_download),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/download");
+              var out = SW.of(context).observatory.containsRoute(name: "/download");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/download");
+              }else
+                Navigator.of(context).pushNamed("/download");
             }
           ),
           Divider(),
@@ -110,7 +136,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.casino),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/dice");
+              var out = SW.of(context).observatory.containsRoute(name: "/dice");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/dice");
+              }else
+                Navigator.of(context).pushNamed("/dice");
             }
           ),
           ListTile(
@@ -118,7 +149,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.book),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/guide");
+              var out = SW.of(context).observatory.containsRoute(name: "/guide");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/guide");
+              }else
+                Navigator.of(context).pushNamed("/guide");
             }
           ),
           ListTile(
@@ -126,7 +162,12 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.settings),
             onTap: (){
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed("/settings");
+              var out = SW.of(context).observatory.containsRoute(name: "/settings");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/settings");
+              }else
+                Navigator.of(context).pushNamed("/settings");
             }
           )
         ],
