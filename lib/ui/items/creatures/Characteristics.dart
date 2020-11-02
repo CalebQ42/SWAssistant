@@ -57,31 +57,25 @@ class Characteristics extends StatelessWidget{
               )
           );
         },
-        child: Column(
-          children: <Widget>[
-            if(editing) Container(height: 5),
-            Text(Creature.characteristics[charNum]),
-            if(editing) Container(height: 5),
-            EditingText(
-              editing: editing,
-              initialText: creature.charVals[charNum].toString(),
-              state: state,
-              controller: (){
-                var controller = TextEditingController(text: creature.charVals[charNum].toString());
-                controller.addListener((){
-                  if(controller.text == "")
-                    creature.charVals[charNum] = 0;
-                  else
-                    creature.charVals[charNum] = int.parse(controller.text);
-                });
-                return controller;
-              }(),
-              fieldAlign: TextAlign.center,
-              style: style,
-              textType: TextInputType.number,
-              defaultSave: true
-            )
-          ],
+        child: EditingText(
+          editing: editing,
+          initialText: creature.charVals[charNum].toString(),
+          state: state,
+          controller: (){
+            var controller = TextEditingController(text: creature.charVals[charNum].toString());
+            controller.addListener((){
+              if(controller.text == "")
+                creature.charVals[charNum] = 0;
+              else
+                creature.charVals[charNum] = int.parse(controller.text);
+            });
+            return controller;
+          }(),
+          fieldAlign: TextAlign.center,
+          style: style,
+          textType: TextInputType.number,
+          defaultSave: true,
+          title: Creature.characteristics[charNum]
         )
       )
     );

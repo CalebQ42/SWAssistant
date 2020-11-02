@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/Talent.dart';
-import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
-import 'package:swassistant/ui/dialogs/character/TalentEditDialog.dart';
+import 'package:swassistant/ui/dialogs/creature/TalentEditDialog.dart';
 
 class Talents extends StatelessWidget{
 
@@ -13,12 +13,12 @@ class Talents extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    var character = Editable.of(context) as Character;
+    var creature = Editable.of(context) as Creature;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: List.generate(
-          character.talents.length,
+          creature.talents.length,
           (index) => InkResponse(
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
@@ -34,7 +34,7 @@ class Talents extends StatelessWidget{
                         Container(height: 15),
                         Center(
                           child: Text(
-                            character.talents[index].name,
+                            creature.talents[index].name,
                             style: Theme.of(context).textTheme.headline5,
                             textAlign: TextAlign.justify,
                           )
@@ -42,12 +42,12 @@ class Talents extends StatelessWidget{
                         Container(height: 5),
                         Center(
                           child: Text(
-                            "Rank: " + character.talents[index].value.toString(),
+                            "Rank: " + creature.talents[index].value.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         Container(height: 10),
-                        Text(character.talents[index].desc)
+                        Text(creature.talents[index].desc)
                       ],
                     )
                   )
@@ -55,7 +55,7 @@ class Talents extends StatelessWidget{
             child: Row(
               children: [
                 Expanded(
-                  child: Text(character.talents[index].name + (character.talents[index].value > 1 ? " " + character.talents[index].value.toString() : "")),
+                  child: Text(creature.talents[index].name + (creature.talents[index].value > 1 ? " " + creature.talents[index].value.toString() : "")),
                 ),
                 AnimatedSwitcher(
                   child: editing ? ButtonBar(
@@ -66,19 +66,19 @@ class Talents extends StatelessWidget{
                         iconSize: 24.0,
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
-                          var temp = Talent.from(character.talents[index]);
-                          character.talents.removeAt(index);
+                          var temp = Talent.from(creature.talents[index]);
+                          creature.talents.removeAt(index);
                           refresh();
-                          character.save(context: context);
+                          creature.save(context: context);
                           Scaffold.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Talent Deleted"),
                               action: SnackBarAction(
                                 label: "Undo",
                                 onPressed: (){
-                                  character.talents.insert(index, temp);
+                                  creature.talents.insert(index, temp);
                                   refresh();
-                                  character.save(context: context);
+                                  creature.save(context: context);
                                 },
                               ),
                             )
@@ -92,11 +92,11 @@ class Talents extends StatelessWidget{
                         onPressed: () =>
                           TalentEditDialog(
                             onClose: (talent){
-                              character.talents[index] = talent;
+                              creature.talents[index] = talent;
                               refresh();
-                              character.save(context: context);
+                              creature.save(context: context);
                             },
-                            talent: character.talents[index],
+                            talent: creature.talents[index],
                           ).show(context)
                       )
                     ],
@@ -133,9 +133,9 @@ class Talents extends StatelessWidget{
                 onPressed: () =>
                   TalentEditDialog(
                     onClose: (talent){
-                      character.talents.add(talent);
+                      creature.talents.add(talent);
                       refresh();
-                      character.save(context: context);
+                      creature.save(context: context);
                     },
                   ).show(context)
               )

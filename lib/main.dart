@@ -43,7 +43,8 @@ class SWAppState extends State {
           shape: RoundedRectangleBorder(),
         ),
         inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder()
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.all(5)
         ),
         brightness: Brightness.light
       );
@@ -76,7 +77,8 @@ class SWAppState extends State {
             )
           ),
           inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder()
+            border: OutlineInputBorder(),
+            contentPadding: EdgeInsets.all(5)
           ),
           brightness: Brightness.dark
         );
@@ -97,7 +99,8 @@ class SWAppState extends State {
             )
           ),
           inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder()
+            border: OutlineInputBorder(),
+            contentPadding: EdgeInsets.all(5)
           ),
           brightness: Brightness.dark
         );
@@ -156,15 +159,21 @@ class Observatory extends NavigatorObserver{
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 
-  //containsRoute return the route if is in history, otherwise it return null
-  Route containsRoute({Route route, String name}){
-    if(route == null && name == null)
-      return null;
+  //Returns the route if it is in history (it), otherwise it return null.
+  //It preferes the route give, then settings, then the name
+  Route containsRoute({Route route, RouteSettings settings, String name}){
     if(route != null)
       return routeHistory.contains(route) ? route : null;
-    return routeHistory.firstWhere(
-      (element) => element.settings.name == name,
-      orElse: () => null
-    );
+    if(settings != null)
+      return routeHistory.firstWhere(
+        (element) => element.settings == settings,
+        orElse: () => null
+      );
+    if(name != null)
+      return routeHistory.firstWhere(
+        (element) => element.settings.name == name,
+        orElse: () => null
+      );
+    return null; 
   }
 }

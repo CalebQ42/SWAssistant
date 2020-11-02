@@ -18,9 +18,8 @@ class Defense extends StatelessWidget{
         Expanded(
           child: Column(
             children: [
-              Text("Melee:"),
-              if(editing) Container(height: 5,),
               EditingText(
+                title: "Melee",
                 editing: editing,
                 initialText: creature.defMelee.toString(),
                 defaultSave: true,
@@ -34,8 +33,6 @@ class Defense extends StatelessWidget{
         Expanded(
           child: Column(
             children: [
-              Text("Ranged:"),
-              if(editing) Container(height: 5,),
               EditingText(
                 editing: editing,
                 initialText: creature.defRanged.toString(),
@@ -43,6 +40,7 @@ class Defense extends StatelessWidget{
                 state: state,
                 textType: TextInputType.number,
                 controller: TextEditingController(text: creature.defRanged.toString()),
+                title: "Ranged"
               )
             ],
           )

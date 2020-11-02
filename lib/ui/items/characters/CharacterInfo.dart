@@ -16,14 +16,12 @@ class CharacterInfo extends StatelessWidget{
     var species = new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Species:"),
         EditingText(
           editing: editing, 
           initialText: character.species,
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          fieldInsets: EdgeInsets.all(3),
           state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
@@ -31,20 +29,19 @@ class CharacterInfo extends StatelessWidget{
             controller.addListener(()=>character.species = controller.text);
             return controller;
           }(),
+          title: "Species",
         )
       ],
     );
     var age = new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Age:"),
         EditingText(
           editing: editing, 
           initialText: character.age.toString(),
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          fieldInsets: EdgeInsets.all(3),
           state: state,
           controller: (){
             var controller = TextEditingController(text: character.age.toString());
@@ -57,20 +54,19 @@ class CharacterInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.number,
+          title: "Age"
         )
       ],
     );
     var motivation = new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Motivation:"),
         EditingText(
           editing: editing, 
           initialText: character.motivation,
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          fieldInsets: EdgeInsets.all(3),
           state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
@@ -78,20 +74,19 @@ class CharacterInfo extends StatelessWidget{
             controller.addListener(() => character.motivation = controller.text);
             return controller;
           }(),
+          title: "Motivation"
         )
       ],
     );
     var career = new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Career:"),
         EditingText(
           editing: editing, 
           initialText: character.career,
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          fieldInsets: EdgeInsets.all(3),
           state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
@@ -99,20 +94,19 @@ class CharacterInfo extends StatelessWidget{
             controller.addListener(()=>character.career = controller.text);
             return controller;
           }(),
+          title: "Career"
         )
       ],
     );
     var category = new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text("Category:"),
         EditingText(
           editing: editing, 
           initialText: character.category,
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          fieldInsets: EdgeInsets.all(3),
           state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
@@ -124,6 +118,7 @@ class CharacterInfo extends StatelessWidget{
             });
             return controller;
           }(),
+          title: "Category"
         )
       ],
     );

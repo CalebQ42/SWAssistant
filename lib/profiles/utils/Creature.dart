@@ -37,8 +37,8 @@ mixin Creature on Editable{
       this.talents.add(Talent.fromJson(dy));
     woundThresh = json["wound threshold"];
     woundCur = json["wound current"];
-    defMelee = json["melee defense"];
-    defRanged = json["ranged defense"];
+    defMelee = json["defense melee"];
+    defRanged = json["defense ranged"];
     soak = json["soak"];
   }
 

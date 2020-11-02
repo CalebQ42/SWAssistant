@@ -14,7 +14,7 @@ import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/creatures/Defense.dart';
 import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
-import 'package:swassistant/ui/items/minion/MinNum.dart';
+import 'package:swassistant/ui/items/minion/MinInfo.dart';
 import 'package:swassistant/ui/items/minion/MinionWound.dart';
 
 import 'utils/Creature.dart';
@@ -30,7 +30,7 @@ class Minion extends Editable with Creature{
 
   String get fileExtension => ".swminion";
   List<String> get cardNames => [
-    "Number of Minions",
+    "Basic Information",
     "Wound",
     "Characteristics",
     "Skill",
@@ -94,8 +94,8 @@ class Minion extends Editable with Creature{
     woundCurTemp = woundCur;
     return [
       EditableContent(
-        stateful: MinNum(woundHolder: woundHolder, holder: numHolder),
-        editButton: false
+        stateful: MinInfo(woundHolder: woundHolder, holder: numHolder),
+        editButton: true
       ),
       EditableContent(
         stateful: MinionWound(holder: woundHolder, numHolder: numHolder),

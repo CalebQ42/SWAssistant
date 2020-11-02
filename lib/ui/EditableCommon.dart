@@ -18,6 +18,8 @@ class EditingText extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final TextAlign textAlign;
   final TextAlign fieldAlign;
+  final String title;
+  final TextTheme titleTheme;
 
   final bool collapsed;
 
@@ -28,9 +30,9 @@ class EditingText extends StatelessWidget {
   final Editable editableBackup;
 
   EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
-      this.fieldInsets = const EdgeInsets.symmetric(horizontal:2.0), this.textInsets = const EdgeInsets.all(4.0),
+      this.fieldInsets = const EdgeInsets.all(3.0), this.textInsets = const EdgeInsets.all(4.0),
       this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
-      this.fieldAlign = TextAlign.start, this.collapsed = false, this.state, this.editableBackup}) {
+      this.fieldAlign = TextAlign.start, this.collapsed = false, this.state, this.editableBackup, this.title, this.titleTheme}) {
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
   }
@@ -44,7 +46,7 @@ class EditingText extends StatelessWidget {
       }
     }
     Widget text;
-    if(editing){
+    if(editing)
       text = Padding(
         key: ValueKey("textField"),
         padding: fieldInsets,
@@ -55,16 +57,30 @@ class EditingText extends StatelessWidget {
           inputFormatters: textType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
           textCapitalization: textCapitalization,
           textAlign: fieldAlign,
-          decoration: InputDecoration(isCollapsed: collapsed, contentPadding: EdgeInsets.symmetric(horizontal: 5)),
+          decoration: InputDecoration(
+            isCollapsed: collapsed,
+            labelText: title
+          ),
         )
       );
-    }else{
+    else
       text = Padding(
         key: ValueKey("text"),
         padding: textInsets,
-        child: Text(initialText, style: style, textAlign: textAlign,)
+        child: Column(
+          children: [
+            if(title != null) Text(
+              title,
+              style: titleTheme ?? Theme.of(context).textTheme.bodyText1.apply(
+                fontSizeDelta: .75,
+                fontWeightDelta: 2
+              )
+            ),
+            if(title != null) Container(height: 5),
+            Text(initialText, style: style, textAlign: textAlign,),
+          ]
+        )
       );
-    }
     var switcher = AnimatedSwitcher(
       duration: Duration(milliseconds: 300),
       child: text,
