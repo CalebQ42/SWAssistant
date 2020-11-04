@@ -62,20 +62,21 @@ class SWDrawer extends StatelessWidget{
               color: Theme.of(context).primaryColor
             )
           ),
-          ListTile(
-            title: Text("GM Mode"),
-            leading: Icon(Icons.contacts),
-            onTap: (){
-              Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/gm");
-              if(out != null){
-                Navigator.of(context).removeRoute(out);
-                Navigator.of(context).pushNamed("/gm");
-              }else
-                Navigator.of(context).pushNamed("/gm");
-            }
-          ),
-          Divider(),
+          // TODO: GM Mode
+          // ListTile(
+          //   title: Text("GM Mode"),
+          //   leading: Icon(Icons.contacts),
+          //   onTap: (){
+          //     Navigator.of(context).pop();
+          //     var out = SW.of(context).observatory.containsRoute(name: "/gm");
+          //     if(out != null){
+          //       Navigator.of(context).removeRoute(out);
+          //       Navigator.of(context).pushNamed("/gm");
+          //     }else
+          //       Navigator.of(context).pushNamed("/gm");
+          //   }
+          // ),
+          // Divider(),
           Padding(padding: EdgeInsets.only(left:5.0),child:Text("Profiles")),
           ListTile(
             title: Text("Characters"),
@@ -116,47 +117,50 @@ class SWDrawer extends StatelessWidget{
                 Navigator.of(context).pushNamed("/vehicles");
             }
           ),
-          ListTile(
-            title: Text("Download"),
-            leading: Icon(Icons.cloud_download),
-            onTap: (){
-              Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/download");
-              if(out != null){
-                Navigator.of(context).removeRoute(out);
-                Navigator.of(context).pushNamed("/download");
-              }else
-                Navigator.of(context).pushNamed("/download");
-            }
-          ),
-          Divider(),
+          // TODO: Download
+          // ListTile(
+          //   title: Text("Download"),
+          //   leading: Icon(Icons.cloud_download),
+          //   onTap: (){
+          //     Navigator.of(context).pop();
+          //     var out = SW.of(context).observatory.containsRoute(name: "/download");
+          //     if(out != null){
+          //       Navigator.of(context).removeRoute(out);
+          //       Navigator.of(context).pushNamed("/download");
+          //     }else
+          //       Navigator.of(context).pushNamed("/download");
+          //   }
+          // ),
+          // Divider(),
           Padding(padding: EdgeInsets.only(left:5.0),child:Text("Other Stuff")),
-          ListTile(
-            title: Text("Dice"),
-            leading: Icon(Icons.casino),
-            onTap: (){
-              Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/dice");
-              if(out != null){
-                Navigator.of(context).removeRoute(out);
-                Navigator.of(context).pushNamed("/dice");
-              }else
-                Navigator.of(context).pushNamed("/dice");
-            }
-          ),
-          ListTile(
-            title: Text("Guide"),
-            leading: Icon(Icons.book),
-            onTap: (){
-              Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/guide");
-              if(out != null){
-                Navigator.of(context).removeRoute(out);
-                Navigator.of(context).pushNamed("/guide");
-              }else
-                Navigator.of(context).pushNamed("/guide");
-            }
-          ),
+          // TODO: Dice
+          // ListTile(
+          //   title: Text("Dice"),
+          //   leading: Icon(Icons.casino),
+          //   onTap: (){
+          //     Navigator.of(context).pop();
+          //     var out = SW.of(context).observatory.containsRoute(name: "/dice");
+          //     if(out != null){
+          //       Navigator.of(context).removeRoute(out);
+          //       Navigator.of(context).pushNamed("/dice");
+          //     }else
+          //       Navigator.of(context).pushNamed("/dice");
+          //   }
+          // ),
+          // TODO: Guide
+          // ListTile(
+          //   title: Text("Guide"),
+          //   leading: Icon(Icons.book),
+          //   onTap: (){
+          //     Navigator.of(context).pop();
+          //     var out = SW.of(context).observatory.containsRoute(name: "/guide");
+          //     if(out != null){
+          //       Navigator.of(context).removeRoute(out);
+          //       Navigator.of(context).pushNamed("/guide");
+          //     }else
+          //       Navigator.of(context).pushNamed("/guide");
+          //   }
+          // ),
           ListTile(
             title: Text("Settings"),
             leading: Icon(Icons.settings),

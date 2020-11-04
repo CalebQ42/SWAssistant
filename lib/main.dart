@@ -44,7 +44,7 @@ class SWAppState extends State {
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.all(5)
+          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
         ),
         brightness: Brightness.light
       );
@@ -78,7 +78,7 @@ class SWAppState extends State {
           ),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.all(5)
+            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
           ),
           brightness: Brightness.dark
         );
@@ -100,7 +100,7 @@ class SWAppState extends State {
           ),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.all(5)
+            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
           ),
           brightness: Brightness.dark
         );
@@ -115,10 +115,14 @@ class SWAppState extends State {
       ],
       initialRoute: "/characters",
       routes: {
+        // "/gm" : (context) => GMMode(),
         "/characters" : (context) => EditableList(EditableList.character),
-        "/vehicles" : (context) => EditableList(EditableList.vehicle),
         "/minions" : (context) => EditableList(EditableList.minion),
-        "/settings" : (context) => Settings(updateTopLevel: () => setState((){}),)
+        "/vehicles" : (context) => EditableList(EditableList.vehicle),
+        // "/download" : (context) => Downloads(),
+        // "/dice" : (context) => Dice(),
+        // "/guide" : (context) => Guide(),
+        "/settings" : (context) => Settings(updateTopLevel: () => setState((){}),),
       },
     );
   }

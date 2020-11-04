@@ -67,7 +67,7 @@ class EditingText extends StatelessWidget {
       text = Padding(
         key: ValueKey("text"),
         padding: textInsets,
-        child: Column(
+        child: title != null ? Column(
           children: [
             if(title != null) Text(
               title,
@@ -79,7 +79,7 @@ class EditingText extends StatelessWidget {
             if(title != null) Container(height: 5),
             Text(initialText, style: style, textAlign: textAlign,),
           ]
-        )
+        ) : Text(initialText, style: style, textAlign: textAlign,)
       );
     var switcher = AnimatedSwitcher(
       duration: Duration(milliseconds: 300),

@@ -295,16 +295,13 @@ class _WeaponEditDialogState extends State{
                 children: List.generate(weapon.characteristics.length,(i){
                   return InkResponse(
                     containedInkWell: true,
-                    onTap: () => showDialog(
-                      context: context,
-                      child: WeaponCharacteristicDialog(
-                        wc: weapon.characteristics[i],
-                        onClose: (wc){
-                          if(wc != null)
-                            setState(() => weapon.characteristics[i] = wc);
-                        }
-                      )
-                    ),
+                    onTap: () => WeaponCharacteristicDialog(
+                      wc: weapon.characteristics[i],
+                      onClose: (wc){
+                        if(wc != null)
+                          setState(() => weapon.characteristics[i] = wc);
+                      }
+                    ).show(context),
                     child: Padding(
                       padding: EdgeInsets.all(5),
                       child: Row(
@@ -322,15 +319,13 @@ class _WeaponEditDialogState extends State{
               FlatButton.icon(
                 label: Text("Add Characteristic"),
                 icon: Icon(Icons.add),
-                onPressed: (){
-                  showDialog(
-                    context: context,
-                    child: WeaponCharacteristicDialog(onClose: (wc){
+                onPressed: () =>
+                  WeaponCharacteristicDialog(
+                    onClose: (wc){
                       if(wc != null)
                         weapon.characteristics.add(wc);
-                    })
-                  );
-                },
+                    }
+                  ).show(context),
               ),
               //Add Brawn
               if(editable is Character || editable is Minion) SwitchListTile(
@@ -356,22 +351,25 @@ class _WeaponEditDialogState extends State{
                 title: Text("Slugthrower (Needs Ammo)")
               ),
               //Ammo
-              if(weapon.limitedAmmo) Container(height: 10),
               AnimatedSwitcher(
                 duration: Duration(milliseconds: 300),
                 transitionBuilder: (child, anim){
                   return SizeTransition(
                     sizeFactor: anim,
+                    axisAlignment: -1,
                     child: child
                   );
                 },
-                child: weapon.limitedAmmo ? TextField(
-                  controller: ammoController,
-                  decoration: InputDecoration(
-                    labelText: "Ammo"
-                  ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                child: weapon.limitedAmmo ? Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: TextField(
+                    controller: ammoController,
+                    decoration: InputDecoration(
+                      labelText: "Ammo",
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  )
                 ) : Container(),
               ),
               ButtonBar(

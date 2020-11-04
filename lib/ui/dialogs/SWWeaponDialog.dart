@@ -210,17 +210,22 @@ class _WeaponResults extends StatelessWidget{
               if(weapon.characteristics.length == 0)
                 return List<Widget>();
               return List<Widget>.generate(weapon.characteristics.length,
-                (index) => Row(
-                  children: [
-                    Expanded(
-                      child: Text(weapon.characteristics[index].name + weapon.characteristics[index].value.toString()),
-                      flex: 4,
-                    ),
-                    Expanded(
-                      child: Center(child: Text(weapon.characteristics[index].advantage.toString())),
-                    )
-                  ],
-                )
+                (index){
+                  var charText = weapon.characteristics[index].name;
+                  if(weapon.characteristics[index].value != 0)
+                    charText += " " + weapon.characteristics[index].value.toString();
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Text(charText),
+                        flex: 4,
+                      ),
+                      Expanded(
+                        child: Center(child: Text(weapon.characteristics[index].advantage.toString())),
+                      )
+                    ],
+                  );
+                }
               );
             }())
           ),

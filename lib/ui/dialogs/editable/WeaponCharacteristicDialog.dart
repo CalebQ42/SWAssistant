@@ -12,6 +12,13 @@ class WeaponCharacteristicDialog extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => _WeaponCharacteristicDialogState(wc, onClose);
+
+  void show(BuildContext context) =>
+    showModalBottomSheet(
+      context: context,
+      builder: (context) =>
+        this
+    );
 }
 
 class _WeaponCharacteristicDialogState extends State{
@@ -51,22 +58,24 @@ class _WeaponCharacteristicDialogState extends State{
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Column(
+    return Padding(
+      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Container(height: 10),
           TextField(
             controller: nameController,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-                  labelText: "Name",
+              labelText: "Name",
             ),
           ),
           Container(height: 10),
           TextField(
             controller: valueController,
             decoration: InputDecoration(
-                  labelText: "Rank",
+              labelText: "Rank",
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -75,28 +84,29 @@ class _WeaponCharacteristicDialogState extends State{
           TextField(
             controller: advantageController,
             decoration: InputDecoration(
-                  labelText: "Advantage Needed",
+              labelText: "Advantage Needed",
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
+          ButtonBar(
+            children: [
+              FlatButton(
+                onPressed: wc.name != "" && wc.value != null && wc.advantage != null ? (){
+                  onClose(wc);
+                  Navigator.of(context).pop();
+                } : null,
+                child: Text("Save")
+              ),
+              FlatButton(
+                onPressed: () =>
+                  Navigator.of(context).pop(),
+                child: Text("Cancel")
+              )
+            ],
+          )
         ],
       ),
-      actions: [
-        FlatButton(
-          onPressed: (){
-            onClose(wc);
-            Navigator.of(context).pop();
-          },
-          child: Text("Save")
-        ),
-        FlatButton(
-          onPressed: wc.name != "" && wc.value != null && wc.advantage != null ? (){
-            Navigator.of(context).pop();
-          } : null,
-          child: Text("Cancel")
-        )
-      ],
     );
   }
 }
