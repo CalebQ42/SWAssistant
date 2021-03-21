@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="basic_info_text">Basic Information:</string>
-    <string name="species_text">Species:</string>
-    <string name="age_text">Age:</string>
-    <string name="motivation_text">Motivation:</string>
-    <string name="career_text">Career:</string>
+    <string name="basic_info_text">Informazioni di base:</string>
+    <string name="species_text">Specie:</string>
+    <string name="age_text">Età:</string>
+    <string name="motivation_text">Motivazione:</string>
+    <string name="career_text">Carriera:</string>
     <string name="wound_strain_text">Wound and Strain:</string>
-    <string name="soak_text">Soak:</string>
-    <string name="wound_text">Wound:</string>
+    <string name="soak_text">Fradicio</string>
+    <string name="wound_text">Ferita</string>
     <string name="reset_text">Reset</string>
     <string name="strain_text">Strain:</string>
     <string name="characteristics_text">Characteristics:</string>
