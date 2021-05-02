@@ -7,8 +7,8 @@ mixin Creature on Editable{
   static final List<String> characteristics = ["Brawn", "Agility", "Intellect", "Cunning", "Willpower", "Presence"];
 
   List<int> charVals = new List.filled(6, 0, growable: false);
-  List<Skill> skills = new List();
-  List<Talent> talents = new List();
+  List<Skill> skills = [];
+  List<Talent> talents = [];
   int woundThresh = 0;
   int woundCur = 0;
   int defMelee = 0, defRanged = 0;
@@ -26,13 +26,13 @@ mixin Creature on Editable{
   }
 
   void creatureLoadJson(Map<String,dynamic> json){
-    this.charVals = new List();
+    this.charVals = [];
     for(dynamic dy in json["characteristics"])
       this.charVals.add(dy);
-    this.skills = new List();
+    this.skills = [];
     for(dynamic dy in json["Skills"])
       this.skills.add(Skill.fromJson(dy));
-    this.talents = new List();
+    this.talents = [];
     for(dynamic dy in json["Talents"])
       this.talents.add(Talent.fromJson(dy));
     woundThresh = json["wound threshold"];

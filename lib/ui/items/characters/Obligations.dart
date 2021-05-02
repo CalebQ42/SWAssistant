@@ -40,7 +40,7 @@ class Obligations extends StatelessWidget{
                             character.obligations.removeAt(index);
                             refresh();
                             character.save(context: context);
-                            Scaffold.of(context).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Deleted Obligation"),
                               action: SnackBarAction(
                                 label: "Undo",

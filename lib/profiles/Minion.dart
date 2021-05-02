@@ -23,8 +23,8 @@ class Minion extends Editable with Creature{
 
   int woundThreshInd = 0;
   int minionNum = 0;
-  List<Item> savedInv = new List();
-  List<Weapon> savedWeapons = new List();
+  List<Item> savedInv = [];
+  List<Weapon> savedWeapons = [];
 
   int woundCurTemp = 0;
 
@@ -62,10 +62,10 @@ class Minion extends Editable with Creature{
     this.woundThreshInd = json["wound threshold per minion"];
     this.minionNum = json["minion number"];
     Map<String,dynamic> saved = json["Saved"];
-    this.savedInv = new List();
+    this.savedInv = [];
     for(dynamic d in saved["Inventory"])
       this.savedInv.add(Item.fromJson(d));
-    this.savedWeapons = new List();
+    this.savedWeapons = [];
     for(dynamic d in saved["Weapons"])
       this.savedWeapons.add(Weapon.fromJson(d));
   }
@@ -75,9 +75,9 @@ class Minion extends Editable with Creature{
     map.addAll(creatureSaveJson());
     map["wound threshold per minion"] = woundThreshInd;
     map["minion number"] = minionNum;
-    var savedInvJson = new List();
+    var savedInvJson = [];
     savedInv.forEach((element) {savedInvJson.add(element.toJson());});
-    var savedWeapJson = new List();
+    var savedWeapJson = [];
     savedWeapons.forEach((element) {savedWeapJson.add(element.toJson());});
     map["Saved"] = {
       "Inventory" : savedInvJson,
@@ -131,7 +131,7 @@ class Minion extends Editable with Creature{
                 var tmp = List.of(weapons);
                 weapons = List.of(savedWeapons);
                 weaponsRefresh();
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Restored"),
                     action: SnackBarAction(
@@ -158,7 +158,7 @@ class Minion extends Editable with Creature{
                 savedWeapons = List.of(weapons);
                 if(reload)
                   weaponsRefresh();
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Saved"),
                   )
@@ -191,7 +191,7 @@ class Minion extends Editable with Creature{
                 var tmp = List.of(inventory);
                 inventory = List.of(savedInv);
                 invRefresh();
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Inventory Restored"),
                     action: SnackBarAction(
@@ -218,7 +218,7 @@ class Minion extends Editable with Creature{
                 savedInv = List.of(inventory);
                 if(refresh)
                   invRefresh();
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Inventory Saved"),
                   )

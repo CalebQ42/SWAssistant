@@ -5,7 +5,7 @@ class SWDiceHolder{
     int ability, proficiency, difficulty, challenge, boost, setback, force;
     SWDiceHolder({this.ability=0, this.proficiency=0, this.difficulty=0, this.challenge=0, this.boost=0, this.setback=0, this.force=0});
     Dice getDice(){
-      var dice = List<Die>();
+      var dice = <Die>[];
       if(ability>0)
         dice.addAll(List.filled(ability, SW.ability));
       if(proficiency>0)

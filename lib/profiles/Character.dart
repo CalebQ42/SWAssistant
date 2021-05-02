@@ -30,13 +30,13 @@ class Character extends Editable with Creature{
 
   String species = "";
   String career = "";
-  List<String> specializations = new List();
-  List<ForcePower> forcePowers = new List();
+  List<String> specializations = [];
+  List<ForcePower> forcePowers = [];
   String motivation = "";
   String emotionalStr = "";
   String emotionalWeak = "";
-  List<Duty> duties = new List();
-  List<Obligation> obligations = new List();
+  List<Duty> duties = [];
+  List<Obligation> obligations = [];
   int strainThresh = 0, strainCur = 0;
   int xpTot = 0, xpCur = 0;
   int force = 0;
@@ -110,19 +110,19 @@ class Character extends Editable with Creature{
     this.creatureLoadJson(json);
     this.species = json["species"];
     this.career = json["career"];
-    specializations = new List();
+    specializations = [];
     for(dynamic s in json["Specializations"])
       specializations.add(s);
-    this.forcePowers = List();
+    this.forcePowers = [];
     for(dynamic dy in json["Force Powers"])
       this.forcePowers.add(ForcePower.fromJson(dy));
     this.motivation = json["motivation"];
     emotionalStr = json["emotional strength"];
     emotionalWeak = json["emotional weakness"];
-    this.duties = List();
+    this.duties = [];
     for(dynamic dy in json["Dutys"])
       this.duties.add(Duty.fromJson(dy));
-    this.obligations  = List();
+    this.obligations  = [];
     for(dynamic dy in json["Obligations"])
       this.obligations.add(Obligation.fromJson(dy));
     this.strainThresh = json["strain threshold"];
@@ -148,16 +148,16 @@ class Character extends Editable with Creature{
     map["species"] = species;
     map["career"] = career;
     map["Specializations"] = specializations;
-    var temp = new List<dynamic>();
+    var temp = <dynamic>[];
     forcePowers.forEach((element) {temp.add(element.toJson());});
     map["Force Powers"] = temp;
     map["motivation"] = motivation;
     map["emotional strength"] = emotionalStr;
     map["emotional weakness"] = emotionalWeak;
-    temp = new List<dynamic>();
+    temp = <dynamic>[];
     duties.forEach((element) {temp.add(element.toJson());});
     map["Dutys"] = temp;
-    temp = new List<dynamic>();
+    temp = <dynamic>[];
     obligations.forEach((element) {temp.add(element.toJson);});
     map["Obligations"] = temp;
     map["strain threshold"] = strainThresh;

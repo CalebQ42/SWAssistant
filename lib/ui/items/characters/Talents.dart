@@ -70,7 +70,7 @@ class Talents extends StatelessWidget{
                           creature.talents.removeAt(index);
                           refresh();
                           creature.save(context: context);
-                          Scaffold.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Talent Deleted"),
                               action: SnackBarAction(

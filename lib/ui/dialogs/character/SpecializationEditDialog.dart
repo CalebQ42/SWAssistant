@@ -52,14 +52,14 @@ class _SpecializationState extends State{
           ),
           ButtonBar(
             children: [
-              FlatButton(
+              TextButton(
                 child: Text("Save"),
                 onPressed: specialization != "" ? (){
                   onClose(specialization);
                   Navigator.of(context).pop();
                 } : null,
               ),
-              FlatButton(
+              TextButton(
                 child: Text("Cancel"),
                 onPressed: () =>
                   Navigator.of(context).pop(),

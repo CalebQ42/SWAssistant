@@ -12,7 +12,7 @@ class ComplexSide{
   List<ComplexSidePart> parts;
 
   ComplexSide({List<ComplexSidePart> parts}) :
-    this.parts = parts ?? List();
+    this.parts = parts ?? [];
 
   ComplexSide clone() => ComplexSide(parts: new List.from(parts));
   String toString() => parts.join(", ");

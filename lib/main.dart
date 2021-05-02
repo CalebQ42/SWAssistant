@@ -131,7 +131,7 @@ class SWAppState extends State {
 
 class Observatory extends NavigatorObserver{
 
-  List<Route> routeHistory = List();
+  List<Route> routeHistory = [];
 
   @override
   void didPush(Route route, Route previousRoute) {

@@ -66,7 +66,7 @@ class Vehicle extends Editable{
     this.speed = json["speed"];
     this.handling = json["handling"];
     this.armor = json["armor"];
-    defense = new List();
+    defense = [];
     for(dynamic i in json["defense"])
       defense.add(i);
     this.totalDefense = json["total defense"];

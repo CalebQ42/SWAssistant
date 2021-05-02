@@ -6,7 +6,7 @@ import 'package:swassistant/ui/UpDownStat.dart';
 
 class DiceResults{
 
-  List<dynamic> _resultsMasterList = List();
+  List<dynamic> _resultsMasterList = [];
   Map<String,int> results = {
     suc : 0,
     fai : 0,
@@ -85,7 +85,7 @@ class DiceResults{
               ),
               ButtonBar(
                 children: [
-                  FlatButton(
+                  TextButton(
                     child: Text("Edit"),
                     onPressed: (){
                       Navigator.of(context).pop();
@@ -206,7 +206,7 @@ class DiceResults{
             ),
             ButtonBar(
               children: [
-                FlatButton(
+                TextButton(
                   child: Text("Return"),
                   onPressed: (){
                     if(!noSuccess && results[suc] == 0 && results[fai] == 0)

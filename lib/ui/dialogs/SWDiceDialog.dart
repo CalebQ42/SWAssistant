@@ -98,7 +98,7 @@ class SWDiceDialog extends StatelessWidget{
           )
         )..add(ButtonBar(
           children: [
-            FlatButton(
+            TextButton(
               child: Text("Roll"),
               onPressed: (){
                 Navigator.of(context).pop();
@@ -109,7 +109,7 @@ class SWDiceDialog extends StatelessWidget{
                 );
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text("Cancel"),
               onPressed: () => Navigator.of(context).pop(),
             )

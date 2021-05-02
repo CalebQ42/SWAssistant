@@ -24,13 +24,13 @@ class Weapons extends StatelessWidget{
         highlightShape: BoxShape.rectangle,
         onTap: (){
           if(editable.weapons[i].itemState == 4)
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Weapon is broken and cannot fire!"),
               )
             );
           else if ((editable.weapons[i].limitedAmmo && editable.weapons[i].ammo <= 0) || !editable.weapons[i].loaded)
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Weapon is out of ammo!"),
               )
@@ -79,7 +79,7 @@ class Weapons extends StatelessWidget{
                       editable.weapons.removeAt(i);
                       refresh();
                       editable.save(context: context);
-                      Scaffold.of(context).showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Deleted Weapon"),
                           action: SnackBarAction(

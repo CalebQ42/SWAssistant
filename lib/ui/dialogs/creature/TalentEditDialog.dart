@@ -89,14 +89,14 @@ class _TalentEditState extends State{
           ),
           ButtonBar(
             children: [
-              FlatButton(
+              TextButton(
                 child: Text("Save"),
                 onPressed: talent.name != "" && talent.value != null ? (){
                   onClose(talent);
                   Navigator.of(context).pop();
                 } : null,
               ),
-              FlatButton(
+              TextButton(
                 child: Text("Cancel"),
                 onPressed: () =>
                   Navigator.of(context).pop(),

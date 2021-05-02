@@ -89,14 +89,14 @@ class ObligationEditDialogState extends State{
           ),
           ButtonBar(
             children: [
-              FlatButton(
+              TextButton(
                 child: Text("Save"),
                 onPressed: obligation.name != "" && obligation.value != null ? (){
                   onClose(obligation);
                   Navigator.pop(context);
                 } : null,
               ),
-              FlatButton(
+              TextButton(
                 child: Text("Cancel"),
                 onPressed: () => Navigator.pop(context),
               )

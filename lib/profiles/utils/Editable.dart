@@ -23,12 +23,12 @@ abstract class Editable extends JsonSavable{
   //Common components
   int id = 0;
   String name;
-  List<Note> notes = new List();
-  List<Weapon> weapons = new List();
+  List<Note> notes = [];
+  List<Weapon> weapons = [];
   String category = "";
-  List<CriticalInjury> criticalInjuries = new List();
+  List<CriticalInjury> criticalInjuries = [];
   String desc = "";
-  List<Item> inventory = new List();
+  List<Item> inventory = [];
 
   List<bool> showCard;
   Route route;
@@ -75,21 +75,21 @@ abstract class Editable extends JsonSavable{
       throw("Must be overridden by child");
     id = json["id"];
     name = json["name"];
-    notes = new List<Note>();
+    notes = <Note>[];
     for (Map<String, dynamic> arrMap in json["Notes"]) 
       notes.add(Note.fromJson(arrMap));
-    weapons = new List<Weapon>();
+    weapons = <Weapon>[];
     for(Map<String,dynamic> arrMap in json["Weapons"])
       weapons.add(Weapon.fromJson(arrMap));
     category = json["category"];
-    criticalInjuries = new List<CriticalInjury>();
+    criticalInjuries = <CriticalInjury>[];
     for(Map<String,dynamic> arrMap in json["Critical Injuries"])
       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
     desc = json["description"];
     showCard = json["show cards"].cast<bool>();
     if(showCard.length != cardNames.length)
       showCard.addAll(List.filled(cardNames.length - showCard.length, false));
-    inventory = new List();
+    inventory = [];
     if(json["Inventory"] != null)
       for(Map<String, dynamic> arrMap in json["Inventory"])
         inventory.add(Item.fromJson(arrMap));
@@ -112,7 +112,7 @@ abstract class Editable extends JsonSavable{
   }
 
   List<Widget> cards(Function refreshList, BuildContext context){
-    var cards = List<Widget>();
+    var cards = <Widget>[];
     var contents = cardContents(context, refreshList);
     cards.add(
       Padding(

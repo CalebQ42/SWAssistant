@@ -316,7 +316,7 @@ class _WeaponEditDialogState extends State{
                   );
                 })
               ),
-              FlatButton.icon(
+              TextButton.icon(
                 label: Text("Add Characteristic"),
                 icon: Icon(Icons.add),
                 onPressed: () =>
@@ -374,13 +374,13 @@ class _WeaponEditDialogState extends State{
               ),
               ButtonBar(
                 children: [
-                  FlatButton(
+                  TextButton(
                     child: Text("Cancel"),
                     onPressed: (){
                       Navigator.of(context).pop();
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text("Save"),
                     onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null && weapon.hp != null
                         && (editable is Character ?  weapon.encumbrance != null : true) && (editable is Vehicle ? weapon.firingArc != null : true)

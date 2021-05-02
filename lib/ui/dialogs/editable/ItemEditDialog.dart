@@ -113,14 +113,14 @@ class _ItemEditDialogState extends State{
             ),
             ButtonBar(
               children: [
-                FlatButton(
+                TextButton(
                   child: Text("Save"),
                   onPressed: (){
                     onClose(item);
                     Navigator.of(context).pop();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("Cancel"),
                   onPressed: () =>
                     Navigator.of(context).pop(),

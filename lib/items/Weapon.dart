@@ -29,7 +29,7 @@ class Weapon implements JsonSavable{
     this.loaded = true, this.limitedAmmo = false, this.itemState = 0, this.ammo = 0,
     this.firingArc = "", this.encumbrance = 0}){
     if (characteristics == null){
-      characteristics = new List();
+      characteristics = [];
     }
   }
 
@@ -48,7 +48,7 @@ class Weapon implements JsonSavable{
       ammo = 0,
       firingArc = null,
       encumbrance = null,
-      characteristics = new List();
+      characteristics = [];
 
   Weapon.fromJson(Map<String,dynamic> json) :
       name = json["name"],
@@ -65,7 +65,7 @@ class Weapon implements JsonSavable{
       ammo = json["ammo"],
       firingArc = json["firing arc"],
       encumbrance = json["encumbrance"],
-      characteristics = new List() {
+      characteristics = [] {
     for(Map<String,dynamic> map in json["Weapon Characteristics"]){
       characteristics.add(WeaponCharacteristic.fromJson(map));
     }
@@ -89,7 +89,7 @@ class Weapon implements JsonSavable{
       characteristics = List.from(from.characteristics);
 
   Map<String,dynamic> toJson(){
-    var characteristicsMap = new List<Map<String,dynamic>>();
+    var characteristicsMap = <Map<String,dynamic>>[];
     for (WeaponCharacteristic wc in characteristics){
       characteristicsMap.add(wc.toJson());
     }

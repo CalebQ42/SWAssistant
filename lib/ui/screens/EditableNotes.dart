@@ -26,7 +26,7 @@ class _EditableNotesState extends State{
             return NoteCard(index: index, onDelete: (){
               var temp = Editable.of(context).notes[index];
               Editable.of(context).notes.removeAt(index);
-              Scaffold.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text("Deleted Note"),
                   action: SnackBarAction(

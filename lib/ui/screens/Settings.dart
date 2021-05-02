@@ -59,7 +59,7 @@ class SettingsState extends State{
                     AlertDialog(
                       content: Text("Turning off firebase will remove the ability to download profiles and any bugs you encounter CANNOT be fixed. Additionally the app needs to be restarted for this to take effect. Continue?"),
                       actions: [
-                        FlatButton(
+                        TextButton(
                           onPressed: (){
                             app.prefs.setBool(preferences.firebase, b);
                             if(Platform.isIOS)
@@ -69,7 +69,7 @@ class SettingsState extends State{
                           },
                           child: Text("Continue")
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text("Cancel"),
                           onPressed: () =>
                             Navigator.pop(context)
@@ -84,7 +84,7 @@ class SettingsState extends State{
                     AlertDialog(
                       content: Text("Turning on Firebase requires an app restart. Continue?"),
                       actions: [
-                        FlatButton(
+                        TextButton(
                           onPressed: (){
                             app.prefs.setBool(preferences.firebase, b);
                             if(Platform.isIOS)
@@ -94,7 +94,7 @@ class SettingsState extends State{
                           },
                           child: Text("Continue")
                         ),
-                        FlatButton(
+                        TextButton(
                           child: Text("Cancel"),
                           onPressed: (){
                             Navigator.pop(context);

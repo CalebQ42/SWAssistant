@@ -9,7 +9,7 @@ class Die{
   String name;
   List<dynamic> sides;
 
-  Die({@required this.name, List sides}) : this.sides = sides ?? List() {
+  Die({@required this.name, List sides}) : this.sides = sides ?? [] {
     if(sides.any((element) => element is !SimpleSide && element is !ComplexSide))
       throw("All sides MUST be SimpleSide or ComplexSide");
   }
@@ -22,7 +22,7 @@ class Dice{
   String name;
   List<Die> dies;
 
-  Dice({@required this.name, List dies}) : this.dies = dies ?? List();
+  Dice({@required this.name, List dies}) : this.dies = dies ?? [];
 
   DiceResults roll(){
     Random random = Random();

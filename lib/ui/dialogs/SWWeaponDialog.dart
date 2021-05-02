@@ -102,14 +102,14 @@ class SWWeaponDialog extends StatelessWidget{
           )
         )..add(ButtonBar(
           children: [
-            FlatButton(
+            TextButton(
               child: Text("Fire!"),
               onPressed: (){
                 Navigator.of(context).pop();
                 _WeaponResults(weapon: weapon, results: holder.getDice().roll()).show(context);
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text("Cancel"),
               onPressed: () => Navigator.of(context).pop(),
             )
@@ -208,7 +208,7 @@ class _WeaponResults extends StatelessWidget{
               )
             ]..addAll((){
               if(weapon.characteristics.length == 0)
-                return List<Widget>();
+                return <Widget>[];
               return List<Widget>.generate(weapon.characteristics.length,
                 (index){
                   var charText = weapon.characteristics[index].name;
@@ -231,7 +231,7 @@ class _WeaponResults extends StatelessWidget{
           ),
           ButtonBar(
             children: [
-              FlatButton(
+              TextButton(
                 child: Text("Edit"),
                 onPressed: (){
                   Navigator.of(context).pop();
@@ -370,7 +370,7 @@ class _WeaponResultsEdit extends StatelessWidget{
           ),
           ButtonBar(
             children: [
-              FlatButton(
+              TextButton(
                 child: Text("Return"),
                 onPressed: (){
                   Navigator.of(context).pop();

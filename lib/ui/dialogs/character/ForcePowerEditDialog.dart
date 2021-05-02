@@ -65,14 +65,14 @@ class _FPState extends State{
           ),
           ButtonBar(
             children: [
-              FlatButton(
+              TextButton(
                 child: Text("Save"),
                 onPressed: fp.name != "" ? () {
                   onClose(fp);
                   Navigator.of(context).pop();
                 } : null,
               ),
-              FlatButton(
+              TextButton(
                 child: Text("Cancel"),
                 onPressed:() =>
                   Navigator.of(context).pop(),

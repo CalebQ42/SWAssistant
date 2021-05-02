@@ -36,7 +36,7 @@ class Specializations extends StatelessWidget{
                         character.specializations.removeAt(index);
                         refresh();
                         character.save(context: context);
-                        Scaffold.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text("Deleted Specialization"),
                             action: SnackBarAction(

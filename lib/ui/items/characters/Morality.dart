@@ -117,7 +117,7 @@ class MoralityState extends State with TickerProviderStateMixin{
                   character.save(context: context);
                 }),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("Resolve Conflict"),
                 onPressed: (){
                   var conflict = int.tryParse(conflictController.text);
@@ -126,7 +126,7 @@ class MoralityState extends State with TickerProviderStateMixin{
                   conflictController.text = "0";
                   character.conflict = 0;
                   var resolution = Random().nextInt(9) + 1;
-                  Scaffold.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("You rolled a " + resolution.toString()),
                   ));
                   resolution = resolution - conflict;

@@ -186,7 +186,7 @@ class Inventory extends StatelessWidget{
                           editable.inventory.removeAt(index);
                           refresh();
                           editable.save(context: context);
-                          Scaffold.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Item Deleted"),
                               action: SnackBarAction(

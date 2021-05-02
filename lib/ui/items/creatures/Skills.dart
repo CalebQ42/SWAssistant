@@ -53,7 +53,7 @@ class Skills extends StatelessWidget{
                       creature.skills.removeAt(index);
                       refresh();
                       creature.save(context: context);
-                      Scaffold.of(context).showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Skill Deleted"),
                           action: SnackBarAction(

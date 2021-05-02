@@ -105,7 +105,7 @@ class ForcePowers extends StatelessWidget{
                           character.forcePowers.removeAt(index);
                           refresh();
                           character.save(context: context);
-                          Scaffold.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Force Power Deleted"),
                               action: SnackBarAction(

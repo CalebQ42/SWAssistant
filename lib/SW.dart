@@ -18,14 +18,14 @@ import 'Preferences.dart' as preferences;
 
 class SW{
 
-  final List<Minion> _minions = new List();
-  final List<String> minCats = new List();
+  final List<Minion> _minions = [];
+  final List<String> minCats = [];
 
-  final List<Character> _characters = new List();
-  final List<String> charCats = new List();
+  final List<Character> _characters = [];
+  final List<String> charCats = [];
 
-  final List<Vehicle> _vehicles = new List();
-  final List<String> vehCats = new List();
+  final List<Vehicle> _vehicles = [];
+  final List<String> vehCats = [];
 
   final SharedPreferences prefs;
 
@@ -43,7 +43,7 @@ class SW{
     _minions.clear();
     _characters.clear();
     _vehicles.clear();
-    List<Editable> defered = new List();
+    List<Editable> defered = [];
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".backup"))
         return;

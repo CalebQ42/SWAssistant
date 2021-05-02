@@ -144,7 +144,7 @@ class _EditableListState extends State{
                       cats =  SW.of(context).vehCats;
                       break;
                   }
-                  List<DropdownMenuItem<String>> out = List();
+                  List<DropdownMenuItem<String>> out = [];
                   out.add(DropdownMenuItem(
                     child: Text("All"),
                     value: null
@@ -265,7 +265,7 @@ class EditableCard extends StatelessWidget{
           msg = "Minion Deleted";
         else if (editable is Vehicle)
           msg = "Vehicle Deleted";
-        Scaffold.of(upperContext).showSnackBar(
+        ScaffoldMessenger.of(upperContext).showSnackBar(
           SnackBar(
             content: Text(msg),
             action: SnackBarAction(

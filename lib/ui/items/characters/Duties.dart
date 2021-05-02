@@ -40,7 +40,7 @@ class Duties extends StatelessWidget{
                             character.duties.removeAt(index);
                             refresh();
                             character.save(context: context);
-                            Scaffold.of(context).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Deleted Duty"),
                               action: SnackBarAction(
                                 label: "Undo",

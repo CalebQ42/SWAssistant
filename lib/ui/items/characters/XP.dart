@@ -95,7 +95,7 @@ class XP extends StatelessWidget{
               ),
             ),
             Container(width: 10,),
-            FlatButton.icon(
+            TextButton.icon(
               onPressed: (){
                 if(xpAddController.text != ""){
                   var adding = int.tryParse(xpAddController.text);

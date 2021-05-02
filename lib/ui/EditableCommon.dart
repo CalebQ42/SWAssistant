@@ -140,7 +140,7 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
       throw("Either a builder or stateful MUST be provided");
     if(stateful != null)
       editing = stateful.getHolder().editing;
-    additionalButtons ??= () => List();
+    additionalButtons ??= () => [];
   }
 
   @override
