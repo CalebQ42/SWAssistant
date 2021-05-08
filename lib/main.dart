@@ -25,22 +25,32 @@ class SWApp extends StatefulWidget{
 class SWAppState extends State {
   @override
   Widget build(BuildContext context) {
+    var baseTheme = Theme.of(context).copyWith(
+      bottomSheetTheme: BottomSheetThemeData(
+        shape: BeveledRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0)
+          )
+        )
+      ),
+    );
+    bool useLight = false;
+    if (SW.of(context).getPreference(preferences.light, null) == null){
+      if (baseTheme.brightness == Brightness.light){
+        useLight = true;
+      }
+    }else if (SW.of(context).getPreference(preferences.light, false)){
+      useLight = true;
+    }
     ThemeData theme;
-    if(SW.of(context).getPreference(preferences.light, false))
-      theme = ThemeData(
+    if(useLight)
+      theme = baseTheme.copyWith(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
-        bottomSheetTheme: BottomSheetThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10.0),
-              topRight: Radius.circular(10.0)
-            )
-          )
-        ),
         snackBarTheme: SnackBarThemeData(
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(),
+          shape: BeveledRectangleBorder(),
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(),
@@ -50,7 +60,7 @@ class SWAppState extends State {
       );
     else{
       if(SW.of(context).getPreference(preferences.amoled, false))
-        theme = ThemeData(
+        theme = baseTheme.copyWith(
           backgroundColor: Colors.black,
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
@@ -62,7 +72,7 @@ class SWAppState extends State {
             contentTextStyle: TextStyle(
               color: Colors.white
             ),
-            shape: RoundedRectangleBorder(),
+            shape: BeveledRectangleBorder(),
             behavior: SnackBarBehavior.floating
           ),
           primaryColor: Colors.red,
@@ -83,7 +93,7 @@ class SWAppState extends State {
           brightness: Brightness.dark
         );
       else
-        theme = ThemeData(
+        theme = baseTheme.copyWith(
           primaryColor: Colors.red,
           accentColor: Colors.lightBlue,
           snackBarTheme: SnackBarThemeData(

@@ -15,6 +15,7 @@ class Description extends StatelessWidget{
       editing: editing,
       initialText: Editable.of(context).desc,
       textCapitalization: TextCapitalization.sentences,
+      textAlign: TextAlign.start,
       multiline: true,
       state: state,
       controller: (){
