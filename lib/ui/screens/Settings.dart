@@ -32,12 +32,27 @@ class SettingsState extends State{
       body: Column(
         children: [
           SwitchListTile(
-            value: app.getPreference(preferences.light, false),
+            value: app.getPreference(preferences.forceLight, false),
             onChanged: (b){
-              app.prefs.setBool(preferences.light, b);
+              app.prefs.setBool(preferences.forceLight, b);
+              if (b){
+                app.prefs.setBool(preferences.forceDark, false);
+              }
               updateTopLevel();
             },
-            title: Text("Light Side Theme"),
+            title: Text("Force Light Side"),
+          ),
+          Divider(),
+          SwitchListTile(
+            value: app.getPreference(preferences.forceDark, false),
+            onChanged: (b){
+              app.prefs.setBool(preferences.forceDark, b);
+              if (b){
+                app.prefs.setBool(preferences.forceLight, false);
+              }
+              updateTopLevel();
+            },
+            title: Text("Force Dark Side"),
           ),
           Divider(),
           SwitchListTile(

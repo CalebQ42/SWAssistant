@@ -24,9 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core: ^1.1.0
-  firebase_crashlytics: "^2.0.2"
-  firebase_analytics: "^8.0.3"
+  firebase_core: ^1.1.1
+  firebase_crashlytics: "^2.0.3"
+  firebase_analytics: "^8.0.4"
   shared_preferences: ^2.0.5
   path_provider: ^2.0.1
   cupertino_icons: ^1.0.3

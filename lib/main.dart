@@ -26,6 +26,14 @@ class SWAppState extends State {
   @override
   Widget build(BuildContext context) {
     var baseTheme = Theme.of(context).copyWith(
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        shape: BeveledRectangleBorder(),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
+      ),
       bottomSheetTheme: BottomSheetThemeData(
         shape: BeveledRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -35,89 +43,38 @@ class SWAppState extends State {
         )
       ),
     );
-    bool useLight = false;
-    if (SW.of(context).getPreference(preferences.light, null) == null){
-      if (baseTheme.brightness == Brightness.light){
-        useLight = true;
-      }
-    }else if (SW.of(context).getPreference(preferences.light, false)){
-      useLight = true;
-    }
-    ThemeData theme;
-    if(useLight)
-      theme = baseTheme.copyWith(
+    return MaterialApp(
+      title: 'SWAssistant',
+      themeMode: SW.of(context).getPreference(preferences.forceLight, false) ?
+        ThemeMode.light : SW.of(context).getPreference(preferences.forceDark, false) ?
+        ThemeMode.dark : ThemeMode.system,
+      theme: baseTheme.copyWith(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
-        snackBarTheme: SnackBarThemeData(
-          behavior: SnackBarBehavior.floating,
-          shape: BeveledRectangleBorder(),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
-        ),
-        brightness: Brightness.light
-      );
-    else{
-      if(SW.of(context).getPreference(preferences.amoled, false))
-        theme = baseTheme.copyWith(
+      ),
+      darkTheme: SW.of(context).getPreference(preferences.amoled, false) ? 
+        baseTheme.copyWith(
           backgroundColor: Colors.black,
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
           scaffoldBackgroundColor: Colors.black,
           cardColor: Color.fromARGB(255, 15, 15, 15),
-          snackBarTheme: SnackBarThemeData(
+          snackBarTheme: baseTheme.snackBarTheme.copyWith(
             backgroundColor: Color.fromARGB(255, 15, 15, 15),
             actionTextColor: Colors.amberAccent,
             contentTextStyle: TextStyle(
               color: Colors.white
             ),
-            shape: BeveledRectangleBorder(),
-            behavior: SnackBarBehavior.floating
           ),
           primaryColor: Colors.red,
-          accentColor: Colors.lightBlue,
-          bottomSheetTheme: BottomSheetThemeData(
+          accentColor: Colors.lightBlueAccent,
+          bottomSheetTheme: baseTheme.bottomSheetTheme.copyWith(
             backgroundColor: Colors.black,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)
-              )
-            )
           ),
-          inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
-          ),
-          brightness: Brightness.dark
-        );
-      else
-        theme = baseTheme.copyWith(
+        ) : baseTheme.copyWith(
           primaryColor: Colors.red,
-          accentColor: Colors.lightBlue,
-          snackBarTheme: SnackBarThemeData(
-            shape: RoundedRectangleBorder(),
-            behavior: SnackBarBehavior.floating
-          ),
-          bottomSheetTheme: BottomSheetThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)
-              )
-            )
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
-          ),
-          brightness: Brightness.dark
-        );
-    }
-    return MaterialApp(
-      title: 'SWAssistant',
-      theme: theme,
+          accentColor: Colors.lightBlueAccent,
+        ),
       navigatorObservers: [
         if(SW.of(context).getPreference(preferences.analytics, true) && SW.of(context).firebaseAvailable)
           FirebaseAnalyticsObserver(analytics: SW.of(context).analytics),
