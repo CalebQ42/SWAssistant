@@ -61,7 +61,7 @@ class SettingsState extends State{
               app.prefs.setBool(preferences.amoled, b);
               updateTopLevel();
             },
-            title: Text("Amoled Dark Theme"),
+            title: Text("Amoled (Pitch Black) Dark Theme"),
           ),
           Divider(),
           SwitchListTile(
@@ -72,7 +72,7 @@ class SettingsState extends State{
                   context: context,
                   builder: (context) => 
                     AlertDialog(
-                      content: Text("Turning off firebase will remove the ability to download profiles and any bugs you encounter CANNOT be fixed. Additionally the app needs to be restarted for this to take effect. Continue?"),
+                      content: Text("Turning off firebase will remove the ability to download profiles. Additionally the app needs to be restarted for this to take effect. Continue?"),
                       actions: [
                         TextButton(
                           onPressed: (){
