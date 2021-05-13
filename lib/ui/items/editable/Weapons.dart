@@ -18,8 +18,8 @@ class Weapons extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
-    var weaponsList = List.generate(editable.weapons.length, (i){
-      return InkResponse(
+    var weaponsList = List.generate(editable.weapons.length, (i) =>
+      InkResponse(
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
         onTap: (){
@@ -54,7 +54,8 @@ class Weapons extends StatelessWidget{
                   return SWDiceHolder();
               }(),
               context: context,
-              weapon: editable.weapons[i]
+              weapon: editable.weapons[i],
+              brawn: (editable is Creature) ? editable.charVals[0] : 0
             ).show(context);
         },
         child: Row(
@@ -131,8 +132,8 @@ class Weapons extends StatelessWidget{
             )
           ],
         )
-      );
-    });
+      )
+    );
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(

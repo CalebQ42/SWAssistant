@@ -15,7 +15,7 @@ class SWDiceDialog extends StatelessWidget{
   Widget build(BuildContext context) =>
     Padding(
       padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
-        child: Wrap(
+      child: Wrap(
         children: List.generate(
           SWDice.SWDice.length, (index) =>
             Row(

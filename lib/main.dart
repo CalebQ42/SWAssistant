@@ -8,6 +8,7 @@ import 'package:swassistant/ui/screens/EditableList.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 
 void main() =>
+  //TODO: ask about firebase, analytics, and crash reporting before first start
   SW.initialize().then(
     (value) {
       if(value.firebaseAvailable && value.getPreference(preferences.crashlytics, true) == true &&
@@ -25,41 +26,42 @@ class SWApp extends StatefulWidget{
 class SWAppState extends State {
   @override
   Widget build(BuildContext context) {
-    var baseTheme = Theme.of(context).copyWith(
-      snackBarTheme: SnackBarThemeData(
-        behavior: SnackBarBehavior.floating,
-        shape: BeveledRectangleBorder(),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
-      ),
-      bottomSheetTheme: BottomSheetThemeData(
-        shape: BeveledRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.0),
-            topRight: Radius.circular(10.0)
-          )
+    var snackTheme = SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      shape: BeveledRectangleBorder(),
+    );
+    var inputTheme = InputDecorationTheme(
+      border: OutlineInputBorder(),
+      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
+    );
+    var bottomSheetTheme = BottomSheetThemeData(
+      shape: BeveledRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.elliptical(25, 25),
+          topRight: Radius.elliptical(25, 25)
         )
-      ),
+      )
     );
     return MaterialApp(
       title: 'SWAssistant',
       themeMode: SW.of(context).getPreference(preferences.forceLight, false) ?
         ThemeMode.light : SW.of(context).getPreference(preferences.forceDark, false) ?
         ThemeMode.dark : ThemeMode.system,
-      theme: baseTheme.copyWith(
+      theme: ThemeData(
         primaryColor: Colors.blue,
         accentColor: Colors.redAccent,
+        bottomSheetTheme: bottomSheetTheme,
+        inputDecorationTheme: inputTheme,
+        snackBarTheme: snackTheme
       ),
       darkTheme: SW.of(context).getPreference(preferences.amoled, false) ? 
-        baseTheme.copyWith(
+        ThemeData( //Amoled Theme
           backgroundColor: Colors.black,
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
           scaffoldBackgroundColor: Colors.black,
           cardColor: Color.fromARGB(255, 15, 15, 15),
-          snackBarTheme: baseTheme.snackBarTheme.copyWith(
+          snackBarTheme: snackTheme.copyWith(
             backgroundColor: Color.fromARGB(255, 15, 15, 15),
             actionTextColor: Colors.amberAccent,
             contentTextStyle: TextStyle(
@@ -68,12 +70,19 @@ class SWAppState extends State {
           ),
           primaryColor: Colors.red,
           accentColor: Colors.lightBlueAccent,
-          bottomSheetTheme: baseTheme.bottomSheetTheme.copyWith(
+          bottomSheetTheme: bottomSheetTheme.copyWith(
             backgroundColor: Colors.black,
           ),
-        ) : baseTheme.copyWith(
+          dividerColor: Colors.grey.shade800,
+          brightness: Brightness.dark,
+          inputDecorationTheme: inputTheme
+        ) : ThemeData( //Dark Theme
           primaryColor: Colors.red,
           accentColor: Colors.lightBlueAccent,
+          brightness: Brightness.dark,
+          bottomSheetTheme: bottomSheetTheme,
+          inputDecorationTheme: inputTheme,
+          snackBarTheme: snackTheme
         ),
       navigatorObservers: [
         if(SW.of(context).getPreference(preferences.analytics, true) && SW.of(context).firebaseAvailable)

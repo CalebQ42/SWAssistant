@@ -77,7 +77,7 @@ class SWDrawer extends StatelessWidget{
           //   }
           // ),
           // Divider(),
-          Padding(padding: EdgeInsets.only(left:5.0),child:Text("Profiles")),
+          Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text("Profiles")),
           ListTile(
             title: Text("Characters"),
             leading: Icon(Icons.face),
@@ -132,7 +132,7 @@ class SWDrawer extends StatelessWidget{
           //   }
           // ),
           // Divider(),
-          Padding(padding: EdgeInsets.only(left:5.0),child:Text("Other Stuff")),
+          Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text("Other Stuff")),
           // TODO: Dice
           // ListTile(
           //   title: Text("Dice"),

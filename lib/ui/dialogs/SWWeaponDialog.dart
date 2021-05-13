@@ -12,8 +12,9 @@ class SWWeaponDialog extends StatelessWidget{
   final SWDiceHolder holder;
   final BuildContext context;
   final Weapon weapon;
+  final int brawn;
 
-  SWWeaponDialog({@required this.holder, @required this.context, @required this.weapon});
+  SWWeaponDialog({@required this.holder, @required this.context, @required this.weapon, this.brawn});
 
   @override
   Widget build(BuildContext context) =>
@@ -106,7 +107,7 @@ class SWWeaponDialog extends StatelessWidget{
               child: Text("Fire!"),
               onPressed: (){
                 Navigator.of(context).pop();
-                _WeaponResults(weapon: weapon, results: holder.getDice().roll()).show(context);
+                _WeaponResults(weapon: weapon, results: holder.getDice().roll(), brawn: brawn,).show(context);
               },
             ),
             TextButton(
@@ -129,8 +130,9 @@ class SWWeaponDialog extends StatelessWidget{
 class _WeaponResults extends StatelessWidget{
   final Weapon weapon;
   final DiceResults results;
+  final int brawn;
 
-  _WeaponResults({this.weapon, this.results});
+  _WeaponResults({this.weapon, this.results, this.brawn});
 
   @override
   Widget build(BuildContext context){
@@ -151,7 +153,9 @@ class _WeaponResults extends StatelessWidget{
       child: Wrap(
         children: [
           Center(
-            child: Text(success.toString() + (isSuccess ? " Success" : " Failure"),
+            child: Text(
+              isSuccess ? (weapon.addBrawn ? weapon.damage + success + brawn : weapon.damage + success).toString() + " Damage"
+                : success.toString() + " Failure",
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
@@ -235,7 +239,9 @@ class _WeaponResults extends StatelessWidget{
                 child: Text("Edit"),
                 onPressed: (){
                   Navigator.of(context).pop();
-                  _WeaponResultsEdit(weapon: weapon, results: results,).show(context);
+                  results.showResultsEdit(context, alternateReturn: (context, results){
+                    _WeaponResults(weapon: weapon, results: results).show(context);
+                  });
                 },
               ),
             ],
@@ -244,144 +250,6 @@ class _WeaponResults extends StatelessWidget{
       )
     );
   }
-
-  void show(BuildContext context) =>
-    showModalBottomSheet(
-      context: context,
-      builder: (context) =>
-        this
-    );
-}
-
-class _WeaponResultsEdit extends StatelessWidget{
-  final Weapon weapon;
-  final DiceResults results;
-
-  _WeaponResultsEdit({this.weapon, this.results});
-
-  Widget build(BuildContext context) =>
-    Padding(
-      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
-        child: Wrap(
-        children: [
-          Row(
-            children: [
-              Expanded(child: Text("Success:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[suc]++,
-                  onDownPressed: () => results.results[suc] --,
-                  getValue: () => results.results[suc],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("Failure:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[fai]++,
-                  onDownPressed: () => results.results[fai] --,
-                  getValue: () => results.results[fai],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("Advantage:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[adv]++,
-                  onDownPressed: () => results.results[adv] --,
-                  getValue: () => results.results[adv],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("Threat:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[thr]++,
-                  onDownPressed: () => results.results[thr] --,
-                  getValue: () => results.results[thr],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("Triumph:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[tri]++,
-                  onDownPressed: () => results.results[tri] --,
-                  getValue: () => results.results[tri],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("Despair:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[des]++,
-                  onDownPressed: () => results.results[des] --,
-                  getValue: () => results.results[des],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("Light Side:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[lig]++,
-                  onDownPressed: () => results.results[lig] --,
-                  getValue: () => results.results[lig],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("Dark Side:")),
-              Expanded(
-                child: UpDownStat(
-                  onUpPressed: () => results.results[dar]++,
-                  onDownPressed: () => results.results[dar] --,
-                  getValue: () => results.results[dar],
-                  min: 0,
-                )
-              )
-            ]
-          ),
-          ButtonBar(
-            children: [
-              TextButton(
-                child: Text("Return"),
-                onPressed: (){
-                  Navigator.of(context).pop();
-                  _WeaponResults(weapon: weapon, results: results).show(context);
-                },
-              )
-            ],
-          )
-        ],
-      )
-    );
 
   void show(BuildContext context) =>
     showModalBottomSheet(

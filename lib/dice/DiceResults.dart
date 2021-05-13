@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:swassistant/dice/SWDice.dart';
 import 'package:swassistant/dice/Sides.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
@@ -100,9 +99,10 @@ class DiceResults{
     );
   }
 
-  void showResultsEdit(BuildContext context,{bool noSuccess = true}) =>
+  void showResultsEdit(BuildContext context,{bool noSuccess = true, void Function(BuildContext, DiceResults) alternateReturn}) =>
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) =>
         Padding(
           padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
@@ -209,12 +209,16 @@ class DiceResults{
                 TextButton(
                   child: Text("Return"),
                   onPressed: (){
-                    if(!noSuccess && results[suc] == 0 && results[fai] == 0)
-                      noSuccess = false;
                     Navigator.of(context).pop();
-                    showCombinedResults(context, noSuccess: noSuccess);
+                    if (alternateReturn == null){
+                      if(!noSuccess && results[suc] == 0 && results[fai] == 0)
+                        noSuccess = false;
+                      showCombinedResults(context, noSuccess: noSuccess);
+                    }else{
+                      alternateReturn(context, this);
+                    }
                   },
-                )
+                ),
               ],
             )
           ],
