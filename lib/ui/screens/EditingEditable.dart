@@ -51,7 +51,7 @@ class _EditingEditableState extends State {
                     value: "disableForce"),
               if (profile is Character)
                 CheckedPopupMenuItem(
-                    checked: (profile as Character).disableObligation,
+                    checked: (profile as Character).disableMorality,
                     child: Text("Disable Morality"),
                     value: "disableMorality"),
               if (profile is Character)
