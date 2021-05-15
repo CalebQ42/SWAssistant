@@ -17,17 +17,16 @@ import 'profiles/Vehicle.dart';
 import 'Preferences.dart' as preferences;
 
 class SW{
+  List<Minion> _minions = [];
+  List<String> minCats = [];
 
-  final List<Minion> _minions = [];
-  final List<String> minCats = [];
+  List<Character> _characters = [];
+  List<String> charCats = [];
 
-  final List<Character> _characters = [];
-  final List<String> charCats = [];
+  List<Vehicle> _vehicles = [];
+  List<String> vehCats = [];
 
-  final List<Vehicle> _vehicles = [];
-  final List<String> vehCats = [];
-
-  final SharedPreferences prefs;
+  SharedPreferences prefs;
 
   bool firebaseAvailable = false;
   FirebaseAnalytics analytics;
@@ -35,7 +34,7 @@ class SW{
 
   String saveDir;
 
-  bool devMode;
+  bool devMode = false;
 
   SW({this.prefs, this.saveDir, this.devMode});
 
@@ -279,45 +278,39 @@ class SW{
   dynamic getPreference(String preference, dynamic defaultValue) =>
     prefs.get(preference) ?? defaultValue;
 
-  static Future<SW> initialize() async{
-    WidgetsFlutterBinding.ensureInitialized();
-    var prefs = await SharedPreferences.getInstance();
-    String saveDir;
+  Future<void> initialize() async{
     if(prefs.containsKey(preferences.saveLocation))
       saveDir = prefs.getString(preferences.saveLocation);
     else{
       var dir = await getExternalStorageDirectory();
       saveDir = dir.path+"/SWChars";
     }
-    bool devMode = false;
     if(!Directory(saveDir).existsSync())
       Directory(saveDir).createSync();
     if((prefs.containsKey(preferences.dev) && prefs.getBool(preferences.dev)) || kDebugMode || kProfileMode){
       devMode = true;
       await testing(saveDir);
     }
-    SW out = SW(prefs: prefs, saveDir: saveDir, devMode: devMode);
-    out.observatory = Observatory();
-    out.loadAll();
-    if(out.getPreference(preferences.crashlytics, true)){
+    observatory = Observatory();
+    loadAll();
+    if(getPreference(preferences.crashlytics, true)){
       try{
         await Firebase.initializeApp();
-        out.firebaseAvailable = true;
-        if(out.getPreference(preferences.crashlytics, true) && kDebugMode == false)
+        firebaseAvailable = true;
+        if(getPreference(preferences.crashlytics, true) && kDebugMode == false)
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
         else
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
-        if(out.getPreference(preferences.analytics, true)){
-          out.analytics = FirebaseAnalytics();
-          out.analytics.setAnalyticsCollectionEnabled(true);
+        if(getPreference(preferences.analytics, true)){
+          analytics = FirebaseAnalytics();
+          analytics.setAnalyticsCollectionEnabled(true);
         }else
           FirebaseAnalytics().setAnalyticsCollectionEnabled(false);
       }catch (e){
         print(e);
-        out.firebaseAvailable = false;
+        firebaseAvailable = false;
       }
     }
-    return out;
   }
 
   static Future<void> testing(String saveDir) async{

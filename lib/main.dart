@@ -10,25 +10,28 @@ import 'package:swassistant/ui/screens/GettingStarted.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   var prefs = await SharedPreferences.getInstance();
+  var app = SW(prefs: prefs);
+  print(prefs.getBool(preferences.firstStart) ?? false);
   if (prefs.getBool(preferences.firstStart) ?? false){
     runApp(InitApp(()=>
-      SW.initialize().then(
-        (sw) {
-          if(sw.firebaseAvailable && sw.getPreference(preferences.crashlytics, true) == true &&
-              sw.getPreference(preferences.firebase, true))
+      app.initialize().then(
+        (nil) {
+          if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) == true &&
+              app.getPreference(preferences.firebase, true))
             FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-          runApp(SWWidget(child: SWApp(), app: sw));
+          runApp(SWWidget(child: SWApp(), app: app));
         }
       )
     ));
   }else{
-    SW.initialize().then(
-      (sw) {
-        if(sw.firebaseAvailable && sw.getPreference(preferences.crashlytics, true) == true &&
-            sw.getPreference(preferences.firebase, true))
+    app.initialize().then(
+      (nil) { 
+        if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) == true &&
+            app.getPreference(preferences.firebase, true))
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-        runApp(SWWidget(child: SWApp(), app: sw));
+        runApp(SWWidget(child: SWApp(), app: app));
       }
     );
   }

@@ -128,7 +128,7 @@ abstract class Editable extends JsonSavable{
   }
 
   Route setRoute(Function refreshCallback){
-    route = MaterialPageRoute(builder: (BuildContext bc)=> EditingEditable(this,refreshCallback),fullscreenDialog: false);
+    route = MaterialPageRoute(builder: (BuildContext bc) => EditingEditable(this,refreshCallback),fullscreenDialog: false);
     return route;
   }
 
