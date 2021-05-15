@@ -2,21 +2,60 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
+import 'package:swassistant/ui/screens/GettingStarted.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 
-void main() =>
-  //TODO: ask about firebase, analytics, and crash reporting before first start
-  SW.initialize().then(
-    (value) {
-      if(value.firebaseAvailable && value.getPreference(preferences.crashlytics, true) == true &&
-          value.getPreference(preferences.firebase, true))
-        FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-      runApp(SWWidget(child: SWApp(), app: value));
-    }
-  );
+Future<void> main() async {
+  var prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool(preferences.firstStart) ?? false){
+    runApp(InitApp(()=>
+      SW.initialize().then(
+        (sw) {
+          if(sw.firebaseAvailable && sw.getPreference(preferences.crashlytics, true) == true &&
+              sw.getPreference(preferences.firebase, true))
+            FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+          runApp(SWWidget(child: SWApp(), app: sw));
+        }
+      )
+    ));
+  }else{
+    SW.initialize().then(
+      (sw) {
+        if(sw.firebaseAvailable && sw.getPreference(preferences.crashlytics, true) == true &&
+            sw.getPreference(preferences.firebase, true))
+          FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+        runApp(SWWidget(child: SWApp(), app: sw));
+      }
+    );
+  }
+}
+
+class InitApp extends StatelessWidget{
+
+  final Function onEnd;
+
+  InitApp(this.onEnd);
+
+  @override
+  Widget build(BuildContext context) =>
+    MaterialApp(
+      title: "SWAssistant",
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        accentColor: Colors.redAccent,
+      ),
+      darkTheme: ThemeData( //Dark Theme
+        primaryColor: Colors.red,
+        accentColor: Colors.lightBlueAccent,
+        brightness: Brightness.dark
+      ),
+      home: GettingStarted()
+    );
+}
 
 class SWApp extends StatefulWidget{
   @override

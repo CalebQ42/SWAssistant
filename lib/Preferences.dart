@@ -1,15 +1,23 @@
+String saveLocation = "saveLocation";
+String thankYou = "donateThankYou";
+String dev = "devMode";
+
+//Usage prefs
 String googleDrive = "cloudEnabled";
 String dice = "getDiceOnLaunch";
-String ads = "adsOn";
-String saveLocation = "saveLocation";
 String colorDice = "colorDice";
-String thankYou = "donateThankYou";
-String firstLaunch = "firstLaunchCheck";
-String analytics = "analytics";
-String startCount = "startCount";
-String dev = "devMode";
+
+//Firebase prefs
 String crashlytics = "crashlytics";
+String analytics = "analytics";
 String firebase = "firebase";
+String ads = "adsOn";
+
+//Starting prefs
+String firstStart = "first";
+String startCount = "startCount";
+
+//Theme prefs
 String forceLight = "forceLight";
 String forceDark = "forceDark";
 String amoled = "amoledTheme";
