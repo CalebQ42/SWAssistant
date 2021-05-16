@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -29,7 +28,6 @@ class SW{
   SharedPreferences prefs;
 
   bool firebaseAvailable = false;
-  FirebaseAnalytics analytics;
   Observatory observatory;
 
   String saveDir;
@@ -299,11 +297,6 @@ class SW{
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
         else
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
-        if(getPreference(preferences.analytics, true)){
-          analytics = FirebaseAnalytics();
-          analytics.setAnalyticsCollectionEnabled(true);
-        }else
-          FirebaseAnalytics().setAnalyticsCollectionEnabled(false);
       }catch (e){
         print(e);
         firebaseAvailable = false;

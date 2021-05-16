@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +53,7 @@ class InitApp extends StatelessWidget{
       ),
       darkTheme: ThemeData( //Dark Theme
         primaryColor: Colors.red,
-        accentColor: Colors.lightBlueAccent,
+        accentColor: Colors.blue,
         brightness: Brightness.dark
       ),
       home: GettingStarted()
@@ -128,8 +127,6 @@ class SWAppState extends State {
           snackBarTheme: snackTheme
         ),
       navigatorObservers: [
-        if(SW.of(context).getPreference(preferences.analytics, true) && SW.of(context).firebaseAvailable)
-          FirebaseAnalyticsObserver(analytics: SW.of(context).analytics),
         SW.of(context).observatory
       ],
       initialRoute: "/characters",

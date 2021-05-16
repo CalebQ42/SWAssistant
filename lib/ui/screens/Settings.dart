@@ -133,17 +133,6 @@ class SettingsState extends State{
             title: Text("Crash Reporting"),
             subtitle: Text("Anonymous crash reporting provided by Firebase Crashlytics")
           ),
-          Divider(),
-          SwitchListTile(
-            value: app.getPreference(preferences.analytics, true),
-            onChanged: app.getPreference(preferences.firebase, true) ? (b){
-              app.analytics.setAnalyticsCollectionEnabled(b);
-              app.prefs.setBool(preferences.analytics, b);
-              setState((){});
-            } : null,
-            title: Text("Anonymous Usage Data"),
-            subtitle: Text("Analytics provided by Firebase (Google)"),
-          )
         ],
       )
     );
