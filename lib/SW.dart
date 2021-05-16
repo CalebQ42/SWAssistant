@@ -287,10 +287,8 @@ class SW{
     }
     if(!Directory(saveDir).existsSync())
       Directory(saveDir).createSync();
-    if((prefs.containsKey(preferences.dev) && prefs.getBool(preferences.dev)) || kDebugMode || kProfileMode){
-      devMode = true;
+    if(devMode)
       await testing(saveDir);
-    }
     observatory = Observatory();
     loadAll();
     if(getPreference(preferences.crashlytics, true)){

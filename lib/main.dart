@@ -13,8 +13,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var prefs = await SharedPreferences.getInstance();
   var app = SW(prefs: prefs);
-  print(prefs.getBool(preferences.firstStart) ?? false);
-  if (prefs.getBool(preferences.firstStart) ?? false){
+  if((prefs.containsKey(preferences.dev) && prefs.getBool(preferences.dev)) || kDebugMode || kProfileMode)
+    app.devMode = true;
+  if (app.devMode || prefs.getBool(preferences.firstStart) ?? false){
     runApp(InitApp(()=>
       app.initialize().then(
         (nil) {
