@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class UpDownStat extends StatefulWidget{
 
   final Key key;
-  final Function onUpPressed;
-  final Function onDownPressed;
+  final Function() onUpPressed;
+  final Function() onDownPressed;
   final int Function() getValue;
   final int max;
-  final Function getMax;
+  final Function() getMax;
   final int min;
   final bool allowNegative;
 
@@ -20,11 +20,11 @@ class UpDownStat extends StatefulWidget{
 
 class _UpDownStatState extends State{
 
-  final Function onUpPressed;
-  final Function onDownPressed;
+  final Function() onUpPressed;
+  final Function() onDownPressed;
   final int Function() getValue;
   final int max;
-  final Function getMax;
+  final Function() getMax;
   final int min;
   final bool allowNegative;
   bool up = false;

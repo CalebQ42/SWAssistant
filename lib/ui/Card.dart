@@ -8,7 +8,7 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class InfoCard extends StatefulWidget{
 
   final InfoCardHolder holder = new InfoCardHolder();
-  final Function(bool b, Function refreshList) onHideChange;
+  final Function(bool b, Function() refreshList) onHideChange;
 
   InfoCard({shown = true, @required Widget contents, String title = "", @required this.onHideChange}){
     holder.shown = shown;
@@ -25,7 +25,7 @@ class InfoCard extends StatefulWidget{
 class _InfoCardState extends State{
 
   InfoCardHolder holder;
-  Function(bool b, Function refreshList) onHideChange;
+  Function(bool b, Function() refreshList) onHideChange;
 
   _InfoCardState(this.holder, this.onHideChange);
 
@@ -61,7 +61,7 @@ class InfoCardHolder{
 }
 
 class NameCardContent extends StatefulWidget{
-  final Function refreshList;
+  final Function() refreshList;
 
   const NameCardContent(this.refreshList);
 
@@ -71,7 +71,7 @@ class NameCardContent extends StatefulWidget{
 }
 
 class _NameCardContentState extends State{
-  Function refreshList;
+  Function() refreshList;
 
   _NameCardContentState(this.refreshList);
 

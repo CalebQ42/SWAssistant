@@ -6,7 +6,7 @@ import 'package:swassistant/ui/dialogs/character/ObligationEditDialog.dart';
 
 class Obligations extends StatelessWidget{
 
-  final Function refresh;
+  final Function() refresh;
   final bool editing;
 
   Obligations({this.refresh, this.editing});

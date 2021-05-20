@@ -38,12 +38,12 @@ class Vehicle extends Editable{
     "Description"
   ];
 
-  Vehicle({@required int id, String name = "New Vehicle", bool saveOnCreation = false, SW app}) :
+  Vehicle({required int id, String name = "New Vehicle", bool saveOnCreation = false, required SW app}) :
       super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
   Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Vehicle.from(Vehicle vehicle, {int id}) :
+  Vehicle.from(Vehicle vehicle, {required int id}) :
       silhouette = vehicle.silhouette,
       speed = vehicle.speed,
       handling = vehicle.handling,
@@ -99,7 +99,7 @@ class Vehicle extends Editable{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context, Function updateList) =>
+  List<Widget> cardContents(BuildContext context, Function() updateList) =>
     <Widget>[
       EditableContent(
         builder: (b, refresh, state) =>
@@ -137,5 +137,10 @@ class Vehicle extends Editable{
       ),
     ];
 
-  static Vehicle of(BuildContext context) => Editable.of(context);
+  static Vehicle? of(BuildContext context){
+    var ed = Editable.of(context);
+    if (ed is Vehicle)
+      return ed;
+    return null;
+  }
 }

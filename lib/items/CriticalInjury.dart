@@ -6,11 +6,6 @@ class CriticalInjury implements JsonSavable{
   int severity;
 
   CriticalInjury({this.name = "", this.desc = "", this.severity = 0});
-
-  CriticalInjury.nulled() :
-    this.name = null,
-    this.desc = null,
-    this.severity = null;
   
   CriticalInjury.from(CriticalInjury criticalInjury) :
     this.name = criticalInjury.name,

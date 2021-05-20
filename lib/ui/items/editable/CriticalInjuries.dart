@@ -4,7 +4,7 @@ import 'package:swassistant/ui/dialogs/editable/CriticalInjuryEditDialog.dart';
 
 class CriticalInjuries extends StatelessWidget{
   final bool editing;
-  final Function refresh;
+  final Function() refresh;
 
   CriticalInjuries({this.editing, this.refresh});
   

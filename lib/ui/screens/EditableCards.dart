@@ -6,7 +6,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 
 class EditableCards extends StatelessWidget{
 
-  final Function refreshList;
+  final Function() refreshList;
 
   EditableCards({this.refreshList});
 

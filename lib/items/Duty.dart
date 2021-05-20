@@ -17,11 +17,6 @@ class Duty implements JsonSavable{
       name = duty.name,
       value = duty.value,
       desc = duty.desc;
-  
-  Duty.nulled() :
-      name = "",
-      value = null,
-      desc = "";
 
   Map<String,dynamic> toJson() => {
     "name" : name,

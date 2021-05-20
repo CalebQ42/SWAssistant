@@ -13,11 +13,6 @@ class WeaponCharacteristic implements JsonSavable{
       value = wc.value,
       advantage = wc.advantage;
 
-  WeaponCharacteristic.nulled() :
-      name = null,
-      value = null,
-      advantage = null;
-
   WeaponCharacteristic.fromJson(Map<String,dynamic> json) :
       name = json["name"],
       value = json["value"],

@@ -14,12 +14,6 @@ class Item implements JsonSavable{
       count = item.count,
       encum = item.encum;
 
-  Item.nulled() :
-      name = null,
-      desc = "",
-      count = 1,
-      encum = 0;
-
   Item.fromJson(Map<String, dynamic> json) :
       name = json["name"],
       desc = json["description"],

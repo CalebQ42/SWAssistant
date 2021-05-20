@@ -7,7 +7,7 @@ import 'package:swassistant/ui/dialogs/creature/TalentEditDialog.dart';
 class Talents extends StatelessWidget{
 
   final bool editing;
-  final Function refresh;
+  final Function() refresh;
 
   Talents({this.editing, this.refresh});
 

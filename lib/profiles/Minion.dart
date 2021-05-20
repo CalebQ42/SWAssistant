@@ -42,12 +42,12 @@ class Minion extends Editable with Creature{
     "Description"
   ];
 
-  Minion({@required int id, String name = "New Minion", bool saveOnCreation = false, SW app}) :
+  Minion({required int id, String name = "New Minion", bool saveOnCreation = false, required SW app}) :
       super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
   Minion.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Minion.from(Minion minion, {int id}) :
+  Minion.from(Minion minion, {required int id}) :
       woundThreshInd = minion.woundThreshInd,
       minionNum = minion.minionNum,
       savedInv = List.of(minion.savedInv),
@@ -86,9 +86,9 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context, Function updateList) {
-    Function weaponsRefresh;
-    Function invRefresh;
+  List<Widget> cardContents(BuildContext context, Function() updateList) {
+    Function()? weaponsRefresh;
+    Function()? invRefresh;
     EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
     EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();
     woundCurTemp = woundCur;
@@ -115,13 +115,14 @@ class Minion extends Editable with Creature{
       ),
       EditableContent(
         builder: (b, refresh, state){
-          weaponsRefresh = refresh;
+          if (weaponsRefresh != null)
+            weaponsRefresh = refresh;
           return Weapons(editing: b, refresh: refresh);
         },
         defaultEditingState: () => weapons.length == 0,
         additonalButtons: () => [
           Tooltip(
-            message: savedWeapons == null ? "Save weapons first!" : "Restore saved weapons",
+            message: savedWeapons.length == 0 ? "Save weapons first!" : "Restore saved weapons",
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -130,7 +131,8 @@ class Minion extends Editable with Creature{
               onPressed: savedWeapons.length == 0 ? null : (){
                 var tmp = List.of(weapons);
                 weapons = List.of(savedWeapons);
-                weaponsRefresh();
+                if (weaponsRefresh != null)
+                  weaponsRefresh!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Restored"),
@@ -138,7 +140,8 @@ class Minion extends Editable with Creature{
                       label: "Undo",
                       onPressed: (){
                         weapons = tmp;
-                        weaponsRefresh();
+                        if (weaponsRefresh != null)
+                          weaponsRefresh!();
                       },
                     ),
                   )
@@ -147,7 +150,7 @@ class Minion extends Editable with Creature{
             )
           ),
           Tooltip(
-            message: savedWeapons == null ? "Save weapons" : "Overwrite saved weapons",
+            message: savedWeapons.length == 0 ? "Save weapons" : "Overwrite saved weapons",
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -156,8 +159,8 @@ class Minion extends Editable with Creature{
               onPressed: (){
                 var reload = (savedWeapons.length == 0 && weapons.length != 0) || (savedWeapons.length != 0 && weapons.length == 0);
                 savedWeapons = List.of(weapons);
-                if(reload)
-                  weaponsRefresh();
+                if(reload && weaponsRefresh != null)
+                  weaponsRefresh!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Weapons Saved"),
@@ -181,7 +184,7 @@ class Minion extends Editable with Creature{
         defaultEditingState: () => inventory.length == 0,
         additonalButtons: () => [
           Tooltip(
-            message: savedInv == null ? "Save inventory first!" : "Restore saved inventory",
+            message: savedInv.length == 0 ? "Save inventory first!" : "Restore saved inventory",
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -190,7 +193,8 @@ class Minion extends Editable with Creature{
               onPressed: savedInv.length == 0 ? null : (){
                 var tmp = List.of(inventory);
                 inventory = List.of(savedInv);
-                invRefresh();
+                if (invRefresh != null)
+                  invRefresh!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Inventory Restored"),
@@ -198,7 +202,8 @@ class Minion extends Editable with Creature{
                       label: "Undo",
                       onPressed: (){
                         inventory = tmp;
-                        invRefresh();
+                        if (invRefresh != null)
+                          invRefresh!();
                       },
                     ),
                   )
@@ -207,7 +212,7 @@ class Minion extends Editable with Creature{
             )
           ),
           Tooltip(
-            message: savedInv == null ? "Save inventory" : "Overwrite saved inventory",
+            message: savedInv.length == 0 ? "Save inventory" : "Overwrite saved inventory",
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -216,8 +221,8 @@ class Minion extends Editable with Creature{
               onPressed: (){
                 var refresh = (savedInv.length == 0 && inventory.length != 0) || (savedInv.length != 0 && inventory.length == 0);
                 savedInv = List.of(inventory);
-                if(refresh)
-                  invRefresh();
+                if(refresh && invRefresh != null)
+                  invRefresh!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Inventory Saved"),
@@ -241,5 +246,10 @@ class Minion extends Editable with Creature{
     ];
   }
 
-  static Minion of(BuildContext context) => Editable.of(context);
+  static Minion? of(BuildContext context){
+    var ed = Editable.of(context);
+    if (ed is Minion)
+      return ed;
+    return null;
+  }
 }

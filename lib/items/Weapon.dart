@@ -25,30 +25,9 @@ class Weapon implements JsonSavable{
   int encumbrance;
 
   Weapon({this.name = "", this.damage = 0, this.critical = 0, this.hp = 0, this.range = 0,
-    this.skill = 0, this.skillBase = 0, this.characteristics, this.addBrawn = false,
+    this.skill = 0, this.skillBase = 0, this.characteristics = const [], this.addBrawn = false,
     this.loaded = true, this.limitedAmmo = false, this.itemState = 0, this.ammo = 0,
-    this.firingArc = "", this.encumbrance = 0}){
-    if (characteristics == null){
-      characteristics = [];
-    }
-  }
-
-  Weapon.nulled() : 
-      name = null,
-      damage = null,
-      critical = null,
-      hp = null,
-      range = null,
-      skill = null,
-      skillBase = null,
-      addBrawn = false,
-      loaded = true,
-      limitedAmmo = false,
-      itemState = 0,
-      ammo = 0,
-      firingArc = null,
-      encumbrance = null,
-      characteristics = [];
+    this.firingArc = "", this.encumbrance = 0});
 
   Weapon.fromJson(Map<String,dynamic> json) :
       name = json["name"],
@@ -107,8 +86,8 @@ class Weapon implements JsonSavable{
       "limited ammo" : limitedAmmo,
       "item state" : itemState,
       "ammo" : ammo,
-      if(firingArc != null) "firing arc" : firingArc,
-      if(encumbrance != null) "encumbrance" : encumbrance
+      "firing arc" : firingArc,
+      "encumbrance" : encumbrance
     };
   }
 

@@ -26,12 +26,6 @@ class Skill implements JsonSavable{
       base = skill.base,
       career = skill.career;
 
-  Skill.nulled() :
-      name = null,
-      value = null,
-      base = null,
-      career = false;
-
   Map<String, dynamic> toJson() => {
     "name" : name,
     "value" : value,

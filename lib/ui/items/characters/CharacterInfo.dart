@@ -7,7 +7,7 @@ class CharacterInfo extends StatelessWidget{
 
   final bool editing;
   final EditableContentState state;
-  final Function updateList;
+  final Function() updateList;
 
   CharacterInfo({this.editing, this.state, this.updateList});
   @override

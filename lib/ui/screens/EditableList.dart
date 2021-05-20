@@ -246,7 +246,7 @@ class _EditableListState extends State{
 class EditableCard extends StatelessWidget{
   final Key key;
   final Editable editable;
-  final Function refreshCallback;
+  final Function() refreshCallback;
   final BuildContext upperContext;
 
   EditableCard({this.key, this.editable, this.refreshCallback, this.upperContext});

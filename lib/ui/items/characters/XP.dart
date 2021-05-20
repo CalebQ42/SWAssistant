@@ -6,7 +6,7 @@ import 'package:swassistant/ui/EditableCommon.dart';
 class XP extends StatelessWidget{
 
   final bool editing;
-  final Function refresh;
+  final Function() refresh;
   final EditableContentState state;
 
   XP({this.editing, this.refresh, this.state});

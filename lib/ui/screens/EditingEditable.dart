@@ -12,7 +12,7 @@ import 'package:swassistant/ui/screens/EditableNotes.dart';
 
 class EditingEditable extends StatefulWidget {
   final Editable profile;
-  final Function refreshList;
+  final Function() refreshList;
 
   EditingEditable(this.profile, this.refreshList);
 
@@ -23,7 +23,7 @@ class EditingEditable extends StatefulWidget {
 
 class _EditingEditableState extends State {
   final Editable profile;
-  final Function refreshList;
+  final Function() refreshList;
   int _index = 0;
 
   _EditingEditableState(this.profile, this.refreshList);

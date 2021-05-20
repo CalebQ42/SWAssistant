@@ -71,12 +71,12 @@ class Character extends Editable with Creature{
     "Description"
   ];
 
-  Character({@required int id, String name = "New Character", bool saveOnCreation = false, SW app}) :
+  Character({required int id, String name = "New Character", bool saveOnCreation = false, required SW app}) :
       super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
 
   Character.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Character.from(Character character, {int id}) :
+  Character.from(Character character, {required int id}) :
       species = character.species,
       career = character.career,
       specializations = List.from(character.specializations),
@@ -178,7 +178,7 @@ class Character extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context, Function updateList) => 
+  List<Widget> cardContents(BuildContext context, Function() updateList) => 
     <Widget>[
       EditableContent(
         builder: (b, refresh, state) =>
@@ -257,5 +257,10 @@ class Character extends Editable with Creature{
       )
     ];
 
-  static Character of(BuildContext context) => Editable.of(context);
+  static Character? of(BuildContext context){
+    var ed = Editable.of(context);
+    if (ed is Character)
+      return ed;
+    return null;
+  }
 }

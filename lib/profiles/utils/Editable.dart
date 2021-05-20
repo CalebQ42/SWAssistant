@@ -114,7 +114,7 @@ abstract class Editable extends JsonSavable{
     return json;
   }
 
-  List<Widget> cards(Function refreshList, BuildContext context){
+  List<Widget> cards(Function() refreshList, BuildContext context){
     var cards = <Widget>[];
     var contents = cardContents(context, refreshList);
     cards.add(
@@ -130,7 +130,7 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  Route? setRoute(Function refreshCallback){
+  Route? setRoute(Function() refreshCallback){
     route = MaterialPageRoute(builder: (BuildContext bc) => EditingEditable(this,refreshCallback),fullscreenDialog: false);
     return route;
   }
@@ -188,7 +188,7 @@ abstract class Editable extends JsonSavable{
   void updateShortcut(){}
   void deleteShortcut(){}
 
-  List<Widget> cardContents(BuildContext context, Function listUpdate);
+  List<Widget> cardContents(BuildContext context, Function() listUpdate);
 
   static Editable of(BuildContext context){
     var ed = context.dependOnInheritedWidgetOfExactType<InheritedEditable>()?.editable;

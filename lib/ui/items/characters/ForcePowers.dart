@@ -10,7 +10,7 @@ import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
 class ForcePowers extends StatelessWidget{
 
   final bool editing;
-  final Function refresh;
+  final Function() refresh;
   final EditableContentState state;
 
   ForcePowers({this.editing, this.refresh, this.state});

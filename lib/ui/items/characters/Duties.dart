@@ -6,7 +6,7 @@ import 'package:swassistant/ui/dialogs/character/DutyEditDialog.dart';
 
 class Duties extends StatelessWidget{
 
-  final Function refresh;
+  final Function() refresh;
   final bool editing;
 
   Duties({this.refresh, this.editing});

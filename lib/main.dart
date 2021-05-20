@@ -39,7 +39,7 @@ Future<void> main() async {
 
 class InitApp extends StatelessWidget{
 
-  final Function onEnd;
+  final Function() onEnd;
 
   InitApp(this.onEnd);
 

@@ -9,7 +9,7 @@ import 'package:swassistant/ui/Common.dart';
 
 class Settings extends StatefulWidget{
 
-  final Function updateTopLevel;
+  final Function() updateTopLevel;
 
   Settings({this.updateTopLevel});
 
@@ -19,7 +19,7 @@ class Settings extends StatefulWidget{
 
 class SettingsState extends State{
 
-  final Function updateTopLevel;
+  final Function() updateTopLevel;
 
   SettingsState({this.updateTopLevel});
 

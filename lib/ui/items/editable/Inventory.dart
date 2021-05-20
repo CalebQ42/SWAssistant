@@ -11,7 +11,7 @@ import 'package:swassistant/ui/dialogs/editable/ItemEditDialog.dart';
 class Inventory extends StatelessWidget{
 
   final bool editing;
-  final Function refresh;
+  final Function() refresh;
   final EditableContentState state;
 
   Inventory({this.editing, this.refresh, this.state});

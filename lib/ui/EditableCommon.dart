@@ -108,7 +108,7 @@ class EditingText extends StatelessWidget {
 
 class EditableContent extends StatefulWidget{
 
-  final Widget Function(bool editing, Function refresh, EditableContentState state) builder;
+  final Widget Function(bool editing, Function() refresh, EditableContentState state) builder;
   final bool Function() defaultEditingState;
   final bool editButton;
   final List<Widget> Function() additonalButtons;
@@ -125,7 +125,7 @@ class EditableContent extends StatefulWidget{
 
 class EditableContentState extends State<EditableContent> with TickerProviderStateMixin{
 
-  Widget Function(bool editing, Function refresh, EditableContentState state) builder;
+  Widget Function(bool editing, Function() refresh, EditableContentState state) builder;
   bool editing;
   final bool editButton;
   List<Widget> Function() additionalButtons;
@@ -188,7 +188,7 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
 }
 
 class EditableContentStatefulHolder{
-  Function reloadFunction = () =>
+  Function() reloadFunction = () =>
     throw("THIS NEEDS TO BE OVERWRITTEN");
   bool editing;
 

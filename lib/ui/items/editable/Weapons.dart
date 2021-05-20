@@ -11,7 +11,7 @@ import 'package:swassistant/ui/dialogs/editable/WeaponEditDialog.dart';
 
 class Weapons extends StatelessWidget{
   final bool editing;
-  final Function refresh;
+  final Function() refresh;
 
   Weapons({this.editing, this.refresh});
 

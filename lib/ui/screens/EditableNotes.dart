@@ -52,7 +52,7 @@ class _EditableNotesState extends State{
 class NoteCard extends StatefulWidget{
 
   final int index;
-  final Function onDelete;
+  final Function() onDelete;
 
   NoteCard({this.index, this.onDelete});
 
@@ -62,7 +62,7 @@ class NoteCard extends StatefulWidget{
 
 class _NoteCardState extends State{
   final int index;
-  final Function onDelete;
+  final Function() onDelete;
 
   _NoteCardState({this.index, this.onDelete});
 
