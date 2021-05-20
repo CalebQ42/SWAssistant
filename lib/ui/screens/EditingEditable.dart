@@ -106,7 +106,7 @@ class _EditingEditableState extends State {
                                           .characters()
                                           .any((element) => element.id == id))
                                         id++;
-                                      out = Character.from(profile, id: id);
+                                      out = Character.from(profile as Character, id: id);
                                     } else if (profile is Minion) {
                                       var id = 0;
                                       while (SW
@@ -114,7 +114,7 @@ class _EditingEditableState extends State {
                                           .minions()
                                           .any((element) => element.id == id))
                                         id++;
-                                      out = Minion.from(profile, id: id);
+                                      out = Minion.from(profile as Minion, id: id);
                                     } else if (profile is Vehicle) {
                                       var id = 0;
                                       while (SW
@@ -122,7 +122,9 @@ class _EditingEditableState extends State {
                                           .vehicles()
                                           .any((element) => element.id == id))
                                         id++;
-                                      out = Vehicle.from(profile, id: id);
+                                      out = Vehicle.from(profile as Vehicle, id: id);
+                                    }else{
+                                      throw "Unsupported Editable Type";
                                     }
                                     out.name = nameController.text;
                                     SW.of(context).add(out);
@@ -146,8 +148,7 @@ class _EditingEditableState extends State {
                       if (value.isGranted)
                         FilePicker.platform.getDirectoryPath().then((value) {
                           profile.save(
-                              filename:
-                                  value + profile.name + profile.fileExtension);
+                              filename: value! + profile.name + profile.fileExtension);
                         });
                     });
                   else if (value.isGranted)
@@ -174,7 +175,7 @@ class _EditingEditableState extends State {
 class InheritedEditable extends InheritedWidget {
   final Editable editable;
 
-  InheritedEditable({Widget child, this.editable}) : super(child: child);
+  InheritedEditable({required Widget child, required this.editable}) : super(child: child);
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;

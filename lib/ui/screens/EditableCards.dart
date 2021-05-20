@@ -8,7 +8,7 @@ class EditableCards extends StatelessWidget{
 
   final Function() refreshList;
 
-  EditableCards({this.refreshList});
+  EditableCards({required this.refreshList});
 
   @override
   Widget build(BuildContext context) {

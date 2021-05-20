@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class UpDownStat extends StatefulWidget{
 
-  final Key key;
+  final Key? key;
   final Function() onUpPressed;
   final Function() onDownPressed;
   final int Function() getValue;
-  final int max;
-  final Function() getMax;
-  final int min;
+  final int? max;
+  final Function()? getMax;
+  final int? min;
   final bool allowNegative;
 
-  UpDownStat({this.key,this.onUpPressed, this.onDownPressed, this.getValue, this.max, this.getMax, this.min, this.allowNegative = false});
+  UpDownStat({this.key, required this.onUpPressed, required this.onDownPressed, required this.getValue, this.max, this.getMax, this.min, this.allowNegative = false});
 
   @override
   State<StatefulWidget> createState()=>_UpDownStatState(onUpPressed: onUpPressed,
@@ -23,13 +23,13 @@ class _UpDownStatState extends State{
   final Function() onUpPressed;
   final Function() onDownPressed;
   final int Function() getValue;
-  final int max;
-  final Function() getMax;
-  final int min;
+  final int? max;
+  final Function()? getMax;
+  final int? min;
   final bool allowNegative;
   bool up = false;
 
-  _UpDownStatState({this.onUpPressed, this.onDownPressed, this.getValue, this.max, int min, this.allowNegative = false, this.getMax}) :
+  _UpDownStatState({required this.onUpPressed, required this.onDownPressed, required this.getValue, this.max = 0, int? min, this.allowNegative = false, this.getMax}) :
     this.min = min ?? (allowNegative ? null : 0);
 
   @override
@@ -41,7 +41,7 @@ class _UpDownStatState extends State{
           child: IconButton(
             icon:Icon(Icons.remove),
             onPressed: (){
-              if(min == null || getValue() > min){
+              if(min == null || getValue() > min!){
                 up = false;
                 onDownPressed();
                 setState((){});
@@ -72,7 +72,7 @@ class _UpDownStatState extends State{
           child: IconButton(
             icon: Icon(Icons.add),
             onPressed: (){
-              if((max == null && getMax == null) || getValue() < (getMax == null ? max : getMax())){
+              if((max == null && getMax == null) || getValue() < (getMax == null ? max : getMax!())){
                 up = true;
                 onUpPressed();
                 setState((){});

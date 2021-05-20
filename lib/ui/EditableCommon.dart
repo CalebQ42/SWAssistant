@@ -4,14 +4,14 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 
 class EditingText extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
 
-  final TickerProviderStateMixin state;
+  final TickerProviderStateMixin? state;
 
-  final TextStyle style;
+  final TextStyle? style;
   final String initialText;
   final bool editing;
-  final TextInputType textType;
+  final TextInputType? textType;
   final EdgeInsets fieldInsets;
   final EdgeInsets textInsets;
   final bool multiline;
@@ -19,28 +19,28 @@ class EditingText extends StatelessWidget {
   final TextAlign textAlign;
   final TextAlign fieldAlign;
   final String title;
-  final TextTheme titleTheme;
+  final TextStyle? titleStyle;
 
   final bool collapsed;
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   final bool defaultSave;
 
-  final Editable editableBackup;
+  final Editable? editableBackup;
 
-  EditingText({this.key, @required this.editing, this.style, this.initialText = "", this.controller, this.textType,
+  EditingText({this.key, required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.all(3.0), this.textInsets = const EdgeInsets.all(4.0),
       this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
-      this.fieldAlign = TextAlign.start, this.collapsed = false, this.state, this.editableBackup, this.title, this.titleTheme}) {
+      this.fieldAlign = TextAlign.start, this.collapsed = false, this.state, this.editableBackup, this.title = "", this.titleStyle}) {
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
   }
   Widget build(BuildContext context) {
     var editable = editableBackup ?? Editable.of(context);
     if(editing){
-      if(defaultSave){
-        controller.addListener(() {
+      if(defaultSave && controller != null){
+        controller!.addListener(() {
           editable.save(context: context);
         });
       }
@@ -67,16 +67,16 @@ class EditingText extends StatelessWidget {
       text = Padding(
         key: ValueKey("text"),
         padding: textInsets,
-        child: title != null ? Column(
+        child: title != "" ? Column(
           children: [
-            if(title != null) Text(
+            if(title != "") Text(
               title,
-              style: titleTheme ?? Theme.of(context).textTheme.bodyText1.apply(
+              style: titleStyle ?? Theme.of(context).textTheme.bodyText1?.apply(
                 fontSizeDelta: .75,
                 fontWeightDelta: 2
               )
             ),
-            if(title != null) Container(height: 5),
+            if(title != "") Container(height: 5),
             Text(initialText, style: style, textAlign: textAlign,),
           ]
         ) : Text(initialText, style: style, textAlign: textAlign,)
@@ -100,7 +100,7 @@ class EditingText extends StatelessWidget {
     );
     return state != null ? AnimatedSize(
       duration: Duration(milliseconds: 250),
-      vsync: state,
+      vsync: state!,
       child: switcher
     ) : switcher;
   }
@@ -108,12 +108,12 @@ class EditingText extends StatelessWidget {
 
 class EditableContent extends StatefulWidget{
 
-  final Widget Function(bool editing, Function() refresh, EditableContentState state) builder;
-  final bool Function() defaultEditingState;
+  final Widget Function(bool editing, Function() refresh, EditableContentState state)? builder;
+  final bool Function()? defaultEditingState;
   final bool editButton;
-  final List<Widget> Function() additonalButtons;
+  final List<Widget> Function()? additonalButtons;
 
-  final StatefulCard stateful;
+  final StatefulCard? stateful;
 
   EditableContent({this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additonalButtons});
 
@@ -125,27 +125,31 @@ class EditableContent extends StatefulWidget{
 
 class EditableContentState extends State<EditableContent> with TickerProviderStateMixin{
 
-  Widget Function(bool editing, Function() refresh, EditableContentState state) builder;
+  Widget Function(bool editing, Function() refresh, EditableContentState state)? builder;
   bool editing;
   final bool editButton;
-  List<Widget> Function() additionalButtons;
+  List<Widget> Function()? additionalButtons;
 
-  StatefulCard stateful;
+  StatefulCard? stateful;
 
-  final bool Function() defaultEditingState;
+  final bool Function()? defaultEditingState;
 
-  EditableContentState({this.builder, this.stateful, this.defaultEditingState, this.editButton, this.additionalButtons}) :
+  EditableContentState({this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additionalButtons}) :
       editing = defaultEditingState == null ? false : defaultEditingState(){
     if(builder == null && stateful == null)
       throw("Either a builder or stateful MUST be provided");
     if(stateful != null)
-      editing = stateful.getHolder().editing;
+      editing = stateful!.getHolder().editing;
     additionalButtons ??= () => [];
   }
 
   @override
   Widget build(BuildContext context) {
-    var addButtons = additionalButtons();
+    List<Widget> addButtons;
+    if (additionalButtons != null)
+      addButtons = additionalButtons!();
+    else
+      addButtons = [];
     var bottomButtons = List<Widget>.from(addButtons);
     if(editButton)
       bottomButtons.add(
@@ -156,14 +160,14 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
             padding: EdgeInsets.all(5.0),
             constraints: BoxConstraints.tight(Size.square(30.0)),
             icon: Icon(Icons.edit),
-            color: editing ? Theme.of(context).buttonTheme.colorScheme.onSurface : Theme.of(context).buttonTheme.colorScheme.onSurface.withOpacity(.24),
+            color: editing ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),
             onPressed: () {
               if(stateful == null)
                 setState(() => editing = !editing);
               else{
                 editing = !editing;
-                stateful.getHolder().editing = editing;
-                stateful.getHolder().reloadFunction();
+                stateful!.getHolder().editing = editing;
+                stateful!.getHolder().reloadFunction();
                 setState(() {});
               }
             }
@@ -173,11 +177,11 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        builder != null ? builder(
+        builder != null ? builder!(
           editing,
           () => setState((){}),
           this
-        ) : stateful,
+        ) : stateful!,
         if(editButton || addButtons.length > 0) ButtonBar(
           buttonPadding: EdgeInsets.only(left: 5, right: 5),
           children: bottomButtons
@@ -188,11 +192,10 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
 }
 
 class EditableContentStatefulHolder{
-  Function() reloadFunction = () =>
-    throw("THIS NEEDS TO BE OVERWRITTEN");
+  Function() reloadFunction;
   bool editing;
 
-  EditableContentStatefulHolder({this.reloadFunction, this.editing = false});
+  EditableContentStatefulHolder({required this.reloadFunction, this.editing = false});
 }
 
 mixin StatefulCard on StatefulWidget{

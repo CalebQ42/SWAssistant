@@ -15,8 +15,8 @@ class SWAppBar extends AppBar{
     "translate" : () => _launchURL("https://crowdin.com/project/swrpg")
   };
 
-  SWAppBar({Widget title, List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions,
-      Map<String, Function> popupFunctions, PreferredSizeWidget bottom}) :
+  SWAppBar({Widget? title, List<Widget> additionalActions = const [], List<PopupMenuItem> additionalPopupActions = const [],
+      Map<String, Function> popupFunctions = const {}, PreferredSizeWidget? bottom}) :
         super(title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
 
   static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions) =>
@@ -33,7 +33,7 @@ class SWAppBar extends AppBar{
       itemBuilder: (context) => additionalPopupActions,
       onSelected:(t) {
         if(popupFunctions[t] != null)
-          popupFunctions[t]();
+          popupFunctions[t]!();
       }
     );
   }

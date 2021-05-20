@@ -54,7 +54,7 @@ class NoteCard extends StatefulWidget{
   final int index;
   final Function() onDelete;
 
-  NoteCard({this.index, this.onDelete});
+  NoteCard({required this.index, required this.onDelete});
 
   @override
   State<StatefulWidget> createState() => _NoteCardState(index: index, onDelete: onDelete);
@@ -64,7 +64,7 @@ class _NoteCardState extends State{
   final int index;
   final Function() onDelete;
 
-  _NoteCardState({this.index, this.onDelete});
+  _NoteCardState({required this.index, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {

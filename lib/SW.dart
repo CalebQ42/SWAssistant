@@ -144,7 +144,7 @@ class SW{
   }
 
   bool remove(Editable editable, BuildContext context){
-    if(editable.route != null && observatory.containsRoute(route: editable.route) != null && editable.route != null)
+    if(editable.route != null && observatory.containsRoute(route: editable.route) != null)
       Navigator.removeRoute(context, editable.route!);
     if(editable is Character)
       return removeCharacter(character: editable);
@@ -327,7 +327,7 @@ class SW{
 class SWWidget extends InheritedWidget{
   final SW app;
   
-  SWWidget({Widget? child, required this.app}) : super(child: child ?? Text("Hello There! Something went wrong"));
+  SWWidget({required Widget child, required this.app}) : super(child: child);
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;

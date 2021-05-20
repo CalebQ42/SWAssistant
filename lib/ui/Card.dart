@@ -10,7 +10,7 @@ class InfoCard extends StatefulWidget{
   final InfoCardHolder holder = new InfoCardHolder();
   final Function(bool b, Function() refreshList) onHideChange;
 
-  InfoCard({shown = true, @required Widget contents, String title = "", @required this.onHideChange}){
+  InfoCard({shown = true, required Widget contents, String title = "", required this.onHideChange}){
     holder.shown = shown;
     holder.contents = contents;
     holder.title = title;
@@ -55,9 +55,9 @@ class _InfoCardState extends State{
 }
 
 class InfoCardHolder{
-  bool shown;
-  Widget contents;
-  String title;
+  bool shown = false;
+  late Widget contents;
+  String title = "";
 }
 
 class NameCardContent extends StatefulWidget{
@@ -94,7 +94,7 @@ class _NameCardContentState extends State{
           }(),child: EditingText(
             editing: b,
             editableBackup: editable,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headline5!,
             textAlign: TextAlign.center,
             initialText: editable.name,
             controller: (){

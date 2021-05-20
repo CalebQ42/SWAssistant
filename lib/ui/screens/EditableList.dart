@@ -19,7 +19,7 @@ class EditableList extends StatefulWidget{
 
   EditableList(this.type){
     if(this.type <0 || this.type > 2)
-      throw("Invlid type");
+      throw("Invalid type");
   }
 
   @override
@@ -29,20 +29,20 @@ class EditableList extends StatefulWidget{
 class _EditableListState extends State{
 
   int type;
-  List list;
-  String category;
+  List list = [];
+  String category = "";
   String search = "";
   bool searching = false;
   FocusNode searchFocus = FocusNode();
   // bool open = false;
 
-  TextEditingController searchController;
+  late TextEditingController searchController;
 
-  _EditableListState(this.type){
+  _EditableListState(this.type) {
     searchController = TextEditingController()
-        ..addListener(() =>
+      ..addListener(() =>
           setState(() => search = searchController.text)
-        );
+      );
   }
 
   Widget build(BuildContext context) {
@@ -103,13 +103,10 @@ class _EditableListState extends State{
                   switch(type){
                     case 0:
                       return "Characters";
-                      break;
                     case 1:
                       return "Minions";
-                      break;
                     case 2:
                       return "Vehicles";
-                      break;
                     default:
                       return "";
                   }
@@ -132,7 +129,7 @@ class _EditableListState extends State{
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 items: (){
-                  List<String> cats;
+                  List<String> cats = [];
                   switch(type){
                     case 0:
                       cats = SW.of(context).charCats;
@@ -162,8 +159,8 @@ class _EditableListState extends State{
                   return out;
                 }(),
                 hint: Text("Categories"),
-                onChanged: (String value) =>
-                  setState(() => category = value),
+                onChanged: (String? value) =>
+                  setState(() => category = value ?? ""),
                 value: category,
                 isExpanded: true,
               )
@@ -244,12 +241,12 @@ class _EditableListState extends State{
 }
 
 class EditableCard extends StatelessWidget{
-  final Key key;
+  final Key? key;
   final Editable editable;
   final Function() refreshCallback;
   final BuildContext upperContext;
 
-  EditableCard({this.key, this.editable, this.refreshCallback, this.upperContext});
+  EditableCard({this.key, required this.editable, required this.refreshCallback, required this.upperContext});
   @override
   Widget build(BuildContext context) =>
     Dismissible(
@@ -258,7 +255,7 @@ class EditableCard extends StatelessWidget{
         var tmp = editable;
         editable.delete(SW.of(upperContext));
         SW.of(upperContext).remove(editable, context);
-        String msg;
+        String msg = "";
         if(editable is Character)
           msg = "Character Deleted";
         else if (editable is Minion)
@@ -285,23 +282,22 @@ class EditableCard extends StatelessWidget{
           child: InkResponse(
             onTap: (){
               if(editable.route != null && SW.of(context).observatory.containsRoute(route: editable.route) != null)
-                Navigator.replace(context, oldRoute: editable.route, newRoute: editable.setRoute(refreshCallback));
+                Navigator.replace(context, oldRoute: editable.route!, newRoute: editable.setRoute(refreshCallback)!);
               else
-                Navigator.push(context, editable.setRoute(refreshCallback));
+                Navigator.push(context, editable.setRoute(refreshCallback)!);
             },
             child:Padding(
               padding: EdgeInsets.all(10.0),
               child: Hero(
                 transitionOnUserGestures: true,
                 tag: (){
-                  String out;
+                  String out = "";
                   if(editable is Character)
                     out = "character/";
                   else if(editable is Minion)
                     out = "minion/";
                   else if(editable is Vehicle)
                     out = "vehicle/";
-                  
                   return out + editable.id.toString();
                 }(),
                 child: Text(editable.name, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,)
