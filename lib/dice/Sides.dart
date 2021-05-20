@@ -11,8 +11,7 @@ class SimpleSide{
 class ComplexSide{
   List<ComplexSidePart> parts;
 
-  ComplexSide({List<ComplexSidePart> parts}) :
-    this.parts = parts ?? [];
+  ComplexSide({this.parts = const[]});
 
   ComplexSide clone() => ComplexSide(parts: new List.from(parts));
   String toString() => parts.join(", ");

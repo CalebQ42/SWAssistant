@@ -30,25 +30,28 @@ abstract class Editable extends JsonSavable{
   String desc = "";
   List<Item> inventory = [];
 
-  List<bool> showCard;
-  Route route;
+  List<bool> showCard = [];
+  Route? route;
 
   String get fileExtension;
   List<String> get cardNames;
 
   //Saving variables
   bool _saving = false;
-  String _loc;
+  String _loc = "";
   bool _defered = false;
 
-  Editable({@required this.id, this.name = "", bool saveOnCreation = false, SW app}){
+  Editable({required this.id, this.name = "", bool saveOnCreation = false, required SW app}){
     showCard = List.filled(cardNames.length, false, growable: false);
     if(saveOnCreation)
       this.save(filename: getFileLocation(app));
   }
 
-  Editable.load(FileSystemEntity file, {SW app, BuildContext context}){
-    app ??= SW.of(context);
+  Editable.load(FileSystemEntity file, {SW? app, BuildContext? context, this.name = ""}){
+    if (app == null && context != null)
+      app ??= SW.of(context);
+    else
+      throw Exception("Must specify app or context");
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
     if(getFileLocation(app)!= file.path)
@@ -127,28 +130,30 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  Route setRoute(Function refreshCallback){
+  Route? setRoute(Function refreshCallback){
     route = MaterialPageRoute(builder: (BuildContext bc) => EditingEditable(this,refreshCallback),fullscreenDialog: false);
     return route;
   }
 
   String getFileLocation(SW sw){
-    if(_loc == null || _loc == "")
+    if(_loc == "")
       return sw.saveDir+ "/" + id.toString() + fileExtension;
     else
       return _loc;
   }
-  String getCloudFileLocation() => null;
+
+  String? getCloudFileLocation() => null;
   
-  void save({String filename, BuildContext context, SW app}) async{
-    if(filename == null && (context != null || app != null))
-      filename = getFileLocation(app ?? SW.of(context));
-    if(filename == null)
-      throw("Either filename or context needs to be given");
+  void save({String filename = "", BuildContext? context, SW? app}) async{
+    if(filename == "") {
+      if (app == null && context == null)
+        throw("Either filename or context needs to be given");
+      filename = getFileLocation(app ?? SW.of(context!));
+    }
     if(!_saving){
       _saving = true;
       var file = File(filename);
-      File backup;
+      File? backup;
       if(file.existsSync())
         backup = file.renameSync(filename +".backup");
       file.createSync();
@@ -185,5 +190,11 @@ abstract class Editable extends JsonSavable{
 
   List<Widget> cardContents(BuildContext context, Function listUpdate);
 
-  static Editable of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedEditable>().editable;
+  static Editable of(BuildContext context){
+    var ed = context.dependOnInheritedWidgetOfExactType<InheritedEditable>()?.editable;
+    if (ed == null){
+      throw "Editable.of called outside of InheritedEditable heirarchy";
+    }
+    return ed;
+  }
 }

@@ -21,8 +21,8 @@ class DiceResults{
 
   void add(dynamic side){
     _resultsMasterList.add(side);
-    if(side is SimpleSide){
-      if(side.toString() != "") results[side.toString()] += (subtractMode ? -1 : 1);
+    if(side is SimpleSide && side.toString() != ""){
+      results[side.toString()] += (subtractMode ? -1 : 1);
     }else if(side is ComplexSide)
       side.parts.forEach((element) =>
         results[element.name] += subtractMode ? -element.value : element.value);
@@ -30,7 +30,7 @@ class DiceResults{
       throw("Needs to be a SimpleSide or ComplexSide");
   }
 
-  int getResult(String name) => results[name];
+  int getResult(String name) => results[name] ?? 0;
 
   void showCombinedResults(BuildContext context,{bool noSuccess = true}){
     bool isSuccess = true;
@@ -99,7 +99,7 @@ class DiceResults{
     );
   }
 
-  void showResultsEdit(BuildContext context,{bool noSuccess = true, void Function(BuildContext, DiceResults) alternateReturn}) =>
+  void showResultsEdit(BuildContext context,{bool noSuccess = true, void Function(BuildContext, DiceResults)? alternateReturn}) =>
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

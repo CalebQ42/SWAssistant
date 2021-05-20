@@ -28,13 +28,13 @@ class SW{
   SharedPreferences prefs;
 
   bool firebaseAvailable = false;
-  Observatory observatory;
+  late Observatory observatory;
 
-  String saveDir;
+  String saveDir = "";
 
   bool devMode = false;
 
-  SW({this.prefs, this.saveDir, this.devMode});
+  SW({required this.prefs});
 
   void loadAll(){
     _minions.clear();
@@ -144,8 +144,8 @@ class SW{
   }
 
   bool remove(Editable editable, BuildContext context){
-    if(editable.route != null && observatory.containsRoute(route: editable.route) != null)
-      Navigator.removeRoute(context, editable.route);
+    if(editable.route != null && observatory.containsRoute(route: editable.route) != null && editable.route != null)
+      Navigator.removeRoute(context, editable.route!);
     if(editable is Character)
       return removeCharacter(character: editable);
     if(editable is Minion)
@@ -155,24 +155,24 @@ class SW{
     return false;
   }
   
-  List<Character> characters({String search = "", String category}){
-    if(search == "" && category == null)
+  List<Character> characters({String search = "", String category = ""}){
+    if(search == "" && category == "")
       return _characters;
     else if(search == "")
       return _characters.where((element) => element.category == category).toList();
-    else if(category == null)
+    else if(category == "")
       return _characters.where((element) => element.name.contains(search)).toList();
     else
       return _characters.where((element) => element.category == category)
           .where((element) => element.name.contains(search)).toList();
   }
 
-  bool removeCharacter({int id, Character character}){
+  bool removeCharacter({int id = -1, Character? character}){
     var success = false;
     if(character != null)
       success = _characters.remove(character);
-    if(id != null){
-      character = _characters.firstWhere((element) => element.id == id, orElse: ()=>null);
+    if(id != -1){
+      character = _characters.firstWhere((element) => element.id == id);
       success = _characters.remove(character);
     }
     if(success && character != null && characters(category: character.category).length == 0)
@@ -193,24 +193,24 @@ class SW{
     });
   }
 
-  List<Minion> minions({String search = "", String category}){
-    if(search == "" && category == null)
+  List<Minion> minions({String search = "", String category = ""}){
+    if(search == "" && category == "")
       return _minions;
     else if(search == "")
       return _minions.where((element) => element.category == category).toList();
-    else if(category == null)
+    else if(category == "")
       return _minions.where((element) => element.name.contains(search)).toList();
     else
       return _minions.where((element) => element.category == category)
           .where((element) => element.name.contains(search)).toList();
   }
 
-  bool removeMinion({int id, Minion minion}){
+  bool removeMinion({int id = -1, Minion? minion}){
     var success = false;
     if(minion != null)
       success = _minions.remove(minion);
-    if(id != null){
-      minion = _minions.firstWhere((element) => element.id == id, orElse: ()=>null);
+    if(id != -1){
+      minion = _minions.firstWhere((element) => element.id == id);
       success = _minions.remove(minion);
     }
     if(success && minion != null && minions(category: minion.category).length == 0)
@@ -231,24 +231,24 @@ class SW{
     });
   }
 
-  List<Vehicle> vehicles({String search = "", String category}){
-    if(search == "" && category == null)
+  List<Vehicle> vehicles({String search = "", String category = ""}){
+    if(search == "" && category == "")
       return _vehicles;
     else if(search == "")
       return _vehicles.where((element) => element.category == category).toList();
-    else if(category == null)
+    else if(category == "")
       return _vehicles.where((element) => element.name.contains(search)).toList();
     else
       return _vehicles.where((element) => element.category == category)
           .where((element) => element.name.contains(search)).toList();
   }
 
-  bool removeVehicle({int id, Vehicle vehicle}){
+  bool removeVehicle({int id = -1, Vehicle? vehicle}){
     var success = false;
     if(vehicle != null)
       success = _vehicles.remove(vehicle);
-    if(id != null){
-      vehicle = _vehicles.firstWhere((element) => element.id == id, orElse: ()=>null);
+    if(id != -1){
+      vehicle = _vehicles.firstWhere((element) => element.id == id);
       success = _vehicles.remove(vehicle);
     }
     if(success && vehicle != null && vehicles(category: vehicle.category).length == 0)
@@ -277,15 +277,15 @@ class SW{
     prefs.get(preference) ?? defaultValue;
 
   Future<void> initialize() async{
-    if(prefs.containsKey(preferences.saveLocation))
-      saveDir = prefs.getString(preferences.saveLocation);
-    else{
-      var dir = await getExternalStorageDirectory();
-      saveDir = dir.path+"/SWChars";
+    var dir = await getExternalStorageDirectory();
+    if (dir == null){
+
+    }else {
+      saveDir = dir.path + "/SWChars";
     }
     if(!Directory(saveDir).existsSync())
       Directory(saveDir).createSync();
-    if(devMode)
+    if(kDebugMode || kProfileMode)
       await testing(saveDir);
     observatory = Observatory();
     loadAll();
@@ -305,7 +305,7 @@ class SW{
   }
 
   static Future<void> testing(String saveDir) async{
-    var testFiles = ["Big Game Hunter [Nemesis].swcharacter","Incom T-47 Airspeeder.swvehicle","Pirate Crew.swminion"];
+    var testFiles = ["Big Game Hunter [Nemesis][Testing].swcharacter","Incom T-47 Airspeeder [Testing].swvehicle","Pirate Crew [Testing].swminion"];
     for(String st in testFiles){
       String json = await rootBundle.loadString("assets/testing/"+st);
       File testFile = File(saveDir+"/"+st);
@@ -315,13 +315,19 @@ class SW{
     }
   }
 
-  static SW of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<SWWidget>().app;
+  static SW of(BuildContext context){
+    var app = context.dependOnInheritedWidgetOfExactType<SWWidget>()?.app;
+    if (app == null){
+      throw "Widget is not a child of SWWidget";
+    }
+    return app;
+  }
 }
 
 class SWWidget extends InheritedWidget{
   final SW app;
   
-  SWWidget({Widget child, this.app}) : super(child: child);
+  SWWidget({Widget? child, required this.app}) : super(child: child ?? Text("Hello There! Something went wrong"));
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;

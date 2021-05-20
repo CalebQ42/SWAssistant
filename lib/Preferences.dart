@@ -1,4 +1,3 @@
-String saveLocation = "saveLocation";
 String thankYou = "donateThankYou";
 String dev = "devMode";
 

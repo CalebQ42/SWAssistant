@@ -12,9 +12,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var prefs = await SharedPreferences.getInstance();
   var app = SW(prefs: prefs);
-  if((prefs.containsKey(preferences.dev) && prefs.getBool(preferences.dev)) || kDebugMode || kProfileMode)
+  if((prefs.containsKey(preferences.dev) && (prefs.getBool(preferences.dev) ?? false)) || kDebugMode || kProfileMode)
     app.devMode = true;
-  if (app.devMode || prefs.getBool(preferences.firstStart) ?? false){
+  if (app.devMode || (prefs.getBool(preferences.firstStart) ?? true)){
     runApp(InitApp(()=>
       app.initialize().then(
         (nil) {
@@ -150,21 +150,23 @@ class Observatory extends NavigatorObserver{
   List<Route> routeHistory = [];
 
   @override
-  void didPush(Route route, Route previousRoute) {
+  void didPush(Route route, Route? previousRoute) {
     routeHistory.add(route);
     super.didPush(route, previousRoute);
   }
 
   @override
-  void didPop(Route route, Route previousRoute) {
+  void didPop(Route route, Route? previousRoute) {
     routeHistory.removeLast();
     super.didPop(route, previousRoute);
   }
 
   @override
-  void didRemove(Route route, Route previousRoute) {
+  void didRemove(Route route, Route? previousRoute) {
     var beginIndex = routeHistory.indexOf(route);
-    var endIndex = routeHistory.indexOf(previousRoute);
+    var endIndex = -1;
+    if (previousRoute != null)
+      endIndex = routeHistory.indexOf(previousRoute);
     if((endIndex == -1 && beginIndex != -1) || beginIndex -1 == endIndex)
       routeHistory.remove(route);
     else if(endIndex != -1 && beginIndex != -1)
@@ -173,27 +175,26 @@ class Observatory extends NavigatorObserver{
   }
 
   @override
-  void didReplace({Route newRoute, Route oldRoute}) {
-    if(routeHistory.contains(oldRoute))
+  void didReplace({Route? newRoute, Route? oldRoute}) {
+    if (oldRoute != null && newRoute != null && routeHistory.contains(oldRoute)){
       routeHistory[routeHistory.indexOf(oldRoute)] = newRoute;
+  }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 
   //Returns the route if it is in history (it), otherwise it return null.
   //It preferes the route give, then settings, then the name
-  Route containsRoute({Route route, RouteSettings settings, String name}){
+  Route? containsRoute({Route? route, RouteSettings? settings, String name = ""}){
     if(route != null)
       return routeHistory.contains(route) ? route : null;
     if(settings != null)
       return routeHistory.firstWhere(
-        (element) => element.settings == settings,
-        orElse: () => null
+        (element) => element.settings == settings
       );
-    if(name != null)
+    if(name != "")
       return routeHistory.firstWhere(
-        (element) => element.settings.name == name,
-        orElse: () => null
+        (element) => element.settings.name == name
       );
-    return null; 
+    return null;
   }
 }

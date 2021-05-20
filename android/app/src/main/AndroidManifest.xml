@@ -1,25 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.apps.darkstorm.swrpg.assistant">
-    <!-- io.flutter.app.FlutterApplication is an android.app.Application that
-         calls FlutterMain.startInitialization(this); in its onCreate method.
-         In most cases you can leave this as-is, but you if you want to provide
-         additional functionality it is fine to subclass or reimplement
-         FlutterApplication and put your custom class here. -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <application
-        android:name="io.flutter.app.FlutterApplication"
+   <application
         android:label="SWAssistant"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:icon="@mipmap/ic_launcher">
-        <meta-data
-          android:name="firebase_crashlytics_collection_enabled"
-          android:value="false" />
-        <!--IDK if below actually does anything, but it's there just in case it is needed-->
-        <meta-data
-          android:name="firebase_analytics_collection_enabled"
-          android:value="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.apps.darkstorm.swrpg.assistant.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
