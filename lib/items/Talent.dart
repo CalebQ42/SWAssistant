@@ -5,7 +5,7 @@ class Talent implements JsonSavable{
   String desc;
   int value;
 
-  Talent({this.name = "", this.desc = "", this.value = 0});
+  Talent({this.name = "", this.desc = "", this.value = -1});
 
   Talent.fromJson(Map<String, dynamic> json) :
       name = json["name"],

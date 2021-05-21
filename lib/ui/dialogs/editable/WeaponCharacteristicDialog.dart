@@ -5,10 +5,10 @@ import 'package:swassistant/items/WeaponCharacteristic.dart';
 class WeaponCharacteristicDialog extends StatefulWidget{
 
   final WeaponCharacteristic wc;
-  final void Function(WeaponCharacteristic) onClose;
+  final void Function(WeaponCharacteristic?) onClose;
 
-  WeaponCharacteristicDialog({WeaponCharacteristic wc, this.onClose}) :
-      this.wc = wc == null ? WeaponCharacteristic.nulled() : WeaponCharacteristic.from(wc);
+  WeaponCharacteristicDialog({WeaponCharacteristic? wc, required this.onClose}) :
+      this.wc = wc == null ? WeaponCharacteristic() : WeaponCharacteristic.from(wc);
 
   @override
   State<StatefulWidget> createState() => _WeaponCharacteristicDialogState(wc, onClose);
@@ -24,11 +24,11 @@ class WeaponCharacteristicDialog extends StatefulWidget{
 class _WeaponCharacteristicDialogState extends State{
   
   final WeaponCharacteristic wc;
-  final Function(WeaponCharacteristic) onClose;
+  final Function(WeaponCharacteristic?) onClose;
 
-  TextEditingController nameController;
-  TextEditingController valueController;
-  TextEditingController advantageController;
+  late TextEditingController nameController;
+  late TextEditingController valueController;
+  late TextEditingController advantageController;
 
   _WeaponCharacteristicDialogState(this.wc, this.onClose){
     nameController = TextEditingController(text: wc.name)
@@ -38,21 +38,21 @@ class _WeaponCharacteristicDialogState extends State{
           else
             wc.name = nameController.text;
         });
-    valueController = TextEditingController(text: wc.value != null ? wc.value.toString() : "")
+    valueController = TextEditingController(text: wc.value != -1 ? wc.value.toString() : "")
         ..addListener(() {
           var val = int.tryParse(valueController.text);
-          if((wc.value == null && val != null) || (wc.value != null && val == null))
-            setState(() => wc.value = val);
+          if((wc.value == -1 && val != null) || (wc.value != -1 && val == null))
+            setState(() => wc.value = val ?? -1);
           else
-            wc.value = val;
+            wc.value = val ?? -1;
         });
-    advantageController = TextEditingController(text: wc.advantage != null ? wc.advantage.toString() : "")
+    advantageController = TextEditingController(text: wc.advantage != -1 ? wc.advantage.toString() : "")
         ..addListener(() {
           var val = int.tryParse(advantageController.text);
-          if((wc.advantage == null && val != null) || (wc.advantage != null && val == null))
-            setState(() => wc.advantage = val);
+          if((wc.advantage == -1 && val != null) || (wc.advantage != -1 && val == null))
+            setState(() => wc.advantage = val ?? -1);
           else
-            wc.advantage = val;
+            wc.advantage = val ?? -1;
         });
   }
 
@@ -92,7 +92,7 @@ class _WeaponCharacteristicDialogState extends State{
           ButtonBar(
             children: [
               TextButton(
-                onPressed: wc.name != "" && wc.value != null && wc.advantage != null ? (){
+                onPressed: wc.name != "" && wc.value != -1 && wc.advantage != -1 ? (){
                   onClose(wc);
                   Navigator.of(context).pop();
                 } : null,

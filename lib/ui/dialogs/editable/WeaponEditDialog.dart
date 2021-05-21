@@ -10,12 +10,12 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/editable/WeaponCharacteristicDialog.dart';
 
 class WeaponEditDialog extends StatefulWidget{
-  final Function(Weapon) onClose;
+  final Function(Weapon?) onClose;
   final Weapon weapon;
   final Editable editable;
 
-  WeaponEditDialog({this.onClose, Weapon weapon, this.editable}) :
-      this.weapon = weapon == null ? Weapon.nulled() : Weapon.from(weapon);
+  WeaponEditDialog({required this.onClose, Weapon? weapon, required this.editable}) :
+      this.weapon = weapon == null ? Weapon() : Weapon.from(weapon);
 
   @override
   State<StatefulWidget> createState() => _WeaponEditDialogState(onClose: onClose, weapon: weapon, editable: editable);
@@ -33,19 +33,19 @@ class WeaponEditDialog extends StatefulWidget{
 }
 
 class _WeaponEditDialogState extends State{
-  final void Function(Weapon) onClose;
+  final void Function(Weapon?) onClose;
   final Weapon weapon;
   final Editable editable;
 
-  TextEditingController nameController;
-  TextEditingController damageController;
-  TextEditingController criticalController;
-  TextEditingController hpController;
-  TextEditingController encumbranceController;
-  TextEditingController arcController;
-  TextEditingController ammoController;
+  late TextEditingController nameController;
+  late TextEditingController damageController;
+  late TextEditingController criticalController;
+  late TextEditingController hpController;
+  late TextEditingController encumbranceController;
+  late TextEditingController arcController;
+  late TextEditingController ammoController;
 
-  _WeaponEditDialogState({this.onClose, this.weapon, this.editable}){
+  _WeaponEditDialogState({required this.onClose, required this.weapon, required this.editable}){
     nameController = TextEditingController(text: weapon.name)
         ..addListener(() {
           if((weapon.name == "" && nameController.text != "") || (weapon.name != "" && nameController.text == ""))
@@ -53,37 +53,37 @@ class _WeaponEditDialogState extends State{
           else
             weapon.name = nameController.text;
         });
-    damageController = TextEditingController(text: weapon.damage != null ? weapon.damage.toString() : "")
+    damageController = TextEditingController(text: weapon.damage != -1 ? weapon.damage.toString() : "")
         ..addListener(() {
           var val = int.tryParse(damageController.text);
-          if((weapon.damage == null && val != null) || (weapon.damage != null && val == null))
-            setState(() => weapon.damage = val);
+          if((weapon.damage == -1 && val != null) || (weapon.damage != -1 && val == null))
+            setState(() => weapon.damage = val ?? -1);
           else
-            weapon.damage = val;
+            weapon.damage = val ?? -1;
         });
-    criticalController = TextEditingController(text: weapon.critical != null ? weapon.critical.toString() : "")
+    criticalController = TextEditingController(text: weapon.critical != -1 ? weapon.critical.toString() : "")
         ..addListener(() {
           var val = int.tryParse(criticalController.text);
-          if((weapon.critical == null && val != null) || (weapon.critical != null && val == null)){
-            setState(() => weapon.critical = val);
+          if((weapon.critical == -1 && val != null) || (weapon.critical != -1 && val == null)){
+            setState(() => weapon.critical = val ?? -1);
           }else
-            weapon.critical = val;
+            weapon.critical = val ?? -1;
         });
-    hpController = TextEditingController(text: weapon.hp != null ? weapon.hp.toString() : "")
+    hpController = TextEditingController(text: weapon.hp != -1 ? weapon.hp.toString() : "")
         ..addListener(() {
           var val = int.tryParse(hpController.text);
-          if((weapon.hp == null && val != null) || (weapon.hp != null && val == null))
-            setState(() => weapon.hp = val);
+          if((weapon.hp == -1 && val != null) || (weapon.hp != -1 && val == null))
+            setState(() => weapon.hp = val ?? -1);
           else
-            weapon.hp = val;
+            weapon.hp = val ?? -1;
         });
-    encumbranceController = TextEditingController(text: weapon.encumbrance != null ? weapon.encumbrance.toString() : "")
+    encumbranceController = TextEditingController(text: weapon.encumbrance != -1 ? weapon.encumbrance.toString() : "")
         ..addListener(() {
           var val = int.tryParse(encumbranceController.text);
-          if((weapon.encumbrance == null && val != null) || (weapon.encumbrance != null && val == null))
-            setState(() => weapon.encumbrance = val);
+          if((weapon.encumbrance == -1 && val != null) || (weapon.encumbrance != -1 && val == null))
+            setState(() => weapon.encumbrance = val ?? -1);
           else
-            weapon.encumbrance = val;
+            weapon.encumbrance = val ?? -1;
         });
     arcController = TextEditingController(text: weapon.firingArc)
       ..addListener(() {
@@ -95,10 +95,10 @@ class _WeaponEditDialogState extends State{
     ammoController = TextEditingController(text: weapon.ammo.toString())
         ..addListener(() {
           var val = int.tryParse(ammoController.text);
-          if((weapon.ammo == null && val != null) || (weapon.ammo != null && val == null))
-            setState(() => weapon.ammo = val);
+          if((weapon.ammo == -1 && val != null) || (weapon.ammo != -1 && val == null))
+            setState(() => weapon.ammo = val ?? -1);
           else
-            weapon.ammo = val;
+            weapon.ammo = val ?? -1;
         });
   }
 
@@ -202,7 +202,7 @@ class _WeaponEditDialogState extends State{
                     )
                   ],
                   value: weapon.range,
-                  onChanged: (value) => setState(()=>weapon.range = value),
+                  onChanged: (value) => setState(()=>weapon.range = value ?? -1),
                 )
               ),
               //Damage
@@ -238,7 +238,7 @@ class _WeaponEditDialogState extends State{
                     ),
                   ],
                   value: weapon.itemState,
-                  onChanged: (value) => setState(() => weapon.itemState = value),
+                  onChanged: (value) => setState(() => weapon.itemState = value ?? 0),
                 )
               ),
               //Skill
@@ -260,8 +260,8 @@ class _WeaponEditDialogState extends State{
                   ),
                   value: weapon.skill,
                   onChanged: (value) => setState((){
-                    weapon.skill = value;
-                    weapon.skillBase = Skill.skillsList[Weapon.weaponSkills[value]];
+                    weapon.skill = value ?? -1;
+                    weapon.skillBase = Skill.skillsList[Weapon.weaponSkills[weapon.skill]]!;
                   }),
                   hint: Text("Skill"),
                 )
@@ -284,7 +284,7 @@ class _WeaponEditDialogState extends State{
                     )
                   ),
                   value: weapon.skillBase,
-                  onChanged: (value) => setState(() => weapon.skillBase = value),
+                  onChanged: (value) => setState(() => weapon.skillBase = value ?? -1),
                   hint: Text("Skill Base"),
                 )
               ),

@@ -3,13 +3,13 @@ import 'package:swassistant/items/CriticalInjury.dart';
 
 class CriticalInjuryEditDialog extends StatefulWidget{
   final CriticalInjury criticalInjury;
-  final Function(CriticalInjury) onClose;
+  final Function(CriticalInjury?) onClose;
 
-  CriticalInjuryEditDialog({CriticalInjury criticalInjury, this.onClose}) :
-    this.criticalInjury = criticalInjury == null ? CriticalInjury.nulled() : CriticalInjury.from(criticalInjury);
+  CriticalInjuryEditDialog({CriticalInjury? criticalInjury, required this.onClose}) :
+    this.criticalInjury = criticalInjury == null ? CriticalInjury() : CriticalInjury.from(criticalInjury);
   
   @override
-  State<StatefulWidget> createState() => _CriticalInjuryEditState(criticalInjury: criticalInjury);
+  State<StatefulWidget> createState() => _CriticalInjuryEditState(criticalInjury: criticalInjury, onClose: onClose);
   
   void show(BuildContext context) =>
     showModalBottomSheet(
@@ -21,22 +21,22 @@ class CriticalInjuryEditDialog extends StatefulWidget{
 
 class _CriticalInjuryEditState extends State{
   final CriticalInjury criticalInjury;
-  final Function(CriticalInjury) onClose;
+  final Function(CriticalInjury?) onClose;
 
-  TextEditingController nameController;
-  TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController descController;
 
-  _CriticalInjuryEditState({this.criticalInjury, this.onClose}){
+  _CriticalInjuryEditState({required this.criticalInjury, required this.onClose}){
       nameController = TextEditingController(text: criticalInjury.name)
           ..addListener(() {
-            if((criticalInjury.name == null && nameController.text != null) || (criticalInjury.name != null && nameController.text == null))
+            if((criticalInjury.name == "" && nameController.text != "") || (criticalInjury.name != "" && nameController.text == ""))
               setState(() => criticalInjury.name = nameController.text);
             else
               criticalInjury.name = nameController.text;
           });
       descController = TextEditingController(text: criticalInjury.desc)
           ..addListener(() {
-            if((criticalInjury.desc == null && descController.text != null) || (criticalInjury.desc != null && descController.text == null))
+            if((criticalInjury.desc == "" && descController.text != "") || (criticalInjury.desc != "" && descController.text == ""))
               setState(() => criticalInjury.desc = descController.text);
             else
               criticalInjury.desc = descController.text;
@@ -95,7 +95,7 @@ class _CriticalInjuryEditState extends State{
                   ),
                 ],
                 onChanged: (value) =>
-                  setState(() => criticalInjury.severity = value),
+                  setState(() => criticalInjury.severity = value ?? -1),
                 value: criticalInjury.severity,
                 onTap: () => FocusScope.of(context).unfocus(),
               )
@@ -104,7 +104,7 @@ class _CriticalInjuryEditState extends State{
               children: [
                 TextButton(
                   child: Text("Save"),
-                  onPressed: criticalInjury.name != null && criticalInjury.desc != null && criticalInjury.severity != null ? (){
+                  onPressed: criticalInjury.name != "" && criticalInjury.desc != "" && criticalInjury.severity != -1 ? (){
                     Navigator.of(context).pop();
                     onClose(criticalInjury);
                   } : null,

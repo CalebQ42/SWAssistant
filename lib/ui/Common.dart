@@ -21,13 +21,11 @@ class SWAppBar extends AppBar{
 
   static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions) =>
     <Widget>[]
-      ..addAll(additionalActions ?? [])
+      ..addAll(additionalActions)
       ..add(_getPopupMenu(additionalPopupActions, popupFunctions));
   
   static PopupMenuButton _getPopupMenu(List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions){
-    popupFunctions ??= Map();
     popupFunctions.addAll(defFunctions);
-    additionalPopupActions ??= [];
     additionalPopupActions.addAll(defPopup);
     return PopupMenuButton(
       itemBuilder: (context) => additionalPopupActions,

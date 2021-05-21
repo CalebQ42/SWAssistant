@@ -12,7 +12,7 @@ class Skill implements JsonSavable{
   int base;
   bool career;
 
-  Skill({this.name = "", this.value = 0, this.base = 0, this.career = false});
+  Skill({this.name = "", this.value = -1, this.base = -1, this.career = false});
 
   Skill.fromJson(Map<String,dynamic> json) :
       name = json["name"],

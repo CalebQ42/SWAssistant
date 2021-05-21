@@ -4,10 +4,10 @@ import 'package:swassistant/items/ForcePower.dart';
 class ForcePowerEditDialog extends StatefulWidget{
 
   final ForcePower fp;
-  final Function(ForcePower) onClose;
+  final Function(ForcePower?) onClose;
 
-  ForcePowerEditDialog({ForcePower power, this.onClose}) :
-    fp = power == null ? ForcePower.nulled() : ForcePower.from(power);
+  ForcePowerEditDialog({ForcePower? power, required this.onClose}) :
+    fp = power == null ? ForcePower() : ForcePower.from(power);
 
   @override
   State<StatefulWidget> createState() => _FPState(fp: fp, onClose: onClose);
@@ -22,12 +22,12 @@ class ForcePowerEditDialog extends StatefulWidget{
 class _FPState extends State{
 
   final ForcePower fp;
-  final Function(ForcePower) onClose;
+  final Function(ForcePower?) onClose;
 
-  TextEditingController nameController;
-  TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController descController;
 
-  _FPState({this.fp, this.onClose}){
+  _FPState({required this.fp, required this.onClose}){
     nameController = TextEditingController(text: fp.name)
       ..addListener(() {
         if((fp.name == "" && nameController.text != "") || (fp.name != "" && nameController.text == ""))

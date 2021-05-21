@@ -38,13 +38,13 @@ class StartingState extends State<GettingStarted>{
               children: [
                 Text(
                   "Welcome!",
-                  style: Theme.of(context).textTheme.headline4.copyWith(color: Colors.black),
+                  style: Theme.of(context).textTheme.headline4?.copyWith(color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   "Welcome to SWAssistant. Thanks for giving it a try. If you've used this app before, you MUST import your old profiles to have them work. Otherwise, continue on.",
                   textAlign: TextAlign.justify,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.black)
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.black)
                 ),
                 Container(
                   height: 5,

@@ -6,7 +6,7 @@ class Item implements JsonSavable{
   int count;
   int encum;
 
-  Item({this.name = "", this.desc = "", this.count = 0, this.encum = 0});
+  Item({this.name = "", this.desc = "", this.count = -1, this.encum = -1});
 
   Item.from(Item item) :
       name = item.name,

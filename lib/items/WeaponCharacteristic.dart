@@ -6,7 +6,7 @@ class WeaponCharacteristic implements JsonSavable{
   int value;
   int advantage;
 
-  WeaponCharacteristic({this.name = "", this.value = 0, this.advantage = 0});
+  WeaponCharacteristic({this.name = "", this.value = -1, this.advantage = -1});
 
   WeaponCharacteristic.from(WeaponCharacteristic wc) :
       name = wc.name,

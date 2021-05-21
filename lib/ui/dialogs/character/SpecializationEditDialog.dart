@@ -3,10 +3,10 @@ import 'package:flutter/widgets.dart';
 
 class SpecializationEditDialog extends StatefulWidget{
 
-  final Function(String) onClose;
+  final Function(String?) onClose;
   final String specialization;
 
-  SpecializationEditDialog({this.onClose, this.specialization});
+  SpecializationEditDialog({required this.onClose, this.specialization = ""});
 
   @override
   State<StatefulWidget> createState() => _SpecializationState(onClose: onClose, specialization: specialization);
@@ -21,12 +21,12 @@ class SpecializationEditDialog extends StatefulWidget{
 
 class _SpecializationState extends State{
 
-  final Function(String) onClose;
+  final Function(String?) onClose;
   String specialization;
 
-  TextEditingController specCont;
+  late TextEditingController specCont;
 
-  _SpecializationState({this.onClose, this.specialization}){
+  _SpecializationState({required this.onClose,required this.specialization}){
     specCont = TextEditingController(text: specialization)
       ..addListener(() {
         if((specialization == "" && specCont.text != "") || (specialization != "" && specCont.text == ""))

@@ -5,10 +5,10 @@ import 'package:swassistant/items/Talent.dart';
 class TalentEditDialog extends StatefulWidget{
 
   final Talent talent;
-  final Function(Talent) onClose;
+  final Function(Talent?) onClose;
 
-  TalentEditDialog({Talent talent, this.onClose}) :
-    this.talent = talent == null ? Talent.nulled() : Talent.from(talent);
+  TalentEditDialog({Talent? talent, required this.onClose}) :
+    this.talent = talent == null ? Talent() : Talent.from(talent);
 
   @override
   State<StatefulWidget> createState() => _TalentEditState(talent: talent, onClose: onClose);
@@ -23,13 +23,13 @@ class TalentEditDialog extends StatefulWidget{
 class _TalentEditState extends State{
 
   final Talent talent;
-  final Function(Talent) onClose;
+  final Function(Talent?) onClose;
 
-  TextEditingController nameController;
-  TextEditingController valueController;
-  TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController valueController;
+  late TextEditingController descController;
 
-  _TalentEditState({this.talent, this.onClose}){
+  _TalentEditState({required this.talent, required this.onClose}){
     nameController = TextEditingController(text: talent.name)
       ..addListener(() {
         if((talent.name == "" && nameController.text != "") || (talent.name != "" && nameController.text == ""))
@@ -40,10 +40,10 @@ class _TalentEditState extends State{
     valueController = TextEditingController(text: talent.value.toString())
       ..addListener(() {
         var value = int.tryParse(valueController.text);
-        if((value == null && talent.value != null) || (value != null && talent.value == null))
-          setState(() => talent.value = value);
+        if((value == null && talent.value != -1) || (value != null && talent.value == -1))
+          setState(() => talent.value = value ?? -1);
         else
-          talent.value = value;
+          talent.value = value ?? -1;
       });
     descController = TextEditingController(text: talent.desc)
       ..addListener(() {
@@ -91,7 +91,7 @@ class _TalentEditState extends State{
             children: [
               TextButton(
                 child: Text("Save"),
-                onPressed: talent.name != "" && talent.value != null ? (){
+                onPressed: talent.name != "" && talent.value != -1 ? (){
                   onClose(talent);
                   Navigator.of(context).pop();
                 } : null,

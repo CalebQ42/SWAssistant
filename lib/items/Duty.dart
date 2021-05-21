@@ -6,7 +6,7 @@ class Duty implements JsonSavable{
   int value;
   String desc;
 
-  Duty({this.name = "", this.value = 0, this.desc = ""});
+  Duty({this.name = "", this.value = -1, this.desc = ""});
 
   Duty.fromJson(Map<String,dynamic> json) :
       name = json["name"],

@@ -5,7 +5,7 @@ class CriticalInjury implements JsonSavable{
   String desc;
   int severity;
 
-  CriticalInjury({this.name = "", this.desc = "", this.severity = 0});
+  CriticalInjury({this.name = "", this.desc = "", this.severity = -1});
   
   CriticalInjury.from(CriticalInjury criticalInjury) :
     this.name = criticalInjury.name,

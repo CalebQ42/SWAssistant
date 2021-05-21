@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/Item.dart';
-import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
 class ItemEditDialog extends StatefulWidget{
 
-  final void Function(Item) onClose;
+  final void Function(Item?) onClose;
   final Editable editable;
   final Item item;
 
-  ItemEditDialog({this.onClose, Item item, this.editable}) :
-      this.item = item == null ? Item.nulled() : Item.from(item);
+  ItemEditDialog({required this.onClose, Item? item, required this.editable}) :
+      this.item = item == null ? Item() : Item.from(item);
 
   @override
   State<StatefulWidget> createState() => _ItemEditDialogState(onClose: onClose, item: item, editable: editable);
@@ -26,19 +25,19 @@ class ItemEditDialog extends StatefulWidget{
 
 class _ItemEditDialogState extends State{
 
-  final void Function(Item) onClose;
-  final Creature editable;
+  final void Function(Item?) onClose;
+  final Editable editable;
   final Item item;
 
-  TextEditingController nameController;
-  TextEditingController countController;
-  TextEditingController encumController;
-  TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController countController;
+  late TextEditingController encumController;
+  late TextEditingController descController;
 
-  _ItemEditDialogState({this.onClose, this.editable, this.item}){
+  _ItemEditDialogState({required this.onClose, required this.editable, required this.item}){
     nameController = TextEditingController(text: item.name)
       ..addListener(() {
-        if((nameController.text == null && item.name != null) || (nameController.text != null && item.name == null))
+        if((nameController.text == "" && item.name != "") || (nameController.text != "" && item.name == ""))
           setState(() => item.name = nameController.text);
         else
           item.name = nameController.text;
@@ -46,22 +45,22 @@ class _ItemEditDialogState extends State{
     countController = TextEditingController(text: item.count.toString())
       ..addListener(() {
         var tmp = int.tryParse(countController.text);
-        if((tmp == null && item.count != null) || (tmp != null && item.count == null))
-          setState(() => item.count = tmp);
+        if((tmp == null && item.count != -1) || (tmp != null && item.count == -1))
+          setState(() => item.count = tmp ?? -1);
         else
-          item.count = tmp;
+          item.count = tmp ?? -1;
       });
     encumController = TextEditingController(text: item.encum.toString())
       ..addListener(() {
         var tmp = int.tryParse(encumController.text);
-        if((tmp == null && item.encum != null) || (tmp != null && item.encum == null))
-          setState(() => item.encum = tmp);
+        if((tmp == null && item.encum != -1) || (tmp != null && item.encum == -1))
+          setState(() => item.encum = tmp ?? -1);
         else
-          item.encum = tmp;
+          item.encum = tmp ?? -1;
       });
     descController = TextEditingController(text: item.desc)
       ..addListener(() {
-        if((descController.text == null && item.desc != null) || (descController.text != null && item.desc == null))
+        if((descController.text == "" && item.desc != "") || (descController.text != "" && item.desc == ""))
           setState(() => item.desc = descController.text);
         else
           item.desc = descController.text;

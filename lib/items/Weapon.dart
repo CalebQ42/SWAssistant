@@ -24,10 +24,10 @@ class Weapon implements JsonSavable{
   String firingArc;
   int encumbrance;
 
-  Weapon({this.name = "", this.damage = 0, this.critical = 0, this.hp = 0, this.range = 0,
-    this.skill = 0, this.skillBase = 0, this.characteristics = const [], this.addBrawn = false,
-    this.loaded = true, this.limitedAmmo = false, this.itemState = 0, this.ammo = 0,
-    this.firingArc = "", this.encumbrance = 0});
+  Weapon({this.name = "", this.damage = -1, this.critical = -1, this.hp = -1, this.range = -1,
+    this.skill = -1, this.skillBase = -1, this.characteristics = const [], this.addBrawn = false,
+    this.loaded = true, this.limitedAmmo = false, this.itemState = 0, this.ammo = -1,
+    this.firingArc = "", this.encumbrance = -1});
 
   Weapon.fromJson(Map<String,dynamic> json) :
       name = json["name"],

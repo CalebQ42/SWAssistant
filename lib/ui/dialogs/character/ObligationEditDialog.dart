@@ -6,10 +6,10 @@ import 'package:swassistant/items/Obligation.dart';
 class ObligationEditDialog extends StatefulWidget{
 
   final Obligation obligation;
-  final Function(Obligation) onClose;
+  final Function(Obligation?) onClose;
 
-  ObligationEditDialog({Obligation obligation, this.onClose}) :
-    this.obligation = obligation != null ? Obligation.from(obligation) : Obligation.nulled();
+  ObligationEditDialog({Obligation? obligation, required this.onClose}) :
+    this.obligation = obligation != null ? Obligation.from(obligation) : Obligation();
 
   @override
   State<StatefulWidget> createState() => ObligationEditDialogState(obligation: this.obligation, onClose: this.onClose);
@@ -24,13 +24,13 @@ class ObligationEditDialog extends StatefulWidget{
 class ObligationEditDialogState extends State{
 
   Obligation obligation;
-  Function(Obligation) onClose;
+  Function(Obligation?) onClose;
 
-  TextEditingController nameController;
-  TextEditingController valueController;
-  TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController valueController;
+  late TextEditingController descController;
 
-  ObligationEditDialogState({this.obligation, this.onClose}){
+  ObligationEditDialogState({required this.obligation, required this.onClose}){
     nameController = TextEditingController(text: obligation.name)
       ..addListener(() {
         if(obligation.name != "" && nameController.text != "")
@@ -40,11 +40,11 @@ class ObligationEditDialogState extends State{
             obligation.name = nameController.text
           );
       });
-    valueController = TextEditingController(text: obligation.value != null ? obligation.value.toString() : "")
+    valueController = TextEditingController(text: obligation.value != -1 ? obligation.value.toString() : "")
       ..addListener(() {
         var tmp = int.tryParse(valueController.text);
-        if(tmp == null || obligation.value == null)
-          setState(() => obligation.value = tmp);
+        if(tmp == null || obligation.value == -1)
+          setState(() => obligation.value = -1);
         else
           obligation.value = tmp;
       });
@@ -91,7 +91,7 @@ class ObligationEditDialogState extends State{
             children: [
               TextButton(
                 child: Text("Save"),
-                onPressed: obligation.name != "" && obligation.value != null ? (){
+                onPressed: obligation.name != "" && obligation.value != -1 ? (){
                   onClose(obligation);
                   Navigator.pop(context);
                 } : null,

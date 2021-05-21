@@ -7,12 +7,12 @@ import 'package:swassistant/profiles/utils/Creature.dart';
 class SkillEditDialog extends StatefulWidget{
   //onClose Skill argument is the edited Skill (or new Skill). Skill argument is null if dialog is cancelled.
   //Doesn't get called when dialog is cancelled.
-  final void Function(Skill) onClose;
+  final void Function(Skill?) onClose;
   final Creature creature;
   final Skill skill;
 
-  SkillEditDialog({this.onClose, Skill skill, this.creature}) :
-      this.skill = skill == null ? Skill.nulled() : 
+  SkillEditDialog({required this.onClose, Skill? skill, required this.creature}) :
+      this.skill = skill == null ? Skill() : 
       creature is Character ? Skill.from(skill) : Skill.from(skill..value = 0);
 
   @override
@@ -27,23 +27,23 @@ class SkillEditDialog extends StatefulWidget{
 }
 
 class _SkillEditDialogState extends State{
-  final Function(Skill) onClose;
+  final Function(Skill?) onClose;
   final Skill skill;
   final Creature creature;
   bool manual = false;
 
-  TextEditingController valueController;
+  late TextEditingController valueController;
 
-  _SkillEditDialogState({this.onClose, this.skill, this.creature}){
-    if(skill.name != null && !Skill.skillsList.containsKey(skill.name))
+  _SkillEditDialogState({required this.onClose, required this.skill, required this.creature}){
+    if(skill.name != "" && !Skill.skillsList.containsKey(skill.name))
       manual = true;
-    valueController = new TextEditingController(text: skill.value != null ? skill.value.toString() : "")
+    valueController = new TextEditingController(text: skill.value != -1 ? skill.value.toString() : "")
         ..addListener(() {
           var val = int.tryParse(valueController.text);
-          if((skill.value == null && val != null) || (skill.value != null && val == null))
-            setState(() => skill.value = val);
+          if((skill.value == -1 && val != null) || (skill.value != -1 && val == null))
+            setState(() => skill.value = val ?? -1);
           else
-            skill.value = val;
+            skill.value = val ?? -1;
         });
   }
   
@@ -66,15 +66,15 @@ class _SkillEditDialogState extends State{
                   setState((){
                     if(value != "Other..."){
                       manual = false;
-                      skill.name = value;
-                      skill.base = Skill.skillsList[value];
+                      skill.name = value!;
+                      skill.base = Skill.skillsList[value]!;
                     }else{
                       manual = true;
                       skill.name = "";
                     }
                   });
                 },
-                value: (Skill.skillsList.containsKey(skill.name) || skill.name == null) ? skill.name : Skill.skillsList.keys.last,
+                value: (Skill.skillsList.containsKey(skill.name) || skill.name == "") ? skill.name : Skill.skillsList.keys.last,
                 items: List.generate(
                   Skill.skillsList.length,
                   (i) =>
@@ -118,7 +118,7 @@ class _SkillEditDialogState extends State{
                   )
                 ),
                 value: skill.base,
-                onChanged: (value) => setState(() => skill.base = value),
+                onChanged: (value) => setState(() => skill.base = -1),
               )
             ),
             if(creature is Character) Container(height: 10),

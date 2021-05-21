@@ -11,7 +11,7 @@ class Settings extends StatefulWidget{
 
   final Function() updateTopLevel;
 
-  Settings({this.updateTopLevel});
+  Settings({required this.updateTopLevel});
 
   @override
   State<StatefulWidget> createState() => SettingsState(updateTopLevel: updateTopLevel);
@@ -21,7 +21,7 @@ class SettingsState extends State{
 
   final Function() updateTopLevel;
 
-  SettingsState({this.updateTopLevel});
+  SettingsState({required this.updateTopLevel});
 
   @override
   Widget build(BuildContext context){

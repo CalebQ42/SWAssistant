@@ -6,10 +6,10 @@ import 'package:swassistant/items/Duty.dart';
 class DutyEditDialog extends StatefulWidget{
 
   final Duty duty;
-  final Function(Duty) onClose;
+  final Function(Duty?) onClose;
 
-  DutyEditDialog({Duty duty, this.onClose}) :
-    this.duty = duty != null ? Duty.from(duty) : Duty.nulled();
+  DutyEditDialog({Duty? duty, required this.onClose}) :
+    this.duty = duty != null ? Duty.from(duty) : Duty();
 
   @override
   State<StatefulWidget> createState() => DutyEditDialogState(duty: this.duty, onClose: this.onClose);
@@ -24,13 +24,13 @@ class DutyEditDialog extends StatefulWidget{
 class DutyEditDialogState extends State{
 
   Duty duty;
-  Function(Duty) onClose;
+  Function(Duty?) onClose;
 
-  TextEditingController nameController;
-  TextEditingController valueController;
-  TextEditingController descController;
+  late TextEditingController nameController;
+  late TextEditingController valueController;
+  late TextEditingController descController;
 
-  DutyEditDialogState({this.duty, this.onClose}){
+  DutyEditDialogState({required this.duty, required this.onClose}){
     nameController = TextEditingController(text: duty.name)
       ..addListener(() {
         if(duty.name != "" && nameController.text != "")
@@ -40,11 +40,11 @@ class DutyEditDialogState extends State{
             duty.name = nameController.text
           );
       });
-    valueController = TextEditingController(text: duty.value != null ? duty.value.toString() : "")
+    valueController = TextEditingController(text: duty.value != -1 ? duty.value.toString() : "")
       ..addListener(() {
         var tmp = int.tryParse(valueController.text);
-        if(tmp == null || duty.value == null)
-          setState(() => duty.value = tmp);
+        if(tmp == null || duty.value == -1)
+          setState(() => duty.value = -1);
         else
           duty.value = tmp;
       });
@@ -91,7 +91,7 @@ class DutyEditDialogState extends State{
             children: [
               TextButton(
                 child: Text("Save"),
-                onPressed: duty.name != "" && duty.value != null ? (){
+                onPressed: duty.name != "" && duty.value != -1 ? (){
                   onClose(duty);
                   Navigator.pop(context);
                 } : null,

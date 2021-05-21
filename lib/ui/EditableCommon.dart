@@ -167,7 +167,8 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
               else{
                 editing = !editing;
                 stateful!.getHolder().editing = editing;
-                stateful!.getHolder().reloadFunction();
+                if (stateful!.getHolder().reloadFunction != null)
+                  stateful!.getHolder().reloadFunction!();
                 setState(() {});
               }
             }
@@ -192,10 +193,10 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
 }
 
 class EditableContentStatefulHolder{
-  Function() reloadFunction;
+  Function()? reloadFunction;
   bool editing;
 
-  EditableContentStatefulHolder({required this.reloadFunction, this.editing = false});
+  EditableContentStatefulHolder({this.reloadFunction, this.editing = false});
 }
 
 mixin StatefulCard on StatefulWidget{

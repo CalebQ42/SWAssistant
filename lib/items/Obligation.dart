@@ -6,7 +6,7 @@ class Obligation implements JsonSavable{
   int value;
   String desc;
 
-  Obligation({this.name = "", this.value = 0, this.desc = ""});
+  Obligation({this.name = "", this.value = -1, this.desc = ""});
 
   Obligation.fromJson(Map<String,dynamic> json) :
     name = json["name"],
