@@ -9,10 +9,13 @@ class XP extends StatelessWidget{
   final Function() refresh;
   final EditableContentState state;
 
-  XP({this.editing, this.refresh, this.state});
+  XP({required this.editing, required this.refresh, required this.state});
+
   @override
   Widget build(BuildContext context){
     var character = Character.of(context);
+    if (character == null)
+      throw "XP card used on non Character";
     var xpAddController = TextEditingController();
     return Column(
       children: [
@@ -86,8 +89,10 @@ class XP extends StatelessWidget{
                 onSubmitted: (text){
                   if(text != ""){
                     var adding = int.tryParse(text);
-                    character.xpTot += adding;
-                    character.xpCur += adding;
+                    if (adding != null){
+                      character.xpTot += adding;
+                      character.xpCur += adding;
+                    }
                     xpAddController.text = "";
                     refresh();
                   }
@@ -99,8 +104,10 @@ class XP extends StatelessWidget{
               onPressed: (){
                 if(xpAddController.text != ""){
                   var adding = int.tryParse(xpAddController.text);
-                  character.xpTot += adding;
-                  character.xpCur += adding;
+                  if (adding != null){
+                    character.xpTot += adding;
+                    character.xpCur += adding;
+                  }
                   xpAddController.text = "";
                   refresh();
                 }

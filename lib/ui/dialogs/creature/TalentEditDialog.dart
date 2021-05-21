@@ -5,7 +5,7 @@ import 'package:swassistant/items/Talent.dart';
 class TalentEditDialog extends StatefulWidget{
 
   final Talent talent;
-  final Function(Talent?) onClose;
+  final Function(Talent) onClose;
 
   TalentEditDialog({Talent? talent, required this.onClose}) :
     this.talent = talent == null ? Talent() : Talent.from(talent);
@@ -23,7 +23,7 @@ class TalentEditDialog extends StatefulWidget{
 class _TalentEditState extends State{
 
   final Talent talent;
-  final Function(Talent?) onClose;
+  final Function(Talent) onClose;
 
   late TextEditingController nameController;
   late TextEditingController valueController;

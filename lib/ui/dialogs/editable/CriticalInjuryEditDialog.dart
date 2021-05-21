@@ -3,7 +3,7 @@ import 'package:swassistant/items/CriticalInjury.dart';
 
 class CriticalInjuryEditDialog extends StatefulWidget{
   final CriticalInjury criticalInjury;
-  final Function(CriticalInjury?) onClose;
+  final Function(CriticalInjury) onClose;
 
   CriticalInjuryEditDialog({CriticalInjury? criticalInjury, required this.onClose}) :
     this.criticalInjury = criticalInjury == null ? CriticalInjury() : CriticalInjury.from(criticalInjury);
@@ -21,7 +21,7 @@ class CriticalInjuryEditDialog extends StatefulWidget{
 
 class _CriticalInjuryEditState extends State{
   final CriticalInjury criticalInjury;
-  final Function(CriticalInjury?) onClose;
+  final Function(CriticalInjury) onClose;
 
   late TextEditingController nameController;
   late TextEditingController descController;

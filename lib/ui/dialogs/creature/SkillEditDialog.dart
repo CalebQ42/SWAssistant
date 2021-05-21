@@ -5,9 +5,7 @@ import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 
 class SkillEditDialog extends StatefulWidget{
-  //onClose Skill argument is the edited Skill (or new Skill). Skill argument is null if dialog is cancelled.
-  //Doesn't get called when dialog is cancelled.
-  final void Function(Skill?) onClose;
+  final void Function(Skill) onClose;
   final Creature creature;
   final Skill skill;
 
@@ -27,7 +25,7 @@ class SkillEditDialog extends StatefulWidget{
 }
 
 class _SkillEditDialogState extends State{
-  final Function(Skill?) onClose;
+  final Function(Skill) onClose;
   final Skill skill;
   final Creature creature;
   bool manual = false;
@@ -140,7 +138,7 @@ class _SkillEditDialogState extends State{
               children: [
                 TextButton(
                   child: Text("Save"),
-                  onPressed: (skill.name != null && skill.base != null && (creature is Character ? skill.value != null : true)) ? (){
+                  onPressed: (skill.name != "" && skill.base != -1 && (creature is Character ? skill.value != -1 : true)) ? (){
                     onClose(skill);
                     Navigator.of(context).pop();
                   } : null,

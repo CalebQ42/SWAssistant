@@ -5,7 +5,7 @@ import 'package:swassistant/items/WeaponCharacteristic.dart';
 class WeaponCharacteristicDialog extends StatefulWidget{
 
   final WeaponCharacteristic wc;
-  final void Function(WeaponCharacteristic?) onClose;
+  final void Function(WeaponCharacteristic) onClose;
 
   WeaponCharacteristicDialog({WeaponCharacteristic? wc, required this.onClose}) :
       this.wc = wc == null ? WeaponCharacteristic() : WeaponCharacteristic.from(wc);
@@ -24,7 +24,7 @@ class WeaponCharacteristicDialog extends StatefulWidget{
 class _WeaponCharacteristicDialogState extends State{
   
   final WeaponCharacteristic wc;
-  final Function(WeaponCharacteristic?) onClose;
+  final Function(WeaponCharacteristic) onClose;
 
   late TextEditingController nameController;
   late TextEditingController valueController;

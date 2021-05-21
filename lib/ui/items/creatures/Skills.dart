@@ -10,10 +10,12 @@ class Skills extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  Skills({this.editing, this.refresh});
+  Skills({required this.editing, required this.refresh});
 
   Widget build(BuildContext context){
     var creature = Creature.of(context);
+    if (creature == null)
+      throw "Characteristics card used on non Creature";
     var children = List.generate(creature.skills.length, (index){
       return InkResponse(
         containedInkWell: true,

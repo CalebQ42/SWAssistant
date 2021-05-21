@@ -11,11 +11,13 @@ class WoundStrain extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  WoundStrain({this.editing, this.state});
+  WoundStrain({required this.editing, required this.state});
 
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
+    if (character == null)
+      throw "Wound Strain card used on non Character";
     return Column(
       children: <Widget>[
         Row(

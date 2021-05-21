@@ -4,7 +4,7 @@ import 'package:swassistant/items/ForcePower.dart';
 class ForcePowerEditDialog extends StatefulWidget{
 
   final ForcePower fp;
-  final Function(ForcePower?) onClose;
+  final Function(ForcePower) onClose;
 
   ForcePowerEditDialog({ForcePower? power, required this.onClose}) :
     fp = power == null ? ForcePower() : ForcePower.from(power);
@@ -22,7 +22,7 @@ class ForcePowerEditDialog extends StatefulWidget{
 class _FPState extends State{
 
   final ForcePower fp;
-  final Function(ForcePower?) onClose;
+  final Function(ForcePower) onClose;
 
   late TextEditingController nameController;
   late TextEditingController descController;

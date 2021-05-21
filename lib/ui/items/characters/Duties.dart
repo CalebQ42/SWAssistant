@@ -9,11 +9,13 @@ class Duties extends StatelessWidget{
   final Function() refresh;
   final bool editing;
 
-  Duties({this.refresh, this.editing});
+  Duties({required this.refresh, required this.editing});
 
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
+    if (character == null)
+      throw "Duties card used on non Character";
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(

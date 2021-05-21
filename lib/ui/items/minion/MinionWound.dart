@@ -8,7 +8,7 @@ class MinionWound extends StatefulWidget with StatefulCard{
   final EditableContentStatefulHolder holder;
   final EditableContentStatefulHolder numHolder;
 
-  MinionWound({this.holder, this.numHolder});
+  MinionWound({required this.holder, required this.numHolder});
 
   @override
   State<StatefulWidget> createState() => MinionWoundState(holder: holder, numHolder: numHolder);
@@ -22,19 +22,21 @@ class MinionWoundState extends State with TickerProviderStateMixin{
   final EditableContentStatefulHolder holder;
   final EditableContentStatefulHolder numHolder;
 
-  TextEditingController indWoundController;
+  TextEditingController? indWoundController;
 
-  MinionWoundState({this.holder, this.numHolder}){
+  MinionWoundState({required this.holder, required this.numHolder}){
     holder.reloadFunction = () => setState((){});
   }
 
   @override
   Widget build(BuildContext context) {
     var minion = Minion.of(context);
+    if (minion == null)
+      throw "MinionWound card used on non Minion";
     if(indWoundController == null)
       indWoundController = TextEditingController(text: minion.woundThreshInd.toString())
           ..addListener(() {
-        var tmp = int.tryParse(indWoundController.text);
+        var tmp = int.tryParse(indWoundController!.text);
         var orig = minion.woundCur;
         if(tmp == null)
           minion.woundThreshInd = 0;
@@ -116,8 +118,8 @@ class MinionWoundState extends State with TickerProviderStateMixin{
               minNum ++;
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
-              if(minion.showCard[minion.cardNames.indexOf("Number of Minions")])
-                numHolder.reloadFunction();
+              if(minion.showCard[minion.cardNames.indexOf("Number of Minions")] && numHolder.reloadFunction != null)
+                numHolder.reloadFunction!();
             }
             minion.save(context: context);
           },

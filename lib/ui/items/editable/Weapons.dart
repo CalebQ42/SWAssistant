@@ -13,7 +13,7 @@ class Weapons extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  Weapons({this.editing, this.refresh});
+  Weapons({required this.editing, required this.refresh});
 
   @override
   Widget build(BuildContext context) {

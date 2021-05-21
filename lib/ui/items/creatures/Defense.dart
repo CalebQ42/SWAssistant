@@ -1,17 +1,18 @@
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
 class Defense extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  Defense({this.editing, this.state});
+  Defense({required this.editing, required this.state});
   
   @override
   Widget build(BuildContext context) {
-    var creature = Editable.of(context) as Creature;
+    var creature = Creature.of(context);
+    if (creature == null)
+      throw "Defense card used on non Creature";
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
 import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
@@ -13,10 +12,12 @@ class ForcePowers extends StatelessWidget{
   final Function() refresh;
   final EditableContentState state;
 
-  ForcePowers({this.editing, this.refresh, this.state});
+  ForcePowers({required this.editing, required this.refresh, required this.state});
   @override
   Widget build(BuildContext context) {
-    var character = Editable.of(context) as Character;
+    var character = Character.of(context);
+    if (character == null)
+      throw "Force Powers card used on non Character";
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(

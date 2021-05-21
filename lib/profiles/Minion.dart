@@ -6,7 +6,7 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/items/characters/Talents.dart';
+import 'package:swassistant/ui/items/creatures/Talents.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
 import 'package:swassistant/ui/items/editable/Weapons.dart';

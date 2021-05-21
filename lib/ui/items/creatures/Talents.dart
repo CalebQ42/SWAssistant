@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/creature/TalentEditDialog.dart';
 
 class Talents extends StatelessWidget{
@@ -9,11 +8,13 @@ class Talents extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  Talents({this.editing, this.refresh});
+  Talents({required this.editing, required this.refresh});
 
   @override
   Widget build(BuildContext context) {
-    var creature = Editable.of(context) as Creature;
+    var creature = Creature.of(context);
+    if (creature == null)
+      throw "Talents card used on non Creature";
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(

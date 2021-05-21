@@ -6,7 +6,7 @@ class CriticalInjuries extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  CriticalInjuries({this.editing, this.refresh});
+  CriticalInjuries({required this.editing, required this.refresh});
   
   @override
   Widget build(BuildContext context) {

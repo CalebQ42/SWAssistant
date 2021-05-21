@@ -9,7 +9,7 @@ class SWDiceDialog extends StatelessWidget{
   final SWDiceHolder holder;
   final BuildContext context;
 
-  SWDiceDialog({@required this.holder, @required this.context});
+  SWDiceDialog({required this.holder, required this.context});
 
   @override
   Widget build(BuildContext context) =>

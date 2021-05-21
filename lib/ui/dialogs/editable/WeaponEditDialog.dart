@@ -10,7 +10,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/editable/WeaponCharacteristicDialog.dart';
 
 class WeaponEditDialog extends StatefulWidget{
-  final Function(Weapon?) onClose;
+  final Function(Weapon) onClose;
   final Weapon weapon;
   final Editable editable;
 
@@ -33,7 +33,7 @@ class WeaponEditDialog extends StatefulWidget{
 }
 
 class _WeaponEditDialogState extends State{
-  final void Function(Weapon?) onClose;
+  final void Function(Weapon) onClose;
   final Weapon weapon;
   final Editable editable;
 

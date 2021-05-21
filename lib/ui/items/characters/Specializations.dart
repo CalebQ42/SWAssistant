@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/character/SpecializationEditDialog.dart';
 
 class Specializations extends StatelessWidget{
@@ -8,11 +7,13 @@ class Specializations extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  Specializations({this.editing, this.refresh});
+  Specializations({required this.editing, required this.refresh});
 
   @override
   Widget build(BuildContext context) {
-    var character = Editable.of(context) as Character;
+    var character = Character.of(context);
+    if (character == null)
+      throw "Specializations card used on non Character";
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Column(

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 class SpecializationEditDialog extends StatefulWidget{
 
-  final Function(String?) onClose;
+  final Function(String) onClose;
   final String specialization;
 
   SpecializationEditDialog({required this.onClose, this.specialization = ""});
@@ -21,7 +21,7 @@ class SpecializationEditDialog extends StatefulWidget{
 
 class _SpecializationState extends State{
 
-  final Function(String?) onClose;
+  final Function(String) onClose;
   String specialization;
 
   late TextEditingController specCont;

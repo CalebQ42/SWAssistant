@@ -9,10 +9,12 @@ class CharacterInfo extends StatelessWidget{
   final EditableContentState state;
   final Function() updateList;
 
-  CharacterInfo({this.editing, this.state, this.updateList});
+  CharacterInfo({required this.editing, required this.state, required this.updateList});
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
+    if (character == null)
+      throw "CharacterInfo card on non Character";
     var species = new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[

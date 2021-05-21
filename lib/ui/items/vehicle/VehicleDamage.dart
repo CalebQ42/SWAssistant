@@ -9,11 +9,13 @@ class VehicleDamage extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  VehicleDamage({this.editing, this.state});
+  VehicleDamage({required this.editing, required this.state});
 
   @override
   Widget build(BuildContext context) {
     var vehicle = Vehicle.of(context);
+    if (vehicle == null)
+      throw "VehicleDamage card called on non Vehicle";
     return Column(
       children: [
         Row(

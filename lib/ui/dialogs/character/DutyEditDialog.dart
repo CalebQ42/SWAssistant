@@ -6,7 +6,7 @@ import 'package:swassistant/items/Duty.dart';
 class DutyEditDialog extends StatefulWidget{
 
   final Duty duty;
-  final Function(Duty?) onClose;
+  final Function(Duty) onClose;
 
   DutyEditDialog({Duty? duty, required this.onClose}) :
     this.duty = duty != null ? Duty.from(duty) : Duty();
@@ -24,7 +24,7 @@ class DutyEditDialog extends StatefulWidget{
 class DutyEditDialogState extends State{
 
   Duty duty;
-  Function(Duty?) onClose;
+  Function(Duty) onClose;
 
   late TextEditingController nameController;
   late TextEditingController valueController;

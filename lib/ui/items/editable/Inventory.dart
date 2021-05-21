@@ -14,7 +14,7 @@ class Inventory extends StatelessWidget{
   final Function() refresh;
   final EditableContentState state;
 
-  Inventory({this.editing, this.refresh, this.state});
+  Inventory({required this.editing, required this.refresh, required this.state});
 
   @override
   Widget build(BuildContext context) {

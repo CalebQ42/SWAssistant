@@ -10,7 +10,7 @@ class MinInfo extends StatefulWidget with StatefulCard{
   final EditableContentStatefulHolder holder;
   final EditableContentStatefulHolder woundHolder;
 
-  MinInfo({this.holder, this.woundHolder});
+  MinInfo({required this.holder, required this.woundHolder});
 
   @override
   State<StatefulWidget> createState() => MinInfoState(holder: holder, woundHolder: woundHolder);
@@ -24,13 +24,15 @@ class MinInfoState extends State{
   final EditableContentStatefulHolder holder;
   final EditableContentStatefulHolder woundHolder;
 
-  MinInfoState({this.woundHolder, this.holder}){
+  MinInfoState({required this.woundHolder, required this.holder}){
     holder.reloadFunction = () => setState((){});
   }
 
   @override
   Widget build(BuildContext context){
     var minion = Minion.of(context);
+    if (minion == null)
+      throw "MinInfo card used on non Minion";
     return Column(
       children: [
         EditingText(
@@ -60,8 +62,8 @@ class MinInfoState extends State{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[minion.cardNames.indexOf("Wound")])
-              woundHolder.reloadFunction();
+            if(minion.showCard[minion.cardNames.indexOf("Wound")] && woundHolder.reloadFunction != null)
+              woundHolder.reloadFunction!();
           },
           onUpPressed: (){
             minion.minionNum++;
@@ -69,8 +71,8 @@ class MinInfoState extends State{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[minion.cardNames.indexOf("Wound")])
-              woundHolder.reloadFunction();
+            if(minion.showCard[minion.cardNames.indexOf("Wound")] && woundHolder.reloadFunction != null)
+              woundHolder.reloadFunction!();
           },
           getValue: () => minion.minionNum,
         )

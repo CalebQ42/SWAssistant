@@ -6,7 +6,7 @@ import 'package:swassistant/items/Obligation.dart';
 class ObligationEditDialog extends StatefulWidget{
 
   final Obligation obligation;
-  final Function(Obligation?) onClose;
+  final Function(Obligation) onClose;
 
   ObligationEditDialog({Obligation? obligation, required this.onClose}) :
     this.obligation = obligation != null ? Obligation.from(obligation) : Obligation();
@@ -24,7 +24,7 @@ class ObligationEditDialog extends StatefulWidget{
 class ObligationEditDialogState extends State{
 
   Obligation obligation;
-  Function(Obligation?) onClose;
+  Function(Obligation) onClose;
 
   late TextEditingController nameController;
   late TextEditingController valueController;

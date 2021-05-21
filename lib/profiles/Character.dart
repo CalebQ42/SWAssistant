@@ -13,7 +13,7 @@ import 'package:swassistant/ui/items/characters/Obligations.dart';
 import 'package:swassistant/ui/items/characters/XP.dart';
 import 'package:swassistant/ui/items/characters/ForcePowers.dart';
 import 'package:swassistant/ui/items/characters/Specializations.dart';
-import 'package:swassistant/ui/items/characters/Talents.dart';
+import 'package:swassistant/ui/items/creatures/Talents.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
 import 'package:swassistant/ui/items/editable/Weapons.dart';

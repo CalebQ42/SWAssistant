@@ -10,7 +10,7 @@ class Characteristics extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  Characteristics({this.editing, this.state});
+  Characteristics({required this.editing, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +20,22 @@ class Characteristics extends StatelessWidget{
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            charBuilder(0, Theme.of(context).textTheme.headline6, context),
-            charBuilder(1, Theme.of(context).textTheme.headline6, context)
+            charBuilder(0, Theme.of(context).textTheme.headline6!, context),
+            charBuilder(1, Theme.of(context).textTheme.headline6!, context)
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            charBuilder(2, Theme.of(context).textTheme.headline6, context),
-            charBuilder(3, Theme.of(context).textTheme.headline6, context)
+            charBuilder(2, Theme.of(context).textTheme.headline6!, context),
+            charBuilder(3, Theme.of(context).textTheme.headline6!, context)
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            charBuilder(4, Theme.of(context).textTheme.headline6, context),
-            charBuilder(5, Theme.of(context).textTheme.headline6, context)
+            charBuilder(4, Theme.of(context).textTheme.headline6!, context),
+            charBuilder(5, Theme.of(context).textTheme.headline6!, context)
           ],
         ),
       ],
@@ -44,6 +44,8 @@ class Characteristics extends StatelessWidget{
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   Widget charBuilder(int charNum, TextStyle style, BuildContext context){
     var creature = Creature.of(context);
+    if (creature == null)
+      throw "Characteristics card used on non Creature";
     return Expanded(
       child: InkResponse(
         containedInkWell: true,

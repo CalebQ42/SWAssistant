@@ -5,7 +5,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 
 class ItemEditDialog extends StatefulWidget{
 
-  final void Function(Item?) onClose;
+  final void Function(Item) onClose;
   final Editable editable;
   final Item item;
 
@@ -25,7 +25,7 @@ class ItemEditDialog extends StatefulWidget{
 
 class _ItemEditDialogState extends State{
 
-  final void Function(Item?) onClose;
+  final void Function(Item) onClose;
   final Editable editable;
   final Item item;
 

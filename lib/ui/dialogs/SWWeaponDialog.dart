@@ -14,7 +14,7 @@ class SWWeaponDialog extends StatelessWidget{
   final Weapon weapon;
   final int brawn;
 
-  SWWeaponDialog({@required this.holder, @required this.context, @required this.weapon, this.brawn});
+  SWWeaponDialog({required this.holder, required this.context, required this.weapon, this.brawn = 0});
 
   @override
   Widget build(BuildContext context) =>
@@ -132,7 +132,7 @@ class _WeaponResults extends StatelessWidget{
   final DiceResults results;
   final int brawn;
 
-  _WeaponResults({this.weapon, this.results, this.brawn});
+  _WeaponResults({required this.weapon, required this.results, required this.brawn});
 
   @override
   Widget build(BuildContext context){
@@ -240,7 +240,7 @@ class _WeaponResults extends StatelessWidget{
                 onPressed: (){
                   Navigator.of(context).pop();
                   results.showResultsEdit(context, alternateReturn: (context, results){
-                    _WeaponResults(weapon: weapon, results: results).show(context);
+                    _WeaponResults(weapon: weapon, results: results, brawn: brawn,).show(context);
                   });
                 },
               ),
