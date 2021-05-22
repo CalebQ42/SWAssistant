@@ -14,9 +14,9 @@ class WeaponCharacteristic implements JsonSavable{
       advantage = wc.advantage;
 
   WeaponCharacteristic.fromJson(Map<String,dynamic> json) :
-      name = json["name"],
-      value = json["value"],
-      advantage = json["advantage"];
+      name = json["name"] ?? "",
+      value = json["value"] ?? -1,
+      advantage = json["advantage"] ?? -1;
 
   Map<String,dynamic> toJson() => {
     "name" : name,

@@ -8,8 +8,8 @@ class Note implements JsonSavable{
   Note({this.title = "", this.note = ""});
 
   Note.fromJson(Map<String, dynamic> map) :
-      title = map["title"],
-      note = map["note"];
+      title = map["title"] ?? "",
+      note = map["note"] ?? "";
 
   Map<String,dynamic> toJson()=>{
     "title" : title,

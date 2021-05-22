@@ -108,34 +108,42 @@ class Character extends Editable with Creature{
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
     this.creatureLoadJson(json);
-    this.species = json["species"];
-    this.career = json["career"];
-    specializations = [];
-    for(dynamic s in json["Specializations"])
-      specializations.add(s);
-    this.forcePowers = [];
-    for(dynamic dy in json["Force Powers"])
-      this.forcePowers.add(ForcePower.fromJson(dy));
-    this.motivation = json["motivation"];
-    emotionalStr = json["emotional strength"];
-    emotionalWeak = json["emotional weakness"];
-    this.duties = [];
-    for(dynamic dy in json["Dutys"])
-      this.duties.add(Duty.fromJson(dy));
-    this.obligations  = [];
-    for(dynamic dy in json["Obligations"])
-      this.obligations.add(Obligation.fromJson(dy));
-    this.strainThresh = json["strain threshold"];
-    this.strainCur = json["strain current"];
-    this.xpTot = json["xp total"];
-    this.xpCur = json["xp current"];
-    this.force = json["force rating"];
-    this.credits = json["credits"];
-    this.morality = json["morality"];
-    this.conflict = json["conflict"];
-    this.darkSide = json["dark side"];
-    this.age = json["age"];
-    this.encumCap = json["encumbrance capacity"];
+    this.species = json["species"] ?? "";
+    this.career = json["career"] ?? "";
+    if(json["Specializations"] != null){
+      specializations = [];
+      for(dynamic s in json["Specializations"])
+        specializations.add(s);
+    }
+    if(json["Force Powers"] != null){
+      this.forcePowers = [];
+      for(dynamic dy in json["Force Powers"])
+        this.forcePowers.add(ForcePower.fromJson(dy));
+    }
+    this.motivation = json["motivation"] ?? "";
+    emotionalStr = json["emotional strength"] ?? "";
+    emotionalWeak = json["emotional weakness"] ?? "";
+    if(json["Dutys"] != null){
+      this.duties = [];
+      for(dynamic dy in json["Dutys"])
+        this.duties.add(Duty.fromJson(dy));
+    }
+    if(json["Obligations"] != null){
+      this.obligations  = [];
+      for(dynamic dy in json["Obligations"])
+        this.obligations.add(Obligation.fromJson(dy));
+    }
+    this.strainThresh = json["strain threshold"] ?? 0;
+    this.strainCur = json["strain current"] ?? 0;
+    this.xpTot = json["xp total"] ?? 0;
+    this.xpCur = json["xp current"] ?? 0;
+    this.force = json["force rating"] ?? 0;
+    this.credits = json["credits"] ?? 0;
+    this.morality = json["morality"] ?? 0;
+    this.conflict = json["conflict"] ?? 0;
+    this.darkSide = json["dark side"] ?? false;
+    this.age = json["age"] ?? 0;
+    this.encumCap = json["encumbrance capacity"] ?? 0;
     this.disableDuty = json["disable duty"] ?? false;
     this.disableForce = json["disable force"] ?? false;
     this.disableObligation = json["disable obligation"] ?? false;

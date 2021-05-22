@@ -15,14 +15,14 @@ class SWAppBar extends AppBar{
     "translate" : () => _launchURL("https://crowdin.com/project/swrpg")
   };
 
-  SWAppBar({Widget? title, List<Widget> additionalActions = const [], List<PopupMenuItem> additionalPopupActions = const [],
-      Map<String, Function> popupFunctions = const {}, PreferredSizeWidget? bottom}) :
+  SWAppBar({Widget? title, List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions,
+      Map<String, Function>? popupFunctions, PreferredSizeWidget? bottom}) : 
         super(title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
 
-  static List<Widget> _getActions(List<Widget> additionalActions, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions) =>
+  static List<Widget> _getActions(List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions, Map<String, Function>? popupFunctions) =>
     <Widget>[]
-      ..addAll(additionalActions)
-      ..add(_getPopupMenu(additionalPopupActions, popupFunctions));
+      ..addAll(additionalActions ?? [])
+      ..add(_getPopupMenu(additionalPopupActions ?? [], popupFunctions ?? {}));
   
   static PopupMenuButton _getPopupMenu(List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions){
     popupFunctions.addAll(defFunctions);

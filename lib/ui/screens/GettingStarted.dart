@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 
 class GettingStarted extends StatefulWidget{
+  final SW app;
+  final Function() onEnd;
+
+  GettingStarted({required this.app, required this.onEnd});
+  
   @override
   State<StatefulWidget> createState() =>
-    StartingState();
+    StartingState(app: app, onEnd: onEnd);
 }
 
 class StartingState extends State<GettingStarted>{
+
   int screen = 0;
+  final SW app;
+  final Function() onEnd;
+
+  StartingState({required this.app, required this.onEnd});
+
   @override
   Widget build(BuildContext context) =>
     Scaffold(
@@ -72,6 +84,17 @@ class StartingState extends State<GettingStarted>{
                 setState((){
                   screen++;
                 }),
+            )
+          ),
+        ),
+        if(app.devMode) Align(
+          alignment: Alignment.bottomLeft,
+          child:  Padding(
+            padding: EdgeInsets.all(10.0),
+            child: FloatingActionButton(
+              child: Icon(Icons.exit_to_app),
+              onPressed: () =>
+                onEnd()
             )
           ),
         ),

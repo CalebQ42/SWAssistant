@@ -59,15 +59,21 @@ class Minion extends Editable with Creature{
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
     this.creatureLoadJson(json);
-    this.woundThreshInd = json["wound threshold per minion"];
-    this.minionNum = json["minion number"];
-    Map<String,dynamic> saved = json["Saved"];
-    this.savedInv = [];
-    for(dynamic d in saved["Inventory"])
-      this.savedInv.add(Item.fromJson(d));
-    this.savedWeapons = [];
-    for(dynamic d in saved["Weapons"])
-      this.savedWeapons.add(Weapon.fromJson(d));
+    this.woundThreshInd = json["wound threshold per minion"] ?? 0;
+    this.minionNum = json["minion number"] ?? 0;
+    if(json["Saved"] != null){
+      Map<String,dynamic> saved = json["Saved"];
+      if(saved["Inventory"] != null){
+        this.savedInv = [];
+        for(dynamic d in saved["Inventory"])
+          this.savedInv.add(Item.fromJson(d));
+      }
+      if(saved["Weapons"] != null){
+        this.savedWeapons = [];
+        for(dynamic d in saved["Weapons"])
+          this.savedWeapons.add(Weapon.fromJson(d));
+      }
+    }
   }
 
   Map<String,dynamic> toJson(){

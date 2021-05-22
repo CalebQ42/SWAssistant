@@ -62,22 +62,24 @@ class Vehicle extends Editable{
 
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
-    this.silhouette = json["silhouette"];
-    this.speed = json["speed"];
-    this.handling = json["handling"];
-    this.armor = json["armor"];
-    defense = [];
-    for(dynamic i in json["defense"])
-      defense.add(i);
-    this.totalDefense = json["total defense"];
-    this.hullTraumaThresh  = json["hull trauma threshold"];
-    this.hullTraumaCur = json["hull trauma current"];
-    this.sysStressThresh = json["system stress threshold"];
-    this.sysStressCur = json["system stress current"];
-    this.encumCapacity = json["encumbrance capacity"];
-    this.passengerCapacity = json["passenger capacity"];
-    this.hp = json["hard points"];
-    this.model = json["model"];
+    this.silhouette = json["silhouette"] ?? 0;
+    this.speed = json["speed"] ?? 0;
+    this.handling = json["handling"] ?? 0;
+    this.armor = json["armor"] ?? 0;
+    if(json["defense"] != null){
+      defense = [];
+      for(dynamic i in json["defense"])
+        defense.add(i);
+    }
+    this.totalDefense = json["total defense"] ?? 0;
+    this.hullTraumaThresh  = json["hull trauma threshold"] ?? 0;
+    this.hullTraumaCur = json["hull trauma current"] ?? 0;
+    this.sysStressThresh = json["system stress threshold"] ?? 0;
+    this.sysStressCur = json["system stress current"] ?? 0;
+    this.encumCapacity = json["encumbrance capacity"] ?? 0;
+    this.passengerCapacity = json["passenger capacity"] ?? 0;
+    this.hp = json["hard points"] ?? 0;
+    this.model = json["model"] ?? "";
   }
 
   Map<String,dynamic> toJson(){

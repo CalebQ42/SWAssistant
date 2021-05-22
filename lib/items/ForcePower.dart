@@ -7,8 +7,8 @@ class ForcePower implements JsonSavable{
   ForcePower({this.name = "", this.desc = ""});
 
   ForcePower.fromJson(Map<String,dynamic> json) :
-      name = json["name"],
-      desc = json["description"];
+      name = json["name"] ?? "",
+      desc = json["description"] ?? "";
 
   ForcePower.from(ForcePower fp) :
       name = fp.name,

@@ -8,9 +8,9 @@ class Talent implements JsonSavable{
   Talent({this.name = "", this.desc = "", this.value = -1});
 
   Talent.fromJson(Map<String, dynamic> json) :
-      name = json["name"],
-      desc = json["description"],
-      value = json["value"];
+      name = json["name"] ?? "",
+      desc = json["description"] ?? "",
+      value = json["value"] ?? -1;
 
   Talent.from(Talent talent) :
       name = talent.name,

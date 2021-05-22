@@ -15,7 +15,7 @@ Future<void> main() async {
   if((prefs.containsKey(preferences.dev) && (prefs.getBool(preferences.dev) ?? false)) || kDebugMode || kProfileMode)
     app.devMode = true;
   if (app.devMode || (prefs.getBool(preferences.firstStart) ?? true)){
-    runApp(InitApp(()=>
+    runApp(InitApp(app: app, onEnd: ()=>
       app.initialize().then(
         (nil) {
           if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) == true &&
@@ -40,8 +40,9 @@ Future<void> main() async {
 class InitApp extends StatelessWidget{
 
   final Function() onEnd;
+  final SW app;
 
-  InitApp(this.onEnd);
+  InitApp({required this.onEnd, required this.app});
 
   @override
   Widget build(BuildContext context) =>
@@ -56,7 +57,7 @@ class InitApp extends StatelessWidget{
         accentColor: Colors.blue,
         brightness: Brightness.dark
       ),
-      home: GettingStarted()
+      home: GettingStarted(app: app, onEnd: onEnd)
     );
 }
 

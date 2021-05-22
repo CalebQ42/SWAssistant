@@ -26,20 +26,26 @@ mixin Creature on Editable{
   }
 
   void creatureLoadJson(Map<String,dynamic> json){
-    this.charVals = [];
-    for(dynamic dy in json["characteristics"])
-      this.charVals.add(dy);
-    this.skills = [];
-    for(dynamic dy in json["Skills"])
-      this.skills.add(Skill.fromJson(dy));
-    this.talents = [];
-    for(dynamic dy in json["Talents"])
-      this.talents.add(Talent.fromJson(dy));
-    woundThresh = json["wound threshold"];
-    woundCur = json["wound current"];
-    defMelee = json["defense melee"];
-    defRanged = json["defense ranged"];
-    soak = json["soak"];
+    if(json["characteristics"] != null){
+      this.charVals = [];
+      for(dynamic dy in json["characteristics"])
+        this.charVals.add(dy);
+    }
+    if(json["Skills"] != null){
+      this.skills = [];
+      for(dynamic dy in json["Skills"])
+        this.skills.add(Skill.fromJson(dy));
+    }
+    if(json["Talents"] != null){
+      this.talents = [];
+      for(dynamic dy in json["Talents"])
+        this.talents.add(Talent.fromJson(dy));
+    }
+    woundThresh = json["wound threshold"] ?? 0;
+    woundCur = json["wound current"] ?? 0;
+    defMelee = json["defense melee"] ?? 0;
+    defRanged = json["defense ranged"] ?? 0;
+    soak = json["soak"] ?? 0;
   }
 
   Map<String,dynamic> creatureSaveJson(){

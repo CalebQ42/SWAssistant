@@ -15,10 +15,10 @@ class Item implements JsonSavable{
       encum = item.encum;
 
   Item.fromJson(Map<String, dynamic> json) :
-      name = json["name"],
-      desc = json["description"],
-      count = json["count"],
-      encum = json["encumbrance"];
+      name = json["name"] ?? "",
+      desc = json["description"] ?? "",
+      count = json["count"] ?? -1,
+      encum = json["encumbrance"] ?? -1;
 
   Map<String, dynamic> toJson() => {
     "name" : name,

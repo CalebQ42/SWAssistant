@@ -9,8 +9,8 @@ class Duty implements JsonSavable{
   Duty({this.name = "", this.value = -1, this.desc = ""});
 
   Duty.fromJson(Map<String,dynamic> json) :
-      name = json["name"],
-      value = json["value"],
+      name = json["name"] ?? "",
+      value = json["value"] ?? -1,
       desc = json["description"] ?? "";
 
   Duty.from(Duty duty) :

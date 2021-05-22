@@ -211,7 +211,7 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.1.0"
+    version: "7.2.0"
   permission_handler_platform_interface:
     dependency: transitive
     description:

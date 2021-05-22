@@ -52,19 +52,19 @@ class SW{
       }
       if(element.path.endsWith(".swcharacter")){
         var temp = Character.load(element, this);
-        if(temp.id != null){
+        if(temp.id >= 0){
           _characters.add(temp);
         }else
           defered.add(temp);
       }else if(element.path.endsWith(".swminion")){
         var temp = Minion.load(element, this);
-        if(temp.id != null){
+        if(temp.id >= 0){
           _minions.add(temp);
         }else
           defered.add(temp);
       }else if(element.path.endsWith(".swvehicle")){
         var temp = Vehicle.load(element, this);
-        if(temp.id != null){
+        if(temp.id >= 0){
           _vehicles.add(temp);
         }else
           defered.add(temp);

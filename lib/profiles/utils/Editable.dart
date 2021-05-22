@@ -21,7 +21,7 @@ import 'JsonSavable.dart';
 abstract class Editable extends JsonSavable{
 
   //Common components
-  int id = 0;
+  int id = -1;
   String name;
   List<Note> notes = [];
   List<Weapon> weapons = [];
@@ -48,10 +48,9 @@ abstract class Editable extends JsonSavable{
   }
 
   Editable.load(FileSystemEntity file, {SW? app, BuildContext? context, this.name = ""}){
-    if (app == null && context != null)
-      app ??= SW.of(context);
-    else
+    if (app == null && context == null)
       throw Exception("Must specify app or context");
+    app ??= SW.of(context!);
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
     if(getFileLocation(app)!= file.path)
@@ -76,26 +75,36 @@ abstract class Editable extends JsonSavable{
   void loadJson(Map<String,dynamic> json){
     if (!(this is Character || this is Vehicle || this is Minion))
       throw("Must be overridden by child");
-    id = json["id"];
-    name = json["name"];
-    notes = <Note>[];
-    for (Map<String, dynamic> arrMap in json["Notes"]) 
-      notes.add(Note.fromJson(arrMap));
-    weapons = <Weapon>[];
-    for(Map<String,dynamic> arrMap in json["Weapons"])
-      weapons.add(Weapon.fromJson(arrMap));
-    category = json["category"];
-    criticalInjuries = <CriticalInjury>[];
-    for(Map<String,dynamic> arrMap in json["Critical Injuries"])
-      criticalInjuries.add(CriticalInjury.fromJson(arrMap));
-    desc = json["description"];
-    showCard = json["show cards"].cast<bool>();
-    if(showCard.length != cardNames.length)
-      showCard.addAll(List.filled(cardNames.length - showCard.length, false));
-    inventory = [];
-    if(json["Inventory"] != null)
-      for(Map<String, dynamic> arrMap in json["Inventory"])
-        inventory.add(Item.fromJson(arrMap));
+    id = json["id"] ?? -1;
+    name = json["name"] ?? "";
+    if (json["Notes"] != null){
+      notes = [];
+      for (Map<String, dynamic> arrMap in json["Notes"]) 
+        notes.add(Note.fromJson(arrMap));
+    }
+    if (json["Weapons"] != null){
+      weapons = [];
+      for(Map<String,dynamic> arrMap in json["Weapons"])
+        weapons.add(Weapon.fromJson(arrMap));
+    }
+    category = json["category"] ?? "";
+    if (json["Critical Injuries"] != null){
+      criticalInjuries = [];
+      for(Map<String,dynamic> arrMap in json["Critical Injuries"])
+        criticalInjuries.add(CriticalInjury.fromJson(arrMap));
+    }
+    desc = json["description"] ?? "";
+    if (json["show cards"] != null){
+      showCard = json["show cards"].cast<bool>();
+      if(showCard.length != cardNames.length)
+        showCard.addAll(List.filled(cardNames.length - showCard.length, false));
+    }
+    if (json["Inventory"] != null){
+      inventory = [];
+      if(json["Inventory"] != null)
+        for(Map<String, dynamic> arrMap in json["Inventory"])
+          inventory.add(Item.fromJson(arrMap));
+    }
   }
 
   @mustCallSuper

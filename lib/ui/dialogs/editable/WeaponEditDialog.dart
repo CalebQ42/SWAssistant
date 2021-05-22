@@ -298,8 +298,7 @@ class _WeaponEditDialogState extends State{
                     onTap: () => WeaponCharacteristicDialog(
                       wc: weapon.characteristics[i],
                       onClose: (wc){
-                        if(wc != null)
-                          setState(() => weapon.characteristics[i] = wc);
+                        setState(() => weapon.characteristics[i] = wc);
                       }
                     ).show(context),
                     child: Padding(
@@ -322,8 +321,7 @@ class _WeaponEditDialogState extends State{
                 onPressed: () =>
                   WeaponCharacteristicDialog(
                     onClose: (wc){
-                      if(wc != null)
-                        weapon.characteristics.add(wc);
+                      weapon.characteristics.add(wc);
                     }
                   ).show(context),
               ),
@@ -382,9 +380,9 @@ class _WeaponEditDialogState extends State{
                   ),
                   TextButton(
                     child: Text("Save"),
-                    onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null && weapon.hp != null
-                        && (editable is Character ?  weapon.encumbrance != null : true) && (editable is Vehicle ? weapon.firingArc != null : true)
-                        && weapon.range != null && weapon.skill != null && weapon.skillBase != null ? (){
+                    onPressed: weapon.name != "" && weapon.damage != -1 && weapon.critical != -1 && weapon.hp != -1
+                        && (editable is Character ?  weapon.encumbrance != -1 : true) && (editable is Vehicle ? weapon.firingArc != "" : true)
+                        && weapon.range != -1 && weapon.skill != -1 && weapon.skillBase != -1 ? (){
                       onClose(weapon);
                       Navigator.of(context).pop();
                     } : null,

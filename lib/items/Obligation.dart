@@ -9,8 +9,8 @@ class Obligation implements JsonSavable{
   Obligation({this.name = "", this.value = -1, this.desc = ""});
 
   Obligation.fromJson(Map<String,dynamic> json) :
-    name = json["name"],
-    value = json["value"],
+    name = json["name"] ?? "",
+    value = json["value"] ?? -1,
     desc = json["description"] ?? "";
 
   Obligation.from(Obligation obligation) :
