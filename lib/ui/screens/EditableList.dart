@@ -30,7 +30,7 @@ class _EditableListState extends State{
 
   int type;
   List list = [];
-  String category = "";
+  String? category;
   String search = "";
   bool searching = false;
   FocusNode searchFocus = FocusNode();
@@ -50,13 +50,13 @@ class _EditableListState extends State{
       FocusScope.of(context).requestFocus(searchFocus);
     switch(type){
       case 0:
-        list = SW.of(context).characters(category: category, search: search);
+        list = SW.of(context).characters(category: category ?? "", search: search);
         break;
       case 1:
-        list = SW.of(context).minions(category: category, search: search);
+        list = SW.of(context).minions(category: category ?? "", search: search);
         break;
       case 2:
-        list = SW.of(context).vehicles(category: category, search: search);
+        list = SW.of(context).vehicles(category: category ?? "", search: search);
         break;
       default:
         throw("invalid list type");
@@ -160,7 +160,7 @@ class _EditableListState extends State{
                 }(),
                 hint: Text("Categories"),
                 onChanged: (String? value) =>
-                  setState(() => category = value ?? ""),
+                  setState(() => category = value),
                 value: category,
                 isExpanded: true,
               )

@@ -53,7 +53,7 @@ abstract class Editable extends JsonSavable{
     app ??= SW.of(context!);
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
-    if(getFileLocation(app)!= file.path)
+    if(getFileLocation(app) != file.path)
       _loc = file.path;
   }
 
@@ -66,9 +66,9 @@ abstract class Editable extends JsonSavable{
       criticalInjuries = List.from(editable.criticalInjuries),
       desc = editable.desc,
       inventory = editable.inventory {
-    showCard = List.filled(cardNames.length, false);
-    if (!(this is Character || this is Vehicle || this is Minion))
-      throw("Must be overridden by child");
+      showCard = List.filled(cardNames.length, false);
+      if (!(this is Character || this is Vehicle || this is Minion))
+        throw("Must be overridden by child");
   }
 
   @mustCallSuper

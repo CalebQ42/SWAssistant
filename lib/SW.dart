@@ -52,21 +52,21 @@ class SW{
       }
       if(element.path.endsWith(".swcharacter")){
         var temp = Character.load(element, this);
-        if(temp.id >= 0){
+        if(temp.id >= 0)
           _characters.add(temp);
-        }else
+        else
           defered.add(temp);
       }else if(element.path.endsWith(".swminion")){
         var temp = Minion.load(element, this);
-        if(temp.id >= 0){
+        if(temp.id >= 0)
           _minions.add(temp);
-        }else
+        else
           defered.add(temp);
       }else if(element.path.endsWith(".swvehicle")){
         var temp = Vehicle.load(element, this);
-        if(temp.id >= 0){
+        if(temp.id >= 0)
           _vehicles.add(temp);
-        }else
+        else
           defered.add(temp);
       }
     });
@@ -96,6 +96,15 @@ class SW{
         }
       });
     }
+    _characters.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
+    _vehicles.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
+    _minions.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
     updateCharacterCategories();
     updateVehicleCategories();
     updateMinionCategories();
@@ -109,6 +118,9 @@ class SW{
         _minions.add(temp);
       }
     });
+    _minions.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
     updateMinionCategories();
   }
 
@@ -120,6 +132,9 @@ class SW{
         _characters.add(temp);
       }
     });
+    _characters.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
     updateCharacterCategories();
   }
 
@@ -131,6 +146,9 @@ class SW{
         _vehicles.add(temp);
       }
     });
+    _vehicles.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
     updateVehicleCategories();
   }
 
@@ -182,6 +200,9 @@ class SW{
 
   void addCharacter(Character character){
     _characters.add(character);
+    _characters.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
     updateCharacterCategories();
   }
 
@@ -220,6 +241,9 @@ class SW{
 
   void addMinion(Minion minion){
     _minions.add(minion);
+    _minions.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
     updateMinionCategories();
   }
 
@@ -258,6 +282,9 @@ class SW{
 
   void addVehicle(Vehicle vehicle){
     _vehicles.add(vehicle);
+    _vehicles.sort((min1, min2)=>
+      min1.name.compareTo(min2.name)
+    );
     updateVehicleCategories();
   }
   

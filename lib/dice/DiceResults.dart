@@ -21,18 +21,13 @@ class DiceResults{
 
   void add(dynamic side){
     _resultsMasterList.add(side);
-    if(side is SimpleSide && side.toString() != ""){
-      int tmp = results[side.toString()]!;
-      tmp += (subtractMode ? -1 : 1);
-      results[side.toString()] = tmp;
-    }else if(side is ComplexSide){
-      side.parts.forEach((element){
-        int tmp = results[side.toString()]!;
-        tmp += subtractMode ? -element.value : element.value;
-        results[side.toString()] = tmp;
-      });
-    }else
-      throw("Needs to be a SimpleSide or ComplexSide");
+    if(side is SimpleSide && side.toString() != "")
+      results[side.toString()] = (results[side.toString()] ?? 0) + (subtractMode ? -1 : 1);
+    else if(side is ComplexSide){
+      side.parts.forEach((element) =>
+        results[side.toString()] = (results[side.toString()] ?? 0) + (subtractMode ? -element.value : element.value)
+      );
+    }
   }
 
   int getResult(String name) => results[name] ?? 0;
@@ -118,16 +113,10 @@ class DiceResults{
                 Expanded(child: Text("Success:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[suc]!;
-                      tmp++;
-                      results[suc] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[suc]!;
-                      tmp--;
-                      results[suc] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[suc] = (results[suc] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[suc] = (results[suc] ?? 0) - 1,
                     getValue: () => results[suc] ?? 0,
                   )
                 )
@@ -138,16 +127,10 @@ class DiceResults{
                 Expanded(child: Text("Failure:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[fai]!;
-                      tmp++;
-                      results[fai] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[fai]!;
-                      tmp--;
-                      results[fai] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[fai] = (results[fai] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[fai] = (results[fai] ?? 0) - 1,
                     getValue: () => results[fai] ?? 0,
                   )
                 )
@@ -158,16 +141,10 @@ class DiceResults{
                 Expanded(child: Text("Advantage:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[adv]!;
-                      tmp++;
-                      results[adv] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[adv]!;
-                      tmp--;
-                      results[adv] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[adv] = (results[adv] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[adv] = (results[adv] ?? 0) - 1,
                     getValue: () => results[adv] ?? 0,
                   )
                 )
@@ -178,16 +155,10 @@ class DiceResults{
                 Expanded(child: Text("Threat:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[thr]!;
-                      tmp++;
-                      results[thr] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[thr]!;
-                      tmp--;
-                      results[thr] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[thr] = (results[thr] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[thr] = (results[thr] ?? 0) - 1,
                     getValue: () => results[thr] ?? 0,
                   )
                 )
@@ -198,16 +169,10 @@ class DiceResults{
                 Expanded(child: Text("Triumph:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[tri]!;
-                      tmp++;
-                      results[tri] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[tri]!;
-                      tmp--;
-                      results[tri] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[tri] = (results[tri] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[tri] = (results[tri] ?? 0) - 1,
                     getValue: () => results[tri] ?? 0,
                   )
                 )
@@ -218,16 +183,10 @@ class DiceResults{
                 Expanded(child: Text("Despair:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[des]!;
-                      tmp++;
-                      results[des] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[des]!;
-                      tmp--;
-                      results[des] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[des] = (results[des] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[des] = (results[des] ?? 0) - 1,
                     getValue: () => results[des] ?? 0,
                   )
                 )
@@ -238,16 +197,10 @@ class DiceResults{
                 Expanded(child: Text("Light Side:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[lig]!;
-                      tmp++;
-                      results[lig] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[lig]!;
-                      tmp--;
-                      results[lig] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[lig] = (results[lig] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[lig] = (results[lig] ?? 0) - 1,
                     getValue: () => results[lig] ?? 0,
                   )
                 )
@@ -258,16 +211,10 @@ class DiceResults{
                 Expanded(child: Text("Dark Side:")),
                 Expanded(
                   child: UpDownStat(
-                    onUpPressed: (){
-                      var tmp = results[dar]!;
-                      tmp++;
-                      results[dar] = tmp;
-                    },
-                    onDownPressed: (){
-                      var tmp = results[dar]!;
-                      tmp--;
-                      results[dar] = tmp;
-                    },
+                    onUpPressed: () =>
+                      results[dar] = (results[dar] ?? 0) + 1,
+                    onDownPressed: () =>
+                      results[dar] = (results[dar] ?? 0) - 1,
                     getValue: () => results[dar] ?? 0,
                   )
                 )

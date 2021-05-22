@@ -78,7 +78,7 @@ class SWAppState extends State {
       contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
     );
     var bottomSheetTheme = BottomSheetThemeData(
-      shape: BeveledRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.elliptical(25, 25),
           topRight: Radius.elliptical(25, 25)
@@ -183,19 +183,31 @@ class Observatory extends NavigatorObserver{
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 
-  //Returns the route if it is in history (it), otherwise it return null.
+  //Returns the route if it is in history, otherwise it return null.
   //It preferes the route give, then settings, then the name
-  Route? containsRoute({Route? route, RouteSettings? settings, String name = ""}){
+  Route? containsRoute({Route? route, RouteSettings? settings, String? name}){
     if(route != null)
       return routeHistory.contains(route) ? route : null;
     if(settings != null)
-      return routeHistory.firstWhere(
-        (element) => element.settings == settings
-      );
-    if(name != "")
-      return routeHistory.firstWhere(
-        (element) => element.settings.name == name
-      );
+      try{
+        return routeHistory.firstWhere(
+          (element) => element.settings == settings,
+        );
+      } catch (e){
+        if(e is StateError){
+          return null;
+        }
+      }
+    if(name != null)
+      try{
+        return routeHistory.firstWhere(
+          (element) => element.settings == settings,
+        );
+      } catch (e){
+        if(e is StateError){
+          return null;
+        }
+      }
     return null;
   }
 }
