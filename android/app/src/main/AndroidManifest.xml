@@ -1,6 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.apps.darkstorm.swrpg.assistant">
-   <application
+    <!-- Only needed for "legacy" profiles from versions below 3.0 -->
+    <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>    <!-- Only needed for "legacy" profiles from versions below 3.0 -->
+
+    <uses-permission-sdk-23 android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <application
         android:label="SWAssistant"
         android:icon="@mipmap/ic_launcher">
         <activity

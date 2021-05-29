@@ -76,21 +76,18 @@ class SW{
       var vehId = 0;
       defered.forEach((temp) {
         if(temp is Character){
-          while(defered.any((e)=>e.id==charId)){
+          while(defered.any((e)=>e.id==charId))
             charId++;
-          }
           temp.id = charId;
           _characters.add(temp);
         }else if (temp is Minion){
-          while(defered.any((e)=>e.id==minId)){
+          while(defered.any((e)=>e.id==minId))
             minId++;
-          }
           temp.id = minId;
           _minions.add(temp);
         }else if (temp is Vehicle){
-          while(defered.any((e)=>e.id==vehId)){
+          while(defered.any((e)=>e.id==vehId))
             vehId++;
-          }
           temp.id = vehId;
           _vehicles.add(temp);
         }
@@ -303,26 +300,34 @@ class SW{
   dynamic getPreference(String preference, dynamic defaultValue) =>
     prefs.get(preference) ?? defaultValue;
 
-  Future<void> initialize() async{
-    var dir = await getExternalStorageDirectory();
-    if (dir == null){
+  static Future<SW> baseInit() async{
+    WidgetsFlutterBinding.ensureInitialized();
+    var prefs = await SharedPreferences.getInstance();
+    var app = SW(prefs: prefs);
+    if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode)
+      app.devMode = true;
+    var dir = await getApplicationDocumentsDirectory();
+    app.saveDir = dir.path + "/SWChars";
+    print(app.saveDir);
+    if(!Directory(app.saveDir).existsSync())
+      Directory(app.saveDir).createSync();
+    app.observatory = Observatory();
+    prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
+    return app;
+  }
 
-    }else {
-      saveDir = dir.path + "/SWChars";
-    }
-    if(!Directory(saveDir).existsSync())
-      Directory(saveDir).createSync();
+  Future<void> postInit() async{
     if(kDebugMode || kProfileMode)
       await testing(saveDir);
-    observatory = Observatory();
     loadAll();
-    if(getPreference(preferences.crashlytics, true)){
+    if(getPreference(preferences.firebase, true)){
       try{
         await Firebase.initializeApp();
         firebaseAvailable = true;
-        if(getPreference(preferences.crashlytics, true) && kDebugMode == false)
+        if(getPreference(preferences.crashlytics, true) && kDebugMode == false && kProfileMode == false){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-        else
+          FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+        }else
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
       }catch (e){
         print(e);
@@ -344,9 +349,8 @@ class SW{
 
   static SW of(BuildContext context){
     var app = context.dependOnInheritedWidgetOfExactType<SWWidget>()?.app;
-    if (app == null){
+    if (app == null)
       throw "Widget is not a child of SWWidget";
-    }
     return app;
   }
 }

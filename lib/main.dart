@@ -1,88 +1,50 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
-import 'package:swassistant/ui/screens/GettingStarted.dart';
+import 'package:swassistant/ui/screens/Setup.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  var prefs = await SharedPreferences.getInstance();
-  var app = SW(prefs: prefs);
-  if((prefs.containsKey(preferences.dev) && (prefs.getBool(preferences.dev) ?? false)) || kDebugMode || kProfileMode)
-    app.devMode = true;
-  if (app.devMode || (prefs.getBool(preferences.firstStart) ?? true)){
-    runApp(InitApp(app: app, onEnd: ()=>
-      app.initialize().then(
-        (nil) {
-          if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) == true &&
-              app.getPreference(preferences.firebase, true))
-            FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-          runApp(SWWidget(child: SWApp(), app: app));
-        }
-      )
-    ));
-  }else{
-    app.initialize().then(
-      (nil) { 
-        if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) == true &&
-            app.getPreference(preferences.firebase, true))
-          FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-        runApp(SWWidget(child: SWApp(), app: app));
-      }
-    );
-  }
-}
-
-class InitApp extends StatelessWidget{
-
-  final Function() onEnd;
-  final SW app;
-
-  InitApp({required this.onEnd, required this.app});
-
-  @override
-  Widget build(BuildContext context) =>
-    MaterialApp(
-      title: "SWAssistant",
-      theme: ThemeData(
-        primaryColor: Colors.blue,
-        accentColor: Colors.redAccent,
-      ),
-      darkTheme: ThemeData( //Dark Theme
-        primaryColor: Colors.red,
-        accentColor: Colors.blue,
-        brightness: Brightness.dark
-      ),
-      home: GettingStarted(app: app, onEnd: onEnd)
-    );
-}
+Future<void> main() async =>
+  SW.baseInit().then(
+    (app) =>
+      runApp(SWWidget(
+        child: SWApp(
+          init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/setup0" : null
+        ),
+        app: app
+      ))
+  );
 
 class SWApp extends StatefulWidget{
+
+  final String? init;
+
+  SWApp({this.init});
+
   @override
-  State<StatefulWidget> createState() => SWAppState();
+  State<StatefulWidget> createState() => SWAppState(init: init);
 }
 
 class SWAppState extends State {
+
+  String? init;
+
+  SWAppState({this.init});
+
   @override
   Widget build(BuildContext context) {
     var snackTheme = SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      shape: BeveledRectangleBorder(),
     );
     var inputTheme = InputDecorationTheme(
       border: OutlineInputBorder(),
-      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
+      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15)
     );
     var bottomSheetTheme = BottomSheetThemeData(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.elliptical(25, 25),
-          topRight: Radius.elliptical(25, 25)
-        )
+        borderRadius: BorderRadius.circular(25)
       )
     );
     return MaterialApp(
@@ -130,7 +92,7 @@ class SWAppState extends State {
       navigatorObservers: [
         SW.of(context).observatory
       ],
-      initialRoute: "/characters",
+      initialRoute: init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
       routes: {
         // "/gm" : (context) => GMMode(),
         "/characters" : (context) => EditableList(EditableList.character),
@@ -140,6 +102,10 @@ class SWAppState extends State {
         // "/dice" : (context) => Dice(),
         // "/guide" : (context) => Guide(),
         "/settings" : (context) => Settings(updateTopLevel: () => setState((){}),),
+        // Initial setup pages
+        "/setup0" : (context) => Setup(screen: 0),
+        "/setup1" : (context) => Setup(screen: 1),
+        "/setup2" : (context) => Setup(screen: 2),
       },
     );
   }
@@ -177,9 +143,8 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    if (oldRoute != null && newRoute != null && routeHistory.contains(oldRoute)){
+    if (oldRoute != null && newRoute != null && routeHistory.contains(oldRoute))
       routeHistory[routeHistory.indexOf(oldRoute)] = newRoute;
-  }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 

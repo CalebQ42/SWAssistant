@@ -148,17 +148,17 @@ class _EditingEditableState extends State {
                       if (value.isGranted)
                         FilePicker.platform.getDirectoryPath().then((value) {
                           profile.save(
-                              filename: value! + profile.name + profile.fileExtension);
+                            filename: value! + profile.name + profile.fileExtension);
                         });
                     });
                   else if (value.isGranted)
                     FilePicker.platform.getDirectoryPath().then((value) {
                       if (value != null)
                         profile.save(
-                            filename: value +
-                                "/" +
-                                profile.name +
-                                profile.fileExtension);
+                          filename: value +
+                            "/" +
+                            profile.name +
+                            profile.fileExtension);
                     });
                   else
                     print(value);

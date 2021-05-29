@@ -8,13 +8,13 @@ String colorDice = "colorDice";
 
 //Firebase prefs
 String crashlytics = "crashlytics";
-String analytics = "analytics";
 String firebase = "firebase";
 String ads = "adsOn";
 
 //Starting prefs
 String firstStart = "first";
 String startCount = "startCount";
+String startingScreen = "startScreen";
 
 //Theme prefs
 String forceLight = "forceLight";
