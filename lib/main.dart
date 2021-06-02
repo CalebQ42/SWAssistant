@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/ui/intro/ScreenZero.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
-import 'package:swassistant/ui/screens/Setup.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 
 Future<void> main() async =>
@@ -11,7 +11,7 @@ Future<void> main() async =>
     (app) =>
       runApp(SWWidget(
         child: SWApp(
-          init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/setup0" : null
+          init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/intro0" : null
         ),
         app: app
       ))
@@ -40,7 +40,6 @@ class SWAppState extends State {
     );
     var inputTheme = InputDecorationTheme(
       border: OutlineInputBorder(),
-      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15)
     );
     var bottomSheetTheme = BottomSheetThemeData(
       shape: RoundedRectangleBorder(
@@ -94,7 +93,7 @@ class SWAppState extends State {
       ],
       initialRoute: init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
       routes: {
-        // "/gm" : (context) => GMMode(),
+        // "/gm" : (context) => GMMode(),.
         "/characters" : (context) => EditableList(EditableList.character),
         "/minions" : (context) => EditableList(EditableList.minion),
         "/vehicles" : (context) => EditableList(EditableList.vehicle),
@@ -103,9 +102,9 @@ class SWAppState extends State {
         // "/guide" : (context) => Guide(),
         "/settings" : (context) => Settings(updateTopLevel: () => setState((){}),),
         // Initial setup pages
-        "/setup0" : (context) => Setup(screen: 0),
-        "/setup1" : (context) => Setup(screen: 1),
-        "/setup2" : (context) => Setup(screen: 2),
+        "/intro0" : (context) => IntroZero(),
+        // "/intro1" : (context) => Setup(screen: 1),
+        // "/intro2" : (context) => Setup(screen: 2),
       },
     );
   }

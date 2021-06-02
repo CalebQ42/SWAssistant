@@ -142,27 +142,28 @@ class _EditingEditableState extends State {
                         ));
                   }),
               "export": () {
-                Permission.storage.status.then((value) {
-                  if (value.isRestricted || value.isDenied)
-                    Permission.storage.request().then((value) {
-                      if (value.isGranted)
-                        FilePicker.platform.getDirectoryPath().then((value) {
-                          profile.save(
-                            filename: value! + profile.name + profile.fileExtension);
-                        });
-                    });
-                  else if (value.isGranted)
-                    FilePicker.platform.getDirectoryPath().then((value) {
-                      if (value != null)
-                        profile.save(
-                          filename: value +
-                            "/" +
-                            profile.name +
-                            profile.fileExtension);
-                    });
-                  else
-                    print(value);
-                });
+                //TODO: Simply export to Documents or Downloads
+                // Permission.storage.status.then((value) {
+                //   if (value.isRestricted || value.isDenied)
+                //     Permission.storage.request().then((value) {
+                //       if (value.isGranted)
+                //         FilePicker.platform.getDirectoryPath().then((value) {
+                //           profile.save(
+                //             filename: value! + profile.name + profile.fileExtension);
+                //         });
+                //     });
+                //   else if (value.isGranted)
+                //     FilePicker.platform.getDirectoryPath().then((value) {
+                //       if (value != null)
+                //         profile.save(
+                //           filename: value +
+                //             "/" +
+                //             profile.name +
+                //             profile.fileExtension);
+                //     });
+                //   else
+                //     print(value);
+                // });
               }
             },
           ),

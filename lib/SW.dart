@@ -316,7 +316,14 @@ class SW{
     return app;
   }
 
-  Future<void> postInit() async{
+  Future<void> postInit(BuildContext context) async{
+    showDialog(
+      context: context,
+      builder: (context) =>
+        AlertDialog(
+          content: Text("LoadingIcons"),
+        )
+    );
     if(kDebugMode || kProfileMode)
       await testing(saveDir);
     loadAll();
@@ -334,6 +341,7 @@ class SW{
         firebaseAvailable = false;
       }
     }
+    Navigator.of(context).pop();
   }
 
   static Future<void> testing(String saveDir) async{
