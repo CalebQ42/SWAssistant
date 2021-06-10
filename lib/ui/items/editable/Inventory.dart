@@ -77,12 +77,9 @@ class Inventory extends StatelessWidget{
                   state: state,
                   controller: (){
                     var controller = new TextEditingController(text: editable.credits.toString());
-                    controller.addListener(() {
-                      if(controller.text =="")
-                        editable.credits = 0;
-                      else
-                        editable.credits = int.parse(controller.text);
-                    });
+                    controller.addListener(() =>
+                      editable.credits = int.tryParse(controller.text) ?? 0
+                    );
                     return controller;
                   }(),
                   textType: TextInputType.number,
@@ -107,12 +104,9 @@ class Inventory extends StatelessWidget{
                   state: state,
                   controller: (){
                     var controller = new TextEditingController(text: editable.encumCap.toString());
-                    controller.addListener(() {
-                      if(controller.text =="")
-                        editable.encumCap = 0;
-                      else
-                        editable.encumCap = int.parse(controller.text);
-                    });
+                    controller.addListener(() =>
+                      editable.encumCap = int.tryParse(controller.text) ?? 0
+                    );
                     return controller;
                   }(),
                   textType: TextInputType.number,

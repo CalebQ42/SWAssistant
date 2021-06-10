@@ -36,12 +36,9 @@ class WoundStrain extends StatelessWidget{
                 state: state,
                 controller: (){
                   var controller = new TextEditingController(text: character.soak.toString());
-                  controller.addListener(() {
-                    if(controller.text =="")
-                      character.soak = 0;
-                    else
-                      character.soak = int.parse(controller.text);
-                  });
+                  controller.addListener(() =>
+                    character.soak = int.tryParse(controller.text) ?? 0
+                  );
                   return controller;
                 }(),
                 textType: TextInputType.number,

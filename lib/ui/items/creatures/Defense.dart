@@ -26,7 +26,14 @@ class Defense extends StatelessWidget{
                 defaultSave: true,
                 state: state,
                 textType: TextInputType.number,
-                controller: TextEditingController(text: creature.defMelee.toString()),
+                controller: (){
+                  var cont = TextEditingController(text: creature.defMelee.toString());
+                  cont.addListener(() =>
+                    creature.defMelee = int.tryParse(cont.text) ?? 0
+                  );
+                  return cont;
+                }(),
+                // controller: TextEditingController(text: creature.defMelee.toString()),
               )
             ],
           ),
@@ -35,13 +42,19 @@ class Defense extends StatelessWidget{
           child: Column(
             children: [
               EditingText(
+                title: "Ranged",
                 editing: editing,
                 initialText: creature.defRanged.toString(),
                 defaultSave: true,
                 state: state,
                 textType: TextInputType.number,
-                controller: TextEditingController(text: creature.defRanged.toString()),
-                title: "Ranged"
+                controller: (){
+                  var cont = TextEditingController(text: creature.defRanged.toString());
+                  cont.addListener(() =>
+                    creature.defRanged = int.tryParse(cont.text) ?? 0
+                  );
+                  return cont;
+                }(),
               )
             ],
           )

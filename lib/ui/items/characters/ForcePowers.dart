@@ -37,12 +37,9 @@ class ForcePowers extends StatelessWidget{
                   state: state,
                   controller: (){
                     var controller = new TextEditingController(text: character.force.toString());
-                    controller.addListener(() {
-                      if(controller.text =="")
-                        character.force = 0;
-                      else
-                        character.force = int.parse(controller.text);
-                    });
+                    controller.addListener(() =>
+                      character.force = int.tryParse(controller.text) ?? 0
+                    );
                     return controller;
                   }(),
                   textType: TextInputType.number,

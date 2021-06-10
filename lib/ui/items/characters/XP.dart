@@ -37,13 +37,9 @@ class XP extends StatelessWidget{
                 initialText: character.xpCur.toString(),
                 controller: (){
                   var cont = TextEditingController(text: character.xpCur.toString());
-                  cont.addListener(() {
-                    var val = int.tryParse(cont.text);
-                    if(val == null)
-                      character.xpCur = 0;
-                    else
-                      character.xpCur = val;
-                  });
+                  cont.addListener(() =>
+                    character.xpCur = int.tryParse(cont.text) ?? 0
+                  );
                   return cont;
                 }(),
                 state: state,
@@ -58,13 +54,9 @@ class XP extends StatelessWidget{
                 initialText: character.xpTot.toString(),
                 controller: (){
                   var cont = TextEditingController(text: character.xpTot.toString());
-                  cont.addListener(() {
-                    var val = int.tryParse(cont.text);
-                    if(val == null)
-                      character.xpTot = 0;
-                    else
-                      character.xpTot = val;
-                  });
+                  cont.addListener(() =>
+                    character.xpTot = int.tryParse(cont.text) ?? 0
+                  );
                   return cont;
                 }(),
                 state: state,

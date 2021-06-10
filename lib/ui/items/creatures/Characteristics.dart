@@ -65,12 +65,9 @@ class Characteristics extends StatelessWidget{
           state: state,
           controller: (){
             var controller = TextEditingController(text: creature.charVals[charNum].toString());
-            controller.addListener((){
-              if(controller.text == "")
-                creature.charVals[charNum] = 0;
-              else
-                creature.charVals[charNum] = int.parse(controller.text);
-            });
+            controller.addListener(() =>
+              creature.charVals[charNum] = int.tryParse(controller.text) ?? 0
+            );
             return controller;
           }(),
           fieldAlign: TextAlign.center,

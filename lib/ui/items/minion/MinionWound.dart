@@ -65,13 +65,9 @@ class MinionWoundState extends State with TickerProviderStateMixin{
                 initialText: minion.soak.toString(),
                 controller: (){
                   var controller = TextEditingController(text: minion.soak.toString());
-                  controller.addListener(() {
-                    var tmp = int.tryParse(controller.text);
-                    if(tmp == null)
-                      minion.soak = 0;
-                    else
-                      minion.soak = tmp;
-                  });
+                  controller.addListener(() =>
+                    minion.soak = int.tryParse(controller.text) ?? 0
+                  );
                   return controller;
                 }(),
                 textAlign: TextAlign.center,

@@ -47,12 +47,9 @@ class CharacterInfo extends StatelessWidget{
           state: state,
           controller: (){
             var controller = TextEditingController(text: character.age.toString());
-            controller.addListener((){
-              if(controller.text == "")
-                character.age = 0;
-              else
-                character.age = int.parse(controller.text);
-            });
+            controller.addListener(() =>
+              character.age = int.tryParse(controller.text) ?? 0
+            );
             return controller;
           }(),
           textType: TextInputType.number,

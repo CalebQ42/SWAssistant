@@ -30,13 +30,9 @@ class VehicleDamage extends StatelessWidget{
                 initialText: vehicle.armor.toString(),
                 controller: (){
                   var controller = TextEditingController(text: vehicle.armor.toString());
-                  controller.addListener(() {
-                    var temp = int.tryParse(controller.text);
-                    if(temp == null)
-                      vehicle.armor = 0;
-                    else
-                      vehicle.armor = temp;
-                  });
+                  controller.addListener(() =>
+                    vehicle.armor = int.tryParse(controller.text) ?? 0
+                  );
                   return controller;
                 }(),
                 textType: TextInputType.number,
@@ -75,14 +71,9 @@ class VehicleDamage extends StatelessWidget{
                   ) : TextField(
                     controller: (){
                       var controller = TextEditingController(text: vehicle.hullTraumaThresh.toString());
-                      controller.addListener(() {
-                        var temp = int.tryParse(controller.text);
-                        if(temp == null)
-                          vehicle.hullTraumaThresh = 0;
-                        else
-                          vehicle.hullTraumaThresh = temp;
-                        vehicle.save(context: context);
-                      });
+                      controller.addListener(() =>
+                        vehicle.hullTraumaThresh = int.tryParse(controller.text) ?? 0
+                      );
                       return controller;
                     }(),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -131,14 +122,9 @@ class VehicleDamage extends StatelessWidget{
                   ) : TextField(
                     controller: (){
                       var controller = TextEditingController(text: vehicle.sysStressThresh.toString());
-                      controller.addListener(() {
-                        var temp = int.tryParse(controller.text);
-                        if(temp == null)
-                          vehicle.sysStressThresh = 0;
-                        else
-                          vehicle.sysStressThresh = temp;
-                        vehicle.save(context: context);
-                      });
+                      controller.addListener(() =>
+                        vehicle.sysStressThresh = int.tryParse(controller.text) ?? 0
+                      );
                       return controller;
                     }(),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
