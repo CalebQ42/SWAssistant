@@ -30,7 +30,7 @@ dependencies:
   path_provider: ^2.0.2
   cupertino_icons: ^1.0.3
   url_launcher: ^6.0.6
-  permission_handler: ^8.0.1
+  permission_handler: ^8.1.1
   file_picker: ^3.0.2+2
   flutter_speed_dial: ^3.0.5
 
