@@ -65,8 +65,6 @@ class _EditingEditableState extends State {
                     child: Text("Disable Obligation"),
                     value: "disableObligation"),
               PopupMenuItem(child: Text("Clone"), value: "clone"),
-              if (SW.of(context).devMode)
-                PopupMenuItem(child: Text("Export"), value: "export"),
             ],
             popupFunctions: {
               "disableForce": () => setState(() => (profile as Character)
@@ -133,38 +131,17 @@ class _EditingEditableState extends State {
                                   },
                                 ),
                                 TextButton(
-                                    child: Text("Cancel"),
-                                    onPressed: () =>
-                                        Navigator.of(context).pop())
+                                  child: Text("Cancel"),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop()
+                                )
                               ],
                             )
                           ],
-                        ));
-                  }),
-              "export": () {
-                //TODO: Simply export to Documents or Downloads
-                // Permission.storage.status.then((value) {
-                //   if (value.isRestricted || value.isDenied)
-                //     Permission.storage.request().then((value) {
-                //       if (value.isGranted)
-                //         FilePicker.platform.getDirectoryPath().then((value) {
-                //           profile.save(
-                //             filename: value! + profile.name + profile.fileExtension);
-                //         });
-                //     });
-                //   else if (value.isGranted)
-                //     FilePicker.platform.getDirectoryPath().then((value) {
-                //       if (value != null)
-                //         profile.save(
-                //           filename: value +
-                //             "/" +
-                //             profile.name +
-                //             profile.fileExtension);
-                //     });
-                //   else
-                //     print(value);
-                // });
-              }
+                        )
+                      );
+                    }
+                  ),
             },
           ),
           body: _index == 0
