@@ -158,19 +158,17 @@ class Observatory extends NavigatorObserver{
           (element) => element.settings == settings,
         );
       } catch (e){
-        if(e is StateError){
+        if(e is StateError)
           return null;
-        }
       }
     if(name != null)
       try{
         return routeHistory.firstWhere(
-          (element) => element.settings == settings,
+          (element) => element.settings.name == name,
         );
       } catch (e){
-        if(e is StateError){
+        if(e is StateError)
           return null;
-        }
       }
     return null;
   }

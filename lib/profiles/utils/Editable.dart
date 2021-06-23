@@ -139,9 +139,12 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  Route? setRoute(Function() refreshCallback){
-    route = MaterialPageRoute(builder: (BuildContext bc) => EditingEditable(this,refreshCallback),fullscreenDialog: false);
-    return route;
+  Route setRoute(Function() refreshCallback){
+    return MaterialPageRoute(
+      builder: (BuildContext bc) => EditingEditable(this,refreshCallback),
+      settings: RouteSettings(name: id.toString() + fileExtension),
+      fullscreenDialog: false
+    );
   }
 
   String getFileLocation(SW sw){
