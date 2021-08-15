@@ -34,6 +34,8 @@ class SW{
 
   bool devMode = false;
 
+  late Function() topLevelUpdate;
+
   SW({required this.prefs});
 
   void loadAll(){

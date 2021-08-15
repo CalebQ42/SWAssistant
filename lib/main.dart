@@ -35,6 +35,7 @@ class SWAppState extends State {
 
   @override
   Widget build(BuildContext context) {
+    SW.of(context).topLevelUpdate = () => setState(() {});
     var snackTheme = SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
     );
@@ -100,7 +101,7 @@ class SWAppState extends State {
         // "/download" : (context) => Downloads(),
         // "/dice" : (context) => Dice(),
         // "/guide" : (context) => Guide(),
-        "/settings" : (context) => Settings(updateTopLevel: () => setState((){}),),
+        "/settings" : (context) => Settings(),
         // Initial setup pages
         "/intro" : (context) => IntroZero(),
       },

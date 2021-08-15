@@ -9,19 +9,15 @@ import 'package:swassistant/ui/Common.dart';
 
 class Settings extends StatefulWidget{
 
-  final Function() updateTopLevel;
-
-  Settings({required this.updateTopLevel});
+  Settings();
 
   @override
-  State<StatefulWidget> createState() => SettingsState(updateTopLevel: updateTopLevel);
+  State<StatefulWidget> createState() => SettingsState();
 }
 
 class SettingsState extends State{
 
-  final Function() updateTopLevel;
-
-  SettingsState({required this.updateTopLevel});
+  SettingsState();
 
   @override
   Widget build(BuildContext context){
@@ -38,7 +34,7 @@ class SettingsState extends State{
               if (b){
                 app.prefs.setBool(preferences.forceDark, false);
               }
-              updateTopLevel();
+              SW.of(context).topLevelUpdate();
             },
             title: Text("Force Light Side"),
           ),
@@ -50,7 +46,7 @@ class SettingsState extends State{
               if (b){
                 app.prefs.setBool(preferences.forceLight, false);
               }
-              updateTopLevel();
+              SW.of(context).topLevelUpdate();
             },
             title: Text("Force Dark Side"),
           ),
@@ -59,7 +55,7 @@ class SettingsState extends State{
             value: app.getPreference(preferences.amoled, false),
             onChanged: (b){
               app.prefs.setBool(preferences.amoled, b);
-              updateTopLevel();
+              SW.of(context).topLevelUpdate();
             },
             title: Text("Amoled (Pitch Black) Dark Theme"),
           ),

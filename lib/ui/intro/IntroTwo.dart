@@ -50,6 +50,7 @@ class _IntroTwoState extends State{
                 if (b)
                   SW.of(context).prefs.setBool(preferences.forceLight, false);
                 setState((){});
+                SW.of(context).topLevelUpdate();
               }
             ),
             SwitchListTile(
@@ -60,6 +61,7 @@ class _IntroTwoState extends State{
               onChanged: (b){
                 SW.of(context).prefs.setBool(preferences.amoled, b);
                 setState((){});
+                SW.of(context).topLevelUpdate();
               }
             ),
             SwitchListTile(
@@ -72,6 +74,7 @@ class _IntroTwoState extends State{
                 if (b)
                   SW.of(context).prefs.setBool(preferences.forceDark, false);
                 setState((){});
+                SW.of(context).topLevelUpdate();
               }
             ),
           ],
