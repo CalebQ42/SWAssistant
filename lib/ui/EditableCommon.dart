@@ -98,11 +98,10 @@ class EditingText extends StatelessWidget {
         );
       },
     );
-    return state != null ? AnimatedSize(
+    return AnimatedSize(
       duration: Duration(milliseconds: 250),
-      vsync: state!,
       child: switcher
-    ) : switcher;
+    );
   }
 }
 

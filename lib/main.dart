@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
-import 'package:swassistant/ui/intro/ScreenZero.dart';
+import 'package:swassistant/ui/intro/IntroZero.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 
@@ -11,7 +11,7 @@ Future<void> main() async =>
     (app) =>
       runApp(SWWidget(
         child: SWApp(
-          init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/intro0" : null
+          init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/intro" : null
         ),
         app: app
       ))
@@ -53,7 +53,7 @@ class SWAppState extends State {
         ThemeMode.dark : ThemeMode.system,
       theme: ThemeData(
         primaryColor: Colors.blue,
-        accentColor: Colors.redAccent,
+        // accentColor: Colors.redAccent,
         bottomSheetTheme: bottomSheetTheme,
         inputDecorationTheme: inputTheme,
         snackBarTheme: snackTheme
@@ -73,7 +73,7 @@ class SWAppState extends State {
             ),
           ),
           primaryColor: Colors.red,
-          accentColor: Colors.lightBlueAccent,
+          // accentColor: Colors.lightBlueAccent,
           bottomSheetTheme: bottomSheetTheme.copyWith(
             backgroundColor: Colors.black,
           ),
@@ -82,7 +82,7 @@ class SWAppState extends State {
           inputDecorationTheme: inputTheme
         ) : ThemeData( //Dark Theme
           primaryColor: Colors.red,
-          accentColor: Colors.lightBlueAccent,
+          // accentColor: Colors.lightBlueAccent,
           brightness: Brightness.dark,
           bottomSheetTheme: bottomSheetTheme,
           inputDecorationTheme: inputTheme,
@@ -102,9 +102,7 @@ class SWAppState extends State {
         // "/guide" : (context) => Guide(),
         "/settings" : (context) => Settings(updateTopLevel: () => setState((){}),),
         // Initial setup pages
-        "/intro0" : (context) => IntroZero(),
-        // "/intro1" : (context) => Setup(screen: 1),
-        // "/intro2" : (context) => Setup(screen: 2),
+        "/intro" : (context) => IntroZero(),
       },
     );
   }
