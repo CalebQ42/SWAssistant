@@ -42,7 +42,7 @@ class _ItemEditDialogState extends State{
         else
           item.name = nameController.text;
       });
-    countController = TextEditingController(text: item.count.toString())
+    countController = TextEditingController(text: item.count == -1 ? null : item.count.toString())
       ..addListener(() {
         var tmp = int.tryParse(countController.text);
         if((tmp == null && item.count != -1) || (tmp != null && item.count == -1))
@@ -50,7 +50,7 @@ class _ItemEditDialogState extends State{
         else
           item.count = tmp ?? -1;
       });
-    encumController = TextEditingController(text: item.encum.toString())
+    encumController = TextEditingController(text: item.encum == -1 ? null : item.encum.toString())
       ..addListener(() {
         var tmp = int.tryParse(encumController.text);
         if((tmp == null && item.encum != -1) || (tmp != null && item.encum == -1))

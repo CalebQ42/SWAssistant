@@ -96,7 +96,7 @@ class _CriticalInjuryEditState extends State{
                 ],
                 onChanged: (value) =>
                   setState(() => criticalInjury.severity = value ?? -1),
-                value: criticalInjury.severity,
+                value: criticalInjury.severity == -1 ? null : criticalInjury.severity,
                 onTap: () => FocusScope.of(context).unfocus(),
               )
             ),
