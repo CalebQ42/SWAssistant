@@ -9,6 +9,7 @@ import 'package:swassistant/ui/items/editable/Description.dart';
 import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/editable/Weapons.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleDamage.dart';
+import 'package:swassistant/ui/items/vehicle/VehicleInfo.dart';
 
 class Vehicle extends Editable{
 
@@ -105,7 +106,7 @@ class Vehicle extends Editable{
     <Widget>[
       EditableContent(
         builder: (b, refresh, state) =>
-          Text("Info")
+          VehicleInfo(editing: b, state: state, updateList: updateList)
         //TODO: VehicleInfo(editing: b, refresh: refresh, state: state)
       ),
       EditableContent(
