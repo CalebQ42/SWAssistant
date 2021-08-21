@@ -9,6 +9,7 @@ import 'package:swassistant/ui/items/editable/Description.dart';
 import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/editable/Weapons.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleDamage.dart';
+import 'package:swassistant/ui/items/vehicle/VehicleDefense.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleInfo.dart';
 
 class Vehicle extends Editable{
@@ -17,6 +18,7 @@ class Vehicle extends Editable{
   int speed = 0;
   int handling = 0;
   int armor = 0;
+  //0-Fore,1-Port,2-Starboard,3-Aft;
   List<int> defense = new List.filled(4, 0, growable: false);
   int totalDefense = 0;
   int hullTraumaThresh = 0;
@@ -109,9 +111,7 @@ class Vehicle extends Editable{
           VehicleInfo(editing: b, state: state, updateList: updateList)
       ),
       EditableContent(
-        builder: (b, refresh, state) =>
-          Text("Defense")
-        //TODO: VehicleDefese(editing: b, refresh: refresh, state: state)
+        stateful: VehicleDefense()
       ),
       EditableContent(
         builder: (b, refresh, state) =>
