@@ -131,20 +131,19 @@ class SWDrawer extends StatelessWidget{
           // ),
           // Divider(),
           Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text("Other Stuff")),
-          // TODO: Dice
-          // ListTile(
-          //   title: Text("Dice"),
-          //   leading: Icon(Icons.casino),
-          //   onTap: (){
-          //     Navigator.of(context).pop();
-          //     var out = SW.of(context).observatory.containsRoute(name: "/dice");
-          //     if(out != null){
-          //       Navigator.of(context).removeRoute(out);
-          //       Navigator.of(context).pushNamed("/dice");
-          //     }else
-          //       Navigator.of(context).pushNamed("/dice");
-          //   }
-          // ),
+          ListTile(
+            title: Text("Dice"),
+            leading: Icon(Icons.casino),
+            onTap: (){
+              Navigator.of(context).pop();
+              var out = SW.of(context).observatory.containsRoute(name: "/dice");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/dice");
+              }else
+                Navigator.of(context).pushNamed("/dice");
+            }
+          ),
           // TODO: Guide
           // ListTile(
           //   title: Text("Guide"),

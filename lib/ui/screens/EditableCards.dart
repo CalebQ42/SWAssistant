@@ -13,6 +13,9 @@ class EditableCards extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var cards = Editable.of(context).cards(refreshList, context);
+    double width = min(MediaQuery.of(context).size.height, 500);
+    int rows = (MediaQuery.of(context).size.width / width).floor();
+    width = MediaQuery.of(context).size.width / rows;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -24,7 +27,7 @@ class EditableCards extends StatelessWidget{
               return ConstrainedBox(
                 key: ValueKey(Editable.of(context).cardNames[index]),
                 constraints: BoxConstraints(
-                  maxWidth: min(MediaQuery.of(context).size.height, 500)
+                  maxWidth: width
                 ),
                 child: cards[index+1]
               );

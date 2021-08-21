@@ -61,6 +61,15 @@ class SettingsState extends State{
           ),
           Divider(),
           SwitchListTile(
+            value: app.getPreference(preferences.colorDice, true),
+            onChanged: (b){
+              app.prefs.setBool(preferences.colorDice, b);
+              SW.of(context).topLevelUpdate();
+            },
+            title: Text("Color Dice Roller"),
+          ),
+          Divider(),
+          SwitchListTile(
             value: app.getPreference(preferences.firebase, true),
             onChanged: (b){
               if(!b)

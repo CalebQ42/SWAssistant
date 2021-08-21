@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/intro/IntroZero.dart';
+import 'package:swassistant/ui/screens/DiceRoller.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 
@@ -99,7 +100,7 @@ class SWAppState extends State {
         "/minions" : (context) => EditableList(EditableList.minion),
         "/vehicles" : (context) => EditableList(EditableList.vehicle),
         // "/download" : (context) => Downloads(),
-        // "/dice" : (context) => Dice(),
+        "/dice" : (context) => DiceRoller(),
         // "/guide" : (context) => Guide(),
         "/settings" : (context) => Settings(),
         // Initial setup pages
