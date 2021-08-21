@@ -32,22 +32,13 @@ class ObligationEditDialogState extends State{
 
   ObligationEditDialogState({required this.obligation, required this.onClose}){
     nameController = TextEditingController(text: obligation.name)
-      ..addListener(() {
-        if(obligation.name != "" && nameController.text != "")
-          obligation.name = nameController.text;
-        else
-          setState(() =>
-            obligation.name = nameController.text
-          );
-      });
+      ..addListener(() =>
+        setState(() => obligation.name = nameController.text)
+      );
     valueController = TextEditingController(text: obligation.value != -1 ? obligation.value.toString() : "")
-      ..addListener(() {
-        var tmp = int.tryParse(valueController.text);
-        if(tmp == null || obligation.value == -1)
-          setState(() => obligation.value = -1);
-        else
-          obligation.value = tmp;
-      });
+      ..addListener(() =>
+        setState(() => obligation.value = int.tryParse(valueController.text) ?? -1)
+      );
     descController = TextEditingController(text: obligation.desc)
       ..addListener(() =>
         obligation.desc = descController.text

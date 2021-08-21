@@ -61,7 +61,6 @@ class MinionWoundState extends State with TickerProviderStateMixin{
               height: 25,
               child: EditingText(
                 editing: holder.editing,
-                state: this,
                 initialText: minion.soak.toString(),
                 controller: (){
                   var controller = TextEditingController(text: minion.soak.toString());
@@ -88,7 +87,6 @@ class MinionWoundState extends State with TickerProviderStateMixin{
               height: 25,
               child: EditingText(
                 editing: holder.editing,
-                state: this,
                 initialText: minion.woundThreshInd.toString(),
                 controller: indWoundController,
                 textType: TextInputType.number,

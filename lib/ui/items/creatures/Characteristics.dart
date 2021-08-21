@@ -62,7 +62,6 @@ class Characteristics extends StatelessWidget{
         child: EditingText(
           editing: editing,
           initialText: creature.charVals[charNum].toString(),
-          state: state,
           controller: (){
             var controller = TextEditingController(text: creature.charVals[charNum].toString());
             controller.addListener(() =>

@@ -90,7 +90,6 @@ class MoralityState extends State with TickerProviderStateMixin{
                   defaultSave: true,
                   textAlign: TextAlign.center,
                   fieldAlign: TextAlign.center,
-                  state: this,
                   style: Theme.of(context).textTheme.headline6,
                 )
               )
@@ -100,7 +99,7 @@ class MoralityState extends State with TickerProviderStateMixin{
                 controller: conflictController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
+                // decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
                 textAlign: TextAlign.center,
               )
             )
@@ -165,7 +164,6 @@ class MoralityState extends State with TickerProviderStateMixin{
                 initialText: character.emotionalStr,
                 controller: strengthController,
                 defaultSave: true,
-                state: this,
                 textCapitalization: TextCapitalization.words,
                 textAlign: TextAlign.center,
                 fieldAlign: TextAlign.center,
@@ -177,7 +175,6 @@ class MoralityState extends State with TickerProviderStateMixin{
                 initialText: character.emotionalWeak,
                 controller: weaknessController,
                 defaultSave: true,
-                state: this,
                 textCapitalization: TextCapitalization.words,
                 textAlign: TextAlign.center,
                 fieldAlign: TextAlign.center,

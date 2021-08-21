@@ -36,13 +36,9 @@ class _SkillEditDialogState extends State{
     if(skill.name != "" && !Skill.skillsList.containsKey(skill.name))
       manual = true;
     valueController = new TextEditingController(text: skill.value != -1 ? skill.value.toString() : "")
-        ..addListener(() {
-          var val = int.tryParse(valueController.text);
-          if((skill.value == -1 && val != null) || (skill.value != -1 && val == null))
-            setState(() => skill.value = val ?? -1);
-          else
-            skill.value = val ?? -1;
-        });
+        ..addListener(() =>
+          setState(() => skill.value = int.tryParse(valueController.text) ?? -1)
+        );
   }
   
   Widget build(BuildContext context) {
@@ -72,7 +68,7 @@ class _SkillEditDialogState extends State{
                     }
                   });
                 },
-                value: (Skill.skillsList.containsKey(skill.name) || skill.name == "") ? skill.name : Skill.skillsList.keys.last,
+                value: Skill.skillsList.containsKey(skill.name) ? skill.name : skill.name == "" ? null : Skill.skillsList.keys.last,
                 items: List.generate(
                   Skill.skillsList.length,
                   (i) =>
@@ -115,8 +111,8 @@ class _SkillEditDialogState extends State{
                     value: i
                   )
                 ),
-                value: skill.base,
-                onChanged: (value) => setState(() => skill.base = -1),
+                value: skill.base == -1 ? null : skill.base,
+                onChanged: (value) => setState(() => skill.base = value ?? -1),
               )
             ),
             if(creature is Character) Container(height: 10),
@@ -138,7 +134,7 @@ class _SkillEditDialogState extends State{
               children: [
                 TextButton(
                   child: Text("Save"),
-                  onPressed: (skill.name != "" && skill.base != -1 && (creature is Character ? skill.value != -1 : true)) ? (){
+                  onPressed: skill.name != "" && skill.base != -1 && (creature is Character ? skill.value != -1 : true) ? (){
                     onClose(skill);
                     Navigator.of(context).pop();
                   } : null,

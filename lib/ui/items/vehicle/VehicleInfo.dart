@@ -26,7 +26,6 @@ class VehicleInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text: vehicle.silhouette.toString());
@@ -49,7 +48,6 @@ class VehicleInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text: vehicle.speed.toString());
@@ -72,7 +70,6 @@ class VehicleInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text: vehicle.armor.toString());
@@ -95,7 +92,6 @@ class VehicleInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text: vehicle.handling.toString());
@@ -119,7 +115,6 @@ class VehicleInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text: vehicle.hp.toString());
@@ -142,7 +137,6 @@ class VehicleInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text: vehicle.passengerCapacity.toString());
@@ -152,30 +146,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
-          title: "Passenger",
-        )
-      ],
-    );
-    var capEncum = new Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        EditingText(
-          editing: editing, 
-          initialText: vehicle.encumCapacity.toString(),
-          style: Theme.of(context).textTheme.subtitle1,
-          defaultSave: true,
-          fieldAlign: TextAlign.center,
-          state: state,
-          textCapitalization: TextCapitalization.words,
-          controller: (){
-            var controller = TextEditingController(text: vehicle.encumCapacity.toString());
-            controller.addListener((){
-              var parse = int.tryParse(controller.text);
-              vehicle.encumCapacity = parse ?? 0;
-            });
-            return controller;
-          }(),
-          title: "Enumbrance",
+          title: "Passengers",
         )
       ],
     );
@@ -188,7 +159,6 @@ class VehicleInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text:vehicle.category);
@@ -206,44 +176,25 @@ class VehicleInfo extends StatelessWidget{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        category,
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  silhouette, armor
-                ],
-              )
-            ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  speed, handling
-                ],
-              )
-            ),
+            Expanded(child: silhouette),
+            Expanded(child: speed),
           ],
         ),
-        hp,
-        SizedBox(height: 5,),
-        Text(
-          "Capacity",
-          style: Theme.of(context).textTheme.headline5,
-          textAlign: TextAlign.center,
+        Row(
+          children: <Widget>[
+            Expanded(child: armor),
+            Expanded(child: handling),
+          ],
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Expanded(
-              child: capPas
-            ),
-            Expanded(
-              child: capEncum
-            )
-          ]
-        )
+            Expanded(child: hp),
+            Expanded(child: capPas),
+          ],
+        ),
+        category,
       ],
     );
   }

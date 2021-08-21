@@ -28,19 +28,13 @@ class _CriticalInjuryEditState extends State{
 
   _CriticalInjuryEditState({required this.criticalInjury, required this.onClose}){
       nameController = TextEditingController(text: criticalInjury.name)
-          ..addListener(() {
-            if((criticalInjury.name == "" && nameController.text != "") || (criticalInjury.name != "" && nameController.text == ""))
-              setState(() => criticalInjury.name = nameController.text);
-            else
-              criticalInjury.name = nameController.text;
-          });
+          ..addListener(() =>
+            setState(() => criticalInjury.name = nameController.text)
+          );
       descController = TextEditingController(text: criticalInjury.desc)
-          ..addListener(() {
-            if((criticalInjury.desc == "" && descController.text != "") || (criticalInjury.desc != "" && descController.text == ""))
-              setState(() => criticalInjury.desc = descController.text);
-            else
-              criticalInjury.desc = descController.text;
-          });
+          ..addListener(() =>
+            criticalInjury.desc = descController.text
+          );
     }
 
   @override
@@ -95,8 +89,8 @@ class _CriticalInjuryEditState extends State{
                   ),
                 ],
                 onChanged: (value) =>
-                  setState(() => criticalInjury.severity = value ?? -1),
-                value: criticalInjury.severity == -1 ? null : criticalInjury.severity,
+                  setState(() => criticalInjury.severity = value ?? 0),
+                value: criticalInjury.severity,
                 onTap: () => FocusScope.of(context).unfocus(),
               )
             ),
@@ -104,7 +98,7 @@ class _CriticalInjuryEditState extends State{
               children: [
                 TextButton(
                   child: Text("Save"),
-                  onPressed: criticalInjury.name != "" && criticalInjury.desc != "" && criticalInjury.severity != -1 ? (){
+                  onPressed: criticalInjury.name != "" ? (){
                     Navigator.of(context).pop();
                     onClose(criticalInjury);
                   } : null,

@@ -24,7 +24,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text:character.species);
@@ -44,7 +43,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           controller: (){
             var controller = TextEditingController(text: character.age.toString());
             controller.addListener(() =>
@@ -66,7 +64,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text: character.motivation);
@@ -86,7 +83,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text:character.career);
@@ -106,7 +102,6 @@ class CharacterInfo extends StatelessWidget{
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
-          state: state,
           textCapitalization: TextCapitalization.words,
           controller: (){
             var controller = TextEditingController(text:character.category);

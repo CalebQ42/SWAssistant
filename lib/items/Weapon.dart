@@ -24,26 +24,26 @@ class Weapon implements JsonSavable{
   String firingArc;
   int encumbrance;
 
-  Weapon({this.name = "", this.damage = -1, this.critical = -1, this.hp = -1, this.range = -1,
+  Weapon({this.name = "", this.damage = -1, this.critical = -1, this.hp = 0, this.range = 0,
     this.skill = -1, this.skillBase = -1, this.characteristics = const [], this.addBrawn = false,
-    this.loaded = true, this.limitedAmmo = false, this.itemState = 0, this.ammo = -1,
-    this.firingArc = "", this.encumbrance = -1});
+    this.loaded = true, this.limitedAmmo = false, this.itemState = 0, this.ammo = 0,
+    this.firingArc = "", this.encumbrance = 0});
 
   Weapon.fromJson(Map<String,dynamic> json) :
       name = json["name"] ?? "",
       damage = json["damage"] ?? -1,
       critical = json["critical rating"] ?? -1,
-      hp = json["hard points"] ?? -1,
-      range = json["range"] ?? -1,
+      hp = json["hard points"] ?? 0,
+      range = json["range"] ?? 0,
       skill = json["skill"] ?? -1,
       skillBase = json["base"] ?? -1,
       addBrawn = json["add brawn"] ?? false,
       loaded = json["loaded"] ?? true,
       limitedAmmo = json["limited ammo"] ?? false,
       itemState = json["item state"] ?? 0,
-      ammo = json["ammo"] ?? -1,
+      ammo = json["ammo"] ?? 0,
       firingArc = json["firing arc"] ?? "",
-      encumbrance = json["encumbrance"] ?? -1,
+      encumbrance = json["encumbrance"] ?? 0,
       characteristics = []{
         if(json["Weapon Characteristics"] != null)
           for(Map<String,dynamic> map in json["Weapon Characteristics"]){

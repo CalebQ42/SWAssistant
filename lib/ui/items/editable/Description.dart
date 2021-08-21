@@ -17,7 +17,6 @@ class Description extends StatelessWidget{
       textCapitalization: TextCapitalization.sentences,
       textAlign: TextAlign.start,
       multiline: true,
-      state: state,
       controller: (){
         var controller = TextEditingController(text: Editable.of(context).desc);
         controller.addListener(() => 

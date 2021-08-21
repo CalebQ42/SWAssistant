@@ -23,7 +23,7 @@ class Vehicle extends Editable{
   int hullTraumaCur = 0;
   int sysStressThresh = 0;
   int sysStressCur = 0;
-  int encumCapacity = 0;
+  int encumCap = 0;
   int passengerCapacity = 0;
   int hp = 0;
   String model = "";
@@ -55,7 +55,7 @@ class Vehicle extends Editable{
       hullTraumaCur = vehicle.hullTraumaCur,
       sysStressThresh = vehicle.sysStressThresh,
       sysStressCur = vehicle.sysStressCur,
-      encumCapacity = vehicle.encumCapacity,
+      encumCap = vehicle.encumCap,
       passengerCapacity = vehicle.passengerCapacity,
       hp = vehicle.hp,
       model = vehicle.model,
@@ -77,7 +77,7 @@ class Vehicle extends Editable{
     this.hullTraumaCur = json["hull trauma current"] ?? 0;
     this.sysStressThresh = json["system stress threshold"] ?? 0;
     this.sysStressCur = json["system stress current"] ?? 0;
-    this.encumCapacity = json["encumbrance capacity"] ?? 0;
+    this.encumCap = json["encumbrance capacity"] ?? 0;
     this.passengerCapacity = json["passenger capacity"] ?? 0;
     this.hp = json["hard points"] ?? 0;
     this.model = json["model"] ?? "";
@@ -95,19 +95,18 @@ class Vehicle extends Editable{
     map["hull trauma current"] = hullTraumaCur;
     map["system stress threshold"] = sysStressThresh;
     map["system stress current"] = sysStressCur;
-    map["encumbrance capacity"] = encumCapacity;
+    map["encumbrance capacity"] = encumCap;
     map["passenger capacity"] = passengerCapacity;
     map["hard points"] = hp;
     map["model"] = model;
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context, Function() updateList) =>
-    <Widget>[
+  List<EditableContent> cardContents(BuildContext context, Function() updateList) =>
+    <EditableContent>[
       EditableContent(
         builder: (b, refresh, state) =>
           VehicleInfo(editing: b, state: state, updateList: updateList)
-        //TODO: VehicleInfo(editing: b, refresh: refresh, state: state)
       ),
       EditableContent(
         builder: (b, refresh, state) =>
@@ -124,8 +123,7 @@ class Vehicle extends Editable{
         defaultEditingState: () => weapons.length == 0,
       ),
       EditableContent(
-        builder: (b, refresh, state) =>
-          Inventory(editing: b, refresh: refresh, state: state),
+        stateful: Inventory(holder: EditableContentStatefulHolder()),
         defaultEditingState: () => inventory.length == 0,
       ),
       EditableContent(

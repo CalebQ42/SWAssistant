@@ -5,7 +5,7 @@ class CriticalInjury implements JsonSavable{
   String desc;
   int severity;
 
-  CriticalInjury({this.name = "", this.desc = "", this.severity = -1});
+  CriticalInjury({this.name = "", this.desc = "", this.severity = 0});
   
   CriticalInjury.from(CriticalInjury criticalInjury) :
     this.name = criticalInjury.name,
@@ -15,7 +15,7 @@ class CriticalInjury implements JsonSavable{
   CriticalInjury.fromJson(Map<String,dynamic> json) :
       name = json["name"] ?? "",
       desc = json["description"] ?? "",
-      severity = json["severity"] ?? -1;
+      severity = json["severity"] ?? 0;
 
   Map<String, dynamic> toJson() => {
     "name" : name,

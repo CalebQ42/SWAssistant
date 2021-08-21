@@ -29,12 +29,9 @@ class _FPState extends State{
 
   _FPState({required this.fp, required this.onClose}){
     nameController = TextEditingController(text: fp.name)
-      ..addListener(() {
-        if((fp.name == "" && nameController.text != "") || (fp.name != "" && nameController.text == ""))
-          setState(() => fp.name = nameController.text);
-        else
-          fp.name = nameController.text;
-      });
+      ..addListener(() =>
+        setState(() => fp.name = nameController.text)
+      );
     descController = TextEditingController(text: fp.desc)
       ..addListener(() => fp.desc = descController.text);
   }

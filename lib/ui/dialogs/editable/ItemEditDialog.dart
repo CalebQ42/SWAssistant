@@ -36,35 +36,21 @@ class _ItemEditDialogState extends State{
 
   _ItemEditDialogState({required this.onClose, required this.editable, required this.item}){
     nameController = TextEditingController(text: item.name)
-      ..addListener(() {
-        if((nameController.text == "" && item.name != "") || (nameController.text != "" && item.name == ""))
-          setState(() => item.name = nameController.text);
-        else
-          item.name = nameController.text;
-      });
-    countController = TextEditingController(text: item.count == -1 ? null : item.count.toString())
-      ..addListener(() {
-        var tmp = int.tryParse(countController.text);
-        if((tmp == null && item.count != -1) || (tmp != null && item.count == -1))
-          setState(() => item.count = tmp ?? -1);
-        else
-          item.count = tmp ?? -1;
-      });
-    encumController = TextEditingController(text: item.encum == -1 ? null : item.encum.toString())
-      ..addListener(() {
-        var tmp = int.tryParse(encumController.text);
-        if((tmp == null && item.encum != -1) || (tmp != null && item.encum == -1))
-          setState(() => item.encum = tmp ?? -1);
-        else
-          item.encum = tmp ?? -1;
-      });
+      ..addListener(() =>
+        setState(() => item.name = nameController.text)
+      );
+    countController = TextEditingController(text: item.count.toString())
+      ..addListener(() =>
+        item.count = int.tryParse(countController.text) ?? 1
+      );
+    encumController = TextEditingController(text: item.encum.toString())
+      ..addListener(() =>
+        item.encum = int.tryParse(encumController.text) ?? 0
+      );
     descController = TextEditingController(text: item.desc)
-      ..addListener(() {
-        if((descController.text == "" && item.desc != "") || (descController.text != "" && item.desc == ""))
-          setState(() => item.desc = descController.text);
-        else
-          item.desc = descController.text;
-      });
+      ..addListener(() =>
+        item.desc = descController.text
+      );
   }
 
   @override
@@ -114,10 +100,10 @@ class _ItemEditDialogState extends State{
               children: [
                 TextButton(
                   child: Text("Save"),
-                  onPressed: (){
+                  onPressed: item.name != "" ? (){
                     onClose(item);
                     Navigator.of(context).pop();
-                  },
+                  } : null,
                 ),
                 TextButton(
                   child: Text("Cancel"),

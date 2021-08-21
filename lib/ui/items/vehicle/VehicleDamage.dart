@@ -38,7 +38,6 @@ class VehicleDamage extends StatelessWidget{
                 textType: TextInputType.number,
                 defaultSave: true,
                 collapsed: true,
-                state: state,
                 fieldAlign: TextAlign.center,
                 textAlign: TextAlign.center,
               ),

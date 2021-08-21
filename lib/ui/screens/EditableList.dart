@@ -281,7 +281,6 @@ class EditableCard extends StatelessWidget{
         child: Card(
           child: InkResponse(
             onTap: (){
-              print("HI");
               if(editable.route != null && SW.of(context).observatory.containsRoute(route: editable.route) != null)
                 Navigator.replace(context, oldRoute: editable.route!, newRoute: editable.setRoute(refreshCallback));
               else

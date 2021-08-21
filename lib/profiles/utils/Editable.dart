@@ -9,6 +9,7 @@ import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/Card.dart';
+import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 import '../Character.dart';
@@ -134,7 +135,19 @@ abstract class Editable extends JsonSavable{
     );
     for (int i = 0; i < contents.length; i++)
       cards.add(
-        InfoCard(shown: showCard[i],contents: contents[i], title: cardNames[i], onHideChange: (bool b, refresh) => showCard[i]=b)
+        InfoCard(
+          shown: showCard[i],
+          contents: contents[i],
+          title: cardNames[i],
+          onHideChange: (bool b, refresh) {
+            showCard[i]=b;
+            if (!b){
+              contents[i].stateful?.getHolder().editing = false;
+              if(contents[i].stateful?.getHolder().reloadFunction != null)
+                contents[i].stateful?.getHolder().reloadFunction!();
+            }
+          }
+        )
       );
     return cards;
   }
@@ -200,7 +213,7 @@ abstract class Editable extends JsonSavable{
   void updateShortcut(){}
   void deleteShortcut(){}
 
-  List<Widget> cardContents(BuildContext context, Function() listUpdate);
+  List<EditableContent> cardContents(BuildContext context, Function() listUpdate);
 
   static Editable of(BuildContext context){
     var ed = context.dependOnInheritedWidgetOfExactType<InheritedEditable>()?.editable;

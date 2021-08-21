@@ -6,7 +6,7 @@ class Item implements JsonSavable{
   int count;
   int encum;
 
-  Item({this.name = "", this.desc = "", this.count = -1, this.encum = -1});
+  Item({this.name = "", this.desc = "", this.count = 1, this.encum = 0});
 
   Item.from(Item item) :
       name = item.name,
@@ -17,8 +17,8 @@ class Item implements JsonSavable{
   Item.fromJson(Map<String, dynamic> json) :
       name = json["name"] ?? "",
       desc = json["description"] ?? "",
-      count = json["count"] ?? -1,
-      encum = json["encumbrance"] ?? -1;
+      count = json["count"] ?? 1,
+      encum = json["encumbrance"] ?? 0;
 
   Map<String, dynamic> toJson() => {
     "name" : name,

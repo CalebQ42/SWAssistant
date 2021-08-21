@@ -28,12 +28,9 @@ class _SpecializationState extends State{
 
   _SpecializationState({required this.onClose,required this.specialization}){
     specCont = TextEditingController(text: specialization)
-      ..addListener(() {
-        if((specialization == "" && specCont.text != "") || (specialization != "" && specCont.text == ""))
-          setState(() => specialization = specCont.text);
-        else
-          specialization = specCont.text;
-      });
+      ..addListener(() =>
+        setState(() => specialization = specCont.text)
+      );
   }
 
   @override

@@ -8,19 +8,59 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/editable/ItemEditDialog.dart';
 
-class Inventory extends StatelessWidget{
+class Inventory extends StatefulWidget with StatefulCard{
 
-  final bool editing;
-  final Function() refresh;
-  final EditableContentState state;
+  final EditableContentStatefulHolder holder;
 
-  Inventory({required this.editing, required this.refresh, required this.state});
+  Inventory({required this.holder});
+
+  @override
+  State<StatefulWidget> createState() => InventoryState(holder: holder);
+
+  @override
+  EditableContentStatefulHolder getHolder() => holder;
+}
+class InventoryState extends State{
+
+  bool editing = false;
+
+  EditableContentStatefulHolder holder;
+
+  TextEditingController? creditController;
+  TextEditingController? encumController;
+
+  InventoryState({required this.holder}){
+    editing = holder.editing;
+    holder.reloadFunction = () => setState(() =>
+      editing = holder.editing
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
     var overEncumbered = false;
     var encumTot = 0;
+    if(editable is Character && creditController == null){
+      creditController = TextEditingController(text: editable.credits.toString());
+      creditController?.addListener(() =>
+        editable.credits = int.tryParse(creditController!.text) ?? 0
+      );
+    }
+    if(editable is Character && encumController == null){
+      encumController = TextEditingController(text: editable.encumCap.toString());
+      encumController?.addListener(() {
+        editable.encumCap = int.tryParse(encumController!.text) ?? 0;
+        setState((){});
+      });
+    }
+    if(editable is Vehicle && encumController == null){
+      encumController = TextEditingController(text: editable.encumCap.toString());
+      encumController?.addListener(() {
+        editable.encumCap = int.tryParse(encumController!.text) ?? 0;
+        setState((){});
+      });
+    }
     if(editable is !Minion && editable.inventory.length > 0){
       if(editable is Character)
         for(Item item in editable.inventory){
@@ -33,7 +73,7 @@ class Inventory extends StatelessWidget{
       else if(editable is Vehicle)
         for(Item item in editable.inventory){
           encumTot += item.encum;
-          if(encumTot > editable.encumCapacity){
+          if(encumTot > editable.encumCap){
             overEncumbered = true;
             break;
           }
@@ -51,7 +91,7 @@ class Inventory extends StatelessWidget{
       else if(editable is Vehicle)
         for(Weapon weap in editable.weapons){
           encumTot += weap.encumbrance;
-          if(encumTot > editable.encumCapacity){
+          if(encumTot > editable.encumCap){
             overEncumbered = true;
             break;
           }
@@ -74,14 +114,7 @@ class Inventory extends StatelessWidget{
                   collapsed: true,
                   fieldAlign: TextAlign.center,
                   fieldInsets: EdgeInsets.all(3),
-                  state: state,
-                  controller: (){
-                    var controller = new TextEditingController(text: editable.credits.toString());
-                    controller.addListener(() =>
-                      editable.credits = int.tryParse(controller.text) ?? 0
-                    );
-                    return controller;
-                  }(),
+                  controller: creditController,
                   textType: TextInputType.number,
                   defaultSave: true,
                 )
@@ -101,14 +134,27 @@ class Inventory extends StatelessWidget{
                   collapsed: true,
                   fieldAlign: TextAlign.center,
                   fieldInsets: EdgeInsets.all(3),
-                  state: state,
-                  controller: (){
-                    var controller = new TextEditingController(text: editable.encumCap.toString());
-                    controller.addListener(() =>
-                      editable.encumCap = int.tryParse(controller.text) ?? 0
-                    );
-                    return controller;
-                  }(),
+                  controller: encumController,
+                  textType: TextInputType.number,
+                  defaultSave: true,
+                )
+              )
+            ],
+          ),
+          if(editable is Vehicle) Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(child: Text("Encumbrance Capacity:")),
+              SizedBox(
+                width: 50,
+                height: 25,
+                child: EditingText(
+                  editing: editing,
+                  initialText: editable.encumCap.toString(),
+                  collapsed: true,
+                  fieldAlign: TextAlign.center,
+                  fieldInsets: EdgeInsets.all(3),
+                  controller: encumController,
                   textType: TextInputType.number,
                   defaultSave: true,
                 )
@@ -178,7 +224,7 @@ class Inventory extends StatelessWidget{
                         onPressed: (){
                           var temp = Item.from(editable.inventory[index]);
                           editable.inventory.removeAt(index);
-                          refresh();
+                          setState((){});
                           editable.save(context: context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -187,7 +233,7 @@ class Inventory extends StatelessWidget{
                                 label: "Undo",
                                 onPressed: (){
                                   editable.inventory.insert(index, temp);
-                                  refresh();
+                                  setState((){});
                                   editable.save(context: context);
                                 }
                               ),
@@ -205,7 +251,7 @@ class Inventory extends StatelessWidget{
                             editable: editable,
                             onClose: (item){
                               editable.inventory[index] = item;
-                              refresh();
+                              setState((){});
                               editable.save(context: context);
                             },
                           ).show(context)
@@ -246,7 +292,7 @@ class Inventory extends StatelessWidget{
                     editable: editable,
                     onClose: (item){
                       editable.inventory.add(item);
-                      refresh();
+                      setState((){});
                       editable.save(context: context);
                     },
                   ).show(context)

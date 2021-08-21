@@ -12,7 +12,7 @@ class EditableCards extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    var cards = Editable.of(context).cards(refreshList,context);
+    var cards = Editable.of(context).cards(refreshList, context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

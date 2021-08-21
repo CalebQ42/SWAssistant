@@ -92,11 +92,11 @@ class Minion extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context, Function() updateList) {
+  List<EditableContent> cardContents(BuildContext context, Function() updateList) {
     Function()? weaponsRefresh;
-    Function()? invRefresh;
     EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
     EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();
+    EditableContentStatefulHolder invHolder = EditableContentStatefulHolder();
     woundCurTemp = woundCur;
     return [
       EditableContent(
@@ -183,10 +183,7 @@ class Minion extends Editable with Creature{
         defaultEditingState: () => talents.length == 0,
       ),
       EditableContent(
-        builder: (b, refresh, state) {
-          invRefresh = refresh;
-          return Inventory(editing: b, refresh: refresh, state: state);
-        },
+        stateful: Inventory(holder: invHolder),
         defaultEditingState: () => inventory.length == 0,
         additonalButtons: () => [
           Tooltip(
@@ -199,8 +196,8 @@ class Minion extends Editable with Creature{
               onPressed: savedInv.length == 0 ? null : (){
                 var tmp = List.of(inventory);
                 inventory = List.of(savedInv);
-                if (invRefresh != null)
-                  invRefresh!();
+                if(invHolder.reloadFunction != null)
+                  invHolder.reloadFunction!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Inventory Restored"),
@@ -208,8 +205,8 @@ class Minion extends Editable with Creature{
                       label: "Undo",
                       onPressed: (){
                         inventory = tmp;
-                        if (invRefresh != null)
-                          invRefresh!();
+                        if(invHolder.reloadFunction != null)
+                          invHolder.reloadFunction!();
                       },
                     ),
                   )
@@ -227,8 +224,8 @@ class Minion extends Editable with Creature{
               onPressed: (){
                 var refresh = (savedInv.length == 0 && inventory.length != 0) || (savedInv.length != 0 && inventory.length == 0);
                 savedInv = List.of(inventory);
-                if(refresh && invRefresh != null)
-                  invRefresh!();
+                if(refresh && invHolder.reloadFunction != null)
+                  invHolder.reloadFunction!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Inventory Saved"),

@@ -31,27 +31,17 @@ class _TalentEditState extends State{
 
   _TalentEditState({required this.talent, required this.onClose}){
     nameController = TextEditingController(text: talent.name)
-      ..addListener(() {
-        if((talent.name == "" && nameController.text != "") || (talent.name != "" && nameController.text == ""))
-          setState(() => talent.name = nameController.text);
-        else
-          talent.name = nameController.text;
-      });
-    valueController = TextEditingController(text: talent.value.toString())
-      ..addListener(() {
-        var value = int.tryParse(valueController.text);
-        if((value == null && talent.value != -1) || (value != null && talent.value == -1))
-          setState(() => talent.value = value ?? -1);
-        else
-          talent.value = value ?? -1;
-      });
+      ..addListener(() =>
+        setState(() => talent.name = nameController.text)
+      );
+    valueController = TextEditingController(text: talent.value == -1 ? "" : talent.value.toString())
+      ..addListener(() =>
+        setState(() => talent.value = int.tryParse(valueController.text) ?? -1)
+      );
     descController = TextEditingController(text: talent.desc)
-      ..addListener(() {
-        if((talent.desc == "" && descController.text != "") || (talent.desc != "" && descController.text == ""))
-          setState(() => talent.desc = descController.text);
-        else
-          talent.desc = descController.text;
-      });
+      ..addListener(() =>
+        talent.desc = descController.text
+      );
   }
 
   @override

@@ -6,8 +6,6 @@ class EditingText extends StatelessWidget {
 
   final Key? key;
 
-  final TickerProviderStateMixin? state;
-
   final TextStyle? style;
   final String initialText;
   final bool editing;
@@ -32,7 +30,7 @@ class EditingText extends StatelessWidget {
   EditingText({this.key, required this.editing, this.style, this.initialText = "", this.controller, this.textType,
       this.fieldInsets = const EdgeInsets.all(3.0), this.textInsets = const EdgeInsets.all(4.0),
       this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
-      this.fieldAlign = TextAlign.start, this.collapsed = false, this.state, this.editableBackup, this.title = "", this.titleStyle}) {
+      this.fieldAlign = TextAlign.start, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle}) {
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
   }

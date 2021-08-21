@@ -32,28 +32,17 @@ class _WeaponCharacteristicDialogState extends State{
 
   _WeaponCharacteristicDialogState(this.wc, this.onClose){
     nameController = TextEditingController(text: wc.name)
-        ..addListener((){
-          if((wc.name == "" && nameController.text != "") || (wc.name != "" && nameController.text == ""))
-            setState(() => wc.name = nameController.text);
-          else
-            wc.name = nameController.text;
-        });
+        ..addListener(() =>
+          setState(() => wc.name = nameController.text)
+        );
     valueController = TextEditingController(text: wc.value != -1 ? wc.value.toString() : "")
         ..addListener(() {
-          var val = int.tryParse(valueController.text);
-          if((wc.value == -1 && val != null) || (wc.value != -1 && val == null))
-            setState(() => wc.value = val ?? -1);
-          else
-            wc.value = val ?? -1;
+          setState(() => wc.value = int.tryParse(valueController.text) ?? -1);
         });
     advantageController = TextEditingController(text: wc.advantage != -1 ? wc.advantage.toString() : "")
-        ..addListener(() {
-          var val = int.tryParse(advantageController.text);
-          if((wc.advantage == -1 && val != null) || (wc.advantage != -1 && val == null))
-            setState(() => wc.advantage = val ?? -1);
-          else
-            wc.advantage = val ?? -1;
-        });
+        ..addListener(() =>
+          setState(() => wc.advantage = int.tryParse(advantageController.text) ?? -1)
+        );
   }
 
   @override

@@ -42,7 +42,6 @@ class XP extends StatelessWidget{
                   );
                   return cont;
                 }(),
-                state: state,
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,
@@ -59,7 +58,6 @@ class XP extends StatelessWidget{
                   );
                   return cont;
                 }(),
-                state: state,
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,

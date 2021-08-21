@@ -33,7 +33,6 @@ class WoundStrain extends StatelessWidget{
                 collapsed: true,
                 fieldAlign: TextAlign.center,
                 fieldInsets: EdgeInsets.all(3),
-                state: state,
                 controller: (){
                   var controller = new TextEditingController(text: character.soak.toString());
                   controller.addListener(() =>

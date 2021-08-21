@@ -186,8 +186,8 @@ class Character extends Editable with Creature{
     return map;
   }
 
-  List<Widget> cardContents(BuildContext context, Function() updateList) => 
-    <Widget>[
+  List<EditableContent> cardContents(BuildContext context, Function() updateList) => 
+    <EditableContent>[
       EditableContent(
         builder: (b, refresh, state) =>
           CharacterInfo(editing: b, state: state, updateList: updateList,)
@@ -241,8 +241,7 @@ class Character extends Editable with Creature{
           XP(editing: b, refresh: refresh, state: state)
       ),
       EditableContent(
-        builder: (b, refresh, state) =>
-          Inventory(editing: b, refresh: refresh, state: state),
+        stateful: Inventory(holder: EditableContentStatefulHolder()),
         defaultEditingState: () => inventory.length == 0
       ),
       if(!disableMorality) EditableContent(

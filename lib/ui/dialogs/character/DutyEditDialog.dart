@@ -32,22 +32,17 @@ class DutyEditDialogState extends State{
 
   DutyEditDialogState({required this.duty, required this.onClose}){
     nameController = TextEditingController(text: duty.name)
-      ..addListener(() {
-        if(duty.name != "" && nameController.text != "")
-          duty.name = nameController.text;
-        else
-          setState(() =>
-            duty.name = nameController.text
-          );
-      });
+      ..addListener(() =>
+        setState(() =>
+          duty.name = nameController.text
+        )
+      );
     valueController = TextEditingController(text: duty.value != -1 ? duty.value.toString() : "")
-      ..addListener(() {
-        var tmp = int.tryParse(valueController.text);
-        if(tmp == null || duty.value == -1)
-          setState(() => duty.value = -1);
-        else
-          duty.value = tmp;
-      });
+      ..addListener(() =>
+        setState(() =>
+          duty.value = int.tryParse(valueController.text) ?? -1
+        )
+      );
     descController = TextEditingController(text: duty.desc)
       ..addListener(() =>
         duty.desc = descController.text

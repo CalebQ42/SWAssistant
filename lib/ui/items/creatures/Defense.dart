@@ -24,7 +24,6 @@ class Defense extends StatelessWidget{
                 editing: editing,
                 initialText: creature.defMelee.toString(),
                 defaultSave: true,
-                state: state,
                 textType: TextInputType.number,
                 controller: (){
                   var cont = TextEditingController(text: creature.defMelee.toString());
@@ -46,7 +45,6 @@ class Defense extends StatelessWidget{
                 editing: editing,
                 initialText: creature.defRanged.toString(),
                 defaultSave: true,
-                state: state,
                 textType: TextInputType.number,
                 controller: (){
                   var cont = TextEditingController(text: creature.defRanged.toString());
