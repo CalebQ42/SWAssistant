@@ -16,6 +16,9 @@ class SWWeaponDialog extends StatelessWidget{
 
   SWWeaponDialog({required this.holder, required this.context, required this.weapon, this.brawn = 0});
 
+  //TODO: add colors! Probably re-make it all.
+  //Overflow the first card to cover top of bottom sheet.
+
   @override
   Widget build(BuildContext context) =>
     Padding(

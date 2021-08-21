@@ -9,17 +9,28 @@ import 'package:swassistant/Preferences.dart' as preferences;
 
 //TODO
 class DiceRoller extends StatelessWidget{
+
+  final SWDiceHolder holder = SWDiceHolder();
+
   @override
   Widget build(BuildContext context) {
     double width = min(MediaQuery.of(context).size.height, 250);
     int rows = (MediaQuery.of(context).size.width / width).floor();
     width = MediaQuery.of(context).size.width / rows;
-    var holder = SWDiceHolder();
     return Scaffold(
+      drawer: SWDrawer(),
       appBar: SWAppBar(
         title: Text("Dice")
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          holder.getDice().roll().showCombinedResults(context, noSuccess: holder.ability == 0 && holder.proficiency == 0
+              && holder.difficulty == 0 && holder.challenge == 0 && holder.boost == 0 && holder.challenge == 0);
+        },
+        child: Icon(Icons.casino),
+      ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -135,7 +146,7 @@ class _DiceCard extends StatelessWidget{
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: width),
       child: Padding(
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.all(2),
         child: Card(
           color: SW.of(context).getPreference(preferences.colorDice, true) ? cardColor : null,
           child: Column(
@@ -143,6 +154,7 @@ class _DiceCard extends StatelessWidget{
             children: [
               Text(
                 title,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline6?.copyWith(color: textColor)
               ),
               upDown

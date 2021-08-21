@@ -11,6 +11,9 @@ class SWDiceDialog extends StatelessWidget{
 
   SWDiceDialog({required this.holder, required this.context});
 
+  //TODO: add colors! Probably re-make it all.
+  //Overflow the first card to cover top of bottom sheet.
+
   @override
   Widget build(BuildContext context) =>
     Padding(
@@ -21,7 +24,7 @@ class SWDiceDialog extends StatelessWidget{
             Row(
               children: <Widget>[
                 Expanded(
-                  child:Text(SWDice.SWDice[index])
+                  child: Text(SWDice.SWDice[index])
                 ),
                 Expanded(
                   child: UpDownStat(

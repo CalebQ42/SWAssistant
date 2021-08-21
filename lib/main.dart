@@ -45,7 +45,7 @@ class SWAppState extends State {
     );
     var bottomSheetTheme = BottomSheetThemeData(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25)
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15))
       )
     );
     return MaterialApp(

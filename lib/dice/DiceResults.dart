@@ -25,14 +25,14 @@ class DiceResults{
       results[side.toString()] = (results[side.toString()] ?? 0) + (subtractMode ? -1 : 1);
     else if(side is ComplexSide){
       side.parts.forEach((element) =>
-        results[side.toString()] = (results[side.toString()] ?? 0) + (subtractMode ? -element.value : element.value)
+        results[element.name] = (results[element.name] ?? 0) + (subtractMode ? -element.value : element.value)
       );
     }
   }
 
   int getResult(String name) => results[name] ?? 0;
 
-  void showCombinedResults(BuildContext context,{bool noSuccess = true}){
+  void showCombinedResults(BuildContext context,{bool noSuccess = false}){
     bool isSuccess = true;
     var success = (results[suc]! + results[tri]!) - (results[fai]! + results[des]!);
     if(success <= 0){
@@ -99,7 +99,7 @@ class DiceResults{
     );
   }
 
-  void showResultsEdit(BuildContext context,{bool noSuccess = true, void Function(BuildContext, DiceResults)? alternateReturn}) =>
+  void showResultsEdit(BuildContext context,{bool noSuccess = false, void Function(BuildContext, DiceResults)? alternateReturn}) =>
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

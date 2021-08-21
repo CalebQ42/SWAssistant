@@ -13,7 +13,7 @@ class Die{
       throw("All sides MUST be SimpleSide or ComplexSide");
   }
 
-  dynamic roll({Random? random}) => sides[(random ?? Random()).nextInt(sides.length)];
+  dynamic roll() => sides[(Random()).nextInt(sides.length)];
 }
 
 class Dice{
@@ -24,9 +24,8 @@ class Dice{
   Dice({required this.name, this.dies = const []});
 
   DiceResults roll(){
-    Random random = Random();
     DiceResults results = DiceResults();
-    dies.forEach((element) => results.add(element.roll(random: random)));
+    dies.forEach((element) => results.add(element.roll()));
     return results;
   }
 }
