@@ -46,7 +46,8 @@ class SWAppState extends State {
     var bottomSheetTheme = BottomSheetThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(15))
-      )
+      ),
+      clipBehavior: Clip.antiAlias
     );
     return MaterialApp(
       title: 'SWAssistant',

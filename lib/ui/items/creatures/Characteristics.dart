@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
@@ -49,16 +48,8 @@ class Characteristics extends StatelessWidget{
     return Expanded(
       child: InkResponse(
         containedInkWell: true,
-        onTap:(){
-          showModalBottomSheet(
-            context: context,
-            builder: (context) =>
-              SWDiceDialog(
-                holder: SWDiceHolder(ability:creature.charVals[charNum]),
-                context: context
-              )
-          );
-        },
+        onTap:() =>
+          SWDiceHolder(ability:creature.charVals[charNum]).showDialog(context),
         child: EditingText(
           editing: editing,
           initialText: creature.charVals[charNum].toString(),

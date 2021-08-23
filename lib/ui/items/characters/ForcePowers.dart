@@ -3,7 +3,6 @@ import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
 import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
 
 class ForcePowers extends StatelessWidget{
@@ -53,14 +52,7 @@ class ForcePowers extends StatelessWidget{
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
             onTap: () =>
-              showModalBottomSheet(
-                context: context,
-                builder: (context) =>
-                  SWDiceDialog(
-                    holder: SWDiceHolder(force: character.force),
-                    context: context
-                  ),
-              ),
+              SWDiceHolder(force: character.force).showDialog(context),
             onLongPress: () =>
               showModalBottomSheet(
                 context: context,

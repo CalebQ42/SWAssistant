@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/dice/Dice.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
+import 'package:swassistant/dice/Sides.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
+import 'package:swassistant/ui/misc/DiceSelector.dart';
 
-//TODO
 class DiceRoller extends StatelessWidget{
 
   final SWDiceHolder holder = SWDiceHolder();
@@ -37,91 +39,25 @@ class DiceRoller extends StatelessWidget{
             Container(height: 10),
             Wrap(
               alignment: WrapAlignment.spaceEvenly,
+              //TODO: test
+              children: List<Widget>.generate(
+                7,
+                (i) =>
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: width),
+                    child: DiceSelector(
+                      holder: holder,
+                      type: i
+                    )
+                  )
+              )
+            ),
+            Container(height: 10),
+            Wrap(
+              alignment: WrapAlignment.spaceEvenly,
               children: [
-                _DiceCard(
-                  cardColor: Colors.green,
-                  textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  title: "Ability",
-                  upDown: UpDownStat(
-                    getValue: () => holder.ability,
-                    onDownPressed: () => holder.ability--,
-                    onUpPressed: () => holder.ability++,
-                    textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  ),
-                  width: width
-                ),
-                _DiceCard(
-                  cardColor: Colors.yellow,
-                  textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.black,
-                  title: "Proficiency",
-                  upDown: UpDownStat(
-                    getValue: () => holder.proficiency,
-                    onDownPressed: () => holder.proficiency--,
-                    onUpPressed: () => holder.proficiency++,
-                    textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.black,
-                  ),
-                  width: width
-                ),
-                _DiceCard(
-                  cardColor: Colors.purple,
-                  textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  title: "Difficulty",
-                  upDown: UpDownStat(
-                    getValue: () => holder.difficulty,
-                    onDownPressed: () => holder.difficulty--,
-                    onUpPressed: () => holder.difficulty++,
-                    textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  ),
-                  width: width
-                ),
-                _DiceCard(
-                  cardColor: Colors.red,
-                  textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  title: "Challenge",
-                  upDown: UpDownStat(
-                    getValue: () => holder.challenge,
-                    onDownPressed: () => holder.challenge--,
-                    onUpPressed: () => holder.challenge++,
-                    textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  ),
-                  width: width
-                ),
-                _DiceCard(
-                  cardColor: Colors.lightBlue,
-                  textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.black,
-                  title: "Boost",
-                  upDown: UpDownStat(
-                    getValue: () => holder.boost,
-                    onDownPressed: () => holder.boost--,
-                    onUpPressed: () => holder.boost++,
-                    textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.black,
-                  ),
-                  width: width
-                ),
-                _DiceCard(
-                  cardColor: Colors.black,
-                  textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  title: "Setback",
-                  upDown: UpDownStat(
-                    getValue: () => holder.setback,
-                    onDownPressed: () => holder.setback--,
-                    onUpPressed: () => holder.setback++,
-                    textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.white,
-                  ),
-                  width: width
-                ),
-                _DiceCard(
-                  cardColor: Colors.white,
-                  textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.black,
-                  title: "Force",
-                  upDown: UpDownStat(
-                    getValue: () => holder.force,
-                    onDownPressed: () => holder.force--,
-                    onUpPressed: () => holder.force++,
-                    textColor: !SW.of(context).getPreference(preferences.colorDice, true) ? null : Colors.black,
-                  ),
-                  width: width
-                ),
+                _InstantDiceCard(sides: 100, width: width),
+                _InstantDiceCard(sides: 10, width: width)
               ]
             )
           ]
@@ -131,37 +67,63 @@ class DiceRoller extends StatelessWidget{
   }
 }
 
-class _DiceCard extends StatelessWidget{
+class _InstantDiceCard extends StatefulWidget{
 
-  final Color cardColor;
-  final Color? textColor;
-  final String title;
-  final UpDownStat upDown;
+  final int sides;
   final double width;
 
-  _DiceCard({required this.cardColor, required this.textColor, required this.title, required this.upDown, required this.width});
+  _InstantDiceCard({required this.sides, required this.width});
 
   @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
+  State<StatefulWidget> createState() => _InstantState(sides, width);
+
+}
+
+class _InstantState extends State{
+
+  final int sides;
+  final double width;
+  int result = -1;
+
+  _InstantState(this.sides, this.width);
+
+  @override
+  Widget build(BuildContext context) =>
+    ConstrainedBox(
       constraints: BoxConstraints(maxWidth: width),
-      child: Padding(
-        padding: EdgeInsets.all(2),
-        child: Card(
-          color: SW.of(context).getPreference(preferences.colorDice, true) ? cardColor : null,
+      child: Card(
+        margin: EdgeInsets.all(4),
+        child: Padding(
+          padding: EdgeInsets.all(5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                title,
+                "d" + sides.toString(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6?.copyWith(color: textColor)
+                style: Theme.of(context).textTheme.headline6
               ),
-              upDown
+              Row(
+                children: [
+                  Expanded(child: Text(
+                    result == -1 ? "" : result.toString(),
+                    textAlign: TextAlign.center,
+                  )),
+                  Expanded(child: TextButton(
+                    onPressed: (){
+                      var res = Die(
+                        name: "die",
+                        sides: List<SimpleSide>.generate(sides, (i) => SimpleSide((i+1).toString()))
+                      ).roll();
+                      setState(() => result = int.tryParse(res.toString()) ?? -1);
+                    },
+                    child: Text("Roll")
+                  ))
+                ],
+              )
             ]
           ),
-        ),
+        )
       )
     );
-  }
 }

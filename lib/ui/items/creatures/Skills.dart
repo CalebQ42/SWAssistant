@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/items/Skill.dart';
-import 'package:swassistant/ui/dialogs/SWDiceDialog.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/dialogs/creature/SkillEditDialog.dart';
@@ -20,16 +19,8 @@ class Skills extends StatelessWidget{
       return InkResponse(
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
-        onTap: (){
-          showModalBottomSheet(
-            context: context,
-            builder: (context) =>
-              SWDiceDialog(
-                holder: creature.skills[index].getDice(creature),
-                context: context
-              )
-          );
-        },
+        onTap: () =>
+          creature.skills[index].getDice(creature).showDialog(context),
         child: Row(
           children: [
             Expanded(
