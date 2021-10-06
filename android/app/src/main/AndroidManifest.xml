@@ -12,6 +12,7 @@
         android:label="SWAssistant"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:exported="true"
             android:name="com.apps.darkstorm.swrpg.assistant.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

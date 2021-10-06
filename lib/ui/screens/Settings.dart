@@ -23,7 +23,9 @@ class SettingsState extends State{
   Widget build(BuildContext context){
     var app = SW.of(context);
     return Scaffold(
-      appBar: SWAppBar(),
+      appBar: SWAppBar(
+        backgroundColor: Theme.of(context).primaryColor
+      ),
       drawer: SWDrawer(),
       body: Column(
         children: [

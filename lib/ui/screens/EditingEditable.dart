@@ -69,6 +69,7 @@ class _EditingEditableState extends State {
               ),
             PopupMenuItem(child: Text("Clone"), value: "clone"),
           ],
+          backgroundColor: Theme.of(context).primaryColor,
           popupFunctions: {
             "disableForce": () => setState(() => (profile as Character)
                 .disableForce = !(profile as Character).disableForce),

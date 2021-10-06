@@ -54,12 +54,15 @@ class SWAppState extends State {
       themeMode: SW.of(context).getPreference(preferences.forceLight, false) ?
         ThemeMode.light : SW.of(context).getPreference(preferences.forceDark, false) ?
         ThemeMode.dark : ThemeMode.system,
-      theme: ThemeData(
-        primaryColor: Colors.blue,
-        // accentColor: Colors.redAccent,
-        bottomSheetTheme: bottomSheetTheme,
+      theme: ThemeData.light().copyWith(
+        primaryColor: Colors.lightBlue,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.lightBlue,
+          accentColor: Colors.redAccent
+        ),
+        snackBarTheme: snackTheme,
         inputDecorationTheme: inputTheme,
-        snackBarTheme: snackTheme
+        bottomSheetTheme: bottomSheetTheme
       ),
       darkTheme: SW.of(context).getPreference(preferences.amoled, false) ? 
         ThemeData( //Amoled Theme
@@ -76,17 +79,24 @@ class SWAppState extends State {
             ),
           ),
           primaryColor: Colors.red,
-          // accentColor: Colors.lightBlueAccent,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.red,
+            primaryColorDark: Colors.red,
+            accentColor: Colors.lightBlueAccent,
+            brightness: Brightness.dark
+          ),
           bottomSheetTheme: bottomSheetTheme.copyWith(
             backgroundColor: Colors.black,
           ),
           dividerColor: Colors.grey.shade800,
-          brightness: Brightness.dark,
           inputDecorationTheme: inputTheme
         ) : ThemeData( //Dark Theme
           primaryColor: Colors.red,
-          // accentColor: Colors.lightBlueAccent,
-          brightness: Brightness.dark,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.red,
+            accentColor: Colors.lightBlueAccent,
+            brightness: Brightness.dark
+          ),
           bottomSheetTheme: bottomSheetTheme,
           inputDecorationTheme: inputTheme,
           snackBarTheme: snackTheme

@@ -6,18 +6,23 @@ class SWAppBar extends AppBar{
 
   static List<PopupMenuItem> defPopup = [
     PopupMenuItem(
-        value: "translate",
-        child: const Text("Help Translate!"),
+      value: "translate",
+      child: const Text("Help Translate!"),
+    ),
+    PopupMenuItem(
+      value: "discuss",
+      child: const Text("Suggestions/Announcements")
     )
   ];
 
   static Map<String, Function> defFunctions = {
-    "translate" : () => _launchURL("https://crowdin.com/project/swrpg")
+    "translate" : () => _launchURL("https://crowdin.com/project/swrpg"),
+    "discuss" : () => _launchURL("https://github.com/CalebQ42/SWAssistant/discussions")
   };
 
   SWAppBar({Widget? title, List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions,
-      Map<String, Function>? popupFunctions, PreferredSizeWidget? bottom}) : 
-        super(title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
+      Map<String, Function>? popupFunctions, PreferredSizeWidget? bottom, required Color backgroundColor}) : 
+        super(backgroundColor: backgroundColor, title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
 
   static List<Widget> _getActions(List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions, Map<String, Function>? popupFunctions) =>
     <Widget>[]
@@ -43,8 +48,6 @@ class SWAppBar extends AppBar{
       throw 'Could not launch $url';
   }
 }
-
-
 
 class SWDrawer extends StatelessWidget{
   @override
@@ -129,7 +132,7 @@ class SWDrawer extends StatelessWidget{
           //       Navigator.of(context).pushNamed("/download");
           //   }
           // ),
-          // Divider(),
+          Divider(),
           Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text("Other Stuff")),
           ListTile(
             title: Text("Dice"),
@@ -169,6 +172,18 @@ class SWDrawer extends StatelessWidget{
                 Navigator.of(context).pushNamed("/settings");
               }else
                 Navigator.of(context).pushNamed("/settings");
+            }
+          ),
+          Divider(),
+          ListTile(
+            title: Text("Donate"),
+            leading: Icon(Icons.monetization_on),
+            onTap: (){
+              Navigator.of(context).pop();
+              //TODO: show popup that gives option to donate through github or Google Play.
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("No available (yet)"))
+              );
             }
           )
         ],

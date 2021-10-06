@@ -1,13 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
 import 'package:swassistant/dice/Dice.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/dice/Sides.dart';
 import 'package:swassistant/ui/Common.dart';
-import 'package:swassistant/ui/UpDownStat.dart';
-import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/ui/misc/DiceSelector.dart';
 
 class DiceRoller extends StatelessWidget{
@@ -22,7 +19,8 @@ class DiceRoller extends StatelessWidget{
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(
-        title: Text("Dice")
+        title: Text("Dice"),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){

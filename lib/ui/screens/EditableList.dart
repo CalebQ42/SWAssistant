@@ -123,6 +123,7 @@ class _EditableListState extends State{
               setState(() => searching = true)
           )
         ],
+        backgroundColor: Theme.of(context).primaryColor,
         bottom: PreferredSize(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
