@@ -5,18 +5,24 @@ class Bottom extends StatelessWidget{
   final List<Widget>? buttons;
   final Color? background;
   final Widget? child;
+  final bool padding;
 
-  Bottom({this.buttons, this.background, this.child});
+  Bottom({this.buttons, this.background, this.child, this.padding = true});
 
   @override
-  Widget build(BuildContext context) =>
-    Wrap(
+  Widget build(BuildContext context) {
+    return Wrap(
       children: [
-        Expanded(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.70),
-            child: SingleChildScrollView(
-              primary: false,
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.70),
+          child: SingleChildScrollView(
+            primary: false,
+            child: Padding(
+              padding: padding ? EdgeInsets.only(
+                top: 10,
+                left: 10,
+                right: 10,
+              ) : EdgeInsets.zero,
               child: child
             )
           )
@@ -27,6 +33,7 @@ class Bottom extends StatelessWidget{
         )
       ],
     );
+  }
 
   void show(BuildContext context) =>
     showModalBottomSheet(

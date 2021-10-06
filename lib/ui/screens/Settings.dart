@@ -140,6 +140,13 @@ class SettingsState extends State{
             title: Text("Crash Reporting"),
             subtitle: Text("Anonymous crash reporting provided by Firebase Crashlytics")
           ),
+          Divider(),
+          AboutListTile(
+            applicationName: "SWAssistant",
+            applicationIcon: ImageIcon(AssetImage("assets/SWAssistant.png")),
+            applicationLegalese: "See https://github.com/CalebQ42/SWAssistant for license and other info",
+            applicationVersion: "3.0.0.0",
+          )
         ],
       )
     );

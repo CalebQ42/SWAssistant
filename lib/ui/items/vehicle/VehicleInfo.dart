@@ -35,6 +35,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
+          textType: TextInputType.number,
           title: "Silhouette",
         )
       ],
@@ -57,6 +58,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
+          textType: TextInputType.number,
           title: "Speed",
         )
       ],
@@ -79,6 +81,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
+          textType: TextInputType.number,
           title: "Armor",
         )
       ],
@@ -101,6 +104,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
+          textType: TextInputType.numberWithOptions(signed: true),
           title: "Handling",
         )
       ],
@@ -124,6 +128,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
+          textType: TextInputType.number,
           title: "Hard Points",
         )
       ],
@@ -146,6 +151,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
+          textType: TextInputType.number,
           title: "Passengers",
         )
       ],

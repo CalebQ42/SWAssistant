@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 
@@ -304,6 +305,9 @@ class SW{
 
   static Future<SW> baseInit() async{
     WidgetsFlutterBinding.ensureInitialized();
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+    }
     var prefs = await SharedPreferences.getInstance();
     var app = SW(prefs: prefs);
     if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode)

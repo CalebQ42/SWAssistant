@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/ui/dialogs/Donate.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SWAppBar extends AppBar{
@@ -44,8 +47,6 @@ class SWAppBar extends AppBar{
   static void _launchURL(String url) async {
     if (await canLaunch(url))
       await launch(url);
-    else
-      throw 'Could not launch $url';
   }
 }
 
@@ -180,12 +181,11 @@ class SWDrawer extends StatelessWidget{
             leading: Icon(Icons.monetization_on),
             onTap: (){
               Navigator.of(context).pop();
-              //TODO: show popup that gives option to donate through github or Google Play.
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("No available (yet)"))
-              );
+              Bottom(
+                child: DonateDialog(),
+              ).show(context);
             }
-          )
+          ),
         ],
       )
     );
