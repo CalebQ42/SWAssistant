@@ -38,5 +38,3 @@ flutter:
   assets:
     - assets/testing/
     - assets/
-flutter_intl:
-  enabled: true
