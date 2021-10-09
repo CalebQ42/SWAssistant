@@ -1,0 +1,32 @@
+{
+    "translate": "Help Translate!",
+    "@translate": {
+      "description": "Links to crowdin"
+    },
+    "discuss": "Discuss",
+    "@discuss": {
+      "description": "Links to Github discussions"
+    },
+
+    "characters": "Characters",
+    "@characters": {},
+    "minions": "Minions",
+    "@minions": {},
+    "vehicles": "Vehicles",
+    "@vehicles": {},
+    "download": "Download",
+    "@download": {},
+    "dice": "Dice",
+    "@dice": {},
+    "guide": "Guide",
+    "@guide": {},
+    "settings": "Settings",
+    "@": {},
+    "donate": "Donate",
+    "@": {},
+
+    "": "",
+    "@": {
+      "description": ""
+    },
+}

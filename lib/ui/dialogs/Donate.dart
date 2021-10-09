@@ -6,7 +6,7 @@ class DonateDialog extends StatelessWidget{
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("There are two options for donations: Github Sponsors or Google Play.", textAlign: TextAlign.center,),
+        Text("Donation Options", style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
         Text("Google Play:", style: Theme.of(context).textTheme.headline6),
         Text("Easy to use with support for most currencies, but donations are capped and Google takes a 15% cut", textAlign: TextAlign.center,),
         Text("Github Sponsors:", style: Theme.of(context).textTheme.headline6),

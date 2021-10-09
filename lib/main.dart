@@ -6,6 +6,7 @@ import 'package:swassistant/ui/intro/IntroZero.dart';
 import 'package:swassistant/ui/screens/DiceRoller.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async =>
   SW.baseInit().then(
@@ -51,6 +52,18 @@ class SWAppState extends State {
     );
     return MaterialApp(
       title: 'SWAssistant',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
+      supportedLocales: [
+        Locale("en", ""),
+        Locale("de",""),
+        Locale("es",""),
+        Locale("fr",""),
+        Locale("it","")
+      ],
       themeMode: SW.of(context).getPreference(preferences.forceLight, false) ?
         ThemeMode.light : SW.of(context).getPreference(preferences.forceDark, false) ?
         ThemeMode.dark : ThemeMode.system,

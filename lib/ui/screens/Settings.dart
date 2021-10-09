@@ -74,57 +74,30 @@ class SettingsState extends State{
           SwitchListTile(
             value: app.getPreference(preferences.firebase, true),
             onChanged: (b){
-              if(!b)
-                showDialog(
-                  context: context,
-                  builder: (context) => 
-                    AlertDialog(
-                      content: Text("Turning off firebase will remove the ability to download profiles. Additionally the app needs to be restarted for this to take effect. Continue?"),
-                      actions: [
-                        TextButton(
-                          onPressed: (){
-                            app.prefs.setBool(preferences.firebase, b);
-                            if(Platform.isIOS)
-                              exit(0);
-                            else
-                              SystemNavigator.pop();
-                          },
-                          child: Text("Continue")
-                        ),
-                        TextButton(
-                          child: Text("Cancel"),
-                          onPressed: () =>
-                            Navigator.pop(context)
-                        )
-                      ],
-                    )
-                );
-              else
-                showDialog(
-                  context: context,
-                  builder: (context) => 
-                    AlertDialog(
-                      content: Text("Turning on Firebase requires an app restart. Continue?"),
-                      actions: [
-                        TextButton(
-                          onPressed: (){
-                            app.prefs.setBool(preferences.firebase, b);
-                            if(Platform.isIOS)
-                              exit(0);
-                            else
-                              SystemNavigator.pop();
-                          },
-                          child: Text("Continue")
-                        ),
-                        TextButton(
-                          child: Text("Cancel"),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          }
-                        )
-                      ],
-                    )
-                );
+              showDialog(
+                context: context,
+                builder: (context) => 
+                  AlertDialog(
+                    content: Text(!b ? "Turning off firebase will remove the ability to download profiles. Additionally the app needs to be restarted for this to take effect. Continue?" : "Turning on Firebase requires an app restart. Continue?"),
+                    actions: [
+                      TextButton(
+                        onPressed: (){
+                          app.prefs.setBool(preferences.firebase, b);
+                          if(Platform.isIOS)
+                            exit(0);
+                          else
+                            SystemNavigator.pop();
+                        },
+                        child: Text("Continue")
+                      ),
+                      TextButton(
+                        child: Text("Cancel"),
+                        onPressed: () =>
+                          Navigator.pop(context)
+                      )
+                    ],
+                  )
+              );
             },
             title: Text("Firebase"),
             subtitle: Text("WARNING: Needed for crash reporting and downloads"),
@@ -143,7 +116,7 @@ class SettingsState extends State{
           Divider(),
           AboutListTile(
             applicationName: "SWAssistant",
-            applicationIcon: ImageIcon(AssetImage("assets/SWAssistant.png")),
+            applicationIcon: Image(image: AssetImage("assets/SWAssistant.png"), height: 64,),
             applicationLegalese: "See https://github.com/CalebQ42/SWAssistant for license and other info",
             applicationVersion: "3.0.0.0",
           )

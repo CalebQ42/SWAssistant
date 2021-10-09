@@ -59,7 +59,7 @@ class SWDrawer extends StatelessWidget{
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text("SW Assistant"),
+            child: Text("SWAssistant"),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor
             )
