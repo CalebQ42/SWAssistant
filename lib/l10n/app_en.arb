@@ -10,4 +10,73 @@
     "guide": "Guide",
     "settings": "Settings",
     "donate": "Donate",
+
+    "edit": "Edit",
+
+    "donoOptions": "Donation Options",
+    "gPlay": "Google Play",
+    "gPlayDesc": "Easy to use with support for most currencies, but donations are capped and Google takes a 15% cut",
+    "sponsors": "Github Sponsors",
+    "sponsorsDesc": "You can donate either one time or on a monthly basis, with custom amounts, AND 100% of your money goes to the developer",
+
+    "name": "Name",
+    "desc": "Description",
+    "rank": "Rank",
+    "characteristic": "Characteristic",
+
+    "duty": "Duty",
+    "forcePower": "Force Power",
+    "obligation": "Obligation",
+    "specialization": "Specialization",
+    "skill": "Skill",
+    "talent": "Talent",
+    "item": "Item",
+    "weapon": "Weapon",
+
+    "value": "Value",
+    "career": "Career",
+    //TODO: skills List
+
+    "injury": "Injury",
+    "severity": "Severity",
+    "severityLevels" : [
+        "Easy",
+        "Average",
+        "Hard",
+        "Daunting"
+    ],
+
+    "count": "Count",
+    "encumTotal": "Encumbrance (Total)",
+
+    "advNeeded": "Advantage Needed",
+
+    "damage": "Damage",
+    "critical": "Critical",
+    "hardPoints": "Hard Points",
+    "encum": "Encumbrance",
+    "firingArc": "Firing Arc",
+    "range": "Range"
+    "weapRange": "Weapon Range"
+    "rangeLevels": [
+        "Enagaged",
+        "Short",
+        "Medium",
+        "Long",
+        "Extreme"
+    ],
+    "itemDamage": "Item Damage",
+    "damageLevels": [
+        "Undamaged",
+        "Minor",
+        "Moderate",
+        "Major",
+        "Broken"
+    ],
+    "skillBase": "Skill Base",
+    "addCharacteristic": "Add Characteristic",
+    "addBrawn": "Add Brawn to Damage",
+    "loaded": "Loaded",
+    "slugthrower": "Slugthrower (Needs Ammo)",
+    "ammo": "Ammo",
 }

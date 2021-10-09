@@ -57,7 +57,7 @@ class _WeaponCharacteristicDialogState extends State{
             controller: nameController,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Name",
+              labelText: "Characteristic",
             ),
           ),
           Container(height: 10),
@@ -85,12 +85,12 @@ class _WeaponCharacteristicDialogState extends State{
                   onClose(wc);
                   Navigator.of(context).pop();
                 } : null,
-                child: Text("Save")
+                child: Text(MaterialLocalizations.of(context).saveButtonLabel)
               ),
               TextButton(
                 onPressed: () =>
                   Navigator.of(context).pop(),
-                child: Text("Cancel")
+                child: Text(MaterialLocalizations.of(context).cancelButtonLabel)
               )
             ],
           )

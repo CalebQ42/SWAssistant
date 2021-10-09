@@ -90,7 +90,7 @@ class _WeaponEditDialogState extends State{
                 controller: nameController,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  labelText: "Name",
+                  labelText: "Weapon",
                 ),
               ),
               Container(height: 10),
@@ -347,7 +347,7 @@ class _WeaponEditDialogState extends State{
               ButtonBar(
                 children: [
                   TextButton(
-                    child: Text("Save"),
+                    child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                     onPressed: weapon.name != "" && weapon.damage != -1 && weapon.critical != -1
                         && weapon.skill != -1 && weapon.skillBase != -1 ? (){
                       onClose(weapon);
@@ -355,7 +355,7 @@ class _WeaponEditDialogState extends State{
                     } : null,
                   ),
                   TextButton(
-                    child: Text("Cancel"),
+                    child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                     onPressed: (){
                       Navigator.of(context).pop();
                     },

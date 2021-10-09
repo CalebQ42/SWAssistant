@@ -97,14 +97,14 @@ class _CriticalInjuryEditState extends State{
             ButtonBar(
               children: [
                 TextButton(
-                  child: Text("Save"),
+                  child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                   onPressed: criticalInjury.name != "" ? (){
                     Navigator.of(context).pop();
                     onClose(criticalInjury);
                   } : null,
                 ),
                 TextButton(
-                  child: Text("Cancel"),
+                  child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                   onPressed: (){
                     Navigator.of(context).pop();
                   },

@@ -65,7 +65,7 @@ class _ItemEditDialogState extends State{
               textCapitalization: TextCapitalization.words,
               controller: nameController,
               decoration: InputDecoration(
-                labelText: "Name"
+                labelText: "Item"
               ),
             ),
             Container(height: 10),
@@ -99,14 +99,14 @@ class _ItemEditDialogState extends State{
             ButtonBar(
               children: [
                 TextButton(
-                  child: Text("Save"),
+                  child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                   onPressed: item.name != "" ? (){
                     onClose(item);
                     Navigator.of(context).pop();
                   } : null,
                 ),
                 TextButton(
-                  child: Text("Cancel"),
+                  child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                   onPressed: () =>
                     Navigator.of(context).pop(),
                 )

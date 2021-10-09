@@ -50,14 +50,14 @@ class _SpecializationState extends State{
           ButtonBar(
             children: [
               TextButton(
-                child: Text("Save"),
+                child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                 onPressed: specialization != "" ? (){
                   onClose(specialization);
                   Navigator.of(context).pop();
                 } : null,
               ),
               TextButton(
-                child: Text("Cancel"),
+                child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                 onPressed: () =>
                   Navigator.of(context).pop(),
               )

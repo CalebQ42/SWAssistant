@@ -133,14 +133,14 @@ class _SkillEditDialogState extends State{
             ButtonBar(
               children: [
                 TextButton(
-                  child: Text("Save"),
+                  child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                   onPressed: skill.name != "" && skill.base != -1 && (creature is Character ? skill.value != -1 : true) ? (){
                     onClose(skill);
                     Navigator.of(context).pop();
                   } : null,
                 ),
                 TextButton(
-                  child: Text("Cancel"),
+                  child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                   onPressed: (){
                     Navigator.of(context).pop();
                   },

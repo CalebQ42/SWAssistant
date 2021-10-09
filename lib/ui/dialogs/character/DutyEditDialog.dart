@@ -85,14 +85,14 @@ class DutyEditDialogState extends State{
           ButtonBar(
             children: [
               TextButton(
-                child: Text("Save"),
+                child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                 onPressed: duty.name != "" && duty.value != -1 ? (){
                   onClose(duty);
                   Navigator.pop(context);
                 } : null,
               ),
               TextButton(
-                child: Text("Cancel"),
+                child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                 onPressed: () => Navigator.pop(context),
               )
             ],
