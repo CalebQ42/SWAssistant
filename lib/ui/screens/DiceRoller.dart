@@ -24,7 +24,7 @@ class DiceRoller extends StatelessWidget{
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          holder.getDice().roll().showCombinedResults(context, noSuccess: holder.ability == 0 && holder.proficiency == 0
+          holder.getDice(context).roll().showCombinedResults(context, noSuccess: holder.ability == 0 && holder.proficiency == 0
               && holder.difficulty == 0 && holder.challenge == 0 && holder.boost == 0 && holder.challenge == 0);
         },
         child: Icon(Icons.casino),

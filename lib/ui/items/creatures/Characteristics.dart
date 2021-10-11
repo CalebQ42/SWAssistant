@@ -64,7 +64,7 @@ class Characteristics extends StatelessWidget{
           style: style,
           textType: TextInputType.number,
           defaultSave: true,
-          title: Creature.characteristics[charNum]
+          title: Creature.characteristics(context)[charNum]
         )
       )
     );

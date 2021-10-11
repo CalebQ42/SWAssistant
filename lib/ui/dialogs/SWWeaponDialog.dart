@@ -20,16 +20,16 @@ class SWWeaponDialog extends StatelessWidget{
   //Overflow the first card to cover top of bottom sheet.
 
   @override
-  Widget build(BuildContext context) =>
-    Padding(
+  Widget build(BuildContext context) {
+    return Padding(
       padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
       child: Wrap(
         children: List.generate(
-          SWDice.SWDice.length, (index) =>
+          7, (index) =>
             Row(
               children: <Widget>[
                 Expanded(
-                  child:Text(SWDice.SWDice[index])
+                  child: Text(SWDice.SWDice[index])
                 ),
                 Expanded(
                   child:UpDownStat(
@@ -110,7 +110,7 @@ class SWWeaponDialog extends StatelessWidget{
               child: Text("Fire!"),
               onPressed: (){
                 Navigator.of(context).pop();
-                _WeaponResults(weapon: weapon, results: holder.getDice().roll(), brawn: brawn,).show(context);
+                _WeaponResults(weapon: weapon, results: holder.getDice(context).roll(), brawn: brawn,).show(context);
               },
             ),
             TextButton(
@@ -121,6 +121,7 @@ class SWWeaponDialog extends StatelessWidget{
         )
       ))
     );
+  }
   
   void show(BuildContext context) =>
     showModalBottomSheet(

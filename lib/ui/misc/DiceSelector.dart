@@ -4,7 +4,7 @@ import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/dice/SWDice.dart' as SWDice;
 import 'package:swassistant/ui/UpDownStat.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class DiceSelector extends StatelessWidget{
 
   final SWDiceHolder holder;
@@ -50,7 +50,7 @@ class DiceSelector extends StatelessWidget{
       }
     }
     var title = Text(
-      SWDice.SWDice[type],
+      getText(context),
       textAlign: TextAlign.center,
       style: small ? Theme.of(context).textTheme.bodyText1?.copyWith(color: text) : Theme.of(context).textTheme.headline6?.copyWith(color: text),
     );
@@ -109,6 +109,26 @@ class DiceSelector extends StatelessWidget{
         return holder.force;
     }
     return -1;
+  }
+
+  String getText(BuildContext context){
+    switch(type){
+      case 0:
+        return AppLocalizations.of(context)!.ability;
+      case 1:
+        return AppLocalizations.of(context)!.proficiency;
+      case 2:
+        return AppLocalizations.of(context)!.difficulty;
+      case 3:
+        return AppLocalizations.of(context)!.challenge;
+      case 4:
+        return AppLocalizations.of(context)!.boost;
+      case 5:
+        return AppLocalizations.of(context)!.setback;
+      case 6:
+        return AppLocalizations.of(context)!.force;
+    }
+    return "";
   }
 
   void up(){

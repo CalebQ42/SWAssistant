@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 mixin Creature on Editable{
-  static final List<String> characteristics = ["Brawn", "Agility", "Intellect", "Cunning", "Willpower", "Presence"];
+  static List<String> characteristics(BuildContext context) => [
+      AppLocalizations.of(context)!.brawn,
+      AppLocalizations.of(context)!.agility,
+      AppLocalizations.of(context)!.intellect,
+      AppLocalizations.of(context)!.cunning,
+      AppLocalizations.of(context)!.willpower,
+      AppLocalizations.of(context)!.presence
+    ];
 
   List<int> charVals = new List.filled(6, 0, growable: false);
   List<Skill> skills = [];

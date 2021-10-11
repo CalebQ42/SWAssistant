@@ -40,7 +40,7 @@ class Weapons extends StatelessWidget{
               holder: (){
                 if(editable is Creature){
                   var skill = editable.skills.firstWhere(
-                    (element) => element.name == Weapon.weaponSkills[editable.weapons[i].skill],
+                    (element) => element.name == Weapon.weaponSkills(context)[editable.weapons[i].skill],
                     orElse: () => Skill()
                   );
                   if(skill.name != "" && skill.base == editable.weapons[i].skillBase)

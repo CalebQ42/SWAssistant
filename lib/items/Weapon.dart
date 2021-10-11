@@ -1,5 +1,7 @@
 
+import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/JsonSavable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'WeaponCharacteristic.dart';
 
@@ -92,12 +94,12 @@ class Weapon implements JsonSavable{
     };
   }
 
-  static List<String> weaponSkills = [
-    "Brawl",
-    "Gunnery",
-    "Lightsaber",
-    "Melee",
-    "Ranged(Light)",
-    "Ranged(Heavy)",
+  static List<String> weaponSkills(BuildContext context) => [
+    AppLocalizations.of(context)!.skills3,
+    AppLocalizations.of(context)!.skills11,
+    AppLocalizations.of(context)!.skills13,
+    AppLocalizations.of(context)!.skills16,
+    AppLocalizations.of(context)!.skills23,
+    AppLocalizations.of(context)!.skills22,
   ];
 }

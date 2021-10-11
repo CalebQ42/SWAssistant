@@ -78,6 +78,7 @@ class _WeaponEditDialogState extends State{
 
   @override
   Widget build(BuildContext context) {
+    var weaponSkills = Weapon.weaponSkills(context);
     return SingleChildScrollView(
       child: DropdownButtonHideUnderline(
         child: Padding(
@@ -226,16 +227,16 @@ class _WeaponEditDialogState extends State{
                   isExpanded: true,
                   onTap: () => FocusScope.of(context).unfocus(),
                   items: List.generate(
-                    Weapon.weaponSkills.length,
+                    weaponSkills.length,
                     (i) => DropdownMenuItem(
-                      child: Text(Weapon.weaponSkills[i]),
+                      child: Text(weaponSkills[i]),
                       value: i
                     )
                   ),
                   value: weapon.skill == -1 ? null : weapon.skill,
                   onChanged: (value) => setState((){
                     weapon.skill = value ?? -1;
-                    weapon.skillBase = Skill.skillsList[Weapon.weaponSkills[weapon.skill]]!;
+                    weapon.skillBase = Skill.skillsList(context)[weaponSkills[weapon.skill]]!;
                   }),
                   hint: Text("Skill"),
                 )
@@ -251,9 +252,9 @@ class _WeaponEditDialogState extends State{
                   isExpanded: true,
                   onTap: () => FocusScope.of(context).unfocus(),
                   items: List.generate(
-                    Creature.characteristics.length,
+                    6,
                     (i) => DropdownMenuItem(
-                      child: Text(Creature.characteristics[i]),
+                      child: Text(Creature.characteristics(context)[i]),
                       value: i
                     )
                   ),

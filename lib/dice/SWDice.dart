@@ -1,93 +1,83 @@
+import 'package:flutter/material.dart';
 import 'package:swassistant/dice/Dice.dart';
 import 'package:swassistant/dice/Sides.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const String suc = "Success";
-const String fai = "Failure";
-const String adv = "Advantage";
-const String thr = "Threat";
-const String tri = "Triumpth";
-const String des = "Despair";
-//Force die sides
-const String lig = "Light Side";
-const String dar = "Dark Side";
-
-const List<String> SWDice = ["Ability", "Proficiency", "Difficulty", "Challenge", "Boost", "Setback", "Force"];
-
-Die ability = Die(name: SWDice[0], sides: [
-    SimpleSide(""),
-    SimpleSide(adv),
-    SimpleSide(adv),
-    SimpleSide(suc),
-    SimpleSide(suc),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)]),
-    ComplexSide(parts:[ComplexSidePart(name:suc,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:2)])
+Die ability(BuildContext context) => Die(name: AppLocalizations.of(context)!.ability, sides: [
+  SimpleSide(""),
+  SimpleSide(AppLocalizations.of(context)!.advantage),
+  SimpleSide(AppLocalizations.of(context)!.advantage),
+  SimpleSide(AppLocalizations.of(context)!.success),
+  SimpleSide(AppLocalizations.of(context)!.success),
+  ComplexSide(parts:[ComplexSidePart(name: AppLocalizations.of(context)!.advantage, value: 1),ComplexSidePart(name: AppLocalizations.of(context)!.success, value:1)]),
+  ComplexSide(parts:[ComplexSidePart(name: AppLocalizations.of(context)!.success, value: 2)]),
+  ComplexSide(parts:[ComplexSidePart(name: AppLocalizations.of(context)!.advantage, value: 2)])
 ]);
-Die proficiency = Die(name: SWDice[1], sides: [
+Die proficiency(BuildContext context) => Die(name:AppLocalizations.of(context)!.proficiency, sides: [
     SimpleSide(""),
-    SimpleSide(suc),
-    SimpleSide(suc),
-    SimpleSide(adv),
-    SimpleSide(tri),
-    ComplexSide(parts:[ComplexSidePart(name:suc,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:suc,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)]),
+    SimpleSide(AppLocalizations.of(context)!.success),
+    SimpleSide(AppLocalizations.of(context)!.success),
+    SimpleSide(AppLocalizations.of(context)!.advantage),
+    SimpleSide(AppLocalizations.of(context)!.triumph),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.success,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.success,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.advantage,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.advantage,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.advantage,value:1),ComplexSidePart(name:AppLocalizations.of(context)!.success,value:1)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.advantage,value:1),ComplexSidePart(name:AppLocalizations.of(context)!.success,value:1)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.advantage,value:1),ComplexSidePart(name:AppLocalizations.of(context)!.success,value:1)]),
 ]);
-Die difficulty = Die(name: SWDice[2], sides: [
+Die difficulty(BuildContext context) => Die(name: AppLocalizations.of(context)!.difficulty, sides: [
     SimpleSide(""),
-    SimpleSide(thr),
-    SimpleSide(thr),
-    SimpleSide(thr),
-    SimpleSide(fai),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:1),ComplexSidePart(name:fai,value:1)]),
-    ComplexSide(parts:[ComplexSidePart(name:fai,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:2)])
+    SimpleSide(AppLocalizations.of(context)!.threat),
+    SimpleSide(AppLocalizations.of(context)!.threat),
+    SimpleSide(AppLocalizations.of(context)!.threat),
+    SimpleSide(AppLocalizations.of(context)!.failure),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.threat,value:1),ComplexSidePart(name:AppLocalizations.of(context)!.failure,value:1)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.failure,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.threat,value:2)])
 ]);
-Die challenge = Die(name: SWDice[3], sides: [
+Die challenge(BuildContext context) => Die(name: AppLocalizations.of(context)!.challenge, sides: [
     SimpleSide(""),
-    SimpleSide(fai),
-    SimpleSide(fai),
-    SimpleSide(thr),
-    SimpleSide(thr),
-    SimpleSide(des),
-    ComplexSide(parts:[ComplexSidePart(name:fai,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:fai,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:1),ComplexSidePart(name:fai,value:1)]),
-    ComplexSide(parts:[ComplexSidePart(name:thr,value:1),ComplexSidePart(name:fai,value:1)]),
+    SimpleSide(AppLocalizations.of(context)!.failure),
+    SimpleSide(AppLocalizations.of(context)!.failure),
+    SimpleSide(AppLocalizations.of(context)!.threat),
+    SimpleSide(AppLocalizations.of(context)!.threat),
+    SimpleSide(AppLocalizations.of(context)!.despair),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.failure,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.failure,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.threat,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.threat,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.threat,value:1),ComplexSidePart(name:AppLocalizations.of(context)!.failure,value:1)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.threat,value:1),ComplexSidePart(name:AppLocalizations.of(context)!.failure,value:1)]),
 ]);
-Die boost = Die(name: SWDice[4], sides: [
+Die boost(BuildContext context) => Die(name: AppLocalizations.of(context)!.boost, sides: [
     SimpleSide(""),
     SimpleSide(""),
-    SimpleSide(adv),
-    SimpleSide(suc),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:2)]),
-    ComplexSide(parts:[ComplexSidePart(name:adv,value:1),ComplexSidePart(name:suc,value:1)])
+    SimpleSide(AppLocalizations.of(context)!.advantage),
+    SimpleSide(AppLocalizations.of(context)!.success),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.advantage,value:2)]),
+    ComplexSide(parts:[ComplexSidePart(name:AppLocalizations.of(context)!.advantage,value:1),ComplexSidePart(name:AppLocalizations.of(context)!.success,value:1)])
 ]);
-Die setback = Die(name: SWDice[5], sides: [
+Die setback(BuildContext context) => Die(name: AppLocalizations.of(context)!.setback, sides: [
     SimpleSide(""),
     SimpleSide(""),
-    SimpleSide(fai),
-    SimpleSide(fai),
-    SimpleSide(thr),
-    SimpleSide(thr)
+    SimpleSide(AppLocalizations.of(context)!.failure),
+    SimpleSide(AppLocalizations.of(context)!.failure),
+    SimpleSide(AppLocalizations.of(context)!.threat),
+    SimpleSide(AppLocalizations.of(context)!.threat)
 ]);
-Die force = Die(name: SWDice[6], sides: [
-    SimpleSide(dar),
-    SimpleSide(dar),
-    SimpleSide(dar),
-    SimpleSide(dar),
-    SimpleSide(dar),
-    SimpleSide(dar),
-    SimpleSide(lig),
-    SimpleSide(lig),
-    ComplexSide(parts: [ComplexSidePart(name:lig,value:2)]),
-    ComplexSide(parts: [ComplexSidePart(name:lig,value:2)]),
-    ComplexSide(parts: [ComplexSidePart(name:lig,value:2)]),
-    ComplexSide(parts: [ComplexSidePart(name:dar,value:2)]),
+Die force(BuildContext context) => Die(name: AppLocalizations.of(context)!.force, sides: [
+    SimpleSide(AppLocalizations.of(context)!.darkSide),
+    SimpleSide(AppLocalizations.of(context)!.darkSide),
+    SimpleSide(AppLocalizations.of(context)!.darkSide),
+    SimpleSide(AppLocalizations.of(context)!.darkSide),
+    SimpleSide(AppLocalizations.of(context)!.darkSide),
+    SimpleSide(AppLocalizations.of(context)!.darkSide),
+    SimpleSide(AppLocalizations.of(context)!.lightSide),
+    SimpleSide(AppLocalizations.of(context)!.lightSide),
+    ComplexSide(parts: [ComplexSidePart(name:AppLocalizations.of(context)!.lightSide,value:2)]),
+    ComplexSide(parts: [ComplexSidePart(name:AppLocalizations.of(context)!.lightSide,value:2)]),
+    ComplexSide(parts: [ComplexSidePart(name:AppLocalizations.of(context)!.lightSide,value:2)]),
+    ComplexSide(parts: [ComplexSidePart(name:AppLocalizations.of(context)!.darkSide,value:2)]),
 ]);

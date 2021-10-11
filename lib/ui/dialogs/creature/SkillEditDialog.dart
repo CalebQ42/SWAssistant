@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SkillEditDialog extends StatefulWidget{
   final void Function(Skill) onClose;
@@ -33,8 +34,6 @@ class _SkillEditDialogState extends State{
   late TextEditingController valueController;
 
   _SkillEditDialogState({required this.onClose, required this.skill, required this.creature}){
-    if(skill.name != "" && !Skill.skillsList.containsKey(skill.name))
-      manual = true;
     valueController = new TextEditingController(text: skill.value != -1 ? skill.value.toString() : "")
         ..addListener(() =>
           setState(() => skill.value = int.tryParse(valueController.text) ?? -1)
@@ -42,6 +41,9 @@ class _SkillEditDialogState extends State{
   }
   
   Widget build(BuildContext context) {
+    var skillsList = Skill.skillsList(context);
+    if(skill.name != "" && !skillsList.containsKey(skill.name))
+      manual = true;
     return DropdownButtonHideUnderline(
       child: Padding(
         padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
@@ -50,7 +52,7 @@ class _SkillEditDialogState extends State{
             Container(height: 15),
             InputDecorator(
               decoration: InputDecoration(
-                labelText: "Skill",
+                labelText: AppLocalizations.of(context)!.skill,
               ),
               child: DropdownButton<String>(
                 isDense: true,
@@ -58,23 +60,23 @@ class _SkillEditDialogState extends State{
                 onTap: () => FocusScope.of(context).unfocus(),
                 onChanged: (value) {
                   setState((){
-                    if(value != "Other..."){
+                    if(value != AppLocalizations.of(context)!.skills35){
                       manual = false;
                       skill.name = value!;
-                      skill.base = Skill.skillsList[value]!;
+                      skill.base = skillsList[value]!;
                     }else{
                       manual = true;
                       skill.name = "";
                     }
                   });
                 },
-                value: Skill.skillsList.containsKey(skill.name) ? skill.name : skill.name == "" ? null : Skill.skillsList.keys.last,
+                value: skillsList.containsKey(skill.name) ? skill.name : skill.name == "" ? null : skillsList.keys.last,
                 items: List.generate(
-                  Skill.skillsList.length,
+                  skillsList.length,
                   (i) =>
                     DropdownMenuItem<String>(
-                      value: Skill.skillsList.keys.elementAt(i),
-                      child: Text(Skill.skillsList.keys.elementAt(i))
+                      value: skillsList.keys.elementAt(i),
+                      child: Text(skillsList.keys.elementAt(i))
                     )
                 ),
               )
@@ -85,7 +87,7 @@ class _SkillEditDialogState extends State{
                 TextField(
                   textCapitalization: TextCapitalization.words,
                   onChanged: (value) => skill.name = value,
-                  autofillHints: Skill.skillsList.keys,
+                  autofillHints: skillsList.keys,
                   controller: TextEditingController(text: skill.name),
                 ),
               duration: Duration(milliseconds: 150),
@@ -98,16 +100,16 @@ class _SkillEditDialogState extends State{
             Container(height: 10),
             InputDecorator(
               decoration: InputDecoration(
-                labelText: "Characteristic",
+                labelText: AppLocalizations.of(context)!.characteristic,
               ),
               child: DropdownButton<int>(
                 isDense: true,
                 isExpanded: true,
                 onTap: () => FocusScope.of(context).unfocus(),
                 items: List.generate(
-                  Creature.characteristics.length,
+                  6,
                   (i) => DropdownMenuItem(
-                    child: Text(Creature.characteristics[i]),
+                    child: Text(Creature.characteristics(context)[i]),
                     value: i
                   )
                 ),

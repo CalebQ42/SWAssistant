@@ -13,7 +13,7 @@
 
     "ability": "Ability",
     "proficiency": "Proficiency",
-    "difficutly": "Difficulty",
+    "difficulty": "Difficulty",
     "challenge": "Challenge",
     "boost": "Boost",
     "setback": "Setback",
@@ -70,6 +70,8 @@
     "talentPlural": "Talents",
     "inventory": "Inventory",
     "criticalInj": "Critical Injuries",
+
+    "ret": "Return",
 
     "desc": "Description",
 
@@ -170,9 +172,15 @@
 
     "conflict": "Conflict",
     "resolveConflict": "Resolve Conflict",
-    "conflictResult": "You rolled a %r",
+    "conflictResult": "You rolled a {result}",
     "@conflictResult": {
-        "description": "Shown as a snackbar when resolving conflict. %r is the roll's result"
+        "description": "Shown as a snackbar when resolving conflict.",
+        "placeholders": {
+            "result":{
+                "type": "int",
+                "example": "2"
+            }
+        }
     },
     "emoStr": "Emotional Strength",
     "emoWeak": "Emotional Weakness",
@@ -190,7 +198,7 @@
     "ranged": "Ranged",
 
     "credits": "Credits:",
-    "encumCap": "Encumbrance Capacity:"
+    "encumCap": "Encumbrance Capacity:",
     "overEncumNotice": "You are over-encumbered! Add a setback die to all Agility and Brawn checks.",
 
     "brokenWeapon": "Weapon is broken and cannot fire!",
@@ -219,9 +227,15 @@
     "disableDuty": "Disable Duty",
     "disableObligation": "Disable Obligation",
     "close": "Clone",
-    "copyOf": "Copy of %n",
+    "copyOf": "Copy of {name}",
     "@copyOf": {
-        "description": "Default name of a cloned profile. %n is replaced with the name of the profile."
+        "description": "Default name of a cloned profile.",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Steve"
+            }
+        }
     },
 
     "deletedDuty": "Duty Deleted",
@@ -261,8 +275,7 @@
     "introPage0ImportButton": "Import Profiles",
     "introPage0ImportMessage": "",
 
-    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings."
-    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
-
+    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
+    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues."
 
 }

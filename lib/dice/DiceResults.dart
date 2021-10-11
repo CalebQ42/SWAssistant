@@ -2,20 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/SWDice.dart';
 import 'package:swassistant/dice/Sides.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DiceResults{
 
   List<dynamic> _resultsMasterList = [];
-  Map<String,int> results = {
-    suc : 0,
-    fai : 0,
-    adv : 0,
-    thr : 0,
-    tri : 0,
-    des : 0,
-    lig : 0,
-    dar : 0
-  };
+  Map<String,int> results = {};
 
   bool subtractMode = false;
 
@@ -34,13 +26,13 @@ class DiceResults{
 
   void showCombinedResults(BuildContext context,{bool noSuccess = false}){
     bool isSuccess = true;
-    var success = (results[suc]! + results[tri]!) - (results[fai]! + results[des]!);
+    var success = (results[AppLocalizations.of(context)!.success]! + results[AppLocalizations.of(context)!.triumph]!) - (results[AppLocalizations.of(context)!.failure]! + results[AppLocalizations.of(context)!.despair]!);
     if(success <= 0){
       isSuccess = false;
       success = success.abs();
     }
     bool isAdvantaged = true;
-    var advantage = results[adv]! - results[thr]!;
+    var advantage = results[AppLocalizations.of(context)!.advantage]! - results[AppLocalizations.of(context)!.threat]!;
     if(advantage < 0){
       isAdvantaged = false;
       advantage = advantage.abs();
@@ -53,39 +45,39 @@ class DiceResults{
           child: Wrap(
             children: [
               if(!noSuccess) Center(
-                child: Text(success.toString() + (isSuccess ? " Success" : " Failure"),
+                child: Text(success.toString() + (isSuccess ? " " + AppLocalizations.of(context)!.success : " " + AppLocalizations.of(context)!.failure),
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
               if(advantage != 0) Center(
-                child: Text(advantage.toString() + (isAdvantaged ? " Advantage" : " Threat"),
+                child: Text(advantage.toString() + (isAdvantaged ? " " + AppLocalizations.of(context)!.advantage : " " + AppLocalizations.of(context)!.threat),
                   style: Theme.of(context).textTheme.headline6,
                 )
               ),
-              if(results[tri]! > 0) Center(
-                child: Text(results[tri].toString() + " Triumph",
+              if(results[AppLocalizations.of(context)!.triumph]! > 0) Center(
+                child: Text(results[AppLocalizations.of(context)!.triumph].toString() + " " + AppLocalizations.of(context)!.triumph,
                   style: Theme.of(context).textTheme.headline6,
                 )
               ),
-              if(results[des]! > 0) Center(
-                child: Text(results[des].toString() + " Despair",
+              if(results[AppLocalizations.of(context)!.despair]! > 0) Center(
+                child: Text(results[AppLocalizations.of(context)!.despair].toString() + " " + AppLocalizations.of(context)!.despair,
                   style: Theme.of(context).textTheme.headline6,
                 )
               ),
-              if(results[lig]! > 0) Center(
-                child: Text(results[lig].toString() + " Light Side",
+              if(results[AppLocalizations.of(context)!.lightSide]! > 0) Center(
+                child: Text(results[AppLocalizations.of(context)!.lightSide].toString() + " " + AppLocalizations.of(context)!.lightSide,
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
-              if(results[dar]! > 0) Center(
-                child: Text(results[dar].toString() + " Dark Side",
+              if(results[AppLocalizations.of(context)!.darkSide]! > 0) Center(
+                child: Text(results[AppLocalizations.of(context)!.darkSide].toString() + " " + AppLocalizations.of(context)!.darkSide,
                   style: Theme.of(context).textTheme.headline6,
                 )
               ),
               ButtonBar(
                 children: [
                   TextButton(
-                    child: Text("Edit"),
+                    child: Text(AppLocalizations.of(context)!.edit),
                     onPressed: (){
                       Navigator.of(context).pop();
                       showResultsEdit(context, noSuccess: noSuccess);
@@ -110,112 +102,112 @@ class DiceResults{
           children: [
             Row(
               children: [
-                Expanded(child: Text("Success:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.success + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[suc] = (results[suc] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.success] = (results[AppLocalizations.of(context)!.success] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[suc] = (results[suc] ?? 0) - 1,
-                    getValue: () => results[suc] ?? 0,
+                      results[AppLocalizations.of(context)!.success] = (results[AppLocalizations.of(context)!.success] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.success] ?? 0,
                   )
                 )
               ]
             ),
             Row(
               children: [
-                Expanded(child: Text("Failure:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.failure + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[fai] = (results[fai] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.failure] = (results[AppLocalizations.of(context)!.failure] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[fai] = (results[fai] ?? 0) - 1,
-                    getValue: () => results[fai] ?? 0,
+                      results[AppLocalizations.of(context)!.failure] = (results[AppLocalizations.of(context)!.failure] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.failure] ?? 0,
                   )
                 )
               ]
             ),
             Row(
               children: [
-                Expanded(child: Text("Advantage:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.advantage + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[adv] = (results[adv] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.advantage] = (results[AppLocalizations.of(context)!.advantage] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[adv] = (results[adv] ?? 0) - 1,
-                    getValue: () => results[adv] ?? 0,
+                      results[AppLocalizations.of(context)!.advantage] = (results[AppLocalizations.of(context)!.advantage] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.advantage] ?? 0,
                   )
                 )
               ]
             ),
             Row(
               children: [
-                Expanded(child: Text("Threat:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.threat + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[thr] = (results[thr] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.threat] = (results[AppLocalizations.of(context)!.threat] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[thr] = (results[thr] ?? 0) - 1,
-                    getValue: () => results[thr] ?? 0,
+                      results[AppLocalizations.of(context)!.threat] = (results[AppLocalizations.of(context)!.threat] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.threat] ?? 0,
                   )
                 )
               ]
             ),
             Row(
               children: [
-                Expanded(child: Text("Triumph:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.triumph + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[tri] = (results[tri] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.triumph] = (results[AppLocalizations.of(context)!.triumph] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[tri] = (results[tri] ?? 0) - 1,
-                    getValue: () => results[tri] ?? 0,
+                      results[AppLocalizations.of(context)!.triumph] = (results[AppLocalizations.of(context)!.triumph] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.triumph] ?? 0,
                   )
                 )
               ]
             ),
             Row(
               children: [
-                Expanded(child: Text("Despair:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.despair + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[des] = (results[des] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.despair] = (results[AppLocalizations.of(context)!.despair] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[des] = (results[des] ?? 0) - 1,
-                    getValue: () => results[des] ?? 0,
+                      results[AppLocalizations.of(context)!.despair] = (results[AppLocalizations.of(context)!.despair] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.despair] ?? 0,
                   )
                 )
               ]
             ),
             Row(
               children: [
-                Expanded(child: Text("Light Side:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.lightSide + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[lig] = (results[lig] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.lightSide] = (results[AppLocalizations.of(context)!.lightSide] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[lig] = (results[lig] ?? 0) - 1,
-                    getValue: () => results[lig] ?? 0,
+                      results[AppLocalizations.of(context)!.lightSide] = (results[AppLocalizations.of(context)!.lightSide] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.lightSide] ?? 0,
                   )
                 )
               ]
             ),
             Row(
               children: [
-                Expanded(child: Text("Dark Side:")),
+                Expanded(child: Text(AppLocalizations.of(context)!.darkSide + ":")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[dar] = (results[dar] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.darkSide] = (results[AppLocalizations.of(context)!.darkSide] ?? 0) + 1,
                     onDownPressed: () =>
-                      results[dar] = (results[dar] ?? 0) - 1,
-                    getValue: () => results[dar] ?? 0,
+                      results[AppLocalizations.of(context)!.darkSide] = (results[AppLocalizations.of(context)!.darkSide] ?? 0) - 1,
+                    getValue: () => results[AppLocalizations.of(context)!.darkSide] ?? 0,
                   )
                 )
               ]
@@ -223,11 +215,11 @@ class DiceResults{
             ButtonBar(
               children: [
                 TextButton(
-                  child: Text("Return"),
+                  child: Text(AppLocalizations.of(context)!.ret),
                   onPressed: (){
                     Navigator.of(context).pop();
                     if (alternateReturn == null){
-                      if(!noSuccess && results[suc] == 0 && results[fai] == 0)
+                      if(!noSuccess && results[AppLocalizations.of(context)!.success] == 0 && results[AppLocalizations.of(context)!.failure] == 0)
                         noSuccess = false;
                       showCombinedResults(context, noSuccess: noSuccess);
                     }else{
