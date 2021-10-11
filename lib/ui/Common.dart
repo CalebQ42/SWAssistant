@@ -14,7 +14,7 @@ class SWAppBar extends AppBar{
     ),
     PopupMenuItem(
       value: "discuss",
-      child: const Text("Suggestions/Announcements")
+      child: const Text("Discuss/Announcements")
     )
   ];
 

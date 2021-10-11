@@ -1,7 +1,34 @@
 {
     "translate": "Help Translate!",
-    "discuss": "Discuss",
+    "discuss": "Discuss/Announcements",
 
+    "success": "Success",
+    "failure": "Failure",
+    "advantage": "Advantage",
+    "threat": "Threat",
+    "triumph": "Triumph",
+    "despair": "Despair",
+    "lightSide": "Light Side",
+    "darkSide": "Dark Side",
+
+    "ability": "Ability",
+    "proficiency": "Proficiency",
+    "difficutly": "Difficulty",
+    "challenge": "Challenge",
+    "boost": "Boost",
+    "setback": "Setback",
+    "force": "Force",
+
+    "brawn": "Brawn",
+    "agility": "Agility",
+    "intellect": "Intellect",
+    "cunning": "Cunning",
+    "willpower": "Willpower",
+    "presence": "Presence",
+
+    "roll": "Roll",
+
+    "profiles": "Profiles",
     "characters": "Characters",
     "minions": "Minions",
     "vehicles": "Vehicles",
@@ -11,6 +38,10 @@
     "settings": "Settings",
     "donate": "Donate",
 
+    "all": "All",
+    "uncategorized": "Uncategorized",
+    "categories": "Categories",
+
     "edit": "Edit",
 
     "donoOptions": "Donation Options",
@@ -19,10 +50,33 @@
     "sponsors": "Github Sponsors",
     "sponsorsDesc": "You can donate either one time or on a monthly basis, with custom amounts, AND 100% of your money goes to the developer",
 
-    "name": "Name",
+    "newCharacter": "New Character",
+    "newMinion": "New Minion",
+    "newVehicle": "New Vehicle",
+
+    "woundStrain": "Wound and Strain",
+    "specializationPlural": "Specializations",
+    "forcePowerPlural": "Force Powers",
+    "xp": "XP",
+    "morality": "Morality",
+    "skillPlural": "Skills",
+
+    "damage": "Damage",
+    
+    "basicInfo": "Basic Information",
+    "defense": "Defense",
+    "weaponPlural": "Weapons",
+    "characteristicPlural": "Characteristics",
+    "talentPlural": "Talents",
+    "inventory": "Inventory",
+    "criticalInj": "Critical Injuries",
+
     "desc": "Description",
+
+    "name": "Name",
     "rank": "Rank",
     "characteristic": "Characteristic",
+    "category": "Category",
 
     "duty": "Duty",
     "forcePower": "Force Power",
@@ -35,16 +89,48 @@
 
     "value": "Value",
     "career": "Career",
-    //TODO: skills List
+    "skills1": "Astrogation",
+    "skills2": "Athletics",
+    "skills3": "Brawl",
+    "skills4": "Charm",
+    "skills5": "Coercion",
+    "skills6": "Computers",
+    "skills7": "Cool",
+    "skills8": "Coordination",
+    "skills9": "Deception",
+    "skills10": "Discipline",
+    "skills11": "Gunnery",
+    "skills12": "Leadership",
+    "skills13": "Lightsaber",
+    "skills14": "Mechanics",
+    "skills15": "Medicine",
+    "skills16": "Melee",
+    "skills17": "Negotiation",
+    "skills18": "Perception",
+    "skills19": "Piloting(Planetary)",
+    "skills20": "Piloting(Space)",
+    "skills21": "Ranged(Heavy)",
+    "skills22": "Ranged(Light)",
+    "skills23": "Resilience",
+    "skills24": "Skulduggery",
+    "skills25": "Stealth",
+    "skills26": "Streetwise",
+    "skills27": "Survival",
+    "skills28": "Vigilance",
+    "skills29": "Knowledge(Core Worlds)",
+    "skills30": "Knowledge(Education)",
+    "skills31": "Knowledge(Lore)",
+    "skills32": "Knowledge(Outer Rim)",
+    "skills33": "Knowledge(Underworld)",
+    "skills34": "Knowledge(Xenology)",
+    "skills35": "Other...",
 
     "injury": "Injury",
     "severity": "Severity",
-    "severityLevels" : [
-        "Easy",
-        "Average",
-        "Hard",
-        "Daunting"
-    ],
+    "severityLevel1": "Easy",
+    "severityLevel2": "Average",
+    "severityLevel3": "Hard",
+    "severityLevel4": "Daunting",
 
     "count": "Count",
     "encumTotal": "Encumbrance (Total)",
@@ -56,27 +142,127 @@
     "hardPoints": "Hard Points",
     "encum": "Encumbrance",
     "firingArc": "Firing Arc",
-    "range": "Range"
-    "weapRange": "Weapon Range"
-    "rangeLevels": [
-        "Enagaged",
-        "Short",
-        "Medium",
-        "Long",
-        "Extreme"
-    ],
+    "range": "Range",
+    "weapRange": "Weapon Range",
+    "rangeLevel1": "Engaged",
+    "rangeLevel2": "Short",
+    "rangeLevel3": "Medium",
+    "rangeLevel4": "Long",
+    "rangeLevel5": "Extreme",
     "itemDamage": "Item Damage",
-    "damageLevels": [
-        "Undamaged",
-        "Minor",
-        "Moderate",
-        "Major",
-        "Broken"
-    ],
+    "damageLevel1": "Undamaged",
+    "damageLevel2": "Minor",
+    "damageLevel3": "Moderate",
+    "damageLevel4": "Major",
+    "damageLevel5": "Broken",
     "skillBase": "Skill Base",
     "addCharacteristic": "Add Characteristic",
     "addBrawn": "Add Brawn to Damage",
     "loaded": "Loaded",
     "slugthrower": "Slugthrower (Needs Ammo)",
     "ammo": "Ammo",
+
+    "species": "Species",
+    "age": "Age",
+    "motivation": "Motivation",
+
+    "forceRating": "Force Rating",
+
+    "conflict": "Conflict",
+    "resolveConflict": "Resolve Conflict",
+    "conflictResult": "You rolled a %r",
+    "@conflictResult": {
+        "description": "Shown as a snackbar when resolving conflict. %r is the roll's result"
+    },
+    "emoStr": "Emotional Strength",
+    "emoWeak": "Emotional Weakness",
+
+    "wound": "Wound",
+    "maxWound": "Max Wound",
+    "strain": "Strain",
+    "maxStrain": "Max Strain",
+
+    "current": "Current:",
+    "total": "Total:",
+    "addXP": "Add XP",
+
+    "melee": "Melee",
+    "ranged": "Ranged",
+
+    "credits": "Credits:",
+    "encumCap": "Encumbrance Capacity:"
+    "overEncumNotice": "You are over-encumbered! Add a setback die to all Agility and Brawn checks.",
+
+    "brokenWeapon": "Weapon is broken and cannot fire!",
+    "weaponOutOfAmmo": "Weapon is out of Ammo!",
+
+    "minNum": "Number of Minions",
+
+    "minWound": "Wound per Minion:",
+    
+    "hullTrauma": "Hull Trauma",
+    "maxTrauma": "Max Hull Trauma",
+    "sysStress": "System Stress",
+    "maxStress": "Max System Stress",
+
+    "totalDefense": "Total Defense (For Angling)",
+    "fore": "Fore",
+    "port": "Port",
+    "starboard": "Starboard",
+    "aft": "Aft",
+    "anglingWarning": "WARNING: Angled defense does not equal total defense",
+
+    "soak": "Soak:",
+
+    "disableForce": "Disable Force",
+    "disableMorality": "Disable Morality",
+    "disableDuty": "Disable Duty",
+    "disableObligation": "Disable Obligation",
+    "close": "Clone",
+    "copyOf": "Copy of %n",
+    "@copyOf": {
+        "description": "Default name of a cloned profile. %n is replaced with the name of the profile."
+    },
+
+    "deletedDuty": "Duty Deleted",
+    "deletedFP": "Force Power Deleted",
+    "deletedObli": "Obligation Deleted",
+    "deletedSpecialization": "Specialization Deleted",
+    "deletedSkill": "Skill Deleted",
+    "deletedTalent": "Talent Deleted",
+    "deletedItem": "Item Deleted",
+    "deletedWeapon": "Weapon Deleted",
+    "deletedCharacter": "Character Deleted",
+    "deletedMinion": "Minion Deleted",
+    "deletedVehicle": "Vehicle Deleted",
+    "deletedNote": "Note Deleted",
+    "undo": "Undo",
+
+    "fire": "Fire!",
+
+    "settings": "Settings",
+    "forceDark": "Force Dark Side",
+    "forceLight": "Force Light Side",
+    "amoledTheme": "Amoled (Pitch Black) Dark Theme",
+    "colorDice": "Color Dice Roller",
+    "firebaseOnNotice": "Turning on Firebase requires an app restart. Continue?",
+    "firebaseOffNotice": "Turning off firebase will remove the ability to download profiles. Additionally the app needs to be restarted for this to take effect. Continue?",
+    "firebase": "Firebase",
+    "firebaseSubtitle": "Needed for crash reporting and downloads",
+    "crashReporting": "Crashlytics (Crash Reporting)",
+    "crashReportingSubtitle": "Anonymous crash reporting provided by Firebase Crashlytics",
+    "aboutText": "See https://github.com/CalebQ42/SWAssistant for license and other info",
+    "ads": "Ads",
+    "cloudSave": "Cloud Save (via Google Drive)",
+
+    "introWelcome": "Welcome!",
+    "introPage0Line1": "Thank you for trying SWAssistant. Before we get started, you first have to set up some preferences.",
+    "introPage0Line2": "Additionally, if you used a previous version of this app, we will need to import your old profiles first.",
+    "introPage0ImportButton": "Import Profiles",
+    "introPage0ImportMessage": "",
+
+    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings."
+    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
+
+
 }

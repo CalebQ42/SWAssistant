@@ -114,7 +114,7 @@ class SWWeaponDialog extends StatelessWidget{
               },
             ),
             TextButton(
-              child: Text("Cancel"),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
               onPressed: () => Navigator.of(context).pop(),
             )
           ],

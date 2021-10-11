@@ -33,7 +33,7 @@ class Minion extends Editable with Creature{
     "Basic Information",
     "Wound",
     "Characteristics",
-    "Skill",
+    "Skills",
     "Defense",
     "Weapons",
     "Talents",

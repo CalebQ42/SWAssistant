@@ -49,7 +49,7 @@ class Characteristics extends StatelessWidget{
       child: InkResponse(
         containedInkWell: true,
         onTap:() =>
-          SWDiceHolder(ability:creature.charVals[charNum]).showDialog(context),
+          SWDiceHolder(ability: creature.charVals[charNum]).showDialog(context),
         child: EditingText(
           editing: editing,
           initialText: creature.charVals[charNum].toString(),

@@ -24,6 +24,7 @@ class SettingsState extends State{
     var app = SW.of(context);
     return Scaffold(
       appBar: SWAppBar(
+        title: Text("Settings"),
         backgroundColor: Theme.of(context).primaryColor
       ),
       drawer: SWDrawer(),
@@ -88,10 +89,10 @@ class SettingsState extends State{
                           else
                             SystemNavigator.pop();
                         },
-                        child: Text("Continue")
+                        child: Text(MaterialLocalizations.of(context).continueButtonLabel)
                       ),
                       TextButton(
-                        child: Text("Cancel"),
+                        child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                         onPressed: () =>
                           Navigator.pop(context)
                       )
@@ -100,7 +101,7 @@ class SettingsState extends State{
               );
             },
             title: Text("Firebase"),
-            subtitle: Text("WARNING: Needed for crash reporting and downloads"),
+            subtitle: Text("Needed for crash reporting and downloads"),
           ),
           Divider(),
           SwitchListTile(
@@ -112,6 +113,24 @@ class SettingsState extends State{
             } : null,
             title: Text("Crash Reporting"),
             subtitle: Text("Anonymous crash reporting provided by Firebase Crashlytics")
+          ),
+          Divider(),
+          SwitchListTile(
+            value: app.getPreference(preferences.ads, true),
+            onChanged: app.getPreference(preferences.firebase, true) ? (b) {
+              //TOOD
+              app.prefs.setBool(preferences.ads, b);
+              setState((){});
+            } : null,
+          ),
+          Divider(),
+          SwitchListTile(
+            value: app.getPreference(preferences.googleDrive, false),
+            onChanged: (b){
+              //TODO
+              app.prefs.setBool(preferences.googleDrive, b);
+              setState(() {});
+            }
           ),
           Divider(),
           AboutListTile(

@@ -30,16 +30,17 @@ class _IntroTwoState extends State{
               style: Theme.of(context).textTheme.headline4
             ),
             SizedBox(height: 10),
-            SwitchListTile(
-              title: Text(
-                "Cloud Save (via Google Drive) (Not currently implemented)",
-              ),
-              value: SW.of(context).getPreference(preferences.googleDrive, true),
-              onChanged: (b){
-                SW.of(context).prefs.setBool(preferences.googleDrive, b);
-                setState((){});
-              }
-            ),
+            //TODO
+            // SwitchListTile(
+            //   title: Text(
+            //     "Cloud Save (via Google Drive) (Not currently implemented)",
+            //   ),
+            //   value: SW.of(context).getPreference(preferences.googleDrive, true),
+            //   onChanged: (b){
+            //     SW.of(context).prefs.setBool(preferences.googleDrive, b);
+            //     setState((){});
+            //   }
+            // ),
             SwitchListTile(
               title: Text(
                 "Force Dark Mode",
