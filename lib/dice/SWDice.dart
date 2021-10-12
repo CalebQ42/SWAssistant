@@ -81,3 +81,22 @@ Die force(BuildContext context) => Die(name: AppLocalizations.of(context)!.force
     ComplexSide(parts: [ComplexSidePart(name:AppLocalizations.of(context)!.lightSide,value:2)]),
     ComplexSide(parts: [ComplexSidePart(name:AppLocalizations.of(context)!.darkSide,value:2)]),
 ]);
+
+String getName(BuildContext context, int index) {
+  switch(index){
+    case 0:
+      return AppLocalizations.of(context)!.ability;
+    case 1:
+      return AppLocalizations.of(context)!.proficiency;
+    case 2:
+      return AppLocalizations.of(context)!.difficulty;
+    case 3:
+      return AppLocalizations.of(context)!.challenge;
+    case 4:
+      return AppLocalizations.of(context)!.boost;
+    case 5:
+      return AppLocalizations.of(context)!.setback;
+    default:
+      return AppLocalizations.of(context)!.force;
+  }
+}

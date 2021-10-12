@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DonateDialog extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Donation Options", style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
-        Text("Google Play:", style: Theme.of(context).textTheme.headline6),
-        Text("Easy to use with support for most currencies, but donations are capped and Google takes a 15% cut", textAlign: TextAlign.center,),
-        Text("Github Sponsors:", style: Theme.of(context).textTheme.headline6),
-        Text("You to donate either one time or on a monthly basis, with custom amounts, AND 100% of your money goes to the developer", textAlign: TextAlign.center,),
+        Text(AppLocalizations.of(context)!.donoOptions, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
+        Text(AppLocalizations.of(context)!.gPlay, style: Theme.of(context).textTheme.headline6),
+        Text(AppLocalizations.of(context)!.gPlayDesc, textAlign: TextAlign.center,),
+        Text(AppLocalizations.of(context)!.sponsors, style: Theme.of(context).textTheme.headline6),
+        Text(AppLocalizations.of(context)!.sponsorsDesc, textAlign: TextAlign.center,),
         Row(
           children: [
             TextButton(
               onPressed: () =>
                 _launchURL("https://github.com/sponsors/CalebQ42"),
-              child: Text("Github Sponsors")
+              child: Text(AppLocalizations.of(context)!.sponsors)
             ),
             TextButton(
               onPressed: (){
                 //TODO: donate amount dialog
               },
-              child: Text("Google Play"),
+              child: Text(AppLocalizations.of(context)!.gPlay),
             )
           ],
         )

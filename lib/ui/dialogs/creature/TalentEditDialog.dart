@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/Talent.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TalentEditDialog extends StatefulWidget{
 
@@ -55,7 +56,7 @@ class _TalentEditState extends State{
             controller: nameController,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Talent",
+              labelText: AppLocalizations.of(context)!.talent,
             ),
           ),
           Container(height: 10),
@@ -64,7 +65,7 @@ class _TalentEditState extends State{
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
-              labelText: "Rank",
+              labelText: AppLocalizations.of(context)!.rank
             ),
           ),
           Container(height: 10),
@@ -74,7 +75,7 @@ class _TalentEditState extends State{
             maxLines: 3,
             minLines: 1,
             decoration: InputDecoration(
-              labelText: "Description",
+              labelText: AppLocalizations.of(context)!.desc
             ),
           ),
           ButtonBar(

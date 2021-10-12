@@ -123,12 +123,12 @@ class _SkillEditDialogState extends State{
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               controller: valueController,
               decoration: InputDecoration(
-                labelText: "Value",
+                labelText: AppLocalizations.of(context)!.value,
               ),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text("Career"),
+              title: Text(AppLocalizations.of(context)!.career),
               value: skill.career,
               onChanged: (b) => setState(() => skill.career = b),
             ),

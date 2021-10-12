@@ -4,17 +4,19 @@ import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/dialogs/Donate.dart';
 import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class SWAppBar extends AppBar{
 
-  static List<PopupMenuItem> defPopup = [
+  static List<PopupMenuItem> defPopup(BuildContext context) =>[
     PopupMenuItem(
       value: "translate",
-      child: const Text("Help Translate!"),
+      child: Text(AppLocalizations.of(context)!.translate),
     ),
     PopupMenuItem(
       value: "discuss",
-      child: const Text("Discuss/Announcements")
+      child: Text(AppLocalizations.of(context)!.discuss)
     )
   ];
 
@@ -23,18 +25,18 @@ class SWAppBar extends AppBar{
     "discuss" : () => _launchURL("https://github.com/CalebQ42/SWAssistant/discussions")
   };
 
-  SWAppBar({Widget? title, List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions,
+  SWAppBar(BuildContext context, {Widget? title, List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions,
       Map<String, Function>? popupFunctions, PreferredSizeWidget? bottom, required Color backgroundColor}) : 
-        super(backgroundColor: backgroundColor, title: title, actions: _getActions(additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
+        super(backgroundColor: backgroundColor, title: title, actions: _getActions(context, additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
 
-  static List<Widget> _getActions(List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions, Map<String, Function>? popupFunctions) =>
+  static List<Widget> _getActions(BuildContext context, List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions, Map<String, Function>? popupFunctions) =>
     <Widget>[]
       ..addAll(additionalActions ?? [])
-      ..add(_getPopupMenu(additionalPopupActions ?? [], popupFunctions ?? {}));
+      ..add(_getPopupMenu(context, additionalPopupActions ?? [], popupFunctions ?? {}));
   
-  static PopupMenuButton _getPopupMenu(List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions){
+  static PopupMenuButton _getPopupMenu(BuildContext context, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions){
     popupFunctions.addAll(defFunctions);
-    additionalPopupActions.addAll(defPopup);
+    additionalPopupActions.addAll(defPopup(context));
     return PopupMenuButton(
       itemBuilder: (context) => additionalPopupActions,
       onSelected:(t) {
@@ -64,24 +66,23 @@ class SWDrawer extends StatelessWidget{
               color: Theme.of(context).primaryColor
             )
           ),
-          // TODO: GM Mode
-          // ListTile(
-          //   title: Text("GM Mode"),
-          //   leading: Icon(Icons.contacts),
-          //   onTap: (){
-          //     Navigator.of(context).pop();
-          //     var out = SW.of(context).observatory.containsRoute(name: "/gm");
-          //     if(out != null){
-          //       Navigator.of(context).removeRoute(out);
-          //       Navigator.of(context).pushNamed("/gm");
-          //     }else
-          //       Navigator.of(context).pushNamed("/gm");
-          //   }
-          // ),
-          // Divider(),
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.gmMode),
+            leading: Icon(Icons.contacts),
+            onTap: (){
+              Navigator.of(context).pop();
+              var out = SW.of(context).observatory.containsRoute(name: "/gm");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/gm");
+              }else
+                Navigator.of(context).pushNamed("/gm");
+            }
+          ),
+          Divider(),
           Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text("Profiles")),
           ListTile(
-            title: Text("Characters"),
+            title: Text(AppLocalizations.of(context)!.characters),
             leading: Icon(Icons.face),
             onTap: (){
               Navigator.of(context).pop();
@@ -94,7 +95,7 @@ class SWDrawer extends StatelessWidget{
             }
           ),
           ListTile(
-            title: Text("Minions"),
+            title: Text(AppLocalizations.of(context)!.minions),
             leading: Icon(Icons.supervisor_account),
             onTap: (){
               Navigator.of(context).pop();
@@ -107,7 +108,7 @@ class SWDrawer extends StatelessWidget{
             }
           ),
           ListTile(
-            title: Text("Vehicles"),
+            title: Text(AppLocalizations.of(context)!.vehicles),
             leading: Icon(Icons.motorcycle),
             onTap: (){
               Navigator.of(context).pop();
@@ -119,24 +120,23 @@ class SWDrawer extends StatelessWidget{
                 Navigator.of(context).pushNamed("/vehicles");
             }
           ),
-          // TODO: Download
-          // ListTile(
-          //   title: Text("Download"),
-          //   leading: Icon(Icons.cloud_download),
-          //   onTap: (){
-          //     Navigator.of(context).pop();
-          //     var out = SW.of(context).observatory.containsRoute(name: "/download");
-          //     if(out != null){
-          //       Navigator.of(context).removeRoute(out);
-          //       Navigator.of(context).pushNamed("/download");
-          //     }else
-          //       Navigator.of(context).pushNamed("/download");
-          //   }
-          // ),
-          Divider(),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text("Other Stuff")),
           ListTile(
-            title: Text("Dice"),
+            title: Text(AppLocalizations.of(context)!.download),
+            leading: Icon(Icons.cloud_download),
+            onTap: (){
+              Navigator.of(context).pop();
+              var out = SW.of(context).observatory.containsRoute(name: "/download");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/download");
+              }else
+                Navigator.of(context).pushNamed("/download");
+            }
+          ),
+          Divider(),
+          Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text(AppLocalizations.of(context)!.otherStuff)),
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.dice),
             leading: Icon(Icons.casino),
             onTap: (){
               Navigator.of(context).pop();
@@ -148,22 +148,21 @@ class SWDrawer extends StatelessWidget{
                 Navigator.of(context).pushNamed("/dice");
             }
           ),
-          // TODO: Guide
-          // ListTile(
-          //   title: Text("Guide"),
-          //   leading: Icon(Icons.book),
-          //   onTap: (){
-          //     Navigator.of(context).pop();
-          //     var out = SW.of(context).observatory.containsRoute(name: "/guide");
-          //     if(out != null){
-          //       Navigator.of(context).removeRoute(out);
-          //       Navigator.of(context).pushNamed("/guide");
-          //     }else
-          //       Navigator.of(context).pushNamed("/guide");
-          //   }
-          // ),
           ListTile(
-            title: Text("Settings"),
+            title: Text(AppLocalizations.of(context)!.guide),
+            leading: Icon(Icons.book),
+            onTap: (){
+              Navigator.of(context).pop();
+              var out = SW.of(context).observatory.containsRoute(name: "/guide");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/guide");
+              }else
+                Navigator.of(context).pushNamed("/guide");
+            }
+          ),
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.settings),
             leading: Icon(Icons.settings),
             onTap: (){
               Navigator.of(context).pop();
@@ -177,8 +176,8 @@ class SWDrawer extends StatelessWidget{
           ),
           Divider(),
           ListTile(
-            title: Text("Donate"),
-            leading: Icon(Icons.monetization_on),
+            title: Text(AppLocalizations.of(context)!.donate),
+            leading: Icon(Icons.monetization_on_outlined),
             onTap: (){
               Navigator.of(context).pop();
               Bottom(

@@ -7,6 +7,7 @@ import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/dice/SWDice.dart' as SWDice;
 import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SWWeaponDialog extends StatelessWidget{
   final SWDiceHolder holder;
@@ -29,7 +30,7 @@ class SWWeaponDialog extends StatelessWidget{
             Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(SWDice.SWDice[index])
+                  child: Text(SWDice.getName(context, index))
                 ),
                 Expanded(
                   child:UpDownStat(
@@ -107,7 +108,7 @@ class SWWeaponDialog extends StatelessWidget{
         )..add(ButtonBar(
           children: [
             TextButton(
-              child: Text("Fire!"),
+              child: Text(AppLocalizations.of(context)!.fire),
               onPressed: (){
                 Navigator.of(context).pop();
                 _WeaponResults(weapon: weapon, results: holder.getDice(context).roll(), brawn: brawn,).show(context);
@@ -141,13 +142,13 @@ class _WeaponResults extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     bool isSuccess = true;
-    var success = (results.getResult(suc) + results.getResult(tri)) - (results.getResult(fai) + results.getResult(des));
+    var success = (results.getResult(AppLocalizations.of(context)!.success) + results.getResult(AppLocalizations.of(context)!.triumph)) - (results.getResult(AppLocalizations.of(context)!.failure) + results.getResult(AppLocalizations.of(context)!.despair));
     if(success <= 0){
       isSuccess = false;
       success = success.abs();
     }
     bool isAdvantaged = true;
-    var advantage = results.getResult(adv) - results.getResult(thr);
+    var advantage = results.getResult(AppLocalizations.of(context)!.advantage) - results.getResult(AppLocalizations.of(context)!.threat);
     if(advantage < 0){
       isAdvantaged = false;
       advantage = advantage.abs();
@@ -158,33 +159,33 @@ class _WeaponResults extends StatelessWidget{
         children: [
           Center(
             child: Text(
-              isSuccess ? (weapon.addBrawn ? weapon.damage + success + brawn : weapon.damage + success).toString() + " Damage"
-                : success.toString() + " Failure",
+              isSuccess ? (weapon.addBrawn ? weapon.damage + success + brawn : weapon.damage + success).toString() + " " + AppLocalizations.of(context)!.damage
+                : success.toString() + " " + AppLocalizations.of(context)!.failure,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
           if(advantage != 0) Center(
-            child: Text(advantage.toString() + (isAdvantaged ? " Advantage" : " Threat"),
+            child: Text(advantage.toString() + (isAdvantaged ? " " + AppLocalizations.of(context)!.advantage : " " + AppLocalizations.of(context)!.threat),
               style: Theme.of(context).textTheme.headline6,
             )
           ),
-          if(results.getResult(tri) > 0) Center(
-            child: Text(results.getResult(tri).toString() + " Triumph",
+          if(results.getResult(AppLocalizations.of(context)!.triumph) > 0) Center(
+            child: Text(results.getResult(AppLocalizations.of(context)!.triumph).toString() + " " + AppLocalizations.of(context)!.triumph,
               style: Theme.of(context).textTheme.headline6,
             )
           ),
-          if(results.getResult(des)> 0) Center(
-            child: Text(results.getResult(des).toString() + " Despair",
+          if(results.getResult(AppLocalizations.of(context)!.despair)> 0) Center(
+            child: Text(results.getResult(AppLocalizations.of(context)!.despair).toString() + " " + AppLocalizations.of(context)!.despair,
               style: Theme.of(context).textTheme.headline6,
             )
           ),
-          if(results.getResult(lig) > 0) Center(
-            child: Text(results.getResult(lig).toString() + " Light Side",
+          if(results.getResult(AppLocalizations.of(context)!.lightSide) > 0) Center(
+            child: Text(results.getResult(AppLocalizations.of(context)!.lightSide).toString() + " " + AppLocalizations.of(context)!.lightSide,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          if(results.getResult(dar) > 0) Center(
-            child: Text(results.getResult(dar).toString() + " Dark Side",
+          if(results.getResult(AppLocalizations.of(context)!.darkSide) > 0) Center(
+            child: Text(results.getResult(AppLocalizations.of(context)!.darkSide).toString() + " " + AppLocalizations.of(context)!.darkSide,
               style: Theme.of(context).textTheme.headline6,
             )
           ),
@@ -194,11 +195,11 @@ class _WeaponResults extends StatelessWidget{
               Row(
                 children: [
                   Expanded(
-                    child: Text("Characteristic"),
+                    child: Text(AppLocalizations.of(context)!.characteristic),
                     flex: 4
                   ),
                   Expanded(
-                    child: Center(child: Text("Adv")),
+                    child: Center(child: Text(AppLocalizations.of(context)!.advantageShort)),
                   )
                 ]
               ),
@@ -206,7 +207,7 @@ class _WeaponResults extends StatelessWidget{
               if(weapon.critical > 0) Row(
                 children: [
                   Expanded(
-                    child: Text("Critical"),
+                    child: Text(AppLocalizations.of(context)!.critical),
                     flex: 4
                   ),
                   Expanded(
@@ -240,7 +241,7 @@ class _WeaponResults extends StatelessWidget{
           ButtonBar(
             children: [
               TextButton(
-                child: Text("Edit"),
+                child: Text(AppLocalizations.of(context)!.edit),
                 onPressed: (){
                   Navigator.of(context).pop();
                   results.showResultsEdit(context, alternateReturn: (context, results){

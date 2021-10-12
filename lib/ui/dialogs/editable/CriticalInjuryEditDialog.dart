@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CriticalInjuryEditDialog extends StatefulWidget{
   final CriticalInjury criticalInjury;
@@ -49,7 +50,7 @@ class _CriticalInjuryEditState extends State{
               textCapitalization: TextCapitalization.words,
               controller: nameController,
               decoration: InputDecoration(
-                    labelText: "Injury",
+                    labelText: AppLocalizations.of(context)!.injury,
               ),
             ),
             Container(height: 10),
@@ -59,32 +60,32 @@ class _CriticalInjuryEditState extends State{
               maxLines: 3,
               minLines: 1,
               decoration: InputDecoration(
-                    labelText: "Description",
+                    labelText: AppLocalizations.of(context)!.desc
               ),
             ),
             Container(height: 10),
             InputDecorator(
               decoration: InputDecoration(
-                    labelText: "Severity",
+                    labelText: AppLocalizations.of(context)!.severity
               ),
               child: DropdownButton<int>(
                 isDense: true,
                 isExpanded: true,
                 items: [
                   DropdownMenuItem(
-                    child: Text("Easy"),
+                    child: Text(AppLocalizations.of(context)!.severityLevel1),
                     value: 0,
                   ),
                   DropdownMenuItem(
-                    child: Text("Average"),
+                    child: Text(AppLocalizations.of(context)!.severityLevel2),
                     value: 1,
                   ),
                   DropdownMenuItem(
-                    child: Text("Hard"),
+                    child: Text(AppLocalizations.of(context)!.severityLevel3),
                     value: 2,
                   ),
                   DropdownMenuItem(
-                    child: Text("Daunting"),
+                    child: Text(AppLocalizations.of(context)!.severityLevel4),
                     value: 3,
                   ),
                 ],

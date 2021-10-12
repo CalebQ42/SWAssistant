@@ -64,6 +64,7 @@ class _EditableListState extends State{
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(
+        context,
         title: AnimatedSwitcher(
           transitionBuilder: (child, anim){
             Tween<Offset> offset;

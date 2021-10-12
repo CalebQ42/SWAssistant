@@ -19,6 +19,7 @@ class DiceRoller extends StatelessWidget{
     return Scaffold(
       drawer: SWDrawer(),
       appBar: SWAppBar(
+        context,
         title: Text("Dice"),
         backgroundColor: Theme.of(context).primaryColor,
       ),

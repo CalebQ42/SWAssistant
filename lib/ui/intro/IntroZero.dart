@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/intro/IntroOne.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IntroZero extends StatelessWidget{
   @override
@@ -19,22 +20,22 @@ class IntroZero extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Welcome!",
+              AppLocalizations.of(context)!.introWelcome,
               style: Theme.of(context).textTheme.headline4
             ),
             SizedBox(height: 5),
             Text(
-              "Thank you for trying SWAssistant. Before we get started, you first have to set up some preferences.",
+              AppLocalizations.of(context)!.introPage0Line1,
               textAlign: TextAlign.justify,
             ),
             SizedBox(height:10),
             Text(
-              "Additionally, if you used a previous version of this app, we will need to import your old profiles first.",
+              AppLocalizations.of(context)!.introPage0Line2,
               textAlign: TextAlign.justify,
             ),
             SizedBox(height:5),
             ElevatedButton(
-              child: Text("Import Profiles"),
+              child: Text(AppLocalizations.of(context)!.introPage0ImportButton),
               onPressed: (){
                 //TODO: import
                 ScaffoldMessenger.of(context).showSnackBar(

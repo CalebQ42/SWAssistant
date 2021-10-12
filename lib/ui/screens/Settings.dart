@@ -24,6 +24,7 @@ class SettingsState extends State{
     var app = SW.of(context);
     return Scaffold(
       appBar: SWAppBar(
+        context,
         title: Text("Settings"),
         backgroundColor: Theme.of(context).primaryColor
       ),

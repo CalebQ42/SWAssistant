@@ -28,11 +28,13 @@
 
     "roll": "Roll",
 
+    "gmMode": "GM Mode",
     "profiles": "Profiles",
     "characters": "Characters",
     "minions": "Minions",
     "vehicles": "Vehicles",
     "download": "Download",
+    "otherStuff": "Other Stuff",
     "dice": "Dice",
     "guide": "Guide",
     "settings": "Settings",
@@ -253,6 +255,10 @@
     "undo": "Undo",
 
     "fire": "Fire!",
+    "advantageShort": "Adv",
+    "@advantageShort": {
+        "description": "Shortened form of advantage. Should be 2 or 3 characters long"
+    },
 
     "settings": "Settings",
     "forceDark": "Force Dark Side",

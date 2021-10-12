@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SpecializationEditDialog extends StatefulWidget{
 
@@ -44,7 +45,7 @@ class _SpecializationState extends State{
             controller: specCont,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Specialization",
+              labelText: AppLocalizations.of(context)!.specialization
             ),
           ),
           ButtonBar(

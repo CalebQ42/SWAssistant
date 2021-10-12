@@ -42,6 +42,7 @@ class _EditingEditableState extends State {
           showSelectedLabels: true,
         ),
         appBar: SWAppBar(
+        context,
           additionalPopupActions: [
             if (profile is Character)
               CheckedPopupMenuItem(

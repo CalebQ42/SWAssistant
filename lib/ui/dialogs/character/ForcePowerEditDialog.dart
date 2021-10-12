@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/ForcePower.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForcePowerEditDialog extends StatefulWidget{
 
@@ -46,7 +47,7 @@ class _FPState extends State{
           TextField(
             controller: nameController,
             decoration: InputDecoration(
-              labelText: "Force Power"
+              labelText: AppLocalizations.of(context)!.forcePower
             ),
             textCapitalization: TextCapitalization.words,
           ),
@@ -54,7 +55,7 @@ class _FPState extends State{
           TextField(
             controller: descController,
             decoration: InputDecoration(
-              labelText: "Description"
+              labelText: AppLocalizations.of(context)!.desc
             ),
             maxLines: 3,
             minLines: 1,

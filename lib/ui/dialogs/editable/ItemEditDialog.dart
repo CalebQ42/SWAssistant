@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemEditDialog extends StatefulWidget{
 
@@ -65,7 +66,7 @@ class _ItemEditDialogState extends State{
               textCapitalization: TextCapitalization.words,
               controller: nameController,
               decoration: InputDecoration(
-                labelText: "Item"
+                labelText: AppLocalizations.of(context)!.item
               ),
             ),
             Container(height: 10),
@@ -74,7 +75,7 @@ class _ItemEditDialogState extends State{
               keyboardType: TextInputType.number,
               controller: countController,
               decoration: InputDecoration(
-                labelText: "Count"
+                labelText: AppLocalizations.of(context)!.count
               ),
             ),
             Container(height: 10),
@@ -83,7 +84,7 @@ class _ItemEditDialogState extends State{
               keyboardType: TextInputType.number,
               controller: encumController,
               decoration: InputDecoration(
-                labelText: "Encumbrance (Total)"
+                labelText: AppLocalizations.of(context)!.encumTotal
               ),
             ),
             Container(height: 10),
@@ -91,7 +92,7 @@ class _ItemEditDialogState extends State{
               textCapitalization: TextCapitalization.sentences,
               controller: descController,
               decoration: InputDecoration(
-                labelText: "Description"
+                labelText: AppLocalizations.of(context)!.desc
               ),
               maxLines: 3,
               minLines: 1,

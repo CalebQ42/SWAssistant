@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/items/Duty.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DutyEditDialog extends StatefulWidget{
 
@@ -60,7 +61,7 @@ class DutyEditDialogState extends State{
             controller: nameController,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Name"
+              labelText: AppLocalizations.of(context)!.name
             ),
           ),
           Container(height: 10),
@@ -69,7 +70,7 @@ class DutyEditDialogState extends State{
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Duty"
+              labelText: AppLocalizations.of(context)!.duty
             ),
           ),
           Container(height: 10),
@@ -79,7 +80,7 @@ class DutyEditDialogState extends State{
             maxLines: 3,
             minLines: 1,
             decoration: InputDecoration(
-              labelText: "Description"
+              labelText: AppLocalizations.of(context)!.desc
             ),
           ),
           ButtonBar(

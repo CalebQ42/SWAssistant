@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/WeaponCharacteristic.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeaponCharacteristicDialog extends StatefulWidget{
 
@@ -57,14 +58,14 @@ class _WeaponCharacteristicDialogState extends State{
             controller: nameController,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Characteristic",
+              labelText: AppLocalizations.of(context)!.characteristic
             ),
           ),
           Container(height: 10),
           TextField(
             controller: valueController,
             decoration: InputDecoration(
-              labelText: "Rank",
+              labelText: AppLocalizations.of(context)!.rank
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -73,7 +74,7 @@ class _WeaponCharacteristicDialogState extends State{
           TextField(
             controller: advantageController,
             decoration: InputDecoration(
-              labelText: "Advantage Needed",
+              labelText: AppLocalizations.of(context)!.advNeeded
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],

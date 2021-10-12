@@ -8,6 +8,7 @@ import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/editable/WeaponCharacteristicDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeaponEditDialog extends StatefulWidget{
   final Function(Weapon) onClose;
@@ -91,7 +92,7 @@ class _WeaponEditDialogState extends State{
                 controller: nameController,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  labelText: "Weapon",
+                  labelText: AppLocalizations.of(context)!.weapon
                 ),
               ),
               Container(height: 10),
@@ -99,7 +100,7 @@ class _WeaponEditDialogState extends State{
               TextField(
                 controller: damageController,
                 decoration: InputDecoration(
-                  labelText: "Damage",
+                  labelText: AppLocalizations.of(context)!.damage
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -109,7 +110,7 @@ class _WeaponEditDialogState extends State{
               TextField(
                 controller: criticalController,
                 decoration: InputDecoration(
-                  labelText: "Critical",
+                  labelText: AppLocalizations.of(context)!.critical
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -119,7 +120,7 @@ class _WeaponEditDialogState extends State{
               TextField(
                 controller: hpController,
                 decoration: InputDecoration(
-                  labelText: "Hard Points",
+                  labelText: AppLocalizations.of(context)!.hardPoints
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -129,7 +130,7 @@ class _WeaponEditDialogState extends State{
               if(editable is Character) TextField(
                 controller: encumbranceController,
                 decoration: InputDecoration(
-                  labelText: "Encumbrance",
+                  labelText: AppLocalizations.of(context)!.encum
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -140,39 +141,39 @@ class _WeaponEditDialogState extends State{
                 controller: arcController,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  labelText: "Firing Arc",
+                  labelText: AppLocalizations.of(context)!.firingArc
                 ),
               ),
               //Range
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  labelText: "Range",
+                  labelText: AppLocalizations.of(context)!.range
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
                   isExpanded: true,
-                  hint: Text("Weapon Range"),
+                  hint: Text(AppLocalizations.of(context)!.weapRange),
                   onTap: () => FocusScope.of(context).unfocus(),
                   items: [
                     DropdownMenuItem(
-                      child: Text("Engaged"),
+                      child: Text(AppLocalizations.of(context)!.rangeLevel1),
                       value: 0,
                     ),
                     DropdownMenuItem(
-                      child: Text("Short"),
+                      child: Text(AppLocalizations.of(context)!.rangeLevel2),
                       value: 1,
                     ),
                     DropdownMenuItem(
-                      child: Text("Medium"),
+                      child: Text(AppLocalizations.of(context)!.rangeLevel3),
                       value: 2,
                     ),
                     DropdownMenuItem(
-                      child: Text("Long"),
+                      child: Text(AppLocalizations.of(context)!.rangeLevel4),
                       value: 3,
                     ),
                     DropdownMenuItem(
-                      child: Text("Extreme"),
+                      child: Text(AppLocalizations.of(context)!.rangeLevel5),
                       value: 4,
                     )
                   ],
@@ -184,7 +185,7 @@ class _WeaponEditDialogState extends State{
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  labelText: "Item Damage",
+                  labelText: AppLocalizations.of(context)!.itemDamage,
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -192,23 +193,23 @@ class _WeaponEditDialogState extends State{
                   onTap: () => FocusScope.of(context).unfocus(),
                   items: [
                     DropdownMenuItem(
-                      child: Text("Undamaged"),
+                      child: Text(AppLocalizations.of(context)!.damageLevel1),
                       value: 0,
                     ),
                     DropdownMenuItem(
-                      child: Text("Minor"),
+                      child: Text(AppLocalizations.of(context)!.damageLevel2),
                       value: 1,
                     ),
                     DropdownMenuItem(
-                      child: Text("Moderate"),
+                      child: Text(AppLocalizations.of(context)!.damageLevel3),
                       value: 2,
                     ),
                     DropdownMenuItem(
-                      child: Text("Major"),
+                      child: Text(AppLocalizations.of(context)!.damageLevel4),
                       value: 3,
                     ),
                     DropdownMenuItem(
-                      child: Text("Broken"),
+                      child: Text(AppLocalizations.of(context)!.damageLevel5),
                       value: 4,
                     ),
                   ],
@@ -220,7 +221,7 @@ class _WeaponEditDialogState extends State{
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  labelText: "Skill",
+                  labelText: AppLocalizations.of(context)!.skill,
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -238,14 +239,14 @@ class _WeaponEditDialogState extends State{
                     weapon.skill = value ?? -1;
                     weapon.skillBase = Skill.skillsList(context)[weaponSkills[weapon.skill]]!;
                   }),
-                  hint: Text("Skill"),
+                  hint: Text(AppLocalizations.of(context)!.skill),
                 )
               ),
               //SkillBase
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  labelText: "Skill Base",
+                  labelText: AppLocalizations.of(context)!.skillBase,
                 ),
                 child: DropdownButton<int>(
                   isDense: true,
@@ -260,12 +261,12 @@ class _WeaponEditDialogState extends State{
                   ),
                   value: weapon.skillBase == -1 ? null : weapon.skillBase,
                   onChanged: (value) => setState(() => weapon.skillBase = value ?? -1),
-                  hint: Text("Skill Base"),
+                  hint: Text(AppLocalizations.of(context)!.skillBase),
                 )
               ),
               //Characteristics
               Container(height: 15),
-              Center(child: Text("Characteristics", style: Theme.of(context).textTheme.headline6),),
+              Center(child: Text(AppLocalizations.of(context)!.characteristic, style: Theme.of(context).textTheme.headline6),),
               Column(
                 children: List.generate(weapon.characteristics.length,(i){
                   return InkResponse(
@@ -291,7 +292,7 @@ class _WeaponEditDialogState extends State{
                 })
               ),
               TextButton.icon(
-                label: Text("Add Characteristic"),
+                label: Text(AppLocalizations.of(context)!.addCharacteristic),
                 icon: Icon(Icons.add),
                 onPressed: () =>
                   WeaponCharacteristicDialog(
@@ -304,13 +305,13 @@ class _WeaponEditDialogState extends State{
               if(editable is Character || editable is Minion) SwitchListTile(
                 value: weapon.addBrawn,
                 onChanged: (value) => setState(() => weapon.addBrawn = value),
-                title: Text("Add Brawn to Damage"),
+                title: Text(AppLocalizations.of(context)!.addBrawn),
               ),
               //Loaded
               SwitchListTile(
                 value: weapon.loaded,
                 onChanged: (value) => setState(() => weapon.loaded = value),
-                title: Text("Loaded")
+                title: Text(AppLocalizations.of(context)!.loaded)
               ),
               //Limited Ammo
               SwitchListTile(
@@ -321,7 +322,7 @@ class _WeaponEditDialogState extends State{
                   if(value)
                     ammoController.text = "0";
                 }),
-                title: Text("Slugthrower (Needs Ammo)")
+                title: Text(AppLocalizations.of(context)!.slugthrower)
               ),
               //Ammo
               AnimatedSwitcher(
@@ -338,7 +339,7 @@ class _WeaponEditDialogState extends State{
                   child: TextField(
                     controller: ammoController,
                     decoration: InputDecoration(
-                      labelText: "Ammo",
+                      labelText: AppLocalizations.of(context)!.ammo,
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],

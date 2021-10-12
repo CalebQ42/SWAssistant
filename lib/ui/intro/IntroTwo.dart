@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IntroTwo extends StatefulWidget{
   @override
@@ -26,7 +27,7 @@ class _IntroTwoState extends State{
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Settings",
+              AppLocalizations.of(context)!.settings,
               style: Theme.of(context).textTheme.headline4
             ),
             SizedBox(height: 10),
@@ -43,7 +44,7 @@ class _IntroTwoState extends State{
             // ),
             SwitchListTile(
               title: Text(
-                "Force Dark Mode",
+                AppLocalizations.of(context)!.forceDark,
               ),
               value: SW.of(context).getPreference(preferences.forceDark, true),
               onChanged: (b){
@@ -56,7 +57,7 @@ class _IntroTwoState extends State{
             ),
             SwitchListTile(
               title: Text(
-                "Amoled Dark Theme (Pitch Black)",
+                AppLocalizations.of(context)!.amoledTheme,
               ),
               value: SW.of(context).getPreference(preferences.amoled, true),
               onChanged: (b){
@@ -67,7 +68,7 @@ class _IntroTwoState extends State{
             ),
             SwitchListTile(
               title: Text(
-                "Force Light Mode",
+                AppLocalizations.of(context)!.forceLight,
               ),
               value: SW.of(context).getPreference(preferences.forceLight, true),
               onChanged: (b){

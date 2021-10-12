@@ -5,6 +5,7 @@ import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
 import 'package:swassistant/ui/intro/IntroTwo.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IntroOne extends StatefulWidget{
   @override
@@ -24,23 +25,23 @@ class _IntroOneState extends State{
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Firebase",
+              AppLocalizations.of(context)!.firebase,
               style: Theme.of(context).textTheme.headline4
             ),
             SizedBox(height: 5),
             Text(
-              "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting or ads. You can change this later in settings.",
+              AppLocalizations.of(context)!.introPage1FirebaseExplaination,
               textAlign: TextAlign.justify,
             ),
             SizedBox(height: 20),
             Text(
-              "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
+              AppLocalizations.of(context)!.introPage1CrashReportingExplaination,
               textAlign: TextAlign.justify,
             ),
             SizedBox(height: 25),
             SwitchListTile(
               title: Text(
-                "Firebase",
+                AppLocalizations.of(context)!.firebase,
               ),
               value: SW.of(context).getPreference(preferences.firebase, true),
               onChanged: (b){
@@ -50,7 +51,7 @@ class _IntroOneState extends State{
             ),
             SwitchListTile(
               title: Text(
-                "Crashlytics (Crash Reporting)",
+                AppLocalizations.of(context)!.crashReporting,
               ),
               value: SW.of(context).getPreference(preferences.crashlytics, true),
               onChanged: SW.of(context).getPreference(preferences.firebase, true) ? (b) {
