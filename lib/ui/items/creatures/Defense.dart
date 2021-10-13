@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Defense extends StatelessWidget{
   final bool editing;
@@ -20,7 +21,7 @@ class Defense extends StatelessWidget{
           child: Column(
             children: [
               EditingText(
-                title: "Melee",
+                title: AppLocalizations.of(context)!.melee,
                 editing: editing,
                 initialText: creature.defMelee.toString(),
                 defaultSave: true,
@@ -41,7 +42,7 @@ class Defense extends StatelessWidget{
           child: Column(
             children: [
               EditingText(
-                title: "Ranged",
+                title: AppLocalizations.of(context)!.ranged,
                 editing: editing,
                 initialText: creature.defRanged.toString(),
                 defaultSave: true,

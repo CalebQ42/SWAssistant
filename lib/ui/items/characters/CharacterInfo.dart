@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CharacterInfo extends StatelessWidget{
 
@@ -30,7 +31,7 @@ class CharacterInfo extends StatelessWidget{
             controller.addListener(()=>character.species = controller.text);
             return controller;
           }(),
-          title: "Species",
+          title: AppLocalizations.of(context)!.species,
         )
       ],
     );
@@ -51,7 +52,7 @@ class CharacterInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.number,
-          title: "Age"
+          title: AppLocalizations.of(context)!.age
         )
       ],
     );
@@ -70,7 +71,7 @@ class CharacterInfo extends StatelessWidget{
             controller.addListener(() => character.motivation = controller.text);
             return controller;
           }(),
-          title: "Motivation"
+          title: AppLocalizations.of(context)!.motivation
         )
       ],
     );
@@ -89,7 +90,7 @@ class CharacterInfo extends StatelessWidget{
             controller.addListener(()=>character.career = controller.text);
             return controller;
           }(),
-          title: "Career"
+          title: AppLocalizations.of(context)!.career
         )
       ],
     );
@@ -112,7 +113,7 @@ class CharacterInfo extends StatelessWidget{
             });
             return controller;
           }(),
-          title: "Category"
+          title: AppLocalizations.of(context)!.category
         )
       ],
     );

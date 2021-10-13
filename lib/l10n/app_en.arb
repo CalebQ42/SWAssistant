@@ -63,7 +63,21 @@
     "morality": "Morality",
     "skillPlural": "Skills",
 
+    "saveWeaponsFirst": "Save weapons first!",
+    "restoreWeapons": "Restore saved weapons",
+    "weaponsRestored": "Weapons Restored",
+    "saveWeapons": "Save weapons",
+    "overwriteWeapons": "Overwrite saved weapons",
+    "weaponsSaved": "Weapons Saved",
+    "saveInventoryFirst": "Save inventory first!",
+    "restoreInventory": "Restore saved inventory",
+    "inventoryRestored": "Inventory Restored",
+    "saveInventory": "Save inventory",
+    "overwriteInventory": "Overwrite saved inventory",
+    "inventorySaved": "Inventory Saved",
+
     "damage": "Damage",
+    "criticalHits": "Critical Hits",
     
     "basicInfo": "Basic Information",
     "defense": "Defense",
@@ -129,7 +143,6 @@
     "skills34": "Knowledge(Xenology)",
     "skills35": "Other...",
 
-    "injury": "Injury",
     "severity": "Severity",
     "severityLevel1": "Easy",
     "severityLevel2": "Average",
@@ -170,7 +183,7 @@
     "age": "Age",
     "motivation": "Motivation",
 
-    "forceRating": "Force Rating",
+    "forceRating": "Force Rating:",
 
     "conflict": "Conflict",
     "resolveConflict": "Resolve Conflict",
@@ -184,8 +197,8 @@
             }
         }
     },
-    "emoStr": "Emotional Strength",
-    "emoWeak": "Emotional Weakness",
+    "emoStr": "Emotional Strength:",
+    "emoWeak": "Emotional Weakness:",
 
     "wound": "Wound",
     "maxWound": "Max Wound",
@@ -206,7 +219,7 @@
     "brokenWeapon": "Weapon is broken and cannot fire!",
     "weaponOutOfAmmo": "Weapon is out of Ammo!",
 
-    "minNum": "Number of Minions",
+    "minNum": "Number of Minions:",
 
     "minWound": "Wound per Minion:",
     
@@ -222,13 +235,19 @@
     "aft": "Aft",
     "anglingWarning": "WARNING: Angled defense does not equal total defense",
 
+    "silhouette": "Silhouette",
+    "speed": "Speed",
+    "armor": "Armor",
+    "handling": "Handling",
+    "passengers": "Passengers",
+
     "soak": "Soak:",
 
     "disableForce": "Disable Force",
     "disableMorality": "Disable Morality",
     "disableDuty": "Disable Duty",
     "disableObligation": "Disable Obligation",
-    "close": "Clone",
+    "clone": "Clone",
     "copyOf": "Copy of {name}",
     "@copyOf": {
         "description": "Default name of a cloned profile.",
@@ -239,6 +258,9 @@
             }
         }
     },
+
+    "stats": "Stats",
+    "notes": "Notes",
 
     "deletedDuty": "Duty Deleted",
     "deletedFP": "Force Power Deleted",

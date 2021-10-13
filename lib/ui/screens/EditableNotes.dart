@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:swassistant/items/Note.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditableNotes extends StatefulWidget{
   @override
@@ -28,9 +29,9 @@ class _EditableNotesState extends State{
               Editable.of(context).notes.removeAt(index);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("Deleted Note"),
+                  content: Text(AppLocalizations.of(context)!.deletedNote),
                   action: SnackBarAction(
-                    label: "Undo",
+                    label: AppLocalizations.of(context)!.undo,
                     onPressed: (){
                       setState((){
                         Editable.of(context).notes.insert(index, temp);

@@ -7,6 +7,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/screens/EditableCards.dart';
 import 'package:swassistant/ui/screens/EditableNotes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditingEditable extends StatefulWidget {
   final Editable profile;
@@ -33,8 +34,8 @@ class _EditingEditableState extends State {
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).cardColor,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.info), label: "Stats"),
-            BottomNavigationBarItem(icon: Icon(Icons.note), label: "Notes")
+            BottomNavigationBarItem(icon: Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
+            BottomNavigationBarItem(icon: Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
           ],
           onTap: (value) => setState(() => _index = value),
           currentIndex: _index,
@@ -47,28 +48,28 @@ class _EditingEditableState extends State {
             if (profile is Character)
               CheckedPopupMenuItem(
                 checked: (profile as Character).disableForce,
-                child: Text("Disable Force"),
+                child: Text(AppLocalizations.of(context)!.disableForce),
                 value: "disableForce"
               ),
             if (profile is Character)
               CheckedPopupMenuItem(
                 checked: (profile as Character).disableMorality,
-                child: Text("Disable Morality"),
+                child: Text(AppLocalizations.of(context)!.disableMorality),
                 value: "disableMorality"
               ),
             if (profile is Character)
               CheckedPopupMenuItem(
                 checked: (profile as Character).disableDuty,
-                child: Text("Disable Duty"),
+                child: Text(AppLocalizations.of(context)!.disableDuty),
                 value: "disableDuty"
               ),
             if (profile is Character)
               CheckedPopupMenuItem(
                 checked: (profile as Character).disableObligation,
-                child: Text("Disable Obligation"),
+                child: Text(AppLocalizations.of(context)!.disableObligation),
                 value: "disableObligation"
               ),
-            PopupMenuItem(child: Text("Clone"), value: "clone"),
+            PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
           ],
           backgroundColor: Theme.of(context).primaryColor,
           popupFunctions: {
@@ -83,7 +84,7 @@ class _EditingEditableState extends State {
             "clone": () => showModalBottomSheet(
               context: context,
               builder: (context) {
-                var nameController = TextEditingController(text: "Copy of " + profile.name);
+                var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(profile.name));
                 return Padding(
                   padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 5, right: 5, bottom: 10)),
                   child: Wrap(
@@ -91,7 +92,7 @@ class _EditingEditableState extends State {
                       Container(height: 10),
                       TextField(
                         controller: nameController,
-                        decoration: InputDecoration(labelText: "Name"),
+                        decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
                       ),
                       ButtonBar(
                         children: [

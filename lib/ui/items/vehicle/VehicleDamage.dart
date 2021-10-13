@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehicleDamage extends StatelessWidget{
 
@@ -21,7 +22,7 @@ class VehicleDamage extends StatelessWidget{
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Soak:"),
+            Text(AppLocalizations.of(context)!.soak),
             SizedBox(
               width: 50,
               height: 25,
@@ -53,7 +54,7 @@ class VehicleDamage extends StatelessWidget{
                   duration: Duration(milliseconds: 300),
                   child: !editing ? Column(
                     children: [
-                      Text("Hull Trauma", textAlign: TextAlign.center),
+                      Text(AppLocalizations.of(context)!.hullTrauma, textAlign: TextAlign.center),
                       UpDownStat(
                         onUpPressed: (){
                           vehicle.hullTraumaCur++;
@@ -77,7 +78,7 @@ class VehicleDamage extends StatelessWidget{
                     }(),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: "Max Hull Trauma"),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxTrauma),
                     textAlign: TextAlign.center,
                   ),
                   transitionBuilder: (child, anim){
@@ -104,7 +105,7 @@ class VehicleDamage extends StatelessWidget{
                   duration: Duration(milliseconds: 300),
                   child: !editing ? Column(
                     children: [
-                      Text("System Stress", textAlign: TextAlign.center),
+                      Text(AppLocalizations.of(context)!.sysStress, textAlign: TextAlign.center),
                       UpDownStat(
                         onUpPressed: (){
                           vehicle.sysStressCur++;
@@ -128,7 +129,7 @@ class VehicleDamage extends StatelessWidget{
                     }(),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: "Max System Stress"),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStress),
                     textAlign: TextAlign.center,
                   ),
                   transitionBuilder: (child, anim){

@@ -50,7 +50,7 @@ class _CriticalInjuryEditState extends State{
               textCapitalization: TextCapitalization.words,
               controller: nameController,
               decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.injury,
+                    labelText: AppLocalizations.of(context)!.name,
               ),
             ),
             Container(height: 10),

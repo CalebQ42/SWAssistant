@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../EditableCommon.dart';
 
@@ -49,10 +50,10 @@ class MinInfoState extends State{
           defaultSave: true,
           textAlign: TextAlign.center,
           fieldAlign: TextAlign.center,
-          title: "Category"
+          title: AppLocalizations.of(context)!.category
         ),
         Container(height: 10,),
-        Text("Number of Minions:"),
+        Text(AppLocalizations.of(context)!.minNum),
         UpDownStat(
           onDownPressed: (){
             minion.minionNum--;
@@ -62,7 +63,7 @@ class MinInfoState extends State{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[minion.cardNames.indexOf("Wound")] && woundHolder.reloadFunction != null)
+            if(minion.showCard[minion.cardNames.indexOf(AppLocalizations.of(context)!.wound)] && woundHolder.reloadFunction != null)
               woundHolder.reloadFunction!();
           },
           onUpPressed: (){
@@ -71,7 +72,7 @@ class MinInfoState extends State{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[minion.cardNames.indexOf("Wound")] && woundHolder.reloadFunction != null)
+            if(minion.showCard[minion.cardNames.indexOf(AppLocalizations.of(context)!.wound)] && woundHolder.reloadFunction != null)
               woundHolder.reloadFunction!();
           },
           getValue: () => minion.minionNum,

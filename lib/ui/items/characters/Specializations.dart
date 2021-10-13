@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/dialogs/character/SpecializationEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Specializations extends StatelessWidget{
 
@@ -39,9 +40,9 @@ class Specializations extends StatelessWidget{
                         character.save(context: context);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text("Deleted Specialization"),
+                            content: Text(AppLocalizations.of(context)!.deletedSpecialization),
                             action: SnackBarAction(
-                              label: "Undo",
+                              label: AppLocalizations.of(context)!.undo,
                               onPressed: (){
                                 character.specializations.insert(index,temp);
                                 refresh();

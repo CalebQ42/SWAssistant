@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class XP extends StatelessWidget{
 
@@ -22,10 +23,10 @@ class XP extends StatelessWidget{
         Row(
           children: [
             Expanded(
-              child: Center(child: Text("Current:")),
+              child: Center(child: Text(AppLocalizations.of(context)!.current)),
             ),
             Expanded(
-              child: Center(child: Text("Total:")),
+              child: Center(child: Text(AppLocalizations.of(context)!.total)),
             )
           ]
         ),
@@ -103,7 +104,7 @@ class XP extends StatelessWidget{
                 }
               },
               icon: Icon(Icons.add),
-              label: Text("Add XP")
+              label: Text(AppLocalizations.of(context)!.addXP)
             )
           ]
         )

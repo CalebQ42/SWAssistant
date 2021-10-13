@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditingText extends StatelessWidget {
 
@@ -151,7 +152,7 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
     if(editButton)
       bottomButtons.add(
         Tooltip(
-          message: "Edit",
+          message: AppLocalizations.of(context)!.edit,
           child: IconButton(
             iconSize: 20.0,
             padding: EdgeInsets.all(5.0),

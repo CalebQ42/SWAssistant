@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehicleInfo extends StatelessWidget{
 
@@ -36,11 +37,11 @@ class VehicleInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.number,
-          title: "Silhouette",
+          title: AppLocalizations.of(context)!.silhouette,
         )
       ],
     );
-    var speed = new Column(
+    var speed = new Column( 
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -59,7 +60,7 @@ class VehicleInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.number,
-          title: "Speed",
+          title: AppLocalizations.of(context)!.speed,
         )
       ],
     );
@@ -82,7 +83,7 @@ class VehicleInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.number,
-          title: "Armor",
+          title: AppLocalizations.of(context)!.armor,
         )
       ],
     );
@@ -105,7 +106,7 @@ class VehicleInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.numberWithOptions(signed: true),
-          title: "Handling",
+          title: AppLocalizations.of(context)!.handling,
         )
       ],
     );
@@ -129,7 +130,7 @@ class VehicleInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.number,
-          title: "Hard Points",
+          title: AppLocalizations.of(context)!.hardPoints,
         )
       ],
     );
@@ -152,7 +153,7 @@ class VehicleInfo extends StatelessWidget{
             return controller;
           }(),
           textType: TextInputType.number,
-          title: "Passengers",
+          title: AppLocalizations.of(context)!.passengers,
         )
       ],
     );
@@ -175,7 +176,7 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
-          title: "Category"
+          title: AppLocalizations.of(context)!.category
         )
       ],
     );

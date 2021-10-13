@@ -16,6 +16,7 @@ import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
 import 'package:swassistant/ui/items/minion/MinInfo.dart';
 import 'package:swassistant/ui/items/minion/MinionWound.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'utils/Creature.dart';
 
@@ -128,7 +129,7 @@ class Minion extends Editable with Creature{
         defaultEditingState: () => weapons.length == 0,
         additonalButtons: () => [
           Tooltip(
-            message: savedWeapons.length == 0 ? "Save weapons first!" : "Restore saved weapons",
+            message: savedWeapons.length == 0 ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -141,9 +142,9 @@ class Minion extends Editable with Creature{
                   weaponsRefresh!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("Weapons Restored"),
+                    content: Text(AppLocalizations.of(context)!.weaponsRestored),
                     action: SnackBarAction(
-                      label: "Undo",
+                      label: AppLocalizations.of(context)!.undo,
                       onPressed: (){
                         weapons = tmp;
                         if (weaponsRefresh != null)
@@ -156,7 +157,7 @@ class Minion extends Editable with Creature{
             )
           ),
           Tooltip(
-            message: savedWeapons.length == 0 ? "Save weapons" : "Overwrite saved weapons",
+            message: savedWeapons.length == 0 ? AppLocalizations.of(context)!.saveWeapons : AppLocalizations.of(context)!.overwriteWeapons,
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -169,7 +170,7 @@ class Minion extends Editable with Creature{
                   weaponsRefresh!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("Weapons Saved"),
+                    content: Text(AppLocalizations.of(context)!.weaponsSaved),
                   )
                 );
               }
@@ -187,7 +188,7 @@ class Minion extends Editable with Creature{
         defaultEditingState: () => inventory.length == 0,
         additonalButtons: () => [
           Tooltip(
-            message: savedInv.length == 0 ? "Save inventory first!" : "Restore saved inventory",
+            message: savedInv.length == 0 ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -200,9 +201,9 @@ class Minion extends Editable with Creature{
                   invHolder.reloadFunction!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("Inventory Restored"),
+                    content: Text(AppLocalizations.of(context)!.inventoryRestored),
                     action: SnackBarAction(
-                      label: "Undo",
+                      label: AppLocalizations.of(context)!.undo,
                       onPressed: (){
                         inventory = tmp;
                         if(invHolder.reloadFunction != null)
@@ -215,7 +216,7 @@ class Minion extends Editable with Creature{
             )
           ),
           Tooltip(
-            message: savedInv.length == 0 ? "Save inventory" : "Overwrite saved inventory",
+            message: savedInv.length == 0 ? AppLocalizations.of(context)!.saveInventory : AppLocalizations.of(context)!.overwriteInventory,
             child: IconButton(
               iconSize: 20.0,
               padding: EdgeInsets.all(5.0),
@@ -228,7 +229,7 @@ class Minion extends Editable with Creature{
                   invHolder.reloadFunction!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("Inventory Saved"),
+                    content: Text(AppLocalizations.of(context)!.inventorySaved),
                   )
                 );
               }

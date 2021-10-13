@@ -6,6 +6,7 @@ import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/dice/Sides.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/misc/DiceSelector.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DiceRoller extends StatelessWidget{
 
@@ -20,7 +21,7 @@ class DiceRoller extends StatelessWidget{
       drawer: SWDrawer(),
       appBar: SWAppBar(
         context,
-        title: Text("Dice"),
+        title: Text(AppLocalizations.of(context)!.dice),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       floatingActionButton: FloatingActionButton(
@@ -116,7 +117,7 @@ class _InstantState extends State{
                       ).roll();
                       setState(() => result = int.tryParse(res.toString()) ?? -1);
                     },
-                    child: Text("Roll")
+                    child: Text(AppLocalizations.of(context)!.roll)
                   ))
                 ],
               )

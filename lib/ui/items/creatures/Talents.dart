@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/dialogs/creature/TalentEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Talents extends StatelessWidget{
 
@@ -43,7 +44,7 @@ class Talents extends StatelessWidget{
                         Container(height: 5),
                         Center(
                           child: Text(
-                            "Rank: " + creature.talents[index].value.toString(),
+                            AppLocalizations.of(context)!.rank + ": " + creature.talents[index].value.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
@@ -73,9 +74,9 @@ class Talents extends StatelessWidget{
                           creature.save(context: context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Talent Deleted"),
+                              content: Text(AppLocalizations.of(context)!.deletedTalent),
                               action: SnackBarAction(
-                                label: "Undo",
+                                label: AppLocalizations.of(context)!.undo,
                                 onPressed: (){
                                   creature.talents.insert(index, temp);
                                   refresh();

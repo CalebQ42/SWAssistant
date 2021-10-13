@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/editable/CriticalInjuryEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CriticalInjuries extends StatelessWidget{
   final bool editing;
@@ -15,7 +16,22 @@ class CriticalInjuries extends StatelessWidget{
       InkResponse(
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
-        onTap: () =>
+        onTap: () {
+          String severity;
+          switch (editable.criticalInjuries[i].severity) {
+            case 0:
+              severity = AppLocalizations.of(context)!.severityLevel1;
+              break;
+            case 1:
+              severity = AppLocalizations.of(context)!.severityLevel2;
+              break;
+            case 2:
+              severity = AppLocalizations.of(context)!.severityLevel3;
+              break;
+            default:
+              severity = AppLocalizations.of(context)!.severityLevel4;
+              break;
+          }
           showModalBottomSheet(
             context: context,
             builder: (context) =>
@@ -35,7 +51,7 @@ class CriticalInjuries extends StatelessWidget{
                     Container(height: 5,),
                     Center(
                       child: Text(
-                        "Severity: " + <String>["Easy", "Average", "Hard", "Daunting"][editable.criticalInjuries[i].severity],
+                        AppLocalizations.of(context)!.severity + ": " + severity,
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
@@ -44,7 +60,8 @@ class CriticalInjuries extends StatelessWidget{
                   ],
                 )
               )
-          ),
+          );
+        },
         child: Row(
           children: [
             Expanded(

@@ -8,6 +8,7 @@ import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/SWWeaponDialog.dart';
 import 'package:swassistant/ui/dialogs/editable/WeaponEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Weapons extends StatelessWidget{
   final bool editing;
@@ -26,13 +27,13 @@ class Weapons extends StatelessWidget{
           if(editable.weapons[i].itemState == 4)
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("Weapon is broken and cannot fire!"),
+                content: Text(AppLocalizations.of(context)!.brokenWeapon),
               )
             );
           else if ((editable.weapons[i].limitedAmmo && editable.weapons[i].ammo <= 0) || !editable.weapons[i].loaded)
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("Weapon is out of ammo!"),
+                content: Text(AppLocalizations.of(context)!.weaponOutOfAmmo),
               )
             );
           else
@@ -82,9 +83,9 @@ class Weapons extends StatelessWidget{
                       editable.save(context: context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("Deleted Weapon"),
+                          content: Text(AppLocalizations.of(context)!.deletedWeapon),
                           action: SnackBarAction(
-                            label: "Undo",
+                            label: AppLocalizations.of(context)!.undo,
                             onPressed: (){
                               editable.weapons.insert(i, temp);
                               refresh();

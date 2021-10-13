@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehicleDefense extends StatefulWidget implements StatefulCard{
 
@@ -46,7 +47,7 @@ class _VehicleDefenseState extends State{
       controller: totalDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: "Total Defense (For Angling)"
+      title: AppLocalizations.of(context)!.totalDefense
     );
     if (foreDefenseCont == null){
       foreDefenseCont = TextEditingController(text: vehicle.defense[0].toString())
@@ -60,7 +61,7 @@ class _VehicleDefenseState extends State{
       controller: foreDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: "Fore"
+      title: AppLocalizations.of(context)!.fore
     );
     if (portDefenseCont == null){
       portDefenseCont = TextEditingController(text: vehicle.defense[1].toString())
@@ -74,7 +75,7 @@ class _VehicleDefenseState extends State{
       controller: portDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: "Port"
+      title: AppLocalizations.of(context)!.port
     );
     if (starboardDefenseCont == null){
       starboardDefenseCont = TextEditingController(text: vehicle.defense[2].toString())
@@ -88,7 +89,7 @@ class _VehicleDefenseState extends State{
       controller: starboardDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: "Starboard"
+      title: AppLocalizations.of(context)!.starboard
     );
     if (aftDefenseCont == null){
       aftDefenseCont = TextEditingController(text: vehicle.defense[3].toString())
@@ -102,7 +103,7 @@ class _VehicleDefenseState extends State{
       controller: aftDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: "Aft"
+      title: AppLocalizations.of(context)!.aft
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,7 +123,7 @@ class _VehicleDefenseState extends State{
         aft,
         if (angleTotal != vehicle.totalDefense) Container(height: 5,),
         if (angleTotal != vehicle.totalDefense) Text(
-          "WARNING: Angled defense does not equal total defense",
+          AppLocalizations.of(context)!.anglingWarning,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),
         )

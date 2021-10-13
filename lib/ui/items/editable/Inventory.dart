@@ -7,6 +7,7 @@ import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/editable/ItemEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Inventory extends StatefulWidget with StatefulCard{
 
@@ -104,7 +105,7 @@ class InventoryState extends State{
           if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Center(child: Text("Credits:")),
+              Center(child: Text(AppLocalizations.of(context)!.credits)),
               SizedBox(
                 width: 75,
                 height: 25,
@@ -124,7 +125,7 @@ class InventoryState extends State{
           if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Center(child: Text("Encumbrance Capacity:")),
+              Center(child: Text(AppLocalizations.of(context)!.encumCap)),
               SizedBox(
                 width: 50,
                 height: 25,
@@ -144,7 +145,7 @@ class InventoryState extends State{
           if(editable is Vehicle) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Center(child: Text("Encumbrance Capacity:")),
+              Center(child: Text(AppLocalizations.of(context)!.encumCap)),
               SizedBox(
                 width: 50,
                 height: 25,
@@ -162,7 +163,7 @@ class InventoryState extends State{
             ],
           ),
           if(overEncumbered) Text(
-            "You are over-encumbered! Add a setback die to all Agility and Brawn checks.",
+            AppLocalizations.of(context)!.overEncumNotice,
             style: TextStyle(color: Theme.of(context).errorColor),
             textAlign: TextAlign.center,
           )
@@ -191,14 +192,14 @@ class InventoryState extends State{
                         Container(height: 5,),
                         Center(
                           child: Text(
-                            "Count: " + editable.inventory[index].count.toString(),
+                            AppLocalizations.of(context)!.count + ": " + editable.inventory[index].count.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         Container(height: 5),
                         Center(
                           child: Text(
-                            "Encumbrance: " + editable.inventory[index].encum.toString(),
+                            AppLocalizations.of(context)!.encum + ": " + editable.inventory[index].encum.toString(),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
@@ -228,9 +229,9 @@ class InventoryState extends State{
                           editable.save(context: context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Item Deleted"),
+                              content: Text(AppLocalizations.of(context)!.deletedItem),
                               action: SnackBarAction(
-                                label: "Undo",
+                                label: AppLocalizations.of(context)!.undo,
                                 onPressed: (){
                                   editable.inventory.insert(index, temp);
                                   setState((){});

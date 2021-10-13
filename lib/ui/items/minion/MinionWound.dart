@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MinionWound extends StatefulWidget with StatefulCard{
 
@@ -55,7 +56,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Soak:"),
+            Text(AppLocalizations.of(context)!.soak),
             SizedBox(
               width: 50,
               height: 25,
@@ -81,7 +82,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Wound per Minion:"),
+            Text(AppLocalizations.of(context)!.minWound),
             SizedBox(
               width: 50,
               height: 25,
@@ -112,7 +113,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
               minNum ++;
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
-              if(minion.showCard[minion.cardNames.indexOf("Number of Minions")] && numHolder.reloadFunction != null)
+              if(minion.showCard[minion.cardNames.indexOf(AppLocalizations.of(context)!.basicInfo)] && numHolder.reloadFunction != null)
                 numHolder.reloadFunction!();
             }
             minion.save(context: context);

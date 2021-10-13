@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WoundStrain extends StatelessWidget{
 
@@ -23,7 +24,7 @@ class WoundStrain extends StatelessWidget{
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Soak:"),
+            Text(AppLocalizations.of(context)!.soak),
             SizedBox(
               width: 50,
               height: 25,
@@ -69,7 +70,7 @@ class WoundStrain extends StatelessWidget{
                   },
                   child: !editing ? Column(
                     children: [
-                      Center(child: Text("Wound")),
+                      Center(child: Text(AppLocalizations.of(context)!.wound)),
                       UpDownStat(
                         key: ValueKey("UpDownWound"),
                         onUpPressed: () {
@@ -95,7 +96,7 @@ class WoundStrain extends StatelessWidget{
                         controller: controll,
                         keyboardType: TextInputType.number,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        decoration: InputDecoration(labelText: "Max Wound",),
+                        decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxWound),
                         textAlign: TextAlign.center,
                       ),
                       padding: EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
@@ -124,7 +125,7 @@ class WoundStrain extends StatelessWidget{
                   },
                   child: !editing ? Column(
                     children: [
-                      Center(child: Text("Strain"),),
+                      Center(child: Text(AppLocalizations.of(context)!.strain),),
                       UpDownStat(
                         key: ValueKey("UpDownStrain"),
                         onUpPressed: (){
@@ -150,7 +151,7 @@ class WoundStrain extends StatelessWidget{
                         controller: controll,
                         keyboardType: TextInputType.number,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        decoration: InputDecoration(labelText: "Max Strain"),
+                        decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStrain),
                         textAlign: TextAlign.center,
                       ),
                       padding: EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)

@@ -7,6 +7,7 @@ import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditableList extends StatefulWidget{
 
@@ -103,11 +104,11 @@ class _EditableListState extends State{
                 (){
                   switch(type){
                     case 0:
-                      return "Characters";
+                      return AppLocalizations.of(context)!.characters;
                     case 1:
-                      return "Minions";
+                      return AppLocalizations.of(context)!.minions;
                     case 2:
-                      return "Vehicles";
+                      return AppLocalizations.of(context)!.vehicles;
                     default:
                       return "";
                   }
@@ -145,11 +146,11 @@ class _EditableListState extends State{
                   }
                   List<DropdownMenuItem<String>> out = [];
                   out.add(DropdownMenuItem(
-                    child: Text("All"),
+                    child: Text(AppLocalizations.of(context)!.all),
                     value: null
                   ));
                   out.add(DropdownMenuItem(
-                    child: Text("Uncategorized"),
+                    child: Text(AppLocalizations.of(context)!.uncategorized),
                     value: ""
                   ));
                   cats.forEach((element) {
@@ -160,7 +161,7 @@ class _EditableListState extends State{
                   });
                   return out;
                 }(),
-                hint: Text("Categories"),
+                hint: Text(AppLocalizations.of(context)!.categories),
                 onChanged: (String? value) =>
                   setState(() => category = value),
                 value: category,
@@ -259,16 +260,16 @@ class EditableCard extends StatelessWidget{
         SW.of(upperContext).remove(editable, context);
         String msg = "";
         if(editable is Character)
-          msg = "Character Deleted";
+          msg = AppLocalizations.of(context)!.deletedCharacter;
         else if (editable is Minion)
-          msg = "Minion Deleted";
+          msg = AppLocalizations.of(context)!.deletedMinion;
         else if (editable is Vehicle)
-          msg = "Vehicle Deleted";
+          msg = AppLocalizations.of(context)!.deletedVehicle;
         ScaffoldMessenger.of(upperContext).showSnackBar(
           SnackBar(
             content: Text(msg),
             action: SnackBarAction(
-              label: "Undo",
+              label: AppLocalizations.of(context)!.undo,
               onPressed: (){
                 SW.of(upperContext).add(tmp);
                 tmp.save(context: context);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Morality extends StatefulWidget with StatefulCard{
 
@@ -69,11 +70,11 @@ class MoralityState extends State with TickerProviderStateMixin{
         Row(
           children: [
             Expanded(
-              child: Text("Morality", textAlign: TextAlign.center,),
+              child: Text(AppLocalizations.of(context)!.morality, textAlign: TextAlign.center,),
             ),
             Container(width: 10),
             Expanded(
-              child: Text("Conflict", textAlign: TextAlign.center),
+              child: Text(AppLocalizations.of(context)!.conflict, textAlign: TextAlign.center),
             )
           ],
         ),
@@ -110,7 +111,7 @@ class MoralityState extends State with TickerProviderStateMixin{
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Dark Side"),
+              Text(AppLocalizations.of(context)!.darkSide),
               Switch(
                 value: character.darkSide,
                 onChanged: (b) => setState((){
@@ -119,7 +120,7 @@ class MoralityState extends State with TickerProviderStateMixin{
                 }),
               ),
               ElevatedButton(
-                child: Text("Resolve Conflict"),
+                child: Text(AppLocalizations.of(context)!.resolveConflict),
                 onPressed: (){
                   var conflict = int.tryParse(conflictController!.text);
                   if(conflict == null)
@@ -128,7 +129,7 @@ class MoralityState extends State with TickerProviderStateMixin{
                   character.conflict = 0;
                   var resolution = Random().nextInt(9) + 1;
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("You rolled a " + resolution.toString()),
+                    content: Text(AppLocalizations.of(context)!.conflictResult(resolution)),
                   ));
                   resolution = resolution - conflict;
                   setState((){
@@ -148,10 +149,10 @@ class MoralityState extends State with TickerProviderStateMixin{
         Row(
           children: [
             Expanded(
-              child: Center(child: Text("Emotional Strength:", style: Theme.of(context).textTheme.subtitle1,)),
+              child: Center(child: Text(AppLocalizations.of(context)!.emoStr, style: Theme.of(context).textTheme.subtitle1,)),
             ),
             Expanded(
-              child: Center(child: Text("Emotional Weakness:", style: Theme.of(context).textTheme.subtitle1,))
+              child: Center(child: Text(AppLocalizations.of(context)!.emoWeak, style: Theme.of(context).textTheme.subtitle1,))
             )
           ]
         ),

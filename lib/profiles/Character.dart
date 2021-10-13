@@ -52,6 +52,7 @@ class Character extends Editable with Creature{
   bool disableMorality = false;
 
   String get fileExtension => ".swcharacter";
+  //TODO: TRANSLATE
   List<String> get cardNames => [
     "Basic Information",
     "Wound and Strain",

@@ -4,6 +4,7 @@ import 'package:swassistant/items/ForcePower.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForcePowers extends StatelessWidget{
 
@@ -24,7 +25,7 @@ class ForcePowers extends StatelessWidget{
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("Force Rating:"),
+              Text(AppLocalizations.of(context)!.forceRating),
               SizedBox(
                 width: 50,
                 child: EditingText(
@@ -96,9 +97,9 @@ class ForcePowers extends StatelessWidget{
                           character.save(context: context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Force Power Deleted"),
+                              content: Text(AppLocalizations.of(context)!.deletedFP),
                               action: SnackBarAction(
-                                label: "Undo",
+                                label: AppLocalizations.of(context)!.undo,
                                 onPressed: (){
                                   character.forcePowers.insert(index, temp);
                                   refresh();

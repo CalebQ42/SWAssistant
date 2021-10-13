@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/dialogs/character/ObligationEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Obligations extends StatelessWidget{
 
@@ -43,9 +44,9 @@ class Obligations extends StatelessWidget{
                             refresh();
                             character.save(context: context);
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Deleted Obligation"),
+                              content: Text(AppLocalizations.of(context)!.deletedObli),
                               action: SnackBarAction(
-                                label: "Undo",
+                                label: AppLocalizations.of(context)!.undo,
                                 onPressed: (){
                                   character.obligations.insert(index, tmp);
                                   refresh();
@@ -113,7 +114,7 @@ class Obligations extends StatelessWidget{
                           ),
                           Container(height: 5),
                           Text(
-                            character.obligations[index].value.toString() + " Obligation",
+                            character.obligations[index].value.toString() + " " + AppLocalizations.of(context)!.obligation,
                             style: Theme.of(context).textTheme.bodyText1,
                             textAlign: TextAlign.center,
                           ),

@@ -4,6 +4,7 @@ import 'package:swassistant/items/Skill.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/dialogs/creature/SkillEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Skills extends StatelessWidget{
   final bool editing;
@@ -48,9 +49,9 @@ class Skills extends StatelessWidget{
                       creature.save(context: context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("Skill Deleted"),
+                          content: Text(AppLocalizations.of(context)!.deletedSkill),
                           action: SnackBarAction(
-                            label: "Undo",
+                            label: AppLocalizations.of(context)!.undo,
                             onPressed: (){
                               creature.skills.insert(index, temp);
                               refresh();

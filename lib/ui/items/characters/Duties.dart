@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:swassistant/items/Duty.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/dialogs/character/DutyEditDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Duties extends StatelessWidget{
 
@@ -43,9 +44,9 @@ class Duties extends StatelessWidget{
                             refresh();
                             character.save(context: context);
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Deleted Duty"),
+                              content: Text(AppLocalizations.of(context)!.deletedDuty),
                               action: SnackBarAction(
-                                label: "Undo",
+                                label: AppLocalizations.of(context)!.undo,
                                 onPressed: (){
                                   character.duties.insert(index, tmp);
                                   refresh();
@@ -113,7 +114,7 @@ class Duties extends StatelessWidget{
                           ),
                           Container(height: 5),
                           Text(
-                            character.duties[index].value.toString() + " Duty",
+                            character.duties[index].value.toString() + " " + AppLocalizations.of(context)!.duty,
                             style: Theme.of(context).textTheme.bodyText1,
                             textAlign: TextAlign.center,
                           ),

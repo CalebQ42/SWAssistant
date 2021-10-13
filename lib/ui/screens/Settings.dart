@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/ui/Common.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Settings extends StatefulWidget{
 
@@ -25,7 +26,7 @@ class SettingsState extends State{
     return Scaffold(
       appBar: SWAppBar(
         context,
-        title: Text("Settings"),
+        title: Text(AppLocalizations.of(context)!.settings),
         backgroundColor: Theme.of(context).primaryColor
       ),
       drawer: SWDrawer(),
@@ -40,7 +41,7 @@ class SettingsState extends State{
               }
               SW.of(context).topLevelUpdate();
             },
-            title: Text("Force Light Side"),
+            title: Text(AppLocalizations.of(context)!.forceLight),
           ),
           Divider(),
           SwitchListTile(
@@ -52,7 +53,7 @@ class SettingsState extends State{
               }
               SW.of(context).topLevelUpdate();
             },
-            title: Text("Force Dark Side"),
+            title: Text(AppLocalizations.of(context)!.forceDark),
           ),
           Divider(),
           SwitchListTile(
@@ -61,7 +62,7 @@ class SettingsState extends State{
               app.prefs.setBool(preferences.amoled, b);
               SW.of(context).topLevelUpdate();
             },
-            title: Text("Amoled (Pitch Black) Dark Theme"),
+            title: Text(AppLocalizations.of(context)!.amoledTheme),
           ),
           Divider(),
           SwitchListTile(
@@ -70,7 +71,7 @@ class SettingsState extends State{
               app.prefs.setBool(preferences.colorDice, b);
               SW.of(context).topLevelUpdate();
             },
-            title: Text("Color Dice Roller"),
+            title: Text(AppLocalizations.of(context)!.colorDice),
           ),
           Divider(),
           SwitchListTile(
@@ -80,7 +81,7 @@ class SettingsState extends State{
                 context: context,
                 builder: (context) => 
                   AlertDialog(
-                    content: Text(!b ? "Turning off firebase will remove the ability to download profiles. Additionally the app needs to be restarted for this to take effect. Continue?" : "Turning on Firebase requires an app restart. Continue?"),
+                    content: Text(!b ? AppLocalizations.of(context)!.firebaseOffNotice : AppLocalizations.of(context)!.firebaseOnNotice),
                     actions: [
                       TextButton(
                         onPressed: (){
@@ -101,8 +102,8 @@ class SettingsState extends State{
                   )
               );
             },
-            title: Text("Firebase"),
-            subtitle: Text("Needed for crash reporting and downloads"),
+            title: Text(AppLocalizations.of(context)!.firebase),
+            subtitle: Text(AppLocalizations.of(context)!.firebaseSubtitle),
           ),
           Divider(),
           SwitchListTile(
@@ -112,8 +113,8 @@ class SettingsState extends State{
               app.prefs.setBool(preferences.crashlytics, b);
               setState((){});
             } : null,
-            title: Text("Crash Reporting"),
-            subtitle: Text("Anonymous crash reporting provided by Firebase Crashlytics")
+            title: Text(AppLocalizations.of(context)!.crashReporting),
+            subtitle: Text(AppLocalizations.of(context)!.crashReportingSubtitle)
           ),
           Divider(),
           SwitchListTile(
@@ -137,7 +138,7 @@ class SettingsState extends State{
           AboutListTile(
             applicationName: "SWAssistant",
             applicationIcon: Image(image: AssetImage("assets/SWAssistant.png"), height: 64,),
-            applicationLegalese: "See https://github.com/CalebQ42/SWAssistant for license and other info",
+            applicationLegalese: AppLocalizations.of(context)!.aboutText,
             applicationVersion: "3.0.0.0",
           )
         ],
