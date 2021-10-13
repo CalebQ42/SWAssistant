@@ -23,6 +23,7 @@ import 'package:swassistant/ui/items/characters/WoundStrain.dart';
 import 'package:swassistant/ui/items/creatures/Defense.dart';
 import 'package:swassistant/ui/items/editable/Inventory.dart';
 import 'package:swassistant/ui/items/creatures/Skills.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'utils/Creature.dart';
 
@@ -52,24 +53,36 @@ class Character extends Editable with Creature{
   bool disableMorality = false;
 
   String get fileExtension => ".swcharacter";
+  int get cardNum {
+    var out = 16;
+    if (disableForce)
+      out--;
+    if (disableMorality)
+      out--;
+    if (disableDuty)
+      out--;
+    if (disableObligation)
+      out--;
+    return out;
+  }
   //TODO: TRANSLATE
-  List<String> get cardNames => [
-    "Basic Information",
-    "Wound and Strain",
-    "Characteristics",
-    "Skill",
-    "Defense",
-    "Weapons",
-    "Critical Injuries",
-    "Specializations",
-    "Talents",
-    if(!disableForce) "Force Powers",
-    "XP",
-    "Inventory",
-    if(!disableMorality) "Morality",
-    if(!disableDuty) "Duty",
-    if(!disableObligation) "Obligation",
-    "Description"
+  List<String> cardNames(BuildContext context) => [
+    AppLocalizations.of(context)!.basicInfo,
+    AppLocalizations.of(context)!.woundStrain,
+    AppLocalizations.of(context)!.characteristicPlural,
+    AppLocalizations.of(context)!.skillPlural,
+    AppLocalizations.of(context)!.defense,
+    AppLocalizations.of(context)!.weaponPlural,
+    AppLocalizations.of(context)!.criticalInj,
+    AppLocalizations.of(context)!.specializationPlural,
+    AppLocalizations.of(context)!.talentPlural,
+    if(!disableForce) AppLocalizations.of(context)!.forcePowerPlural,
+    AppLocalizations.of(context)!.xp,
+    AppLocalizations.of(context)!.inventory,
+    if(!disableMorality) AppLocalizations.of(context)!.morality,
+    if(!disableDuty) AppLocalizations.of(context)!.duty,
+    if(!disableObligation) AppLocalizations.of(context)!.obligation,
+    AppLocalizations.of(context)!.desc
   ];
 
   Character({required int id, String name = "New Character", bool saveOnCreation = false, required SW app}) :

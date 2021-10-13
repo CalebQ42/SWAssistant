@@ -35,7 +35,7 @@ abstract class Editable extends JsonSavable{
   Route? route;
 
   String get fileExtension;
-  List<String> get cardNames;
+  int get cardNum;
 
   //Saving variables
   bool _saving = false;
@@ -43,7 +43,7 @@ abstract class Editable extends JsonSavable{
   bool _defered = false;
 
   Editable({required this.id, this.name = "", bool saveOnCreation = false, required SW app}){
-    showCard = List.filled(cardNames.length, false, growable: false);
+    showCard = List.filled(cardNum, false, growable: false);
     if(saveOnCreation)
       this.save(filename: getFileLocation(app));
   }
@@ -67,7 +67,7 @@ abstract class Editable extends JsonSavable{
       criticalInjuries = List.from(editable.criticalInjuries),
       desc = editable.desc,
       inventory = editable.inventory {
-      showCard = List.filled(cardNames.length, false);
+      showCard = List.filled(cardNum, false);
       if (!(this is Character || this is Vehicle || this is Minion))
         throw("Must be overridden by child");
   }
@@ -97,8 +97,8 @@ abstract class Editable extends JsonSavable{
     desc = json["description"] ?? "";
     if (json["show cards"] != null){
       showCard = json["show cards"].cast<bool>();
-      if(showCard.length != cardNames.length)
-        showCard.addAll(List.filled(cardNames.length - showCard.length, false));
+      if(showCard.length != cardNum)
+        showCard.addAll(List.filled(cardNum - showCard.length, false));
     }
     if (json["Inventory"] != null){
       inventory = [];
@@ -124,7 +124,7 @@ abstract class Editable extends JsonSavable{
     return json;
   }
 
-  List<Widget> cards(Function() refreshList, BuildContext context){
+  List<Widget> cards(BuildContext context, Function() refreshList){
     var cards = <Widget>[];
     var contents = cardContents(context, refreshList);
     cards.add(
@@ -133,12 +133,13 @@ abstract class Editable extends JsonSavable{
         child: NameCardContent(refreshList)
       )
     );
+    var names = cardNames(context);
     for (int i = 0; i < contents.length; i++)
       cards.add(
         InfoCard(
           shown: showCard[i],
           contents: contents[i],
-          title: cardNames[i],
+          title: names[i],
           onHideChange: (bool b, refresh) {
             showCard[i]=b;
             if (!b){
@@ -214,6 +215,8 @@ abstract class Editable extends JsonSavable{
   void deleteShortcut(){}
 
   List<EditableContent> cardContents(BuildContext context, Function() listUpdate);
+
+  List<String> cardNames(BuildContext context);
 
   static Editable of(BuildContext context){
     var ed = context.dependOnInheritedWidgetOfExactType<InheritedEditable>()?.editable;

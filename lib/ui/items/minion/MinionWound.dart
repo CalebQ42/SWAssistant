@@ -113,7 +113,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
               minNum ++;
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
-              if(minion.showCard[minion.cardNames.indexOf(AppLocalizations.of(context)!.basicInfo)] && numHolder.reloadFunction != null)
+              if(minion.showCard[0] && numHolder.reloadFunction != null)
                 numHolder.reloadFunction!();
             }
             minion.save(context: context);

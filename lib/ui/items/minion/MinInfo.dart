@@ -63,7 +63,7 @@ class MinInfoState extends State{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[minion.cardNames.indexOf(AppLocalizations.of(context)!.wound)] && woundHolder.reloadFunction != null)
+            if(minion.showCard[1] && woundHolder.reloadFunction != null)
               woundHolder.reloadFunction!();
           },
           onUpPressed: (){
@@ -72,7 +72,7 @@ class MinInfoState extends State{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[minion.cardNames.indexOf(AppLocalizations.of(context)!.wound)] && woundHolder.reloadFunction != null)
+            if(minion.showCard[1] && woundHolder.reloadFunction != null)
               woundHolder.reloadFunction!();
           },
           getValue: () => minion.minionNum,

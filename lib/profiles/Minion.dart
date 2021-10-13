@@ -30,17 +30,18 @@ class Minion extends Editable with Creature{
   int woundCurTemp = 0;
 
   String get fileExtension => ".swminion";
-  List<String> get cardNames => [
-    "Basic Information",
-    "Wound",
-    "Characteristics",
-    "Skills",
-    "Defense",
-    "Weapons",
-    "Talents",
-    "Inventory",
-    "Critical Injuries",
-    "Description"
+  int get cardNum => 10;
+  List<String> cardNames(BuildContext context) => [
+    AppLocalizations.of(context)!.basicInfo,
+    AppLocalizations.of(context)!.wound,
+    AppLocalizations.of(context)!.characteristicPlural,
+    AppLocalizations.of(context)!.skillPlural,
+    AppLocalizations.of(context)!.defense,
+    AppLocalizations.of(context)!.weaponPlural,
+    AppLocalizations.of(context)!.talentPlural,
+    AppLocalizations.of(context)!.inventory,
+    AppLocalizations.of(context)!.criticalInj,
+    AppLocalizations.of(context)!.desc
   ];
 
   Minion({required int id, String name = "New Minion", bool saveOnCreation = false, required SW app}) :

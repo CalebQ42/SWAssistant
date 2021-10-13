@@ -11,6 +11,7 @@ import 'package:swassistant/ui/items/editable/Weapons.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleDamage.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleDefense.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleInfo.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Vehicle extends Editable{
 
@@ -31,14 +32,15 @@ class Vehicle extends Editable{
   String model = "";
 
   String get fileExtension => ".swvehicle";
-  List<String> get cardNames => [
-    "Basic Information",
-    "Defense",
-    "Damage",
-    "Weapons",
-    "Inventory",
-    "Critical Injuries",
-    "Description"
+  int get cardNum => 7;
+  List<String> cardNames(BuildContext context) => [
+    AppLocalizations.of(context)!.basicInfo,
+    AppLocalizations.of(context)!.defense,
+    AppLocalizations.of(context)!.damage,
+    AppLocalizations.of(context)!.weaponPlural,
+    AppLocalizations.of(context)!.inventory,
+    AppLocalizations.of(context)!.criticalHits,
+    AppLocalizations.of(context)!.desc
   ];
 
   Vehicle({required int id, String name = "New Vehicle", bool saveOnCreation = false, required SW app}) :
