@@ -1,4 +1,13 @@
 {
+
+    "introWelcome": "Welcome!",
+    "introPage0Line1": "Thank you for trying SWAssistant. Before we get started, you first have to set up some preferences.",
+    "introPage0Line2": "Additionally, if you used a previous version of this app, we will need to import your old profiles first.",
+    "introPage0ImportButton": "Import Profiles",
+    "introPage0ImportMessage": "TODO: Not implemented yet",
+    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
+    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
+
     "translate": "Help Translate!",
     "discuss": "Discuss/Announcements",
 
@@ -296,14 +305,4 @@
     "aboutText": "See https://github.com/CalebQ42/SWAssistant for license and other info",
     "ads": "Ads",
     "cloudSave": "Cloud Save (via Google Drive)",
-
-    "introWelcome": "Welcome!",
-    "introPage0Line1": "Thank you for trying SWAssistant. Before we get started, you first have to set up some preferences.",
-    "introPage0Line2": "Additionally, if you used a previous version of this app, we will need to import your old profiles first.",
-    "introPage0ImportButton": "Import Profiles",
-    "introPage0ImportMessage": "",
-
-    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
-    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues."
-
 }

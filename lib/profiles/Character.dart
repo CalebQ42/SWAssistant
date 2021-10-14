@@ -65,7 +65,7 @@ class Character extends Editable with Creature{
       out--;
     return out;
   }
-  //TODO: TRANSLATE
+  
   List<String> cardNames(BuildContext context) => [
     AppLocalizations.of(context)!.basicInfo,
     AppLocalizations.of(context)!.woundStrain,

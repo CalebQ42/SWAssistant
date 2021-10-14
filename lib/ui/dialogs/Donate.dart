@@ -21,7 +21,7 @@ class DonateDialog extends StatelessWidget{
             ),
             TextButton(
               onPressed: (){
-                //TODO: donate amount dialog
+                //TODO: gplay donate dialog
               },
               child: Text(AppLocalizations.of(context)!.gPlay),
             )

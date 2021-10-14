@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/dice/SWDice.dart';
 import 'package:swassistant/dice/Sides.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

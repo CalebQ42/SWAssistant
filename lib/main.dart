@@ -22,7 +22,6 @@ Future<void> main() async =>
 
 //TODO: Misc
 //* Convert show modalBottomSheet to Bottom.
-//* Move all strings translated localizations.
 //* Move all old translations to arb files.
 //  * Possibly ajust UI to require less translation.
 //* Overencumbrance setback additon automatically

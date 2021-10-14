@@ -2,7 +2,6 @@
 //Displays a dialog to roll a specified number of SW Dice
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/DiceResults.dart';
-import 'package:swassistant/dice/SWDice.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/dice/SWDice.dart' as SWDice;
 import 'package:swassistant/items/Weapon.dart';

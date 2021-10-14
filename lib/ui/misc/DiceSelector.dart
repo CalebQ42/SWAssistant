@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
-import 'package:swassistant/dice/SWDice.dart' as SWDice;
 import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class DiceSelector extends StatelessWidget{
