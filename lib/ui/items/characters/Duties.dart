@@ -62,7 +62,7 @@ class Duties extends StatelessWidget{
                           constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                           onPressed: () =>
                             DutyEditDialog(
-                              duty: character.duties[index],
+                              d: character.duties[index],
                               onClose: (duty){
                                 character.duties[index] = duty;
                                 refresh();

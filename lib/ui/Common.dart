@@ -181,7 +181,7 @@ class SWDrawer extends StatelessWidget{
             onTap: (){
               Navigator.of(context).pop();
               Bottom(
-                child: DonateDialog(),
+                child: (context) => DonateDialog(),
               ).show(context);
             }
           ),

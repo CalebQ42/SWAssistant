@@ -32,13 +32,14 @@ class SWDiceHolder{
 
   void showDialog(BuildContext context){
     Bottom(
-      child: Column(
-        children: List.generate(
-          7, (index) =>
-            DiceSelector(holder: this, type: index)
-        )
-      ),
-      buttons: [
+      child: (context) =>
+        Column(
+          children: List.generate(
+            7, (index) =>
+              DiceSelector(holder: this, type: index)
+          )
+        ),
+      buttons: (context) => [
         TextButton(
           child: Text(AppLocalizations.of(context)!.roll),
           onPressed: (){
@@ -53,8 +54,7 @@ class SWDiceHolder{
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
           onPressed: () => Navigator.of(context).pop(),
-        )
-      ],
+        )],
     ).show(context);
   }
 }

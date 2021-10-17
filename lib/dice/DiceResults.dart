@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/Sides.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 
 class DiceResults{
 
@@ -25,79 +26,82 @@ class DiceResults{
 
   void showCombinedResults(BuildContext context,{bool noSuccess = false}){
     bool isSuccess = true;
-    var success = (results[AppLocalizations.of(context)!.success]! + results[AppLocalizations.of(context)!.triumph]!) - (results[AppLocalizations.of(context)!.failure]! + results[AppLocalizations.of(context)!.despair]!);
+    var success = (getResult(AppLocalizations.of(context)!.success) + getResult(AppLocalizations.of(context)!.triumph)) - (getResult(AppLocalizations.of(context)!.failure) + getResult(AppLocalizations.of(context)!.despair));
     if(success <= 0){
       isSuccess = false;
       success = success.abs();
     }
     bool isAdvantaged = true;
-    var advantage = results[AppLocalizations.of(context)!.advantage]! - results[AppLocalizations.of(context)!.threat]!;
+    var advantage = getResult(AppLocalizations.of(context)!.advantage) - getResult(AppLocalizations.of(context)!.threat);
     if(advantage < 0){
       isAdvantaged = false;
       advantage = advantage.abs();
     }
-    showModalBottomSheet(
-      context: context,
-      builder: (context) =>
-        Padding(
-          padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
-          child: Wrap(
-            children: [
-              if(!noSuccess) Center(
-                child: Text(success.toString() + (isSuccess ? " " + AppLocalizations.of(context)!.success : " " + AppLocalizations.of(context)!.failure),
-                  style: Theme.of(context).textTheme.headline6,
-                ),
+    Bottom(
+      buttons: (context) =>
+        [TextButton(
+          child: Text(AppLocalizations.of(context)!.edit),
+          onPressed: (){
+            Navigator.pop(context);
+            showResultsEdit(context, noSuccess: noSuccess);
+          },
+        )],
+      child: (context) =>
+        Column(
+          children: [
+            if(!noSuccess) Center(
+              child: Text(success.toString() + (isSuccess ? " " + AppLocalizations.of(context)!.success : " " + AppLocalizations.of(context)!.failure),
+                style: Theme.of(context).textTheme.headline6,
               ),
-              if(advantage != 0) Center(
-                child: Text(advantage.toString() + (isAdvantaged ? " " + AppLocalizations.of(context)!.advantage : " " + AppLocalizations.of(context)!.threat),
-                  style: Theme.of(context).textTheme.headline6,
-                )
-              ),
-              if(results[AppLocalizations.of(context)!.triumph]! > 0) Center(
-                child: Text(results[AppLocalizations.of(context)!.triumph].toString() + " " + AppLocalizations.of(context)!.triumph,
-                  style: Theme.of(context).textTheme.headline6,
-                )
-              ),
-              if(results[AppLocalizations.of(context)!.despair]! > 0) Center(
-                child: Text(results[AppLocalizations.of(context)!.despair].toString() + " " + AppLocalizations.of(context)!.despair,
-                  style: Theme.of(context).textTheme.headline6,
-                )
-              ),
-              if(results[AppLocalizations.of(context)!.lightSide]! > 0) Center(
-                child: Text(results[AppLocalizations.of(context)!.lightSide].toString() + " " + AppLocalizations.of(context)!.lightSide,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ),
-              if(results[AppLocalizations.of(context)!.darkSide]! > 0) Center(
-                child: Text(results[AppLocalizations.of(context)!.darkSide].toString() + " " + AppLocalizations.of(context)!.darkSide,
-                  style: Theme.of(context).textTheme.headline6,
-                )
-              ),
-              ButtonBar(
-                children: [
-                  TextButton(
-                    child: Text(AppLocalizations.of(context)!.edit),
-                    onPressed: (){
-                      Navigator.of(context).pop();
-                      showResultsEdit(context, noSuccess: noSuccess);
-                    },
-                  ),
-                ],
+            ),
+            if(advantage != 0) Center(
+              child: Text(advantage.toString() + (isAdvantaged ? " " + AppLocalizations.of(context)!.advantage : " " + AppLocalizations.of(context)!.threat),
+                style: Theme.of(context).textTheme.headline6,
               )
-            ],
-          )
+            ),
+            if(getResult(AppLocalizations.of(context)!.triumph) > 0) Center(
+              child: Text(results[AppLocalizations.of(context)!.triumph].toString() + " " + AppLocalizations.of(context)!.triumph,
+                style: Theme.of(context).textTheme.headline6,
+              )
+            ),
+            if(getResult(AppLocalizations.of(context)!.despair) > 0) Center(
+              child: Text(results[AppLocalizations.of(context)!.despair].toString() + " " + AppLocalizations.of(context)!.despair,
+                style: Theme.of(context).textTheme.headline6,
+              )
+            ),
+            if(getResult(AppLocalizations.of(context)!.lightSide) > 0) Center(
+              child: Text(results[AppLocalizations.of(context)!.lightSide].toString() + " " + AppLocalizations.of(context)!.lightSide,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            if(getResult(AppLocalizations.of(context)!.darkSide) > 0) Center(
+              child: Text(results[AppLocalizations.of(context)!.darkSide].toString() + " " + AppLocalizations.of(context)!.darkSide,
+                style: Theme.of(context).textTheme.headline6,
+              )
+            )
+          ]
         )
-    );
+    ).show(context);
   }
 
   void showResultsEdit(BuildContext context,{bool noSuccess = false, void Function(BuildContext, DiceResults)? alternateReturn}) =>
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) =>
-        Padding(
-          padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15, top: 15)),
-          child: Wrap(
+    Bottom(
+      buttons: (context) => [
+        TextButton(
+          child: Text(AppLocalizations.of(context)!.ret),
+          onPressed: (){
+            Navigator.of(context).pop();
+            if (alternateReturn == null){
+              if(!noSuccess && getResult(AppLocalizations.of(context)!.success) == 0 && getResult(AppLocalizations.of(context)!.failure) == 0)
+                noSuccess = false;
+              showCombinedResults(context, noSuccess: noSuccess);
+            }else{
+              alternateReturn(context, this);
+            }
+          },
+        )],
+      child: (context) =>
+        Wrap(
           children: [
             Row(
               children: [
@@ -105,10 +109,10 @@ class DiceResults{
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[AppLocalizations.of(context)!.success] = (results[AppLocalizations.of(context)!.success] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.success] = getResult(AppLocalizations.of(context)!.success) + 1,
                     onDownPressed: () =>
-                      results[AppLocalizations.of(context)!.success] = (results[AppLocalizations.of(context)!.success] ?? 0) - 1,
-                    getValue: () => results[AppLocalizations.of(context)!.success] ?? 0,
+                      results[AppLocalizations.of(context)!.success] = getResult(AppLocalizations.of(context)!.success) - 1,
+                    getValue: () => getResult(AppLocalizations.of(context)!.success),
                   )
                 )
               ]
@@ -119,10 +123,10 @@ class DiceResults{
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[AppLocalizations.of(context)!.failure] = (results[AppLocalizations.of(context)!.failure] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.failure] = getResult(AppLocalizations.of(context)!.failure) + 1,
                     onDownPressed: () =>
-                      results[AppLocalizations.of(context)!.failure] = (results[AppLocalizations.of(context)!.failure] ?? 0) - 1,
-                    getValue: () => results[AppLocalizations.of(context)!.failure] ?? 0,
+                      results[AppLocalizations.of(context)!.failure] = getResult(AppLocalizations.of(context)!.failure) - 1,
+                    getValue: () => getResult(AppLocalizations.of(context)!.failure),
                   )
                 )
               ]
@@ -147,10 +151,10 @@ class DiceResults{
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[AppLocalizations.of(context)!.threat] = (results[AppLocalizations.of(context)!.threat] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.threat] = getResult(AppLocalizations.of(context)!.threat) + 1,
                     onDownPressed: () =>
-                      results[AppLocalizations.of(context)!.threat] = (results[AppLocalizations.of(context)!.threat] ?? 0) - 1,
-                    getValue: () => results[AppLocalizations.of(context)!.threat] ?? 0,
+                      results[AppLocalizations.of(context)!.threat] = getResult(AppLocalizations.of(context)!.threat) - 1,
+                    getValue: () => getResult(AppLocalizations.of(context)!.threat),
                   )
                 )
               ]
@@ -161,10 +165,10 @@ class DiceResults{
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[AppLocalizations.of(context)!.triumph] = (results[AppLocalizations.of(context)!.triumph] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.triumph] = getResult(AppLocalizations.of(context)!.triumph) + 1,
                     onDownPressed: () =>
-                      results[AppLocalizations.of(context)!.triumph] = (results[AppLocalizations.of(context)!.triumph] ?? 0) - 1,
-                    getValue: () => results[AppLocalizations.of(context)!.triumph] ?? 0,
+                      results[AppLocalizations.of(context)!.triumph] = getResult(AppLocalizations.of(context)!.triumph) - 1,
+                    getValue: () => getResult(AppLocalizations.of(context)!.triumph),
                   )
                 )
               ]
@@ -175,10 +179,10 @@ class DiceResults{
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[AppLocalizations.of(context)!.despair] = (results[AppLocalizations.of(context)!.despair] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.despair] = getResult(AppLocalizations.of(context)!.despair) + 1,
                     onDownPressed: () =>
-                      results[AppLocalizations.of(context)!.despair] = (results[AppLocalizations.of(context)!.despair] ?? 0) - 1,
-                    getValue: () => results[AppLocalizations.of(context)!.despair] ?? 0,
+                      results[AppLocalizations.of(context)!.despair] = getResult(AppLocalizations.of(context)!.despair) - 1,
+                    getValue: () => getResult(AppLocalizations.of(context)!.despair),
                   )
                 )
               ]
@@ -189,10 +193,10 @@ class DiceResults{
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[AppLocalizations.of(context)!.lightSide] = (results[AppLocalizations.of(context)!.lightSide] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.lightSide] = getResult(AppLocalizations.of(context)!.lightSide) + 1,
                     onDownPressed: () =>
-                      results[AppLocalizations.of(context)!.lightSide] = (results[AppLocalizations.of(context)!.lightSide] ?? 0) - 1,
-                    getValue: () => results[AppLocalizations.of(context)!.lightSide] ?? 0,
+                      results[AppLocalizations.of(context)!.lightSide] = getResult(AppLocalizations.of(context)!.lightSide) - 1,
+                    getValue: () => getResult(AppLocalizations.of(context)!.lightSide),
                   )
                 )
               ]
@@ -203,33 +207,15 @@ class DiceResults{
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
-                      results[AppLocalizations.of(context)!.darkSide] = (results[AppLocalizations.of(context)!.darkSide] ?? 0) + 1,
+                      results[AppLocalizations.of(context)!.darkSide] = getResult(AppLocalizations.of(context)!.darkSide) + 1,
                     onDownPressed: () =>
-                      results[AppLocalizations.of(context)!.darkSide] = (results[AppLocalizations.of(context)!.darkSide] ?? 0) - 1,
+                      results[AppLocalizations.of(context)!.darkSide] = getResult(AppLocalizations.of(context)!.darkSide) - 1,
                     getValue: () => results[AppLocalizations.of(context)!.darkSide] ?? 0,
                   )
                 )
               ]
-            ),
-            ButtonBar(
-              children: [
-                TextButton(
-                  child: Text(AppLocalizations.of(context)!.ret),
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                    if (alternateReturn == null){
-                      if(!noSuccess && results[AppLocalizations.of(context)!.success] == 0 && results[AppLocalizations.of(context)!.failure] == 0)
-                        noSuccess = false;
-                      showCombinedResults(context, noSuccess: noSuccess);
-                    }else{
-                      alternateReturn(context, this);
-                    }
-                  },
-                ),
-              ],
             )
           ],
         )
-      )
-    );
+      ).show(context);
 }

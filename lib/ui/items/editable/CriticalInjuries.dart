@@ -95,7 +95,7 @@ class CriticalInjuries extends StatelessWidget{
                           refresh();
                           editable.save(context: context);
                         },
-                        criticalInjury: editable.criticalInjuries[i]
+                        inj: editable.criticalInjuries[i]
                       ).show(context)
                   )
                 ]

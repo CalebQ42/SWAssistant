@@ -3,28 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/items/Item.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 
-class ItemEditDialog extends StatefulWidget{
-
-  final void Function(Item) onClose;
-  final Editable editable;
-  final Item item;
-
-  ItemEditDialog({required this.onClose, Item? item, required this.editable}) :
-      this.item = item == null ? Item() : Item.from(item);
-
-  @override
-  State<StatefulWidget> createState() => _ItemEditDialogState(onClose: onClose, item: item, editable: editable);
-  
-  void show(BuildContext context) =>
-    showModalBottomSheet(
-      context: context,
-      builder: (context) =>
-        this
-    );
-}
-
-class _ItemEditDialogState extends State{
+class ItemEditDialog{
 
   final void Function(Item) onClose;
   final Editable editable;
@@ -35,11 +16,15 @@ class _ItemEditDialogState extends State{
   late TextEditingController encumController;
   late TextEditingController descController;
 
-  _ItemEditDialogState({required this.onClose, required this.editable, required this.item}){
+  late Bottom bot;
+
+  ItemEditDialog({required this.onClose, Item? it, required this.editable}) :
+      this.item = it == null ? Item() : Item.from(it){
     nameController = TextEditingController(text: item.name)
-      ..addListener(() =>
-        setState(() => item.name = nameController.text)
-      );
+      ..addListener(() {
+        item.name = nameController.text;
+        bot.updateButtons();
+      });
     countController = TextEditingController(text: item.count.toString())
       ..addListener(() =>
         item.count = int.tryParse(countController.text) ?? 1
@@ -52,14 +37,22 @@ class _ItemEditDialogState extends State{
       ..addListener(() =>
         item.desc = descController.text
       );
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-    DropdownButtonHideUnderline(
-      child: Padding(
-        padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
-        child: Wrap(
+    bot = Bottom(
+      buttons: (context) => [
+        TextButton(
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+          onPressed: item.name != "" ? (){
+            onClose(item);
+            Navigator.of(context).pop();
+          } : null,
+        ),
+        TextButton(
+          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          onPressed: () =>
+            Navigator.of(context).pop(),
+        )],
+      child: (context) =>
+        Wrap(
           children: [
             Container(height: 15),
             TextField(
@@ -97,24 +90,10 @@ class _ItemEditDialogState extends State{
               maxLines: 3,
               minLines: 1,
             ),
-            ButtonBar(
-              children: [
-                TextButton(
-                  child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                  onPressed: item.name != "" ? (){
-                    onClose(item);
-                    Navigator.of(context).pop();
-                  } : null,
-                ),
-                TextButton(
-                  child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                  onPressed: () =>
-                    Navigator.of(context).pop(),
-                )
-              ],
-            )
           ]
         )
-      )
     );
+  }
+  
+  void show(BuildContext context) => bot.show(context);
 }

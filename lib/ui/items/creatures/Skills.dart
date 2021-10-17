@@ -25,7 +25,7 @@ class Skills extends StatelessWidget{
         child: Row(
           children: [
             Expanded(
-              child: Text(creature.skills[index].name,
+              child: Text(creature.skills[index].name!,
                 style: TextStyle(fontWeight: creature.skills[index].career ? FontWeight.bold : FontWeight.normal)
               ),
               flex: 7
@@ -73,7 +73,7 @@ class Skills extends StatelessWidget{
                           refresh();
                           creature.save(context: context);
                         },
-                        skill: creature.skills[index]
+                        sk: creature.skills[index]
                       ).show(context)
                   )
                 ]

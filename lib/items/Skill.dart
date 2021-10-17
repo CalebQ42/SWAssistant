@@ -9,12 +9,12 @@ import 'package:swassistant/profiles/utils/JsonSavable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Skill implements JsonSavable{
-  String name;
+  String? name;
   int value;
   int base;
   bool career;
 
-  Skill({this.name = "", this.value = -1, this.base = -1, this.career = false});
+  Skill({this.name, this.value = -1, this.base = -1, this.career = false});
 
   Skill.fromJson(Map<String,dynamic> json) :
       name = json["name"] ?? "",
@@ -50,7 +50,7 @@ class Skill implements JsonSavable{
   }
 
   String toString(){
-    return name + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
+    return name! + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
   }
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence

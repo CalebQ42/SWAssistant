@@ -54,7 +54,6 @@ class Weapons extends StatelessWidget{
                 }else
                   return SWDiceHolder();
               }(),
-              context: context,
               weapon: editable.weapons[i],
               brawn: (editable is Creature) ? editable.charVals[0] : 0
             ).show(context);

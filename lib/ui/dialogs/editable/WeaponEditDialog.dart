@@ -272,7 +272,7 @@ class _WeaponEditDialogState extends State{
                   return InkResponse(
                     containedInkWell: true,
                     onTap: () => WeaponCharacteristicDialog(
-                      wc: weapon.characteristics[i],
+                      characteristic: weapon.characteristics[i],
                       onClose: (wc){
                         setState(() => weapon.characteristics[i] = wc);
                       }

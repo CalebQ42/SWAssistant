@@ -248,7 +248,7 @@ class InventoryState extends State{
                         constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: () =>
                           ItemEditDialog(
-                            item: editable.inventory[index],
+                            it: editable.inventory[index],
                             editable: editable,
                             onClose: (item){
                               editable.inventory[index] = item;

@@ -98,7 +98,7 @@ class Talents extends StatelessWidget{
                               refresh();
                               creature.save(context: context);
                             },
-                            talent: creature.talents[index],
+                            tal: creature.talents[index],
                           ).show(context)
                       )
                     ],

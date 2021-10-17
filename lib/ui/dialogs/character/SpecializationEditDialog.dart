@@ -1,70 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 
-class SpecializationEditDialog extends StatefulWidget{
-
-  final Function(String) onClose;
-  final String specialization;
-
-  SpecializationEditDialog({required this.onClose, this.specialization = ""});
-
-  @override
-  State<StatefulWidget> createState() => _SpecializationState(onClose: onClose, specialization: specialization);
-
-  void show(BuildContext context) =>
-    showModalBottomSheet(
-      context: context,
-      builder: (context) =>
-        this
-    );
-}
-
-class _SpecializationState extends State{
+class SpecializationEditDialog{
 
   final Function(String) onClose;
   String specialization;
 
   late TextEditingController specCont;
 
-  _SpecializationState({required this.onClose,required this.specialization}){
+  late Bottom bot;
+
+  SpecializationEditDialog({required this.onClose, this.specialization = ""}){
     specCont = TextEditingController(text: specialization)
-      ..addListener(() =>
-        setState(() => specialization = specCont.text)
-      );
+      ..addListener(() {
+        specialization = specCont.text;
+      });
+    bot = Bottom(
+      child: (context) =>
+        Wrap(
+          children: [
+            Container(height: 15),
+            TextField(
+              controller: specCont,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.specialization
+              ),
+            ),
+          ],
+        ),
+      buttons: (context) => [
+        TextButton(
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+          onPressed: specialization != "" ? (){
+            onClose(specialization);
+            Navigator.of(context).pop();
+          } : null,
+        ),
+        TextButton(
+          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          onPressed: () =>
+            Navigator.of(context).pop(),
+        )]
+    );
   }
 
-  @override
-  Widget build(BuildContext context) =>
-    Padding(
-      padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 15, right: 15)),
-      child: Wrap(
-        children: [
-          Container(height: 15),
-          TextField(
-            controller: specCont,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.specialization
-            ),
-          ),
-          ButtonBar(
-            children: [
-              TextButton(
-                child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                onPressed: specialization != "" ? (){
-                  onClose(specialization);
-                  Navigator.of(context).pop();
-                } : null,
-              ),
-              TextButton(
-                child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                onPressed: () =>
-                  Navigator.of(context).pop(),
-              )
-            ],
-          )
-        ],
-      )
-    );
+  void show(BuildContext context) => bot.show(context);
 }

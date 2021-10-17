@@ -62,7 +62,7 @@ class Obligations extends StatelessWidget{
                           constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                           onPressed: () =>
                             ObligationEditDialog(
-                              obligation: character.obligations[index],
+                              obli: character.obligations[index],
                               onClose: (obligation){
                                 character.obligations[index] = obligation;
                                 refresh();
