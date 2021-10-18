@@ -11,8 +11,8 @@ class EditingText extends StatelessWidget {
   final String initialText;
   final bool editing;
   final TextInputType? textType;
-  final EdgeInsets fieldInsets;
-  final EdgeInsets textInsets;
+  final EdgeInsets? fieldInsets;
+  final EdgeInsets? textInsets;
   final bool multiline;
   final TextCapitalization textCapitalization;
   final TextAlign textAlign;
@@ -28,9 +28,8 @@ class EditingText extends StatelessWidget {
 
   final Editable? editableBackup;
 
-  EditingText({this.key, required this.editing, this.style, this.initialText = "", this.controller, this.textType,
-      this.fieldInsets = const EdgeInsets.all(3.0), this.textInsets = const EdgeInsets.all(4.0),
-      this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
+  EditingText({this.key, required this.editing, this.style, this.initialText = "", this.controller, this.textType, this.fieldInsets,
+      this.textInsets, this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
       this.fieldAlign = TextAlign.start, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle}) {
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
@@ -48,7 +47,7 @@ class EditingText extends StatelessWidget {
     if(editing)
       text = Padding(
         key: ValueKey("textField"),
-        padding: fieldInsets,
+        padding: fieldInsets ?? EdgeInsets.all(4.0),
         child: TextField(
           maxLines: multiline ? null : 1,
           controller: controller,
@@ -65,7 +64,7 @@ class EditingText extends StatelessWidget {
     else
       text = Padding(
         key: ValueKey("text"),
-        padding: textInsets,
+        padding: textInsets ?? EdgeInsets.all(4.0),
         child: title != "" ? Column(
           children: [
             if(title != "") Text(

@@ -106,7 +106,7 @@ class Weapons extends StatelessWidget{
                           refresh();
                           editable.save(context: context);
                         },
-                        weapon: editable.weapons[i]
+                        weap: editable.weapons[i]
                       ).show(context)
                   )
                 ]

@@ -5,6 +5,7 @@ import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/UpdatingSwitchTile.dart';
 
 class SkillEditDialog{
   final void Function(Skill) onClose;
@@ -53,7 +54,7 @@ class SkillEditDialog{
                   labelText: AppLocalizations.of(context)!.value,
                 ),
               ),
-              _UpdatingSwitchTile(
+              UpdatingSwitchTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(AppLocalizations.of(context)!.career),
                 value: skill.career,
@@ -66,40 +67,6 @@ class SkillEditDialog{
   }
 
   void show(BuildContext context) => bot.show(context);
-}
-
-class _UpdatingSwitchTile extends StatefulWidget{
-  final bool value;
-  final Function(bool) onChanged;
-  final EdgeInsets contentPadding;
-  final Widget title;
-
-  _UpdatingSwitchTile({required this.value, required this.onChanged, required this.title, required this.contentPadding});
-
-  @override
-  State<StatefulWidget> createState() => _UpdatingSwitchTileState(value: value, onChanged: onChanged, title: title, contentPadding: contentPadding);
-}
-
-class _UpdatingSwitchTileState extends State{
-
-  bool value;
-  final Function(bool) onChanged;
-  final EdgeInsets contentPadding;
-  final Widget title;
-
-  _UpdatingSwitchTileState({required this.value, required this.onChanged, required this.contentPadding, required this.title});
-
-  @override
-  Widget build(BuildContext context) =>
-    SwitchListTile(
-      value: value,
-      title: title,
-      contentPadding: contentPadding,
-      onChanged: (b){
-        onChanged(b);
-        setState(() => value = b);
-      }
-    );
 }
 
 class _SkillSelector extends StatefulWidget{
