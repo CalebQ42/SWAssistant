@@ -39,7 +39,6 @@ class DiceRoller extends StatelessWidget{
             Container(height: 10),
             Wrap(
               alignment: WrapAlignment.spaceEvenly,
-              //TODO: test
               children: List<Widget>.generate(
                 7,
                 (i) =>

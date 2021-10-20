@@ -5,6 +5,7 @@ import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 import 'package:swassistant/ui/screens/EditableCards.dart';
 import 'package:swassistant/ui/screens/EditableNotes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -81,61 +82,57 @@ class _EditingEditableState extends State {
               (profile as Character).disableObligation = !(profile as Character).disableObligation),
             "disableMorality": () => setState(() => (profile as Character)
                 .disableMorality = !(profile as Character).disableMorality),
-            "clone": () => showModalBottomSheet(
-              context: context,
-              builder: (context) {
+            "clone": () => Bottom(
+              child: (context) {
                 var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(profile.name));
-                return Padding(
-                  padding: MediaQuery.of(context).viewInsets.add(EdgeInsets.only(left: 5, right: 5, bottom: 10)),
-                  child: Wrap(
-                    children: [
-                      Container(height: 10),
-                      TextField(
-                        controller: nameController,
-                        decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
-                      ),
-                      ButtonBar(
-                        children: [
-                          TextButton(
-                            child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                            onPressed: () {
-                              Editable out;
-                              if (profile is Character) {
-                                var id = 0;
-                                while (SW.of(context).characters().any((element) => element.id == id))
-                                  id++;
-                                out = Character.from(profile as Character, id: id);
-                              } else if (profile is Minion) {
-                                var id = 0;
-                                while (SW.of(context).minions().any((element) => element.id == id))
-                                  id++;
-                                out = Minion.from(profile as Minion, id: id);
-                              } else if (profile is Vehicle) {
-                                var id = 0;
-                                while (SW.of(context).vehicles().any((element) => element.id == id))
-                                  id++;
-                                out = Vehicle.from(profile as Vehicle, id: id);
-                              }else{
-                                throw "Unsupported Editable Type";
-                              }
-                              out.name = nameController.text;
-                              SW.of(context).add(out);
-                              out.save(context: context);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                            onPressed: () =>
-                              Navigator.of(context).pop()
-                          )
-                        ],
-                      )
-                    ],
-                  )
+                return Wrap(
+                  children: [
+                    Container(height: 10),
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
+                    ),
+                    ButtonBar(
+                      children: [
+                        TextButton(
+                          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+                          onPressed: () {
+                            Editable out;
+                            if (profile is Character) {
+                              var id = 0;
+                              while (SW.of(context).characters().any((element) => element.id == id))
+                                id++;
+                              out = Character.from(profile as Character, id: id);
+                            } else if (profile is Minion) {
+                              var id = 0;
+                              while (SW.of(context).minions().any((element) => element.id == id))
+                                id++;
+                              out = Minion.from(profile as Minion, id: id);
+                            } else if (profile is Vehicle) {
+                              var id = 0;
+                              while (SW.of(context).vehicles().any((element) => element.id == id))
+                                id++;
+                              out = Vehicle.from(profile as Vehicle, id: id);
+                            }else{
+                              throw "Unsupported Editable Type";
+                            }
+                            out.name = nameController.text;
+                            SW.of(context).add(out);
+                            out.save(context: context);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                          onPressed: () =>
+                            Navigator.of(context).pop()
+                        )
+                      ],
+                    )
+                  ],
                 );
               }
-            ),
+            ).show(context),
           },
         ),
       body: _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes()

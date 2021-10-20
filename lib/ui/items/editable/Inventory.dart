@@ -8,6 +8,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/editable/ItemEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 
 class Inventory extends StatefulWidget with StatefulCard{
 
@@ -173,42 +174,38 @@ class InventoryState extends State{
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
             onTap: () =>
-              showModalBottomSheet(
-                context: context,
-                builder: (context) =>
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20, right: 10, left: 10),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Container(height: 15),
-                        Center(
-                          child: Text(
-                            editable.inventory[index].name,
-                            style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.center,
-                          )
+              Bottom(
+                child: (context) =>
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: [
+                      Container(height: 15),
+                      Center(
+                        child: Text(
+                          editable.inventory[index].name,
+                          style: Theme.of(context).textTheme.headline5,
+                          textAlign: TextAlign.center,
+                        )
+                      ),
+                      Container(height: 5,),
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.count + ": " + editable.inventory[index].count.toString(),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        Container(height: 5,),
-                        Center(
-                          child: Text(
-                            AppLocalizations.of(context)!.count + ": " + editable.inventory[index].count.toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
+                      ),
+                      Container(height: 5),
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.encum + ": " + editable.inventory[index].encum.toString(),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        Container(height: 5),
-                        Center(
-                          child: Text(
-                            AppLocalizations.of(context)!.encum + ": " + editable.inventory[index].encum.toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ),
-                        Container(height: 10),
-                        if(editable.inventory[index].desc != "") Text(editable.inventory[index].desc)
-                      ],
-                    )
+                      ),
+                      Container(height: 10),
+                      if(editable.inventory[index].desc != "") Text(editable.inventory[index].desc)
+                    ],
                   )
-              ),
+              ).show(context),
             child: Row(
               children: [
                 Expanded(

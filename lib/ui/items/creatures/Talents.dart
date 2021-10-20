@@ -3,6 +3,7 @@ import 'package:swassistant/items/Talent.dart';
 import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/ui/dialogs/creature/TalentEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 
 class Talents extends StatelessWidget{
 
@@ -25,35 +26,31 @@ class Talents extends StatelessWidget{
             containedInkWell: true,
             highlightShape: BoxShape.rectangle,
             onTap: () =>
-              showModalBottomSheet(
-                context: context,
-                builder: (context) =>
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20, right: 10, left: 10),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Container(height: 15),
-                        Center(
-                          child: Text(
-                            creature.talents[index].name,
-                            style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.justify,
-                          )
+              Bottom(
+                child: (context) =>
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: [
+                      Container(height: 15),
+                      Center(
+                        child: Text(
+                          creature.talents[index].name,
+                          style: Theme.of(context).textTheme.headline5,
+                          textAlign: TextAlign.justify,
+                        )
+                      ),
+                      Container(height: 5),
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.rank + ": " + creature.talents[index].value.toString(),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        Container(height: 5),
-                        Center(
-                          child: Text(
-                            AppLocalizations.of(context)!.rank + ": " + creature.talents[index].value.toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ),
-                        Container(height: 10),
-                        Text(creature.talents[index].desc)
-                      ],
-                    )
+                      ),
+                      Container(height: 10),
+                      Text(creature.talents[index].desc)
+                    ],
                   )
-              ),
+              ).show(context),
             child: Row(
               children: [
                 Expanded(

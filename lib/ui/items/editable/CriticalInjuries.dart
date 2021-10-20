@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/editable/CriticalInjuryEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 
 class CriticalInjuries extends StatelessWidget{
   final bool editing;
@@ -32,35 +33,31 @@ class CriticalInjuries extends StatelessWidget{
               severity = AppLocalizations.of(context)!.severityLevel4;
               break;
           }
-          showModalBottomSheet(
-            context: context,
-            builder: (context) =>
-              Padding(
-                padding: EdgeInsets.only(bottom: 20, right: 10, left: 10),
-                child: Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    Container(height: 15),
-                    Center(
-                      child: Text(
-                        editable.criticalInjuries[i].name,
-                        style: Theme.of(context).textTheme.headline5,
-                        textAlign: TextAlign.justify,
-                      )
+          Bottom(
+            child: (context) =>
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Container(height: 15),
+                  Center(
+                    child: Text(
+                      editable.criticalInjuries[i].name,
+                      style: Theme.of(context).textTheme.headline5,
+                      textAlign: TextAlign.justify,
+                    )
+                  ),
+                  Container(height: 5,),
+                  Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.severity + ": " + severity,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
-                    Container(height: 5,),
-                    Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.severity + ": " + severity,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
-                    Container(height: 10),
-                    Text(editable.criticalInjuries[i].desc, textAlign: TextAlign.justify)
-                  ],
-                )
+                  ),
+                  Container(height: 10),
+                  Text(editable.criticalInjuries[i].desc, textAlign: TextAlign.justify)
+                ],
               )
-          );
+          ).show(context);
         },
         child: Row(
           children: [

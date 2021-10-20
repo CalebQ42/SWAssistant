@@ -5,6 +5,7 @@ import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
 
 class ForcePowers extends StatelessWidget{
 
@@ -55,28 +56,24 @@ class ForcePowers extends StatelessWidget{
             onTap: () =>
               SWDiceHolder(force: character.force).showDialog(context),
             onLongPress: () =>
-              showModalBottomSheet(
-                context: context,
-                builder: (context) =>
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20, right: 10, left: 10),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Container(height: 15),
-                        Center(
-                          child: Text(
-                            character.forcePowers[index].name,
-                            style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.justify,
-                          )
-                        ),
-                        Container(height: 10),
-                        Text(character.forcePowers[index].desc)
-                      ],
-                    )
+              Bottom(
+                child: (context) =>
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: [
+                      Container(height: 15),
+                      Center(
+                        child: Text(
+                          character.forcePowers[index].name,
+                          style: Theme.of(context).textTheme.headline5,
+                          textAlign: TextAlign.justify,
+                        )
+                      ),
+                      Container(height: 10),
+                      Text(character.forcePowers[index].desc)
+                    ],
                   )
-              ),
+              ).show(context),
             child: Row(
               children: [
                 Expanded(

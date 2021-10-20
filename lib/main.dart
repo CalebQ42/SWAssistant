@@ -20,11 +20,13 @@ Future<void> main() async =>
       ))
   );
 
-//TODO: Misc
-//* Convert show modalBottomSheet to Bottom.
+//TODO: Before Release
+//* Guide (Maybe)
+//* GM Mode
+//* Google Drive saving
+//* Importing
 //* Move all old translations to arb files.
 //  * Possibly ajust UI to require less translation.
-//* Overencumbrance setback additon automatically
 
 class SWApp extends StatefulWidget{
 
