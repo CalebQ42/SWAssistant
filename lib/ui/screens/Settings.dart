@@ -75,6 +75,16 @@ class SettingsState extends State{
           ),
           Divider(),
           SwitchListTile(
+            title: Text(AppLocalizations.of(context)!.cloudSave),
+            value: app.getPreference(preferences.googleDrive, false),
+            onChanged: (b){
+              //TODO
+              app.prefs.setBool(preferences.googleDrive, b);
+              setState(() {});
+            }
+          ),
+          Divider(),
+          SwitchListTile(
             value: app.getPreference(preferences.firebase, true),
             onChanged: (b){
               showDialog(
@@ -118,21 +128,13 @@ class SettingsState extends State{
           ),
           Divider(),
           SwitchListTile(
+            title: Text(AppLocalizations.of(context)!.ads),
             value: app.getPreference(preferences.ads, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b) {
               //TOOD
               app.prefs.setBool(preferences.ads, b);
               setState((){});
             } : null,
-          ),
-          Divider(),
-          SwitchListTile(
-            value: app.getPreference(preferences.googleDrive, false),
-            onChanged: (b){
-              //TODO
-              app.prefs.setBool(preferences.googleDrive, b);
-              setState(() {});
-            }
           ),
           Divider(),
           AboutListTile(

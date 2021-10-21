@@ -318,7 +318,7 @@ class SW{
     app.saveDir = dir.path + "/SWChars";
     if(!Directory(app.saveDir).existsSync())
       Directory(app.saveDir).createSync();
-    if(kDebugMode || kProfileMode)
+    if(app.devMode)
       await testing(app.saveDir);
     app.loadAll();
     app.observatory = Observatory();
@@ -331,8 +331,7 @@ class SW{
       context: context,
       builder: (context) =>
         AlertDialog(
-          //TODO: icon
-          content: Text("Loading..."),
+          content: CircularProgressIndicator(),
         )
     );
     if(getPreference(preferences.firebase, true)){
