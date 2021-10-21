@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
@@ -45,49 +44,51 @@ class IntroZero extends StatelessWidget{
             SizedBox(height:5),
             ElevatedButton(
               child: Text(AppLocalizations.of(context)!.introPage0ImportButton),
-              onPressed: (){
-                getExternalStorageDirectory()
-                //TODO: Check API to see if manual import is necessary. If not, I should have access to the files directly.
-                Bottom(
-                  buttons: (context) => [
-                    TextButton(
-                      child: Text(MaterialLocalizations.of(context).continueButtonLabel),
-                      onPressed: (){
-                        Navigator.pop(context);
-                        getSWChars(context);
-                      },
-                    ),
-                    TextButton(
-                      child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                      onPressed: () =>
-                        Navigator.pop(context),
-                    )
-                  ],
-                  child: (context) =>
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.introPage0ManualImport,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        Container(height: 10),
-                        Text(
-                          AppLocalizations.of(context)!.introPage0ManualImportLine0,
-                          textAlign: TextAlign.justify,
-                        ),
-                        Container(height: 10),
-                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine1),
-                        Container(height: 5),
-                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine2),
-                        Container(height: 5),
-                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine3),
-                        Container(height: 5),
-                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine4),
-                      ],
-                    )
-                ).show(context);
+              onPressed: () {
+                tryOldImport(context).then((value) {
+                  if (value != 0)
+                    return;
+                  Bottom(
+                    buttons: (context) => [
+                      TextButton(
+                        child: Text(MaterialLocalizations.of(context).continueButtonLabel),
+                        onPressed: (){
+                          Navigator.pop(context);
+                          manualImport(context);
+                        },
+                      ),
+                      TextButton(
+                        child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                        onPressed: () =>
+                          Navigator.pop(context),
+                      )
+                    ],
+                    child: (context) =>
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.introPage0ManualImport,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                          Container(height: 10),
+                          Text(
+                            AppLocalizations.of(context)!.introPage0ManualImportLine0,
+                            textAlign: TextAlign.justify,
+                          ),
+                          Container(height: 10),
+                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine1),
+                          Container(height: 5),
+                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine2),
+                          Container(height: 5),
+                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine3),
+                          Container(height: 5),
+                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine4),
+                        ],
+                      )
+                  ).show(context);
+                });
               }
             )
           ]
@@ -95,7 +96,44 @@ class IntroZero extends StatelessWidget{
       )
     );
 
-  void getSWChars(BuildContext context){
+  Future<int> tryOldImport(BuildContext context) async{
+    //First try to access the files directly. This won't work on newer versions of Android, but on older version SHOULD work fine.
+    var extStorage = Directory("/sdcard");
+    if (extStorage.existsSync()){
+      var charsFold = Directory(extStorage.path + "/SWChars");
+      if (charsFold.existsSync()){
+        print("I'm Super Alive!");
+        var fils = charsFold.listSync();
+        print(fils.length);
+        if (fils.length > 0){
+          for (var f in fils){
+            Editable ed;
+            if (f.path.endsWith(".swminion"))
+                ed = Minion.load(f, SW.of(context));
+            else if (f.path.endsWith(".swcharacter"))
+                ed = Character.load(f, SW.of(context));
+            else if (f.path.endsWith(".swvehicle"))
+                ed = Vehicle.load(f, SW.of(context));
+            else
+              continue;
+            ed.loc = "";
+            ed.findNexID(SW.of(context));
+            ed.save(app: SW.of(context));
+            SW.of(context).add(ed);
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.introPage0ImportSuccess(fils.length))
+            )
+          );
+          return fils.length;
+        }
+      }
+    }
+    return 0;
+  }
+
+  void manualImport(BuildContext context){
     var app = SW.of(context);
     var message = ScaffoldMessenger.of(context);
     var locs = AppLocalizations.of(context)!;
