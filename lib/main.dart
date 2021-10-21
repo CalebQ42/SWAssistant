@@ -21,10 +21,11 @@ Future<void> main() async =>
   );
 
 //TODO: Before Release
-//* Guide (Maybe)
+//* Guide (Maybe drop??)
 //* GM Mode
 //* Google Drive saving
 //* Importing
+//* Dice AppBar Button
 //* Move all old translations to arb files.
 //  * Possibly ajust UI to require less translation.
 

@@ -314,7 +314,6 @@ class SW{
       app.devMode = true;
     var dir = await getApplicationDocumentsDirectory();
     app.saveDir = dir.path + "/SWChars";
-    print(app.saveDir);
     if(!Directory(app.saveDir).existsSync())
       Directory(app.saveDir).createSync();
     app.observatory = Observatory();
@@ -328,7 +327,7 @@ class SW{
       builder: (context) =>
         AlertDialog(
           //TODO: icon
-          content: Text("LoadingIcons"),
+          content: Text("Loading..."),
         )
     );
     if(kDebugMode || kProfileMode)
@@ -344,7 +343,6 @@ class SW{
         }else
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
       }catch (e){
-        print(e);
         firebaseAvailable = false;
       }
     }
