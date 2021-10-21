@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
@@ -82,16 +83,8 @@ class _NameCardContentState extends State{
       builder: (b, refresh, state) =>
         Hero(
           transitionOnUserGestures: true,
-          tag: (){
-            String out = "";
-            if(editable is Character)
-              out = "character/";
-            else if (editable is Minion)
-              out = "minion/";
-            else if (editable is Vehicle)
-              out = "vehicle/";
-            return out + editable.id.toString();
-          }(),child: EditingText(
+          tag: () => editable.getFileLocation(SW.of(context)),
+          child: EditingText(
             editing: b,
             editableBackup: editable,
             style: Theme.of(context).textTheme.headline5!,

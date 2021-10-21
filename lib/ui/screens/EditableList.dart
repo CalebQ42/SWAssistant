@@ -289,20 +289,11 @@ class EditableCard extends StatelessWidget{
               else
                 Navigator.push(context, editable.setRoute(refreshCallback));
             },
-            child:Padding(
+            child: Padding(
               padding: EdgeInsets.all(10.0),
               child: Hero(
                 transitionOnUserGestures: true,
-                tag: (){
-                  String out = "";
-                  if(editable is Character)
-                    out = "character/";
-                  else if(editable is Minion)
-                    out = "minion/";
-                  else if(editable is Vehicle)
-                    out = "vehicle/";
-                  return out + editable.id.toString();
-                }(),
+                tag: () => editable.getFileLocation(SW.of(context)),
                 child: Text(editable.name, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,)
               ),
             )

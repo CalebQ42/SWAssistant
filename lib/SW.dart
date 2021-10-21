@@ -200,6 +200,7 @@ class SW{
 
   void addCharacter(Character character){
     _characters.add(character);
+    //TODO: Better insertion.
     _characters.sort((min1, min2)=>
       min1.name.compareTo(min2.name)
     );
@@ -241,6 +242,7 @@ class SW{
 
   void addMinion(Minion minion){
     _minions.add(minion);
+    //TODO: Better insertion.
     _minions.sort((min1, min2)=>
       min1.name.compareTo(min2.name)
     );
@@ -282,6 +284,7 @@ class SW{
 
   void addVehicle(Vehicle vehicle){
     _vehicles.add(vehicle);
+    //TODO: Better insertion.
     _vehicles.sort((min1, min2)=>
       min1.name.compareTo(min2.name)
     );
@@ -305,9 +308,8 @@ class SW{
 
   static Future<SW> baseInit() async{
     WidgetsFlutterBinding.ensureInitialized();
-    if (defaultTargetPlatform == TargetPlatform.android) {
+    if (defaultTargetPlatform == TargetPlatform.android)
       InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
-    }
     var prefs = await SharedPreferences.getInstance();
     var app = SW(prefs: prefs);
     if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode)
@@ -316,6 +318,9 @@ class SW{
     app.saveDir = dir.path + "/SWChars";
     if(!Directory(app.saveDir).existsSync())
       Directory(app.saveDir).createSync();
+    if(kDebugMode || kProfileMode)
+      await testing(app.saveDir);
+    app.loadAll();
     app.observatory = Observatory();
     prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
     return app;
@@ -330,9 +335,6 @@ class SW{
           content: Text("Loading..."),
         )
     );
-    if(kDebugMode || kProfileMode)
-      await testing(saveDir);
-    loadAll();
     if(getPreference(preferences.firebase, true)){
       try{
         await Firebase.initializeApp();

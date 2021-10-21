@@ -2,7 +2,12 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/Minion.dart';
+import 'package:swassistant/profiles/Vehicle.dart';
+import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/intro/IntroOne.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -41,7 +46,8 @@ class IntroZero extends StatelessWidget{
             ElevatedButton(
               child: Text(AppLocalizations.of(context)!.introPage0ImportButton),
               onPressed: (){
-                //TODO: Check API to see if manual import is necessary.
+                getExternalStorageDirectory()
+                //TODO: Check API to see if manual import is necessary. If not, I should have access to the files directly.
                 Bottom(
                   buttons: (context) => [
                     TextButton(
@@ -58,9 +64,28 @@ class IntroZero extends StatelessWidget{
                     )
                   ],
                   child: (context) =>
-                    Text(
-                      AppLocalizations.of(context)!.introPage0ImportMessage,
-                      textAlign: TextAlign.justify,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.introPage0ManualImport,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                        Container(height: 10),
+                        Text(
+                          AppLocalizations.of(context)!.introPage0ManualImportLine0,
+                          textAlign: TextAlign.justify,
+                        ),
+                        Container(height: 10),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine1),
+                        Container(height: 5),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine2),
+                        Container(height: 5),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine3),
+                        Container(height: 5),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine4),
+                      ],
                     )
                 ).show(context);
               }
@@ -71,21 +96,43 @@ class IntroZero extends StatelessWidget{
     );
 
   void getSWChars(BuildContext context){
+    var app = SW.of(context);
+    var message = ScaffoldMessenger.of(context);
+    var locs = AppLocalizations.of(context)!;
     //possibly show loading dialog.
     FilePicker.platform.pickFiles(allowMultiple: true).then((value) {
-      if(value == null){
-        print("ret");
+      if(value == null)
+        return;
+      if (value.files.isEmpty){
+        message.showSnackBar(
+          SnackBar(content: Text(locs.introPage0ImportNone))
+        );
         return;
       }
-      if (value.files.isEmpty) {
-        //TODO: Dialog about you failing.
-      }
       for(var f in value.files){
-        //TODO: import
+        var fil = File(f.path!);
+        Editable ed;
+        switch (f.extension){
+          case "swminion":
+            ed = Minion.load(fil, app);
+            break;
+          case "swcharacter":
+            ed = Character.load(fil, app);
+            break;
+          case "swvehicle":
+            ed = Vehicle.load(fil, app);
+            break;
+          default:
+            continue;
+        }
+        ed.loc = "";
+        ed.findNexID(app);
+        ed.save(app: app);
+        app.add(ed);
       }
-      ScaffoldMessenger.of(context).showSnackBar(
+      message.showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.introPage0ImportSuccess(value.files.length))
+          content: Text(locs.introPage0ImportSuccess(value.files.length))
         )
       );
     });

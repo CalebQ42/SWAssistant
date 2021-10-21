@@ -39,7 +39,7 @@ abstract class Editable extends JsonSavable{
 
   //Saving variables
   bool _saving = false;
-  String _loc = "";
+  String loc = "";
   bool _defered = false;
 
   Editable({required this.id, this.name = "", bool saveOnCreation = false, required SW app}){
@@ -55,7 +55,7 @@ abstract class Editable extends JsonSavable{
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
     if(getFileLocation(app) != file.path)
-      _loc = file.path;
+      loc = file.path;
   }
 
   Editable.from(Editable editable, {int id = 0}) :
@@ -70,6 +70,15 @@ abstract class Editable extends JsonSavable{
       showCard = List.filled(cardNum, false);
       if (!(this is Character || this is Vehicle || this is Minion))
         throw("Must be overridden by child");
+  }
+
+  void findNexID(SW app){
+    id = 0;
+    while (true){
+      if (!File(app.saveDir + "/" + id.toString() + fileExtension).existsSync())
+        return;
+      id++;
+    }
   }
 
   @mustCallSuper
@@ -162,10 +171,10 @@ abstract class Editable extends JsonSavable{
   }
 
   String getFileLocation(SW sw){
-    if(_loc == "")
+    if(loc == "")
       return sw.saveDir+ "/" + id.toString() + fileExtension;
     else
-      return _loc;
+      return loc;
   }
 
   String? getCloudFileLocation() => null;
