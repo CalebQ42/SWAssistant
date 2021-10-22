@@ -80,6 +80,8 @@ class IntroZero extends StatelessWidget{
                           Container(height: 10),
                           Text(AppLocalizations.of(context)!.introPage0ManualImportLine1),
                           Container(height: 5),
+                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine1a),
+                          Container(height: 5),
                           Text(AppLocalizations.of(context)!.introPage0ManualImportLine2),
                           Container(height: 5),
                           Text(AppLocalizations.of(context)!.introPage0ManualImportLine3),

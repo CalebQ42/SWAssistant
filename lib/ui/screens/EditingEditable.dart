@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
+import 'package:swassistant/dice/SWDiceHolder.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
@@ -44,7 +45,14 @@ class _EditingEditableState extends State {
           showSelectedLabels: true,
         ),
         appBar: SWAppBar(
-        context,
+          context,
+          additionalActions: [
+            IconButton(
+              icon: Icon(Icons.casino_outlined),
+              onPressed: () =>
+                SWDiceHolder().showDialog(context),
+            ),
+          ],
           additionalPopupActions: [
             if (profile is Character)
               CheckedPopupMenuItem(
