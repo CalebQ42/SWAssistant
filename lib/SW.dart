@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
 
 import 'profiles/Minion.dart';
 import 'profiles/Character.dart';
@@ -29,13 +32,13 @@ class SW{
   SharedPreferences prefs;
 
   bool firebaseAvailable = false;
-  late Observatory observatory;
-
   String saveDir = "";
-
   bool devMode = false;
 
   late Function() topLevelUpdate;
+  late Observatory observatory;
+  GoogleSignIn? gsi;
+  drive.DriveApi? driveApi;
 
   SW({required this.prefs});
 
@@ -298,9 +301,31 @@ class SW{
         vehCats.add(element.category);
     });
   }
+
+  bool isSignedIn() {
+    return gsi != null && gsi!.currentUser != null;
+  }
+
+  Future<bool> initCloud() async{
+    if(isSignedIn())
+      return true;
+    gsi = GoogleSignIn(
+      scopes: [drive.DriveApi.driveScope],
+    );
+    await gsi!.signInSilently();
+    if (gsi!.currentUser == null)
+      await gsi!.signIn();
+    if (gsi!.currentUser == null){
+      gsi = null;
+      return false;
+    }
+    driveApi = drive.DriveApi((await gsi!.authenticatedClient())!);
+    return true;
+  }
   
-  void syncCloud(){
-    //TODO: cload loading AND saving
+  Future<void> syncCloud() async{
+    if(!await initCloud())
+      return;
   }
 
   dynamic getPreference(String preference, dynamic defaultValue) =>
@@ -334,6 +359,8 @@ class SW{
           content: CircularProgressIndicator(),
         )
     );
+    if (getPreference(preferences.googleDrive, false))
+      await syncCloud();
     if(getPreference(preferences.firebase, true)){
       try{
         await Firebase.initializeApp();
