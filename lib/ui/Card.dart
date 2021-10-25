@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/Minion.dart';
-import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 

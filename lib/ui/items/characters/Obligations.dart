@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/dialogs/character/ObligationEditDialog.dart';

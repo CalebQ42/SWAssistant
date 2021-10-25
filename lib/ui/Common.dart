@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/dialogs/Donate.dart';

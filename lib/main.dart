@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/intro/IntroZero.dart';
@@ -24,9 +23,20 @@ Future<void> main() async =>
 //* Guide (Maybe drop??)
 //* GM Mode
 //* Google Drive saving
-//* Dice AppBar Button
+//  * Create a generic "Driver" to also use for CDR.
 //* Move all old translations to arb files.
 //  * Possibly ajust UI to require less translation.
+
+//TODO: Post-release
+//* Character creator
+//* Real-time Google Drive syncing
+//* Add index value for custom order.
+//* Game Room???
+//  * Share characters and vehicles with a GM
+//  * Possibly share between all players.
+//  * Would have to utilize private server for functionality.
+//  * Possibly lock behind paymment to pay for server.
+//    * Don't really want to do this. Maybe have a limited number of free rooms?
 
 class SWApp extends StatefulWidget{
 

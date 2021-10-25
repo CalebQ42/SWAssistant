@@ -99,15 +99,6 @@ class SW{
         }
       });
     }
-    _characters.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
-    _vehicles.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
-    _minions.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
     updateCharacterCategories();
     updateVehicleCategories();
     updateMinionCategories();
@@ -121,9 +112,6 @@ class SW{
         _minions.add(temp);
       }
     });
-    _minions.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
     updateMinionCategories();
   }
 
@@ -135,9 +123,6 @@ class SW{
         _characters.add(temp);
       }
     });
-    _characters.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
     updateCharacterCategories();
   }
 
@@ -149,9 +134,6 @@ class SW{
         _vehicles.add(temp);
       }
     });
-    _vehicles.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
     updateVehicleCategories();
   }
 
@@ -204,9 +186,6 @@ class SW{
   void addCharacter(Character character){
     _characters.add(character);
     //TODO: Better insertion.
-    _characters.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
     updateCharacterCategories();
   }
 
@@ -246,9 +225,6 @@ class SW{
   void addMinion(Minion minion){
     _minions.add(minion);
     //TODO: Better insertion.
-    _minions.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
     updateMinionCategories();
   }
 
@@ -288,9 +264,6 @@ class SW{
   void addVehicle(Vehicle vehicle){
     _vehicles.add(vehicle);
     //TODO: Better insertion.
-    _vehicles.sort((min1, min2)=>
-      min1.name.compareTo(min2.name)
-    );
     updateVehicleCategories();
   }
   
@@ -302,16 +275,16 @@ class SW{
     });
   }
 
-  bool isSignedIn() {
-    return gsi != null && gsi!.currentUser != null;
-  }
+  bool isSignedIn() =>
+    gsi != null && gsi!.currentUser != null;
 
   Future<bool> initCloud() async{
     if(isSignedIn())
       return true;
-    gsi = GoogleSignIn(
-      scopes: [drive.DriveApi.driveScope],
-    );
+    if (gsi == null)
+      gsi = GoogleSignIn(
+        scopes: [drive.DriveApi.driveScope],
+      );
     await gsi!.signInSilently();
     if (gsi!.currentUser == null)
       await gsi!.signIn();
@@ -319,13 +292,13 @@ class SW{
       gsi = null;
       return false;
     }
-    driveApi = drive.DriveApi((await gsi!.authenticatedClient())!);
     return true;
   }
   
   Future<void> syncCloud() async{
     if(!await initCloud())
       return;
+    driveApi ??= drive.DriveApi((await gsi!.authenticatedClient())!);
   }
 
   dynamic getPreference(String preference, dynamic defaultValue) =>
