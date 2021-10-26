@@ -1,4 +1,4 @@
-import 'package:swassistant/profiles/utils/JsonSavable.dart';
+import 'package:swassistant/utils/JsonSavable.dart';
 
 class Talent implements JsonSavable{
   String name;

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/profiles/utils/JsonSavable.dart';
+import 'package:swassistant/utils/JsonSavable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'WeaponCharacteristic.dart';

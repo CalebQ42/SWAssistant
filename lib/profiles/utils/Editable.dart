@@ -10,11 +10,11 @@ import 'package:swassistant/items/Weapon.dart';
 import 'package:swassistant/ui/Card.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
+import 'package:swassistant/utils/JsonSavable.dart';
 
 import '../Character.dart';
 import '../Minion.dart';
 import '../Vehicle.dart';
-import 'JsonSavable.dart';
 
 //Editable holds all common components of Vehicles, Minions, and Characters and
 //provides a framework on how to display, load, and save them.

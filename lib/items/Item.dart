@@ -1,4 +1,4 @@
-import 'package:swassistant/profiles/utils/JsonSavable.dart';
+import 'package:swassistant/utils/JsonSavable.dart';
 
 class Item implements JsonSavable{
   String name;
