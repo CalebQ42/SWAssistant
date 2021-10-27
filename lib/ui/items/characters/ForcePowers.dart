@@ -5,7 +5,7 @@ import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 
 class ForcePowers extends StatelessWidget{
 

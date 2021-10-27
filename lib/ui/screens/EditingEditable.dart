@@ -6,7 +6,7 @@ import 'package:swassistant/profiles/Minion.dart';
 import 'package:swassistant/profiles/Vehicle.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/screens/EditableCards.dart';
 import 'package:swassistant/ui/screens/EditableNotes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,36 +14,41 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EditingEditable extends StatefulWidget {
   final Editable profile;
   final Function() refreshList;
+  final bool contained;
 
-  EditingEditable(this.profile, this.refreshList);
+  EditingEditable(this.profile, this.refreshList, {this.contained = false});
 
   @override
   State<StatefulWidget> createState() =>
-      _EditingEditableState(profile, refreshList);
+      _EditingEditableState(profile, refreshList, contained);
 }
 
 class _EditingEditableState extends State {
   final Editable profile;
   final Function() refreshList;
   int _index = 0;
+  final bool contained;
 
-  _EditingEditableState(this.profile, this.refreshList);
+  _EditingEditableState(this.profile, this.refreshList, this.contained);
 
-  Widget build(BuildContext context) =>
-    InheritedEditable(
-      child: Scaffold(
+  Widget build(BuildContext context) {
+    var main = _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes();
+    var bottomNav = BottomNavigationBar(
+      backgroundColor: Theme.of(context).cardColor,
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
+        BottomNavigationBarItem(icon: Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
+      ],
+      onTap: (value) => setState(() => _index = value),
+      currentIndex: _index,
+      elevation: 8.0,
+      showSelectedLabels: true,
+    );
+    Widget body;
+    if(contained)
+      body = Scaffold(
         drawer: SWDrawer(),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).cardColor,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
-            BottomNavigationBarItem(icon: Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
-          ],
-          onTap: (value) => setState(() => _index = value),
-          currentIndex: _index,
-          elevation: 8.0,
-          showSelectedLabels: true,
-        ),
+        bottomNavigationBar: bottomNav,
         appBar: SWAppBar(
           context,
           additionalActions: [
@@ -143,10 +148,21 @@ class _EditingEditableState extends State {
             ).show(context),
           },
         ),
-      body: _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes()
-    ),
-    editable: profile
-  );
+        body: main
+      );
+    else
+      body = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(child: main,),
+          bottomNav
+        ],
+      );
+    return InheritedEditable(
+      child: body,
+      editable: profile
+    );
+  }
 }
 
 class InheritedEditable extends InheritedWidget {

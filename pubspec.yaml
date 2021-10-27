@@ -23,7 +23,7 @@ dependencies:
   url_launcher: ^6.0.12
   permission_handler: ^8.2.5
   file_picker: ^4.1.6
-  flutter_speed_dial: ^4.5.0
+  flutter_speed_dial: ^4.6.0
   in_app_purchase: ^1.0.9
   googleapis: ^6.0.0
   google_sign_in: ^5.2.0

@@ -20,7 +20,6 @@ Future<void> main() async =>
   );
 
 //TODO: Before Release
-//* Guide (Maybe drop??)
 //* GM Mode
 //* Google Drive saving
 //  * Create a generic "Driver" to also use for CDR.

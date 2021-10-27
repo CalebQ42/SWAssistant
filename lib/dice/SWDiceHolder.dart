@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/Dice.dart';
 import 'package:swassistant/dice/SWDice.dart' as SWDice;
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/misc/DiceSelector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

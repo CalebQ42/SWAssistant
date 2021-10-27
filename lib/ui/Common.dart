@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/dialogs/Donate.dart';
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -147,19 +147,19 @@ class SWDrawer extends StatelessWidget{
                 Navigator.of(context).pushNamed("/dice");
             }
           ),
-          ListTile(
-            title: Text(AppLocalizations.of(context)!.guide),
-            leading: Icon(Icons.book),
-            onTap: (){
-              Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/guide");
-              if(out != null){
-                Navigator.of(context).removeRoute(out);
-                Navigator.of(context).pushNamed("/guide");
-              }else
-                Navigator.of(context).pushNamed("/guide");
-            }
-          ),
+          // ListTile(
+          //   title: Text(AppLocalizations.of(context)!.guide),
+          //   leading: Icon(Icons.book),
+          //   onTap: (){
+          //     Navigator.of(context).pop();
+          //     var out = SW.of(context).observatory.containsRoute(name: "/guide");
+          //     if(out != null){
+          //       Navigator.of(context).removeRoute(out);
+          //       Navigator.of(context).pushNamed("/guide");
+          //     }else
+          //       Navigator.of(context).pushNamed("/guide");
+          //   }
+          // ),
           ListTile(
             title: Text(AppLocalizations.of(context)!.settings),
             leading: Icon(Icons.settings),

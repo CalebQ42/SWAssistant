@@ -90,7 +90,7 @@ class Character extends Editable with Creature{
 
   Character.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Character.from(Character character, {required int id}) :
+  Character.from(Character character, {int id = -1}) :
       species = character.species,
       career = character.career,
       specializations = List.from(character.specializations),

@@ -25,6 +25,9 @@
     "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
     "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
 
+    "gmModeTap": "Select a profile on the left to edit.",
+    "gmModeType": "Type...",
+
     "translate": "Help Translate!",
     "discuss": "Discuss/Announcements",
 

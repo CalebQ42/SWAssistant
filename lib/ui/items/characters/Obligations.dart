@@ -3,7 +3,7 @@ import 'package:swassistant/items/Obligation.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/ui/dialogs/character/ObligationEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 
 class Obligations extends StatelessWidget{
 

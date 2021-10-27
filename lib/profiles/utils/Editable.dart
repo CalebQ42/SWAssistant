@@ -57,7 +57,7 @@ abstract class Editable extends JsonSavable{
       loc = file.path;
   }
 
-  Editable.from(Editable editable, {int id = 0}) :
+  Editable.from(Editable editable, {int id = -1}) :
       this.id = id,
       name = editable.name,
       notes = List.from(editable.notes),

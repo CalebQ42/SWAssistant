@@ -10,7 +10,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/intro/IntroOne.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 
 class IntroZero extends StatelessWidget{
   @override

@@ -48,7 +48,7 @@ class Vehicle extends Editable{
 
   Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Vehicle.from(Vehicle vehicle, {required int id}) :
+  Vehicle.from(Vehicle vehicle, {int id = -1}) :
       silhouette = vehicle.silhouette,
       speed = vehicle.speed,
       handling = vehicle.handling,

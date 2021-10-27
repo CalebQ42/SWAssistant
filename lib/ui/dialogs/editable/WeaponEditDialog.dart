@@ -9,7 +9,7 @@ import 'package:swassistant/profiles/utils/Creature.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/dialogs/editable/WeaponCharacteristicDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/misc/UpdatingSwitchTile.dart';
 
 class WeaponEditDialog{

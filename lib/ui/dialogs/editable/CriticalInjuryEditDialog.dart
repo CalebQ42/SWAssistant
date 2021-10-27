@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/CriticalInjury.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/BottomSheetTemplate.dart';
+import 'package:swassistant/ui/misc/Bottom.dart';
 
 class CriticalInjuryEditDialog {
   final CriticalInjury criticalInjury;
