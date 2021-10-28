@@ -119,19 +119,20 @@ class SWDrawer extends StatelessWidget{
                 Navigator.of(context).pushNamed("/vehicles");
             }
           ),
-          ListTile(
-            title: Text(AppLocalizations.of(context)!.download),
-            leading: Icon(Icons.cloud_download),
-            onTap: (){
-              Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/download");
-              if(out != null){
-                Navigator.of(context).removeRoute(out);
-                Navigator.of(context).pushNamed("/download");
-              }else
-                Navigator.of(context).pushNamed("/download");
-            }
-          ),
+          //TODO:
+          // ListTile(
+          //   title: Text(AppLocalizations.of(context)!.download),
+          //   leading: Icon(Icons.cloud_download),
+          //   onTap: (){
+          //     Navigator.of(context).pop();
+          //     var out = SW.of(context).observatory.containsRoute(name: "/download");
+          //     if(out != null){
+          //       Navigator.of(context).removeRoute(out);
+          //       Navigator.of(context).pushNamed("/download");
+          //     }else
+          //       Navigator.of(context).pushNamed("/download");
+          //   }
+          // ),
           Divider(),
           Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text(AppLocalizations.of(context)!.otherStuff)),
           ListTile(

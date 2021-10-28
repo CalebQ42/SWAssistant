@@ -17,10 +17,11 @@ class IntroZero extends StatelessWidget{
   Widget build(BuildContext context) =>
     IntroScreen(
       nextScreen: IntroOne(),
-      prevScreenAction: () =>
+      prevScreenAction: SW.of(context).devMode ? () =>
         SW.of(context).postInit(context).whenComplete(() =>
           Navigator.of(context).pushNamedAndRemoveUntil("/characters", (route) => false)
-        ),
+        ) : null,
+      defPrevScreen: false,
       prevScreenIcon: Icon(Icons.exit_to_app),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 500),

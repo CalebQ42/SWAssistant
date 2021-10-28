@@ -4,9 +4,9 @@ class IntroScreen extends StatelessWidget{
 
   final Widget? child;
   final Widget? nextScreen;
-  final Function()? nextScreenAction;
+  final void Function()? nextScreenAction;
   final bool defPrevScreen;
-  final Function()? prevScreenAction;
+  final void Function()? prevScreenAction;
   final Widget? nextScreenIcon;
   final Widget? prevScreenIcon;
 

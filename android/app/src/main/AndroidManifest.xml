@@ -1,5 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.apps.darkstorm.swrpg.assistant">
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission
+        android:name="android.permission.INTERNET" />
     <application
         android:label="SWAssistant"
         android:icon="@mipmap/ic_launcher">

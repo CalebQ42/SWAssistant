@@ -16,11 +16,13 @@ class _IntroTwoState extends State{
   @override
   Widget build(BuildContext context) =>
     IntroScreen(
-      nextScreenAction: () => 
-      SW.of(context).postInit(context).whenComplete(() =>
-        Navigator.pushNamedAndRemoveUntil(
-          context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false)
-      ),
+      nextScreenAction: () {
+        SW.of(context).prefs.setBool(preferences.firstStart, false);
+        SW.of(context).postInit(context).whenComplete(() =>
+            Navigator.pushNamedAndRemoveUntil(
+              context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false)
+        );
+      },
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 500),
         child: Column(
