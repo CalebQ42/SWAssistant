@@ -22,17 +22,21 @@ class GMMode extends StatelessWidget{
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     width = min(400, width / 3);
-    return BackButtonListener(
-      onBackButtonPressed: (){
-        if (backStack.length == 0)
-          return Future.value(false);
-        backStack.removeLast();
+    var remain = MediaQuery.of(context).size.width - width;
+    return WillPopScope(
+      onWillPop: (){
+        if (backStack.length == 1 || backStack.length == 0)
+          return Future.value(true);
         for(var o in message.onChange)
           o(backStack.last);
-        return Future.value(true);
+        return Future.value(false);
       },
       child: Scaffold(
-        appBar: _GMModeBar(message) as SWAppBar,
+        appBar: PreferredSize(
+          child: _GMModeBar(message),
+          preferredSize: Size.fromHeight(Theme.of(context).appBarTheme.toolbarHeight ?? 55),
+        ),
+        drawer: SWDrawer(),
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
@@ -41,18 +45,29 @@ class GMMode extends StatelessWidget{
               constraints: BoxConstraints(
                 maxWidth: width,
               ),
+              child: EditableList(-1,
+                contained: true,
+                onTap: (ed) {
+                  backStack.add(ed);
+                  for(var o in message.onChange)
+                    o(backStack.last);
+                  //TODO: Check to see if profile is already in stack and remove it.
+                },
+                message: message,
+              )
             ),
+            Expanded(child: _GMModeEditor(message, remain))
           ],
         ),
-      ),
+      )
     );
   }
 }
 
 class GMModeMessager{
-  final List<Function(Editable)> onChange = [];
-  late Function() editingState;
-  late Function() listState;
+  final List<void Function(Editable)> onChange = [];
+  late void Function() editingState;
+  late void Function() listState;
 }
 
 class _GMModeBar extends StatefulWidget{
@@ -117,14 +132,22 @@ class _BarState extends State{
           PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
       ],
       popupFunctions: editable != null ? {
-        "disableForce": () => setState(() => (editable as Character)
-            .disableForce = !(editable as Character).disableForce),
-        "disableDuty": () => setState(() => (editable as Character)
-            .disableDuty = !(editable as Character).disableDuty),
-        "disableObligation": () => setState(() =>
-          (editable as Character).disableObligation = !(editable as Character).disableObligation),
-        "disableMorality": () => setState(() => (editable as Character)
-            .disableMorality = !(editable as Character).disableMorality),
+        "disableForce": () {
+          setState(() => (editable as Character).disableForce = !(editable as Character).disableForce);
+          message.editingState();
+        },
+        "disableDuty": () {
+          setState(() => (editable as Character).disableDuty = !(editable as Character).disableDuty);
+          message.editingState();
+        },
+        "disableObligation": () {
+          setState(() => (editable as Character).disableObligation = !(editable as Character).disableObligation);
+          message.editingState();
+        },
+        "disableMorality": () {
+          setState(() => (editable as Character).disableMorality = !(editable as Character).disableMorality);
+          message.editingState();
+        },
         "clone": () => Bottom(
           child: (context) {
             var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(editable!.name));
@@ -154,6 +177,7 @@ class _BarState extends State{
                         SW.of(context).add(out);
                         out.save(context: context);
                         Navigator.of(context).pop();
+                        message.listState();
                       },
                     ),
                     TextButton(
@@ -166,25 +190,27 @@ class _BarState extends State{
               ],
             );
           }
-        ).show(context),
-      },
+        ).show(context)
+      } : null
     );
 }
 
 class _GMModeEditor extends StatefulWidget{
   final GMModeMessager message;
+  final double width;
 
-  _GMModeEditor(this.message);
+  _GMModeEditor(this.message, this.width);
 
   @override
-  State<StatefulWidget> createState() => _GMModeState(message);
+  State<StatefulWidget> createState() => _GMModeState(message, width);
 }
 
 class _GMModeState extends State{
   final GMModeMessager message;
+  final double width;
   Editable? curEdit;
 
-  _GMModeState(this.message){
+  _GMModeState(this.message, this.width){
     message.onChange.add(
       (ed) => setState(() => curEdit = ed)
     );
@@ -199,9 +225,9 @@ class _GMModeState extends State{
       )
     ) : EditingEditable(
       curEdit!,
-      (){
-
-      },
+      message.listState,
+      key: Key(curEdit!.id.toString() + curEdit!.fileExtension),
       contained: true,
-    )
+      w: width,
+    );
 }

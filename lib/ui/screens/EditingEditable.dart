@@ -12,27 +12,29 @@ import 'package:swassistant/ui/screens/EditableNotes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditingEditable extends StatefulWidget {
+  final Key? key;
   final Editable profile;
-  final Function() refreshList;
+  final void Function() refreshList;
   final bool contained;
+  final double? w;
 
-  EditingEditable(this.profile, this.refreshList, {this.contained = false});
+  EditingEditable(this.profile, this.refreshList, {this.key, this.contained = false, this.w});
 
   @override
   State<StatefulWidget> createState() =>
-      _EditingEditableState(profile, refreshList, contained);
+      _EditingEditableState(profile, refreshList, contained, w);
 }
 
 class _EditingEditableState extends State {
   final Editable profile;
-  final Function() refreshList;
+  final void Function() refreshList;
   int _index = 0;
   final bool contained;
+  final double? w;
 
-  _EditingEditableState(this.profile, this.refreshList, this.contained);
+  _EditingEditableState(this.profile, this.refreshList, this.contained, this.w);
 
   Widget build(BuildContext context) {
-    var main = _index == 0 ? EditableCards(refreshList: refreshList) : EditableNotes();
     var bottomNav = BottomNavigationBar(
       backgroundColor: Theme.of(context).cardColor,
       items: [
@@ -45,7 +47,7 @@ class _EditingEditableState extends State {
       showSelectedLabels: true,
     );
     Widget body;
-    if(contained)
+    if(!contained)
       body = Scaffold(
         drawer: SWDrawer(),
         bottomNavigationBar: bottomNav,
@@ -148,13 +150,13 @@ class _EditingEditableState extends State {
             ).show(context),
           },
         ),
-        body: main
+        body: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes()
       );
     else
       body = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: main,),
+          Expanded(child: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes(),),
           bottomNav
         ],
       );

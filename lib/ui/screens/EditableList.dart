@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:googleapis/appengine/v1.dart';
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/profiles/Character.dart';
 import 'package:swassistant/profiles/Minion.dart';
@@ -8,6 +7,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/screens/GMMode.dart';
 
 class EditableList extends StatefulWidget{
 
@@ -18,15 +18,16 @@ class EditableList extends StatefulWidget{
 
   final int type;
   final bool contained;
-  final Function(Editable)? onTap;
+  final void Function(Editable)? onTap;
+  final GMModeMessager? message;
 
-  EditableList(this.type, {this.contained = false, this.onTap}){
-    if(this.type <0 || this.type > 2)
+  EditableList(this.type, {this.contained = false, this.onTap, this.message}){
+    if(this.type <-1 || this.type > 2)
       throw("Invalid type");
   }
 
   @override
-  State<StatefulWidget> createState() => _EditableListState(type, contained, onTap);
+  State<StatefulWidget> createState() => _EditableListState(type, contained, onTap, message);
 }
 
 class _EditableListState extends State{
@@ -38,17 +39,20 @@ class _EditableListState extends State{
   bool searching = false;
   FocusNode searchFocus = FocusNode();
   final bool contained;
-  Function(Editable)? onTap;
+  void Function(Editable)? onTap;
+  final GMModeMessager? message;
   // bool open = false;
 
   late TextEditingController searchController;
 
-  _EditableListState(this.type, this.contained, this.onTap) {
+  _EditableListState(this.type, this.contained, this.onTap, this.message) {
     if (!contained)
       searchController = TextEditingController()
         ..addListener(() =>
           setState(() => search = searchController.text)
         );
+    if(message != null)
+      message!.listState = () => setState((){});
   }
 
   Widget build(BuildContext context) {
@@ -56,9 +60,10 @@ class _EditableListState extends State{
       FocusScope.of(context).requestFocus(searchFocus);
     switch(type){
       case -1:
-        list = SW.of(context).characters().cast<Editable>()
-          ..addAll(SW.of(context).minions())
-          ..addAll(SW.of(context).vehicles());
+        list = [];
+        list.addAll(SW.of(context).characters());
+        list.addAll(SW.of(context).minions());
+        list.addAll(SW.of(context).vehicles());
         break;
       case 0:
         list = SW.of(context).characters(category: category ?? "", search: search);
@@ -157,7 +162,18 @@ class _EditableListState extends State{
                   }else
                     category = value;
                 }),
-              value: category,
+              value: (contained) ? (){
+                switch(type){
+                case -1:
+                  return null;
+                case 0:
+                  return "characters";
+                case 1:
+                  return "minions";
+                default:
+                  return "vehicles";
+                }
+              }() : category,
               isExpanded: true,
             )
           )

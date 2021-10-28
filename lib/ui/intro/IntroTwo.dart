@@ -35,7 +35,7 @@ class _IntroTwoState extends State{
               title: Text(
                 "Cloud Save (via Google Drive) (Not currently implemented)",
               ),
-              value: SW.of(context).getPreference(preferences.googleDrive, true),
+              value: SW.of(context).getPreference(preferences.googleDrive, false),
               onChanged: (b){
                 //TODO+
                 SW.of(context).prefs.setBool(preferences.googleDrive, b);
@@ -46,7 +46,7 @@ class _IntroTwoState extends State{
               title: Text(
                 AppLocalizations.of(context)!.forceDark,
               ),
-              value: SW.of(context).getPreference(preferences.forceDark, true),
+              value: SW.of(context).getPreference(preferences.forceDark, false),
               onChanged: (b){
                 SW.of(context).prefs.setBool(preferences.forceDark, b);
                 if (b)
@@ -59,7 +59,7 @@ class _IntroTwoState extends State{
               title: Text(
                 AppLocalizations.of(context)!.amoledTheme,
               ),
-              value: SW.of(context).getPreference(preferences.amoled, true),
+              value: SW.of(context).getPreference(preferences.amoled, false),
               onChanged: (b){
                 SW.of(context).prefs.setBool(preferences.amoled, b);
                 setState((){});
@@ -70,7 +70,7 @@ class _IntroTwoState extends State{
               title: Text(
                 AppLocalizations.of(context)!.forceLight,
               ),
-              value: SW.of(context).getPreference(preferences.forceLight, true),
+              value: SW.of(context).getPreference(preferences.forceLight, false),
               onChanged: (b){
                 SW.of(context).prefs.setBool(preferences.forceLight, b);
                 if (b)

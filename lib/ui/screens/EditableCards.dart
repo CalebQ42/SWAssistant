@@ -6,13 +6,14 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 class EditableCards extends StatelessWidget{
 
   final Function() refreshList;
+  final double? w;
 
-  EditableCards({required this.refreshList});
+  EditableCards({required this.refreshList, this.w});
 
   @override
   Widget build(BuildContext context) {
     var cards = Editable.of(context).cards(context, refreshList);
-    double width = min(MediaQuery.of(context).size.height, 500);
+    double width = w ?? min(MediaQuery.of(context).size.height, 500);
     int rows = (MediaQuery.of(context).size.width / width).floor();
     width = MediaQuery.of(context).size.width / rows;
     return SingleChildScrollView(

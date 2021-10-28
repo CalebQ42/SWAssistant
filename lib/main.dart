@@ -4,6 +4,7 @@ import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/intro/IntroZero.dart';
 import 'package:swassistant/ui/screens/DiceRoller.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
+import 'package:swassistant/ui/screens/GMMode.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,7 +21,7 @@ Future<void> main() async =>
   );
 
 //TODO: Before Release
-//* GM Mode
+//* Google Play donate
 //* Google Drive saving
 //  * Create a generic "Driver" to also use for CDR.
 //* Move all old translations to arb files.
@@ -138,15 +139,13 @@ class SWAppState extends State {
       ],
       initialRoute: init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
       routes: {
-        // "/gm" : (context) => GMMode(),.
+        "/gm" : (context) => GMMode(),
         "/characters" : (context) => EditableList(EditableList.character),
         "/minions" : (context) => EditableList(EditableList.minion),
         "/vehicles" : (context) => EditableList(EditableList.vehicle),
         // "/download" : (context) => Downloads(),
         "/dice" : (context) => DiceRoller(),
-        // "/guide" : (context) => Guide(),
         "/settings" : (context) => Settings(),
-        // Initial setup pages
         "/intro" : (context) => IntroZero(),
       },
     );
