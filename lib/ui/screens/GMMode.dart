@@ -88,7 +88,6 @@ class _BarState extends State{
     message.onChange.add(
       (ed) => setState(() => editable = ed)
     );
-    message.editingState = () => setState((){});
   }
 
   @override
@@ -214,6 +213,7 @@ class _GMModeState extends State{
     message.onChange.add(
       (ed) => setState(() => curEdit = ed)
     );
+    message.editingState = () => setState((){});
   }
 
   @override

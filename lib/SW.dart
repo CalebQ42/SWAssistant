@@ -338,7 +338,7 @@ class SW{
       try{
         await Firebase.initializeApp();
         firebaseAvailable = true;
-        if(getPreference(preferences.crashlytics, true) && kDebugMode == false && kProfileMode == false){
+        if(getPreference(preferences.crashlytics, true) && kDebugMode == false){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         }else

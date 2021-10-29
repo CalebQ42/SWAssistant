@@ -105,6 +105,7 @@ class EditingText extends StatelessWidget {
 
 class EditableContent extends StatefulWidget{
 
+  final Key? key;
   final Widget Function(bool editing, Function() refresh, EditableContentState state)? builder;
   final bool Function()? defaultEditingState;
   final bool editButton;
@@ -112,7 +113,7 @@ class EditableContent extends StatefulWidget{
 
   final StatefulCard? stateful;
 
-  EditableContent({this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additonalButtons});
+  EditableContent({this.key, this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additonalButtons});
 
   @override
   State<EditableContent> createState() =>
