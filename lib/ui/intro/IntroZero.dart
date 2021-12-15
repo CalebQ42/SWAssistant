@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/SW.dart';
@@ -45,17 +46,17 @@ class IntroZero extends StatelessWidget{
             SizedBox(height:5),
             ElevatedButton(
               child: Text(AppLocalizations.of(context)!.introPage0ImportButton),
-              onPressed: () {
-                tryOldImport(context).then((value) {
-                  if (value != 0)
-                    return;
+              onPressed: () async {
+                //Android 10+ prevents full access to the filesystem. If older, we can access old profiles directly.
+                //Otherwise, we need to have the user manually select the profiles.
+                if (Platform.isAndroid && ((await DeviceInfoPlugin().androidInfo).version.sdkInt ?? 29) >= 29)
                   Bottom(
                     buttons: (context) => [
                       TextButton(
                         child: Text(MaterialLocalizations.of(context).continueButtonLabel),
                         onPressed: (){
                           Navigator.pop(context);
-                          manualImport(context);
+                          SW.of(context).manualImport(context);
                         },
                       ),
                       TextButton(
@@ -91,7 +92,12 @@ class IntroZero extends StatelessWidget{
                         ],
                       )
                   ).show(context);
-                });
+                else{
+                  var num = oldImport(context);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppLocalizations.of(context)!.importSuccess(num)),
+                  ));
+                }
               }
             )
           ]
@@ -99,15 +105,12 @@ class IntroZero extends StatelessWidget{
       )
     );
 
-  Future<int> tryOldImport(BuildContext context) async{
-    //First try to access the files directly. This won't work on newer versions of Android, but on older version SHOULD work fine.
+  int oldImport(BuildContext context){
     var extStorage = Directory("/sdcard");
     if (extStorage.existsSync()){
       var charsFold = Directory(extStorage.path + "/SWChars");
       if (charsFold.existsSync()){
-        print("I'm Super Alive!");
         var fils = charsFold.listSync();
-        print(fils.length);
         if (fils.length > 0){
           for (var f in fils){
             Editable ed;
@@ -126,7 +129,7 @@ class IntroZero extends StatelessWidget{
           }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.introPage0ImportSuccess(fils.length))
+              content: Text(AppLocalizations.of(context)!.importSuccess(fils.length))
             )
           );
           return fils.length;
@@ -134,48 +137,5 @@ class IntroZero extends StatelessWidget{
       }
     }
     return 0;
-  }
-
-  void manualImport(BuildContext context){
-    var app = SW.of(context);
-    var message = ScaffoldMessenger.of(context);
-    var locs = AppLocalizations.of(context)!;
-    //possibly show loading dialog.
-    FilePicker.platform.pickFiles(allowMultiple: true).then((value) {
-      if(value == null)
-        return;
-      if (value.files.isEmpty){
-        message.showSnackBar(
-          SnackBar(content: Text(locs.introPage0ImportNone))
-        );
-        return;
-      }
-      for(var f in value.files){
-        var fil = File(f.path!);
-        Editable ed;
-        switch (f.extension){
-          case "swminion":
-            ed = Minion.load(fil, app);
-            break;
-          case "swcharacter":
-            ed = Character.load(fil, app);
-            break;
-          case "swvehicle":
-            ed = Vehicle.load(fil, app);
-            break;
-          default:
-            continue;
-        }
-        ed.loc = "";
-        ed.findNexID(app);
-        ed.save(app: app);
-        app.add(ed);
-      }
-      message.showSnackBar(
-        SnackBar(
-          content: Text(locs.introPage0ImportSuccess(value.files.length))
-        )
-      );
-    });
   }
 }

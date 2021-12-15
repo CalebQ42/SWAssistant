@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -7,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'profiles/Minion.dart';
 import 'profiles/Character.dart';
@@ -306,8 +307,6 @@ class SW{
 
   static Future<SW> baseInit() async{
     WidgetsFlutterBinding.ensureInitialized();
-    if (defaultTargetPlatform == TargetPlatform.android)
-      InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
     var prefs = await SharedPreferences.getInstance();
     var app = SW(prefs: prefs);
     if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode)
@@ -326,10 +325,20 @@ class SW{
 
   Future<void> postInit(BuildContext context) async{
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) =>
         AlertDialog(
-          content: CircularProgressIndicator(),
+          content: Column(
+            children: [
+              CircularProgressIndicator(),
+              Container(height: 10),
+              Text(
+                AppLocalizations.of(context)!.loadingDialog,
+                textAlign: TextAlign.center,
+              )
+            ]
+          )
         )
     );
     if (getPreference(preferences.googleDrive, false))
@@ -350,6 +359,67 @@ class SW{
     Navigator.of(context).pop();
   }
 
+  void manualImport(BuildContext context){
+    var message = ScaffoldMessenger.of(context);
+    var locs = AppLocalizations.of(context)!;
+    var nav = Navigator.of(context);
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) =>
+        AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              Container(height: 10),
+              Text(
+                AppLocalizations.of(context)!.importDialog,
+                textAlign: TextAlign.center,
+              )
+            ]
+          )
+        )
+    );
+    FilePicker.platform.pickFiles(allowMultiple: true).then((value) {
+      if(value == null)
+        return;
+      if (value.files.isEmpty){
+        message.showSnackBar(
+          SnackBar(content: Text(locs.introPage0ImportNone))
+        );
+        return;
+      }
+      for(var f in value.files){
+        var fil = File(f.path!);
+        Editable ed;
+        switch (f.extension){
+          case "swminion":
+            ed = Minion.load(fil, this);
+            break;
+          case "swcharacter":
+            ed = Character.load(fil, this);
+            break;
+          case "swvehicle":
+            ed = Vehicle.load(fil, this);
+            break;
+          default:
+            continue;
+        }
+        ed.loc = "";
+        ed.findNexID(this);
+        ed.save(app: this);
+        add(ed);
+      }
+      nav.pop();
+      message.showSnackBar(
+        SnackBar(
+          content: Text(locs.importSuccess(value.files.length))
+        )
+      );
+    });
+  }
+
   static Future<void> testing(String saveDir) async{
     var testFiles = ["Big Game Hunter [Nemesis][Testing].swcharacter","Incom T-47 Airspeeder [Testing].swvehicle","Pirate Crew [Testing].swminion"];
     for(String st in testFiles){
@@ -367,6 +437,8 @@ class SW{
       throw "Widget is not a child of SWWidget";
     return app;
   }
+
+
 }
 
 class SWWidget extends InheritedWidget{

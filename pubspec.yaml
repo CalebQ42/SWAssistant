@@ -15,19 +15,20 @@ dependencies:
     sdk: flutter
 
   intl: ^0.17.0
-  firebase_core: ^1.8.0
-  firebase_crashlytics: "^2.2.4"
-  shared_preferences: ^2.0.8
-  path_provider: ^2.0.6
-  cupertino_icons: ^1.0.3
-  url_launcher: ^6.0.12
-  permission_handler: ^8.2.5
-  file_picker: ^4.1.6
-  flutter_speed_dial: ^4.6.2
-  in_app_purchase: ^1.0.9
-  googleapis: ^6.0.0
-  google_sign_in: ^5.2.0
+  firebase_core: ^1.10.5
+  firebase_crashlytics: "^2.4.3"
+  shared_preferences: ^2.0.11
+  path_provider: ^2.0.8
+  cupertino_icons: ^1.0.4
+  url_launcher: ^6.0.17
+  permission_handler: ^8.3.0
+  file_picker: ^4.2.7
+  # flutter_speed_dial: ^5.0.0+1
+  in_app_purchase: ^2.0.1
+  googleapis: ^7.0.0
+  google_sign_in: ^5.2.1
   extension_google_sign_in_as_googleapis_auth: ^2.0.4
+  device_info_plus: ^3.1.1
 
 dev_dependencies:
   flutter_test:

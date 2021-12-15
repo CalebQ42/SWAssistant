@@ -1,5 +1,4 @@
 {
-
     "introWelcome": "Welcome!",
     "introPage0Line1": "Thank you for trying SWAssistant. Before we get started, you first have to set up some preferences.",
     "introPage0Line2": "Additionally, if you used a previous version of this app, we will need to import your old profiles first.",
@@ -11,8 +10,13 @@
     "introPage0ManualImportLine2": "2) Select the folder named SWChars",
     "introPage0ManualImportLine3": "3) Long press on one of the files until it goes into multi-select mode, then select all the other files in the folder",
     "introPage0ManualImportLine4": "4) Click the Select Files button.",
-    "introPage0ImportSuccess": "Successfully imported {number} profiles.",
-    "@introPage0ImportSuccess": {
+    
+    "introPage0ImportNone": "You seemed to have to selected any files",
+    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
+    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
+
+    "importSuccess": "Successfully imported {number} profiles.",
+    "@importSuccess": {
         "description": "Shown after imported old profiles. number is how many profiles imported.",
         "placeholders": {
             "number":{
@@ -21,9 +25,9 @@
             }
         }
     },
-    "introPage0ImportNone": "You seemed to have to selected any files",
-    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
-    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
+    "importDialog": "Importing Profiles...",
+
+    "loadingDialog": "Loading...",
 
     "gmModeTap": "Select a profile on the left to edit.",
     "gmModeType": "Type...",

@@ -36,9 +36,8 @@ class SettingsState extends State{
             value: app.getPreference(preferences.forceLight, false),
             onChanged: (b){
               app.prefs.setBool(preferences.forceLight, b);
-              if (b){
+              if (b)
                 app.prefs.setBool(preferences.forceDark, false);
-              }
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.forceLight),
@@ -48,9 +47,8 @@ class SettingsState extends State{
             value: app.getPreference(preferences.forceDark, false),
             onChanged: (b){
               app.prefs.setBool(preferences.forceDark, b);
-              if (b){
+              if (b)
                 app.prefs.setBool(preferences.forceLight, false);
-              }
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.forceDark),
@@ -78,7 +76,7 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.cloudSave),
             value: app.getPreference(preferences.googleDrive, false),
             onChanged: (b){
-              //TODO
+              //TODO: Google Drive
               app.prefs.setBool(preferences.googleDrive, b);
               setState(() {});
             }
@@ -142,6 +140,11 @@ class SettingsState extends State{
             applicationIcon: Image(image: AssetImage("assets/SWAssistant.png"), height: 64,),
             applicationLegalese: AppLocalizations.of(context)!.aboutText,
             applicationVersion: "3.0.0.0",
+          ),
+          Divider(),
+          ElevatedButton(
+            onPressed: () => app.manualImport(context),
+            child: Text(AppLocalizations.of(context)!.introPage0ImportButton)
           )
         ],
       )
