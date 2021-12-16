@@ -21,7 +21,6 @@ Future<void> main() async =>
   );
 
 //TODO: Before Release
-//* Google Play donate
 //* Google Drive saving
 //  * Create a generic "Driver" to also use for CDR.
 //* Move all old translations to arb files.

@@ -48,10 +48,12 @@ class GMMode extends StatelessWidget{
               child: EditableList(-1,
                 contained: true,
                 onTap: (ed) {
+                  var ind = backStack.indexWhere((element) => element.id == ed.id && element.fileExtension == ed.fileExtension);
                   backStack.add(ed);
                   for(var o in message.onChange)
                     o(backStack.last);
-                  //TODO: Check to see if profile is already in stack and remove it.
+                  if (ind != -1)
+                    backStack.removeAt(ind);
                 },
                 message: message,
               )

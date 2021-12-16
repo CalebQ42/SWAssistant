@@ -39,7 +39,7 @@ class _IntroTwoState extends State{
               ),
               value: SW.of(context).getPreference(preferences.googleDrive, false),
               onChanged: (b){
-                //TODO
+                //TODO: Google Drive
                 SW.of(context).prefs.setBool(preferences.googleDrive, b);
                 setState((){});
               }
