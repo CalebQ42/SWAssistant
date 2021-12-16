@@ -84,6 +84,20 @@
     "gPlayDesc": "Easy to use with support for most currencies, but donations are capped and Google takes a 15% cut",
     "sponsors": "Github Sponsors",
     "sponsorsDesc": "You can donate either one time or on a monthly basis, with custom amounts, AND 100% of your money goes to the developer",
+    "gPlayDonate": "Donate {amount}",
+    "@gPlayDonate": {
+        "description": "Shown in the Google Play donation dialog. amount is the amount in whatever local currency the donation is for.",
+        "placeholders": {
+            "amount":{
+                "type": "String",
+                "example": "$10"
+            }
+        }
+    },
+    "gPlayPurchase": "Purchase",
+    "gPlayUnavailable": "Google Play is currently unavailable",
+    "gPlayThanks": "Thank you for your donation :D",
+    "gPlayPurchasePending": "Purchase Pending...",
 
     "newCharacter": "New Character",
     "newMinion": "New Minion",

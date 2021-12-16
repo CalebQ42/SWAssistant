@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:swassistant/ui/dialogs/GPlayDonate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,13 +17,28 @@ class DonateDialog extends StatelessWidget{
         Row(
           children: [
             TextButton(
-              onPressed: () =>
-                _launchURL("https://github.com/sponsors/CalebQ42"),
+              onPressed: () {
+                Navigator.pop(context);
+                _launchURL("https://github.com/sponsors/CalebQ42");
+              },
               child: Text(AppLocalizations.of(context)!.sponsors)
             ),
             TextButton(
-              onPressed: (){
-                //TODO: gplay donate dialog
+              onPressed: () async{
+                if (!await InAppPurchase.instance.isAvailable())
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppLocalizations.of(context)!.gPlayUnavailable),
+                  ));
+                else
+                  InAppPurchase.instance.queryProductDetails(Set.of([
+                    "donate1",
+                    "donate5",
+                    "donate10",
+                    "donate20",
+                  ])).then((value) {
+                    Navigator.of(context).pop();
+                    GPlayDonateDialog(value.productDetails).show(context);
+                  });
               },
               child: Text(AppLocalizations.of(context)!.gPlay),
             )

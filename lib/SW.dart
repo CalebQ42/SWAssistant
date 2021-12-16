@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swassistant/main.dart';
@@ -309,6 +310,12 @@ class SW{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
     var app = SW(prefs: prefs);
+    InAppPurchase.instance.purchaseStream.listen((event) {
+      for(var e in event){
+        if (e.pendingCompletePurchase)
+          InAppPurchase.instance.completePurchase(e);
+      }
+    });
     if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode)
       app.devMode = true;
     var dir = await getApplicationDocumentsDirectory();

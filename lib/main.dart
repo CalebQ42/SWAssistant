@@ -25,7 +25,7 @@ Future<void> main() async =>
 //* Google Drive saving
 //  * Create a generic "Driver" to also use for CDR.
 //* Move all old translations to arb files.
-//  * Possibly ajust UI to require less translation.
+//  * Possibly ajust UI to require less new translations.
 
 //TODO: Post-release
 //* Character creator
