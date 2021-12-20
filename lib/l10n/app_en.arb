@@ -11,7 +11,6 @@
     "introPage0ManualImportLine3": "3) Long press on one of the files until it goes into multi-select mode, then select all the other files in the folder",
     "introPage0ManualImportLine4": "4) Click the Select Files button.",
     
-    "introPage0ImportNone": "You seemed to have to selected any files",
     "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
     "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
 
@@ -26,6 +25,7 @@
         }
     },
     "importDialog": "Importing Profiles...",
+    "importNone": "You seemed to have not selected any files",
 
     "loadingDialog": "Loading...",
 

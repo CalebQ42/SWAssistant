@@ -389,41 +389,40 @@ class SW{
         )
     );
     FilePicker.platform.pickFiles(allowMultiple: true).then((value) {
-      if(value == null)
-        return;
-      if (value.files.isEmpty){
-        message.showSnackBar(
-          SnackBar(content: Text(locs.introPage0ImportNone))
-        );
-        return;
-      }
-      for(var f in value.files){
-        var fil = File(f.path!);
-        Editable ed;
-        switch (f.extension){
-          case "swminion":
-            ed = Minion.load(fil, this);
-            break;
-          case "swcharacter":
-            ed = Character.load(fil, this);
-            break;
-          case "swvehicle":
-            ed = Vehicle.load(fil, this);
-            break;
-          default:
-            continue;
+      if(value != null && value.files.isNotEmpty){
+        for(var f in value.files){
+          var fil = File(f.path!);
+          Editable ed;
+          switch (f.extension){
+            case "swminion":
+              ed = Minion.load(fil, this);
+              break;
+            case "swcharacter":
+              ed = Character.load(fil, this);
+              break;
+            case "swvehicle":
+              ed = Vehicle.load(fil, this);
+              break;
+            default:
+              continue;
+          }
+          ed.loc = "";
+          ed.findNexID(this);
+          ed.save(app: this);
+          add(ed);
         }
-        ed.loc = "";
-        ed.findNexID(this);
-        ed.save(app: this);
-        add(ed);
       }
       nav.pop();
-      message.showSnackBar(
-        SnackBar(
-          content: Text(locs.importSuccess(value.files.length))
-        )
-      );
+      if (value == null || value.files.length == 0)
+        message.showSnackBar(
+          SnackBar(content: Text(locs.importNone))
+        );
+      else
+        message.showSnackBar(
+          SnackBar(
+            content: Text(locs.importSuccess(value.files.length))
+          )
+        );
     });
   }
 

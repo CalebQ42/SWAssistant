@@ -30,7 +30,7 @@ class SettingsState extends State{
         backgroundColor: Theme.of(context).primaryColor
       ),
       drawer: SWDrawer(),
-      body: Column(
+      body: ListView(
         children: [
           SwitchListTile(
             value: app.getPreference(preferences.forceLight, false),
