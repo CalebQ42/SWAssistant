@@ -49,7 +49,6 @@ class DonateDialog extends StatelessWidget{
   }
 
   static void _launchURL(String url) async {
-    if (await canLaunch(url))
-      await launch(url);
+    if (!await launch(url)) throw 'Could not launch $url';
   }
 }

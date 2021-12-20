@@ -51,7 +51,7 @@ class WoundStrain extends StatelessWidget{
           children: <Widget>[
             Expanded(
               child: SizedBox(
-                height: 65,
+                height: 80,
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
@@ -81,8 +81,8 @@ class WoundStrain extends StatelessWidget{
                           character.save(context: context);
                         },
                         getValue: ()=>character.woundCur,
-                        max: character.woundThresh,
-                      )
+                      ),
+                      Center(child: Text(AppLocalizations.of(context)!.max(character.woundThresh)))
                     ]
                   ) : (){
                     var controll = TextEditingController(text: character.woundThresh.toString());
@@ -106,7 +106,7 @@ class WoundStrain extends StatelessWidget{
             ),
             Expanded(
               child: SizedBox(
-                height: 65,
+                height: 80,
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
@@ -136,8 +136,8 @@ class WoundStrain extends StatelessWidget{
                           character.save(context: context);
                         },
                         getValue: ()=>character.strainCur,
-                        max: character.strainThresh,
-                      )
+                      ),
+                      Center(child: Text(AppLocalizations.of(context)!.max(character.strainThresh)))
                     ]
                   ) : (){
                     var controll = TextEditingController(text: character.strainThresh.toString());

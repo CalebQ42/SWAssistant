@@ -251,6 +251,16 @@
     "maxWound": "Max Wound",
     "strain": "Strain",
     "maxStrain": "Max Strain",
+    "max": "Max: {number}",
+    "@max": {
+        "description": "Used to display the max wound, strain, threashhold, and stress",
+        "placeholders": {
+            "number": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
 
     "current": "Current:",
     "total": "Total:",

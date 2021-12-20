@@ -15,20 +15,19 @@ import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 class GMMode extends StatelessWidget{
 
-  final List<Editable> backStack = [];
   final GMModeMessager message = GMModeMessager();
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    width = min(400, width / 3);
+    width = min(450, width / 3);
     var remain = MediaQuery.of(context).size.width - width;
     return WillPopScope(
       onWillPop: (){
-        if (backStack.length == 1 || backStack.length == 0)
+        if (message.backStack.length == 1 || message.backStack.length == 0)
           return Future.value(true);
         for(var o in message.onChange)
-          o(backStack.last);
+          o(message.backStack.last);
         return Future.value(false);
       },
       child: Scaffold(
@@ -48,17 +47,20 @@ class GMMode extends StatelessWidget{
               child: EditableList(-1,
                 contained: true,
                 onTap: (ed) {
-                  var ind = backStack.indexWhere((element) => element.id == ed.id && element.fileExtension == ed.fileExtension);
-                  backStack.add(ed);
+                  var ind = message.backStack.indexWhere((element) => element.id == ed.id && element.fileExtension == ed.fileExtension);
+                  message.backStack.add(ed);
                   for(var o in message.onChange)
-                    o(backStack.last);
+                    o(message.backStack.last);
                   if (ind != -1)
-                    backStack.removeAt(ind);
+                    message.backStack.removeAt(ind);
                 },
                 message: message,
               )
             ),
-            Expanded(child: _GMModeEditor(message, remain))
+            Expanded(
+              key: ValueKey(remain),
+              child: _GMModeEditor(message, remain)
+            )
           ],
         ),
       )
@@ -70,6 +72,8 @@ class GMModeMessager{
   final List<void Function(Editable)> onChange = [];
   late void Function() editingState;
   late void Function() listState;
+
+  final List<Editable> backStack = [];
 }
 
 class _GMModeBar extends StatefulWidget{
@@ -216,11 +220,13 @@ class _GMModeState extends State{
       (ed) => setState(() => curEdit = ed)
     );
     message.editingState = () => setState((){});
+    if(message.backStack.isNotEmpty)
+      curEdit = message.backStack[message.backStack.length-1];
   }
 
   @override
-  Widget build(BuildContext context) =>
-    curEdit == null ? Center(
+  Widget build(BuildContext context){
+    return curEdit == null ? Center(
       child: Text(
         AppLocalizations.of(context)!.gmModeTap,
         textAlign: TextAlign.justify,
@@ -228,8 +234,9 @@ class _GMModeState extends State{
     ) : EditingEditable(
       curEdit!,
       message.listState,
-      key: Key(curEdit!.id.toString() + curEdit!.fileExtension),
+      key: Key(curEdit!.id.toString() + curEdit!.fileExtension + width.toString()),
       contained: true,
       w: width,
     );
+  }
 }

@@ -49,7 +49,7 @@ class VehicleDamage extends StatelessWidget{
           children: [
             Expanded(
               child: SizedBox(
-                height: 65,
+                height: 80,
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   child: !editing ? Column(
@@ -64,9 +64,9 @@ class VehicleDamage extends StatelessWidget{
                           vehicle.hullTraumaCur--;
                           vehicle.save(context: context);
                         },
-                        getMax: () => vehicle.hullTraumaThresh,
                         getValue: () => vehicle.hullTraumaCur,
-                      )
+                      ),
+                      Center(child: Text(AppLocalizations.of(context)!.max(vehicle.hullTraumaThresh)))
                     ],
                   ) : TextField(
                     controller: (){
@@ -100,7 +100,7 @@ class VehicleDamage extends StatelessWidget{
             Container(width: 10,),
             Expanded(
               child: SizedBox(
-                height: 65,
+                height: 80,
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   child: !editing ? Column(
@@ -115,9 +115,9 @@ class VehicleDamage extends StatelessWidget{
                           vehicle.sysStressCur--;
                           vehicle.save(context: context);
                         },
-                        getMax: () => vehicle.sysStressThresh,
                         getValue: () => vehicle.sysStressCur,
-                      )
+                      ),
+                      Center(child: Text(AppLocalizations.of(context)!.max(vehicle.sysStressThresh)))
                     ],
                   ) : TextField(
                     controller: (){
