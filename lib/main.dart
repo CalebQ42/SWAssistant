@@ -20,23 +20,6 @@ Future<void> main() async =>
       ))
   );
 
-//TODO: Before Release
-//* Google Drive saving
-//  * Create a generic "Driver" to also use for CDR.
-//* Move all old translations to arb files.
-//  * Possibly ajust UI to require less new translations.
-
-//TODO: Post-release
-//* Character creator
-//* Real-time Google Drive syncing
-//* Add index value for custom order.
-//* Game Room???
-//  * Share characters and vehicles with a GM
-//  * Possibly share between all players.
-//  * Would have to utilize private server for functionality.
-//  * Possibly lock behind paymment to pay for server.
-//    * Don't really want to do this. Maybe have a limited number of free rooms?
-
 class SWApp extends StatefulWidget{
 
   final String? init;
