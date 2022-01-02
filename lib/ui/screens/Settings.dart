@@ -134,17 +134,40 @@ class SettingsState extends State{
               setState((){});
             } : null,
           ),
+          if (app.devMode) Divider(),
+          if(app.devMode) TextButton(
+            onPressed: () => app.manualImport(context),
+            style: ButtonStyle(
+              alignment: Alignment.centerLeft
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                AppLocalizations.of(context)!.introPage0ImportButton,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            )
+          ),
+          Divider(),
+          TextButton(
+            onPressed: () => Navigator.pushNamed(context, "/intro"),
+            style: ButtonStyle(
+              alignment: Alignment.centerLeft
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                AppLocalizations.of(context)!.showIntro,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            )
+          ),
           Divider(),
           AboutListTile(
             applicationName: "SWAssistant",
             applicationIcon: Image(image: AssetImage("assets/SWAssistant.png"), height: 64,),
             applicationLegalese: AppLocalizations.of(context)!.aboutText,
             applicationVersion: "3.0.0.0",
-          ),
-          Divider(),
-          ElevatedButton(
-            onPressed: () => app.manualImport(context),
-            child: Text(AppLocalizations.of(context)!.introPage0ImportButton)
           )
         ],
       )
