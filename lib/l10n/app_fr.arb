@@ -304,5 +304,6 @@
     "crashReportingSubtitle": "Anonymous crash reporting provided by Firebase Crashlytics",
     "aboutText": "See https://github.com/CalebQ42/SWAssistant for license and other info",
     "ads": "Ads",
-    "cloudSave": "Cloud Save (via Google Drive)"
+    "cloudSave": "Cloud Save (via Google Drive)",
+    "showIntro": "Show Intro"
 }
