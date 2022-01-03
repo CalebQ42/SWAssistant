@@ -81,10 +81,10 @@
             }
         }
     },
-    "gPlayPurchase": "Purchase",
-    "gPlayUnavailable": "Google Play is currently unavailable",
-    "gPlayThanks": "Thank you for your donation :D",
-    "gPlayPurchasePending": "Purchase Pending...",
+    "gPlayPurchase": "Acquista",
+    "gPlayUnavailable": "Google Play non è attualmente disponibile",
+    "gPlayThanks": "Grazie per la tua donazione! :D",
+    "gPlayPurchasePending": "Acquisto In Attesa...",
     "newCharacter": "Nuovo Personaggio",
     "newMinion": "New Minion",
     "newVehicle": "Nuovo Veicolo",
