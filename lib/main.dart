@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
@@ -10,6 +13,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async =>
+runZonedGuarded<Future<void>>(() async =>
   SW.baseInit().then(
     (app) =>
       runApp(SWWidget(
@@ -18,7 +22,8 @@ Future<void> main() async =>
         ),
         app: app
       ))
-  );
+  ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
+);
 
 class SWApp extends StatefulWidget{
 

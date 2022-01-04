@@ -70,29 +70,23 @@ class Weapon implements JsonSavable{
       encumbrance = from.encumbrance,
       characteristics = List.from(from.characteristics);
 
-  Map<String,dynamic> toJson(){
-    var characteristicsMap = <Map<String,dynamic>>[];
-    for (WeaponCharacteristic wc in characteristics){
-      characteristicsMap.add(wc.toJson());
-    }
-    return{
-      "name" : name,
-      "damage" : damage,
-      "critical rating" : critical,
-      "hard points" : hp,
-      "range" : range,
-      "skill" : skill,
-      "base" : skillBase,
-      "Weapon Characteristics" : characteristicsMap,
-      "add brawn" : addBrawn,
-      "loaded" : loaded,
-      "limited ammo" : limitedAmmo,
-      "item state" : itemState,
-      "ammo" : ammo,
-      "firing arc" : firingArc,
-      "encumbrance" : encumbrance
-    };
-  }
+  Map<String,dynamic> toJson() => {
+    "name" : name,
+    "damage" : damage,
+    "critical rating" : critical,
+    "hard points" : hp,
+    "range" : range,
+    "skill" : skill,
+    "base" : skillBase,
+    "Weapon Characteristics" : List.generate(characteristics.length, (index) => characteristics[index].toJson()),
+    "add brawn" : addBrawn,
+    "loaded" : loaded,
+    "limited ammo" : limitedAmmo,
+    "item state" : itemState,
+    "ammo" : ammo,
+    "firing arc" : firingArc,
+    "encumbrance" : encumbrance
+  };
 
   static List<String> weaponSkills(BuildContext context) => [
     AppLocalizations.of(context)!.skills3,

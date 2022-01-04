@@ -56,18 +56,16 @@ mixin Creature on Editable{
     soak = json["soak"] ?? 0;
   }
 
-  Map<String,dynamic> creatureSaveJson(){
-    var json = new Map<String,dynamic>();
-    json["characteristics"] = charVals;
-    json["Skills"] = List.generate(skills.length, (index) => skills[index].toJson());
-    json["Talents"] = List.generate(talents.length, (index) => talents[index].toJson());
-    json["wound threshold"] = woundThresh;
-    json["wound current"] = woundCur;
-    json["melee defense"] = defMelee;
-    json["ranged defense"] = defRanged;
-    json["soak"] = soak;
-    return json;
-  }
+  Map<String,dynamic> creatureSaveJson() => {
+    "characteristics": charVals,
+    "Skills": List.generate(skills.length, (index) => skills[index].toJson()),
+    "Talents": List.generate(talents.length, (index) => talents[index].toJson()),
+    "wound threshold": woundThresh,
+    "wound current": woundCur,
+    "melee defense": defMelee,
+    "ranged defense": defRanged,
+    "soak": soak
+  };
 
   static Creature? of(BuildContext context){
     var ed = Editable.of(context);

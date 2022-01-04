@@ -47,7 +47,7 @@ class GMMode extends StatelessWidget{
               child: EditableList(-1,
                 contained: true,
                 onTap: (ed) {
-                  var ind = message.backStack.indexWhere((element) => element.id == ed.id && element.fileExtension == ed.fileExtension);
+                  var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);
                   message.backStack.add(ed);
                   for(var o in message.onChange)
                     o(message.backStack.last);
@@ -177,7 +177,6 @@ class _BarState extends State{
                           out = Vehicle.from(editable as Vehicle);
                         else
                           throw "Unsupported Editable Type";
-                        out.findNexID(SW.of(context));
                         out.name = nameController.text;
                         SW.of(context).add(out);
                         out.save(context: context);
@@ -234,7 +233,7 @@ class _GMModeState extends State{
     ) : EditingEditable(
       curEdit!,
       message.listState,
-      key: Key(curEdit!.id.toString() + curEdit!.fileExtension + width.toString()),
+      // key: Key(curEdit!.uid.toString() + curEdit!.fileExtension + width.toString()),
       contained: true,
       w: width,
     );

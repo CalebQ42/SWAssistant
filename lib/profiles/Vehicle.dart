@@ -43,12 +43,12 @@ class Vehicle extends Editable{
     AppLocalizations.of(context)!.desc
   ];
 
-  Vehicle({required int id, String name = "New Vehicle", bool saveOnCreation = false, required SW app}) :
-      super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
+  Vehicle({String name = "New Vehicle", bool saveOnCreation = false, required SW app}) :
+      super(name: name, saveOnCreation: saveOnCreation, app: app);
 
   Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Vehicle.from(Vehicle vehicle, {int id = -1}) :
+  Vehicle.from(Vehicle vehicle) :
       silhouette = vehicle.silhouette,
       speed = vehicle.speed,
       handling = vehicle.handling,
@@ -63,7 +63,7 @@ class Vehicle extends Editable{
       passengerCapacity = vehicle.passengerCapacity,
       hp = vehicle.hp,
       model = vehicle.model,
-      super.from(vehicle, id: id);
+      super.from(vehicle);
 
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
@@ -87,24 +87,23 @@ class Vehicle extends Editable{
     this.model = json["model"] ?? "";
   }
 
-  Map<String,dynamic> toJson(){
-    var map = super.toJson();
-    map["silhouette"] = silhouette;
-    map["speed"] = speed;
-    map["handling"] = handling;
-    map["armor"] = armor;
-    map["defense"] = defense;
-    map["total defense"] = totalDefense;
-    map["hull trauma threshold"] = hullTraumaThresh;
-    map["hull trauma current"] = hullTraumaCur;
-    map["system stress threshold"] = sysStressThresh;
-    map["system stress current"] = sysStressCur;
-    map["encumbrance capacity"] = encumCap;
-    map["passenger capacity"] = passengerCapacity;
-    map["hard points"] = hp;
-    map["model"] = model;
-    return map;
-  }
+  Map<String,dynamic> toJson() => 
+    super.toJson()..addAll({
+      "silhouette": silhouette,
+      "speed": speed,
+      "handling": handling,
+      "armor": armor,
+      "defense": defense,
+      "total defense": totalDefense,
+      "hull trauma threshold": hullTraumaThresh,
+      "hull trauma current": hullTraumaCur,
+      "system stress threshold": sysStressThresh,
+      "system stress current": sysStressCur,
+      "encumbrance capacity": encumCap,
+      "passenger capacity": passengerCapacity,
+      "hard points": hp,
+      "model": model,
+    });
 
   List<EditableContent> cardContents(BuildContext context, Function() updateList) =>
     <EditableContent>[

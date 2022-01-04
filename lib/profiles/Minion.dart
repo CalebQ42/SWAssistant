@@ -44,17 +44,17 @@ class Minion extends Editable with Creature{
     AppLocalizations.of(context)!.desc
   ];
 
-  Minion({required int id, String name = "New Minion", bool saveOnCreation = false, required SW app}) :
-      super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
+  Minion({String name = "New Minion", bool saveOnCreation = false, required SW app}) :
+      super(name: name, saveOnCreation: saveOnCreation, app: app);
 
   Minion.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Minion.from(Minion minion, {int id = -1}) :
+  Minion.from(Minion minion) :
       woundThreshInd = minion.woundThreshInd,
       minionNum = minion.minionNum,
       savedInv = List.of(minion.savedInv),
       savedWeapons = List.of(minion.savedWeapons),
-      super.from(minion, id: id){
+      super.from(minion){
     creatureFrom(minion);
   }
 
@@ -78,21 +78,15 @@ class Minion extends Editable with Creature{
     }
   }
 
-  Map<String,dynamic> toJson(){
-    var map = super.toJson();
-    map.addAll(creatureSaveJson());
-    map["wound threshold per minion"] = woundThreshInd;
-    map["minion number"] = minionNum;
-    var savedInvJson = [];
-    savedInv.forEach((element) {savedInvJson.add(element.toJson());});
-    var savedWeapJson = [];
-    savedWeapons.forEach((element) {savedWeapJson.add(element.toJson());});
-    map["Saved"] = {
-      "Inventory" : savedInvJson,
-      "Weapons" : savedWeapJson
-    };
-    return map;
-  }
+  Map<String,dynamic> toJson() =>
+    super.toJson()..addAll({
+      "wound threshold per minion": woundThreshInd,
+      "minion number": minionNum,
+      "Saved": {
+        "Inventory" : List.generate(savedInv.length, (index) => savedInv[index].toJson()),
+        "Weapons" : List.generate(savedWeapons.length, (index) => savedWeapons[index].toJson())
+      }
+    })..addAll(creatureSaveJson());
 
   List<EditableContent> cardContents(BuildContext context, Function() updateList) {
     Function()? weaponsRefresh;

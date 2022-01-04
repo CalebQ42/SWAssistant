@@ -85,12 +85,12 @@ class Character extends Editable with Creature{
     AppLocalizations.of(context)!.desc
   ];
 
-  Character({required int id, String name = "New Character", bool saveOnCreation = false, required SW app}) :
-      super(id: id, name: name, saveOnCreation: saveOnCreation, app: app);
+  Character({String name = "New Character", bool saveOnCreation = false, required SW app}) :
+      super(name: name, saveOnCreation: saveOnCreation, app: app);
 
   Character.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Character.from(Character character, {int id = -1}) :
+  Character.from(Character character) :
       species = character.species,
       career = character.career,
       specializations = List.from(character.specializations),
@@ -115,7 +115,7 @@ class Character extends Editable with Creature{
       disableForce = character.disableForce,
       disableObligation = character.disableObligation,
       disableMorality = character.disableMorality,
-      super.from(character, id: id){
+      super.from(character){
     creatureFrom(character);
   }
 
@@ -164,41 +164,33 @@ class Character extends Editable with Creature{
     this.disableMorality = json["disable morality"] ?? false;
   }
 
-  Map<String,dynamic> toJson(){
-    var map = super.toJson();
-    map.addAll(creatureSaveJson());
-    map["species"] = species;
-    map["career"] = career;
-    map["Specializations"] = specializations;
-    var temp = <dynamic>[];
-    forcePowers.forEach((element) {temp.add(element.toJson());});
-    map["Force Powers"] = temp;
-    map["motivation"] = motivation;
-    map["emotional strength"] = emotionalStr;
-    map["emotional weakness"] = emotionalWeak;
-    temp = <dynamic>[];
-    duties.forEach((element) {temp.add(element.toJson());});
-    map["Dutys"] = temp;
-    temp = <dynamic>[];
-    obligations.forEach((element) {temp.add(element.toJson);});
-    map["Obligations"] = temp;
-    map["strain threshold"] = strainThresh;
-    map["strain current"] = strainCur;
-    map["xp total"] = xpTot;
-    map["xp current"] = xpCur;
-    map["force rating"] = force;
-    map["credits"] = credits;
-    map["morality"] = morality;
-    map["conflict"] = conflict;
-    map["dark side"] = darkSide;
-    map["age"] = age;
-    map["encumbrance capacity"] = encumCap;
-    map["disable force"] = disableForce;
-    map["disable duty"] = disableDuty;
-    map["disable obligation"] = disableObligation;
-    map["disable morality"] = disableMorality;
-    return map;
-  }
+  Map<String,dynamic> toJson() => 
+    super.toJson()..addAll({
+      "species": species,
+      "career": career,
+      "Specializations": specializations,
+      "Force Powers": List.generate(forcePowers.length, (index) => forcePowers[index].toJson()),
+      "motivation": motivation,
+      "emotional strength": emotionalStr,
+      "emotional weakness": emotionalWeak,
+      "Dutys": List.generate(duties.length, (index) => duties[index].toJson()),
+      "Obligations": List.generate(obligations.length, (index) => obligations[index].toJson()),
+      "strain threshold": strainThresh,
+      "strain current": strainCur,
+      "xp total": xpTot,
+      "xp current": xpCur,
+      "force rating": force,
+      "credits": credits,
+      "morality": morality,
+      "conflict": conflict,
+      "dark side": darkSide,
+      "age": age,
+      "encumbrance capacity": encumCap,
+      "disable force": disableForce,
+      "disable duty": disableDuty,
+      "disable obligation": disableObligation,
+      "disable morality": disableMorality,
+    })..addAll(creatureSaveJson());
 
   List<EditableContent> cardContents(BuildContext context, Function() updateList) => 
     <EditableContent>[

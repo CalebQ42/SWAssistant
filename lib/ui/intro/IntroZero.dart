@@ -11,6 +11,7 @@ import 'package:swassistant/ui/intro/IntroOne.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
+import 'package:uuid/uuid.dart';
 
 class IntroZero extends StatelessWidget{
   @override
@@ -111,6 +112,7 @@ class IntroZero extends StatelessWidget{
       if (charsFold.existsSync()){
         var fils = charsFold.listSync();
         if (fils.length > 0){
+          var uuid = Uuid();
           for (var f in fils){
             Editable ed;
             if (f.path.endsWith(".swminion"))
@@ -121,8 +123,8 @@ class IntroZero extends StatelessWidget{
                 ed = Vehicle.load(f, SW.of(context));
             else
               continue;
+            ed.uid = uuid.v4();
             ed.loc = "";
-            ed.findNexID(SW.of(context));
             ed.save(app: SW.of(context));
             SW.of(context).add(ed);
           }

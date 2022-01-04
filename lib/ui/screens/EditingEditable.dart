@@ -113,24 +113,14 @@ class _EditingEditableState extends State {
                           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                           onPressed: () {
                             Editable out;
-                            if (profile is Character) {
-                              var id = 0;
-                              while (SW.of(context).characters().any((element) => element.id == id))
-                                id++;
-                              out = Character.from(profile as Character, id: id);
-                            } else if (profile is Minion) {
-                              var id = 0;
-                              while (SW.of(context).minions().any((element) => element.id == id))
-                                id++;
-                              out = Minion.from(profile as Minion, id: id);
-                            } else if (profile is Vehicle) {
-                              var id = 0;
-                              while (SW.of(context).vehicles().any((element) => element.id == id))
-                                id++;
-                              out = Vehicle.from(profile as Vehicle, id: id);
-                            }else{
+                            if (profile is Character)
+                              out = Character.from(profile as Character);
+                            else if (profile is Minion)
+                              out = Minion.from(profile as Minion);
+                            else if (profile is Vehicle)
+                              out = Vehicle.from(profile as Vehicle);
+                            else
                               throw "Unsupported Editable Type";
-                            }
                             out.name = nameController.text;
                             SW.of(context).add(out);
                             out.save(context: context);

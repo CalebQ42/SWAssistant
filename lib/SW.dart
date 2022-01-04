@@ -15,6 +15,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uuid/uuid.dart';
 
 import 'profiles/Minion.dart';
 import 'profiles/Character.dart';
@@ -48,7 +49,6 @@ class SW{
     _minions.clear();
     _characters.clear();
     _vehicles.clear();
-    List<Editable> defered = [];
     Directory(saveDir).listSync().forEach((element) {
       if(element.path.endsWith(".backup"))
         return;
@@ -57,50 +57,15 @@ class SW{
         File(element.path).deleteSync();
         backup.copySync(element.path);
         backup.deleteSync();
+        element = File(element.path);
       }
-      if(element.path.endsWith(".swcharacter")){
-        var temp = Character.load(element, this);
-        if(temp.id >= 0)
-          _characters.add(temp);
-        else
-          defered.add(temp);
-      }else if(element.path.endsWith(".swminion")){
-        var temp = Minion.load(element, this);
-        if(temp.id >= 0)
-          _minions.add(temp);
-        else
-          defered.add(temp);
-      }else if(element.path.endsWith(".swvehicle")){
-        var temp = Vehicle.load(element, this);
-        if(temp.id >= 0)
-          _vehicles.add(temp);
-        else
-          defered.add(temp);
-      }
+      if(element.path.endsWith(".swcharacter"))
+        _characters.add(Character.load(element, this));
+      else if(element.path.endsWith(".swminion"))
+        _minions.add(Minion.load(element, this));
+      else if(element.path.endsWith(".swvehicle"))
+        _vehicles.add(Vehicle.load(element, this));
     });
-    if(defered.length >0){
-      var charId = 0;
-      var minId = 0;
-      var vehId = 0;
-      defered.forEach((temp) {
-        if(temp is Character){
-          while(defered.any((e)=>e.id==charId))
-            charId++;
-          temp.id = charId;
-          _characters.add(temp);
-        }else if (temp is Minion){
-          while(defered.any((e)=>e.id==minId))
-            minId++;
-          temp.id = minId;
-          _minions.add(temp);
-        }else if (temp is Vehicle){
-          while(defered.any((e)=>e.id==vehId))
-            vehId++;
-          temp.id = vehId;
-          _vehicles.add(temp);
-        }
-      });
-    }
     updateCharacterCategories();
     updateVehicleCategories();
     updateMinionCategories();
@@ -172,12 +137,12 @@ class SW{
           .where((element) => element.name.contains(search)).toList();
   }
 
-  bool removeCharacter({int id = -1, Character? character}){
+  bool removeCharacter({String? uid, Character? character}){
     var success = false;
     if(character != null)
       success = _characters.remove(character);
-    if(id != -1){
-      character = _characters.firstWhere((element) => element.id == id);
+    if(uid != null){
+      character = _characters.firstWhere((element) => element.uid == uid);
       success = _characters.remove(character);
     }
     if(success && character != null && characters(category: character.category).length == 0)
@@ -211,12 +176,12 @@ class SW{
           .where((element) => element.name.contains(search)).toList();
   }
 
-  bool removeMinion({int id = -1, Minion? minion}){
+  bool removeMinion({String? uid, Minion? minion}){
     var success = false;
     if(minion != null)
       success = _minions.remove(minion);
-    if(id != -1){
-      minion = _minions.firstWhere((element) => element.id == id);
+    if(uid != null){
+      minion = _minions.firstWhere((element) => element.uid == uid);
       success = _minions.remove(minion);
     }
     if(success && minion != null && minions(category: minion.category).length == 0)
@@ -250,12 +215,12 @@ class SW{
           .where((element) => element.name.contains(search)).toList();
   }
 
-  bool removeVehicle({int id = -1, Vehicle? vehicle}){
+  bool removeVehicle({String? uid, Vehicle? vehicle}){
     var success = false;
     if(vehicle != null)
       success = _vehicles.remove(vehicle);
-    if(id != -1){
-      vehicle = _vehicles.firstWhere((element) => element.id == id);
+    if(uid != null){
+      vehicle = _vehicles.firstWhere((element) => element.uid == uid);
       success = _vehicles.remove(vehicle);
     }
     if(success && vehicle != null && vehicles(category: vehicle.category).length == 0)
@@ -390,6 +355,7 @@ class SW{
     );
     FilePicker.platform.pickFiles(allowMultiple: true).then((value) {
       if(value != null && value.files.isNotEmpty){
+        var uuid = Uuid();
         for(var f in value.files){
           var fil = File(f.path!);
           Editable ed;
@@ -406,8 +372,8 @@ class SW{
             default:
               continue;
           }
+          ed.uid = uuid.v4();
           ed.loc = "";
-          ed.findNexID(this);
           ed.save(app: this);
           add(ed);
         }

@@ -11,6 +11,7 @@ import 'package:swassistant/ui/Card.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 import 'package:swassistant/utils/JsonSavable.dart';
+import 'package:uuid/uuid.dart';
 
 import '../Character.dart';
 import '../Minion.dart';
@@ -21,7 +22,7 @@ import '../Vehicle.dart';
 abstract class Editable extends JsonSavable{
 
   //Common components
-  int id = -1;
+  late String uid;
   String name;
   List<Note> notes = [];
   List<Weapon> weapons = [];
@@ -38,10 +39,10 @@ abstract class Editable extends JsonSavable{
 
   //Saving variables
   bool _saving = false;
-  String loc = "";
+  String? loc;
   bool _defered = false;
 
-  Editable({required this.id, this.name = "", bool saveOnCreation = false, required SW app}){
+  Editable({this.name = "", bool saveOnCreation = false, required SW app}) : this.uid = Uuid().v4(){
     showCard = List.filled(cardNum, false, growable: false);
     if(saveOnCreation)
       this.save(filename: getFileLocation(app));
@@ -57,8 +58,8 @@ abstract class Editable extends JsonSavable{
       loc = file.path;
   }
 
-  Editable.from(Editable editable, {int id = -1}) :
-      this.id = id,
+  Editable.from(Editable editable) :
+      uid = Uuid().v4(),
       name = editable.name,
       notes = List.from(editable.notes),
       weapons = List.from(editable.weapons),
@@ -71,20 +72,11 @@ abstract class Editable extends JsonSavable{
         throw("Must be overridden by child");
   }
 
-  void findNexID(SW app){
-    id = 0;
-    while (true){
-      if (!File(app.saveDir + "/" + id.toString() + fileExtension).existsSync())
-        return;
-      id++;
-    }
-  }
-
   @mustCallSuper
   void loadJson(Map<String,dynamic> json){
     if (!(this is Character || this is Vehicle || this is Minion))
       throw("Must be overridden by child");
-    id = json["id"] ?? -1;
+    uid = json["uid"] ?? Uuid().v4();
     name = json["name"] ?? "";
     if (json["Notes"] != null){
       notes = [];
@@ -120,16 +112,17 @@ abstract class Editable extends JsonSavable{
   Map<String, dynamic> toJson(){
     if (!(this is Character || this is Vehicle || this is Minion))
       throw("Must be overridden by child");
-    var json = new Map<String,dynamic>();
-    json["Notes"] = List.generate(notes.length, (index) => notes[index].toJson());
-    json["Weapons"] = List.generate(weapons.length, (index) => weapons[index].toJson());
-    json["Critical Injuries"] = List.generate(criticalInjuries.length, (index) => criticalInjuries[index].toJson());
-    json["name"] = name;
-    json["category"] = category;
-    json["description"] = desc;
-    json["show cards"] = showCard;
-    json["Inventory"] = List.generate(inventory.length, (index) => inventory[index].toJson());
-    return json;
+    return {
+      "uid": uid,
+      "Notes": List.generate(notes.length, (index) => notes[index].toJson()),
+      "Weapons": List.generate(weapons.length, (index) => weapons[index].toJson()),
+      "Critical Injuries" : List.generate(criticalInjuries.length, (index) => criticalInjuries[index].toJson()),
+      "name" : name,
+      "category" : category,
+      "description" : desc,
+      "show cards" : showCard,
+      "Inventory" : List.generate(inventory.length, (index) => inventory[index].toJson()),
+    };
   }
 
   List<Widget> cards(BuildContext context, Function() refreshList){
@@ -163,18 +156,12 @@ abstract class Editable extends JsonSavable{
 
   Route setRoute(Function() refreshCallback){
     return MaterialPageRoute(
-      builder: (BuildContext bc) => EditingEditable(this,refreshCallback),
-      settings: RouteSettings(name: id.toString() + fileExtension),
-      fullscreenDialog: false
+      builder: (BuildContext bc) => EditingEditable(this, refreshCallback),
+      settings: RouteSettings(name: uid.toString() + fileExtension)
     );
   }
 
-  String getFileLocation(SW sw){
-    if(loc == "")
-      return sw.saveDir+ "/" + id.toString() + fileExtension;
-    else
-      return loc;
-  }
+  String getFileLocation(SW sw) => loc ?? sw.saveDir + "/" + uid.toString() + fileExtension;
 
   String? getCloudFileLocation() => null;
   
