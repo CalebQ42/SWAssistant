@@ -1,4 +1,6 @@
 # SWAssistant
+[![Crowdin](https://badges.crowdin.net/swrpg/localized.svg)](https://crowdin.com/project/swrpg)
+
 An app for the Star Wars RPG from Fantasy Flight Games.  
 [Play Store](https://play.google.com/store/apps/details?id=com.apps.darkstorm.swrpg.assistant)
 ### Features:
