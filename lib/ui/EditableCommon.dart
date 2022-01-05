@@ -16,7 +16,7 @@ class EditingText extends StatelessWidget {
   final bool multiline;
   final TextCapitalization textCapitalization;
   final TextAlign textAlign;
-  final TextAlign fieldAlign;
+  final TextAlign? fieldAlign;
   final String title;
   final TextStyle? titleStyle;
 
@@ -29,8 +29,8 @@ class EditingText extends StatelessWidget {
   final Editable? editableBackup;
 
   EditingText({this.key, required this.editing, this.style, this.initialText = "", this.controller, this.textType, this.fieldInsets,
-      this.textInsets, this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.start,
-      this.fieldAlign = TextAlign.start, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle}) {
+      this.textInsets, this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.center,
+      this.fieldAlign, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle}) {
     if(editing && this.controller == null)
       throw "text controller MUST be specified when in editing mode";
   }
@@ -54,7 +54,7 @@ class EditingText extends StatelessWidget {
           keyboardType: textType,
           inputFormatters: textType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
           textCapitalization: textCapitalization,
-          textAlign: fieldAlign,
+          textAlign: fieldAlign ?? TextAlign.start,
           decoration: InputDecoration(
             isCollapsed: collapsed,
             labelText: title
@@ -65,19 +65,21 @@ class EditingText extends StatelessWidget {
       text = Padding(
         key: ValueKey("text"),
         padding: textInsets ?? EdgeInsets.all(4.0),
-        child: title != "" ? Column(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if(title != "") Text(
               title,
               style: titleStyle ?? Theme.of(context).textTheme.bodyText1?.apply(
                 fontSizeDelta: .75,
                 fontWeightDelta: 2
-              )
+              ),
+              textAlign: textAlign,
             ),
             if(title != "") Container(height: 5),
             Text(initialText, style: style, textAlign: textAlign,),
           ]
-        ) : Text(initialText, style: style, textAlign: textAlign,)
+        )
       );
     var switcher = AnimatedSwitcher(
       duration: Duration(milliseconds: 300),
@@ -110,15 +112,17 @@ class EditableContent extends StatefulWidget{
   final bool Function()? defaultEditingState;
   final bool editButton;
   final List<Widget> Function()? additonalButtons;
+  final List<Widget> Function()? editingButtons;
 
   final StatefulCard? stateful;
 
-  EditableContent({this.key, this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additonalButtons});
+  EditableContent({this.key, this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additonalButtons, this.editingButtons});
 
   @override
   State<EditableContent> createState() =>
     EditableContentState(builder: builder, defaultEditingState: defaultEditingState,
-        stateful: stateful, editButton: editButton, additionalButtons: additonalButtons);
+        stateful: stateful, editButton: editButton, additionalButtons: additonalButtons,
+        editingButtons: editingButtons);
 }
 
 class EditableContentState extends State<EditableContent> with TickerProviderStateMixin{
@@ -127,12 +131,13 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
   bool editing;
   final bool editButton;
   List<Widget> Function()? additionalButtons;
+  final List<Widget> Function()? editingButtons;
 
   StatefulCard? stateful;
 
   final bool Function()? defaultEditingState;
 
-  EditableContentState({this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additionalButtons}) :
+  EditableContentState({this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additionalButtons, this.editingButtons}) :
       editing = defaultEditingState == null ? false : defaultEditingState(){
     if(builder == null && stateful == null)
       throw("Either a builder or stateful MUST be provided");
@@ -155,6 +160,7 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
           message: AppLocalizations.of(context)!.edit,
           child: IconButton(
             iconSize: 20.0,
+            splashRadius: 20,
             padding: EdgeInsets.all(5.0),
             constraints: BoxConstraints.tight(Size.square(30.0)),
             icon: Icon(Icons.edit),
@@ -181,9 +187,28 @@ class EditableContentState extends State<EditableContent> with TickerProviderSta
           () => setState((){}),
           this
         ) : stateful!,
-        if(editButton || addButtons.length > 0) ButtonBar(
-          buttonPadding: EdgeInsets.only(left: 5, right: 5),
-          children: bottomButtons
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if(editingButtons != null) AnimatedSwitcher(
+              duration: Duration(milliseconds: 200),
+              transitionBuilder: (child, anim) =>
+                ClipRect(
+                  child: SlideTransition(
+                    position: Tween(begin: Offset(1.0, 0), end: Offset.zero).animate(anim),
+                    child: child,
+                  )
+                ),
+              child: (!editing) ? Container() : ButtonBar(
+                buttonPadding: EdgeInsets.symmetric(horizontal: 5),
+                children: editingButtons!()
+              )
+            ),
+            if(editButton || addButtons.length > 0) ButtonBar(
+              buttonPadding: EdgeInsets.symmetric(horizontal: 5),
+              children: bottomButtons
+            )
+          ]
         )
       ],
     );

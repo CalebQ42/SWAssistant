@@ -128,6 +128,7 @@ class MoralityState extends State with TickerProviderStateMixin{
                   conflictController!.text = "0";
                   character.conflict = 0;
                   var resolution = Random().nextInt(9) + 1;
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(AppLocalizations.of(context)!.conflictResult(resolution)),
                   ));

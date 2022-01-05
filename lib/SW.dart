@@ -290,7 +290,7 @@ class SW{
     if(app.devMode)
       await testing(app.saveDir);
     app.loadAll();
-    app.observatory = Observatory();
+    app.observatory = Observatory(app);
     prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
     return app;
   }
@@ -379,16 +379,19 @@ class SW{
         }
       }
       nav.pop();
-      if (value == null || value.files.length == 0)
+      if (value == null || value.files.length == 0){
+        message.clearSnackBars();
         message.showSnackBar(
           SnackBar(content: Text(locs.importNone))
         );
-      else
+      }else{
+        message.clearSnackBars();
         message.showSnackBar(
           SnackBar(
             content: Text(locs.importSuccess(value.files.length))
           )
         );
+      }
     });
   }
 

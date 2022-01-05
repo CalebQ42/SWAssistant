@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
@@ -13,17 +14,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async =>
-runZonedGuarded<Future<void>>(() async =>
-  SW.baseInit().then(
-    (app) =>
-      runApp(SWWidget(
-        child: SWApp(
-          init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/intro" : null
-        ),
-        app: app
-      ))
-  ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
-);
+  runZonedGuarded<Future<void>>(() async =>
+    SW.baseInit().then(
+      (app) =>
+        runApp(SWWidget(
+          child: SWApp(
+            init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/intro" : null
+          ),
+          app: app
+        ))
+    ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
+  );
 
 class SWApp extends StatefulWidget{
 
@@ -139,19 +140,25 @@ class SWAppState extends State {
   }
 }
 
-
 class Observatory extends NavigatorObserver{
 
   List<Route> routeHistory = [];
+  SW app;
+
+  Observatory(this.app);
 
   @override
   void didPush(Route route, Route? previousRoute) {
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true))
+      FirebaseCrashlytics.instance.setCustomKey("page", route.settings.name ?? "unknown");
     routeHistory.add(route);
     super.didPush(route, previousRoute);
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true))
+      FirebaseCrashlytics.instance.setCustomKey("page", previousRoute?.settings.name ?? "unknown");
     routeHistory.removeLast();
     super.didPop(route, previousRoute);
   }

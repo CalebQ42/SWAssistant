@@ -140,13 +140,45 @@ class _EditingEditableState extends State {
             ).show(context),
           },
         ),
-        body: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes()
+        body: AnimatedSwitcher(
+          duration: Duration(milliseconds: 300),
+          transitionBuilder: (child, anim){
+            Tween<Offset> twen;
+            if(child is EditableCards)
+              twen = Tween(begin: Offset(-1.0, 0), end: Offset.zero);
+            else
+              twen = Tween(begin: Offset(1.0, 0), end: Offset.zero);
+            return ClipRect(
+              child: SlideTransition(
+                position: twen.animate(anim),
+                child: child,
+              )
+            );
+          },
+          child: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes()
+        )
       );
     else
       body = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes(),),
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 300),
+              transitionBuilder: (child, anim){
+                Tween<Offset> twen;
+                if(child is EditableCards)
+                  twen = Tween(begin: Offset(-1.0, 0), end: Offset.zero);
+                else
+                  twen = Tween(begin: Offset(1.0, 0), end: Offset.zero);
+                return SlideTransition(
+                  position: twen.animate(anim),
+                  child: child,
+                );
+              },
+              child: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes()
+            )
+          ),
           bottomNav
         ],
       );

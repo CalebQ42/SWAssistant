@@ -77,9 +77,9 @@ class _EditableListState extends State{
       default:
         throw("invalid list type");
     }
-    var main = ListView.builder(
-      itemCount: list.length,
-      itemBuilder: (BuildContext c, int index) => 
+    var main = AnimatedList(
+      initialItemCount: list.length,
+      itemBuilder: (c, index, anim) => 
         EditableCard(
           editable: list[index],
           refreshCallback: () => setState((){}),
@@ -341,6 +341,7 @@ class EditableCard extends StatelessWidget{
           msg = AppLocalizations.of(context)!.deletedMinion;
         else if (editable is Vehicle)
           msg = AppLocalizations.of(context)!.deletedVehicle;
+        ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(upperContext).showSnackBar(
           SnackBar(
             content: Text(msg),
@@ -359,6 +360,8 @@ class EditableCard extends StatelessWidget{
       child: InheritedEditable(
         child: Card(
           child: InkResponse(
+            highlightShape: BoxShape.rectangle,
+            containedInkWell: true,
             onTap: (){
               if(onTap != null){
                 onTap!(editable);
@@ -371,10 +374,28 @@ class EditableCard extends StatelessWidget{
             },
             child: Padding(
               padding: EdgeInsets.all(10.0),
-              child: Hero(
-                transitionOnUserGestures: true,
-                tag: () => editable.getFileLocation(SW.of(context)),
-                child: Text(editable.name, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,)
+              child: Column(
+                children: [
+                  Hero(
+                    transitionOnUserGestures: true,
+                    tag: () => editable.getFileLocation(SW.of(context)),
+                    child: Text(editable.name, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,)
+                  ),
+                  if(onTap != null) Container(height: 10),
+                  if(onTap != null) Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      (){
+                        if(editable is Character)
+                          return AppLocalizations.of(context)!.characters;
+                        if(editable is Minion)
+                          return AppLocalizations.of(context)!.minions;
+                        return AppLocalizations.of(context)!.vehicles;
+                      }(),
+                      style: Theme.of(context).textTheme.caption
+                    ),
+                  )
+                ],
               ),
             )
           )

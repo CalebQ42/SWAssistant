@@ -26,6 +26,7 @@ class GMMode extends StatelessWidget{
       onWillPop: (){
         if (message.backStack.length == 1 || message.backStack.length == 0)
           return Future.value(true);
+        message.backStack.removeLast();
         for(var o in message.onChange)
           o(message.backStack.last);
         return Future.value(false);
@@ -224,18 +225,20 @@ class _GMModeState extends State{
   }
 
   @override
-  Widget build(BuildContext context){
-    return curEdit == null ? Center(
-      child: Text(
-        AppLocalizations.of(context)!.gmModeTap,
-        textAlign: TextAlign.justify,
+  Widget build(BuildContext context) =>
+    AnimatedSwitcher(
+      duration: Duration(milliseconds: 300),
+      child: curEdit == null ? Center(
+        child: Text(
+          AppLocalizations.of(context)!.gmModeTap,
+          textAlign: TextAlign.justify,
+        )
+      ) : EditingEditable(
+        curEdit!,
+        message.listState,
+        key: Key(curEdit!.uid.toString() + curEdit!.fileExtension),
+        contained: true,
+        w: width,
       )
-    ) : EditingEditable(
-      curEdit!,
-      message.listState,
-      // key: Key(curEdit!.uid.toString() + curEdit!.fileExtension + width.toString()),
-      contained: true,
-      w: width,
     );
-  }
 }

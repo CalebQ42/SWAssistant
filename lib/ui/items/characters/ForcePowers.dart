@@ -92,6 +92,7 @@ class ForcePowers extends StatelessWidget{
                           character.forcePowers.removeAt(index);
                           refresh();
                           character.save(context: context);
+                          ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(AppLocalizations.of(context)!.deletedFP),

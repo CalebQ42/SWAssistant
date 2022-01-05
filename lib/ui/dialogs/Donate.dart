@@ -25,11 +25,12 @@ class DonateDialog extends StatelessWidget{
             ),
             TextButton(
               onPressed: () async{
-                if (!await InAppPurchase.instance.isAvailable())
+                if (!await InAppPurchase.instance.isAvailable()){
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(AppLocalizations.of(context)!.gPlayUnavailable),
                   ));
-                else
+                }else
                   InAppPurchase.instance.queryProductDetails(Set.of([
                     "donate1",
                     "donate5",

@@ -24,19 +24,21 @@ class Weapons extends StatelessWidget{
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
         onTap: (){
-          if(editable.weapons[i].itemState == 4)
+          if(editable.weapons[i].itemState == 4){
+            ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(AppLocalizations.of(context)!.brokenWeapon),
               )
             );
-          else if ((editable.weapons[i].limitedAmmo && editable.weapons[i].ammo <= 0) || !editable.weapons[i].loaded)
+          }else if ((editable.weapons[i].limitedAmmo && editable.weapons[i].ammo <= 0) || !editable.weapons[i].loaded){
+            ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(AppLocalizations.of(context)!.weaponOutOfAmmo),
               )
             );
-          else
+          }else
             SWWeaponDialog(
               holder: (){
                 if(editable is Creature){
@@ -80,6 +82,7 @@ class Weapons extends StatelessWidget{
                       editable.weapons.removeAt(i);
                       refresh();
                       editable.save(context: context);
+                      ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(AppLocalizations.of(context)!.deletedWeapon),

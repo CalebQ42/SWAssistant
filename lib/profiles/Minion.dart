@@ -127,6 +127,7 @@ class Minion extends Editable with Creature{
             message: savedWeapons.length == 0 ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
             child: IconButton(
               iconSize: 20.0,
+              splashRadius: 20,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(Icons.restore),
@@ -135,6 +136,7 @@ class Minion extends Editable with Creature{
                 weapons = List.of(savedWeapons);
                 if (weaponsRefresh != null)
                   weaponsRefresh!();
+                ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(AppLocalizations.of(context)!.weaponsRestored),
@@ -155,6 +157,7 @@ class Minion extends Editable with Creature{
             message: savedWeapons.length == 0 ? AppLocalizations.of(context)!.saveWeapons : AppLocalizations.of(context)!.overwriteWeapons,
             child: IconButton(
               iconSize: 20.0,
+              splashRadius: 20,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedWeapons.length == 0 ? Icons.save_outlined : Icons.save),
@@ -163,6 +166,7 @@ class Minion extends Editable with Creature{
                 savedWeapons = List.of(weapons);
                 if(reload && weaponsRefresh != null)
                   weaponsRefresh!();
+                ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(AppLocalizations.of(context)!.weaponsSaved),
@@ -186,6 +190,7 @@ class Minion extends Editable with Creature{
             message: savedInv.length == 0 ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
             child: IconButton(
               iconSize: 20.0,
+              splashRadius: 20,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedInv.length == 0 ? Icons.restore_outlined : Icons.restore),
@@ -194,6 +199,7 @@ class Minion extends Editable with Creature{
                 inventory = List.of(savedInv);
                 if(invHolder.reloadFunction != null)
                   invHolder.reloadFunction!();
+                ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(AppLocalizations.of(context)!.inventoryRestored),
@@ -214,6 +220,7 @@ class Minion extends Editable with Creature{
             message: savedInv.length == 0 ? AppLocalizations.of(context)!.saveInventory : AppLocalizations.of(context)!.overwriteInventory,
             child: IconButton(
               iconSize: 20.0,
+              splashRadius: 20,
               padding: EdgeInsets.all(5.0),
               constraints: BoxConstraints.tight(Size.square(30.0)),
               icon: Icon(savedInv.length == 0 ? Icons.save_outlined : Icons.save),
@@ -222,6 +229,7 @@ class Minion extends Editable with Creature{
                 savedInv = List.of(inventory);
                 if(refresh && invHolder.reloadFunction != null)
                   invHolder.reloadFunction!();
+                ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(AppLocalizations.of(context)!.inventorySaved),

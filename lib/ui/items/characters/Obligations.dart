@@ -43,6 +43,7 @@ class Obligations extends StatelessWidget{
                           character.obligations.removeAt(index);
                           refresh();
                           character.save(context: context);
+                          ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(AppLocalizations.of(context)!.deletedObli),
                             action: SnackBarAction(

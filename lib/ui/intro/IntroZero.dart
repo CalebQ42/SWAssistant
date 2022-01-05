@@ -94,6 +94,7 @@ class IntroZero extends StatelessWidget{
                   ).show(context);
                 else{
                   var num = oldImport(context);
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(AppLocalizations.of(context)!.importSuccess(num)),
                   ));
@@ -128,6 +129,7 @@ class IntroZero extends StatelessWidget{
             ed.save(app: SW.of(context));
             SW.of(context).add(ed);
           }
+          ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(AppLocalizations.of(context)!.importSuccess(fils.length))

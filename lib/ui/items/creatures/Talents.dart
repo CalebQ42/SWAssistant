@@ -69,6 +69,7 @@ class Talents extends StatelessWidget{
                           creature.talents.removeAt(index);
                           refresh();
                           creature.save(context: context);
+                          ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(AppLocalizations.of(context)!.deletedTalent),

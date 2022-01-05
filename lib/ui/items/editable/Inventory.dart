@@ -224,6 +224,7 @@ class InventoryState extends State{
                           editable.inventory.removeAt(index);
                           setState((){});
                           editable.save(context: context);
+                          ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(AppLocalizations.of(context)!.deletedItem),
