@@ -203,7 +203,7 @@
     "forceRating": "Classificazione della Forza:",
     "conflict": "Conflict",
     "resolveConflict": "Risolvi conflitto:",
-    "conflictResult": "You rolled a {result}",
+    "conflictResult": "Il tuo risultato è {result}",
     "@conflictResult": {
         "description": "Shown as a snackbar when resolving conflict.",
         "placeholders": {
