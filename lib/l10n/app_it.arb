@@ -262,7 +262,7 @@
     "disableDuty": "Disable Duty",
     "disableObligation": "Disable Obligation",
     "clone": "Clone",
-    "copyOf": "Copy of {name}",
+    "copyOf": "Copia di {name}",
     "@copyOf": {
         "description": "Default name of a cloned profile.",
         "placeholders": {
@@ -272,21 +272,21 @@
             }
         }
     },
-    "stats": "Stats",
+    "stats": "Statistiche",
     "notes": "Note",
     "deletedDuty": "Duty Deleted",
     "deletedFP": "Force Power Deleted",
     "deletedObli": "Obligation Deleted",
     "deletedSpecialization": "Specializzazione Eliminata",
     "deletedSkill": "Abilità Eliminata",
-    "deletedTalent": "Talent Deleted",
-    "deletedItem": "Item Deleted",
-    "deletedWeapon": "Weapon Deleted",
-    "deletedCharacter": "Character Deleted",
+    "deletedTalent": "Talento Eliminato",
+    "deletedItem": "Oggetto cancellato.",
+    "deletedWeapon": "Arma Eliminata",
+    "deletedCharacter": "Personaggio eliminato",
     "deletedMinion": "PNG Eliminato",
-    "deletedVehicle": "Vehicle Deleted",
-    "deletedNote": "Note Deleted",
-    "undo": "Undo",
+    "deletedVehicle": "Veicolo Eliminato",
+    "deletedNote": "Nota Eliminata",
+    "undo": "Annulla",
     "fire": "Fire!",
     "advantageShort": "Adv",
     "@advantageShort": {
