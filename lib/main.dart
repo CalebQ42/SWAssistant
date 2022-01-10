@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/Preferences.dart' as preferences;
 import 'package:swassistant/SW.dart';
 import 'package:swassistant/ui/intro/IntroZero.dart';
 import 'package:swassistant/ui/screens/DiceRoller.dart';
-import 'package:swassistant/ui/screens/EditableList.dart';
+import 'package:swassistant/ui/screens/EditableListOld.dart';
 import 'package:swassistant/ui/screens/GMMode.dart';
 import 'package:swassistant/ui/screens/Settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

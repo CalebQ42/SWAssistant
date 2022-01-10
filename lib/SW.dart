@@ -131,10 +131,10 @@ class SW{
     else if(search == "")
       return _characters.where((element) => element.category == category).toList();
     else if(category == "")
-      return _characters.where((element) => element.name.contains(search)).toList();
+      return _characters.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
     else
       return _characters.where((element) => element.category == category)
-          .where((element) => element.name.contains(search)).toList();
+          .where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
   }
 
   bool removeCharacter({String? uid, Character? character}){
@@ -170,10 +170,10 @@ class SW{
     else if(search == "")
       return _minions.where((element) => element.category == category).toList();
     else if(category == "")
-      return _minions.where((element) => element.name.contains(search)).toList();
+      return _minions.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
     else
       return _minions.where((element) => element.category == category)
-          .where((element) => element.name.contains(search)).toList();
+          .where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
   }
 
   bool removeMinion({String? uid, Minion? minion}){
@@ -209,10 +209,10 @@ class SW{
     else if(search == "")
       return _vehicles.where((element) => element.category == category).toList();
     else if(category == "")
-      return _vehicles.where((element) => element.name.contains(search)).toList();
+      return _vehicles.where((element) => element.name.toLowerCase().contains(search..toLowerCase())).toList();
     else
       return _vehicles.where((element) => element.category == category)
-          .where((element) => element.name.contains(search)).toList();
+          .where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
   }
 
   bool removeVehicle({String? uid, Vehicle? vehicle}){

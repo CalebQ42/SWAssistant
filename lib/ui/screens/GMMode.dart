@@ -10,7 +10,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
-import 'package:swassistant/ui/screens/EditableList.dart';
+import 'package:swassistant/ui/screens/EditableListOld.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 class GMMode extends StatelessWidget{
@@ -45,7 +45,9 @@ class GMMode extends StatelessWidget{
               constraints: BoxConstraints(
                 maxWidth: width,
               ),
-              child: EditableList(-1,
+              child: EditableList(
+                -1,
+                key: //TODO
                 contained: true,
                 onTap: (ed) {
                   var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);
@@ -54,8 +56,7 @@ class GMMode extends StatelessWidget{
                     o(message.backStack.last);
                   if (ind != -1)
                     message.backStack.removeAt(ind);
-                },
-                message: message,
+                }
               )
             ),
             Expanded(
@@ -72,7 +73,6 @@ class GMMode extends StatelessWidget{
 class GMModeMessager{
   final List<void Function(Editable)> onChange = [];
   late void Function() editingState;
-  late void Function() listState;
 
   final List<Editable> backStack = [];
 }
