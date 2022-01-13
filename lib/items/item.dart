@@ -20,6 +20,7 @@ class Item implements JsonSavable{
       count = json["count"] ?? 1,
       encum = json["encumbrance"] ?? 0;
 
+  @override
   Map<String, dynamic> toJson() => {
     "name" : name,
     "description" : desc,

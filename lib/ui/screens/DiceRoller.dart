@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/dice/Dice.dart';
-import 'package:swassistant/dice/SWDiceHolder.dart';
-import 'package:swassistant/dice/Sides.dart';
+import 'package:swassistant/dice/dice.dart';
+import 'package:swassistant/dice/swdice_holder.dart';
+import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/misc/DiceSelector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

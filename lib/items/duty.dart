@@ -17,7 +17,8 @@ class Duty implements JsonSavable{
       name = duty.name,
       value = duty.value,
       desc = duty.desc;
-
+  
+  @override
   Map<String,dynamic> toJson() => {
     "name" : name,
     "value" : value,

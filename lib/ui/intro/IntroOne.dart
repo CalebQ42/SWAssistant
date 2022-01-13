@@ -1,10 +1,10 @@
 //firebase options.
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
 import 'package:swassistant/ui/intro/IntroTwo.dart';
-import 'package:swassistant/Preferences.dart' as preferences;
+import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IntroOne extends StatefulWidget{

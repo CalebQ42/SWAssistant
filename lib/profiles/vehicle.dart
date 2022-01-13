@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/sw.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
 import 'package:swassistant/ui/items/editable/Inventory.dart';
-import 'package:swassistant/ui/items/editable/Weapons.dart';
+import 'package:swassistant/ui/items/editable/weapons.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleDamage.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleDefense.dart';
 import 'package:swassistant/ui/items/vehicle/VehicleInfo.dart';
@@ -20,7 +20,7 @@ class Vehicle extends Editable{
   int handling = 0;
   int armor = 0;
   //0-Fore,1-Port,2-Starboard,3-Aft;
-  List<int> defense = new List.filled(4, 0, growable: false);
+  List<int> defense = List.filled(4, 0, growable: false);
   int totalDefense = 0;
   int hullTraumaThresh = 0;
   int hullTraumaCur = 0;
@@ -31,8 +31,11 @@ class Vehicle extends Editable{
   int hp = 0;
   String model = "";
 
+  @override
   String get fileExtension => ".swvehicle";
+  @override
   int get cardNum => 7;
+  @override
   List<String> cardNames(BuildContext context) => [
     AppLocalizations.of(context)!.basicInfo,
     AppLocalizations.of(context)!.defense,
@@ -65,28 +68,31 @@ class Vehicle extends Editable{
       model = vehicle.model,
       super.from(vehicle);
 
+  @override
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
-    this.silhouette = json["silhouette"] ?? 0;
-    this.speed = json["speed"] ?? 0;
-    this.handling = json["handling"] ?? 0;
-    this.armor = json["armor"] ?? 0;
+    silhouette = json["silhouette"] ?? 0;
+    speed = json["speed"] ?? 0;
+    handling = json["handling"] ?? 0;
+    armor = json["armor"] ?? 0;
     if(json["defense"] != null){
       defense = [];
-      for(dynamic i in json["defense"])
+      for(dynamic i in json["defense"]){
         defense.add(i);
+      }
     }
-    this.totalDefense = json["total defense"] ?? 0;
-    this.hullTraumaThresh  = json["hull trauma threshold"] ?? 0;
-    this.hullTraumaCur = json["hull trauma current"] ?? 0;
-    this.sysStressThresh = json["system stress threshold"] ?? 0;
-    this.sysStressCur = json["system stress current"] ?? 0;
-    this.encumCap = json["encumbrance capacity"] ?? 0;
-    this.passengerCapacity = json["passenger capacity"] ?? 0;
-    this.hp = json["hard points"] ?? 0;
-    this.model = json["model"] ?? "";
+    totalDefense = json["total defense"] ?? 0;
+    hullTraumaThresh  = json["hull trauma threshold"] ?? 0;
+    hullTraumaCur = json["hull trauma current"] ?? 0;
+    sysStressThresh = json["system stress threshold"] ?? 0;
+    sysStressCur = json["system stress current"] ?? 0;
+    encumCap = json["encumbrance capacity"] ?? 0;
+    passengerCapacity = json["passenger capacity"] ?? 0;
+    hp = json["hard points"] ?? 0;
+    model = json["model"] ?? "";
   }
 
+  @override
   Map<String,dynamic> toJson() => 
     super.toJson()..addAll({
       "silhouette": silhouette,
@@ -105,6 +111,7 @@ class Vehicle extends Editable{
       "model": model,
     });
 
+  @override
   List<EditableContent> cardContents(BuildContext context, Function() updateList) =>
     <EditableContent>[
       EditableContent(
@@ -121,16 +128,16 @@ class Vehicle extends Editable{
       EditableContent(
         builder: (b, refresh, state) =>
           Weapons(editing: b, refresh: refresh),
-        defaultEditingState: () => weapons.length == 0,
+        defaultEditingState: () => weapons.isEmpty,
       ),
       EditableContent(
         stateful: Inventory(holder: EditableContentStatefulHolder()),
-        defaultEditingState: () => inventory.length == 0,
+        defaultEditingState: () => inventory.isEmpty,
       ),
       EditableContent(
         builder: (b, refresh, state) =>
           CriticalInjuries(editing: b, refresh: refresh),
-        defaultEditingState: () => criticalInjuries.length == 0,
+        defaultEditingState: () => criticalInjuries.isEmpty,
       ),
       EditableContent(
         builder: (b, refresh, state) =>
@@ -141,8 +148,7 @@ class Vehicle extends Editable{
 
   static Vehicle? of(BuildContext context){
     var ed = Editable.of(context);
-    if (ed is Vehicle)
-      return ed;
+    if (ed is Vehicle) return ed;
     return null;
   }
 }

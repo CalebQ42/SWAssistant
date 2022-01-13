@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swassistant/profiles/Character.dart';
+import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

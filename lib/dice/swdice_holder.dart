@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/dice/Dice.dart';
-import 'package:swassistant/dice/SWDice.dart' as SWDice;
+import 'package:swassistant/dice/dice.dart';
+import 'package:swassistant/dice/swdice.dart' as swdice;
 import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/misc/DiceSelector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,21 +13,28 @@ class SWDiceHolder{
   
   Dice getDice(BuildContext context){
     var dice = <Die>[];
-    if(ability>0)
-      dice.addAll(List.filled(ability, SWDice.ability(context)));
-    if(proficiency>0)
-      dice.addAll(List.filled(proficiency, SWDice.proficiency(context)));
-    if(difficulty>0)
-      dice.addAll(List.filled(difficulty, SWDice.difficulty(context)));
-    if(challenge>0)
-      dice.addAll(List.filled(challenge, SWDice.challenge(context)));
-    if(boost>0)
-      dice.addAll(List.filled(boost, SWDice.boost(context)));
-    if(setback>0)
-      dice.addAll(List.filled(setback, SWDice.setback(context)));
-    if(force>0)
-      dice.addAll(List.filled(force, SWDice.force(context)));
-    return Dice(name: "SWDice Dice", dies: dice);
+    if(ability>0){
+      dice.addAll(List.filled(ability, swdice.ability(context)));
+    }
+    if(proficiency>0){
+      dice.addAll(List.filled(proficiency, swdice.proficiency(context)));
+    }
+    if(difficulty>0){
+      dice.addAll(List.filled(difficulty, swdice.difficulty(context)));
+    }
+    if(challenge>0){
+      dice.addAll(List.filled(challenge, swdice.challenge(context)));
+    }
+    if(boost>0){
+      dice.addAll(List.filled(boost, swdice.boost(context)));
+    }
+    if(setback>0){
+      dice.addAll(List.filled(setback, swdice.setback(context)));
+    }
+    if(force>0){
+      dice.addAll(List.filled(force, swdice.force(context)));
+    }
+    return Dice(name: "swdice Dice", dies: dice);
   }
 
   void showDialog(BuildContext context){

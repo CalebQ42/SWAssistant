@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/items/Skill.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/items/skill.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/dialogs/creature/SkillEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

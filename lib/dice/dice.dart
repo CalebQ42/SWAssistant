@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:swassistant/dice/DiceResults.dart';
-import 'package:swassistant/dice/Sides.dart';
+import 'package:swassistant/dice/dice_results.dart';
+import 'package:swassistant/dice/sides.dart';
 
 class Die{
 
@@ -9,8 +9,9 @@ class Die{
   List<dynamic> sides;
 
   Die({required this.name, this.sides = const []}){
-    if(sides.any((element) => element is !SimpleSide && element is !ComplexSide))
+    if(sides.any((element) => element is !SimpleSide && element is !ComplexSide)){
       throw("All sides MUST be SimpleSide or ComplexSide");
+    }
   }
 
   dynamic roll() => sides[(Random()).nextInt(sides.length)];
@@ -25,7 +26,9 @@ class Dice{
 
   DiceResults roll(){
     DiceResults results = DiceResults();
-    dies.forEach((element) => results.add(element.roll()));
+    for(var d in dies){
+      results.add(d.roll());
+    }
     return results;
   }
 }

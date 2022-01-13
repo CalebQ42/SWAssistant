@@ -18,6 +18,7 @@ class WeaponCharacteristic implements JsonSavable{
       value = json["value"] ?? -1,
       advantage = json["advantage"] ?? -1;
 
+  @override
   Map<String,dynamic> toJson() => {
     "name" : name,
     "value" : value,

@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:swassistant/dice/SWDiceHolder.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/Minion.dart';
-import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/dice/swdice_holder.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/utils/JsonSavable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -28,6 +28,7 @@ class Skill implements JsonSavable{
       base = skill.base,
       career = skill.career;
 
+  @override
   Map<String, dynamic> toJson() => {
     "name" : name,
     "value" : value,
@@ -36,19 +37,21 @@ class Skill implements JsonSavable{
   };
 
   SWDiceHolder getDice(Creature creature) {
-    if(creature is Character)
+    if(creature is Character){
       return SWDiceHolder(
         ability: (creature.charVals[base] - value).abs(),
         proficiency: min(creature.charVals[base], value)
       );
-    else if(creature is Minion)
+    }else if(creature is Minion){
       return SWDiceHolder(
         ability: (creature.charVals[base] - creature.minionNum).abs(),
         proficiency: min(creature.charVals[base], creature.minionNum)
       );
+    }
     return SWDiceHolder();
   }
 
+  @override
   String toString(){
     return name! + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
   }

@@ -5,6 +5,7 @@ class SimpleSide{
 
   SimpleSide clone() => SimpleSide(_value);
   void setString(String side) => _value = side;
+  @override
   String toString() => _value;
 }
 
@@ -24,5 +25,6 @@ class ComplexSidePart{
   ComplexSidePart({this.name = "", this.value = 0});
 
   ComplexSidePart clone() => ComplexSidePart(name: name, value:value);
+  @override
   String toString() => value != 1 ? value.toString() + " " + name : name;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/dice/SWDiceHolder.dart';
-import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/dice/swdice_holder.dart';
+import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
 class Characteristics extends StatelessWidget{

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swassistant/SW.dart';
-import 'package:swassistant/Preferences.dart' as preferences;
+import 'package:swassistant/sw.dart';
+import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/ui/Common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

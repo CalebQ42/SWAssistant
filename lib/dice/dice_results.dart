@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/dice/Sides.dart';
+import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 
 class DiceResults{
 
-  List<dynamic> _resultsMasterList = [];
+  final List<dynamic> _resultsMasterList = const [];
   Map<String,int> results = {};
 
   bool subtractMode = false;
 
   void add(dynamic side){
     _resultsMasterList.add(side);
-    if(side is SimpleSide && side.toString() != "")
+    if(side is SimpleSide && side.toString() != ""){
       results[side.toString()] = (results[side.toString()] ?? 0) + (subtractMode ? -1 : 1);
-    else if(side is ComplexSide){
-      side.parts.forEach((element) =>
-        results[element.name] = (results[element.name] ?? 0) + (subtractMode ? -element.value : element.value)
-      );
+    }else if(side is ComplexSide){
+      for(var side in side.parts){
+        results[side.name] = (results[side.name] ?? 0) + (subtractMode ? -side.value : side.value);
+      }
     }
   }
 
@@ -92,8 +92,9 @@ class DiceResults{
           onPressed: (){
             Navigator.of(context).pop();
             if (alternateReturn == null){
-              if(!noSuccess && getResult(AppLocalizations.of(context)!.success) == 0 && getResult(AppLocalizations.of(context)!.failure) == 0)
+              if(!noSuccess && getResult(AppLocalizations.of(context)!.success) == 0 && getResult(AppLocalizations.of(context)!.failure) == 0){
                 noSuccess = false;
+              }
               showCombinedResults(context, noSuccess: noSuccess);
             }else{
               alternateReturn(context, this);

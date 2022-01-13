@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/Donate.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:url_launcher/url_launcher.dart';

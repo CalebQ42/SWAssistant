@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/sw.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
 class InfoCard extends StatefulWidget{

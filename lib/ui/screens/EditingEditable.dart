@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
-import 'package:swassistant/dice/SWDiceHolder.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/Minion.dart';
-import 'package:swassistant/profiles/Vehicle.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/sw.dart';
+import 'package:swassistant/dice/swdice_holder.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/profiles/vehicle.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/screens/EditableCards.dart';

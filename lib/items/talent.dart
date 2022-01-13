@@ -17,6 +17,7 @@ class Talent implements JsonSavable{
       desc = talent.desc,
       value = talent.value;
 
+  @override
   Map<String, dynamic> toJson() => {
     "name" : name,
     "description" : desc,

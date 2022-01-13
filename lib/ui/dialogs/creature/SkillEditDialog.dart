@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swassistant/items/Skill.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/items/skill.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/misc/UpdatingSwitchTile.dart';

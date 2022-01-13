@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/dice/Dice.dart';
-import 'package:swassistant/dice/Sides.dart';
+import 'package:swassistant/dice/dice.dart';
+import 'package:swassistant/dice/sides.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Die ability(BuildContext context) => Die(name: AppLocalizations.of(context)!.ability, sides: [

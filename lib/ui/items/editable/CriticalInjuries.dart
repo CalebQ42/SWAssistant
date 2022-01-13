@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/CriticalInjuryEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';

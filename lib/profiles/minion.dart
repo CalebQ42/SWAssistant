@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
-import 'package:swassistant/items/Item.dart';
-import 'package:swassistant/items/Weapon.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/sw.dart';
+import 'package:swassistant/items/item.dart';
+import 'package:swassistant/items/weapon.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/items/creatures/Talents.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
-import 'package:swassistant/ui/items/editable/Weapons.dart';
+import 'package:swassistant/ui/items/editable/weapons.dart';
 import 'package:swassistant/ui/items/creatures/Characteristics.dart';
 import 'package:swassistant/ui/items/creatures/Defense.dart';
 import 'package:swassistant/ui/items/editable/Inventory.dart';
@@ -18,7 +18,7 @@ import 'package:swassistant/ui/items/minion/MinInfo.dart';
 import 'package:swassistant/ui/items/minion/MinionWound.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'utils/Creature.dart';
+import 'utils/creature.dart';
 
 class Minion extends Editable with Creature{
 
@@ -29,8 +29,11 @@ class Minion extends Editable with Creature{
 
   int woundCurTemp = 0;
 
+  @override
   String get fileExtension => ".swminion";
+  @override
   int get cardNum => 10;
+  @override
   List<String> cardNames(BuildContext context) => [
     AppLocalizations.of(context)!.basicInfo,
     AppLocalizations.of(context)!.wound,
@@ -58,26 +61,30 @@ class Minion extends Editable with Creature{
     creatureFrom(minion);
   }
 
+  @override
   void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
-    this.creatureLoadJson(json);
-    this.woundThreshInd = json["wound threshold per minion"] ?? 0;
-    this.minionNum = json["minion number"] ?? 0;
+    creatureLoadJson(json);
+    woundThreshInd = json["wound threshold per minion"] ?? 0;
+    minionNum = json["minion number"] ?? 0;
     if(json["Saved"] != null){
       Map<String,dynamic> saved = json["Saved"];
       if(saved["Inventory"] != null){
-        this.savedInv = [];
-        for(dynamic d in saved["Inventory"])
-          this.savedInv.add(Item.fromJson(d));
+        savedInv = [];
+        for(dynamic d in saved["Inventory"]){
+          savedInv.add(Item.fromJson(d));
+        }
       }
       if(saved["Weapons"] != null){
-        this.savedWeapons = [];
-        for(dynamic d in saved["Weapons"])
-          this.savedWeapons.add(Weapon.fromJson(d));
+        savedWeapons = [];
+        for(dynamic d in saved["Weapons"]){
+          savedWeapons.add(Weapon.fromJson(d));
+        }
       }
     }
   }
 
+  @override
   Map<String,dynamic> toJson() =>
     super.toJson()..addAll({
       "wound threshold per minion": woundThreshInd,
@@ -88,7 +95,8 @@ class Minion extends Editable with Creature{
       }
     })..addAll(creatureSaveJson());
 
-  List<EditableContent> cardContents(BuildContext context, Function() updateList) {
+  @override
+  List<EditableContent> cardContents(BuildContext context, Function() listUpdate) {
     Function()? weaponsRefresh;
     EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
     EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();
@@ -109,7 +117,7 @@ class Minion extends Editable with Creature{
       EditableContent(
         builder: (b, refresh, state) =>
           Skills(editing: b, refresh: refresh),
-        defaultEditingState: () => skills.length == 0
+        defaultEditingState: () => skills.isEmpty
       ),
       EditableContent(
         builder: (b, refresh, state) =>
@@ -117,25 +125,23 @@ class Minion extends Editable with Creature{
       ),
       EditableContent(
         builder: (b, refresh, state){
-          if (weaponsRefresh != null)
-            weaponsRefresh = refresh;
+          if (weaponsRefresh != null) weaponsRefresh = refresh;
           return Weapons(editing: b, refresh: refresh);
         },
-        defaultEditingState: () => weapons.length == 0,
+        defaultEditingState: () => weapons.isEmpty,
         additonalButtons: () => [
           Tooltip(
-            message: savedWeapons.length == 0 ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
+            message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
             child: IconButton(
               iconSize: 20.0,
               splashRadius: 20,
-              padding: EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(Size.square(30.0)),
-              icon: Icon(Icons.restore),
-              onPressed: savedWeapons.length == 0 ? null : (){
+              padding: const EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(const Size.square(30.0)),
+              icon: const Icon(Icons.restore),
+              onPressed: savedWeapons.isEmpty ? null : (){
                 var tmp = List.of(weapons);
                 weapons = List.of(savedWeapons);
-                if (weaponsRefresh != null)
-                  weaponsRefresh!();
+                if (weaponsRefresh != null) weaponsRefresh!();
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -144,8 +150,7 @@ class Minion extends Editable with Creature{
                       label: AppLocalizations.of(context)!.undo,
                       onPressed: (){
                         weapons = tmp;
-                        if (weaponsRefresh != null)
-                          weaponsRefresh!();
+                        if (weaponsRefresh != null) weaponsRefresh!();
                       },
                     ),
                   )
@@ -154,18 +159,17 @@ class Minion extends Editable with Creature{
             )
           ),
           Tooltip(
-            message: savedWeapons.length == 0 ? AppLocalizations.of(context)!.saveWeapons : AppLocalizations.of(context)!.overwriteWeapons,
+            message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeapons : AppLocalizations.of(context)!.overwriteWeapons,
             child: IconButton(
               iconSize: 20.0,
               splashRadius: 20,
-              padding: EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(Size.square(30.0)),
-              icon: Icon(savedWeapons.length == 0 ? Icons.save_outlined : Icons.save),
+              padding: const EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(const Size.square(30.0)),
+              icon: Icon(savedWeapons.isEmpty ? Icons.save_outlined : Icons.save),
               onPressed: (){
-                var reload = (savedWeapons.length == 0 && weapons.length != 0) || (savedWeapons.length != 0 && weapons.length == 0);
+                var reload = (savedWeapons.isEmpty && weapons.isNotEmpty) || (savedWeapons.isNotEmpty && weapons.isEmpty);
                 savedWeapons = List.of(weapons);
-                if(reload && weaponsRefresh != null)
-                  weaponsRefresh!();
+                if(reload && weaponsRefresh != null) weaponsRefresh!();
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -180,25 +184,24 @@ class Minion extends Editable with Creature{
       EditableContent(
         builder: (b, refresh, state) =>
           Talents(editing: b, refresh: refresh),
-        defaultEditingState: () => talents.length == 0,
+        defaultEditingState: () => talents.isEmpty,
       ),
       EditableContent(
         stateful: Inventory(holder: invHolder),
-        defaultEditingState: () => inventory.length == 0,
+        defaultEditingState: () => inventory.isEmpty,
         additonalButtons: () => [
           Tooltip(
-            message: savedInv.length == 0 ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
+            message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
             child: IconButton(
               iconSize: 20.0,
               splashRadius: 20,
-              padding: EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(Size.square(30.0)),
-              icon: Icon(savedInv.length == 0 ? Icons.restore_outlined : Icons.restore),
-              onPressed: savedInv.length == 0 ? null : (){
+              padding: const EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(const Size.square(30.0)),
+              icon: Icon(savedInv.isEmpty ? Icons.restore_outlined : Icons.restore),
+              onPressed: savedInv.isEmpty ? null : (){
                 var tmp = List.of(inventory);
                 inventory = List.of(savedInv);
-                if(invHolder.reloadFunction != null)
-                  invHolder.reloadFunction!();
+                if(invHolder.reloadFunction != null) invHolder.reloadFunction!();
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -207,8 +210,7 @@ class Minion extends Editable with Creature{
                       label: AppLocalizations.of(context)!.undo,
                       onPressed: (){
                         inventory = tmp;
-                        if(invHolder.reloadFunction != null)
-                          invHolder.reloadFunction!();
+                        if(invHolder.reloadFunction != null) invHolder.reloadFunction!();
                       },
                     ),
                   )
@@ -217,18 +219,17 @@ class Minion extends Editable with Creature{
             )
           ),
           Tooltip(
-            message: savedInv.length == 0 ? AppLocalizations.of(context)!.saveInventory : AppLocalizations.of(context)!.overwriteInventory,
+            message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventory : AppLocalizations.of(context)!.overwriteInventory,
             child: IconButton(
               iconSize: 20.0,
               splashRadius: 20,
-              padding: EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(Size.square(30.0)),
-              icon: Icon(savedInv.length == 0 ? Icons.save_outlined : Icons.save),
+              padding: const EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(const Size.square(30.0)),
+              icon: Icon(savedInv.isEmpty ? Icons.save_outlined : Icons.save),
               onPressed: (){
-                var refresh = (savedInv.length == 0 && inventory.length != 0) || (savedInv.length != 0 && inventory.length == 0);
+                var refresh = (savedInv.isEmpty && inventory.isNotEmpty) || (savedInv.isNotEmpty && inventory.isEmpty);
                 savedInv = List.of(inventory);
-                if(refresh && invHolder.reloadFunction != null)
-                  invHolder.reloadFunction!();
+                if(refresh && invHolder.reloadFunction != null) invHolder.reloadFunction!();
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -243,7 +244,7 @@ class Minion extends Editable with Creature{
       EditableContent(
         builder: (b, refresh, state) =>
           CriticalInjuries(editing: b, refresh: refresh),
-        defaultEditingState: () => criticalInjuries.length == 0
+        defaultEditingState: () => criticalInjuries.isEmpty
       ),
       EditableContent(
         builder: (b, refresh, state) =>
@@ -255,8 +256,7 @@ class Minion extends Editable with Creature{
 
   static Minion? of(BuildContext context){
     var ed = Editable.of(context);
-    if (ed is Minion)
-      return ed;
+    if (ed is Minion) return ed;
     return null;
   }
 }

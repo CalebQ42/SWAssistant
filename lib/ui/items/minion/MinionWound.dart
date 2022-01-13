@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:swassistant/profiles/Minion.dart';
+import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/UpDownStat.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

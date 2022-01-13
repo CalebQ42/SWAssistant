@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:swassistant/Preferences.dart' as preferences;
-import 'package:swassistant/SW.dart';
+import 'package:swassistant/preferences.dart' as preferences;
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/IntroZero.dart';
 import 'package:swassistant/ui/screens/DiceRoller.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
@@ -29,28 +29,30 @@ class SWApp extends StatefulWidget{
 
   final String? init;
 
-  SWApp({this.init});
+  const SWApp({Key? key, this.init}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => SWAppState(init: init);
+  State<StatefulWidget> createState() => SWAppState();
 }
 
-class SWAppState extends State {
+class SWAppState extends State<SWApp> {
 
   String? init;
 
-  SWAppState({this.init});
+  SWAppState(){
+    init = widget.init;
+  }
 
   @override
   Widget build(BuildContext context) {
     SW.of(context).topLevelUpdate = () => setState(() {});
-    var snackTheme = SnackBarThemeData(
+    const snackTheme = SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
     );
-    var inputTheme = InputDecorationTheme(
+    const inputTheme = InputDecorationTheme(
       border: OutlineInputBorder(),
     );
-    var bottomSheetTheme = BottomSheetThemeData(
+    const bottomSheetTheme = BottomSheetThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(15))
       ),
@@ -58,13 +60,13 @@ class SWAppState extends State {
     );
     return MaterialApp(
       title: 'SWAssistant',
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale("en", ""),
         Locale("de",""),
         Locale("es",""),
@@ -90,11 +92,11 @@ class SWAppState extends State {
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
           scaffoldBackgroundColor: Colors.black,
-          cardColor: Color.fromARGB(255, 15, 15, 15),
+          cardColor: const Color.fromARGB(255, 15, 15, 15),
           snackBarTheme: snackTheme.copyWith(
-            backgroundColor: Color.fromARGB(255, 15, 15, 15),
+            backgroundColor: const Color.fromARGB(255, 15, 15, 15),
             actionTextColor: Colors.amberAccent,
-            contentTextStyle: TextStyle(
+            contentTextStyle: const TextStyle(
               color: Colors.white
             ),
           ),
@@ -148,16 +150,18 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true))
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
       FirebaseCrashlytics.instance.setCustomKey("page", route.settings.name ?? "unknown");
+    }
     routeHistory.add(route);
     super.didPush(route, previousRoute);
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true))
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
       FirebaseCrashlytics.instance.setCustomKey("page", previousRoute?.settings.name ?? "unknown");
+    }
     routeHistory.removeLast();
     super.didPop(route, previousRoute);
   }
@@ -166,45 +170,53 @@ class Observatory extends NavigatorObserver{
   void didRemove(Route route, Route? previousRoute) {
     var beginIndex = routeHistory.indexOf(route);
     var endIndex = -1;
-    if (previousRoute != null)
+    if (previousRoute != null){
       endIndex = routeHistory.indexOf(previousRoute);
-    if((endIndex == -1 && beginIndex != -1) || beginIndex -1 == endIndex)
+    }
+    if((endIndex == -1 && beginIndex != -1) || beginIndex -1 == endIndex){
       routeHistory.remove(route);
-    else if(endIndex != -1 && beginIndex != -1)
+    }else if(endIndex != -1 && beginIndex != -1){
       routeHistory.removeRange(beginIndex,endIndex);
+    }
     super.didRemove(route, previousRoute);
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    if (oldRoute != null && newRoute != null && routeHistory.contains(oldRoute))
+    if (oldRoute != null && newRoute != null && routeHistory.contains(oldRoute)){
       routeHistory[routeHistory.indexOf(oldRoute)] = newRoute;
+    }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 
   //Returns the route if it is in history, otherwise it return null.
   //It preferes the route give, then settings, then the name
   Route? containsRoute({Route? route, RouteSettings? settings, String? name}){
-    if(route != null)
+    if(route != null){
       return routeHistory.contains(route) ? route : null;
-    if(settings != null)
+    }
+    if(settings != null){
       try{
         return routeHistory.firstWhere(
           (element) => element.settings == settings,
         );
       } catch (e){
-        if(e is StateError)
+        if(e is StateError){
           return null;
+        }
       }
-    if(name != null)
+    }
+    if(name != null){
       try{
         return routeHistory.firstWhere(
           (element) => element.settings.name == name,
         );
       } catch (e){
-        if(e is StateError)
+        if(e is StateError){
           return null;
+        }
       }
+    }
     return null;
   }
 }

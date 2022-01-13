@@ -10,26 +10,26 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swassistant/main.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uuid/uuid.dart';
 
-import 'profiles/Minion.dart';
-import 'profiles/Character.dart';
-import 'profiles/Vehicle.dart';
-import 'Preferences.dart' as preferences;
+import 'profiles/minion.dart';
+import 'profiles/character.dart';
+import 'profiles/vehicle.dart';
+import 'preferences.dart' as preferences;
 
 class SW{
-  List<Minion> _minions = [];
+  final List<Minion> _minions = [];
   List<String> minCats = [];
 
-  List<Character> _characters = [];
+  final List<Character> _characters = [];
   List<String> charCats = [];
 
-  List<Vehicle> _vehicles = [];
+  final List<Vehicle> _vehicles = [];
   List<String> vehCats = [];
 
   SharedPreferences prefs;
@@ -50,8 +50,9 @@ class SW{
     _characters.clear();
     _vehicles.clear();
     Directory(saveDir).listSync().forEach((element) {
-      if(element.path.endsWith(".backup"))
+      if(element.path.endsWith(".backup")){
         return;
+      }
       var backup = File(element.path+".backup");
       if(backup.existsSync()){
         File(element.path).deleteSync();
@@ -59,12 +60,13 @@ class SW{
         backup.deleteSync();
         element = File(element.path);
       }
-      if(element.path.endsWith(".swcharacter"))
+      if(element.path.endsWith(".swcharacter")){
         _characters.add(Character.load(element, this));
-      else if(element.path.endsWith(".swminion"))
+      }else if(element.path.endsWith(".swminion")){
         _minions.add(Minion.load(element, this));
-      else if(element.path.endsWith(".swvehicle"))
+      }else if(element.path.endsWith(".swvehicle")){
         _vehicles.add(Vehicle.load(element, this));
+      }
     });
     updateCharacterCategories();
     updateVehicleCategories();
@@ -105,44 +107,49 @@ class SW{
   }
 
   void add(Editable editable){
-    if(editable is Character)
+    if(editable is Character){
       addCharacter(editable);
-    if(editable is Minion)
+    }else if(editable is Minion){
       addMinion(editable);
-    if(editable is Vehicle)
+    }else if(editable is Vehicle){
       addVehicle(editable);
+    }
   }
 
   bool remove(Editable editable, BuildContext context){
-    if(editable.route != null && observatory.containsRoute(route: editable.route) != null)
+    if(editable.route != null && observatory.containsRoute(route: editable.route) != null){
       Navigator.removeRoute(context, editable.route!);
-    if(editable is Character)
+    }
+    if(editable is Character){
       return removeCharacter(character: editable);
-    if(editable is Minion)
+    }else if(editable is Minion){
       return removeMinion(minion: editable);
-    if(editable is Vehicle)
+    }else if(editable is Vehicle){
       return removeVehicle(vehicle: editable);
+    }
     return false;
   }
   
   List<Character> characters({String search = "", String? category}){
-    if(search == "" && category == null)
+    if(search == "" && category == null){
       return _characters;
-    if(category == null)
+    }else if(category == null){
       return _characters.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
+    }
     return _characters.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
   bool removeCharacter({String? uid, Character? character}){
     var success = false;
-    if(character != null)
+    if(character != null){
       success = _characters.remove(character);
-    if(uid != null){
+    }else if(uid != null){
       character = _characters.firstWhere((element) => element.uid == uid);
       success = _characters.remove(character);
     }
-    if(success && character != null && characters(category: character.category).length == 0)
+    if(success && character != null && characters(category: character.category).isEmpty){
       updateCharacterCategories();
+    }
     return success;
   }
 
@@ -154,30 +161,33 @@ class SW{
 
   void updateCharacterCategories(){
     charCats.clear();
-    _characters.forEach((element) {
-      if(element.category != "" && !charCats.contains(element.category))
-        charCats.add(element.category);
-    });
+    for(var char in _characters){
+      if(char.category != "" && !charCats.contains(char.category)){
+        charCats.add(char.category);
+      }
+    }
   }
 
   List<Minion> minions({String search = "", String? category}){
-    if(search == "" && category == null)
+    if(search == "" && category == null){
       return _minions;
-    if(category == null)
+    }else if(category == null){
       return _minions.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
+    }
     return _minions.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
   bool removeMinion({String? uid, Minion? minion}){
     var success = false;
-    if(minion != null)
+    if(minion != null){
       success = _minions.remove(minion);
-    if(uid != null){
+    }else if(uid != null){
       minion = _minions.firstWhere((element) => element.uid == uid);
       success = _minions.remove(minion);
     }
-    if(success && minion != null && minions(category: minion.category).length == 0)
+    if(success && minion != null && minions(category: minion.category).isEmpty){
       updateMinionCategories();
+    }
     return success;
   }
 
@@ -189,30 +199,33 @@ class SW{
 
   void updateMinionCategories(){
     minCats.clear();
-    _minions.forEach((element) {
-      if(element.category != "" && !minCats.contains(element.category))
-        minCats.add(element.category);
-    });
+    for(var min in _minions){
+      if(min.category != "" && !minCats.contains(min.category)){
+        minCats.add(min.category);
+      }
+    }
   }
 
   List<Vehicle> vehicles({String search = "", String? category}){
-    if(search == "" && category == null)
+    if(search == "" && category == null){
       return _vehicles;
-    if(category == null)
+    }else if(category == null){
       return _vehicles.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
+    }
     return _vehicles.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
   bool removeVehicle({String? uid, Vehicle? vehicle}){
     var success = false;
-    if(vehicle != null)
+    if(vehicle != null){
       success = _vehicles.remove(vehicle);
-    if(uid != null){
+    }else if(uid != null){
       vehicle = _vehicles.firstWhere((element) => element.uid == uid);
       success = _vehicles.remove(vehicle);
     }
-    if(success && vehicle != null && vehicles(category: vehicle.category).length == 0)
+    if(success && vehicle != null && vehicles(category: vehicle.category).isEmpty){
       updateVehicleCategories();
+    }
     return success;
   }
 
@@ -224,25 +237,27 @@ class SW{
   
   void updateVehicleCategories(){
     vehCats.clear();
-    _vehicles.forEach((element) {
-      if(element.category != "" && !vehCats.contains(element.category))
-        vehCats.add(element.category);
-    });
+    for(var veh in _vehicles){
+      if(veh.category != "" && !vehCats.contains(veh.category)){
+        vehCats.add(veh.category);
+      }
+    }
   }
 
   bool isSignedIn() =>
     gsi != null && gsi!.currentUser != null;
 
   Future<bool> initCloud() async{
-    if(isSignedIn())
+    if(isSignedIn()){
       return true;
-    if (gsi == null)
-      gsi = GoogleSignIn(
-        scopes: [drive.DriveApi.driveScope],
-      );
+    }
+    gsi ??= GoogleSignIn(
+      scopes: [drive.DriveApi.driveScope],
+    );
     await gsi!.signInSilently();
-    if (gsi!.currentUser == null)
+    if (gsi!.currentUser == null){
       await gsi!.signIn();
+    }
     if (gsi!.currentUser == null){
       gsi = null;
       return false;
@@ -251,8 +266,9 @@ class SW{
   }
   
   Future<void> syncCloud() async{
-    if(!await initCloud())
+    if(!await initCloud()){
       return;
+    }
     driveApi ??= drive.DriveApi((await gsi!.authenticatedClient())!);
   }
 
@@ -265,18 +281,22 @@ class SW{
     var app = SW(prefs: prefs);
     InAppPurchase.instance.purchaseStream.listen((event) {
       for(var e in event){
-        if (e.pendingCompletePurchase)
+        if (e.pendingCompletePurchase){
           InAppPurchase.instance.completePurchase(e);
+        }
       }
     });
-    if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode)
+    if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode){
       app.devMode = true;
+    }
     var dir = await getApplicationDocumentsDirectory();
     app.saveDir = dir.path + "/SWChars";
-    if(!Directory(app.saveDir).existsSync())
+    if(!Directory(app.saveDir).existsSync()){
       Directory(app.saveDir).createSync();
-    if(app.devMode)
+    }
+    if(app.devMode){
       await testing(app.saveDir);
+    }
     app.loadAll();
     app.observatory = Observatory(app);
     prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
@@ -291,7 +311,7 @@ class SW{
         AlertDialog(
           content: Column(
             children: [
-              CircularProgressIndicator(),
+              const CircularProgressIndicator(),
               Container(height: 10),
               Text(
                 AppLocalizations.of(context)!.loadingDialog,
@@ -301,8 +321,9 @@ class SW{
           )
         )
     );
-    if (getPreference(preferences.googleDrive, false))
+    if (getPreference(preferences.googleDrive, false)){
       await syncCloud();
+    }
     if(getPreference(preferences.firebase, true)){
       try{
         await Firebase.initializeApp();
@@ -310,8 +331,9 @@ class SW{
         if(getPreference(preferences.crashlytics, true) && kDebugMode == false){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-        }else
+        }else{
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+        }
       }catch (e){
         firebaseAvailable = false;
       }
@@ -331,7 +353,7 @@ class SW{
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(),
+              const CircularProgressIndicator(),
               Container(height: 10),
               Text(
                 AppLocalizations.of(context)!.importDialog,
@@ -343,7 +365,7 @@ class SW{
     );
     FilePicker.platform.pickFiles(allowMultiple: true).then((value) {
       if(value != null && value.files.isNotEmpty){
-        var uuid = Uuid();
+        var uuid = const Uuid();
         for(var f in value.files){
           var fil = File(f.path!);
           Editable ed;
@@ -367,7 +389,7 @@ class SW{
         }
       }
       nav.pop();
-      if (value == null || value.files.length == 0){
+      if (value == null || value.files.isEmpty){
         message.clearSnackBars();
         message.showSnackBar(
           SnackBar(content: Text(locs.importNone))
@@ -388,16 +410,18 @@ class SW{
     for(String st in testFiles){
       String json = await rootBundle.loadString("assets/testing/"+st);
       File testFile = File(saveDir+"/"+st);
-      if(testFile.existsSync())
+      if(testFile.existsSync()){
         testFile.deleteSync();
+      }
       testFile.writeAsStringSync(json);
     }
   }
 
   static SW of(BuildContext context){
     var app = context.dependOnInheritedWidgetOfExactType<SWWidget>()?.app;
-    if (app == null)
+    if (app == null){
       throw "Widget is not a child of SWWidget";
+    }
     return app;
   }
 
@@ -407,7 +431,7 @@ class SW{
 class SWWidget extends InheritedWidget{
   final SW app;
   
-  SWWidget({required Widget child, required this.app}) : super(child: child);
+  const SWWidget({Key? key, required Widget child, required this.app}) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;

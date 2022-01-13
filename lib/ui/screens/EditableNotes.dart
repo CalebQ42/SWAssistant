@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/items/Note.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/items/note.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

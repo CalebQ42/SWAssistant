@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:swassistant/SW.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/Minion.dart';
-import 'package:swassistant/profiles/Vehicle.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/sw.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/profiles/vehicle.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/intro/IntroOne.dart';
 import 'package:swassistant/ui/intro/IntroScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

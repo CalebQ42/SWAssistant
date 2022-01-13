@@ -14,6 +14,7 @@ class ForcePower implements JsonSavable{
       name = fp.name,
       desc = fp.desc;
 
+  @override
   Map<String, dynamic> toJson() => {
     "name" : name,
     "description" : desc

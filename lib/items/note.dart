@@ -13,6 +13,7 @@ class Note implements JsonSavable{
       note = map["note"] ?? "",
       align = map["align"] ?? 0;
 
+  @override
   Map<String,dynamic> toJson()=>{
     "title": title,
     "note": note,

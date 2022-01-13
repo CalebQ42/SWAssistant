@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/items/Skill.dart';
-import 'package:swassistant/items/Talent.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/items/skill.dart';
+import 'package:swassistant/items/talent.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 mixin Creature on Editable{
@@ -14,7 +14,7 @@ mixin Creature on Editable{
       AppLocalizations.of(context)!.presence
     ];
 
-  List<int> charVals = new List.filled(6, 0, growable: false);
+  List<int> charVals = List.filled(6, 0, growable: false);
   List<Skill> skills = [];
   List<Talent> talents = [];
   int woundThresh = 0;
@@ -35,19 +35,22 @@ mixin Creature on Editable{
 
   void creatureLoadJson(Map<String,dynamic> json){
     if(json["characteristics"] != null){
-      this.charVals = [];
-      for(dynamic dy in json["characteristics"])
-        this.charVals.add(dy);
+      charVals = [];
+      for(dynamic dy in json["characteristics"]){
+        charVals.add(dy);
+      }
     }
     if(json["Skills"] != null){
-      this.skills = [];
-      for(dynamic dy in json["Skills"])
-        this.skills.add(Skill.fromJson(dy));
+      skills = [];
+      for(dynamic dy in json["Skills"]){
+        skills.add(Skill.fromJson(dy));
+      }
     }
     if(json["Talents"] != null){
-      this.talents = [];
-      for(dynamic dy in json["Talents"])
-        this.talents.add(Talent.fromJson(dy));
+      talents = [];
+      for(dynamic dy in json["Talents"]){
+        talents.add(Talent.fromJson(dy));
+      }
     }
     woundThresh = json["wound threshold"] ?? 0;
     woundCur = json["wound current"] ?? 0;

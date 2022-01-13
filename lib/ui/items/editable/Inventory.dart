@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/items/Item.dart';
-import 'package:swassistant/items/Weapon.dart';
-import 'package:swassistant/profiles/Character.dart';
-import 'package:swassistant/profiles/Minion.dart';
-import 'package:swassistant/profiles/Vehicle.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/items/item.dart';
+import 'package:swassistant/items/weapon.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/profiles/vehicle.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/editable/ItemEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 
 class Description extends StatelessWidget{

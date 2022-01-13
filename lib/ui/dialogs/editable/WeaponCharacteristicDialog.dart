@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swassistant/items/WeaponCharacteristic.dart';
+import 'package:swassistant/items/weapon_characteristic.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 

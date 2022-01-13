@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/items/Talent.dart';
-import 'package:swassistant/profiles/utils/Creature.dart';
+import 'package:swassistant/items/talent.dart';
+import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/dialogs/creature/TalentEditDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';

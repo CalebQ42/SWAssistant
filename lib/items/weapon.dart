@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/utils/JsonSavable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'WeaponCharacteristic.dart';
+import 'weapon_characteristic.dart';
 
 class Weapon implements JsonSavable{
 
@@ -47,10 +47,11 @@ class Weapon implements JsonSavable{
       firingArc = json["firing arc"] ?? "",
       encumbrance = json["encumbrance"] ?? 0,
       characteristics = []{
-        if(json["Weapon Characteristics"] != null)
+        if(json["Weapon Characteristics"] != null){
           for(Map<String,dynamic> map in json["Weapon Characteristics"]){
             characteristics.add(WeaponCharacteristic.fromJson(map));
           }
+        }
       }
 
   Weapon.from(Weapon from) : 
@@ -70,6 +71,7 @@ class Weapon implements JsonSavable{
       encumbrance = from.encumbrance,
       characteristics = List.from(from.characteristics);
 
+  @override
   Map<String,dynamic> toJson() => {
     "name" : name,
     "damage" : damage,

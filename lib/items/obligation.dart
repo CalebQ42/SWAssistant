@@ -18,6 +18,7 @@ class Obligation implements JsonSavable{
     value = obligation.value,
     desc = obligation.desc;
 
+  @override
   Map<String,dynamic> toJson() => {
     "name" : name,
     "value" : value,

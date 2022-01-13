@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:swassistant/profiles/utils/Editable.dart';
+import 'package:swassistant/profiles/utils/editable.dart';
 
 class EditableCards extends StatelessWidget{
 
