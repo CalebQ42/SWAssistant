@@ -125,16 +125,12 @@ class SW{
     return false;
   }
   
-  List<Character> characters({String search = "", String category = ""}){
-    if(search == "" && category == "")
+  List<Character> characters({String search = "", String? category}){
+    if(search == "" && category == null)
       return _characters;
-    else if(search == "")
-      return _characters.where((element) => element.category == category).toList();
-    else if(category == "")
+    if(category == null)
       return _characters.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
-    else
-      return _characters.where((element) => element.category == category)
-          .where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
+    return _characters.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
   bool removeCharacter({String? uid, Character? character}){
@@ -164,16 +160,12 @@ class SW{
     });
   }
 
-  List<Minion> minions({String search = "", String category = ""}){
-    if(search == "" && category == "")
+  List<Minion> minions({String search = "", String? category}){
+    if(search == "" && category == null)
       return _minions;
-    else if(search == "")
-      return _minions.where((element) => element.category == category).toList();
-    else if(category == "")
+    if(category == null)
       return _minions.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
-    else
-      return _minions.where((element) => element.category == category)
-          .where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
+    return _minions.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
   bool removeMinion({String? uid, Minion? minion}){
@@ -203,16 +195,12 @@ class SW{
     });
   }
 
-  List<Vehicle> vehicles({String search = "", String category = ""}){
-    if(search == "" && category == "")
+  List<Vehicle> vehicles({String search = "", String? category}){
+    if(search == "" && category == null)
       return _vehicles;
-    else if(search == "")
-      return _vehicles.where((element) => element.category == category).toList();
-    else if(category == "")
-      return _vehicles.where((element) => element.name.toLowerCase().contains(search..toLowerCase())).toList();
-    else
-      return _vehicles.where((element) => element.category == category)
-          .where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
+    if(category == null)
+      return _vehicles.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
+    return _vehicles.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
   bool removeVehicle({String? uid, Vehicle? vehicle}){

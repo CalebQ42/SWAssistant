@@ -29,14 +29,7 @@
 .packages
 .pub-cache/
 .pub/
-pubspec.lock
 /build/
-ios/Flutter/flutter_export_environment.sh
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -47,15 +40,13 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Exceptions to above rules.
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
 
 # Keyfile Info
 android/key.properties
 
 # Firebase
 android/app/google-services.json
-
-# Old Android stuff
-.gradle/
-local.properties

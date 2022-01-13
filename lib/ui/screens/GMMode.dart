@@ -10,7 +10,7 @@ import 'package:swassistant/profiles/utils/Editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/Common.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
-import 'package:swassistant/ui/screens/EditableListOld.dart';
+import 'package:swassistant/ui/screens/EditableList.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';
 
 class GMMode extends StatelessWidget{
@@ -36,7 +36,7 @@ class GMMode extends StatelessWidget{
           child: _GMModeBar(message),
           preferredSize: Size.fromHeight(Theme.of(context).appBarTheme.toolbarHeight ?? 55),
         ),
-        drawer: SWDrawer(),
+        // drawer: SWDrawer(),
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
@@ -47,8 +47,7 @@ class GMMode extends StatelessWidget{
               ),
               child: EditableList(
                 -1,
-                key: //TODO
-                contained: true,
+                key: message.listKey,
                 onTap: (ed) {
                   var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);
                   message.backStack.add(ed);
@@ -73,6 +72,7 @@ class GMMode extends StatelessWidget{
 class GMModeMessager{
   final List<void Function(Editable)> onChange = [];
   late void Function() editingState;
+  final GlobalKey<EditableListState> listKey = GlobalKey();
 
   final List<Editable> backStack = [];
 }
@@ -182,7 +182,7 @@ class _BarState extends State{
                         SW.of(context).add(out);
                         out.save(context: context);
                         Navigator.of(context).pop();
-                        message.listState();
+                        message.listKey.currentState?.setState(() {});
                       },
                     ),
                     TextButton(
@@ -235,7 +235,7 @@ class _GMModeState extends State{
         )
       ) : EditingEditable(
         curEdit!,
-        message.listState,
+        () => message.listKey.currentState?.setState(() {}),
         key: Key(curEdit!.uid.toString() + curEdit!.fileExtension),
         contained: true,
         w: width,
