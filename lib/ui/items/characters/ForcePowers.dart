@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
-import 'package:swassistant/items/force%20_power.dart';
+import 'package:swassistant/items/force_power.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/EditableCommon.dart';
 import 'package:swassistant/ui/dialogs/character/ForcePowerEditDialog.dart';

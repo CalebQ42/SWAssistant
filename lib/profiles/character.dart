@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/items/duty.dart';
-import 'package:swassistant/items/force%20_power.dart';
+import 'package:swassistant/items/force_power.dart';
 import 'package:swassistant/items/obligation.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/EditableCommon.dart';

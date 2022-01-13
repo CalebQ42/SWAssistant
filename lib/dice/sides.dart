@@ -14,7 +14,8 @@ class ComplexSide{
 
   ComplexSide({this.parts = const[]});
 
-  ComplexSide clone() => ComplexSide(parts: new List.from(parts));
+  ComplexSide clone() => ComplexSide(parts: List.from(parts));
+  @override
   String toString() => parts.join(", ");
 }
 
