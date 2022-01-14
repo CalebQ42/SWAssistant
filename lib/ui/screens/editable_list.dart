@@ -6,43 +6,35 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/common.dart';
-import 'package:swassistant/ui/screens/EditingEditable.dart';
+import 'package:swassistant/ui/screens/editing_editable.dart';
 
 class EditableList extends StatefulWidget{
 
-  static final int character = 0;
-  static final int minion = 1;
-  static final int vehicle = 2;
+  static const int character = 0;
+  static const int minion = 1;
+  static const int vehicle = 2;
 
   final int type;
-  final Key? key;
   final void Function(Editable)? onTap;
 
-  EditableList(this.type, {this.key, this.onTap});
+  const EditableList(this.type, {Key? key, this.onTap}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() =>
-    EditableListState(type, key: key, onTap: onTap);
+  State<StatefulWidget> createState() => EditableListState();
 }
 
-class EditableListState extends State{
+class EditableListState extends State<EditableList>{
 
-  //This determines which list is shown
-  //all = -1
-  //character = 0
-  //minion = 1
-  //vehicle = 2
-  //TODO
-  int type;
-  final Key? key;
-  final void Function(Editable)? onTap;
+  late int type;
   List<Editable> list = [];
   String? cat;
   String search = "";
 
   GlobalKey<AnimatedListState> listKey = GlobalKey();
 
-  EditableListState(this.type, {this.key, this.onTap});
+  EditableListState(){
+    type = widget.type;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +42,15 @@ class EditableListState extends State{
     List<DropdownMenuItem<String>> categories;
     switch(type){
       case -1:
-        if(cat == null)
+        if(cat == null){
           list = app.characters().cast<Editable>()..addAll(app.minions())..addAll(app.vehicles());
-        else if(cat == "char")
+        }else if(cat == "char"){
           list = app.characters();
-        else if(cat == "min")
+        }else if(cat == "min"){
           list = app.minions();
-        else
+        }else{
           list = app.vehicles();
+        }
         categories = [
           DropdownMenuItem<String>(
             child: Text(AppLocalizations.of(context)!.all),
@@ -152,10 +145,10 @@ class EditableListState extends State{
       initialItemCount: list.length,
       itemBuilder: (context, i, anim) =>
         SlideTransition(
-          position: Tween<Offset>(begin: Offset(1.0, 0), end: Offset.zero).animate(anim),
+          position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
           child: InheritedEditable(
             child: EditableCard(
-              onTap: onTap,
+              onTap: widget.onTap,
               refreshList: () => setState((){}),
               onDismiss: (){
                 var tmp = list[i];
@@ -194,19 +187,19 @@ class EditableListState extends State{
           )
         ),
     );
-    return (onTap == null) ?
+    return (widget.onTap == null) ?
       Scaffold(
         appBar: SWAppBar(
           context,
           backgroundColor: Theme.of(context).primaryColor,
           bottom: PreferredSize(
             child: catSelector,
-            preferredSize: Size.fromHeight(50)
+            preferredSize: const Size.fromHeight(50)
           )
         ),
-        drawer: SWDrawer(),
+        drawer: const SWDrawer(),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: (){
             Editable newEd;
             switch(type){
@@ -241,7 +234,7 @@ class EditableCard extends StatelessWidget{
   final void Function() refreshList;
   final void Function() onDismiss;
 
-  EditableCard({this.onTap, required this.refreshList, required this.onDismiss});
+  const EditableCard({this.onTap, required this.refreshList, required this.onDismiss, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
@@ -254,9 +247,9 @@ class EditableCard extends StatelessWidget{
           highlightShape: BoxShape.rectangle,
           onTap: (){
             var ed = Editable.of(context);
-            if(onTap != null)
+            if(onTap != null){
               onTap!(ed);
-            else
+            }else{
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (c) =>
@@ -266,9 +259,10 @@ class EditableCard extends StatelessWidget{
                     )
                 )
               );
+            }
           },
           child: Padding(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

@@ -9,13 +9,15 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/common.dart';
-import 'package:swassistant/ui/misc/Bottom.dart';
-import 'package:swassistant/ui/screens/EditableList.dart';
-import 'package:swassistant/ui/screens/EditingEditable.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:swassistant/ui/screens/editable_list.dart';
+import 'package:swassistant/ui/screens/editing_editable.dart';
 
 class GMMode extends StatelessWidget{
 
   final GMModeMessager message = GMModeMessager();
+
+  GMMode({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +26,13 @@ class GMMode extends StatelessWidget{
     var remain = MediaQuery.of(context).size.width - width;
     return WillPopScope(
       onWillPop: (){
-        if (message.backStack.length == 1 || message.backStack.length == 0)
+        if (message.backStack.length == 1 || message.backStack.isEmpty) {
           return Future.value(true);
+        }
         message.backStack.removeLast();
-        for(var o in message.onChange)
+        for(var o in message.onChange) {
           o(message.backStack.last);
+        }
         return Future.value(false);
       },
       child: Scaffold(
@@ -51,10 +55,12 @@ class GMMode extends StatelessWidget{
                 onTap: (ed) {
                   var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);
                   message.backStack.add(ed);
-                  for(var o in message.onChange)
+                  for(var o in message.onChange) {
                     o(message.backStack.last);
-                  if (ind != -1)
+                  }
+                  if (ind != -1) {
                     message.backStack.removeAt(ind);
+                  }
                 }
               )
             ),
@@ -80,19 +86,18 @@ class GMModeMessager{
 class _GMModeBar extends StatefulWidget{
   final GMModeMessager message;
 
-  _GMModeBar(this.message);
+  const _GMModeBar(this.message);
 
   @override
-  State<StatefulWidget> createState() => _BarState(message);
+  State<StatefulWidget> createState() => _BarState();
 }
 
-class _BarState extends State{
+class _BarState extends State<_GMModeBar>{
   
-  final GMModeMessager message;
   Editable? editable;
 
-  _BarState(this.message){
-    message.onChange.add(
+  _BarState(){
+    widget.message.onChange.add(
       (ed) => setState(() => editable = ed)
     );
   }
@@ -104,7 +109,7 @@ class _BarState extends State{
       backgroundColor: Theme.of(context).primaryColor,
       additionalActions: [
         IconButton(
-          icon: Icon(Icons.casino_outlined),
+          icon: const Icon(Icons.casino_outlined),
           onPressed: () =>
             SWDiceHolder().showDialog(context),
         ),
@@ -140,19 +145,19 @@ class _BarState extends State{
       popupFunctions: editable != null ? {
         "disableForce": () {
           setState(() => (editable as Character).disableForce = !(editable as Character).disableForce);
-          message.editingState();
+          widget.message.editingState();
         },
         "disableDuty": () {
           setState(() => (editable as Character).disableDuty = !(editable as Character).disableDuty);
-          message.editingState();
+          widget.message.editingState();
         },
         "disableObligation": () {
           setState(() => (editable as Character).disableObligation = !(editable as Character).disableObligation);
-          message.editingState();
+          widget.message.editingState();
         },
         "disableMorality": () {
           setState(() => (editable as Character).disableMorality = !(editable as Character).disableMorality);
-          message.editingState();
+          widget.message.editingState();
         },
         "clone": () => Bottom(
           child: (context) {
@@ -170,19 +175,20 @@ class _BarState extends State{
                       child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                       onPressed: () {
                         Editable out;
-                        if (editable is Character)
+                        if (editable is Character) {
                           out = Character.from(editable as Character);
-                        else if (editable is Minion)
+                        } else if (editable is Minion) {
                           out = Minion.from(editable as Minion);
-                        else if (editable is Vehicle) 
+                        } else if (editable is Vehicle) {
                           out = Vehicle.from(editable as Vehicle);
-                        else
+                        } else {
                           throw "Unsupported Editable Type";
+                        }
                         out.name = nameController.text;
                         SW.of(context).add(out);
                         out.save(context: context);
                         Navigator.of(context).pop();
-                        message.listKey.currentState?.setState(() {});
+                        widget.message.listKey.currentState?.setState(() {});
                       },
                     ),
                     TextButton(
@@ -201,33 +207,34 @@ class _BarState extends State{
 }
 
 class _GMModeEditor extends StatefulWidget{
+
   final GMModeMessager message;
   final double width;
 
-  _GMModeEditor(this.message, this.width);
+  const _GMModeEditor(this.message, this.width);
 
   @override
-  State<StatefulWidget> createState() => _GMModeState(message, width);
+  State<StatefulWidget> createState() => _GMModeState();
 }
 
-class _GMModeState extends State{
-  final GMModeMessager message;
-  final double width;
+class _GMModeState extends State<_GMModeEditor>{
+
   Editable? curEdit;
 
-  _GMModeState(this.message, this.width){
-    message.onChange.add(
+  _GMModeState(){
+    widget.message.onChange.add(
       (ed) => setState(() => curEdit = ed)
     );
-    message.editingState = () => setState((){});
-    if(message.backStack.isNotEmpty)
-      curEdit = message.backStack[message.backStack.length-1];
+    widget.message.editingState = () => setState((){});
+    if(widget.message.backStack.isNotEmpty) {
+      curEdit = widget.message.backStack[widget.message.backStack.length-1];
+    }
   }
 
   @override
   Widget build(BuildContext context) =>
     AnimatedSwitcher(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       child: curEdit == null ? Center(
         child: Text(
           AppLocalizations.of(context)!.gmModeTap,
@@ -235,10 +242,10 @@ class _GMModeState extends State{
         )
       ) : EditingEditable(
         curEdit!,
-        () => message.listKey.currentState?.setState(() {}),
+        () => widget.message.listKey.currentState?.setState(() {}),
         key: Key(curEdit!.uid.toString() + curEdit!.fileExtension),
         contained: true,
-        w: width,
+        w: widget.width,
       )
     );
 }

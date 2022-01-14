@@ -5,7 +5,7 @@ import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
-import 'package:swassistant/utils/JsonSavable.dart';
+import 'package:swassistant/utils/json_savable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Skill implements JsonSavable{

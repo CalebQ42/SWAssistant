@@ -7,9 +7,9 @@ class Bottom extends StatelessWidget{
   final Widget Function(BuildContext)? child;
   final bool padding;
 
-  final _BottomMessager messager = _BottomMessager();
+  final _BottomMessenger messenger = _BottomMessenger();
 
-  Bottom({this.buttons, this.background, required this.child, this.padding = true});
+  Bottom({this.buttons, this.background, required this.child, this.padding = true, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class Bottom extends StatelessWidget{
           child: SingleChildScrollView(
             primary: false,
             child: Padding(
-              padding: padding ? EdgeInsets.only(
+              padding: padding ? const EdgeInsets.only(
                 top: 10,
                 left: 10,
                 right: 10,
@@ -31,13 +31,13 @@ class Bottom extends StatelessWidget{
         ),
         if(buttons != null) _BottomButtons(
           builder: buttons!,
-          messager: messager
+          messenger: messenger
         )
       ],
     );
   }
 
-  void updateButtons() => messager.updateButtons();
+  void updateButtons() => messenger.updateButtons();
 
   void show(BuildContext context) =>
     showModalBottomSheet(
@@ -48,33 +48,32 @@ class Bottom extends StatelessWidget{
     );
 }
 
-class _BottomMessager{
+class _BottomMessenger{
   late Function() updateButtons;
 
-  _BottomMessager();
+  _BottomMessenger();
 }
 
 class _BottomButtons extends StatefulWidget{
   final List<Widget> Function(BuildContext) builder;
-  final _BottomMessager messager;
+  final _BottomMessenger messenger;
 
-  _BottomButtons({required this.builder, required this.messager});
+  const _BottomButtons({required this.builder, required this.messenger, Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ButtonState(builder, messager);
+  State<StatefulWidget> createState() => _ButtonState();
 }
 
-class _ButtonState extends State{
-  final List<Widget> Function(BuildContext) builder;
+class _ButtonState extends State<_BottomButtons>{
 
-  _ButtonState(this.builder, _BottomMessager message){
-    message.updateButtons = () => setState((){});
+  _ButtonState(){
+    widget.messenger.updateButtons = () => setState((){});
   }
 
   @override
   Widget build(BuildContext context) =>
     ButtonBar(
       alignment: MainAxisAlignment.end,
-      children: builder(context)
+      children: widget.builder(context)
     );
 }

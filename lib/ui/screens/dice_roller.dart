@@ -5,12 +5,14 @@ import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/ui/common.dart';
-import 'package:swassistant/ui/misc/DiceSelector.dart';
+import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DiceRoller extends StatelessWidget{
 
   final SWDiceHolder holder = SWDiceHolder();
+
+  DiceRoller({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class DiceRoller extends StatelessWidget{
     int rows = (MediaQuery.of(context).size.width / width).floor();
     width = MediaQuery.of(context).size.width / rows;
     return Scaffold(
-      drawer: SWDrawer(),
+      drawer: const SWDrawer(),
       appBar: SWAppBar(
         context,
         title: Text(AppLocalizations.of(context)!.dice),
@@ -29,10 +31,10 @@ class DiceRoller extends StatelessWidget{
           holder.getDice(context).roll().showCombinedResults(context, noSuccess: holder.ability == 0 && holder.proficiency == 0
               && holder.difficulty == 0 && holder.challenge == 0 && holder.boost == 0 && holder.challenge == 0);
         },
-        child: Icon(Icons.casino),
+        child: const Icon(Icons.casino),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -71,34 +73,30 @@ class _InstantDiceCard extends StatefulWidget{
   final int sides;
   final double width;
 
-  _InstantDiceCard({required this.sides, required this.width});
+  const _InstantDiceCard({required this.sides, required this.width});
 
   @override
-  State<StatefulWidget> createState() => _InstantState(sides, width);
+  State<StatefulWidget> createState() => _InstantState();
 
 }
 
-class _InstantState extends State{
+class _InstantState extends State<_InstantDiceCard>{
 
-  final int sides;
-  final double width;
   int result = -1;
-
-  _InstantState(this.sides, this.width);
 
   @override
   Widget build(BuildContext context) =>
     ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: width),
+      constraints: BoxConstraints(maxWidth: widget.width),
       child: Card(
-        margin: EdgeInsets.all(4),
+        margin: const EdgeInsets.all(4),
         child: Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                "d" + sides.toString(),
+                "d" + widget.sides.toString(),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline6
               ),
@@ -112,7 +110,7 @@ class _InstantState extends State{
                     onPressed: (){
                       var res = Die(
                         name: "die",
-                        sides: List<SimpleSide>.generate(sides, (i) => SimpleSide((i+1).toString()))
+                        sides: List<SimpleSide>.generate(widget.sides, (i) => SimpleSide((i+1).toString()))
                       ).roll();
                       setState(() => result = int.tryParse(res.toString()) ?? -1);
                     },

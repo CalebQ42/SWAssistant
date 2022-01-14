@@ -14,14 +14,14 @@ import 'package:swassistant/ui/items/characters/xp.dart';
 import 'package:swassistant/ui/items/characters/force_powers.dart';
 import 'package:swassistant/ui/items/characters/specializations.dart';
 import 'package:swassistant/ui/items/creatures/talents.dart';
-import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
-import 'package:swassistant/ui/items/editable/Description.dart';
+import 'package:swassistant/ui/items/editable/critical_injuries.dart';
+import 'package:swassistant/ui/items/editable/description.dart';
 import 'package:swassistant/ui/items/editable/weapons.dart';
 import 'package:swassistant/ui/items/creatures/characteristics.dart';
 import 'package:swassistant/ui/items/characters/character_info.dart';
 import 'package:swassistant/ui/items/characters/wound_strain.dart';
 import 'package:swassistant/ui/items/creatures/defense.dart';
-import 'package:swassistant/ui/items/editable/Inventory.dart';
+import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/creatures/skills.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

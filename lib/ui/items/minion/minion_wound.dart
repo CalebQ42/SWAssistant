@@ -9,48 +9,41 @@ class MinionWound extends StatefulWidget with StatefulCard{
   final EditableContentStatefulHolder holder;
   final EditableContentStatefulHolder numHolder;
 
-  MinionWound({required this.holder, required this.numHolder});
+  MinionWound({required this.holder, required this.numHolder, Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => MinionWoundState(holder: holder, numHolder: numHolder);
+  State<StatefulWidget> createState() => MinionWoundState();
 
   @override
   EditableContentStatefulHolder getHolder() => holder;
 }
 
-class MinionWoundState extends State with TickerProviderStateMixin{
-
-  final EditableContentStatefulHolder holder;
-  final EditableContentStatefulHolder numHolder;
+class MinionWoundState extends State<MinionWound>{
 
   TextEditingController? indWoundController;
 
-  MinionWoundState({required this.holder, required this.numHolder}){
-    holder.reloadFunction = () => setState((){});
+  MinionWoundState(){
+    widget.holder.reloadFunction = () => setState((){});
   }
 
   @override
   Widget build(BuildContext context) {
     var minion = Minion.of(context);
-    if (minion == null)
-      throw "MinionWound card used on non Minion";
-    if(indWoundController == null)
-      indWoundController = TextEditingController(text: minion.woundThreshInd.toString())
-          ..addListener(() {
-        var tmp = int.tryParse(indWoundController!.text);
-        var orig = minion.woundCur;
-        if(tmp == null)
-          minion.woundThreshInd = 0;
-        else
-          minion.woundThreshInd = tmp;
-        minion.woundThresh = minion.woundThreshInd * minion.minionNum;
-        if(minion.woundCur < minion.woundCurTemp)
-          minion.woundCur = minion.woundCurTemp;
-        if(minion.woundCur > minion.woundThresh)
-          minion.woundCur = minion.woundThresh;
-        if(minion.woundCur != orig)
-          setState((){});
-      });
+    if (minion == null) throw "MinionWound card used on non Minion";
+    indWoundController ??= TextEditingController(text: minion.woundThreshInd.toString())
+        ..addListener(() {
+      var tmp = int.tryParse(indWoundController!.text);
+      var orig = minion.woundCur;
+      if(tmp == null){
+        minion.woundThreshInd = 0;
+      }else{
+        minion.woundThreshInd = tmp;
+      }
+      minion.woundThresh = minion.woundThreshInd * minion.minionNum;
+      if(minion.woundCur < minion.woundCurTemp) minion.woundCur = minion.woundCurTemp;
+      if(minion.woundCur > minion.woundThresh) minion.woundCur = minion.woundThresh;
+      if(minion.woundCur != orig) setState((){});
+    });
     return Column(
       children: [
         Row(
@@ -61,7 +54,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
               width: 50,
               height: 25,
               child: EditingText(
-                editing: holder.editing,
+                editing: widget.holder.editing,
                 initialText: minion.soak.toString(),
                 controller: (){
                   var controller = TextEditingController(text: minion.soak.toString());
@@ -87,7 +80,7 @@ class MinionWoundState extends State with TickerProviderStateMixin{
               width: 50,
               height: 25,
               child: EditingText(
-                editing: holder.editing,
+                editing: widget.holder.editing,
                 initialText: minion.woundThreshInd.toString(),
                 controller: indWoundController,
                 textType: TextInputType.number,
@@ -109,12 +102,14 @@ class MinionWoundState extends State with TickerProviderStateMixin{
             minion.woundCur--;
             minion.woundCurTemp = minion.woundCur;
             int minNum = minion.woundCur ~/ minion.woundThreshInd;
-            if(minion.woundCur % minion.woundThreshInd > 0)
+            if(minion.woundCur % minion.woundThreshInd > 0){
               minNum ++;
+            }
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
-              if(minion.showCard[0] && numHolder.reloadFunction != null)
-                numHolder.reloadFunction!();
+              if(minion.showCard[0] && widget.numHolder.reloadFunction != null){
+                widget.numHolder.reloadFunction!();
+              }
             }
             minion.save(context: context);
           },

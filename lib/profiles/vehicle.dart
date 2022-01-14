@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/editable_common.dart';
-import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
-import 'package:swassistant/ui/items/editable/Description.dart';
-import 'package:swassistant/ui/items/editable/Inventory.dart';
+import 'package:swassistant/ui/items/editable/critical_injuries.dart';
+import 'package:swassistant/ui/items/editable/description.dart';
+import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/editable/weapons.dart';
-import 'package:swassistant/ui/items/vehicle/VehicleDamage.dart';
-import 'package:swassistant/ui/items/vehicle/VehicleDefense.dart';
-import 'package:swassistant/ui/items/vehicle/VehicleInfo.dart';
+import 'package:swassistant/ui/items/vehicle/vehicle_damage.dart';
+import 'package:swassistant/ui/items/vehicle/vehicle_defense.dart';
+import 'package:swassistant/ui/items/vehicle/vehicle_info.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Vehicle extends Editable{

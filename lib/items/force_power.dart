@@ -1,4 +1,4 @@
-import 'package:swassistant/utils/JsonSavable.dart';
+import 'package:swassistant/utils/json_savable.dart';
 
 class ForcePower implements JsonSavable{
   String name;

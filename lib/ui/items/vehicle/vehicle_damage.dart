@@ -10,13 +10,12 @@ class VehicleDamage extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  VehicleDamage({required this.editing, required this.state});
+  const VehicleDamage({required this.editing, required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var vehicle = Vehicle.of(context);
-    if (vehicle == null)
-      throw "VehicleDamage card called on non Vehicle";
+    if (vehicle == null) throw "VehicleDamage card called on non Vehicle";
     return Column(
       children: [
         Row(
@@ -51,7 +50,7 @@ class VehicleDamage extends StatelessWidget{
               child: SizedBox(
                 height: 80,
                 child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   child: !editing ? Column(
                     children: [
                       Text(AppLocalizations.of(context)!.hullTrauma, textAlign: TextAlign.center),
@@ -83,10 +82,11 @@ class VehicleDamage extends StatelessWidget{
                   ),
                   transitionBuilder: (child, anim){
                     Tween<Offset> offset;
-                    if((!editing && child is TextField) || (editing && child is Column))
-                      offset = Tween(begin: Offset(0.0,-1.0), end: Offset.zero);
-                    else
-                      offset = Tween(begin: Offset(0.0,1.0), end: Offset.zero);
+                    if((!editing && child is TextField) || (editing && child is Column)){
+                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
+                    }else{
+                      offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
+                    }
                     return ClipRect(
                       child: SlideTransition(
                         position: offset.animate(anim),
@@ -102,7 +102,7 @@ class VehicleDamage extends StatelessWidget{
               child: SizedBox(
                 height: 80,
                 child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   child: !editing ? Column(
                     children: [
                       Text(AppLocalizations.of(context)!.sysStress, textAlign: TextAlign.center),
@@ -134,10 +134,11 @@ class VehicleDamage extends StatelessWidget{
                   ),
                   transitionBuilder: (child, anim){
                     Tween<Offset> offset;
-                    if((!editing && child is TextField) || (editing && child is Column))
-                      offset = Tween(begin: Offset(0.0,-1.0), end: Offset.zero);
-                    else
-                      offset = Tween(begin: Offset(0.0,1.0), end: Offset.zero);
+                    if((!editing && child is TextField) || (editing && child is Column)){
+                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
+                    }else{
+                      offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
+                    }
                     return ClipRect(
                       child: SlideTransition(
                         position: offset.animate(anim),

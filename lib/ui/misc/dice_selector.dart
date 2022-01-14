@@ -10,7 +10,7 @@ class DiceSelector extends StatelessWidget{
   final int type;
   final bool small;
 
-  DiceSelector({required this.holder, required this.type, this.small = true});
+  const DiceSelector({required this.holder, required this.type, this.small = true, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -60,21 +60,22 @@ class DiceSelector extends StatelessWidget{
       textColor: text,
     );
     Widget body;
-    if (small)
+    if (small){
       body = Row(
         children: [
           Expanded(child: title),
           Expanded(child: upDown),
         ],
       );
-    else
+    }else{
       body = Column(
         children: [
           title, upDown
         ],
       );
+    }
     body = Padding(
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       child: body,
     );
     if (small){
@@ -84,7 +85,7 @@ class DiceSelector extends StatelessWidget{
       );
     }
     return small ? body : Card(
-      margin: EdgeInsets.all(4),
+      margin: const EdgeInsets.all(4),
       color: background,
       child: body,
     );

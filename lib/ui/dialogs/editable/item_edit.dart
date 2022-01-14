@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/items/item.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/Bottom.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
 
 class ItemEditDialog{
 

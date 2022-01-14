@@ -9,8 +9,8 @@ import 'package:swassistant/items/note.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/ui/card.dart';
 import 'package:swassistant/ui/editable_common.dart';
-import 'package:swassistant/ui/screens/EditingEditable.dart';
-import 'package:swassistant/utils/JsonSavable.dart';
+import 'package:swassistant/ui/screens/editing_editable.dart';
+import 'package:swassistant/utils/json_savable.dart';
 import 'package:uuid/uuid.dart';
 
 import '../character.dart';

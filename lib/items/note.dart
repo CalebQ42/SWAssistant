@@ -1,5 +1,5 @@
 
-import 'package:swassistant/utils/JsonSavable.dart';
+import 'package:swassistant/utils/json_savable.dart';
 
 class Note implements JsonSavable{
   String title;

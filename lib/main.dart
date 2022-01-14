@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/intro_zero.dart';
-import 'package:swassistant/ui/screens/DiceRoller.dart';
-import 'package:swassistant/ui/screens/EditableList.dart';
-import 'package:swassistant/ui/screens/GMMode.dart';
-import 'package:swassistant/ui/screens/Settings.dart';
+import 'package:swassistant/ui/screens/dice_roller.dart';
+import 'package:swassistant/ui/screens/editable_list.dart';
+import 'package:swassistant/ui/screens/gm_mode.dart';
+import 'package:swassistant/ui/screens/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -129,12 +129,12 @@ class SWAppState extends State<SWApp> {
       initialRoute: init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
       routes: {
         "/gm" : (context) => GMMode(),
-        "/characters" : (context) => EditableList(EditableList.character),
-        "/minions" : (context) => EditableList(EditableList.minion),
-        "/vehicles" : (context) => EditableList(EditableList.vehicle),
+        "/characters" : (context) => const EditableList(EditableList.character),
+        "/minions" : (context) => const EditableList(EditableList.minion),
+        "/vehicles" : (context) => const EditableList(EditableList.vehicle),
         // "/download" : (context) => Downloads(),
         "/dice" : (context) => DiceRoller(),
-        "/settings" : (context) => Settings(),
+        "/settings" : (context) => const Settings(),
         "/intro" : (context) => const IntroZero(),
       },
     );

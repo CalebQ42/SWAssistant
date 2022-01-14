@@ -7,17 +7,17 @@ class VehicleDefense extends StatefulWidget implements StatefulCard{
 
   final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
 
+  VehicleDefense({Key? key}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() => _VehicleDefenseState(holder: holder);
+  State<StatefulWidget> createState() => _VehicleDefenseState();
 
   @override
   EditableContentStatefulHolder getHolder() => holder;
 
 }
 
-class _VehicleDefenseState extends State{
-
-  EditableContentStatefulHolder holder;
+class _VehicleDefenseState extends State<VehicleDefense>{
 
   TextEditingController? totalDefenseCont;
   TextEditingController? foreDefenseCont;
@@ -25,80 +25,71 @@ class _VehicleDefenseState extends State{
   TextEditingController? portDefenseCont;
   TextEditingController? starboardDefenseCont;
 
-  _VehicleDefenseState({required this.holder}){
-    holder.reloadFunction = () => setState((){});
+  _VehicleDefenseState(){
+    widget.holder.reloadFunction = () => setState((){});
   }
 
   @override
   Widget build(BuildContext context) {
     var vehicle = Vehicle.of(context)!;
     int angleTotal = 0;
-    for (int i in vehicle.defense)
+    for (int i in vehicle.defense){
       angleTotal += i;
-    if (totalDefenseCont == null){
-      totalDefenseCont = TextEditingController(text: vehicle.totalDefense.toString())
-          ..addListener(() =>
-            setState(() => vehicle.totalDefense = int.tryParse(totalDefenseCont!.text) ?? 0)
-          );
     }
+    totalDefenseCont ??= TextEditingController(text: vehicle.totalDefense.toString())
+      ..addListener(() =>
+        setState(() => vehicle.totalDefense = int.tryParse(totalDefenseCont!.text) ?? 0)
+      );
     var total = EditingText(
-      editing: holder.editing,
+      editing: widget.holder.editing,
       initialText: vehicle.totalDefense.toString(),
       controller: totalDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
       title: AppLocalizations.of(context)!.totalDefense
     );
-    if (foreDefenseCont == null){
-      foreDefenseCont = TextEditingController(text: vehicle.defense[0].toString())
-          ..addListener(() =>
-            setState(() => vehicle.defense[0] = int.tryParse(foreDefenseCont!.text) ?? 0)
-          );
-    }
+    foreDefenseCont ??= TextEditingController(text: vehicle.defense[0].toString())
+      ..addListener(() =>
+        setState(() => vehicle.defense[0] = int.tryParse(foreDefenseCont!.text) ?? 0)
+      );
     var fore = EditingText(
-      editing: holder.editing,
+      editing: widget.holder.editing,
       initialText: vehicle.defense[0].toString(),
       controller: foreDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
       title: AppLocalizations.of(context)!.fore
     );
-    if (portDefenseCont == null){
-      portDefenseCont = TextEditingController(text: vehicle.defense[1].toString())
-          ..addListener(() =>
-            setState(() => vehicle.defense[1] = int.tryParse(portDefenseCont!.text) ?? 0)
-          );
-    }
+    portDefenseCont ??= TextEditingController(text: vehicle.defense[1].toString())
+      ..addListener(() =>
+        setState(() => vehicle.defense[1] = int.tryParse(portDefenseCont!.text) ?? 0)
+      );
     var port = EditingText(
-      editing: holder.editing,
+      editing: widget.holder.editing,
       initialText: vehicle.defense[1].toString(),
       controller: portDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
       title: AppLocalizations.of(context)!.port
     );
-    if (starboardDefenseCont == null){
-      starboardDefenseCont = TextEditingController(text: vehicle.defense[2].toString())
-          ..addListener(() =>
-            setState(() => vehicle.defense[2] = int.tryParse(starboardDefenseCont!.text) ?? 0)
-          );
-    }
+    starboardDefenseCont ??= TextEditingController(text: vehicle.defense[2].toString())
+      ..addListener(() =>
+        setState(() => vehicle.defense[2] = int.tryParse(starboardDefenseCont!.text) ?? 0)
+      );
     var starboard = EditingText(
-      editing: holder.editing,
+      editing: widget.holder.editing,
       initialText: vehicle.defense[2].toString(),
       controller: starboardDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
       title: AppLocalizations.of(context)!.starboard
     );
-    if (aftDefenseCont == null){
-      aftDefenseCont = TextEditingController(text: vehicle.defense[3].toString())
-          ..addListener(() =>
-            setState(() => vehicle.defense[3] = int.tryParse(aftDefenseCont!.text) ?? 0)
-          );
-    }
+    aftDefenseCont ??= TextEditingController(text: vehicle.defense[3].toString())
+      ..addListener(() =>
+        setState(() => vehicle.defense[3] = int.tryParse(aftDefenseCont!.text) ?? 0)
+      );
     var aft = EditingText(
-      editing: holder.editing,
+      editing: widget.holder.editing,
       initialText: vehicle.defense[3].toString(),
       controller: aftDefenseCont,
       textType: TextInputType.number,
@@ -109,7 +100,7 @@ class _VehicleDefenseState extends State{
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         total,
-        Divider(
+        const Divider(
           indent: 10,
           endIndent: 10,
         ),

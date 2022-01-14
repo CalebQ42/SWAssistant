@@ -10,33 +10,29 @@ class MinInfo extends StatefulWidget with StatefulCard{
   final EditableContentStatefulHolder holder;
   final EditableContentStatefulHolder woundHolder;
 
-  MinInfo({required this.holder, required this.woundHolder});
+  MinInfo({required this.holder, required this.woundHolder, Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => MinInfoState(holder: holder, woundHolder: woundHolder);
+  State<StatefulWidget> createState() => MinInfoState();
 
   @override
   EditableContentStatefulHolder getHolder() => holder;
 }
 
-class MinInfoState extends State{
+class MinInfoState extends State<MinInfo>{
 
-  final EditableContentStatefulHolder holder;
-  final EditableContentStatefulHolder woundHolder;
-
-  MinInfoState({required this.woundHolder, required this.holder}){
-    holder.reloadFunction = () => setState((){});
+  MinInfoState(){
+    widget.holder.reloadFunction = () => setState((){});
   }
 
   @override
   Widget build(BuildContext context){
     var minion = Minion.of(context);
-    if (minion == null)
-      throw "MinInfo card used on non Minion";
+    if (minion == null) throw "MinInfo card used on non Minion";
     return Column(
       children: [
         EditingText(
-          editing: holder.editing,
+          editing: widget.holder.editing,
           initialText: minion.category,
           controller: (){
             var cont = TextEditingController(text: minion.category);
@@ -57,13 +53,13 @@ class MinInfoState extends State{
           onDownPressed: (){
             minion.minionNum--;
             minion.woundCur -= minion.woundThreshInd;
-            if(minion.woundCur < 0)
-              minion.woundCur = 0;
+            if(minion.woundCur < 0) minion.woundCur = 0;
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[1] && woundHolder.reloadFunction != null)
-              woundHolder.reloadFunction!();
+            if(minion.showCard[1] && widget.woundHolder.reloadFunction != null){
+              widget.woundHolder.reloadFunction!();
+            }
           },
           onUpPressed: (){
             minion.minionNum++;
@@ -71,8 +67,9 @@ class MinInfoState extends State{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            if(minion.showCard[1] && woundHolder.reloadFunction != null)
-              woundHolder.reloadFunction!();
+            if(minion.showCard[1] && widget.woundHolder.reloadFunction != null){
+              widget.woundHolder.reloadFunction!();
+            }
           },
           getValue: () => minion.minionNum,
         )

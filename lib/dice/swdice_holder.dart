@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/swdice.dart' as swdice;
-import 'package:swassistant/ui/misc/Bottom.dart';
-import 'package:swassistant/ui/misc/DiceSelector.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SWDiceHolder{

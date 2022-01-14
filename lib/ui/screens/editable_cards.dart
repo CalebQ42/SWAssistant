@@ -8,7 +8,7 @@ class EditableCards extends StatelessWidget{
   final Function() refreshList;
   final double? w;
 
-  EditableCards({required this.refreshList, this.w});
+  const EditableCards({required this.refreshList, this.w, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

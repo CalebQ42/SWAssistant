@@ -10,15 +10,13 @@ class VehicleInfo extends StatelessWidget{
   final EditableContentState state;
   final Function() updateList;
 
-  VehicleInfo({required this.editing, required this.state, required this.updateList});
+  const VehicleInfo({required this.editing, required this.state, required this.updateList, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var vehicle = Vehicle.of(context);
-    if (vehicle == null)
-      throw "VehicleInfo card called on non Vehicle";
-    
-    var silhouette = new Column(
+    if (vehicle == null) throw "VehicleInfo card called on non Vehicle";
+    var silhouette = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -41,7 +39,7 @@ class VehicleInfo extends StatelessWidget{
         )
       ],
     );
-    var speed = new Column( 
+    var speed = Column( 
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -64,7 +62,7 @@ class VehicleInfo extends StatelessWidget{
         )
       ],
     );
-    var armor = new Column(
+    var armor = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -87,7 +85,7 @@ class VehicleInfo extends StatelessWidget{
         )
       ],
     );
-    var handling = new Column(
+    var handling = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -105,13 +103,13 @@ class VehicleInfo extends StatelessWidget{
             });
             return controller;
           }(),
-          textType: TextInputType.numberWithOptions(signed: true),
+          textType: const TextInputType.numberWithOptions(signed: true),
           title: AppLocalizations.of(context)!.handling,
         )
       ],
     );
     //TODO: Possibly move to dedicated modifications card
-    var hp = new Column(
+    var hp = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -134,7 +132,7 @@ class VehicleInfo extends StatelessWidget{
         )
       ],
     );
-    var capPas = new Column(
+    var capPas = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -157,7 +155,7 @@ class VehicleInfo extends StatelessWidget{
         )
       ],
     );
-    var category = new Column(
+    var category = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(

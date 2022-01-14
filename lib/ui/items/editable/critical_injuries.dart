@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/crit_inj_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/Bottom.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
 
 class CriticalInjuries extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  CriticalInjuries({required this.editing, required this.refresh});
+  const CriticalInjuries({required this.editing, required this.refresh, Key? key}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -63,19 +63,19 @@ class CriticalInjuries extends StatelessWidget{
           children: [
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(editable.criticalInjuries[i].name)
               )
             ),
             AnimatedSwitcher(
-              duration: Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 250),
               child: !editing ? Container(height: 24,)
               : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   IconButton(
-                    constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                    icon: Icon(Icons.delete_forever),
+                    constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                    icon: const Icon(Icons.delete_forever),
                     onPressed: (){
                       editable.criticalInjuries.removeAt(i);
                       refresh();
@@ -83,8 +83,8 @@ class CriticalInjuries extends StatelessWidget{
                     }
                   ),
                   IconButton(
-                    constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                    icon: Icon(Icons.edit),
+                    constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                    icon: const Icon(Icons.edit),
                     onPressed: () =>
                       CriticalInjuryEditDialog(
                         onClose: (criticalinjury){
@@ -98,9 +98,10 @@ class CriticalInjuries extends StatelessWidget{
                 ]
               ),
               transitionBuilder: (child, anim){
-                var offset = Offset(1,0);
-                if((!editing && child is ButtonBar) || (editing && child is Container))
-                  offset = Offset(-1,0);
+                var offset = const Offset(1,0);
+                if((!editing && child is ButtonBar) || (editing && child is Container)){
+                  offset = const Offset(-1,0);
+                }
                 return ClipRect(
                   child: SizeTransition(
                     sizeFactor: anim,
@@ -121,12 +122,12 @@ class CriticalInjuries extends StatelessWidget{
       )
     );
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
           Column(children: criticalinjuriesList),
           AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             transitionBuilder: (wid,anim){
               return SizeTransition(
                 sizeFactor: anim,
@@ -136,7 +137,7 @@ class CriticalInjuries extends StatelessWidget{
             },
             child: editing ? Center(
               child: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () =>
                   CriticalInjuryEditDialog(
                     onClose: (criticalinjury){

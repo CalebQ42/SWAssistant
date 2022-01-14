@@ -8,10 +8,13 @@ class EditableNotes extends StatelessWidget{
 
   final GlobalKey<AnimatedListState> listy = GlobalKey<AnimatedListState>(); 
 
+  EditableNotes({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) =>
     Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.note_add),
+        child: const Icon(Icons.note_add),
         onPressed: (){
           Editable.of(context).notes.add(Note());
           listy.currentState?.insertItem(Editable.of(context).notes.length-1);
@@ -22,13 +25,13 @@ class EditableNotes extends StatelessWidget{
         initialItemCount: Editable.of(context).notes.length,
         itemBuilder: (context, index, anim) =>
           SlideTransition(
-            position: Tween(begin: Offset(1.0, 0.0), end: Offset.zero).animate(anim),
+            position: Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).animate(anim),
             child: NoteCard(
               index: index,
               list: listy,
             )
           ),
-        padding: EdgeInsets.only(bottom: 75)
+        padding: const EdgeInsets.only(bottom: 75)
       )
     );
 }
@@ -39,7 +42,7 @@ class NoteCard extends StatelessWidget{
   final GlobalKey<AnimatedListState> list;
   final EditableContentStatefulHolder holder;
 
-  NoteCard({required this.index, required this.list}) : holder = EditableContentStatefulHolder();
+  NoteCard({Key? key, required this.index, required this.list}) : holder = EditableContentStatefulHolder(), super(key: key);
 
   @override
   Widget build(BuildContext context) =>
@@ -47,46 +50,49 @@ class NoteCard extends StatelessWidget{
       key: ValueKey(index.toString() + Editable.of(context).notes[index].note),
       child: Card(
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: EditableContent(
             editingButtons: () => [
               IconButton(
                 iconSize: 20.0,
                 splashRadius: 20,
-                padding: EdgeInsets.all(5.0),
-                constraints: BoxConstraints.tight(Size.square(30.0)),
-                icon: Icon(Icons.format_align_left),
+                padding: const EdgeInsets.all(5.0),
+                constraints: BoxConstraints.tight(const Size.square(30.0)),
+                icon: const Icon(Icons.format_align_left),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () {
                   Editable.of(context).notes[index].align = 0;
-                  if(holder.reloadFunction != null)
+                  if(holder.reloadFunction != null) {
                     holder.reloadFunction!();
+                  }
                 }
               ),
               IconButton(
                 iconSize: 20.0,
                 splashRadius: 20,
-                padding: EdgeInsets.all(5.0),
-                constraints: BoxConstraints.tight(Size.square(30.0)),
-                icon: Icon(Icons.format_align_center),
+                padding: const EdgeInsets.all(5.0),
+                constraints: BoxConstraints.tight(const Size.square(30.0)),
+                icon: const Icon(Icons.format_align_center),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () {
                   Editable.of(context).notes[index].align = 1;
-                  if(holder.reloadFunction != null)
+                  if(holder.reloadFunction != null) {
                     holder.reloadFunction!();
+                  }
                 }
               ),
               IconButton(
                 iconSize: 20.0,
                 splashRadius: 20,
-                padding: EdgeInsets.all(5.0),
-                constraints: BoxConstraints.tight(Size.square(30.0)),
-                icon: Icon(Icons.format_align_right),
+                padding: const EdgeInsets.all(5.0),
+                constraints: BoxConstraints.tight(const Size.square(30.0)),
+                icon: const Icon(Icons.format_align_right),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () {
                   Editable.of(context).notes[index].align = 2;
-                  if(holder.reloadFunction != null)
+                  if(holder.reloadFunction != null) {
                     holder.reloadFunction!();
+                  }
                 }
               )
             ],
@@ -121,32 +127,31 @@ class NoteCardContents extends StatefulWidget with StatefulCard{
   final int index;
   final EditableContentStatefulHolder holder;
 
-  NoteCardContents({required this.index, required this.holder});
+  NoteCardContents({Key? key, required this.index, required this.holder}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _NoteCardState(index: index, holder: holder);
+  State<StatefulWidget> createState() => _NoteCardState();
 
+  @override
   EditableContentStatefulHolder getHolder() => holder;
 }
 
-class _NoteCardState extends State{
-  final int index;
-  final EditableContentStatefulHolder holder;
+class _NoteCardState extends State<NoteCardContents>{
 
   TextEditingController? control;
 
-  _NoteCardState({required this.index, required this.holder}){
-    holder.reloadFunction = () => setState((){});
+  _NoteCardState(){
+    widget.holder.reloadFunction = () => setState((){});
   }
 
   @override
   Widget build(BuildContext context) {
-    control ??= TextEditingController(text: Editable.of(context).notes[index].note)
+    control ??= TextEditingController(text: Editable.of(context).notes[widget.index].note)
       ..addListener(() {
-        Editable.of(context).notes[index].note = control!.text;
+        Editable.of(context).notes[widget.index].note = control!.text;
       });
     TextAlign align;
-    switch(Editable.of(context).notes[index].align){
+    switch(Editable.of(context).notes[widget.index].align){
       case 0:
         align = TextAlign.left;
         break;
@@ -157,8 +162,8 @@ class _NoteCardState extends State{
         align = TextAlign.right;
     }
     return EditingText(
-      editing: holder.editing,
-      initialText: Editable.of(context).notes[index].note,
+      editing: widget.holder.editing,
+      initialText: Editable.of(context).notes[widget.index].note,
       defaultSave: true,
       controller: control,
       textAlign: align,

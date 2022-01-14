@@ -8,33 +8,31 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/dialogs/editable/item_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/Bottom.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
 
 class Inventory extends StatefulWidget with StatefulCard{
 
   final EditableContentStatefulHolder holder;
 
-  Inventory({required this.holder});
+  const Inventory({required this.holder, Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => InventoryState(holder: holder);
+  State<StatefulWidget> createState() => InventoryState();
 
   @override
   EditableContentStatefulHolder getHolder() => holder;
 }
-class InventoryState extends State{
+class InventoryState extends State<Inventory>{
 
   bool editing = false;
-
-  EditableContentStatefulHolder holder;
 
   TextEditingController? creditController;
   TextEditingController? encumController;
 
-  InventoryState({required this.holder}){
-    editing = holder.editing;
-    holder.reloadFunction = () => setState(() =>
-      editing = holder.editing
+  InventoryState(){
+    editing = widget.holder.editing;
+    widget.holder.reloadFunction = () => setState(() =>
+      editing = widget.holder.editing
     );
   }
 
@@ -63,8 +61,8 @@ class InventoryState extends State{
         setState((){});
       });
     }
-    if(editable is !Minion && editable.inventory.length > 0){
-      if(editable is Character)
+    if(editable is !Minion && editable.inventory.isNotEmpty){
+      if(editable is Character){
         for(Item item in editable.inventory){
           encumTot += item.encum;
           if(encumTot > editable.encumCap){
@@ -72,7 +70,7 @@ class InventoryState extends State{
             break;
           }
         }
-      else if(editable is Vehicle)
+      }else if(editable is Vehicle){
         for(Item item in editable.inventory){
           encumTot += item.encum;
           if(encumTot > editable.encumCap){
@@ -80,9 +78,10 @@ class InventoryState extends State{
             break;
           }
         }
+      }
     }
-    if(editable is !Minion && editable.inventory.length > 0){
-      if(editable is Character)
+    if(editable is !Minion && editable.inventory.isNotEmpty){
+      if(editable is Character){
         for(Weapon weap in editable.weapons){
           encumTot += weap.encumbrance;
           if(encumTot > editable.encumCap){
@@ -90,7 +89,7 @@ class InventoryState extends State{
             break;
           }
         }
-      else if(editable is Vehicle)
+      }else if(editable is Vehicle){
         for(Weapon weap in editable.weapons){
           encumTot += weap.encumbrance;
           if(encumTot > editable.encumCap){
@@ -98,9 +97,10 @@ class InventoryState extends State{
             break;
           }
         }
+      }
     }
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
           if(editable is Character) Row(
@@ -115,7 +115,7 @@ class InventoryState extends State{
                   initialText: editable.credits.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
-                  fieldInsets: EdgeInsets.all(3),
+                  fieldInsets: const EdgeInsets.all(3),
                   controller: creditController,
                   textType: TextInputType.number,
                   defaultSave: true,
@@ -135,7 +135,7 @@ class InventoryState extends State{
                   initialText: editable.encumCap.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
-                  fieldInsets: EdgeInsets.all(3),
+                  fieldInsets: const EdgeInsets.all(3),
                   controller: encumController,
                   textType: TextInputType.number,
                   defaultSave: true,
@@ -155,7 +155,7 @@ class InventoryState extends State{
                   initialText: editable.encumCap.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
-                  fieldInsets: EdgeInsets.all(3),
+                  fieldInsets: const EdgeInsets.all(3),
                   controller: encumController,
                   textType: TextInputType.number,
                   defaultSave: true,
@@ -167,8 +167,7 @@ class InventoryState extends State{
             AppLocalizations.of(context)!.overEncumNotice,
             style: TextStyle(color: Theme.of(context).errorColor),
             textAlign: TextAlign.center,
-          )
-        ]..addAll(List.generate(
+          ), ...List.generate(
           editable.inventory.length,
           (index) => InkResponse(
             containedInkWell: true,
@@ -216,9 +215,9 @@ class InventoryState extends State{
                     buttonPadding: EdgeInsets.zero,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.delete_forever),
+                        icon: const Icon(Icons.delete_forever),
                         iconSize: 24.0,
-                        constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                        constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
                           var temp = Item.from(editable.inventory[index]);
                           editable.inventory.removeAt(index);
@@ -241,9 +240,9 @@ class InventoryState extends State{
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.edit),
+                        icon: const Icon(Icons.edit),
                         iconSize: 24.0,
-                        constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                        constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: () =>
                           ItemEditDialog(
                             it: editable.inventory[index],
@@ -257,11 +256,12 @@ class InventoryState extends State{
                       )
                     ],
                   ) : Container(height: 40),
-                  duration: Duration(milliseconds: 250),
+                  duration: const Duration(milliseconds: 250),
                   transitionBuilder: (child, anim){
-                    var offset = Offset(1,0);
-                    if((!editing && child is ButtonBar) || (editing && child is Container))
-                      offset = Offset(-1,0);
+                    var offset = const Offset(1,0);
+                    if((!editing && child is ButtonBar) || (editing && child is Container)){
+                      offset = const Offset(-1,0);
+                    }
                     return ClipRect(
                       child: SizeTransition(
                         sizeFactor: anim,
@@ -280,12 +280,11 @@ class InventoryState extends State{
               ],
             )
           )
-        ))..add(
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
+        ), AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
             child: editing ? Center(
               child: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () =>
                   ItemEditDialog(
                     editable: editable,
@@ -304,7 +303,7 @@ class InventoryState extends State{
                 axisAlignment: -1.0,
               ),
           )
-        ),
+        ],
       ),
     );
   }

@@ -7,7 +7,7 @@ class Description extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  Description({required this.editing, required this.state});
+  const Description({required this.editing, required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

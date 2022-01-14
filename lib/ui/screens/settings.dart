@@ -10,7 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Settings extends StatefulWidget{
 
-  Settings();
+  const Settings({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => SettingsState();
@@ -29,31 +29,33 @@ class SettingsState extends State{
         title: Text(AppLocalizations.of(context)!.settings),
         backgroundColor: Theme.of(context).primaryColor
       ),
-      drawer: SWDrawer(),
+      drawer: const SWDrawer(),
       body: ListView(
         children: [
           SwitchListTile(
             value: app.getPreference(preferences.forceLight, false),
             onChanged: (b){
               app.prefs.setBool(preferences.forceLight, b);
-              if (b)
+              if (b) {
                 app.prefs.setBool(preferences.forceDark, false);
+              }
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.forceLight),
           ),
-          Divider(),
+          const Divider(),
           SwitchListTile(
             value: app.getPreference(preferences.forceDark, false),
             onChanged: (b){
               app.prefs.setBool(preferences.forceDark, b);
-              if (b)
+              if (b) {
                 app.prefs.setBool(preferences.forceLight, false);
+              }
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.forceDark),
           ),
-          Divider(),
+          const Divider(),
           SwitchListTile(
             value: app.getPreference(preferences.amoled, false),
             onChanged: (b){
@@ -62,7 +64,7 @@ class SettingsState extends State{
             },
             title: Text(AppLocalizations.of(context)!.amoledTheme),
           ),
-          Divider(),
+          const Divider(),
           SwitchListTile(
             value: app.getPreference(preferences.colorDice, true),
             onChanged: (b){
@@ -71,7 +73,7 @@ class SettingsState extends State{
             },
             title: Text(AppLocalizations.of(context)!.colorDice),
           ),
-          Divider(),
+          const Divider(),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.cloudSave),
             value: app.getPreference(preferences.googleDrive, false),
@@ -81,7 +83,7 @@ class SettingsState extends State{
               setState(() {});
             }
           ),
-          Divider(),
+          const Divider(),
           SwitchListTile(
             value: app.getPreference(preferences.firebase, true),
             onChanged: (b){
@@ -94,10 +96,11 @@ class SettingsState extends State{
                       TextButton(
                         onPressed: (){
                           app.prefs.setBool(preferences.firebase, b);
-                          if(Platform.isIOS)
+                          if(Platform.isIOS) {
                             exit(0);
-                          else
+                          } else {
                             SystemNavigator.pop();
+                          }
                         },
                         child: Text(MaterialLocalizations.of(context).continueButtonLabel)
                       ),
@@ -113,7 +116,7 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.firebase),
             subtitle: Text(AppLocalizations.of(context)!.firebaseSubtitle),
           ),
-          Divider(),
+          const Divider(),
           SwitchListTile(
             value: app.getPreference(preferences.crashlytics, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b){
@@ -124,7 +127,7 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.crashReporting),
             subtitle: Text(AppLocalizations.of(context)!.crashReportingSubtitle)
           ),
-          Divider(),
+          const Divider(),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.ads),
             value: app.getPreference(preferences.ads, true),
@@ -134,38 +137,38 @@ class SettingsState extends State{
               setState((){});
             } : null,
           ),
-          if (app.devMode) Divider(),
+          if (app.devMode) const Divider(),
           if(app.devMode) TextButton(
             onPressed: () => app.manualImport(context),
-            style: ButtonStyle(
+            style: const ButtonStyle(
               alignment: Alignment.centerLeft
             ),
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 AppLocalizations.of(context)!.introPage0ImportButton,
                 style: Theme.of(context).textTheme.subtitle1,
               )
             )
           ),
-          Divider(),
+          const Divider(),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, "/intro"),
-            style: ButtonStyle(
+            style: const ButtonStyle(
               alignment: Alignment.centerLeft
             ),
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 AppLocalizations.of(context)!.showIntro,
                 style: Theme.of(context).textTheme.subtitle1,
               )
             )
           ),
-          Divider(),
+          const Divider(),
           AboutListTile(
             applicationName: "SWAssistant",
-            applicationIcon: Image(image: AssetImage("assets/SWAssistant.png"), height: 64,),
+            applicationIcon: const Image(image: AssetImage("assets/SWAssistant.png"), height: 64,),
             applicationLegalese: AppLocalizations.of(context)!.aboutText,
             applicationVersion: "3.0.0.0",
           )

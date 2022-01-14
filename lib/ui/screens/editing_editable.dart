@@ -6,40 +6,37 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/common.dart';
-import 'package:swassistant/ui/misc/Bottom.dart';
-import 'package:swassistant/ui/screens/EditableCards.dart';
-import 'package:swassistant/ui/screens/EditableNotes.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:swassistant/ui/screens/editable_cards.dart';
+import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditingEditable extends StatefulWidget {
-  final Key? key;
+
   final Editable profile;
   final void Function() refreshList;
   final bool contained;
   final double? w;
 
-  EditingEditable(this.profile, this.refreshList, {this.key, this.contained = false, this.w});
+  const EditingEditable(this.profile, this.refreshList, {Key? key, this.contained = false, this.w}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() =>
-      _EditingEditableState(profile, refreshList, contained, w);
+  State<StatefulWidget> createState() => _EditingEditableState();
 }
 
-class _EditingEditableState extends State {
-  final Editable profile;
-  final void Function() refreshList;
+class _EditingEditableState extends State<EditingEditable>{
+
   int _index = 0;
-  final bool contained;
-  final double? w;
 
-  _EditingEditableState(this.profile, this.refreshList, this.contained, this.w);
+  _EditingEditableState();
 
+  @override
   Widget build(BuildContext context) {
     var bottomNav = BottomNavigationBar(
       backgroundColor: Theme.of(context).cardColor,
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
-        BottomNavigationBarItem(icon: Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
+        BottomNavigationBarItem(icon: const Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
+        BottomNavigationBarItem(icon: const Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
       ],
       onTap: (value) => setState(() => _index = value),
       currentIndex: _index,
@@ -47,41 +44,41 @@ class _EditingEditableState extends State {
       showSelectedLabels: true,
     );
     Widget body;
-    if(!contained)
+    if(!widget.contained) {
       body = Scaffold(
-        drawer: SWDrawer(),
+        drawer: const SWDrawer(),
         bottomNavigationBar: bottomNav,
         appBar: SWAppBar(
           context,
           additionalActions: [
             IconButton(
-              icon: Icon(Icons.casino_outlined),
+              icon: const Icon(Icons.casino_outlined),
               onPressed: () =>
                 SWDiceHolder().showDialog(context),
             ),
           ],
           additionalPopupActions: [
-            if (profile is Character)
+            if (widget.profile is Character)
               CheckedPopupMenuItem(
-                checked: (profile as Character).disableForce,
+                checked: (widget.profile as Character).disableForce,
                 child: Text(AppLocalizations.of(context)!.disableForce),
                 value: "disableForce"
               ),
-            if (profile is Character)
+            if (widget.profile is Character)
               CheckedPopupMenuItem(
-                checked: (profile as Character).disableMorality,
+                checked: (widget.profile as Character).disableMorality,
                 child: Text(AppLocalizations.of(context)!.disableMorality),
                 value: "disableMorality"
               ),
-            if (profile is Character)
+            if (widget.profile is Character)
               CheckedPopupMenuItem(
-                checked: (profile as Character).disableDuty,
+                checked: (widget.profile as Character).disableDuty,
                 child: Text(AppLocalizations.of(context)!.disableDuty),
                 value: "disableDuty"
               ),
-            if (profile is Character)
+            if (widget.profile is Character)
               CheckedPopupMenuItem(
-                checked: (profile as Character).disableObligation,
+                checked: (widget.profile as Character).disableObligation,
                 child: Text(AppLocalizations.of(context)!.disableObligation),
                 value: "disableObligation"
               ),
@@ -89,17 +86,17 @@ class _EditingEditableState extends State {
           ],
           backgroundColor: Theme.of(context).primaryColor,
           popupFunctions: {
-            "disableForce": () => setState(() => (profile as Character)
-                .disableForce = !(profile as Character).disableForce),
-            "disableDuty": () => setState(() => (profile as Character)
-                .disableDuty = !(profile as Character).disableDuty),
+            "disableForce": () => setState(() => (widget.profile as Character)
+                .disableForce = !(widget.profile as Character).disableForce),
+            "disableDuty": () => setState(() => (widget.profile as Character)
+                .disableDuty = !(widget.profile as Character).disableDuty),
             "disableObligation": () => setState(() =>
-              (profile as Character).disableObligation = !(profile as Character).disableObligation),
-            "disableMorality": () => setState(() => (profile as Character)
-                .disableMorality = !(profile as Character).disableMorality),
+              (widget.profile as Character).disableObligation = !(widget.profile as Character).disableObligation),
+            "disableMorality": () => setState(() => (widget.profile as Character)
+                .disableMorality = !(widget.profile as Character).disableMorality),
             "clone": () => Bottom(
               child: (context) {
-                var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(profile.name));
+                var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(widget.profile.name));
                 return Wrap(
                   children: [
                     Container(height: 10),
@@ -113,14 +110,15 @@ class _EditingEditableState extends State {
                           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
                           onPressed: () {
                             Editable out;
-                            if (profile is Character)
-                              out = Character.from(profile as Character);
-                            else if (profile is Minion)
-                              out = Minion.from(profile as Minion);
-                            else if (profile is Vehicle)
-                              out = Vehicle.from(profile as Vehicle);
-                            else
+                            if (widget.profile is Character) {
+                              out = Character.from(widget.profile as Character);
+                            } else if (widget.profile is Minion) {
+                              out = Minion.from(widget.profile as Minion);
+                            } else if (widget.profile is Vehicle) {
+                              out = Vehicle.from(widget.profile as Vehicle);
+                            } else {
                               throw "Unsupported Editable Type";
+                            }
                             out.name = nameController.text;
                             SW.of(context).add(out);
                             out.save(context: context);
@@ -141,13 +139,14 @@ class _EditingEditableState extends State {
           },
         ),
         body: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           transitionBuilder: (child, anim){
             Tween<Offset> twen;
-            if(child is EditableCards)
-              twen = Tween(begin: Offset(-1.0, 0), end: Offset.zero);
-            else
-              twen = Tween(begin: Offset(1.0, 0), end: Offset.zero);
+            if(child is EditableCards) {
+              twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
+            } else {
+              twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
+            }
             return ClipRect(
               child: SlideTransition(
                 position: twen.animate(anim),
@@ -155,36 +154,38 @@ class _EditingEditableState extends State {
               )
             );
           },
-          child: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes()
+          child: _index == 0 ? EditableCards(refreshList: widget.refreshList, w: widget.w) : EditableNotes()
         )
       );
-    else
+    } else {
       body = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: AnimatedSwitcher(
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               transitionBuilder: (child, anim){
                 Tween<Offset> twen;
-                if(child is EditableCards)
-                  twen = Tween(begin: Offset(-1.0, 0), end: Offset.zero);
-                else
-                  twen = Tween(begin: Offset(1.0, 0), end: Offset.zero);
+                if(child is EditableCards) {
+                  twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
+                } else {
+                  twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
+                }
                 return SlideTransition(
                   position: twen.animate(anim),
                   child: child,
                 );
               },
-              child: _index == 0 ? EditableCards(refreshList: refreshList, w: w) : EditableNotes()
+              child: _index == 0 ? EditableCards(refreshList: widget.refreshList, w: widget.w) : EditableNotes()
             )
           ),
           bottomNav
         ],
       );
+    }
     return InheritedEditable(
       child: body,
-      editable: profile
+      editable: widget.profile
     );
   }
 }
@@ -192,7 +193,7 @@ class _EditingEditableState extends State {
 class InheritedEditable extends InheritedWidget {
   final Editable editable;
 
-  InheritedEditable({required Widget child, required this.editable}) : super(child: child);
+  const InheritedEditable({required Widget child, required this.editable, Key? key}) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;
