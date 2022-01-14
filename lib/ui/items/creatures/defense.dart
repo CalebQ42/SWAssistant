@@ -7,13 +7,12 @@ class Defense extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  Defense({required this.editing, required this.state});
+  const Defense({required this.editing, required this.state, Key? key}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     var creature = Creature.of(context);
-    if (creature == null)
-      throw "Defense card used on non Creature";
+    if (creature == null) throw "Defense card used on non Creature";
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [

@@ -8,7 +8,7 @@ class Characteristics extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  Characteristics({required this.editing, required this.state});
+  const Characteristics({required this.editing, required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +39,11 @@ class Characteristics extends StatelessWidget{
       ],
     );
   }
+
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   Widget charBuilder(int charNum, TextStyle style, BuildContext context){
     var creature = Creature.of(context);
-    if (creature == null)
-      throw "Characteristics card used on non Creature";
+    if (creature == null) throw "Characteristics card used on non Creature";
     return Expanded(
       child: InkResponse(
         containedInkWell: true,

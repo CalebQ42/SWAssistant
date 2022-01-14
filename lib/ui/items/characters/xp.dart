@@ -10,13 +10,12 @@ class XP extends StatelessWidget{
   final Function() refresh;
   final EditableContentState state;
 
-  XP({required this.editing, required this.refresh, required this.state});
+  const XP({required this.editing, required this.refresh, required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
     var character = Character.of(context);
-    if (character == null)
-      throw "XP card used on non Character";
+    if (character == null) throw "XP card used on non Character";
     var xpAddController = TextEditingController();
     return Column(
       children: [
@@ -76,7 +75,7 @@ class XP extends StatelessWidget{
                 controller: xpAddController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
+                decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
                 onSubmitted: (text){
                   if(text != ""){
                     var adding = int.tryParse(text);
@@ -103,7 +102,7 @@ class XP extends StatelessWidget{
                   refresh();
                 }
               },
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
               label: Text(AppLocalizations.of(context)!.addXP)
             )
           ]

@@ -8,15 +8,14 @@ class Specializations extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  Specializations({required this.editing, required this.refresh});
+  const Specializations({required this.editing, required this.refresh, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
-    if (character == null)
-      throw "Specializations card used on non Character";
+    if (character == null) throw "Specializations card used on non Character";
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: List.generate(
           character.specializations.length,
@@ -30,9 +29,9 @@ class Specializations extends StatelessWidget{
                   buttonPadding: EdgeInsets.zero,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.delete_forever),
+                      icon: const Icon(Icons.delete_forever),
                       iconSize: 24.0,
-                      constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                      constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                       onPressed: (){
                         var temp = character.specializations[index];
                         character.specializations.removeAt(index);
@@ -55,9 +54,9 @@ class Specializations extends StatelessWidget{
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.edit),
+                      icon: const Icon(Icons.edit),
                       iconSize: 24.0,
-                      constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                      constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                       onPressed: () =>
                         SpecializationEditDialog(
                           onClose: (specialization){
@@ -70,11 +69,12 @@ class Specializations extends StatelessWidget{
                     )
                   ],
                 ) : Container(height: 40),
-                duration: Duration(milliseconds: 250),
+                duration: const Duration(milliseconds: 250),
                 transitionBuilder: (child, anim){
-                  var offset = Offset(1,0);
-                  if((!editing && child is ButtonBar) || (editing && child is Container))
-                    offset = Offset(-1,0);
+                  var offset = const Offset(1,0);
+                  if((!editing && child is ButtonBar) || (editing && child is Container)){
+                    offset = const Offset(-1,0);
+                  }
                   return ClipRect(
                     child: SizeTransition(
                       sizeFactor: anim,
@@ -94,10 +94,10 @@ class Specializations extends StatelessWidget{
           )
         )..add(
           AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             child: editing ? Center(
               child: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () =>
                   SpecializationEditDialog(
                     onClose: (specialization){

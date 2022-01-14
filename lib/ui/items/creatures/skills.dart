@@ -9,12 +9,12 @@ class Skills extends StatelessWidget{
   final bool editing;
   final Function() refresh;
 
-  Skills({required this.editing, required this.refresh});
+  const Skills({required this.editing, required this.refresh, Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context){
     var creature = Creature.of(context);
-    if (creature == null)
-      throw "Characteristics card used on non Creature";
+    if (creature == null) throw "Characteristics card used on non Creature";
     var children = List.generate(creature.skills.length, (index){
       return InkResponse(
         containedInkWell: true,
@@ -32,15 +32,15 @@ class Skills extends StatelessWidget{
             AnimatedSwitcher(
               child: !editing && creature is Character ? Padding(
                 child:Text(creature.skills[index].value.toString()),
-                padding: EdgeInsets.all(12)
+                padding: const EdgeInsets.all(12)
               )
               : !editing ? Container(height: 40,) : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   IconButton(
                     iconSize: 24.0,
-                    constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                    icon: Icon(Icons.delete_forever),
+                    constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                    icon: const Icon(Icons.delete_forever),
                     onPressed: (){
                       var temp = Skill.from(creature.skills[index]);
                       creature.skills.removeAt(index);
@@ -63,8 +63,8 @@ class Skills extends StatelessWidget{
                     }
                   ),
                   IconButton(
-                    constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                    icon: Icon(Icons.edit),
+                    constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                    icon: const Icon(Icons.edit),
                     onPressed: () =>
                       SkillEditDialog(
                         creature: creature,
@@ -78,11 +78,12 @@ class Skills extends StatelessWidget{
                   )
                 ]
               ),
-              duration: Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 250),
               transitionBuilder: (child, anim){
-                var offset = Offset(1,0);
-                if((!editing && child is ButtonBar) || (editing && child is Padding))
-                  offset = Offset(-1,0);
+                var offset = const Offset(1,0);
+                if((!editing && child is ButtonBar) || (editing && child is Padding)){
+                  offset = const Offset(-1,0);
+                }
                 return ClipRect(
                   child: SizeTransition(
                     sizeFactor: anim,
@@ -103,17 +104,17 @@ class Skills extends StatelessWidget{
       );
     });
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Column(
         children: <Widget>[
           Column(
             children: children
           ),
           AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             child: editing ? Center(
               child: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () =>
                   SkillEditDialog(
                     creature: creature,

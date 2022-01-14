@@ -8,59 +8,58 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Morality extends StatefulWidget with StatefulCard{
 
+  Morality({Key? key}) : super(key: key);
+
   final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
 
   @override
-  State<StatefulWidget> createState() => MoralityState(holder: holder);
+  State<StatefulWidget> createState() => MoralityState();
 
   @override
   EditableContentStatefulHolder getHolder() => holder;
 }
 
-class MoralityState extends State with TickerProviderStateMixin{
+class MoralityState extends State<Morality>{
 
   bool editing = false;
-
-  EditableContentStatefulHolder holder;
 
   TextEditingController? moralityController;
   TextEditingController? conflictController;
   TextEditingController? strengthController;
   TextEditingController? weaknessController;
 
-  MoralityState({required this.holder}){
-    editing = holder.editing;
-    holder.reloadFunction = () => setState(() =>
-      editing = holder.editing
+  MoralityState(){
+    editing = widget.holder.editing;
+    widget.holder.reloadFunction = () => setState(() =>
+      editing = widget.holder.editing
     );
   }
 
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
-    if (character == null)
-      throw "Morality card used on non Character";
+    if (character == null) throw "Morality card used on non Character";
     if(moralityController == null){
-      moralityController = new TextEditingController(text: character.morality.toString());
+      moralityController = TextEditingController(text: character.morality.toString());
       moralityController?.addListener(() =>
         character.morality = int.tryParse(moralityController!.text) ?? 0
       );
     }
     if(conflictController == null){
-      conflictController = new TextEditingController(text: character.conflict.toString());
+      conflictController = TextEditingController(text: character.conflict.toString());
       conflictController?.addListener(() {
         character.conflict = int.tryParse(conflictController!.text) ?? 0;
         character.save(context: context);
       });
     }
     if(strengthController == null){
-      strengthController = new TextEditingController(text: character.emotionalStr);
+      strengthController = TextEditingController(text: character.emotionalStr);
       strengthController?.addListener(() {
         character.emotionalStr = strengthController!.text;
       });
     }
     if(weaknessController == null){
-      weaknessController = new TextEditingController(text: character.emotionalWeak);
+      weaknessController = TextEditingController(text: character.emotionalWeak);
       weaknessController?.addListener(() {
         character.emotionalWeak = weaknessController!.text;
       });
@@ -123,8 +122,7 @@ class MoralityState extends State with TickerProviderStateMixin{
                 child: Text(AppLocalizations.of(context)!.resolveConflict),
                 onPressed: (){
                   var conflict = int.tryParse(conflictController!.text);
-                  if(conflict == null)
-                    conflict = 0;
+                  conflict ??= 0;
                   conflictController!.text = "0";
                   character.conflict = 0;
                   var resolution = Random().nextInt(9) + 1;
@@ -135,10 +133,11 @@ class MoralityState extends State with TickerProviderStateMixin{
                   resolution = resolution - conflict;
                   setState((){
                     character.morality += character.darkSide ? -resolution : resolution;
-                    if(character.morality > 100)
+                    if(character.morality > 100){
                       character.morality = 100;
-                    else if (character.morality < 0)
+                    }else if (character.morality < 0){
                       character.morality = 0;
+                    }
                     character.save(context: context);
                   });
                 },

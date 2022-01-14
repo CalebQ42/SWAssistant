@@ -13,14 +13,14 @@ class ForcePowers extends StatelessWidget{
   final Function() refresh;
   final EditableContentState state;
 
-  ForcePowers({required this.editing, required this.refresh, required this.state});
+  const ForcePowers({required this.editing, required this.refresh, required this.state, Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
-    if (character == null)
-      throw "Force Powers card used on non Character";
+    if (character == null) throw "Force Powers card used on non Character";
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
           Row(
@@ -34,9 +34,9 @@ class ForcePowers extends StatelessWidget{
                   initialText: character.force.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
-                  fieldInsets: EdgeInsets.all(3),
+                  fieldInsets: const EdgeInsets.all(3),
                   controller: (){
-                    var controller = new TextEditingController(text: character.force.toString());
+                    var controller = TextEditingController(text: character.force.toString());
                     controller.addListener(() =>
                       character.force = int.tryParse(controller.text) ?? 0
                     );
@@ -47,8 +47,7 @@ class ForcePowers extends StatelessWidget{
                 )
               )
             ],
-          )
-        ]..addAll(List.generate(
+          ), ...List.generate(
           character.forcePowers.length,
           (index) => InkResponse(
             containedInkWell: true,
@@ -84,9 +83,9 @@ class ForcePowers extends StatelessWidget{
                     buttonPadding: EdgeInsets.zero,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.delete_forever),
+                        icon: const Icon(Icons.delete_forever),
                         iconSize: 24.0,
-                        constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                        constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
                           var temp = ForcePower.from(character.forcePowers[index]);
                           character.forcePowers.removeAt(index);
@@ -109,9 +108,9 @@ class ForcePowers extends StatelessWidget{
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.edit),
+                        icon: const Icon(Icons.edit),
                         iconSize: 24.0,
-                        constraints: BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                        constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: () =>
                           ForcePowerEditDialog(
                             onClose: (forcePower){
@@ -124,11 +123,12 @@ class ForcePowers extends StatelessWidget{
                       )
                     ],
                   ) : Container(height: 40),
-                  duration: Duration(milliseconds: 250),
+                  duration: const Duration(milliseconds: 250),
                   transitionBuilder: (child, anim){
-                    var offset = Offset(1,0);
-                    if((!editing && child is ButtonBar) || (editing && child is Container))
-                      offset = Offset(-1,0);
+                    var offset = const Offset(1,0);
+                    if((!editing && child is ButtonBar) || (editing && child is Container)){
+                      offset = const Offset(-1,0);
+                    }
                     return ClipRect(
                       child: SizeTransition(
                         sizeFactor: anim,
@@ -147,12 +147,11 @@ class ForcePowers extends StatelessWidget{
               ],
             )
           )
-        ))..add(
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
+        ), AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
             child: editing ? Center(
               child: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () =>
                   ForcePowerEditDialog(
                     onClose: (forcePower){
@@ -171,7 +170,7 @@ class ForcePowers extends StatelessWidget{
               );
             },
           )
-        ),
+        ],
       ),
     );
   }

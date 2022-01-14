@@ -135,7 +135,7 @@ class SWAppState extends State<SWApp> {
         // "/download" : (context) => Downloads(),
         "/dice" : (context) => DiceRoller(),
         "/settings" : (context) => Settings(),
-        "/intro" : (context) => IntroZero(),
+        "/intro" : (context) => const IntroZero(),
       },
     );
   }

@@ -10,13 +10,13 @@ class CharacterInfo extends StatelessWidget{
   final EditableContentState state;
   final Function() updateList;
 
-  CharacterInfo({required this.editing, required this.state, required this.updateList});
+  const CharacterInfo({required this.editing, required this.state, required this.updateList, Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
-    if (character == null)
-      throw "CharacterInfo card on non Character";
-    var species = new Column(
+    if (character == null) throw "CharacterInfo card on non Character";
+    var species = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -35,7 +35,7 @@ class CharacterInfo extends StatelessWidget{
         )
       ],
     );
-    var age = new Column(
+    var age = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -56,7 +56,7 @@ class CharacterInfo extends StatelessWidget{
         )
       ],
     );
-    var motivation = new Column(
+    var motivation = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -75,7 +75,7 @@ class CharacterInfo extends StatelessWidget{
         )
       ],
     );
-    var career = new Column(
+    var career = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
@@ -94,7 +94,7 @@ class CharacterInfo extends StatelessWidget{
         )
       ],
     );
-    var category = new Column(
+    var category = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(

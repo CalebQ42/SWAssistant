@@ -11,13 +11,12 @@ class WoundStrain extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  WoundStrain({required this.editing, required this.state});
+  const WoundStrain({required this.editing, required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
-    if (character == null)
-      throw "Wound Strain card used on non Character";
+    if (character == null) throw "Wound Strain card used on non Character";
     return Column(
       children: <Widget>[
         Row(
@@ -32,9 +31,9 @@ class WoundStrain extends StatelessWidget{
                 initialText: character.soak.toString(),
                 collapsed: true,
                 fieldAlign: TextAlign.center,
-                fieldInsets: EdgeInsets.all(3),
+                fieldInsets: const EdgeInsets.all(3),
                 controller: (){
-                  var controller = new TextEditingController(text: character.soak.toString());
+                  var controller = TextEditingController(text: character.soak.toString());
                   controller.addListener(() =>
                     character.soak = int.tryParse(controller.text) ?? 0
                   );
@@ -53,13 +52,14 @@ class WoundStrain extends StatelessWidget{
               child: SizedBox(
                 height: 80,
                 child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
                     Tween<Offset> offset;
-                    if((!editing && wid is Padding) || (editing && wid is Column))
-                      offset = Tween(begin: Offset(0.0,-1.0), end: Offset.zero);
-                    else
-                      offset = Tween(begin: Offset(0.0,1.0), end: Offset.zero);
+                    if((!editing && wid is Padding) || (editing && wid is Column)){
+                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
+                    }else{
+                      offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
+                    }
                     return ClipRect(
                       child: SlideTransition(
                         position: offset.animate(anim),
@@ -71,7 +71,7 @@ class WoundStrain extends StatelessWidget{
                     children: [
                       Center(child: Text(AppLocalizations.of(context)!.wound)),
                       UpDownStat(
-                        key: ValueKey("UpDownWound"),
+                        key: const ValueKey("UpDownWound"),
                         onUpPressed: () {
                           character.woundCur++;
                           character.save(context: context);
@@ -98,7 +98,7 @@ class WoundStrain extends StatelessWidget{
                         decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxWound),
                         textAlign: TextAlign.center,
                       ),
-                      padding: EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
+                      padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
                     ); 
                   }()
                 )
@@ -108,13 +108,14 @@ class WoundStrain extends StatelessWidget{
               child: SizedBox(
                 height: 80,
                 child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
                     Tween<Offset> offset;
-                    if((!editing && wid is Padding) || (editing && wid is Column))
-                      offset = Tween(begin: Offset(0.0,-1.0), end: Offset.zero);
-                    else
-                      offset = Tween(begin: Offset(0.0,1.0), end: Offset.zero);
+                    if((!editing && wid is Padding) || (editing && wid is Column)){
+                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
+                    }else{
+                      offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
+                    }
                     return ClipRect(
                       child: SlideTransition(
                         position: offset.animate(anim),
@@ -126,7 +127,7 @@ class WoundStrain extends StatelessWidget{
                     children: [
                       Center(child: Text(AppLocalizations.of(context)!.strain),),
                       UpDownStat(
-                        key: ValueKey("UpDownStrain"),
+                        key: const ValueKey("UpDownStrain"),
                         onUpPressed: (){
                           character.strainCur++;
                           character.save(context: context);
@@ -153,7 +154,7 @@ class WoundStrain extends StatelessWidget{
                         decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStrain),
                         textAlign: TextAlign.center,
                       ),
-                      padding: EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
+                      padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
                     ); 
                   }()
                 )

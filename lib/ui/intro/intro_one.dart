@@ -21,7 +21,7 @@ class _IntroOneState extends State{
   @override
   Widget build(BuildContext context) =>
     IntroScreen(
-      nextScreen: IntroTwo(),
+      nextScreen: const IntroTwo(),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 500),
         child: Column(
