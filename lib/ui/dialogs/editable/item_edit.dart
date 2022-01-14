@@ -19,7 +19,7 @@ class ItemEditDialog{
   late Bottom bot;
 
   ItemEditDialog({required this.onClose, Item? it, required this.editable}) :
-      this.item = it == null ? Item() : Item.from(it){
+    item = it == null ? Item() : Item.from(it){
     nameController = TextEditingController(text: item.name)
       ..addListener(() {
         item.name = nameController.text;

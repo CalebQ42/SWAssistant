@@ -7,7 +7,7 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/dialogs/editable/WeaponCharacteristicDialog.dart';
+import 'package:swassistant/ui/dialogs/editable/weapon_char_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/misc/UpdatingSwitchTile.dart';
@@ -27,7 +27,7 @@ class WeaponEditDialog{
   late TextEditingController arcController;
 
   WeaponEditDialog({required this.onClose, Weapon? weap, required this.editable}) :
-      this.weapon = weap == null ? Weapon() : Weapon.from(weap){
+    weapon = weap == null ? Weapon() : Weapon.from(weap){
     nameController = TextEditingController(text: weapon.name)
         ..addListener(() {
           weapon.name = nameController.text;
@@ -164,21 +164,20 @@ class _WeaponAmmo extends StatefulWidget{
 
   final Weapon weapon;
 
-  _WeaponAmmo(this.weapon);
+  const _WeaponAmmo(this.weapon, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _AmmoState(weapon);
+  State<StatefulWidget> createState() => _AmmoState();
 }
 
-class _AmmoState extends State{
+class _AmmoState extends State<_WeaponAmmo>{
 
-  final Weapon weapon;
   late TextEditingController ammoController;
 
-  _AmmoState(this.weapon){
-    ammoController = TextEditingController(text: weapon.ammo.toString())
+  _AmmoState(){
+    ammoController = TextEditingController(text: widget.weapon.ammo.toString())
         ..addListener(() =>
-          weapon.ammo = int.tryParse(ammoController.text) ?? 0
+          widget.weapon.ammo = int.tryParse(ammoController.text) ?? 0
         );
   }
 
@@ -188,7 +187,7 @@ class _AmmoState extends State{
       children: [
         //Ammo
         AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           transitionBuilder: (child, anim){
             return SizeTransition(
               sizeFactor: anim,
@@ -196,8 +195,8 @@ class _AmmoState extends State{
               child: child
             );
           },
-          child: weapon.limitedAmmo ? Padding(
-            padding: EdgeInsets.only(top: 5),
+          child: widget.weapon.limitedAmmo ? Padding(
+            padding: const EdgeInsets.only(top: 5),
             child: TextField(
               controller: ammoController,
               decoration: InputDecoration(
@@ -210,8 +209,8 @@ class _AmmoState extends State{
         ),
         //Limited Ammo
         SwitchListTile(
-          value: weapon.limitedAmmo,
-          onChanged: (value) => setState(() => weapon.limitedAmmo = value),
+          value: widget.weapon.limitedAmmo,
+          onChanged: (value) => setState(() => widget.weapon.limitedAmmo = value),
           title: Text(AppLocalizations.of(context)!.slugthrower)
         ),
       ],
@@ -222,23 +221,19 @@ class _WeaponCharacteristics extends StatefulWidget{
 
   final Weapon weapon;
 
-  _WeaponCharacteristics(this.weapon);
+  const _WeaponCharacteristics(this.weapon, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CharacteristicsState(weapon);
+  State<StatefulWidget> createState() => _CharacteristicsState();
 }
 
-class _CharacteristicsState extends State{
-
-  final Weapon weapon;
-
-  _CharacteristicsState(this.weapon);
+class _CharacteristicsState extends State<_WeaponCharacteristics>{
 
   @override
   Widget build(BuildContext context) =>
     Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: List.generate(weapon.characteristics.length,(i){
+      children: List.generate(widget.weapon.characteristics.length,(i){
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -246,37 +241,37 @@ class _CharacteristicsState extends State{
               containedInkWell: true,
               onTap: () =>
                 WeaponCharacteristicDialog(
-                  characteristic: weapon.characteristics[i],
+                  characteristic: widget.weapon.characteristics[i],
                   onClose: (wc){
-                    setState(() => weapon.characteristics[i] = wc);
+                    setState(() => widget.weapon.characteristics[i] = wc);
                   }
                 ).show(context),
               child: Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(weapon.characteristics[i].name + " " +weapon.characteristics[i].value.toString()),
+                      child: Text(widget.weapon.characteristics[i].name + " " + widget.weapon.characteristics[i].value.toString()),
                     ),
-                    Text(weapon.characteristics[i].advantage.toString())
+                    Text(widget.weapon.characteristics[i].advantage.toString())
                   ],
                 )
               )
             )),
             IconButton(
               onPressed: () =>
-                setState(()=> weapon.characteristics.removeAt(i)),
-              icon: Icon(Icons.delete_forever)
+                setState(()=> widget.weapon.characteristics.removeAt(i)),
+              icon: const Icon(Icons.delete_forever)
             )
           ]
         );
       })..add(
         TextButton.icon(
           label: Text(AppLocalizations.of(context)!.addCharacteristic),
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () =>
             WeaponCharacteristicDialog(
-              onClose: (wc) => setState(() => weapon.characteristics.add(wc))
+              onClose: (wc) => setState(() => widget.weapon.characteristics.add(wc))
             ).show(context),
         ),
       )
@@ -288,18 +283,13 @@ class _WeaponDropdowns extends StatefulWidget{
   final Weapon weapon;
   final Bottom bot;
 
-  _WeaponDropdowns(this.weapon, this.bot);
+  const _WeaponDropdowns(this.weapon, this.bot, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _WeaponState(weapon, bot);
+  State<StatefulWidget> createState() => _WeaponState();
 }
 
-class _WeaponState extends State{
-
-  final Weapon weapon;
-  final Bottom bot;
-
-  _WeaponState(this.weapon, this.bot);
+class _WeaponState extends State<_WeaponDropdowns>{
 
   @override
   Widget build(BuildContext context) {
@@ -338,8 +328,8 @@ class _WeaponState extends State{
                   value: 4,
                 )
               ],
-              value: weapon.range,
-              onChanged: (value) => setState(() => weapon.range = value ?? 0),
+              value: widget.weapon.range,
+              onChanged: (value) => setState(() => widget.weapon.range = value ?? 0),
             )
           ),
           //Damage
@@ -374,8 +364,8 @@ class _WeaponState extends State{
                   value: 4,
                 ),
               ],
-              value: weapon.itemState,
-              onChanged: (value) => setState(() => weapon.itemState = value ?? 0),
+              value: widget.weapon.itemState,
+              onChanged: (value) => setState(() => widget.weapon.itemState = value ?? 0),
             )
           ),
           //Skill
@@ -395,11 +385,11 @@ class _WeaponState extends State{
                   value: i
                 )
               ),
-              value: weapon.skill == -1 ? null : weapon.skill,
+              value: widget.weapon.skill == -1 ? null : widget.weapon.skill,
               onChanged: (value) => setState((){
-                weapon.skill = value ?? -1;
-                weapon.skillBase = Skill.skillsList(context)[weaponSkills[weapon.skill]]!;
-                bot.updateButtons();
+                widget.weapon.skill = value ?? -1;
+                widget.weapon.skillBase = Skill.skillsList(context)[weaponSkills[widget.weapon.skill]]!;
+                widget.bot.updateButtons();
               }),
               hint: Text(AppLocalizations.of(context)!.skill),
             )
@@ -420,10 +410,10 @@ class _WeaponState extends State{
                   value: i
                 )
               ),
-              value: weapon.skillBase == -1 ? null : weapon.skillBase,
+              value: widget.weapon.skillBase == -1 ? null : widget.weapon.skillBase,
               onChanged: (value) => setState(() {
-                weapon.skillBase = value ?? -1;
-                bot.updateButtons();
+                widget.weapon.skillBase = value ?? -1;
+                widget.bot.updateButtons();
               }),
               hint: Text(AppLocalizations.of(context)!.skillBase),
             )

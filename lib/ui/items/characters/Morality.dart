@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/character.dart';
-import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Morality extends StatefulWidget with StatefulCard{

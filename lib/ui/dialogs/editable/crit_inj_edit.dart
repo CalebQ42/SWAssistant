@@ -13,7 +13,7 @@ class CriticalInjuryEditDialog {
   late Bottom bot;
 
   CriticalInjuryEditDialog({CriticalInjury? inj, required this.onClose}) :
-    this.criticalInjury = inj == null ? CriticalInjury() : CriticalInjury.from(inj){
+    criticalInjury = inj == null ? CriticalInjury() : CriticalInjury.from(inj){
     nameController = TextEditingController(text: criticalInjury.name)
         ..addListener(() {
           criticalInjury.name = nameController.text;
@@ -80,17 +80,13 @@ class _SeverityDropdown extends StatefulWidget{
   final CriticalInjury criticalInjury;
   final Bottom bot;
 
-  _SeverityDropdown(this.criticalInjury, this.bot);
+  const _SeverityDropdown(this.criticalInjury, this.bot, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SeverityState(criticalInjury, bot);
+  State<StatefulWidget> createState() => _SeverityState();
 }
 
-class _SeverityState extends State{
-  final CriticalInjury criticalInjury;
-  final Bottom bot;
-
-  _SeverityState(this.criticalInjury, this.bot);
+class _SeverityState extends State<_SeverityDropdown>{
 
   @override
   Widget build(BuildContext context) =>
@@ -116,10 +112,10 @@ class _SeverityState extends State{
         ),
       ],
       onChanged: (value) {
-        setState(() => criticalInjury.severity = value ?? 0);
-        bot.updateButtons();
+        setState(() => widget.criticalInjury.severity = value ?? 0);
+        widget.bot.updateButtons();
       },
-      value: criticalInjury.severity,
+      value: widget.criticalInjury.severity,
       onTap: () => FocusScope.of(context).unfocus(),
     );
 }

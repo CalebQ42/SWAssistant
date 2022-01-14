@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/sides.dart';
-import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 

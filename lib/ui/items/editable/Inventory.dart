@@ -5,8 +5,8 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/dialogs/editable/ItemEditDialog.dart';
+import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/dialogs/editable/item_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 

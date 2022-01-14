@@ -8,7 +8,7 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/Common.dart';
+import 'package:swassistant/ui/common.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/screens/EditableList.dart';
 import 'package:swassistant/ui/screens/EditingEditable.dart';

@@ -16,7 +16,7 @@ class WeaponCharacteristicDialog{
   late TextEditingController advantageController;
 
   WeaponCharacteristicDialog({WeaponCharacteristic? characteristic, required this.onClose}) :
-      this.wc = characteristic == null ? WeaponCharacteristic() : WeaponCharacteristic.from(characteristic){
+    wc = characteristic == null ? WeaponCharacteristic() : WeaponCharacteristic.from(characteristic){
     nameController = TextEditingController(text: wc.name)
         ..addListener(() {
           wc.name = nameController.text;

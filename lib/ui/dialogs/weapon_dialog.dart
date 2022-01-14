@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice_results.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
-import 'package:swassistant/dice/swdice.dart' as SWDice;
+import 'package:swassistant/dice/swdice.dart' as swdice;
 import 'package:swassistant/items/weapon.dart';
-import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 
@@ -37,7 +37,7 @@ class SWWeaponDialog {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text(SWDice.getName(context, index))
+                    child: Text(swdice.getName(context, index))
                   ),
                   Expanded(
                     child:UpDownStat(
@@ -171,7 +171,7 @@ class _WeaponResults{
             style: Theme.of(context).textTheme.headline6,
           )
         ),
-        if(weapon.critical > 0 || weapon.characteristics.length > 0) Column(
+        if(weapon.critical > 0 || weapon.characteristics.isNotEmpty) Column(
           children: [
             Container(height: 15,),
             Row(
@@ -185,7 +185,7 @@ class _WeaponResults{
                 )
               ]
             ),
-            Divider(),
+            const Divider(),
             if(weapon.critical > 0) Row(
               children: [
                 Expanded(
@@ -196,15 +196,16 @@ class _WeaponResults{
                   child: Center(child: Text(weapon.critical.toString())),
                 )
               ],
-            )
-          ]..addAll((){
-            if(weapon.characteristics.length == 0)
+            ), ...(){
+            if(weapon.characteristics.isEmpty){
               return <Widget>[];
+            }
             return List<Widget>.generate(weapon.characteristics.length,
               (index){
                 var charText = weapon.characteristics[index].name;
-                if(weapon.characteristics[index].value != 0)
+                if(weapon.characteristics[index].value != 0){
                   charText += " " + weapon.characteristics[index].value.toString();
+                }
                 return Row(
                   children: [
                     Expanded(
@@ -218,7 +219,8 @@ class _WeaponResults{
                 );
               }
             );
-          }())
+          }()
+          ]
         )
       ],
     );

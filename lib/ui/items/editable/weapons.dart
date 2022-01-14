@@ -6,8 +6,8 @@ import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/dialogs/SWWeaponDialog.dart';
-import 'package:swassistant/ui/dialogs/editable/WeaponEditDialog.dart';
+import 'package:swassistant/ui/dialogs/weapon_dialog.dart';
+import 'package:swassistant/ui/dialogs/editable/weapon_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Weapons extends StatelessWidget{

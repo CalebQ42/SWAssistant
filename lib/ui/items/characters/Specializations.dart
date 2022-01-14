@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
-import 'package:swassistant/ui/dialogs/character/SpecializationEditDialog.dart';
+import 'package:swassistant/ui/dialogs/character/specialization_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Specializations extends StatelessWidget{

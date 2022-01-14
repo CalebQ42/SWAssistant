@@ -17,9 +17,9 @@ class SkillEditDialog{
   late TextEditingController valueController;
 
   SkillEditDialog({required this.onClose, Skill? sk, required this.creature}) :
-      this.skill = sk == null ? Skill() : 
+      skill = sk == null ? Skill() : 
       creature is Character ? Skill.from(sk) : Skill.from(sk..value = 0){
-    valueController = new TextEditingController(text: skill.value != -1 ? skill.value.toString() : "")
+    valueController = TextEditingController(text: skill.value != -1 ? skill.value.toString() : "")
       ..addListener(() {
         skill.value = int.tryParse(valueController.text) ?? -1;
         bot.updateButtons();
@@ -73,32 +73,31 @@ class _SkillSelector extends StatefulWidget{
   final Skill skill;
   final Bottom bot;
 
-  _SkillSelector(this.skill, this.bot);
+  const _SkillSelector(this.skill, this.bot, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SkillSelectorState(skill, bot);
+  State<StatefulWidget> createState() => _SkillSelectorState();
 }
 
-class _SkillSelectorState extends State{
-  final Skill skill;
-  final Bottom bot;
+class _SkillSelectorState extends State<_SkillSelector>{
+
   bool manual = false;
   late Map<String, int> skillsList;
 
   late TextEditingController skillController;
 
-  _SkillSelectorState(this.skill, this.bot){
-    skillController = TextEditingController(text: skill.name)
+  _SkillSelectorState(){
+    skillController = TextEditingController(text: widget.skill.name)
       ..addListener(() {
-        skill.name = skillController.text;
-        bot.updateButtons();
+        widget.skill.name = skillController.text;
+        widget.bot.updateButtons();
       });
   }
 
   @override
   Widget build(BuildContext context) {
     skillsList = Skill.skillsList(context);
-    if(skill.name != null && !skillsList.containsKey(skill.name)){
+    if(widget.skill.name != null && !skillsList.containsKey(widget.skill.name)){
       manual = true;
     }
     return Column(
@@ -115,16 +114,16 @@ class _SkillSelectorState extends State{
               setState((){
                 if(value != AppLocalizations.of(context)!.skills35){
                   manual = false;
-                  skill.name = value!;
-                  skill.base = skillsList[value]!;
+                  widget.skill.name = value!;
+                  widget.skill.base = skillsList[value]!;
                 }else{
                   manual = true;
-                  skill.name = "";
+                  widget.skill.name = "";
                 }
               });
-              bot.updateButtons();
+              widget.bot.updateButtons();
             },
-            value: skillsList.containsKey(skill.name) ? skill.name : skill.name == null ? null : skillsList.keys.last,
+            value: skillsList.containsKey(widget.skill.name) ? widget.skill.name : widget.skill.name == null ? null : skillsList.keys.last,
             items: List.generate(
               skillsList.length,
               (i) =>
@@ -140,11 +139,11 @@ class _SkillSelectorState extends State{
           child: !manual ? Container() :
             TextField(
               textCapitalization: TextCapitalization.words,
-              onChanged: (value) => skill.name = value,
+              onChanged: (value) => widget.skill.name = value,
               autofillHints: skillsList.keys,
               controller: skillController,
             ),
-          duration: Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 150),
           transitionBuilder: (child, anim) =>
             SizeTransition(
               sizeFactor: anim,
@@ -167,10 +166,10 @@ class _SkillSelectorState extends State{
                 value: i
               )
             ),
-            value: skill.base == -1 ? null : skill.base,
+            value: widget.skill.base == -1 ? null : widget.skill.base,
             onChanged: (value) {
-              setState(() => skill.base = value ?? -1);
-              bot.updateButtons();
+              setState(() => widget.skill.base = value ?? -1);
+              widget.bot.updateButtons();
             }
           )
         ),

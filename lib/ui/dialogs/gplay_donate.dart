@@ -8,14 +8,14 @@ class GPlayDonateDialog extends StatefulWidget{
   final List<ProductDetails> prods;
   final indHolder = _IndHolder();
 
-  GPlayDonateDialog(this.prods){
+  GPlayDonateDialog(this.prods, {Key? key}) : super(key: key){
     prods.sort((one,two) =>
       (100*(one.rawPrice - two.rawPrice)).floor()
     );
   }
 
   @override
-  State<StatefulWidget> createState() => _GPlayDonateState(prods, indHolder);
+  State<StatefulWidget> createState() => _GPlayDonateState();
 
   void show(BuildContext context) {
     var bot = Bottom(
@@ -41,26 +41,23 @@ class GPlayDonateDialog extends StatefulWidget{
   }
 }
 
-class _GPlayDonateState extends State{
+class _GPlayDonateState extends State<GPlayDonateDialog>{
 
-  final List<ProductDetails> prods;
-  final _IndHolder indHolder;
-
-  _GPlayDonateState(this.prods, this.indHolder);
+  _GPlayDonateState();
 
   @override
   Widget build(BuildContext context) =>
     Wrap(
-      children: List.generate(prods.length,
+      children: List.generate(widget.prods.length,
         (index) =>
           RadioListTile<int>(
             value: index,
-            groupValue: indHolder.index,
+            groupValue: widget.indHolder.index,
             onChanged: (i) => setState((){
-              indHolder.index = i;
-              indHolder.bot?.updateButtons();
+              widget.indHolder.index = i;
+              widget.indHolder.bot?.updateButtons();
             }),
-            title: Text(AppLocalizations.of(context)!.gPlayDonate(prods[index].price)),
+            title: Text(AppLocalizations.of(context)!.gPlayDonate(widget.prods[index].price)),
           )
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/vehicle.dart';
-import 'package:swassistant/ui/EditableCommon.dart';
-import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehicleDamage extends StatelessWidget{

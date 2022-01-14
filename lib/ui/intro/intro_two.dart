@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/ui/intro/IntroScreen.dart';
+import 'package:swassistant/ui/intro/intro.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IntroTwo extends StatefulWidget{
+
+  const IntroTwo({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() =>
     _IntroTwoState();
@@ -24,7 +27,7 @@ class _IntroTwoState extends State{
         );
       },
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 500),
+        constraints: const BoxConstraints(maxWidth: 500),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -32,9 +35,9 @@ class _IntroTwoState extends State{
               AppLocalizations.of(context)!.settings,
               style: Theme.of(context).textTheme.headline4
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SwitchListTile(
-              title: Text(
+              title: const Text(
                 "Cloud Save (via Google Drive) (Not currently implemented)",
               ),
               value: SW.of(context).getPreference(preferences.googleDrive, false),
@@ -51,8 +54,7 @@ class _IntroTwoState extends State{
               value: SW.of(context).getPreference(preferences.forceDark, false),
               onChanged: (b){
                 SW.of(context).prefs.setBool(preferences.forceDark, b);
-                if (b)
-                  SW.of(context).prefs.setBool(preferences.forceLight, false);
+                if (b) SW.of(context).prefs.setBool(preferences.forceLight, false);
                 setState((){});
                 SW.of(context).topLevelUpdate();
               }
@@ -75,8 +77,7 @@ class _IntroTwoState extends State{
               value: SW.of(context).getPreference(preferences.forceLight, false),
               onChanged: (b){
                 SW.of(context).prefs.setBool(preferences.forceLight, b);
-                if (b)
-                  SW.of(context).prefs.setBool(preferences.forceDark, false);
+                if (b) SW.of(context).prefs.setBool(preferences.forceDark, false);
                 setState((){});
                 SW.of(context).topLevelUpdate();
               }

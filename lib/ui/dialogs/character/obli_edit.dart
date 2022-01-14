@@ -16,7 +16,7 @@ class ObligationEditDialog{
   late TextEditingController descController;
 
   ObligationEditDialog({Obligation? obli, required this.onClose}) :
-    this.obligation = obli != null ? Obligation.from(obli) : Obligation(){
+    obligation = obli != null ? Obligation.from(obli) : Obligation(){
     nameController = TextEditingController(text: obligation.name)
       ..addListener(() {
         obligation.name = nameController.text;

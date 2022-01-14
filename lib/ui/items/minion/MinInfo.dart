@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/minion.dart';
-import 'package:swassistant/ui/UpDownStat.dart';
+import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../EditableCommon.dart';
+import '../../editable_common.dart';
 
 class MinInfo extends StatefulWidget with StatefulCard{
 

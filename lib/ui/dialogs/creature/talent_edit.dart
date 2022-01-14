@@ -16,7 +16,7 @@ class TalentEditDialog{
   late TextEditingController descController;
 
   TalentEditDialog({Talent? tal, required this.onClose}) :
-    this.talent = tal == null ? Talent() : Talent.from(tal){
+    talent = tal == null ? Talent() : Talent.from(tal){
     nameController = TextEditingController(text: talent.name)
       ..addListener(() {
         talent.name = nameController.text;

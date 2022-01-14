@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
-import 'package:swassistant/ui/dialogs/creature/SkillEditDialog.dart';
+import 'package:swassistant/ui/dialogs/creature/skill_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Skills extends StatelessWidget{

@@ -5,7 +5,7 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/Common.dart';
+import 'package:swassistant/ui/common.dart';
 import 'package:swassistant/ui/misc/Bottom.dart';
 import 'package:swassistant/ui/screens/EditableCards.dart';
 import 'package:swassistant/ui/screens/EditableNotes.dart';

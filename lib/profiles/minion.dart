@@ -5,7 +5,7 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/items/item.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/EditableCommon.dart';
+import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/items/creatures/Talents.dart';
 import 'package:swassistant/ui/items/editable/CriticalInjuries.dart';
 import 'package:swassistant/ui/items/editable/Description.dart';
@@ -129,7 +129,7 @@ class Minion extends Editable with Creature{
           return Weapons(editing: b, refresh: refresh);
         },
         defaultEditingState: () => weapons.isEmpty,
-        additonalButtons: () => [
+        additionalButtons: () => [
           Tooltip(
             message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
             child: IconButton(
@@ -189,7 +189,7 @@ class Minion extends Editable with Creature{
       EditableContent(
         stateful: Inventory(holder: invHolder),
         defaultEditingState: () => inventory.isEmpty,
-        additonalButtons: () => [
+        additionalButtons: () => [
           Tooltip(
             message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
             child: IconButton(

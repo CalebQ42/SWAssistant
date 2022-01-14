@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
-import 'package:swassistant/ui/Common.dart';
+import 'package:swassistant/ui/common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Settings extends StatefulWidget{
