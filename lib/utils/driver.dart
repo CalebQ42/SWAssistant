@@ -7,12 +7,34 @@ class Driver{
 
   String? wd;
   DriveApi? api;
-  GoogleSignIn gsi;
+  GoogleSignIn? gsi;
 
-  Driver(this.gsi);
+  bool initialized = false;
 
-  void initGsi() async =>
-    api = DriveApi((await gsi.authenticatedClient())!);
+  bool isReady() => isSignedIn() && initialized;
+
+  bool isSignedIn() =>
+    gsi != null && gsi!.currentUser != null;
+
+  Future<bool> init() async{
+    if(isSignedIn()){
+      return true;
+    }
+    gsi ??= GoogleSignIn(
+      scopes: [DriveApi.driveScope],
+    );
+    await gsi!.signInSilently();
+    if (gsi!.currentUser == null){
+      await gsi!.signIn();
+    }
+    if (gsi!.currentUser == null){
+      gsi = null;
+      return false;
+    }
+    api = DriveApi((await gsi!.authenticatedClient())!);
+    initialized = true;
+    return true;
+  }
 
   void setWD(String filename){}
   String? createFile(String filename){}

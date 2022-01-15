@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
+import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/intro_zero.dart';
 import 'package:swassistant/ui/screens/dice_roller.dart';
@@ -37,12 +38,6 @@ class SWApp extends StatefulWidget{
 
 class SWAppState extends State<SWApp> {
 
-  String? init;
-
-  SWAppState(){
-    init = widget.init;
-  }
-
   @override
   Widget build(BuildContext context) {
     SW.of(context).topLevelUpdate = () => setState(() {});
@@ -60,6 +55,26 @@ class SWAppState extends State<SWApp> {
     );
     return MaterialApp(
       title: 'SWAssistant',
+      onGenerateRoute: (settings) {
+        Widget widy;
+        if(settings.name?.startsWith("/edit/") == true){
+          var ed = settings.arguments! as Editable;
+          return ed.getRoute();
+        }
+        if(settings.name == "/vehicles"){
+          widy = const EditableList(EditableList.vehicle);
+        }else if(settings.name == "/minions"){
+          widy = const EditableList(EditableList.minion);
+        }else{
+          widy = const EditableList(EditableList.character);
+        }
+        return MaterialPageRoute(
+          builder: (context) => widy,
+          settings: settings,
+          maintainState: false,
+          fullscreenDialog: true
+        );
+      },
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -126,12 +141,9 @@ class SWAppState extends State<SWApp> {
       navigatorObservers: [
         SW.of(context).observatory
       ],
-      initialRoute: init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
+      initialRoute: widget.init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
       routes: {
         "/gm" : (context) => GMMode(),
-        "/characters" : (context) => const EditableList(EditableList.character),
-        "/minions" : (context) => const EditableList(EditableList.minion),
-        "/vehicles" : (context) => const EditableList(EditableList.vehicle),
         // "/download" : (context) => Downloads(),
         "/dice" : (context) => DiceRoller(),
         "/settings" : (context) => const Settings(),

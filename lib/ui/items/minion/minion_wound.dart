@@ -22,7 +22,9 @@ class MinionWoundState extends State<MinionWound>{
 
   TextEditingController? indWoundController;
 
-  MinionWoundState(){
+  @override
+  void initState(){
+    super.initState();
     widget.holder.reloadFunction = () => setState((){});
   }
 

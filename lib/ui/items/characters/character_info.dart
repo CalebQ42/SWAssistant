@@ -8,9 +8,8 @@ class CharacterInfo extends StatelessWidget{
 
   final bool editing;
   final EditableContentState state;
-  final Function() updateList;
 
-  const CharacterInfo({required this.editing, required this.state, required this.updateList, Key? key}) : super(key: key);
+  const CharacterInfo({required this.editing, required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,6 @@ class CharacterInfo extends StatelessWidget{
             controller.addListener((){
               character.category = controller.text;
               SW.of(context).updateCharacterCategories();
-              updateList();
             });
             return controller;
           }(),

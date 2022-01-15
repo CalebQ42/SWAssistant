@@ -21,7 +21,9 @@ class MinInfo extends StatefulWidget with StatefulCard{
 
 class MinInfoState extends State<MinInfo>{
 
-  MinInfoState(){
+  @override
+  void initState(){
+    super.initState();
     widget.holder.reloadFunction = () => setState((){});
   }
 

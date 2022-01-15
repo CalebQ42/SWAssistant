@@ -138,13 +138,13 @@ abstract class Editable extends JsonSavable{
     };
   }
 
-  List<Widget> cards(BuildContext context, Function() refreshList){
+  List<Widget> cards(BuildContext context){
     var cards = <Widget>[];
-    var contents = cardContents(context, refreshList);
+    var contents = cardContents(context);
     cards.add(
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: NameCardContent(refreshList)
+        child: NameCardContent()
       )
     );
     var names = cardNames(context);
@@ -162,6 +162,7 @@ abstract class Editable extends JsonSavable{
                 contents[i].stateful?.getHolder().reloadFunction!();
               }
             }
+            save(context: context);
           }
         )
       );
@@ -169,11 +170,13 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  Route setRoute(Function() refreshCallback){
-    return MaterialPageRoute(
-      builder: (BuildContext bc) => EditingEditable(this, refreshCallback),
-      settings: RouteSettings(name: uid.toString() + fileExtension)
+  Route getRoute(){
+    route = MaterialPageRoute(
+      builder: (BuildContext bc) => EditingEditable(this),
+      settings: RouteSettings(name: uid.toString() + fileExtension),
+      maintainState: false,
     );
+    return route!;
   }
 
   String getFileLocation(SW sw) => loc ?? sw.saveDir + "/" + uid.toString() + fileExtension;
@@ -228,7 +231,7 @@ abstract class Editable extends JsonSavable{
   void updateShortcut(){}
   void deleteShortcut(){}
 
-  List<EditableContent> cardContents(BuildContext context, Function() listUpdate);
+  List<EditableContent> cardContents(BuildContext context);
 
   List<String> cardNames(BuildContext context);
 

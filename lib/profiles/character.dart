@@ -198,12 +198,12 @@ class Character extends Editable with Creature{
     })..addAll(creatureSaveJson());
 
   @override
-  List<EditableContent> cardContents(BuildContext context, Function() listUpdate) => 
+  List<EditableContent> cardContents(BuildContext context) => 
     <EditableContent>[
       EditableContent(
         key: const Key("info"),
         builder: (b, refresh, state) =>
-          CharacterInfo(editing: b, state: state, updateList: listUpdate,)
+          CharacterInfo(editing: b, state: state)
       ),
       EditableContent(
         key: const Key("wound"),

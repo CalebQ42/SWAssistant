@@ -28,7 +28,9 @@ class MoralityState extends State<Morality>{
   TextEditingController? strengthController;
   TextEditingController? weaknessController;
 
-  MoralityState(){
+  @override
+  void initState() {
+    super.initState();
     editing = widget.holder.editing;
     widget.holder.reloadFunction = () => setState(() =>
       editing = widget.holder.editing

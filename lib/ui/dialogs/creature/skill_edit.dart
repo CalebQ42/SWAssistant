@@ -86,7 +86,9 @@ class _SkillSelectorState extends State<_SkillSelector>{
 
   late TextEditingController skillController;
 
-  _SkillSelectorState(){
+  @override
+  void initState() {
+    super.initState();
     skillController = TextEditingController(text: widget.skill.name)
       ..addListener(() {
         widget.skill.name = skillController.text;

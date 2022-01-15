@@ -18,8 +18,6 @@ class Settings extends StatefulWidget{
 
 class SettingsState extends State{
 
-  SettingsState();
-
   @override
   Widget build(BuildContext context){
     var app = SW.of(context);

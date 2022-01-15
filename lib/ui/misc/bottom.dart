@@ -66,7 +66,9 @@ class _BottomButtons extends StatefulWidget{
 
 class _ButtonState extends State<_BottomButtons>{
 
-  _ButtonState(){
+  @override
+  void initState(){
+    super.initState();
     widget.messenger.updateButtons = () => setState((){});
   }
 

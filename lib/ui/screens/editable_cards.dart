@@ -5,14 +5,13 @@ import 'package:swassistant/profiles/utils/editable.dart';
 
 class EditableCards extends StatelessWidget{
 
-  final Function() refreshList;
   final double? w;
 
-  const EditableCards({required this.refreshList, this.w, Key? key}) : super(key: key);
+  const EditableCards({this.w, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var cards = Editable.of(context).cards(context, refreshList);
+    var cards = Editable.of(context).cards(context);
     double width = min(w ?? MediaQuery.of(context).size.height, 350);
     int rows = (MediaQuery.of(context).size.width / width).floor();
     width = w ?? MediaQuery.of(context).size.width / rows;

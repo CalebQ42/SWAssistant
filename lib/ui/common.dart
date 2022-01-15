@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/donate.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:swassistant/ui/screens/test.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -195,6 +197,16 @@ class SWDrawer extends StatelessWidget{
               ).show(context);
             }
           ),
+          if(kDebugMode) ListTile(
+            title: const Text("TESTING BUTTON (DON'T USE UNLESS YOUR ME)"),
+            leading: const Icon(Icons.warning_amber_rounded),
+            onTap: (){
+              Navigator.of(context).pop();
+              Bottom(
+                child: (context) => const TestScreen()
+              ).show(context);
+            }
+          )
         ],
       )
     );

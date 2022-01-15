@@ -25,7 +25,9 @@ class _VehicleDefenseState extends State<VehicleDefense>{
   TextEditingController? portDefenseCont;
   TextEditingController? starboardDefenseCont;
 
-  _VehicleDefenseState(){
+  @override
+  void initState(){
+    super.initState();
     widget.holder.reloadFunction = () => setState((){});
   }
 

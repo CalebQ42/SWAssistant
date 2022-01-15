@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/editable_common.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InfoCard extends StatefulWidget{
 
@@ -20,14 +24,6 @@ class InfoCard extends StatefulWidget{
 
 class _InfoCardState extends State<InfoCard>{
 
-  late InfoCardHolder holder;
-  late Function(bool b, Function() refreshList) onHideChange;
-
-  _InfoCardState(){
-    holder = widget.holder;
-    onHideChange = widget.onHideChange;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
@@ -35,20 +31,20 @@ class _InfoCardState extends State<InfoCard>{
       title: AnimatedAlign(
         curve: Curves.easeOutBack,
         duration: const Duration(milliseconds: 500),
-        alignment: holder.shown ? Alignment.center : Alignment.centerLeft,
+        alignment: widget.holder.shown ? Alignment.center : Alignment.centerLeft,
         child: Text(
-          holder.title,
+          widget.holder.title,
           style: Theme.of(context).textTheme.subtitle1,
         )
       ),
-      children: [holder.contents],
+      children: [widget.holder.contents],
       onExpansionChanged: (b){
         setState((){
-          onHideChange(b, () => setState((){}));
-          holder.shown = b;
+          widget.onHideChange(b, () => setState((){}));
+          widget.holder.shown = b;
         });
       },
-      initiallyExpanded: holder.shown,
+      initiallyExpanded: widget.holder.shown,
     );
   }
 }
@@ -60,9 +56,8 @@ class InfoCardHolder{
 }
 
 class NameCardContent extends StatefulWidget{
-  final Function() refreshList;
 
-  const NameCardContent(this.refreshList, {Key? key}) : super(key: key);
+  const NameCardContent({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() =>
@@ -70,11 +65,6 @@ class NameCardContent extends StatefulWidget{
 }
 
 class _NameCardContentState extends State<NameCardContent>{
-  late Function() refreshList;
-
-  _NameCardContentState(){
-    refreshList = widget.refreshList;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +84,24 @@ class _NameCardContentState extends State<NameCardContent>{
               var cont = TextEditingController(text: editable.name);
               cont.addListener(() {
                 editable.name = cont.text;
-                refreshList();
               });
               return cont;
             }(),
             defaultSave: true,
             textCapitalization: TextCapitalization.words,
           )
-        )
+        ),
+      defaultEditingState: () {
+        switch(editable.runtimeType){
+          case Character:
+            return editable.name == AppLocalizations.of(context)!.newCharacter;
+          case Minion:
+            return editable.name == AppLocalizations.of(context)!.newMinion;
+          case Vehicle:
+            return editable.name == AppLocalizations.of(context)!.newVehicle;
+        }
+        return false;
+      }
     );
   }
 }

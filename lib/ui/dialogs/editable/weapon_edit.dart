@@ -174,11 +174,13 @@ class _AmmoState extends State<_WeaponAmmo>{
 
   late TextEditingController ammoController;
 
-  _AmmoState(){
+  @override
+  void initState() {
+    super.initState();
     ammoController = TextEditingController(text: widget.weapon.ammo.toString())
-        ..addListener(() =>
-          widget.weapon.ammo = int.tryParse(ammoController.text) ?? 0
-        );
+      ..addListener(() =>
+        widget.weapon.ammo = int.tryParse(ammoController.text) ?? 0
+      );
   }
 
   @override

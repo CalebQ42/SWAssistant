@@ -11,10 +11,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/utils/driver.dart';
 import 'package:uuid/uuid.dart';
 
 import 'profiles/minion.dart';
@@ -40,8 +38,8 @@ class SW{
 
   late Function() topLevelUpdate;
   late Observatory observatory;
-  GoogleSignIn? gsi;
-  drive.DriveApi? driveApi;
+
+  Driver? drive;
 
   SW({required this.prefs});
 
@@ -132,7 +130,7 @@ class SW{
   
   List<Character> characters({String search = "", String? category}){
     if(search == "" && category == null){
-      return _characters;
+      return List.of(_characters);
     }else if(category == null){
       return _characters.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
     }
@@ -170,7 +168,7 @@ class SW{
 
   List<Minion> minions({String search = "", String? category}){
     if(search == "" && category == null){
-      return _minions;
+      return List.of(_minions);
     }else if(category == null){
       return _minions.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
     }
@@ -208,7 +206,7 @@ class SW{
 
   List<Vehicle> vehicles({String search = "", String? category}){
     if(search == "" && category == null){
-      return _vehicles;
+      return List.of(_vehicles);
     }else if(category == null){
       return _vehicles.where((element) => element.name.toLowerCase().contains(search.toLowerCase())).toList();
     }
@@ -243,33 +241,16 @@ class SW{
       }
     }
   }
-
-  bool isSignedIn() =>
-    gsi != null && gsi!.currentUser != null;
-
-  Future<bool> initCloud() async{
-    if(isSignedIn()){
-      return true;
-    }
-    gsi ??= GoogleSignIn(
-      scopes: [drive.DriveApi.driveScope],
-    );
-    await gsi!.signInSilently();
-    if (gsi!.currentUser == null){
-      await gsi!.signIn();
-    }
-    if (gsi!.currentUser == null){
-      gsi = null;
-      return false;
-    }
-    return true;
-  }
   
-  Future<void> syncCloud() async{
-    if(!await initCloud()){
-      return;
+  Future<bool> syncCloud() async{
+    drive ??= Driver();
+    if(!drive!.isReady()){
+      if(!await drive!.init()){
+        return false;
+      }
     }
-    driveApi ??= drive.DriveApi((await gsi!.authenticatedClient())!);
+    //TODO
+    return false;
   }
 
   dynamic getPreference(String preference, dynamic defaultValue) =>

@@ -14,11 +14,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class EditingEditable extends StatefulWidget {
 
   final Editable profile;
-  final void Function() refreshList;
   final bool contained;
   final double? w;
 
-  const EditingEditable(this.profile, this.refreshList, {Key? key, this.contained = false, this.w}) : super(key: key);
+  const EditingEditable(this.profile, {Key? key, this.contained = false, this.w}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _EditingEditableState();
@@ -154,7 +153,7 @@ class _EditingEditableState extends State<EditingEditable>{
               )
             );
           },
-          child: _index == 0 ? EditableCards(refreshList: widget.refreshList, w: widget.w) : EditableNotes()
+          child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
         )
       );
     } else {
@@ -176,7 +175,7 @@ class _EditingEditableState extends State<EditingEditable>{
                   child: child,
                 );
               },
-              child: _index == 0 ? EditableCards(refreshList: widget.refreshList, w: widget.w) : EditableNotes()
+              child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
             )
           ),
           bottomNav

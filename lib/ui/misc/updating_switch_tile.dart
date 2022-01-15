@@ -17,7 +17,9 @@ class UpdatingSwitchTileState extends State<UpdatingSwitchTile>{
 
   late bool value;
 
-  UpdatingSwitchTileState(){
+  @override
+  void initState(){
+    super.initState();
     value = widget.value;
   }
 

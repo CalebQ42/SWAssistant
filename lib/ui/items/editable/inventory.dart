@@ -29,7 +29,9 @@ class InventoryState extends State<Inventory>{
   TextEditingController? creditController;
   TextEditingController? encumController;
 
-  InventoryState(){
+  @override
+  void initState() {
+    super.initState();
     editing = widget.holder.editing;
     widget.holder.reloadFunction = () => setState(() =>
       editing = widget.holder.editing

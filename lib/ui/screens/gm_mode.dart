@@ -27,6 +27,7 @@ class GMMode extends StatelessWidget{
     return WillPopScope(
       onWillPop: (){
         if (message.backStack.length == 1 || message.backStack.isEmpty) {
+          Navigator.of(context).overlay?.setState(() {});
           return Future.value(true);
         }
         message.backStack.removeLast();
@@ -96,7 +97,9 @@ class _BarState extends State<_GMModeBar>{
   
   Editable? editable;
 
-  _BarState(){
+  @override
+  void initState(){
+    super.initState();
     widget.message.onChange.add(
       (ed) => setState(() => editable = ed)
     );
@@ -221,7 +224,9 @@ class _GMModeState extends State<_GMModeEditor>{
 
   Editable? curEdit;
 
-  _GMModeState(){
+  @override
+  void initState(){
+    super.initState();
     widget.message.onChange.add(
       (ed) => setState(() => curEdit = ed)
     );
@@ -242,7 +247,6 @@ class _GMModeState extends State<_GMModeEditor>{
         )
       ) : EditingEditable(
         curEdit!,
-        () => widget.message.listKey.currentState?.setState(() {}),
         key: Key(curEdit!.uid.toString() + curEdit!.fileExtension),
         contained: true,
         w: widget.width,

@@ -140,7 +140,9 @@ class _NoteCardState extends State<NoteCardContents>{
 
   TextEditingController? control;
 
-  _NoteCardState(){
+  @override
+  void initState(){
+    super.initState();
     widget.holder.reloadFunction = () => setState((){});
   }
 

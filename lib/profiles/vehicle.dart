@@ -112,11 +112,11 @@ class Vehicle extends Editable{
     });
 
   @override
-  List<EditableContent> cardContents(BuildContext context, Function() listUpdate) =>
+  List<EditableContent> cardContents(BuildContext context) =>
     <EditableContent>[
       EditableContent(
         builder: (b, refresh, state) =>
-          VehicleInfo(editing: b, state: state, updateList: listUpdate)
+          VehicleInfo(editing: b, state: state)
       ),
       EditableContent(
         stateful: VehicleDefense()

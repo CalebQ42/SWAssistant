@@ -8,9 +8,8 @@ class VehicleInfo extends StatelessWidget{
 
   final bool editing;
   final EditableContentState state;
-  final Function() updateList;
 
-  const VehicleInfo({required this.editing, required this.state, required this.updateList, Key? key}) : super(key: key);
+  const VehicleInfo({required this.editing, required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +169,6 @@ class VehicleInfo extends StatelessWidget{
             controller.addListener((){
               vehicle.category = controller.text;
               SW.of(context).updateCharacterCategories();
-              updateList();
             });
             return controller;
           }(),

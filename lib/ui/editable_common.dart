@@ -126,7 +126,9 @@ class EditableContentState extends State<EditableContent>{
   
   late bool editing;
 
-  EditableContentState() {
+  @override
+  void initState() {
+    super.initState();
     editing = widget.defaultEditingState == null ? false : widget.defaultEditingState!();
     if(widget.builder == null && widget.stateful == null) throw("Either a builder or stateful MUST be provided");
     if(widget.stateful != null) editing = widget.stateful!.getHolder().editing;

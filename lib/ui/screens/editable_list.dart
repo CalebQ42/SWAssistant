@@ -30,20 +30,28 @@ class EditableListState extends State<EditableList>{
   String? cat;
   String search = "";
 
-  GlobalKey<AnimatedListState> listKey = GlobalKey();
+  late GlobalKey<AnimatedListState> listKey;
 
-  EditableListState(){
+  @override
+  void initState() {
+    super.initState();
     type = widget.type;
+    listKey = GlobalKey();
   }
 
   @override
   Widget build(BuildContext context) {
     var app = SW.of(context);
+    var oldLen = list.length;
     List<DropdownMenuItem<String>> categories;
     switch(type){
       case -1:
         if(cat == null){
-          list = app.characters().cast<Editable>()..addAll(app.minions())..addAll(app.vehicles());
+          list = [
+            ...app.characters(),
+            ...app.minions(),
+            ...app.vehicles()
+          ];
         }else if(cat == "char"){
           list = app.characters();
         }else if(cat == "min"){
@@ -136,13 +144,29 @@ class EditableListState extends State<EditableList>{
               )
         );
     }
-    var catSelector = DropdownButton<String>(
-      items: categories,
-      onChanged: (category) => cat = category,
+    if(list.length != oldLen){
+      listKey = GlobalKey();
+      print("Rebuild!");
+    }
+    print("potato");
+    var catSelector = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: cat,
+          items: categories,
+          isExpanded: true,
+          onChanged: (category) {
+            cat = category;
+            setState((){});
+          },
+        )
+      )
     );
     var mainList = AnimatedList(
       key: listKey,
       initialItemCount: list.length,
+      padding: const EdgeInsets.only(bottom: 80),
       itemBuilder: (context, i, anim) =>
         SlideTransition(
           position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
@@ -152,8 +176,8 @@ class EditableListState extends State<EditableList>{
               refreshList: () => setState((){}),
               onDismiss: (){
                 var tmp = list[i];
-                list.removeAt(i);
                 list[i].delete(app);
+                list.removeAt(i);
                 app.remove(tmp, context);
                 listKey.currentState?.removeItem(
                   i,
@@ -213,16 +237,28 @@ class EditableListState extends State<EditableList>{
                 newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
             }
             app.add(newEd);
-            list.add(newEd);
-            listKey.currentState?.insertItem(list.length-1);
+            Navigator.pushNamed(
+              context,
+              "/edit/" + newEd.uid,
+              arguments: newEd
+            );
           },
         ),
+        body: mainList
       )
     :
       Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          catSelector,
-          mainList
+          Container(
+            color: Theme.of(context).primaryColor,
+            child: catSelector,
+          ),
+          Expanded(child:
+            ClipRect(
+              child: mainList
+            )
+          )
         ]
       );
   }
@@ -240,8 +276,11 @@ class EditableCard extends StatelessWidget{
   Widget build(BuildContext context) =>
     Dismissible(
       key: Key(Editable.of(context).uid),
-      onDismissed: (_) => onDismiss(),
+      onDismissed: (_) {
+        onDismiss();
+      },
       child: Card(
+        margin: const EdgeInsets.all(5),
         child: InkResponse(
           containedInkWell: true,
           highlightShape: BoxShape.rectangle,
@@ -250,14 +289,9 @@ class EditableCard extends StatelessWidget{
             if(onTap != null){
               onTap!(ed);
             }else{
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (c) =>
-                    EditingEditable(
-                      ed,
-                      refreshList
-                    )
-                )
+              Navigator.of(context).pushNamed(
+                "/edit/" + ed.uid,
+                arguments: ed
               );
             }
           },
@@ -268,7 +302,7 @@ class EditableCard extends StatelessWidget{
               children: [
                 Text(
                   Editable.of(context).name,
-                  style: Theme.of(context).textTheme.headlineMedium
+                  style: Theme.of(context).textTheme.headlineSmall
                 ),
                 if(onTap != null) Container(height: 10),
                 if(onTap != null) Align(
