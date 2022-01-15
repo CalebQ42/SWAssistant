@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/donate.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/ui/screens/test.dart';
+import 'package:swassistant/test.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

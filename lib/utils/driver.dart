@@ -18,14 +18,18 @@ class Driver{
 
   Future<bool> init() async{
     if(isSignedIn()){
+      api = DriveApi((await gsi!.authenticatedClient())!);
       return true;
     }
-    gsi ??= GoogleSignIn(
-      scopes: [DriveApi.driveScope],
-    );
-    await gsi!.signInSilently();
-    if (gsi!.currentUser == null){
-      await gsi!.signIn();
+    gsi = GoogleSignIn(scopes: [DriveApi.driveScope]);
+    try{
+      await gsi!.signInSilently();
+      if (gsi!.currentUser == null){
+        await gsi!.signIn();
+      }
+    }catch(e){
+      print(e);
+      return false;
     }
     if (gsi!.currentUser == null){
       gsi = null;

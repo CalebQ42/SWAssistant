@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/utils/driver.dart';
 
 class TestScreen extends StatelessWidget{
 
@@ -12,7 +13,9 @@ class TestScreen extends StatelessWidget{
         children: [
           Expanded(child: ElevatedButton(
             child: const Text("Test"),
-            onPressed: (){
+            onPressed: () async {
+              var driv = Driver();
+              print(await driv.init());
             }
           ))
         ]
