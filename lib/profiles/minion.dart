@@ -95,12 +95,13 @@ class Minion extends Editable with Creature{
       }
     })..addAll(creatureSaveJson());
 
+  EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
+  EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();
+  EditableContentStatefulHolder invHolder = EditableContentStatefulHolder();
+
   @override
   List<EditableContent> cardContents(BuildContext context) {
     Function()? weaponsRefresh;
-    EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
-    EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();
-    EditableContentStatefulHolder invHolder = EditableContentStatefulHolder();
     woundCurTemp = woundCur;
     return [
       EditableContent(

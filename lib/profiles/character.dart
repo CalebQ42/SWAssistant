@@ -197,6 +197,8 @@ class Character extends Editable with Creature{
       "disable morality": disableMorality,
     })..addAll(creatureSaveJson());
 
+  var invHold = EditableContentStatefulHolder();
+
   @override
   List<EditableContent> cardContents(BuildContext context) => 
     <EditableContent>[
@@ -265,7 +267,7 @@ class Character extends Editable with Creature{
       ),
       EditableContent(
         key: const Key("inv"),
-        stateful: Inventory(holder: EditableContentStatefulHolder()),
+        stateful: Inventory(holder: invHold),
         defaultEditingState: () => inventory.isEmpty
       ),
       if(!disableMorality) EditableContent(

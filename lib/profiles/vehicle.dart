@@ -111,6 +111,8 @@ class Vehicle extends Editable{
       "model": model,
     });
 
+  var invHold = EditableContentStatefulHolder();
+
   @override
   List<EditableContent> cardContents(BuildContext context) =>
     <EditableContent>[
@@ -131,7 +133,7 @@ class Vehicle extends Editable{
         defaultEditingState: () => weapons.isEmpty,
       ),
       EditableContent(
-        stateful: Inventory(holder: EditableContentStatefulHolder()),
+        stateful: Inventory(holder: invHold),
         defaultEditingState: () => inventory.isEmpty,
       ),
       EditableContent(

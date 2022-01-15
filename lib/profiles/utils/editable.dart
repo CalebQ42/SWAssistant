@@ -142,8 +142,8 @@ abstract class Editable extends JsonSavable{
     var cards = <Widget>[];
     var contents = cardContents(context);
     cards.add(
-      Padding(
-        padding: const EdgeInsets.all(10.0),
+      const Padding(
+        padding: EdgeInsets.all(10.0),
         child: NameCardContent()
       )
     );

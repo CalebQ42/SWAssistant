@@ -146,9 +146,7 @@ class EditableListState extends State<EditableList>{
     }
     if(list.length != oldLen){
       listKey = GlobalKey();
-      print("Rebuild!");
     }
-    print("potato");
     var catSelector = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: DropdownButtonHideUnderline(

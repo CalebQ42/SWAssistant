@@ -27,7 +27,7 @@ class GMMode extends StatelessWidget{
     return WillPopScope(
       onWillPop: (){
         if (message.backStack.length == 1 || message.backStack.isEmpty) {
-          Navigator.of(context).overlay?.setState(() {});
+          // Navigator.of(context).overlay?.setState(() {});
           return Future.value(true);
         }
         message.backStack.removeLast();
