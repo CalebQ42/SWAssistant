@@ -86,7 +86,7 @@ class EditingText extends StatelessWidget {
       child: text,
       transitionBuilder: (wid, anim){
         Tween<Offset> slide;
-        if((editing && wid.key == const ValueKey("text")) || (!editing && wid.key == const ValueKey("textField"))){
+        if(wid.key == const ValueKey("text")){
           slide = Tween(begin: const Offset(0.0,-1.0),end: Offset.zero);
         }else{
           slide = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
@@ -98,9 +98,27 @@ class EditingText extends StatelessWidget {
           )
         );
       },
+      layoutBuilder: (child, oldStack){
+        List<Widget> newStack = [];
+        for(var chil in oldStack){
+          newStack.add(
+            SizedOverflowBox(
+              size: Size.zero,
+              child: chil
+            )
+          );
+        }
+        return Stack(
+          alignment: AlignmentDirectional.center,
+          children:[
+            ...newStack,
+            child!,
+          ]
+        );
+      },
     );
     return AnimatedSize(
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 300),
       child: switcher
     );
   }
