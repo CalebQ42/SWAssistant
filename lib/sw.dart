@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/utils/driver.dart';
+import 'package:swassistant/utils/driver/driver.dart';
 import 'package:uuid/uuid.dart';
 
 import 'profiles/minion.dart';
@@ -241,6 +241,51 @@ class SW{
       }
     }
   }
+
+  Future<bool> initialSync(BuildContext context) async{
+    showDialog(
+      context: context,
+      builder: (c) =>
+        AlertDialog(
+          content: Column(
+            children: [
+              const CircularProgressIndicator(),
+              Container(height: 10),
+              Text(
+                AppLocalizations.of(context)!.driveSyncing,
+                textAlign: TextAlign.center,
+              )
+            ]
+          )
+        )
+    );
+    drive ??= Driver();
+    if(!drive!.isReady()){
+      if(!await drive!.init()){
+        //TODO
+        return false;
+      }
+    }
+    return false;
+  }
+
+  void showErrorDialog(Error e, BuildContext context) =>
+    showDialog(
+      //TODO
+      context: context,
+      builder: (c) =>
+        AlertDialog(
+          content: Text("hello"),
+          actions: [
+            TextButton(
+              child: Text("Submit as Bug"),
+              onPressed: (){
+                FirebaseCrashlytics.instance.recordError(e, null);
+              },
+            )
+          ],
+        )
+    );
   
   Future<bool> syncCloud() async{
     drive ??= Driver();

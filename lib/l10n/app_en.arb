@@ -29,8 +29,13 @@
 
     "loadingDialog": "Loading...",
 
+    "driveSyncing": "Syncing Google Drive",
+
     "gmModeTap": "Select a profile on the left to edit.",
     "gmModeType": "Type...",
+    "@gmModeType": {
+        "description": "Used for the selector for GM Mode to switch between Characters, Minions, and Vehicles"
+    },
 
     "translate": "Help Translate!",
     "discuss": "Discuss/Announcements",

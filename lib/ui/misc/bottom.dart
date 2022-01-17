@@ -13,27 +13,30 @@ class Bottom extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.70),
-          child: SingleChildScrollView(
-            primary: false,
-            child: Padding(
-              padding: padding ? const EdgeInsets.only(
-                top: 10,
-                left: 10,
-                right: 10,
-              ) : EdgeInsets.zero,
-              child: child!(context)
+    return Padding(
+      padding: MediaQuery.of(context).viewInsets,
+      child: Wrap(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.50),
+            child: SingleChildScrollView(
+              primary: false,
+              child: Padding(
+                padding: padding ? const EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                ) : EdgeInsets.zero,
+                child: child!(context)
+              )
             )
+          ),
+          if(buttons != null) _BottomButtons(
+            builder: buttons!,
+            messenger: messenger
           )
-        ),
-        if(buttons != null) _BottomButtons(
-          builder: buttons!,
-          messenger: messenger
-        )
-      ],
+        ],
+      )
     );
   }
 
