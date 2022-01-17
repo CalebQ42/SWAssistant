@@ -25,8 +25,12 @@
     "importDialog": "Importing Profiles...",
     "importNone": "You seemed to have not selected any files",
     "loadingDialog": "Loading...",
+    "driveSyncing": "Syncing Google Drive",
     "gmModeTap": "Select a profile on the left to edit.",
     "gmModeType": "Type...",
+    "@gmModeType": {
+        "description": "Used for the selector for GM Mode to switch between Characters, Minions, and Vehicles"
+    },
     "translate": "Aidez à la traduction!",
     "discuss": "Discuss/Announcements",
     "success": "Succès",
