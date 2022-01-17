@@ -42,6 +42,7 @@ class Characteristics extends StatelessWidget{
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   Widget charBuilder(int charNum, TextStyle style, BuildContext context){
+    //TODO: FIX!!!!!
     var creature = Creature.of(context);
     if (creature == null) throw "Characteristics card used on non Creature";
     return Expanded(
