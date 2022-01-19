@@ -4,12 +4,12 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class VehicleInfo extends StatelessWidget{
-
+class VehicleInfo extends StatelessWidget {
   final bool editing;
   final EditableContentState state;
 
-  const VehicleInfo({required this.editing, required this.state, Key? key}) : super(key: key);
+  const VehicleInfo({required this.editing, required this.state, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +19,16 @@ class VehicleInfo extends StatelessWidget{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
-          editing: editing, 
+          editing: editing,
           initialText: vehicle.silhouette.toString(),
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
-          controller: (){
-            var controller = TextEditingController(text: vehicle.silhouette.toString());
-            controller.addListener((){
+          controller: () {
+            var controller =
+                TextEditingController(text: vehicle.silhouette.toString());
+            controller.addListener(() {
               var parse = int.tryParse(controller.text);
               vehicle.silhouette = parse ?? 0;
             });
@@ -38,19 +39,20 @@ class VehicleInfo extends StatelessWidget{
         )
       ],
     );
-    var speed = Column( 
+    var speed = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
-          editing: editing, 
+          editing: editing,
           initialText: vehicle.speed.toString(),
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
-          controller: (){
-            var controller = TextEditingController(text: vehicle.speed.toString());
-            controller.addListener((){
+          controller: () {
+            var controller =
+                TextEditingController(text: vehicle.speed.toString());
+            controller.addListener(() {
               var parse = int.tryParse(controller.text);
               vehicle.speed = parse ?? 0;
             });
@@ -65,15 +67,16 @@ class VehicleInfo extends StatelessWidget{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
-          editing: editing, 
+          editing: editing,
           initialText: vehicle.armor.toString(),
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
-          controller: (){
-            var controller = TextEditingController(text: vehicle.armor.toString());
-            controller.addListener((){
+          controller: () {
+            var controller =
+                TextEditingController(text: vehicle.armor.toString());
+            controller.addListener(() {
               var parse = int.tryParse(controller.text);
               vehicle.armor = parse ?? 0;
             });
@@ -88,15 +91,16 @@ class VehicleInfo extends StatelessWidget{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
-          editing: editing, 
+          editing: editing,
           initialText: vehicle.handling.toString(),
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
-          controller: (){
-            var controller = TextEditingController(text: vehicle.handling.toString());
-            controller.addListener((){
+          controller: () {
+            var controller =
+                TextEditingController(text: vehicle.handling.toString());
+            controller.addListener(() {
               var parse = int.tryParse(controller.text);
               vehicle.handling = parse ?? 0;
             });
@@ -112,15 +116,15 @@ class VehicleInfo extends StatelessWidget{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
-          editing: editing, 
+          editing: editing,
           initialText: vehicle.hp.toString(),
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
-          controller: (){
+          controller: () {
             var controller = TextEditingController(text: vehicle.hp.toString());
-            controller.addListener((){
+            controller.addListener(() {
               var parse = int.tryParse(controller.text);
               vehicle.hp = parse ?? 0;
             });
@@ -135,15 +139,16 @@ class VehicleInfo extends StatelessWidget{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
-          editing: editing, 
+          editing: editing,
           initialText: vehicle.passengerCapacity.toString(),
           style: Theme.of(context).textTheme.subtitle1,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
-          controller: (){
-            var controller = TextEditingController(text: vehicle.passengerCapacity.toString());
-            controller.addListener((){
+          controller: () {
+            var controller = TextEditingController(
+                text: vehicle.passengerCapacity.toString());
+            controller.addListener(() {
               var parse = int.tryParse(controller.text);
               vehicle.passengerCapacity = parse ?? 0;
             });
@@ -158,22 +163,21 @@ class VehicleInfo extends StatelessWidget{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         EditingText(
-          editing: editing, 
-          initialText: vehicle.category,
-          style: Theme.of(context).textTheme.subtitle1,
-          defaultSave: true,
-          fieldAlign: TextAlign.center,
-          textCapitalization: TextCapitalization.words,
-          controller: (){
-            var controller = TextEditingController(text:vehicle.category);
-            controller.addListener((){
-              vehicle.category = controller.text;
-              SW.of(context).updateCharacterCategories();
-            });
-            return controller;
-          }(),
-          title: AppLocalizations.of(context)!.category
-        )
+            editing: editing,
+            initialText: vehicle.category,
+            style: Theme.of(context).textTheme.subtitle1,
+            defaultSave: true,
+            fieldAlign: TextAlign.center,
+            textCapitalization: TextCapitalization.words,
+            controller: () {
+              var controller = TextEditingController(text: vehicle.category);
+              controller.addListener(() {
+                vehicle.category = controller.text;
+                SW.of(context).updateCharacterCategories();
+              });
+              return controller;
+            }(),
+            title: AppLocalizations.of(context)!.category)
       ],
     );
     return Column(

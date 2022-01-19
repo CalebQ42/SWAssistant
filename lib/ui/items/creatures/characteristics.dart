@@ -3,12 +3,12 @@ import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/editable_common.dart';
 
-class Characteristics extends StatelessWidget{
-
+class Characteristics extends StatelessWidget {
   final bool editing;
   final EditableContentState state;
 
-  const Characteristics({required this.editing, required this.state, Key? key}) : super(key: key);
+  const Characteristics({required this.editing, required this.state, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,28 +41,26 @@ class Characteristics extends StatelessWidget{
   }
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
-  Widget charBuilder(int charNum, TextStyle style, BuildContext context){
+  Widget charBuilder(int charNum, TextStyle style, BuildContext context) {
     var creature = Creature.of(context);
     if (creature == null) throw "Characteristics card used on non Creature";
     return Expanded(
-      child: EditingText(
-        onTap:() =>
-          SWDiceHolder(ability: creature.charVals[charNum]).showDialog(context),
-        editing: editing,
-        initialText: creature.charVals[charNum].toString(),
-        controller: (){
-          var controller = TextEditingController(text: creature.charVals[charNum].toString());
-          controller.addListener(() =>
-            creature.charVals[charNum] = int.tryParse(controller.text) ?? 0
-          );
-          return controller;
-        }(),
-        fieldAlign: TextAlign.center,
-        style: style,
-        textType: TextInputType.number,
-        defaultSave: true,
-        title: Creature.characteristics(context)[charNum]
-      )
-    );
+        child: EditingText(
+            onTap: () => SWDiceHolder(ability: creature.charVals[charNum])
+                .showDialog(context),
+            editing: editing,
+            initialText: creature.charVals[charNum].toString(),
+            controller: () {
+              var controller = TextEditingController(
+                  text: creature.charVals[charNum].toString());
+              controller.addListener(() => creature.charVals[charNum] =
+                  int.tryParse(controller.text) ?? 0);
+              return controller;
+            }(),
+            fieldAlign: TextAlign.center,
+            style: style,
+            textType: TextInputType.number,
+            defaultSave: true,
+            title: Creature.characteristics(context)[charNum]));
   }
 }

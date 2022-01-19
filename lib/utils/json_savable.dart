@@ -1,7 +1,6 @@
-abstract class JsonSavable{
-
+abstract class JsonSavable {
   JsonSavable();
-  JsonSavable.fromJson(Map<String,dynamic> json);
+  JsonSavable.fromJson(Map<String, dynamic> json);
 
-  Map<String,dynamic> toJson();
+  Map<String, dynamic> toJson();
 }

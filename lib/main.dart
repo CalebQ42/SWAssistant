@@ -13,21 +13,17 @@ import 'package:swassistant/ui/screens/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Future<void> main() async =>
-  runZonedGuarded<Future<void>>(() async =>
-    SW.baseInit().then(
-      (app) =>
-        runApp(SWWidget(
-          child: SWApp(
-            init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/intro" : null
-          ),
-          app: app
-        ))
-    ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
-  );
+Future<void> main() async => runZonedGuarded<Future<void>>(
+    () async => SW.baseInit().then((app) => runApp(SWWidget(
+        child: SWApp(
+            init:
+                (app.devMode || app.getPreference(preferences.firstStart, true))
+                    ? "/intro"
+                    : null),
+        app: app))),
+    (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 
-class SWApp extends StatefulWidget{
-
+class SWApp extends StatefulWidget {
   final String? init;
 
   const SWApp({Key? key, this.init}) : super(key: key);
@@ -37,7 +33,6 @@ class SWApp extends StatefulWidget{
 }
 
 class SWAppState extends State<SWApp> {
-
   @override
   Widget build(BuildContext context) {
     SW.of(context).topLevelUpdate = () => setState(() {});
@@ -48,32 +43,29 @@ class SWAppState extends State<SWApp> {
       border: OutlineInputBorder(),
     );
     const bottomSheetTheme = BottomSheetThemeData(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(15))
-      ),
-      clipBehavior: Clip.antiAlias
-    );
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+        clipBehavior: Clip.antiAlias);
     return MaterialApp(
       title: 'SWAssistant',
       onGenerateRoute: (settings) {
         Widget widy;
-        if(settings.name?.startsWith("/edit/") == true){
+        if (settings.name?.startsWith("/edit/") == true) {
           var ed = settings.arguments! as Editable;
           return ed.getRoute();
         }
-        if(settings.name == "/vehicles"){
+        if (settings.name == "/vehicles") {
           widy = const EditableList(EditableList.vehicle);
-        }else if(settings.name == "/minions"){
+        } else if (settings.name == "/minions") {
           widy = const EditableList(EditableList.minion);
-        }else{
+        } else {
           widy = const EditableList(EditableList.character);
         }
         return MaterialPageRoute(
-          builder: (context) => widy,
-          settings: settings,
-          maintainState: false,
-          fullscreenDialog: true
-        );
+            builder: (context) => widy,
+            settings: settings,
+            maintainState: false,
+            fullscreenDialog: true);
       },
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -83,78 +75,74 @@ class SWAppState extends State<SWApp> {
       ],
       supportedLocales: const [
         Locale("en", ""),
-        Locale("de",""),
-        Locale("es",""),
-        Locale("fr",""),
-        Locale("it","")
+        Locale("de", ""),
+        Locale("es", ""),
+        Locale("fr", ""),
+        Locale("it", "")
       ],
-      themeMode: SW.of(context).getPreference(preferences.forceLight, false) ?
-        ThemeMode.light : SW.of(context).getPreference(preferences.forceDark, false) ?
-        ThemeMode.dark : ThemeMode.system,
+      themeMode: SW.of(context).getPreference(preferences.forceLight, false)
+          ? ThemeMode.light
+          : SW.of(context).getPreference(preferences.forceDark, false)
+              ? ThemeMode.dark
+              : ThemeMode.system,
       theme: ThemeData.light().copyWith(
-        primaryColor: Colors.lightBlue,
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.lightBlue,
-          accentColor: Colors.redAccent
-        ),
-        snackBarTheme: snackTheme,
-        inputDecorationTheme: inputTheme,
-        bottomSheetTheme: bottomSheetTheme
-      ),
-      darkTheme: SW.of(context).getPreference(preferences.amoled, false) ? 
-        ThemeData( //Amoled Theme
-          backgroundColor: Colors.black,
-          canvasColor: Colors.black,
-          shadowColor: Colors.grey.shade800,
-          scaffoldBackgroundColor: Colors.black,
-          cardColor: const Color.fromARGB(255, 15, 15, 15),
-          snackBarTheme: snackTheme.copyWith(
-            backgroundColor: const Color.fromARGB(255, 15, 15, 15),
-            actionTextColor: Colors.amberAccent,
-            contentTextStyle: const TextStyle(
-              color: Colors.white
-            ),
-          ),
-          primaryColor: Colors.red,
+          primaryColor: Colors.lightBlue,
           colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.red,
-            primaryColorDark: Colors.red,
-            accentColor: Colors.lightBlueAccent,
-            brightness: Brightness.dark
-          ),
-          bottomSheetTheme: bottomSheetTheme.copyWith(
-            backgroundColor: Colors.black,
-          ),
-          dividerColor: Colors.grey.shade800,
-          inputDecorationTheme: inputTheme
-        ) : ThemeData( //Dark Theme
-          primaryColor: Colors.red,
-          colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.red,
-            accentColor: Colors.lightBlueAccent,
-            brightness: Brightness.dark
-          ),
-          bottomSheetTheme: bottomSheetTheme,
+              primarySwatch: Colors.lightBlue, accentColor: Colors.redAccent),
+          snackBarTheme: snackTheme,
           inputDecorationTheme: inputTheme,
-          snackBarTheme: snackTheme
-        ),
-      navigatorObservers: [
-        SW.of(context).observatory
-      ],
-      initialRoute: widget.init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
+          bottomSheetTheme: bottomSheetTheme),
+      darkTheme: SW.of(context).getPreference(preferences.amoled, false)
+          ? ThemeData(
+              //Amoled Theme
+              backgroundColor: Colors.black,
+              canvasColor: Colors.black,
+              shadowColor: Colors.grey.shade800,
+              scaffoldBackgroundColor: Colors.black,
+              cardColor: const Color.fromARGB(255, 15, 15, 15),
+              snackBarTheme: snackTheme.copyWith(
+                backgroundColor: const Color.fromARGB(255, 15, 15, 15),
+                actionTextColor: Colors.amberAccent,
+                contentTextStyle: const TextStyle(color: Colors.white),
+              ),
+              primaryColor: Colors.red,
+              colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.red,
+                  primaryColorDark: Colors.red,
+                  accentColor: Colors.lightBlueAccent,
+                  brightness: Brightness.dark),
+              bottomSheetTheme: bottomSheetTheme.copyWith(
+                backgroundColor: Colors.black,
+              ),
+              dividerColor: Colors.grey.shade800,
+              inputDecorationTheme: inputTheme)
+          : ThemeData(
+              //Dark Theme
+              primaryColor: Colors.red,
+              colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.red,
+                  accentColor: Colors.lightBlueAccent,
+                  brightness: Brightness.dark),
+              bottomSheetTheme: bottomSheetTheme,
+              inputDecorationTheme: inputTheme,
+              snackBarTheme: snackTheme),
+      navigatorObservers: [SW.of(context).observatory],
+      initialRoute: widget.init ??
+          SW
+              .of(context)
+              .getPreference(preferences.startingScreen, "/characters"),
       routes: {
-        "/gm" : (context) => GMMode(),
+        "/gm": (context) => GMMode(),
         // "/download" : (context) => Downloads(),
-        "/dice" : (context) => DiceRoller(),
-        "/settings" : (context) => const Settings(),
-        "/intro" : (context) => const IntroZero(),
+        "/dice": (context) => DiceRoller(),
+        "/settings": (context) => const Settings(),
+        "/intro": (context) => const IntroZero(),
       },
     );
   }
 }
 
-class Observatory extends NavigatorObserver{
-
+class Observatory extends NavigatorObserver {
   List<Route> routeHistory = [];
   SW app;
 
@@ -162,8 +150,10 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
-      FirebaseCrashlytics.instance.setCustomKey("page", route.settings.name ?? "unknown");
+    if (app.firebaseAvailable &&
+        app.getPreference(preferences.crashlytics, true)) {
+      FirebaseCrashlytics.instance
+          .setCustomKey("page", route.settings.name ?? "unknown");
     }
     routeHistory.add(route);
     super.didPush(route, previousRoute);
@@ -171,8 +161,10 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
-      FirebaseCrashlytics.instance.setCustomKey("page", previousRoute?.settings.name ?? "unknown");
+    if (app.firebaseAvailable &&
+        app.getPreference(preferences.crashlytics, true)) {
+      FirebaseCrashlytics.instance
+          .setCustomKey("page", previousRoute?.settings.name ?? "unknown");
     }
     routeHistory.removeLast();
     super.didPop(route, previousRoute);
@@ -182,20 +174,22 @@ class Observatory extends NavigatorObserver{
   void didRemove(Route route, Route? previousRoute) {
     var beginIndex = routeHistory.indexOf(route);
     var endIndex = -1;
-    if (previousRoute != null){
+    if (previousRoute != null) {
       endIndex = routeHistory.indexOf(previousRoute);
     }
-    if((endIndex == -1 && beginIndex != -1) || beginIndex -1 == endIndex){
+    if ((endIndex == -1 && beginIndex != -1) || beginIndex - 1 == endIndex) {
       routeHistory.remove(route);
-    }else if(endIndex != -1 && beginIndex != -1){
-      routeHistory.removeRange(beginIndex,endIndex);
+    } else if (endIndex != -1 && beginIndex != -1) {
+      routeHistory.removeRange(beginIndex, endIndex);
     }
     super.didRemove(route, previousRoute);
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    if (oldRoute != null && newRoute != null && routeHistory.contains(oldRoute)){
+    if (oldRoute != null &&
+        newRoute != null &&
+        routeHistory.contains(oldRoute)) {
       routeHistory[routeHistory.indexOf(oldRoute)] = newRoute;
     }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
@@ -203,28 +197,28 @@ class Observatory extends NavigatorObserver{
 
   //Returns the route if it is in history, otherwise it return null.
   //It preferes the route give, then settings, then the name
-  Route? containsRoute({Route? route, RouteSettings? settings, String? name}){
-    if(route != null){
+  Route? containsRoute({Route? route, RouteSettings? settings, String? name}) {
+    if (route != null) {
       return routeHistory.contains(route) ? route : null;
     }
-    if(settings != null){
-      try{
+    if (settings != null) {
+      try {
         return routeHistory.firstWhere(
           (element) => element.settings == settings,
         );
-      } catch (e){
-        if(e is StateError){
+      } catch (e) {
+        if (e is StateError) {
           return null;
         }
       }
     }
-    if(name != null){
-      try{
+    if (name != null) {
+      try {
         return routeHistory.firstWhere(
           (element) => element.settings.name == name,
         );
-      } catch (e){
-        if(e is StateError){
+      } catch (e) {
+        if (e is StateError) {
           return null;
         }
       }
