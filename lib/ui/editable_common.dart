@@ -26,9 +26,11 @@ class EditingText extends StatelessWidget {
 
   final Editable? editableBackup;
 
+  final void Function()? onTap;
+
   EditingText({Key? key, required this.editing, this.style, this.initialText = "", this.controller, this.textType, this.fieldInsets,
       this.textInsets, this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.center,
-      this.fieldAlign, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle}) : super(key: key) {
+      this.fieldAlign, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle, this.onTap}) : super(key: key) {
     if(editing && controller == null) throw "text controller MUST be specified when in editing mode";
   }
 
@@ -80,6 +82,15 @@ class EditingText extends StatelessWidget {
           ]
         )
       );
+      if(onTap != null){
+        text = InkResponse(
+          key: const ValueKey("text"),
+          child: text,
+          onTap: onTap,
+          containedInkWell: true,
+          highlightShape: BoxShape.rectangle,
+        );
+      }
     }
     var switcher = AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),

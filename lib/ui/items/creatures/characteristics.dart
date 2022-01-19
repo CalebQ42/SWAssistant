@@ -42,30 +42,26 @@ class Characteristics extends StatelessWidget{
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   Widget charBuilder(int charNum, TextStyle style, BuildContext context){
-    //TODO: FIX!!!!!
     var creature = Creature.of(context);
     if (creature == null) throw "Characteristics card used on non Creature";
     return Expanded(
-      child: InkResponse(
-        containedInkWell: true,
+      child: EditingText(
         onTap:() =>
           SWDiceHolder(ability: creature.charVals[charNum]).showDialog(context),
-        child: EditingText(
-          editing: editing,
-          initialText: creature.charVals[charNum].toString(),
-          controller: (){
-            var controller = TextEditingController(text: creature.charVals[charNum].toString());
-            controller.addListener(() =>
-              creature.charVals[charNum] = int.tryParse(controller.text) ?? 0
-            );
-            return controller;
-          }(),
-          fieldAlign: TextAlign.center,
-          style: style,
-          textType: TextInputType.number,
-          defaultSave: true,
-          title: Creature.characteristics(context)[charNum]
-        )
+        editing: editing,
+        initialText: creature.charVals[charNum].toString(),
+        controller: (){
+          var controller = TextEditingController(text: creature.charVals[charNum].toString());
+          controller.addListener(() =>
+            creature.charVals[charNum] = int.tryParse(controller.text) ?? 0
+          );
+          return controller;
+        }(),
+        fieldAlign: TextAlign.center,
+        style: style,
+        textType: TextInputType.number,
+        defaultSave: true,
+        title: Creature.characteristics(context)[charNum]
       )
     );
   }

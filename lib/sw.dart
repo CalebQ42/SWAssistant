@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +40,7 @@ class SW{
   late Function() topLevelUpdate;
   late Observatory observatory;
 
-  Driver? drive;
+  Driver? driver;
 
   SW({required this.prefs});
 
@@ -244,53 +245,58 @@ class SW{
 
   Future<bool> initialSync(BuildContext context) async{
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (c) =>
-        AlertDialog(
-          content: Column(
-            children: [
-              const CircularProgressIndicator(),
-              Container(height: 10),
-              Text(
-                AppLocalizations.of(context)!.driveSyncing,
-                textAlign: TextAlign.center,
-              )
-            ]
+        BackButtonListener(
+          onBackButtonPressed: () => Future.value(true),
+          child: AlertDialog(
+            content: Column(
+              children: [
+                const CircularProgressIndicator(),
+                Container(height: 10),
+                Text(
+                  AppLocalizations.of(context)!.driveSyncing,
+                  textAlign: TextAlign.center,
+                )
+              ]
+            )
           )
         )
     );
-    drive ??= Driver();
-    if(!drive!.isReady()){
-      if(!await drive!.init()){
+    var okay = await driveInit();
+    if(!okay) return false;
+    for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
+      if(fil.name == null) continue;
+      if(fil.name!.endsWith(".swcharacter") || fil.name!.endsWith(".swminion") || fil.name!.endsWith(".swvehicle")){
         //TODO
-        return false;
       }
     }
     return false;
   }
 
-  void showErrorDialog(Error e, BuildContext context) =>
-    showDialog(
-      //TODO
-      context: context,
-      builder: (c) =>
-        AlertDialog(
-          content: Text("hello"),
-          actions: [
-            TextButton(
-              child: Text("Submit as Bug"),
-              onPressed: (){
-                FirebaseCrashlytics.instance.recordError(e, null);
-              },
-            )
-          ],
-        )
-    );
+  Future<bool> driveInit() async{
+    driver ??= Driver();
+    if(!driver!.isReady()){
+      if(!await driver!.init()){
+        return false;
+      }
+    }
+    var foldId = await driver!.getID("SWChars");
+    if(foldId == null){
+      foldId = await driver!.createFolderFromRoot("SWChars", description: "Profiles for SWAssistant");
+      if(foldId == null){
+        return false;
+      }
+    }
+    driver!.wd = foldId;
+    return true;
+  }
   
   Future<bool> syncCloud() async{
-    drive ??= Driver();
-    if(!drive!.isReady()){
-      if(!await drive!.init()){
+    driver ??= Driver();
+    if(!driver!.isReady()){
+      if(!await driver!.init()){
         return false;
       }
     }

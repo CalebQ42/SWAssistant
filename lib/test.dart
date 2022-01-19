@@ -1,3 +1,5 @@
+import 'dart:io' as io;
+
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/utils/driver/driver.dart';
@@ -16,14 +18,22 @@ class TestScreen extends StatelessWidget{
             child: const Text("Test"),
             onPressed: () async {
               var app = SW.of(context);
-              app.drive ??= Driver();
-              if(!app.drive!.isReady()){
-                var ready = await app.drive!.init();
+              app.driver ??= Driver();
+              if(!app.driver!.isReady()){
+                var ready = await app.driver!.init();
                 if(!ready){
                   print("NOPE");
                   return;
                 };
               }
+              var foldId = await app.driver!.getID("SWChars");
+              if(foldId == null){
+                foldId = await app.driver!.createFolderFromRoot("SWChars", description: "Profiles for SWAssistant");
+                if(foldId == null){
+                  return;
+                }
+              }
+              app.driver!.wd = foldId;
             }
           ))
         ]
