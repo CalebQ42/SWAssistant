@@ -29,10 +29,12 @@ class DriveQueryBuilder {
     String out = "";
     if (name != null) out = _append(out, "name = '" + _escape(name!) + "'");
     if (mime != null) out = _append(out, "mimeType = '" + _escape(mime!) + "'");
-    if (notMime != null)
+    if (notMime != null) {
       out = _append(out, "mimeType != '" + _escape(notMime!) + "'");
-    if (parent != null)
+    }
+    if (parent != null) {
       out = _append(out, "'" + _escape(parent!) + "' in parents");
+    }
     if (trashed) out = _append(out, "trashed = true");
     if (nameContains != null) {
       for (var cont in nameContains!) {

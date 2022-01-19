@@ -1,5 +1,3 @@
-import 'dart:io' as io;
-
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/utils/driver/driver.dart';
@@ -22,7 +20,6 @@ class TestScreen extends StatelessWidget {
                       print("NOPE");
                       return;
                     }
-                    ;
                   }
                   var foldId = await app.driver!.getID("SWChars");
                   if (foldId == null) {

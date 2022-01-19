@@ -42,10 +42,12 @@ class MinionWoundState extends State<MinionWound> {
               minion.woundThreshInd = tmp;
             }
             minion.woundThresh = minion.woundThreshInd * minion.minionNum;
-            if (minion.woundCur < minion.woundCurTemp)
+            if (minion.woundCur < minion.woundCurTemp) {
               minion.woundCur = minion.woundCurTemp;
-            if (minion.woundCur > minion.woundThresh)
+            }
+            if (minion.woundCur > minion.woundThresh) {
               minion.woundCur = minion.woundThresh;
+            }
             if (minion.woundCur != orig) setState(() {});
           });
     return Column(
