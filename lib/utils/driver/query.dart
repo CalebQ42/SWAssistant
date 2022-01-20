@@ -76,10 +76,8 @@ class DriveQueryBuilder{
   String _escape(String toEscape) =>
     toEscape.replaceAll("'", "\\'").replaceAll("\\", "\\\\");
 
-  String _append(String oldQuery, String newQuery){
-    if(oldQuery != ""){
-      return oldQuery + " and " + newQuery;
-    }
+  String _append(String oldQuery, String newQuery) {
+    if (oldQuery != "") return oldQuery + " and " + newQuery;
     return newQuery;
   }
 }

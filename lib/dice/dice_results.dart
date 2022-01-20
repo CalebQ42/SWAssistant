@@ -13,10 +13,10 @@ class DiceResults{
 
   void add(dynamic side){
     _resultsMasterList.add(side);
-    if(side is SimpleSide && side.toString() != ""){
+    if (side is SimpleSide && side.toString() != "") {
       results[side.toString()] = (results[side.toString()] ?? 0) + (subtractMode ? -1 : 1);
-    }else if(side is ComplexSide){
-      for(var side in side.parts){
+    } else if (side is ComplexSide) {
+      for (var side in side.parts) {
         results[side.name] = (results[side.name] ?? 0) + (subtractMode ? -side.value : side.value);
       }
     }

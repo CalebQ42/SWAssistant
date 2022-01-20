@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/utils/driver/driver.dart';
 import 'package:uuid/uuid.dart';
 
@@ -115,8 +116,8 @@ class SW{
     }
   }
 
-  bool remove(Editable editable, BuildContext context){
-    if(editable.route != null && observatory.containsRoute(route: editable.route) != null){
+  bool remove(Editable editable, [BuildContext? context]){
+    if(context != null && editable.route != null && observatory.containsRoute(route: editable.route) != null){
       Navigator.removeRoute(context, editable.route!);
     }
     if(editable is Character){
@@ -265,14 +266,97 @@ class SW{
         )
     );
     var okay = await driveInit();
-    if(!okay) return false;
-    for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
-      if(fil.name == null) continue;
-      if(fil.name!.endsWith(".swcharacter") || fil.name!.endsWith(".swminion") || fil.name!.endsWith(".swvehicle")){
-        //TODO
+    if (!okay) return false;
+    var loadedCounter = 0;
+    var files = await driver!.listFiles("") ?? <drive.File>[];
+  outer:
+    for (var fil in files) {
+      if (fil.name == null || fil.id == null || fil.modifiedTime == null) continue;
+      var type = -1;
+      if (fil.name!.endsWith(".swcharacter")) type == EditableList.character;
+      if (fil.name!.endsWith(".swminion")) type == EditableList.minion;
+      if (fil.name!.endsWith(".swvehicle")) type == EditableList.vehicle;
+      if (type == -1) continue;
+      String uid = "";
+      if (fil.appProperties?["uid"] != null) {
+        uid = fil.appProperties!["uid"]!;
+        if (fil.name!.endsWith(".swcharacter")) {
+          for (var char in _characters) {
+            if (char.uid == uid) {
+              char.driveId = fil.id;
+              var localFil = File(char.getFileLocation(this));
+              if (localFil.lastModifiedSync().isBefore(fil.modifiedTime!)) continue outer;
+              loadedCounter++;
+              char.cloudSave(this).then((value) => loadedCounter--);
+              continue outer;
+            }
+          }
+          var char = Character(app: this);
+          loadedCounter++;
+          char.cloudLoad(fil.id!, this).then((value){
+            char.save(app: this);
+            loadedCounter--;
+          });
+        } else if (fil.name!.endsWith(".swminion")) {
+          for (var min in _minions) {
+            if (min.uid == uid) {
+              min.driveId = fil.id;
+              var localFil = File(min.getFileLocation(this));
+              if (localFil.lastModifiedSync().isBefore(fil.modifiedTime!)) continue outer;
+              loadedCounter++;
+              min.cloudSave(this).then((value) => loadedCounter--);
+              continue outer;
+            }
+          }
+          var min = Minion(app: this);
+          loadedCounter++;
+          min.cloudLoad(fil.id!, this).then((value){
+            min.save(app: this);
+            loadedCounter--;
+          });
+        } else if (fil.name!.endsWith(".swvehicle")) {
+          for (var veh in _vehicles) {
+            if (veh.uid == uid) {
+              veh.driveId = fil.id;
+              var localFil = File(veh.getFileLocation(this));
+              if (localFil.lastModifiedSync().isBefore(fil.modifiedTime!)) continue outer;
+              loadedCounter++;
+              veh.cloudSave(this).then((value) => loadedCounter--);
+              continue outer;
+            }
+          }
+          var veh = Vehicle(app: this);
+          loadedCounter++;
+          veh.cloudLoad(fil.id!, this).then((value){
+            veh.save(app: this);
+            loadedCounter--;
+          });
+        }
       }
     }
-    return false;
+    for (var char in _characters) {
+      if (char.driveId == null) {
+        loadedCounter++;
+        char.cloudSave(this).then((value) => loadedCounter--);
+      }
+    }
+    for (var min in _minions) {
+      if (min.driveId == null) {
+        loadedCounter++;
+        min.cloudSave(this).then((value) => loadedCounter--);
+      }
+    }
+    for (var veh in _vehicles) {
+      if (veh.driveId == null) {
+        loadedCounter++;
+        veh.cloudSave(this).then((value) => loadedCounter--);
+      }
+    }
+    while (loadedCounter > 0) {
+      sleep(const Duration(milliseconds: 100));
+    }
+    Navigator.pop(context);
+    return true;
   }
 
   Future<bool> driveInit() async{
@@ -294,13 +378,68 @@ class SW{
   }
   
   Future<bool> syncCloud() async{
-    driver ??= Driver();
-    if(!driver!.isReady()){
-      if(!await driver!.init()){
-        return false;
+    var okay = await driveInit();
+    if (!okay) return false;
+    List<Editable> all = <Editable>[
+      ..._characters,
+      ..._minions,
+      ..._vehicles
+    ];
+    var loadedWaiting = 0;
+    List<drive.File> files = await driver!.listFiles("") ?? [];
+    for (var fil in files){
+      if (fil.name == null || fil.id == null || fil.appProperties?["uid"] == null || fil.modifiedTime == null) continue;
+      Editable match;
+      try {
+        match = all.firstWhere((element) => element.uid == fil.appProperties!["uid"]);
+      } catch(e){
+        if (fil.name!.endsWith(".swcharacter")) {
+          var char = Character(app: this);
+          loadedWaiting++;
+          char.cloudLoad(fil.id!, this).then((value) {
+            char.save(app: this);
+            _characters.add(char);
+            loadedWaiting--;
+          });
+        } else if (fil.name!.endsWith(".swminion")) {
+          var char = Minion(app: this);
+          loadedWaiting++;
+          char.cloudLoad(fil.id!, this).then((value) {
+            char.save(app: this);
+            _minions.add(char);
+            loadedWaiting--;
+          });
+        } else if (fil.name!.endsWith(".swvehicle")) {
+          var char = Vehicle(app: this);
+          loadedWaiting++;
+          char.cloudLoad(fil.id!, this).then((value) {
+            char.save(app: this);
+            _vehicles.add(char);
+            loadedWaiting--;
+          });
+        }
+        continue;
       }
+      var localFil = File(match.getFileLocation(this));
+      if (fil.modifiedTime!.isAfter(localFil.lastModifiedSync())){
+        loadedWaiting++;
+        match.cloudLoad(fil.id!, this).then((value) => loadedWaiting--);
+      }else{
+        loadedWaiting++;
+        match.cloudSave(this).then((value) => loadedWaiting--);
+      }
+      all.remove(match);
     }
-    //TODO
+    while (loadedWaiting > 0) {
+      sleep(const Duration(milliseconds: 100));
+    }
+    for (var ed in all) {
+      ed.delete(this);
+      remove(ed);
+    }
+    updateCharacterCategories();
+    updateMinionCategories();
+    updateVehicleCategories();
     return false;
   }
 
@@ -325,9 +464,6 @@ class SW{
     app.saveDir = dir.path + "/SWChars";
     if(!Directory(app.saveDir).existsSync()){
       Directory(app.saveDir).createSync();
-    }
-    if(app.devMode){
-      await testing(app.saveDir);
     }
     app.loadAll();
     app.observatory = Observatory(app);
@@ -435,18 +571,6 @@ class SW{
         );
       }
     });
-  }
-
-  static Future<void> testing(String saveDir) async{
-    var testFiles = ["Big Game Hunter [Nemesis][Testing].swcharacter","Incom T-47 Airspeeder [Testing].swvehicle","Pirate Crew [Testing].swminion"];
-    for(String st in testFiles){
-      String json = await rootBundle.loadString("assets/testing/"+st);
-      File testFile = File(saveDir+"/"+st);
-      if(testFile.existsSync()){
-        testFile.deleteSync();
-      }
-      testFile.writeAsStringSync(json);
-    }
   }
 
   static SW of(BuildContext context){

@@ -12,6 +12,7 @@ import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
 import 'package:uuid/uuid.dart';
+import 'package:swassistant/preferences.dart' as preferences;
 
 import '../character.dart';
 import '../minion.dart';
@@ -38,6 +39,9 @@ abstract class Editable extends JsonSavable{
   int get cardNum;
 
   //Saving variables
+  String? driveId;
+  bool _cloudSaving = false;
+  bool _cloudDefered = false;
   bool _saving = false;
   String? loc;
   bool _defered = false;
@@ -56,9 +60,7 @@ abstract class Editable extends JsonSavable{
     app ??= SW.of(context!);
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap);
-    if(getFileLocation(app) != file.path){
-      loc = file.path;
-    }
+    if (getFileLocation(app) != file.path) loc = file.path;
   }
 
   Editable.from(Editable editable) :
@@ -181,16 +183,21 @@ abstract class Editable extends JsonSavable{
 
   String getFileLocation(SW sw) => loc ?? sw.saveDir + "/" + uid.toString() + fileExtension;
 
-  String? getCloudFileLocation() => null;
-  
-  void save({String filename = "", BuildContext? context, SW? app}) async{
-    if(filename == "") {
-      if (app == null && context == null){
-        throw("Either filename or context needs to be given");
+  Future<String?> getCloudFileId(SW app) async =>
+    driveId ?? await app.driver!.getID(uid + fileExtension);
+
+  void save({String filename = "", BuildContext? context, SW? app}) async {
+    if (filename == "") {
+      if (app == null && context == null) {
+        throw ("Either filename or context needs to be given");
       }
-      filename = getFileLocation(app ?? SW.of(context!));
+      app ??= SW.of(context!);
+      filename = getFileLocation(app);
     }
-    if(!_saving){
+    if (app != null && app.getPreference(preferences.googleDrive, false)) {
+      cloudSave(app);
+    }
+    if (!_saving && !_defered) {
       _saving = true;
       var file = File(filename);
       File? backup;
@@ -203,33 +210,79 @@ abstract class Editable extends JsonSavable{
         backup.deleteSync();
       }
       _saving = false;
-    }else{
-      if(!_defered){
-        _defered = true;
-        while(_saving){
-          sleep(const Duration(milliseconds: 250));
-        }
-        save(filename: filename);
-        _defered = false;
+    } else if (!_defered) {
+      _defered = true;
+      while (_saving) {
+        sleep(const Duration(milliseconds: 250));
       }
+      _defered = false;
+      save(filename: filename);
     }
   }
 
-  void cloudSave(){}
-  void load(String filename){
+  Future<void> cloudSave(SW app) async {
+    if (!_cloudSaving && !_defered) {
+      _cloudSaving = true;
+      if (app.driver == null || !app.driver!.isReady()) {
+        _cloudSaving = false;
+        return;
+      }
+      driveId ??= await getCloudFileId(app);
+      if (driveId == null) {
+        driveId = await app.driver!.createFile(uid + fileExtension,
+          appProperties: {"uid" : uid},
+        );
+        if (driveId == null) {
+          return;
+        }
+      }
+      var data = jsonEncode(toJson()).codeUnits;
+      app.driver!.updateContents(driveId!, Stream.value(data), data.length);
+      _cloudSaving = false;
+    } else if (!_cloudDefered) {
+      _cloudDefered = true;
+      while (_cloudSaving) {
+        sleep(const Duration(milliseconds: 500));
+      }
+      _cloudDefered = false;
+      cloudSave(app);
+    }
+  }
+
+  void load(String filename) {
     var file = File(filename);
     loadJson(jsonDecode(file.readAsStringSync()));
   }
-  void cloudLoad(){}
-  void delete(SW app){
+
+  Future<bool> cloudLoad(String driveId, SW app, {bool replaceId = true}) async {
+    if (replaceId) this.driveId = driveId;
+    if (app.driver == null || !app.driver!.isReady()) return false;
+    var media = await app.driver!.getData(driveId);
+    if (media == null) return false;
+    loadJson(jsonDecode(String.fromCharCodes(await media.stream.elementAt(0))));
+    return true;
+  }
+
+  void delete(SW app) {
+    if (app.getPreference(preferences.googleDrive, false)) cloudDelete(app);
     var fil = File(getFileLocation(app));
     fil.deleteSync();
   }
 
-  void addShortcut(){}
-  bool hasShortcut(){ return false; }
-  void updateShortcut(){}
-  void deleteShortcut(){}
+  Future<void> cloudDelete(SW app) async {
+    driveId ??= await getCloudFileId(app);
+    if (driveId == null) return;
+    if (app.driver == null || !app.driver!.isReady()) return;
+    return await app.driver!.delete(driveId!);
+  }
+
+  void addShortcut() {}
+  bool hasShortcut() {
+    return false;
+  }
+
+  void updateShortcut() {}
+  void deleteShortcut() {}
 
   List<EditableContent> cardContents(BuildContext context);
 
