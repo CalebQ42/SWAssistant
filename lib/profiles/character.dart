@@ -27,7 +27,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'utils/creature.dart';
 
-class Character extends Editable with Creature {
+class Character extends Editable with Creature{
+
   String species = "";
   String career = "";
   List<String> specializations = [];
@@ -56,100 +57,97 @@ class Character extends Editable with Creature {
   @override
   int get cardNum {
     var out = 16;
-    if (disableForce) out--;
-    if (disableMorality) out--;
-    if (disableDuty) out--;
-    if (disableObligation) out--;
+    if(disableForce) out--;
+    if(disableMorality) out--;
+    if(disableDuty) out--;
+    if(disableObligation) out--;
     return out;
   }
-
+  
   @override
   List<String> cardNames(BuildContext context) => [
-        AppLocalizations.of(context)!.basicInfo,
-        AppLocalizations.of(context)!.woundStrain,
-        AppLocalizations.of(context)!.characteristicPlural,
-        AppLocalizations.of(context)!.skillPlural,
-        AppLocalizations.of(context)!.defense,
-        AppLocalizations.of(context)!.weaponPlural,
-        AppLocalizations.of(context)!.criticalInj,
-        AppLocalizations.of(context)!.specializationPlural,
-        AppLocalizations.of(context)!.talentPlural,
-        if (!disableForce) AppLocalizations.of(context)!.forcePowerPlural,
-        AppLocalizations.of(context)!.xp,
-        AppLocalizations.of(context)!.inventory,
-        if (!disableMorality) AppLocalizations.of(context)!.morality,
-        if (!disableDuty) AppLocalizations.of(context)!.duty,
-        if (!disableObligation) AppLocalizations.of(context)!.obligation,
-        AppLocalizations.of(context)!.desc
-      ];
+    AppLocalizations.of(context)!.basicInfo,
+    AppLocalizations.of(context)!.woundStrain,
+    AppLocalizations.of(context)!.characteristicPlural,
+    AppLocalizations.of(context)!.skillPlural,
+    AppLocalizations.of(context)!.defense,
+    AppLocalizations.of(context)!.weaponPlural,
+    AppLocalizations.of(context)!.criticalInj,
+    AppLocalizations.of(context)!.specializationPlural,
+    AppLocalizations.of(context)!.talentPlural,
+    if(!disableForce) AppLocalizations.of(context)!.forcePowerPlural,
+    AppLocalizations.of(context)!.xp,
+    AppLocalizations.of(context)!.inventory,
+    if(!disableMorality) AppLocalizations.of(context)!.morality,
+    if(!disableDuty) AppLocalizations.of(context)!.duty,
+    if(!disableObligation) AppLocalizations.of(context)!.obligation,
+    AppLocalizations.of(context)!.desc
+  ];
 
-  Character(
-      {String name = "New Character",
-      bool saveOnCreation = false,
-      required SW app})
-      : super(name: name, saveOnCreation: saveOnCreation, app: app);
+  Character({String name = "New Character", bool saveOnCreation = false, required SW app}) :
+      super(name: name, saveOnCreation: saveOnCreation, app: app);
 
   Character.load(FileSystemEntity file, SW app) : super.load(file, app: app);
 
-  Character.from(Character character)
-      : species = character.species,
-        career = character.career,
-        specializations = List.from(character.specializations),
-        forcePowers = List.from(character.forcePowers),
-        motivation = character.motivation,
-        emotionalStr = character.emotionalStr,
-        emotionalWeak = character.emotionalWeak,
-        duties = List.from(character.duties),
-        obligations = List.from(character.obligations),
-        strainThresh = character.strainThresh,
-        strainCur = character.strainCur,
-        xpTot = character.xpTot,
-        xpCur = character.xpCur,
-        force = character.force,
-        credits = character.credits,
-        morality = character.morality,
-        conflict = character.conflict,
-        darkSide = character.darkSide,
-        age = character.age,
-        encumCap = character.encumCap,
-        disableDuty = character.disableDuty,
-        disableForce = character.disableForce,
-        disableObligation = character.disableObligation,
-        disableMorality = character.disableMorality,
-        super.from(character) {
+  Character.from(Character character) :
+      species = character.species,
+      career = character.career,
+      specializations = List.from(character.specializations),
+      forcePowers = List.from(character.forcePowers),
+      motivation = character.motivation,
+      emotionalStr = character.emotionalStr,
+      emotionalWeak = character.emotionalWeak,
+      duties = List.from(character.duties),
+      obligations = List.from(character.obligations),
+      strainThresh = character.strainThresh,
+      strainCur = character.strainCur,
+      xpTot = character.xpTot,
+      xpCur = character.xpCur,
+      force = character.force,
+      credits = character.credits,
+      morality = character.morality,
+      conflict = character.conflict,
+      darkSide = character.darkSide,
+      age = character.age,
+      encumCap = character.encumCap,
+      disableDuty = character.disableDuty,
+      disableForce = character.disableForce,
+      disableObligation = character.disableObligation,
+      disableMorality = character.disableMorality,
+      super.from(character){
     creatureFrom(character);
   }
 
   @override
-  void loadJson(Map<String, dynamic> json) {
+  void loadJson(Map<String,dynamic> json){
     super.loadJson(json);
     creatureLoadJson(json);
     species = json["species"] ?? "";
     career = json["career"] ?? "";
-    if (json["Specializations"] != null) {
+    if(json["Specializations"] != null){
       specializations = [];
-      for (dynamic s in json["Specializations"]) {
+      for(dynamic s in json["Specializations"]){
         specializations.add(s);
       }
     }
-    if (json["Force Powers"] != null) {
+    if(json["Force Powers"] != null){
       forcePowers = [];
-      for (dynamic dy in json["Force Powers"]) {
+      for(dynamic dy in json["Force Powers"]){
         forcePowers.add(ForcePower.fromJson(dy));
       }
     }
     motivation = json["motivation"] ?? "";
     emotionalStr = json["emotional strength"] ?? "";
     emotionalWeak = json["emotional weakness"] ?? "";
-    if (json["Dutys"] != null) {
+    if(json["Dutys"] != null){
       duties = [];
-      for (dynamic dy in json["Dutys"]) {
+      for(dynamic dy in json["Dutys"]){
         duties.add(Duty.fromJson(dy));
       }
     }
-    if (json["Obligations"] != null) {
-      obligations = [];
-      for (dynamic dy in json["Obligations"]) {
+    if(json["Obligations"] != null){
+      obligations  = [];
+      for(dynamic dy in json["Obligations"]){
         obligations.add(Obligation.fromJson(dy));
       }
     }
@@ -171,19 +169,17 @@ class Character extends Editable with Creature {
   }
 
   @override
-  Map<String, dynamic> toJson() => super.toJson()
-    ..addAll({
+  Map<String,dynamic> toJson() => 
+    super.toJson()..addAll({
       "species": species,
       "career": career,
       "Specializations": specializations,
-      "Force Powers": List.generate(
-          forcePowers.length, (index) => forcePowers[index].toJson()),
+      "Force Powers": List.generate(forcePowers.length, (index) => forcePowers[index].toJson()),
       "motivation": motivation,
       "emotional strength": emotionalStr,
       "emotional weakness": emotionalWeak,
       "Dutys": List.generate(duties.length, (index) => duties[index].toJson()),
-      "Obligations": List.generate(
-          obligations.length, (index) => obligations[index].toJson()),
+      "Obligations": List.generate(obligations.length, (index) => obligations[index].toJson()),
       "strain threshold": strainThresh,
       "strain current": strainCur,
       "xp total": xpTot,
@@ -199,97 +195,106 @@ class Character extends Editable with Creature {
       "disable duty": disableDuty,
       "disable obligation": disableObligation,
       "disable morality": disableMorality,
-    })
-    ..addAll(creatureSaveJson());
+    })..addAll(creatureSaveJson());
 
   var invHold = EditableContentStatefulHolder();
 
   @override
-  List<EditableContent> cardContents(BuildContext context) => <EditableContent>[
-        EditableContent(
-            key: const Key("info"),
-            builder: (b, refresh, state) =>
-                CharacterInfo(editing: b, state: state)),
-        EditableContent(
-            key: const Key("wound"),
-            builder: (b, refresh, state) =>
-                WoundStrain(editing: b, state: state),
-            defaultEditingState: () =>
-                soak == 0 && woundThresh == 0 && strainThresh == 0),
-        EditableContent(
-            key: const Key("characteristics"),
-            builder: (b, refresh, state) =>
-                Characteristics(editing: b, state: state),
-            defaultEditingState: () =>
-                charVals.every((element) => element == 0)),
-        EditableContent(
-            key: const Key("skills"),
-            builder: (b, refresh, state) =>
-                Skills(editing: b, refresh: refresh),
-            defaultEditingState: () => skills.isEmpty),
-        EditableContent(
-            key: const Key("defense"),
-            builder: (b, refresh, state) => Defense(editing: b, state: state)),
-        EditableContent(
-            key: const Key("weapons"),
-            builder: (b, refresh, state) =>
-                Weapons(editing: b, refresh: refresh),
-            defaultEditingState: () => weapons.isEmpty),
-        EditableContent(
-            key: const Key("critInj"),
-            builder: (b, refresh, state) =>
-                CriticalInjuries(editing: b, refresh: refresh),
-            defaultEditingState: () => criticalInjuries.isEmpty),
-        EditableContent(
-            key: const Key("special"),
-            builder: (b, refresh, state) => Specializations(
-                  editing: b,
-                  refresh: refresh,
-                ),
-            defaultEditingState: () => specializations.isEmpty),
-        EditableContent(
-            key: const Key("tal"),
-            builder: (b, refresh, state) => Talents(
-                  editing: b,
-                  refresh: refresh,
-                ),
-            defaultEditingState: () => talents.isEmpty),
-        if (!disableForce)
-          EditableContent(
-              key: const Key("fp"),
-              builder: (b, refresh, state) =>
-                  ForcePowers(editing: b, refresh: refresh, state: state),
-              defaultEditingState: () => forcePowers.isEmpty && force == 0),
-        EditableContent(
-            key: const Key("xp"),
-            builder: (b, refresh, state) =>
-                XP(editing: b, refresh: refresh, state: state)),
-        EditableContent(
-            key: const Key("inv"),
-            stateful: Inventory(holder: invHold),
-            defaultEditingState: () => inventory.isEmpty),
-        if (!disableMorality)
-          EditableContent(key: const Key("morality"), stateful: Morality()),
-        if (!disableDuty)
-          EditableContent(
-              key: const Key("duty"),
-              builder: (b, refresh, state) =>
-                  Duties(editing: b, refresh: refresh),
-              defaultEditingState: () => duties.isEmpty),
-        if (!disableObligation)
-          EditableContent(
-              key: const Key("obli"),
-              builder: (b, refresh, state) =>
-                  Obligations(editing: b, refresh: refresh),
-              defaultEditingState: () => obligations.isEmpty),
-        EditableContent(
-            key: const Key("desc"),
-            builder: (b, refresh, state) =>
-                Description(editing: b, state: state),
-            defaultEditingState: () => desc == "")
-      ];
+  List<EditableContent> cardContents(BuildContext context) => 
+    <EditableContent>[
+      EditableContent(
+        key: const Key("info"),
+        builder: (b, refresh, state) =>
+          CharacterInfo(editing: b, state: state)
+      ),
+      EditableContent(
+        key: const Key("wound"),
+        builder: (b, refresh, state) =>
+          WoundStrain(editing: b, state: state),
+        defaultEditingState: () => soak == 0 && woundThresh == 0 && strainThresh == 0
+      ),
+      EditableContent(
+        key: const Key("characteristics"),
+        builder: (b, refresh, state) =>
+          Characteristics(editing: b, state: state),
+        defaultEditingState: () => charVals.every((element) => element == 0)
+      ),
+      EditableContent(
+        key: const Key("skills"),
+        builder: (b, refresh, state) =>
+          Skills(editing:b, refresh: refresh),
+        defaultEditingState: () => skills.isEmpty
+      ),
+      EditableContent(
+        key: const Key("defense"),
+        builder: (b, refresh, state) =>
+          Defense(editing: b, state: state)
+      ),
+      EditableContent(
+        key: const Key("weapons"),
+        builder: (b, refresh, state) =>
+          Weapons(editing: b, refresh: refresh),
+        defaultEditingState: () => weapons.isEmpty
+      ),
+      EditableContent(
+        key: const Key("critInj"),
+        builder: (b, refresh, state) =>
+          CriticalInjuries(editing: b, refresh: refresh),
+        defaultEditingState: () => criticalInjuries.isEmpty
+      ),
+      EditableContent(
+        key: const Key("special"),
+        builder: (b, refresh, state) =>
+          Specializations(editing: b, refresh: refresh,),
+        defaultEditingState: () => specializations.isEmpty
+      ),
+      EditableContent(
+        key: const Key("tal"),
+        builder: (b, refresh, state) =>
+          Talents(editing: b, refresh: refresh,),
+        defaultEditingState: () => talents.isEmpty
+      ),
+      if(!disableForce) EditableContent(
+        key: const Key("fp"),
+        builder: (b, refresh, state) =>
+          ForcePowers(editing: b, refresh: refresh, state: state),
+        defaultEditingState: () => forcePowers.isEmpty && force == 0
+      ),
+      EditableContent(
+        key: const Key("xp"),
+        builder: (b, refresh, state) =>
+          XP(editing: b, refresh: refresh, state: state)
+      ),
+      EditableContent(
+        key: const Key("inv"),
+        stateful: Inventory(holder: invHold),
+        defaultEditingState: () => inventory.isEmpty
+      ),
+      if(!disableMorality) EditableContent(
+        key: const Key("morality"),
+        stateful: Morality()
+      ),
+      if(!disableDuty) EditableContent(
+        key: const Key("duty"),
+        builder: (b, refresh, state) =>
+          Duties(editing: b, refresh: refresh),
+        defaultEditingState: () => duties.isEmpty
+      ),
+      if(!disableObligation) EditableContent(
+        key: const Key("obli"),
+        builder: (b, refresh, state) =>
+          Obligations(editing: b, refresh: refresh),
+        defaultEditingState: () => obligations.isEmpty
+      ),
+      EditableContent(
+        key: const Key("desc"),
+        builder: (b, refresh, state) =>
+          Description(editing: b, state: state),
+        defaultEditingState: () => desc == ""
+      )
+    ];
 
-  static Character? of(BuildContext context) {
+  static Character? of(BuildContext context){
     var ed = Editable.of(context);
     if (ed is Character) return ed;
     return null;

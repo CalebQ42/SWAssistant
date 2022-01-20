@@ -4,15 +4,15 @@ import 'package:swassistant/items/talent.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-mixin Creature on Editable {
+mixin Creature on Editable{
   static List<String> characteristics(BuildContext context) => [
-        AppLocalizations.of(context)!.brawn,
-        AppLocalizations.of(context)!.agility,
-        AppLocalizations.of(context)!.intellect,
-        AppLocalizations.of(context)!.cunning,
-        AppLocalizations.of(context)!.willpower,
-        AppLocalizations.of(context)!.presence
-      ];
+      AppLocalizations.of(context)!.brawn,
+      AppLocalizations.of(context)!.agility,
+      AppLocalizations.of(context)!.intellect,
+      AppLocalizations.of(context)!.cunning,
+      AppLocalizations.of(context)!.willpower,
+      AppLocalizations.of(context)!.presence
+    ];
 
   List<int> charVals = List.filled(6, 0, growable: false);
   List<Skill> skills = [];
@@ -22,7 +22,7 @@ mixin Creature on Editable {
   int defMelee = 0, defRanged = 0;
   int soak = 0;
 
-  void creatureFrom(Creature creature) {
+  void creatureFrom(Creature creature){
     charVals = List.from(creature.charVals);
     skills = List.from(creature.skills);
     talents = List.from(creature.talents);
@@ -33,22 +33,22 @@ mixin Creature on Editable {
     soak = creature.soak;
   }
 
-  void creatureLoadJson(Map<String, dynamic> json) {
-    if (json["characteristics"] != null) {
+  void creatureLoadJson(Map<String,dynamic> json){
+    if(json["characteristics"] != null){
       charVals = [];
-      for (dynamic dy in json["characteristics"]) {
+      for(dynamic dy in json["characteristics"]){
         charVals.add(dy);
       }
     }
-    if (json["Skills"] != null) {
+    if(json["Skills"] != null){
       skills = [];
-      for (dynamic dy in json["Skills"]) {
+      for(dynamic dy in json["Skills"]){
         skills.add(Skill.fromJson(dy));
       }
     }
-    if (json["Talents"] != null) {
+    if(json["Talents"] != null){
       talents = [];
-      for (dynamic dy in json["Talents"]) {
+      for(dynamic dy in json["Talents"]){
         talents.add(Talent.fromJson(dy));
       }
     }
@@ -59,22 +59,20 @@ mixin Creature on Editable {
     soak = json["soak"] ?? 0;
   }
 
-  Map<String, dynamic> creatureSaveJson() => {
-        "characteristics": charVals,
-        "Skills":
-            List.generate(skills.length, (index) => skills[index].toJson()),
-        "Talents":
-            List.generate(talents.length, (index) => talents[index].toJson()),
-        "wound threshold": woundThresh,
-        "wound current": woundCur,
-        "melee defense": defMelee,
-        "ranged defense": defRanged,
-        "soak": soak
-      };
+  Map<String,dynamic> creatureSaveJson() => {
+    "characteristics": charVals,
+    "Skills": List.generate(skills.length, (index) => skills[index].toJson()),
+    "Talents": List.generate(talents.length, (index) => talents[index].toJson()),
+    "wound threshold": woundThresh,
+    "wound current": woundCur,
+    "melee defense": defMelee,
+    "ranged defense": defRanged,
+    "soak": soak
+  };
 
-  static Creature? of(BuildContext context) {
+  static Creature? of(BuildContext context){
     var ed = Editable.of(context);
-    if (ed is Creature) {
+    if (ed is Creature){
       return ed;
     }
     return null;

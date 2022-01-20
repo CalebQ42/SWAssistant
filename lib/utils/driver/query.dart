@@ -1,4 +1,4 @@
-class DriveQueryBuilder {
+class DriveQueryBuilder{
   static const String folderMime = "application/vnd.google-apps.folder";
   static const String fileMime = "application/vnd.google-apps.file";
 
@@ -25,42 +25,40 @@ class DriveQueryBuilder {
   Map<String, String>? appProperties;
   bool trashed = false;
 
-  String getQuery() {
+  String getQuery(){
     String out = "";
-    if (name != null) out = _append(out, "name = '" + _escape(name!) + "'");
-    if (mime != null) out = _append(out, "mimeType = '" + _escape(mime!) + "'");
-    if (notMime != null)
-      out = _append(out, "mimeType != '" + _escape(notMime!) + "'");
-    if (parent != null)
-      out = _append(out, "'" + _escape(parent!) + "' in parents");
-    if (trashed) out = _append(out, "trashed = true");
-    if (nameContains != null) {
-      for (var cont in nameContains!) {
+    if(name != null) out = _append(out, "name = '" + _escape(name!) + "'");
+    if(mime != null) out = _append(out, "mimeType = '" + _escape(mime!) + "'");
+    if(notMime != null) out = _append(out, "mimeType != '" + _escape(notMime!) + "'");
+    if(parent != null) out = _append(out, "'" + _escape(parent!) + "' in parents");
+    if(trashed) out = _append(out, "trashed = true");
+    if(nameContains != null){
+      for(var cont in nameContains!){
         out = _append(out, "name contains '" + _escape(cont) + "'");
       }
     }
-    if (nameNotContains != null) {
-      for (var cont in nameNotContains!) {
+    if(nameNotContains != null){
+      for(var cont in nameNotContains!){
         out = _append(out, "not name contains '" + _escape(cont) + "'");
       }
     }
-    if (fullTextContains != null) {
-      for (var cont in fullTextContains!) {
+    if(fullTextContains != null){
+      for(var cont in fullTextContains!){
         out = _append(out, "fullText contains '" + _escape(cont) + "'");
       }
     }
-    if (fullTextNotContains != null) {
-      for (var cont in fullTextNotContains!) {
+    if(fullTextNotContains != null){
+      for(var cont in fullTextNotContains!){
         out = _append(out, "not fullText contains '" + _escape(cont) + "'");
       }
     }
-    if (editedAfter != null) {
+    if(editedAfter != null){
       out = _append(out, "modifiedTime > " + _dateToString(editedAfter!));
     }
-    if (appProperties != null) {
-      for (var key in appProperties!.keys) {
+    if(appProperties != null){
+      for(var key in appProperties!.keys){
         out = _append(out, "appProperties has { key='" + _escape(key));
-        if (appProperties![key] != null) {
+        if(appProperties![key] != null){
           out += "' and value='" + _escape(appProperties![key]!);
         }
         out += "' }";
@@ -69,26 +67,17 @@ class DriveQueryBuilder {
     return out;
   }
 
-  String _dateToString(DateTime time) {
+  String _dateToString(DateTime time){
     time = time.toUtc();
-    return time.year.toString() +
-        "-" +
-        time.month.toString() +
-        "-" +
-        time.day.toString() +
-        "T" +
-        time.hour.toString() +
-        ":" +
-        time.minute.toString() +
-        ":" +
-        time.second.toString();
+    return time.year.toString() + "-" + time.month.toString() + "-" + time.day.toString() +
+      "T" + time.hour.toString() + ":" + time.minute.toString() + ":" + time.second.toString();
   }
 
   String _escape(String toEscape) =>
-      toEscape.replaceAll("'", "\\'").replaceAll("\\", "\\\\");
+    toEscape.replaceAll("'", "\\'").replaceAll("\\", "\\\\");
 
-  String _append(String oldQuery, String newQuery) {
-    if (oldQuery != "") {
+  String _append(String oldQuery, String newQuery){
+    if(oldQuery != ""){
       return oldQuery + " and " + newQuery;
     }
     return newQuery;

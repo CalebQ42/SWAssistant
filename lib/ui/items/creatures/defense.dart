@@ -3,13 +3,12 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Defense extends StatelessWidget {
+class Defense extends StatelessWidget{
   final bool editing;
   final EditableContentState state;
 
-  const Defense({required this.editing, required this.state, Key? key})
-      : super(key: key);
-
+  const Defense({required this.editing, required this.state, Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     var creature = Creature.of(context);
@@ -26,11 +25,11 @@ class Defense extends StatelessWidget {
                 initialText: creature.defMelee.toString(),
                 defaultSave: true,
                 textType: TextInputType.number,
-                controller: () {
-                  var cont =
-                      TextEditingController(text: creature.defMelee.toString());
-                  cont.addListener(
-                      () => creature.defMelee = int.tryParse(cont.text) ?? 0);
+                controller: (){
+                  var cont = TextEditingController(text: creature.defMelee.toString());
+                  cont.addListener(() =>
+                    creature.defMelee = int.tryParse(cont.text) ?? 0
+                  );
                   return cont;
                 }(),
                 // controller: TextEditingController(text: creature.defMelee.toString()),
@@ -39,24 +38,25 @@ class Defense extends StatelessWidget {
           ),
         ),
         Expanded(
-            child: Column(
-          children: [
-            EditingText(
-              title: AppLocalizations.of(context)!.ranged,
-              editing: editing,
-              initialText: creature.defRanged.toString(),
-              defaultSave: true,
-              textType: TextInputType.number,
-              controller: () {
-                var cont =
-                    TextEditingController(text: creature.defRanged.toString());
-                cont.addListener(
-                    () => creature.defRanged = int.tryParse(cont.text) ?? 0);
-                return cont;
-              }(),
-            )
-          ],
-        ))
+          child: Column(
+            children: [
+              EditingText(
+                title: AppLocalizations.of(context)!.ranged,
+                editing: editing,
+                initialText: creature.defRanged.toString(),
+                defaultSave: true,
+                textType: TextInputType.number,
+                controller: (){
+                  var cont = TextEditingController(text: creature.defRanged.toString());
+                  cont.addListener(() =>
+                    creature.defRanged = int.tryParse(cont.text) ?? 0
+                  );
+                  return cont;
+                }(),
+              )
+            ],
+          )
+        )
       ],
     );
   }

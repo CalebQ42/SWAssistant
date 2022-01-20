@@ -1,23 +1,27 @@
 import 'package:swassistant/utils/json_savable.dart';
 
-class Obligation implements JsonSavable {
+class Obligation implements JsonSavable{
+
   String name;
   int value;
   String desc;
 
   Obligation({this.name = "", this.value = -1, this.desc = ""});
 
-  Obligation.fromJson(Map<String, dynamic> json)
-      : name = json["name"] ?? "",
-        value = json["value"] ?? -1,
-        desc = json["description"] ?? "";
+  Obligation.fromJson(Map<String,dynamic> json) :
+    name = json["name"] ?? "",
+    value = json["value"] ?? -1,
+    desc = json["description"] ?? "";
 
-  Obligation.from(Obligation obligation)
-      : name = obligation.name,
-        value = obligation.value,
-        desc = obligation.desc;
+  Obligation.from(Obligation obligation) :
+    name = obligation.name,
+    value = obligation.value,
+    desc = obligation.desc;
 
   @override
-  Map<String, dynamic> toJson() =>
-      {"name": name, "value": value, "description": desc};
+  Map<String,dynamic> toJson() => {
+    "name" : name,
+    "value" : value,
+    "description" : desc
+  };
 }

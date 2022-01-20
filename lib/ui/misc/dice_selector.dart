@@ -4,22 +4,20 @@ import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+class DiceSelector extends StatelessWidget{
 
-class DiceSelector extends StatelessWidget {
   final SWDiceHolder holder;
   final int type;
   final bool small;
 
-  const DiceSelector(
-      {required this.holder, required this.type, this.small = true, Key? key})
-      : super(key: key);
+  const DiceSelector({required this.holder, required this.type, this.small = true, Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     Color? background;
     Color? text;
     if (SW.of(context).getPreference(preferences.colorDice, true)) {
-      switch (type) {
+      switch(type){
         case 0:
           background = Colors.green;
           text = Colors.white;
@@ -53,9 +51,7 @@ class DiceSelector extends StatelessWidget {
     var title = Text(
       getText(context),
       textAlign: TextAlign.center,
-      style: small
-          ? Theme.of(context).textTheme.bodyText1?.copyWith(color: text)
-          : Theme.of(context).textTheme.headline6?.copyWith(color: text),
+      style: small ? Theme.of(context).textTheme.bodyText1?.copyWith(color: text) : Theme.of(context).textTheme.headline6?.copyWith(color: text),
     );
     var upDown = UpDownStat(
       getValue: () => getValue(),
@@ -64,39 +60,39 @@ class DiceSelector extends StatelessWidget {
       textColor: text,
     );
     Widget body;
-    if (small) {
+    if (small){
       body = Row(
         children: [
           Expanded(child: title),
           Expanded(child: upDown),
         ],
       );
-    } else {
+    }else{
       body = Column(
-        children: [title, upDown],
+        children: [
+          title, upDown
+        ],
       );
     }
     body = Padding(
       padding: const EdgeInsets.all(5),
       child: body,
     );
-    if (small) {
+    if (small){
       body = Container(
         child: body,
         color: background,
       );
     }
-    return small
-        ? body
-        : Card(
-            margin: const EdgeInsets.all(4),
-            color: background,
-            child: body,
-          );
+    return small ? body : Card(
+      margin: const EdgeInsets.all(4),
+      color: background,
+      child: body,
+    );
   }
 
-  int getValue() {
-    switch (type) {
+  int getValue(){
+    switch(type){
       case 0:
         return holder.ability;
       case 1:
@@ -115,8 +111,8 @@ class DiceSelector extends StatelessWidget {
     return -1;
   }
 
-  String getText(BuildContext context) {
-    switch (type) {
+  String getText(BuildContext context){
+    switch(type){
       case 0:
         return AppLocalizations.of(context)!.ability;
       case 1:
@@ -135,8 +131,8 @@ class DiceSelector extends StatelessWidget {
     return "";
   }
 
-  void up() {
-    switch (type) {
+  void up(){
+    switch(type){
       case 0:
         holder.ability++;
         return;
@@ -161,8 +157,8 @@ class DiceSelector extends StatelessWidget {
     }
   }
 
-  void down() {
-    switch (type) {
+  void down(){
+    switch(type){
       case 0:
         holder.ability--;
         return;

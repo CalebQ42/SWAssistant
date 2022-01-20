@@ -6,7 +6,8 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Morality extends StatefulWidget with StatefulCard {
+class Morality extends StatefulWidget with StatefulCard{
+
   Morality({Key? key}) : super(key: key);
 
   final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
@@ -18,7 +19,8 @@ class Morality extends StatefulWidget with StatefulCard {
   EditableContentStatefulHolder getHolder() => holder;
 }
 
-class MoralityState extends State<Morality> {
+class MoralityState extends State<Morality>{
+
   bool editing = false;
 
   TextEditingController? moralityController;
@@ -30,35 +32,35 @@ class MoralityState extends State<Morality> {
   void initState() {
     super.initState();
     editing = widget.holder.editing;
-    widget.holder.reloadFunction =
-        () => setState(() => editing = widget.holder.editing);
+    widget.holder.reloadFunction = () => setState(() =>
+      editing = widget.holder.editing
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "Morality card used on non Character";
-    if (moralityController == null) {
-      moralityController =
-          TextEditingController(text: character.morality.toString());
+    if(moralityController == null){
+      moralityController = TextEditingController(text: character.morality.toString());
       moralityController?.addListener(() =>
-          character.morality = int.tryParse(moralityController!.text) ?? 0);
+        character.morality = int.tryParse(moralityController!.text) ?? 0
+      );
     }
-    if (conflictController == null) {
-      conflictController =
-          TextEditingController(text: character.conflict.toString());
+    if(conflictController == null){
+      conflictController = TextEditingController(text: character.conflict.toString());
       conflictController?.addListener(() {
         character.conflict = int.tryParse(conflictController!.text) ?? 0;
         character.save(context: context);
       });
     }
-    if (strengthController == null) {
+    if(strengthController == null){
       strengthController = TextEditingController(text: character.emotionalStr);
       strengthController?.addListener(() {
         character.emotionalStr = strengthController!.text;
       });
     }
-    if (weaknessController == null) {
+    if(weaknessController == null){
       weaknessController = TextEditingController(text: character.emotionalWeak);
       weaknessController?.addListener(() {
         character.emotionalWeak = weaknessController!.text;
@@ -69,129 +71,120 @@ class MoralityState extends State<Morality> {
         Row(
           children: [
             Expanded(
-              child: Text(
-                AppLocalizations.of(context)!.morality,
-                textAlign: TextAlign.center,
-              ),
+              child: Text(AppLocalizations.of(context)!.morality, textAlign: TextAlign.center,),
             ),
             Container(width: 10),
             Expanded(
-              child: Text(AppLocalizations.of(context)!.conflict,
-                  textAlign: TextAlign.center),
+              child: Text(AppLocalizations.of(context)!.conflict, textAlign: TextAlign.center),
             )
           ],
         ),
-        Container(
-          height: 5,
-        ),
+        Container(height: 5,),
         Row(
           children: [
             Expanded(
-                child: Center(
-                    child: EditingText(
-              editing: editing,
-              initialText: character.morality.toString(),
-              controller: moralityController,
-              textType: TextInputType.number,
-              defaultSave: true,
-              textAlign: TextAlign.center,
-              fieldAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6,
-            ))),
-            Expanded(
-                child: TextField(
-              controller: conflictController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              // decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
-              textAlign: TextAlign.center,
-            ))
-          ],
-        ),
-        Container(
-          height: 5,
-        ),
-        Center(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(AppLocalizations.of(context)!.darkSide),
-            Switch(
-              value: character.darkSide,
-              onChanged: (b) => setState(() {
-                character.darkSide = b;
-                character.save(context: context);
-              }),
-            ),
-            ElevatedButton(
-              child: Text(AppLocalizations.of(context)!.resolveConflict),
-              onPressed: () {
-                var conflict = int.tryParse(conflictController!.text);
-                conflict ??= 0;
-                conflictController!.text = "0";
-                character.conflict = 0;
-                var resolution = Random().nextInt(9) + 1;
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      AppLocalizations.of(context)!.conflictResult(resolution)),
-                ));
-                resolution = resolution - conflict;
-                setState(() {
-                  character.morality +=
-                      character.darkSide ? -resolution : resolution;
-                  if (character.morality > 100) {
-                    character.morality = 100;
-                  } else if (character.morality < 0) {
-                    character.morality = 0;
-                  }
-                  character.save(context: context);
-                });
-              },
-            ),
-          ],
-        )),
-        Container(
-          height: 5,
-        ),
-        Row(children: [
-          Expanded(
-            child: Center(
-                child: Text(
-              AppLocalizations.of(context)!.emoStr,
-              style: Theme.of(context).textTheme.subtitle1,
-            )),
-          ),
-          Expanded(
               child: Center(
-                  child: Text(
-            AppLocalizations.of(context)!.emoWeak,
-            style: Theme.of(context).textTheme.subtitle1,
-          )))
-        ]),
+                child: EditingText(
+                  editing: editing,
+                  initialText: character.morality.toString(),
+                  controller: moralityController,
+                  textType: TextInputType.number,
+                  defaultSave: true,
+                  textAlign: TextAlign.center,
+                  fieldAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline6,
+                )
+              )
+            ),
+            Expanded(
+              child: TextField(
+                controller: conflictController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                // decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
+                textAlign: TextAlign.center,
+              )
+            )
+          ],
+        ),
+        Container(height: 5,),
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(AppLocalizations.of(context)!.darkSide),
+              Switch(
+                value: character.darkSide,
+                onChanged: (b) => setState((){
+                  character.darkSide = b;
+                  character.save(context: context);
+                }),
+              ),
+              ElevatedButton(
+                child: Text(AppLocalizations.of(context)!.resolveConflict),
+                onPressed: (){
+                  var conflict = int.tryParse(conflictController!.text);
+                  conflict ??= 0;
+                  conflictController!.text = "0";
+                  character.conflict = 0;
+                  var resolution = Random().nextInt(9) + 1;
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppLocalizations.of(context)!.conflictResult(resolution)),
+                  ));
+                  resolution = resolution - conflict;
+                  setState((){
+                    character.morality += character.darkSide ? -resolution : resolution;
+                    if(character.morality > 100){
+                      character.morality = 100;
+                    }else if (character.morality < 0){
+                      character.morality = 0;
+                    }
+                    character.save(context: context);
+                  });
+                },
+              ),
+            ],
+          )
+        ),
+        Container(height: 5,),
+        Row(
+          children: [
+            Expanded(
+              child: Center(child: Text(AppLocalizations.of(context)!.emoStr, style: Theme.of(context).textTheme.subtitle1,)),
+            ),
+            Expanded(
+              child: Center(child: Text(AppLocalizations.of(context)!.emoWeak, style: Theme.of(context).textTheme.subtitle1,))
+            )
+          ]
+        ),
         Container(height: 5),
-        Row(children: [
-          Expanded(
+        Row(
+          children: [
+            Expanded(
               child: EditingText(
-            editing: editing,
-            initialText: character.emotionalStr,
-            controller: strengthController,
-            defaultSave: true,
-            textCapitalization: TextCapitalization.words,
-            textAlign: TextAlign.center,
-            fieldAlign: TextAlign.center,
-          )),
-          Expanded(
+                editing: editing,
+                initialText: character.emotionalStr,
+                controller: strengthController,
+                defaultSave: true,
+                textCapitalization: TextCapitalization.words,
+                textAlign: TextAlign.center,
+                fieldAlign: TextAlign.center,
+              )
+            ),
+            Expanded(
               child: EditingText(
-            editing: editing,
-            initialText: character.emotionalWeak,
-            controller: weaknessController,
-            defaultSave: true,
-            textCapitalization: TextCapitalization.words,
-            textAlign: TextAlign.center,
-            fieldAlign: TextAlign.center,
-          ))
-        ])
+                editing: editing,
+                initialText: character.emotionalWeak,
+                controller: weaknessController,
+                defaultSave: true,
+                textCapitalization: TextCapitalization.words,
+                textAlign: TextAlign.center,
+                fieldAlign: TextAlign.center,
+              )
+            )
+          ]
+        )
       ],
     );
   }

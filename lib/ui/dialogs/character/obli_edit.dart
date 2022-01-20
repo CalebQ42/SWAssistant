@@ -4,7 +4,8 @@ import 'package:swassistant/items/obligation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
-class ObligationEditDialog {
+class ObligationEditDialog{
+
   final Obligation obligation;
   final Function(Obligation) onClose;
 
@@ -14,67 +15,70 @@ class ObligationEditDialog {
   late TextEditingController valueController;
   late TextEditingController descController;
 
-  ObligationEditDialog({Obligation? obli, required this.onClose})
-      : obligation = obli != null ? Obligation.from(obli) : Obligation() {
+  ObligationEditDialog({Obligation? obli, required this.onClose}) :
+    obligation = obli != null ? Obligation.from(obli) : Obligation(){
     nameController = TextEditingController(text: obligation.name)
       ..addListener(() {
         obligation.name = nameController.text;
         bot.updateButtons();
       });
-    valueController = TextEditingController(
-        text: obligation.value != -1 ? obligation.value.toString() : "")
+    valueController = TextEditingController(text: obligation.value != -1 ? obligation.value.toString() : "")
       ..addListener(() {
         obligation.value = int.tryParse(valueController.text) ?? -1;
         bot.updateButtons();
       });
     descController = TextEditingController(text: obligation.desc)
-      ..addListener(() => obligation.desc = descController.text);
+      ..addListener(() =>
+        obligation.desc = descController.text
+      );
     bot = Bottom(
-        child: (context) => Wrap(
-              children: [
-                Container(height: 15),
-                TextField(
-                  controller: nameController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.name),
-                ),
-                Container(height: 10),
-                TextField(
-                  controller: valueController,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.obligation),
-                ),
-                Container(height: 10),
-                TextField(
-                  controller: descController,
-                  textCapitalization: TextCapitalization.sentences,
-                  maxLines: 3,
-                  minLines: 1,
-                  decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.desc),
-                )
-              ],
-            ),
-        buttons: (context) => [
-              TextButton(
-                child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                onPressed: obligation.name != "" && obligation.value != -1
-                    ? () {
-                        onClose(obligation);
-                        Navigator.pop(context);
-                      }
-                    : null,
+      child: (context) =>
+        Wrap(
+          children: [
+            Container(height: 15),
+            TextField(
+              controller: nameController,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.name
               ),
-              TextButton(
-                child:
-                    Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                onPressed: () => Navigator.pop(context),
-              )
-            ]);
+            ),
+            Container(height: 10),
+            TextField(
+              controller: valueController,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.obligation
+              ),
+            ),
+            Container(height: 10),
+            TextField(
+              controller: descController,
+              textCapitalization: TextCapitalization.sentences,
+              maxLines: 3,
+              minLines: 1,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.desc
+              ),
+            )
+          ],
+        ),
+      buttons: (context) =>[
+        TextButton(
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+          onPressed: obligation.name != "" && obligation.value != -1 ? (){
+            onClose(obligation);
+            Navigator.pop(context);
+          } : null,
+        ),
+        TextButton(
+          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          onPressed: () => Navigator.pop(context),
+        )]
+    );
   }
 
-  void show(BuildContext context) => bot.show(context);
+  void show(BuildContext context) =>
+    bot.show(context);
 }

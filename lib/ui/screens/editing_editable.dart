@@ -12,19 +12,19 @@ import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditingEditable extends StatefulWidget {
+
   final Editable profile;
   final bool contained;
   final double? w;
 
-  const EditingEditable(this.profile,
-      {Key? key, this.contained = false, this.w})
-      : super(key: key);
+  const EditingEditable(this.profile, {Key? key, this.contained = false, this.w}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _EditingEditableState();
 }
 
-class _EditingEditableState extends State<EditingEditable> {
+class _EditingEditableState extends State<EditingEditable>{
+
   int _index = 0;
 
   _EditingEditableState();
@@ -34,12 +34,8 @@ class _EditingEditableState extends State<EditingEditable> {
     var bottomNav = BottomNavigationBar(
       backgroundColor: Theme.of(context).cardColor,
       items: [
-        BottomNavigationBarItem(
-            icon: const Icon(Icons.info),
-            label: AppLocalizations.of(context)!.stats),
-        BottomNavigationBarItem(
-            icon: const Icon(Icons.note),
-            label: AppLocalizations.of(context)!.notes)
+        BottomNavigationBarItem(icon: const Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
+        BottomNavigationBarItem(icon: const Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
       ],
       onTap: (value) => setState(() => _index = value),
       currentIndex: _index,
@@ -47,157 +43,156 @@ class _EditingEditableState extends State<EditingEditable> {
       showSelectedLabels: true,
     );
     Widget body;
-    if (!widget.contained) {
+    if(!widget.contained) {
       body = Scaffold(
-          drawer: const SWDrawer(),
-          bottomNavigationBar: bottomNav,
-          appBar: SWAppBar(
-            context,
-            additionalActions: [
-              IconButton(
-                icon: const Icon(Icons.casino_outlined),
-                onPressed: () => SWDiceHolder().showDialog(context),
+        drawer: const SWDrawer(),
+        bottomNavigationBar: bottomNav,
+        appBar: SWAppBar(
+          context,
+          additionalActions: [
+            IconButton(
+              icon: const Icon(Icons.casino_outlined),
+              onPressed: () =>
+                SWDiceHolder().showDialog(context),
+            ),
+          ],
+          additionalPopupActions: [
+            if (widget.profile is Character)
+              CheckedPopupMenuItem(
+                checked: (widget.profile as Character).disableForce,
+                child: Text(AppLocalizations.of(context)!.disableForce),
+                value: "disableForce"
               ),
-            ],
-            additionalPopupActions: [
-              if (widget.profile is Character)
-                CheckedPopupMenuItem(
-                    checked: (widget.profile as Character).disableForce,
-                    child: Text(AppLocalizations.of(context)!.disableForce),
-                    value: "disableForce"),
-              if (widget.profile is Character)
-                CheckedPopupMenuItem(
-                    checked: (widget.profile as Character).disableMorality,
-                    child: Text(AppLocalizations.of(context)!.disableMorality),
-                    value: "disableMorality"),
-              if (widget.profile is Character)
-                CheckedPopupMenuItem(
-                    checked: (widget.profile as Character).disableDuty,
-                    child: Text(AppLocalizations.of(context)!.disableDuty),
-                    value: "disableDuty"),
-              if (widget.profile is Character)
-                CheckedPopupMenuItem(
-                    checked: (widget.profile as Character).disableObligation,
-                    child:
-                        Text(AppLocalizations.of(context)!.disableObligation),
-                    value: "disableObligation"),
-              PopupMenuItem(
-                  child: Text(AppLocalizations.of(context)!.clone),
-                  value: "clone"),
-            ],
-            backgroundColor: Theme.of(context).primaryColor,
-            popupFunctions: {
-              "disableForce": () => setState(() => (widget.profile as Character)
-                  .disableForce = !(widget.profile as Character).disableForce),
-              "disableDuty": () => setState(() => (widget.profile as Character)
-                  .disableDuty = !(widget.profile as Character).disableDuty),
-              "disableObligation": () => setState(() =>
-                  (widget.profile as Character).disableObligation =
-                      !(widget.profile as Character).disableObligation),
-              "disableMorality": () => setState(() =>
-                  (widget.profile as Character).disableMorality =
-                      !(widget.profile as Character).disableMorality),
-              "clone": () => Bottom(child: (context) {
-                    var nameController = TextEditingController(
-                        text: AppLocalizations.of(context)!
-                            .copyOf(widget.profile.name));
-                    return Wrap(
+            if (widget.profile is Character)
+              CheckedPopupMenuItem(
+                checked: (widget.profile as Character).disableMorality,
+                child: Text(AppLocalizations.of(context)!.disableMorality),
+                value: "disableMorality"
+              ),
+            if (widget.profile is Character)
+              CheckedPopupMenuItem(
+                checked: (widget.profile as Character).disableDuty,
+                child: Text(AppLocalizations.of(context)!.disableDuty),
+                value: "disableDuty"
+              ),
+            if (widget.profile is Character)
+              CheckedPopupMenuItem(
+                checked: (widget.profile as Character).disableObligation,
+                child: Text(AppLocalizations.of(context)!.disableObligation),
+                value: "disableObligation"
+              ),
+            PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
+          ],
+          backgroundColor: Theme.of(context).primaryColor,
+          popupFunctions: {
+            "disableForce": () => setState(() => (widget.profile as Character)
+                .disableForce = !(widget.profile as Character).disableForce),
+            "disableDuty": () => setState(() => (widget.profile as Character)
+                .disableDuty = !(widget.profile as Character).disableDuty),
+            "disableObligation": () => setState(() =>
+              (widget.profile as Character).disableObligation = !(widget.profile as Character).disableObligation),
+            "disableMorality": () => setState(() => (widget.profile as Character)
+                .disableMorality = !(widget.profile as Character).disableMorality),
+            "clone": () => Bottom(
+              child: (context) {
+                var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(widget.profile.name));
+                return Wrap(
+                  children: [
+                    Container(height: 10),
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
+                    ),
+                    ButtonBar(
                       children: [
-                        Container(height: 10),
-                        TextField(
-                          controller: nameController,
-                          decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context)!.name),
+                        TextButton(
+                          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+                          onPressed: () {
+                            Editable out;
+                            if (widget.profile is Character) {
+                              out = Character.from(widget.profile as Character);
+                            } else if (widget.profile is Minion) {
+                              out = Minion.from(widget.profile as Minion);
+                            } else if (widget.profile is Vehicle) {
+                              out = Vehicle.from(widget.profile as Vehicle);
+                            } else {
+                              throw "Unsupported Editable Type";
+                            }
+                            out.name = nameController.text;
+                            SW.of(context).add(out);
+                            out.save(context: context);
+                            Navigator.of(context).pop();
+                          },
                         ),
-                        ButtonBar(
-                          children: [
-                            TextButton(
-                              child: Text(MaterialLocalizations.of(context)
-                                  .saveButtonLabel),
-                              onPressed: () {
-                                Editable out;
-                                if (widget.profile is Character) {
-                                  out = Character.from(
-                                      widget.profile as Character);
-                                } else if (widget.profile is Minion) {
-                                  out = Minion.from(widget.profile as Minion);
-                                } else if (widget.profile is Vehicle) {
-                                  out = Vehicle.from(widget.profile as Vehicle);
-                                } else {
-                                  throw "Unsupported Editable Type";
-                                }
-                                out.name = nameController.text;
-                                SW.of(context).add(out);
-                                out.save(context: context);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                                child: Text(MaterialLocalizations.of(context)
-                                    .cancelButtonLabel),
-                                onPressed: () => Navigator.of(context).pop())
-                          ],
+                        TextButton(
+                          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                          onPressed: () =>
+                            Navigator.of(context).pop()
                         )
                       ],
-                    );
-                  }).show(context),
-            },
-          ),
-          body: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, anim) {
-                Tween<Offset> twen;
-                if (child is EditableCards) {
-                  twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
-                } else {
-                  twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
-                }
-                return ClipRect(
-                    child: SlideTransition(
-                  position: twen.animate(anim),
-                  child: child,
-                ));
-              },
-              child:
-                  _index == 0 ? EditableCards(w: widget.w) : EditableNotes()));
+                    )
+                  ],
+                );
+              }
+            ).show(context),
+          },
+        ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (child, anim){
+            Tween<Offset> twen;
+            if(child is EditableCards) {
+              twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
+            } else {
+              twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
+            }
+            return ClipRect(
+              child: SlideTransition(
+                position: twen.animate(anim),
+                child: child,
+              )
+            );
+          },
+          child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
+        )
+      );
     } else {
       body = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-              child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (child, anim) {
-                    Tween<Offset> twen;
-                    if (child is EditableCards) {
-                      twen =
-                          Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
-                    } else {
-                      twen =
-                          Tween(begin: const Offset(1.0, 0), end: Offset.zero);
-                    }
-                    return SlideTransition(
-                      position: twen.animate(anim),
-                      child: child,
-                    );
-                  },
-                  child: _index == 0
-                      ? EditableCards(w: widget.w)
-                      : EditableNotes())),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, anim){
+                Tween<Offset> twen;
+                if(child is EditableCards) {
+                  twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
+                } else {
+                  twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
+                }
+                return SlideTransition(
+                  position: twen.animate(anim),
+                  child: child,
+                );
+              },
+              child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
+            )
+          ),
           bottomNav
         ],
       );
     }
-    return InheritedEditable(child: body, editable: widget.profile);
+    return InheritedEditable(
+      child: body,
+      editable: widget.profile
+    );
   }
 }
 
 class InheritedEditable extends InheritedWidget {
   final Editable editable;
 
-  const InheritedEditable(
-      {required Widget child, required this.editable, Key? key})
-      : super(key: key, child: child);
+  const InheritedEditable({required Widget child, required this.editable, Key? key}) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;
