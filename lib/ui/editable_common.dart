@@ -47,9 +47,8 @@ class EditingText extends StatelessWidget {
       this.titleStyle,
       this.onTap})
       : super(key: key) {
-    if (editing && controller == null) {
+    if (editing && controller == null)
       throw "text controller MUST be specified when in editing mode";
-    }
   }
 
   @override
@@ -175,9 +174,8 @@ class EditableContentState extends State<EditableContent> {
     editing = widget.defaultEditingState == null
         ? false
         : widget.defaultEditingState!();
-    if (widget.builder == null && widget.stateful == null) {
+    if (widget.builder == null && widget.stateful == null)
       throw ("Either a builder or stateful MUST be provided");
-    }
     if (widget.stateful != null) editing = widget.stateful!.getHolder().editing;
   }
 

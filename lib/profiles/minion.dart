@@ -156,9 +156,8 @@ class Minion extends Editable with Creature {
                                     label: AppLocalizations.of(context)!.undo,
                                     onPressed: () {
                                       weapons = tmp;
-                                      if (weaponsRefresh != null) {
+                                      if (weaponsRefresh != null)
                                         weaponsRefresh!();
-                                      }
                                     },
                                   ),
                                 ));
@@ -181,9 +180,8 @@ class Minion extends Editable with Creature {
                               (savedWeapons.isEmpty && weapons.isNotEmpty) ||
                                   (savedWeapons.isNotEmpty && weapons.isEmpty);
                           savedWeapons = List.of(weapons);
-                          if (reload && weaponsRefresh != null) {
+                          if (reload && weaponsRefresh != null)
                             weaponsRefresh!();
-                          }
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
@@ -216,9 +214,8 @@ class Minion extends Editable with Creature {
                       : () {
                           var tmp = List.of(inventory);
                           inventory = List.of(savedInv);
-                          if (invHolder.reloadFunction != null) {
+                          if (invHolder.reloadFunction != null)
                             invHolder.reloadFunction!();
-                          }
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(AppLocalizations.of(context)!
@@ -227,9 +224,8 @@ class Minion extends Editable with Creature {
                               label: AppLocalizations.of(context)!.undo,
                               onPressed: () {
                                 inventory = tmp;
-                                if (invHolder.reloadFunction != null) {
+                                if (invHolder.reloadFunction != null)
                                   invHolder.reloadFunction!();
-                                }
                               },
                             ),
                           ));
@@ -249,9 +245,8 @@ class Minion extends Editable with Creature {
                     var refresh = (savedInv.isEmpty && inventory.isNotEmpty) ||
                         (savedInv.isNotEmpty && inventory.isEmpty);
                     savedInv = List.of(inventory);
-                    if (refresh && invHolder.reloadFunction != null) {
+                    if (refresh && invHolder.reloadFunction != null)
                       invHolder.reloadFunction!();
-                    }
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content:

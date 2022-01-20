@@ -188,13 +188,4 @@ class Driver {
         .update(File(), id, uploadMedia: Media(data, dataLength));
     return fil.id != null;
   }
-
-  Future<void> delete(String id, bool trash) async {
-    if (!isReady()) return;
-    if (trash) {
-      await api!.files.update(File(trashed: true), id);
-    } else {
-      await api!.files.delete(id);
-    }
-  }
 }
