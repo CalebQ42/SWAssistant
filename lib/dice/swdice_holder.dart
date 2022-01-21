@@ -4,12 +4,42 @@ import 'package:swassistant/dice/swdice.dart' as swdice;
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/utils/json_savable.dart';
 
-class SWDiceHolder{
+class SWDiceHolder extends JsonSavable{
 
   int ability, proficiency, difficulty, challenge, boost, setback, force;
 
   SWDiceHolder({this.ability=0, this.proficiency=0, this.difficulty=0, this.challenge=0, this.boost=0, this.setback=0, this.force=0});
+  SWDiceHolder.fromJson(Map<String,dynamic> json) :
+    ability = json["ability"] ?? 0,
+    proficiency = json["proficiency"] ?? 0,
+    difficulty = json["difficulty"] ?? 0,
+    challenge = json["challenge"] ?? 0,
+    boost = json["boost"] ?? 0,
+    setback = json["setback"] ?? 0,
+    force = json["force"] ?? 0;
+
+  @override
+  Map<String, dynamic> toJson() => {
+    "ability" : ability,
+    "proficiency" : proficiency,
+    "difficulty" : difficulty,
+    "challenge" : challenge,
+    "boost" : boost,
+    "setback" : setback,
+    "force" : setback
+  }..removeWhere((key, value) => value == 0);
+
+  void addDice(SWDiceHolder toAdd){
+    ability += toAdd.ability;
+    proficiency += toAdd.proficiency;
+    difficulty += toAdd.difficulty;
+    challenge += toAdd.challenge;
+    boost += toAdd.boost;
+    setback += toAdd.setback;
+    force += toAdd.force;
+  }
   
   Dice getDice(BuildContext context){
     var dice = <Die>[];
