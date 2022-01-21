@@ -42,4 +42,5 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/testing/
     - assets/

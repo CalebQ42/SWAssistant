@@ -40,22 +40,14 @@ class Driver{
     return true;
   }
 
-  Future<File?> getFile(String id) async {
-    if (!isReady()) return null;
-    return await api!.files.get(id) as File;
-  }
-
-  Future<Media?> getData(String id) async {
-    if (!isReady()) return null;
-    return await api!.files.get(id, downloadOptions: DownloadOptions.fullMedia) as Media;
-  }
-
-  Future<List<File>?> listFilesFromRoot(String folder) async {
-    if (!isReady()) return null;
-    var foldID =
-        await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime);
-    if (foldID == null) return null;
-    return (await api!.files.list(corpora: "user", q: "'" + foldID + "' in parents")).files;
+  Future<List<File>?> listFilesFromRoot(String folder) async{
+    if(!isReady()) return null;
+    var foldID = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime);
+    if(foldID == null) return null;
+    return (await api!.files.list(
+      corpora: "user",
+      q: "'" + foldID + "' in parents"
+    )).files;
   }
   Future<List<File>?> listFiles(String folder) async {
     if(!isReady()) return null;
@@ -181,23 +173,12 @@ class Driver{
     );
     return fil.id;
   }
-
-  Future<bool> updateContents(String id, Stream<List<int>> data, [int? dataLength]) async {
-    if (!isReady()) return false;
-    var fil = await api!.files.update(File(), id, uploadMedia: Media(data, dataLength));
+  Future<bool> updateContents(String id, Stream<List<int>> data, {int? dataLength}) async{
+    if(!isReady()) return false;
+    var fil = await api!.files.update(
+      File(), id,
+      uploadMedia: Media(data, dataLength)
+    );
     return fil.id != null;
-  }
-
-  Future<void> delete(String id) async{
-    if (!isReady()) return;
-    await api!.files.delete(id);
-    return;
-  }
-
-  Future<bool> trash(String id) async{
-    if (!isReady()) return false;
-    var fil = await api!.files.update(File(trashed: true), id);
-    if (fil.id == id && fil.trashed!) return true;
-    return false;
   }
 }

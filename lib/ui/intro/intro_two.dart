@@ -37,11 +37,12 @@ class _IntroTwoState extends State{
             ),
             const SizedBox(height: 10),
             SwitchListTile(
-              title: Text(
-                AppLocalizations.of(context)!.cloudSave,
+              title: const Text(
+                "Cloud Save (via Google Drive) (Not currently implemented)",
               ),
               value: SW.of(context).getPreference(preferences.googleDrive, false),
               onChanged: (b){
+                //TODO: Google Drive
                 SW.of(context).prefs.setBool(preferences.googleDrive, b);
                 setState((){});
               }
