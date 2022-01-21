@@ -276,21 +276,15 @@ class SW{
   }
 
   Future<bool> driveInit() async{
+    if(driver != null && driver!.isReady()) return true;
     driver ??= Driver();
     if(!driver!.isReady()){
       if(!await driver!.init()){
         return false;
       }
     }
-    var foldId = await driver!.getID("SWChars");
-    if(foldId == null){
-      foldId = await driver!.createFolderFromRoot("SWChars", description: "Profiles for SWAssistant");
-      if(foldId == null){
-        return false;
-      }
-    }
-    driver!.wd = foldId;
-    return true;
+    var okay = await driver!.setWD("SWChars");
+    return okay;
   }
   
   Future<bool> syncCloud() async{

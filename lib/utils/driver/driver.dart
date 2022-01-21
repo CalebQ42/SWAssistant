@@ -40,6 +40,18 @@ class Driver{
     return true;
   }
 
+  Future<bool> setWD(String folder) async {
+    if(!isReady()) return false;
+    if(folder == "" || folder == "/"){
+      wd = "root";
+      return true;
+    }
+    var foldId = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime, createIfMissing: true);
+    if (foldId == null) return false;
+    wd = foldId;
+    return true;
+  }
+
   Future<List<File>?> listFilesFromRoot(String folder) async{
     if(!isReady()) return null;
     var foldID = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime);
@@ -49,6 +61,7 @@ class Driver{
       q: "'" + foldID + "' in parents"
     )).files;
   }
+
   Future<List<File>?> listFiles(String folder) async {
     if(!isReady()) return null;
     var foldID = await getID(folder, mimeType: DriveQueryBuilder.folderMime);
@@ -58,18 +71,8 @@ class Driver{
       q: "'" + foldID + "' in parents"
     )).files;
   }
-  Future<bool> setWD(String folder) async {
-    if(!isReady()) return false;
-    if(folder == "" || folder == "/"){
-      wd = "root";
-      return true;
-    }
-    var foldID = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime);
-    if(foldID == null) return false;
-    wd = foldID;
-    return true;
-  }
-  Future<String?> getIDFromRoot(String filename, {String? mimeType}) async {
+
+  Future<String?> getIDFromRoot(String filename, {String? mimeType, bool createIfMissing = false}) async {
     if(!isReady()) return null;
     if(filename == "" || filename == "/") return "root";
     var parentID = "root";
@@ -90,8 +93,20 @@ class Driver{
         corpora: "user",
         q: query.getQuery()
       )).files;
-      if(out == null || out.isEmpty) return null;
-      if(out[0].id == null) return null;
+      if (out == null || out.isEmpty) {
+        if (!createIfMissing) return null;
+        var id = await createFileWithParent(fold, parentID);
+        if (id == null) return null;
+        parentID = id;
+        continue;
+      }
+      if(out[0].id == null) {
+        if (!createIfMissing) return null;
+        var id = await createFileWithParent(fold, parentID);
+        if (id == null) return null;
+        parentID = id;
+        continue;
+      }
       parentID = out[0].id!;
     }
     if(mimeType != null && out![0].mimeType != mimeType){
@@ -102,7 +117,8 @@ class Driver{
     }
     return out![0].id!;
   }
-  Future<String?> getID(String filename, {String? mimeType}) async {
+
+  Future<String?> getID(String filename, {String? mimeType, bool createIfMissing = false}) async {
     if(!isReady()) return null;
     if(filename == "" || filename == "/") return wd;
     var parentID = wd;
@@ -123,16 +139,31 @@ class Driver{
         corpora: "user",
         q: query.getQuery()
       )).files;
-      if(out == null || out.isEmpty) return null;
-      if(out[0].id == null) return null;
+      if (out == null || out.isEmpty) {
+        if (!createIfMissing) return null;
+        var id = await createFileWithParent(fold, parentID);
+        if (id == null) return null;
+        parentID = id;
+        continue;
+      }
+      if(out[0].id == null) {
+        if (!createIfMissing) return null;
+        var id = await createFileWithParent(fold, parentID);
+        if (id == null) return null;
+        parentID = id;
+        continue;
+      }
       parentID = out[0].id!;
     }
     return out![0].id;
   }
+
   Future<String?> createFolderFromRoot(String filename, {String? description}) async =>
     createFileFromRoot(filename, description: description, mimeType: DriveQueryBuilder.folderMime);
+
   Future<String?> createFolder(String filename, {String? description}) async =>
     createFile(filename, description: description, mimeType: DriveQueryBuilder.folderMime);
+
   Future<String?> createFileFromRoot(String filename, {String? mimeType, Map<String, String?>? appProperties, String? description}) async{
     if(!isReady()) return null;
     String? parent = 'root';
@@ -151,6 +182,20 @@ class Driver{
     fil = await api!.files.create(fil);
     return fil.id;
   }
+
+  Future<String?> createFileWithParent(String filename, String parentId, {String? mimeType, Map<String, String?>? appProperties, String? description}) async {
+    if(!isReady()) return null;
+    var fil = File(
+      appProperties: appProperties,
+      description: description,
+      parents: [parentId],
+      name: filename,
+      mimeType: mimeType,
+    );
+    fil = await api!.files.create(fil);
+    return fil.id;
+  }
+
   Future<String?> createFile(String filename, {String? mimeType, Map<String, String?>? appProperties, String? description, Stream<List<int>>? data, int? dataLength}) async{
     if(!isReady()) return null;
     String? parent = wd;
@@ -165,7 +210,6 @@ class Driver{
       parents: [parent],
       name: filename.substring(lastInd+1),
       mimeType: mimeType,
-
     );
     fil = await api!.files.create(
       fil,
@@ -173,6 +217,17 @@ class Driver{
     );
     return fil.id;
   }
+
+  Future<File?> getFile(String id) async {
+    if(!isReady()) return null;
+    return (await api!.files.get(id)) as File;
+  }
+
+  Future<Media?> getContents(String id) async {
+    if(!isReady()) return null;
+    return (await api!.files.get(id, downloadOptions: DownloadOptions.fullMedia)) as Media;
+  }
+
   Future<bool> updateContents(String id, Stream<List<int>> data, {int? dataLength}) async{
     if(!isReady()) return false;
     var fil = await api!.files.update(
@@ -180,5 +235,20 @@ class Driver{
       uploadMedia: Media(data, dataLength)
     );
     return fil.id != null;
+  }
+
+  Future<void> delete(String id) async {
+    if(!isReady()) return Future.value();
+    return await api!.files.delete(id);
+  }
+
+  Future<bool> trash(String id) async {
+    if(!isReady()) return false;
+    return (await api!.files.update(File(trashed: true), id)).trashed ?? false;
+  }
+
+  Future<bool> unTrash(String id) async {
+    if(!isReady()) return false;
+    return !((await api!.files.update(File(trashed: false), id)).trashed ?? false);
   }
 }
