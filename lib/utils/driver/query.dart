@@ -31,7 +31,7 @@ class DriveQueryBuilder{
     if(mime != null) out = _append(out, "mimeType = '" + _escape(mime!) + "'");
     if(notMime != null) out = _append(out, "mimeType != '" + _escape(notMime!) + "'");
     if(parent != null) out = _append(out, "'" + _escape(parent!) + "' in parents");
-    if(trashed) out = _append(out, "trashed = true");
+    out = _append(out, "trashed = " + trashed.toString());
     if(nameContains != null){
       for(var cont in nameContains!){
         out = _append(out, "name contains '" + _escape(cont) + "'");

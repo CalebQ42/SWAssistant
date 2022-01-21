@@ -22,7 +22,7 @@ class Driver{
       api = DriveApi((await gsi!.authenticatedClient())!);
       return true;
     }
-    gsi = GoogleSignIn(scopes: [DriveApi.driveScope]);
+    gsi = GoogleSignIn(scopes: [DriveApi.driveFileScope]);
     try{
       await gsi!.signInSilently();
       if (gsi!.currentUser == null){
@@ -95,25 +95,25 @@ class Driver{
       )).files;
       if (out == null || out.isEmpty) {
         if (!createIfMissing) return null;
-        var id = await createFileWithParent(fold, parentID);
+        var id = await createFileWithParent(fold, parentID, mimeType: query.mime);
         if (id == null) return null;
         parentID = id;
+        var fil = await getFile(id);
+        if(fil == null) return null;
+        out = [fil];
         continue;
       }
       if(out[0].id == null) {
         if (!createIfMissing) return null;
-        var id = await createFileWithParent(fold, parentID);
+        var id = await createFileWithParent(fold, parentID, mimeType: query.mime);
         if (id == null) return null;
         parentID = id;
+        var fil = await getFile(id);
+        if(fil == null) return null;
+        out = [fil];
         continue;
       }
       parentID = out[0].id!;
-    }
-    if(mimeType != null && out![0].mimeType != mimeType){
-      for(var otherOut in out){
-        if(otherOut.mimeType == mimeType) return otherOut.id;
-      }
-      return null;
     }
     return out![0].id!;
   }
@@ -173,6 +173,7 @@ class Driver{
       if(parent == null) return null;
     }
     var fil = File(
+      modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,
       parents: [parent],
@@ -186,6 +187,7 @@ class Driver{
   Future<String?> createFileWithParent(String filename, String parentId, {String? mimeType, Map<String, String?>? appProperties, String? description}) async {
     if(!isReady()) return null;
     var fil = File(
+      modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,
       parents: [parentId],
@@ -205,6 +207,7 @@ class Driver{
       if(parent == null) return null;
     }
     var fil = File(
+      modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,
       parents: [parent],
@@ -231,7 +234,7 @@ class Driver{
   Future<bool> updateContents(String id, Stream<List<int>> data, {int? dataLength}) async{
     if(!isReady()) return false;
     var fil = await api!.files.update(
-      File(), id,
+      File(modifiedTime: DateTime.now(),), id,
       uploadMedia: Media(data, dataLength)
     );
     return fil.id != null;

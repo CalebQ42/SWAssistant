@@ -22,8 +22,8 @@ class _IntroTwoState extends State{
       nextScreenAction: () {
         SW.of(context).prefs.setBool(preferences.firstStart, false);
         SW.of(context).postInit(context).whenComplete(() =>
-            Navigator.pushNamedAndRemoveUntil(
-              context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false)
+          Navigator.pushNamedAndRemoveUntil(
+            context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false)
         );
       },
       child: ConstrainedBox(
@@ -37,12 +37,11 @@ class _IntroTwoState extends State{
             ),
             const SizedBox(height: 10),
             SwitchListTile(
-              title: const Text(
-                "Cloud Save (via Google Drive) (Not currently implemented)",
+              title: Text(
+                AppLocalizations.of(context)!.cloudSave
               ),
               value: SW.of(context).getPreference(preferences.googleDrive, false),
               onChanged: (b){
-                //TODO: Google Drive
                 SW.of(context).prefs.setBool(preferences.googleDrive, b);
                 setState((){});
               }

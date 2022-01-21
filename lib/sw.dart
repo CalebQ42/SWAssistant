@@ -243,38 +243,6 @@ class SW{
     }
   }
 
-  Future<bool> initialSync(BuildContext context) async{
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (c) =>
-        BackButtonListener(
-          onBackButtonPressed: () => Future.value(true),
-          child: AlertDialog(
-            content: Column(
-              children: [
-                const CircularProgressIndicator(),
-                Container(height: 10),
-                Text(
-                  AppLocalizations.of(context)!.driveSyncing,
-                  textAlign: TextAlign.center,
-                )
-              ]
-            )
-          )
-        )
-    );
-    var okay = await driveInit();
-    if(!okay) return false;
-    for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
-      if(fil.name == null) continue;
-      if(fil.name!.endsWith(".swcharacter") || fil.name!.endsWith(".swminion") || fil.name!.endsWith(".swvehicle")){
-        //TODO
-      }
-    }
-    return false;
-  }
-
   Future<bool> driveInit() async{
     if(driver != null && driver!.isReady()) return true;
     driver ??= Driver();
@@ -286,15 +254,216 @@ class SW{
     var okay = await driver!.setWD("SWChars");
     return okay;
   }
-  
-  Future<bool> syncCloud() async{
-    driver ??= Driver();
-    if(!driver!.isReady()){
-      if(!await driver!.init()){
-        return false;
+
+  Future<bool> initialSync(BuildContext context) async{
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (c) =>
+        AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircularProgressIndicator(),
+              Container(height: 10),
+              Text(
+                AppLocalizations.of(context)!.driveSyncing,
+                textAlign: TextAlign.center,
+              )
+            ]
+          )
+        )
+    );
+    var okay = await driveInit();
+    if(!okay){
+      Navigator.pop(context);
+      return false;
+    }
+    var all = <Editable>[
+      ..._characters,
+      ..._minions,
+      ..._vehicles
+    ];
+    var loadWaiting = 0;
+    for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
+      if(fil.id == null || fil.name == null || fil.modifiedTime == null) continue;
+      var uid = fil.appProperties?["uid"];
+      if (uid == null) {
+        Editable ed;
+        if(fil.name!.endsWith(".swcharacter")){
+          ed = Character(app: this);
+        } else if(fil.name!.endsWith(".swvehicle")){
+          ed = Vehicle(app: this);
+        } else if(fil.name!.endsWith(".swminion")){
+          ed = Minion(app: this);
+        } else {
+          continue;
+        }
+        loadWaiting++;
+        await ed.cloudLoad(this, fil.id!).then((value) async {
+          Editable? matchEd;
+          try {
+            matchEd = all.firstWhere((element) => element.uid == ed.uid);
+          }catch(e){}
+          if(matchEd == null){
+            await ed.save(app: this, localOnly: true);
+            add(ed);
+            loadWaiting--;
+            return;
+          }
+          matchEd.driveId = fil.id!;
+          var local = File(matchEd.getFileLocation(this));
+          if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
+            await matchEd.cloudLoad(this, fil.id!);
+            await matchEd.save(app: this, localOnly: true);
+          } else {
+            await matchEd.cloudSave(this);
+          }
+          all.remove(matchEd);
+          loadWaiting--;
+        });
+      } else {
+        Editable? matchEd;
+        try {
+          matchEd = all.firstWhere((element) => element.uid == uid);
+        }catch(e){}
+        if(matchEd == null){
+          Editable ed;
+          if(fil.name!.endsWith(".swcharacter")){
+            ed = Character(app: this);
+          } else if(fil.name!.endsWith(".swvehicle")){
+            ed = Vehicle(app: this);
+          } else if(fil.name!.endsWith(".swminion")){
+            ed = Minion(app: this);
+          } else {
+            continue;
+          }
+          loadWaiting++;
+          await ed.cloudLoad(this, fil.id!).then((value) async {
+            await ed.save(app: this, localOnly: true);
+            add(ed);
+            loadWaiting--;
+          });
+          continue;
+        }
+        matchEd.driveId = fil.id!;
+        var local = File(matchEd.getFileLocation(this));
+        if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
+          loadWaiting++;
+          await matchEd.cloudLoad(this, fil.id!).then((value) async {
+            await matchEd!.save(app: this, localOnly: true);
+            loadWaiting--;
+          });
+        } else {
+          loadWaiting++;
+          matchEd.cloudSave(this).then((value) => loadWaiting--);
+        }
+        all.remove(matchEd);
       }
     }
-    //TODO
+    while(loadWaiting > 0) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    for (var ed in all) {
+      loadWaiting++;
+      ed.cloudSave(this).then((value) => loadWaiting--);
+    }
+    while(loadWaiting > 0) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    Navigator.pop(context);
+    return true;
+  }
+  
+  Future<bool> syncCloud() async{
+    var okay = await driveInit();
+    if(!okay) return false;
+    var all = <Editable>[
+      ..._characters,
+      ..._minions,
+      ..._vehicles
+    ];
+    var loadWaiting = 0;
+    for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
+      if(fil.id == null || fil.name == null) continue;
+      var uid = fil.appProperties?["uid"];
+      if (uid == null) {
+        Editable ed;
+        if(fil.name!.endsWith(".swcharacter")){
+          ed = Character(app: this);
+        } else if(fil.name!.endsWith(".swvehicle")){
+          ed = Vehicle(app: this);
+        } else if(fil.name!.endsWith(".swminion")){
+          ed = Minion(app: this);
+        } else {
+          continue;
+        }
+        loadWaiting++;
+        await ed.cloudLoad(this, fil.id!).then((value) async {
+          Editable? matchEd;
+          try {
+            matchEd = all.firstWhere((element) => element.uid == ed.uid);
+          }catch(e){}
+          if(matchEd == null){
+            await ed.save(app: this, localOnly: true);
+            add(ed);
+            loadWaiting--;
+            return;
+          }
+          matchEd.driveId = fil.id!;
+          var local = File(matchEd.getFileLocation(this));
+          if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
+            await matchEd.cloudLoad(this, fil.id!);
+            await matchEd.save(app: this, localOnly: true);
+          } else {
+            await matchEd.cloudSave(this);
+          }
+          all.remove(matchEd);
+          loadWaiting--;
+        });
+      } else {
+        print(uid);
+        Editable? matchEd;
+        try {
+          matchEd = all.firstWhere((element) => element.uid == uid);
+        }catch(e){}
+        if(matchEd == null){
+          Editable ed;
+          if(fil.name!.endsWith(".swcharacter")){
+            ed = Character(app: this);
+          } else if(fil.name!.endsWith(".swvehicle")){
+            ed = Vehicle(app: this);
+          } else if(fil.name!.endsWith(".swminion")){
+            ed = Minion(app: this);
+          } else {
+            continue;
+          }
+          loadWaiting++;
+          await ed.cloudLoad(this, fil.id!).then((value) async {
+            await ed.save(app: this, localOnly: true);
+            add(ed);
+            loadWaiting--;
+          });
+          continue;
+        }
+        matchEd.driveId = fil.id!;
+        var local = File(matchEd.getFileLocation(this));
+        if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
+          loadWaiting++;
+          await matchEd.cloudLoad(this, fil.id!).then((value) async {
+            await matchEd!.save(app: this, localOnly: true);
+            loadWaiting--;
+          });
+        } else {
+          loadWaiting++;
+          matchEd.cloudSave(this).then((value) => loadWaiting--);
+        }
+        all.remove(matchEd);
+      }
+    }
+    while(loadWaiting > 0) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
     return false;
   }
 
@@ -320,9 +489,6 @@ class SW{
     if(!Directory(app.saveDir).existsSync()){
       Directory(app.saveDir).createSync();
     }
-    if(app.devMode){
-      await testing(app.saveDir);
-    }
     app.loadAll();
     app.observatory = Observatory(app);
     prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
@@ -336,6 +502,7 @@ class SW{
       builder: (context) =>
         AlertDialog(
           content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               const CircularProgressIndicator(),
               Container(height: 10),
@@ -429,18 +596,6 @@ class SW{
         );
       }
     });
-  }
-
-  static Future<void> testing(String saveDir) async{
-    var testFiles = ["Big Game Hunter [Nemesis][Testing].swcharacter","Incom T-47 Airspeeder [Testing].swvehicle","Pirate Crew [Testing].swminion"];
-    for(String st in testFiles){
-      String json = await rootBundle.loadString("assets/testing/"+st);
-      File testFile = File(saveDir+"/"+st);
-      if(testFile.existsSync()){
-        testFile.deleteSync();
-      }
-      testFile.writeAsStringSync(json);
-    }
   }
 
   static SW of(BuildContext context){

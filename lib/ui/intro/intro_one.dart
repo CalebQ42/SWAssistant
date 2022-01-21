@@ -62,16 +62,16 @@ class _IntroOneState extends State{
                 setState((){});
               } : null
             ),
-            SwitchListTile(
-              title: const Text(
-                "Ads (Not currently implemented)",
-              ),
-              value: SW.of(context).getPreference(preferences.crashlytics, true),
-              onChanged: SW.of(context).getPreference(preferences.firebase, true) ? (b) {
-                SW.of(context).prefs.setBool(preferences.crashlytics, b);
-                setState((){});
-              } : null
-            ),
+            // TODO: SwitchListTile(
+            //   title: const Text(
+            //     "Ads (Not currently implemented)",
+            //   ),
+            //   value: SW.of(context).getPreference(preferences.ads, true),
+            //   onChanged: SW.of(context).getPreference(preferences.firebase, true) ? (b) {
+            //     SW.of(context).prefs.setBool(preferences.ads, b);
+            //     setState((){});
+            //   } : null
+            // ),
           ],
         )
       )

@@ -55,10 +55,10 @@ class WoundStrain extends StatelessWidget{
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
                     Tween<Offset> offset;
-                    if((!editing && wid is Padding) || (editing && wid is Column)){
-                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
-                    }else{
+                    if(wid is Padding){
                       offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
+                    }else{
+                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
                     }
                     return ClipRect(
                       child: SlideTransition(
@@ -87,7 +87,7 @@ class WoundStrain extends StatelessWidget{
                   ) : (){
                     var controll = TextEditingController(text: character.woundThresh.toString());
                     controll.addListener(() {
-                      character.woundThresh = int.parse(controll.text);
+                      character.woundThresh = int.tryParse(controll.text) ?? 0;
                       character.save(context: context);
                     });
                     return Padding(
@@ -111,10 +111,10 @@ class WoundStrain extends StatelessWidget{
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (wid, anim){
                     Tween<Offset> offset;
-                    if((!editing && wid is Padding) || (editing && wid is Column)){
-                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
-                    }else{
+                    if(wid is Padding){
                       offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
+                    }else{
+                      offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
                     }
                     return ClipRect(
                       child: SlideTransition(
@@ -143,7 +143,7 @@ class WoundStrain extends StatelessWidget{
                   ) : (){
                     var controll = TextEditingController(text: character.strainThresh.toString());
                     controll.addListener(() {
-                      character.strainThresh = int.parse(controll.text);
+                      character.strainThresh = int.tryParse(controll.text) ?? 0;
                       character.save(context: context);
                     });
                     return Padding(

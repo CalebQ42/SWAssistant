@@ -75,9 +75,16 @@ class SettingsState extends State{
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.cloudSave),
             value: app.getPreference(preferences.googleDrive, false),
-            onChanged: (b){
-              //TODO: Google Drive
-              app.prefs.setBool(preferences.googleDrive, b);
+            onChanged: (b) {
+              if (b) {
+                app.initialSync(context).then((value) {
+                  app.prefs.setBool(preferences.googleDrive, b);
+                  setState(() {});
+                });
+              } else {
+                if(app.driver != null) app.driver!.gsi?.disconnect();
+                app.prefs.setBool(preferences.googleDrive, b);
+              }
               setState(() {});
             }
           ),

@@ -15,6 +15,7 @@ class SpecializationEditDialog{
     specCont = TextEditingController(text: specialization)
       ..addListener(() {
         specialization = specCont.text;
+        bot.updateButtons();
       });
     bot = Bottom(
       child: (context) =>

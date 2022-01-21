@@ -26,6 +26,7 @@ class Bottom extends StatelessWidget{
                   top: 10,
                   left: 10,
                   right: 10,
+                  bottom: 15
                 ) : EdgeInsets.zero,
                 child: child!(context)
               )

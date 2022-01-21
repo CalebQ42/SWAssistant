@@ -186,7 +186,7 @@ abstract class Editable extends JsonSavable{
 
   String getFileLocation(SW sw) => loc ?? sw.saveDir + "/" + uid.toString() + fileExtension;
   
-  void save({String filename = "", BuildContext? context, SW? app}) async{
+  Future<void> save({String filename = "", BuildContext? context, SW? app, bool localOnly = false}) async{
     if(filename == "") {
       if (app == null && context == null){
         throw("Either filename or context needs to be given");
@@ -194,7 +194,7 @@ abstract class Editable extends JsonSavable{
       app ??= SW.of(context!);
       filename = getFileLocation(app);
     }
-    if(app != null && app.getPreference(preferences.googleDrive, false)) {
+    if(!localOnly && app != null && app.getPreference(preferences.googleDrive, false)) {
       cloudSave(app);
     }
     if(!_saving && !_defered){
@@ -213,7 +213,7 @@ abstract class Editable extends JsonSavable{
     }else if(!_defered){
       _defered = true;
       while(_saving){
-        sleep(const Duration(milliseconds: 250));
+        await Future.delayed(const Duration(milliseconds: 250));
       }
       _defered = false;
       save(filename: filename);
@@ -223,7 +223,11 @@ abstract class Editable extends JsonSavable{
   Future<String?> getDriveId(SW app) async {
     if (driveId == null){
       if(app.driver == null || !app.driver!.isReady()) return null;
-      var newId = await app.driver!.getID(uid+fileExtension, createIfMissing: true);
+      var newId = await app.driver!.getID(uid+fileExtension);
+      newId ??= await app.driver!.createFile(
+        uid + fileExtension,
+        appProperties: {"uid" : uid}
+      );
       if (newId == null) return null;
       driveId = newId;
     }
@@ -242,13 +246,13 @@ abstract class Editable extends JsonSavable{
         _cloudSaving = false;
         return;
       }
-      var data = Stream.value(jsonEncode(toJson()).codeUnits);
-      await app.driver!.updateContents(id, data, dataLength: 1);
+      var data = jsonEncode(toJson()).codeUnits;
+      await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
       _cloudSaving = false;
     } else if (!_cloudDefered) {
       _cloudDefered = true;
       while(_cloudSaving) {
-        sleep(const Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
       }
       _cloudDefered = false;
       cloudSave(app);
@@ -262,7 +266,10 @@ abstract class Editable extends JsonSavable{
     if(app.driver == null || !app.driver!.isReady()) return;
     var media = await app.driver!.getContents(id);
     if (media == null) return;
-    var out = await media.stream.first;
+    List<int> out = [];
+    await for(var tmp in media.stream){
+      out.addAll(tmp);
+    }
     loadJson(jsonDecode(String.fromCharCodes(out)));
     if(overwriteId) driveId = id;
   }
