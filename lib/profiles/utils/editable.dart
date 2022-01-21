@@ -50,7 +50,7 @@ abstract class Editable extends JsonSavable{
   Editable({this.name = "", bool saveOnCreation = false, required SW app}) : uid = const Uuid().v4(){
     showCard = List.filled(cardNum, false, growable: false);
     if(saveOnCreation){
-      save(filename: getFileLocation(app));
+      save(app: app);
     }
   }
 
@@ -276,6 +276,7 @@ abstract class Editable extends JsonSavable{
   void delete(SW app){
     var fil = File(getFileLocation(app));
     fil.deleteSync();
+    if(driveId != null) app.driver?.delete(driveId!);
   }
 
   void addShortcut(){}
