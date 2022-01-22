@@ -25,8 +25,20 @@
     "importDialog": "Importing Profiles...",
     "importNone": "You seemed to have not selected any files",
     "loadingDialog": "Loading...",
+    "driveSyncing": "Syncing Google Drive",
+    "syncFail": "Syncing failed",
+    "syncComplete": "Syncing Complete",
+    "driveSyncingNotice": "Google Drive is syncing",
+    "@driveSyncingNotice": {
+        "description": "Shown when the user tries to do an action while Google Drive is syncing."
+    },
+    "driveDisconnectNotice": "Google Drive is disconnect",
+    "driveFirstLaunch": "Syncing your profiles to Google Drive is now available. Go to Settings to enable it?",
     "gmModeTap": "Select a profile on the left to edit.",
     "gmModeType": "Type...",
+    "@gmModeType": {
+        "description": "Used for the selector for GM Mode to switch between Characters, Minions, and Vehicles"
+    },
     "translate": "Hilf beim Übersetzen!",
     "discuss": "Discuss/Announcements",
     "success": "Erfolg",
