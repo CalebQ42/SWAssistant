@@ -5,9 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehicleDefense extends StatefulWidget implements StatefulCard{
 
-  final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
+  final EditableContentStatefulHolder holder;
 
-  VehicleDefense({Key? key}) : super(key: key);
+  const VehicleDefense({Key? key, required this.holder}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _VehicleDefenseState();

@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:swassistant/dice/dice_results.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/dialogs/weapon_dialog.dart';
 import 'package:swassistant/ui/dialogs/editable/weapon_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -23,6 +23,81 @@ class Weapons extends StatelessWidget{
       InkResponse(
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
+        //TODO: Make nice weapon info displya.
+        // onLongPress: () =>
+        //   Bottom(
+        //     child: (context) =>
+        //       Wrap(
+        //         alignment: WrapAlignment.center,
+        //         children: [
+        //           Container(height: 15),
+        //           Center(
+        //             child: Text(
+        //               editable.weapons[i].name,
+        //               style: Theme.of(context).textTheme.headline5,
+        //               textAlign: TextAlign.center,
+        //             )
+        //           ),
+        //           Container(height: 5,),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.damage + ": " + editable.weapons[i].damage.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 5),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.critical + ": " + editable.weapons[i].critical.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 5),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 5),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 5),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 5),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 5),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 5),
+        //           Center(
+        //             child: Text(
+        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+        //               style: Theme.of(context).textTheme.bodyText1,
+        //             ),
+        //           ),
+        //           Container(height: 10),
+        //         ],
+        //       )
+        //   ).show(context),
         onTap: (){
           if(editable.weapons[i].itemState == 4){
             ScaffoldMessenger.of(context).clearSnackBars();
@@ -39,28 +114,26 @@ class Weapons extends StatelessWidget{
               )
             );
           }else{
-            SWWeaponDialog(
-              holder: (){
-                if(editable is Creature){
-                  var skill = editable.skills.firstWhere(
-                    (element) => element.name == Weapon.weaponSkills(context)[editable.weapons[i].skill],
-                    orElse: () => Skill()
-                  );
-                  if(skill.name != "" && skill.base == editable.weapons[i].skillBase){
-                    return skill.getDice(editable);
-                  }else{
-                    return SWDiceHolder(
-                      ability: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
-                      proficiency: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs()
-                    );
-                  }
-                }else{
-                  return SWDiceHolder();
-                }
-              }(),
-              weapon: editable.weapons[i],
-              brawn: (editable is Creature) ? editable.charVals[0] : 0
-            ).show(context);
+            var pack = WeaponPack(editable.weapons[i], (editable is Creature) ? editable.charVals[0] : 0);
+            if(editable is Creature){
+              var skill = editable.skills.firstWhere(
+                (element) => element.name == Weapon.weaponSkills(context)[editable.weapons[i].skill],
+                orElse: () => Skill(value: 0)
+              );
+              if(skill.name != "" && skill.base == editable.weapons[i].skillBase){
+                var hold = skill.getDice(editable);
+                hold.weaponPack = pack;
+                hold.showDialog(context);
+              }else{
+                SWDiceHolder(
+                  ability: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs(),
+                  proficiency: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
+                  weaponPack: pack,
+                ).showDialog(context);
+              }
+            }else{
+              SWDiceHolder(weaponPack: pack).showDialog(context);
+            }
           }
         },
         child: Row(

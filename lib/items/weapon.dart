@@ -95,7 +95,7 @@ class Weapon implements JsonSavable{
     AppLocalizations.of(context)!.skills11,
     AppLocalizations.of(context)!.skills13,
     AppLocalizations.of(context)!.skills16,
-    AppLocalizations.of(context)!.skills23,
+    AppLocalizations.of(context)!.skills21,
     AppLocalizations.of(context)!.skills22,
   ];
 }

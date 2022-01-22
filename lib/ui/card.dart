@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
-import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -71,25 +70,22 @@ class _NameCardContentState extends State<NameCardContent>{
     var editable = Editable.of(context);
     return EditableContent(
       builder: (b, refresh, state) =>
-        Hero(
-          transitionOnUserGestures: true,
-          tag: () => editable.getFileLocation(SW.of(context)),
-          child: EditingText(
-            editing: b,
-            editableBackup: editable,
-            style: Theme.of(context).textTheme.headline5!,
-            textAlign: TextAlign.center,
-            initialText: editable.name,
-            controller: (){
-              var cont = TextEditingController(text: editable.name);
-              cont.addListener(() {
-                editable.name = cont.text;
-              });
-              return cont;
-            }(),
-            defaultSave: true,
-            textCapitalization: TextCapitalization.words,
-          )
+        EditingText(
+          heroTag: editable.uid,
+          editing: b,
+          editableBackup: editable,
+          style: Theme.of(context).textTheme.headline5!,
+          textAlign: TextAlign.center,
+          initialText: editable.name,
+          controller: (){
+            var cont = TextEditingController(text: editable.name);
+            cont.addListener(() {
+              editable.name = cont.text;
+            });
+            return cont;
+          }(),
+          defaultSave: true,
+          textCapitalization: TextCapitalization.words,
         ),
       defaultEditingState: () {
         switch(editable.runtimeType){

@@ -4,46 +4,41 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:swassistant/utils/driver/query.dart';
 
 class Driver{
-  //TODO: Google Drive Everything
-
-  String wd = "root";
+  String wd = "appDataFolder";
   DriveApi? api;
   GoogleSignIn? gsi;
 
-  bool initialized = false;
-
-  bool isReady() => isSignedIn() && initialized;
-
-  bool isSignedIn() =>
-    gsi != null && gsi!.currentUser != null;
-
-  Future<bool> init() async{
-    if(isSignedIn()){
+  //ready returns whether the driver is ready to use. If the driver is not ready, it tries to initialize it.
+  Future<bool> ready([String? wdFolder]) async {
+    if(gsi != null && gsi!.currentUser != null && api != null){
       api = DriveApi((await gsi!.authenticatedClient())!);
       return true;
     }
-    gsi = GoogleSignIn(scopes: [DriveApi.driveFileScope]);
     try{
-      await gsi!.signInSilently();
-      if (gsi!.currentUser == null){
-        await gsi!.signIn();
+      gsi ??= GoogleSignIn(scopes: [DriveApi.driveAppdataScope]);
+      if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
+        print("Re-auth");
+        await gsi!.signInSilently();
+        if(gsi!.currentUser == null) gsi!.signIn();
       }
-    }catch(e){
+      if(gsi!.currentUser == null) return false;
+      api = DriveApi((await gsi!.authenticatedClient())!);
+    } catch(e) {
       return false;
     }
-    if (gsi!.currentUser == null){
-      gsi = null;
-      return false;
-    }
-    api = DriveApi((await gsi!.authenticatedClient())!);
-    initialized = true;
+    if(wdFolder != null) await setWD(wdFolder);
     return true;
   }
 
+  //readySync is similar to ready, except does NOT try to initialize the driver. Use ready when possible.
+  bool readySync() {
+    return gsi != null && gsi!.currentUser != null && api != null;
+  }
+
   Future<bool> setWD(String folder) async {
-    if(!isReady()) return false;
+    if(!await ready()) return false;
     if(folder == "" || folder == "/"){
-      wd = "root";
+      wd = "appDataFolder";
       return true;
     }
     var foldId = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime, createIfMissing: true);
@@ -53,29 +48,29 @@ class Driver{
   }
 
   Future<List<File>?> listFilesFromRoot(String folder) async{
-    if(!isReady()) return null;
+    if(!await ready()) return null;
     var foldID = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime);
     if(foldID == null) return null;
     return (await api!.files.list(
-      corpora: "user",
+      spaces: "appDataFolder",
       q: "'" + foldID + "' in parents"
     )).files;
   }
 
   Future<List<File>?> listFiles(String folder) async {
-    if(!isReady()) return null;
+    if(!await ready()) return null;
     var foldID = await getID(folder, mimeType: DriveQueryBuilder.folderMime);
     if(foldID == null) return null;
     return (await api!.files.list(
-      corpora: "user",
+      spaces: "appDataFolder",
       q: "'" + foldID + "' in parents"
     )).files;
   }
 
   Future<String?> getIDFromRoot(String filename, {String? mimeType, bool createIfMissing = false}) async {
-    if(!isReady()) return null;
-    if(filename == "" || filename == "/") return "root";
-    var parentID = "root";
+    if(!await ready()) return null;
+    if(filename == "" || filename == "/") return "appDataFolder";
+    var parentID = "appDataFolder";
     var split = filename.split("/");
     List<File>? out;
     for(int i = 0; i< split.length; i++){
@@ -90,7 +85,7 @@ class Driver{
       query.name = fold;
       query.parent = parentID;
       out = (await api!.files.list(
-        corpora: "user",
+        spaces: "appDataFolder",
         q: query.getQuery()
       )).files;
       if (out == null || out.isEmpty) {
@@ -119,7 +114,7 @@ class Driver{
   }
 
   Future<String?> getID(String filename, {String? mimeType, bool createIfMissing = false}) async {
-    if(!isReady()) return null;
+    if(!await ready()) return null;
     if(filename == "" || filename == "/") return wd;
     var parentID = wd;
     var split = filename.split("/");
@@ -136,7 +131,7 @@ class Driver{
       query.name = fold;
       query.parent = parentID;
       out = (await api!.files.list(
-        corpora: "user",
+        spaces: "appDataFolder",
         q: query.getQuery()
       )).files;
       if (out == null || out.isEmpty) {
@@ -165,8 +160,8 @@ class Driver{
     createFile(filename, description: description, mimeType: DriveQueryBuilder.folderMime);
 
   Future<String?> createFileFromRoot(String filename, {String? mimeType, Map<String, String?>? appProperties, String? description}) async{
-    if(!isReady()) return null;
-    String? parent = 'root';
+    if(!await ready()) return null;
+    String? parent = 'appDataFolder';
     var lastInd = filename.lastIndexOf("/");
     if(lastInd != -1){
       parent = await getIDFromRoot(filename.substring(0,lastInd));
@@ -185,7 +180,7 @@ class Driver{
   }
 
   Future<String?> createFileWithParent(String filename, String parentId, {String? mimeType, Map<String, String?>? appProperties, String? description}) async {
-    if(!isReady()) return null;
+    if(!await ready()) return null;
     var fil = File(
       modifiedTime: DateTime.now(),
       appProperties: appProperties,
@@ -199,7 +194,7 @@ class Driver{
   }
 
   Future<String?> createFile(String filename, {String? mimeType, Map<String, String?>? appProperties, String? description, Stream<List<int>>? data, int? dataLength}) async{
-    if(!isReady()) return null;
+    if(!await ready()) return null;
     String? parent = wd;
     var lastInd = filename.lastIndexOf("/");
     if(lastInd != -1){
@@ -222,17 +217,17 @@ class Driver{
   }
 
   Future<File?> getFile(String id) async {
-    if(!isReady()) return null;
+    if(!await ready()) return null;
     return (await api!.files.get(id)) as File;
   }
 
   Future<Media?> getContents(String id) async {
-    if(!isReady()) return null;
+    if(!await ready()) return null;
     return (await api!.files.get(id, downloadOptions: DownloadOptions.fullMedia)) as Media;
   }
 
   Future<bool> updateContents(String id, Stream<List<int>> data, {int? dataLength}) async{
-    if(!isReady()) return false;
+    if(!await ready()) return false;
     var fil = await api!.files.update(
       File(modifiedTime: DateTime.now(),), id,
       uploadMedia: Media(data, dataLength)
@@ -241,17 +236,17 @@ class Driver{
   }
 
   Future<void> delete(String id) async {
-    if(!isReady()) return Future.value();
+    if(!await ready()) return Future.value();
     return await api!.files.delete(id);
   }
 
   Future<bool> trash(String id) async {
-    if(!isReady()) return false;
+    if(!await ready()) return false;
     return (await api!.files.update(File(trashed: true), id)).trashed ?? false;
   }
 
   Future<bool> unTrash(String id) async {
-    if(!isReady()) return false;
+    if(!await ready()) return false;
     return !((await api!.files.update(File(trashed: false), id)).trashed ?? false);
   }
 }

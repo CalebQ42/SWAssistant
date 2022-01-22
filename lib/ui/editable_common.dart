@@ -17,6 +17,7 @@ class EditingText extends StatelessWidget {
   final TextAlign? fieldAlign;
   final String title;
   final TextStyle? titleStyle;
+  final String? heroTag;
 
   final bool collapsed;
 
@@ -30,7 +31,7 @@ class EditingText extends StatelessWidget {
 
   EditingText({Key? key, required this.editing, this.style, this.initialText = "", this.controller, this.textType, this.fieldInsets,
       this.textInsets, this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.center,
-      this.fieldAlign, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle, this.onTap}) : super(key: key) {
+      this.fieldAlign, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle, this.onTap, this.heroTag}) : super(key: key) {
     if(editing && controller == null) throw "text controller MUST be specified when in editing mode";
   }
 
@@ -55,7 +56,7 @@ class EditingText extends StatelessWidget {
           keyboardType: textType,
           inputFormatters: textType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
           textCapitalization: textCapitalization,
-          textAlign: fieldAlign ?? TextAlign.start,
+          textAlign: fieldAlign ?? textAlign,
           decoration: InputDecoration(
             isCollapsed: collapsed,
             labelText: title
@@ -71,14 +72,12 @@ class EditingText extends StatelessWidget {
           children: [
             if(title != "") Text(
               title,
-              style: titleStyle ?? Theme.of(context).textTheme.bodyText1?.apply(
-                fontSizeDelta: .75,
-                fontWeightDelta: 2
-              ),
+              style: titleStyle ?? Theme.of(context).textTheme.titleSmall,
               textAlign: textAlign,
             ),
             if(title != "") Container(height: 5),
-            Text(initialText, style: style, textAlign: textAlign,),
+            (heroTag == null) ? Text(initialText, style: style, textAlign: textAlign,) :
+              Hero(tag: heroTag!, transitionOnUserGestures: true, child: Text(initialText, style: style, textAlign: textAlign,)),
           ]
         )
       );
@@ -158,9 +157,9 @@ class EditableContentState extends State<EditableContent>{
   @override
   void initState() {
     super.initState();
-    editing = widget.defaultEditingState == null ? false : widget.defaultEditingState!();
+    editing = (widget.defaultEditingState == null) ? false : widget.defaultEditingState!();
     if(widget.builder == null && widget.stateful == null) throw("Either a builder or stateful MUST be provided");
-    if(widget.stateful != null) editing = widget.stateful!.getHolder().editing;
+    if(widget.stateful != null) widget.stateful!.getHolder().editing = editing;
   }
 
   @override

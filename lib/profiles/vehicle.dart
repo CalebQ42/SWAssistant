@@ -112,6 +112,7 @@ class Vehicle extends Editable{
     });
 
   var invHold = EditableContentStatefulHolder();
+  var defHold = EditableContentStatefulHolder();
 
   @override
   List<EditableContent> cardContents(BuildContext context) =>
@@ -121,7 +122,7 @@ class Vehicle extends Editable{
           VehicleInfo(editing: b, state: state)
       ),
       EditableContent(
-        stateful: VehicleDefense()
+        stateful: VehicleDefense(holder: defHold)
       ),
       EditableContent(
         builder: (b, refresh, state) =>

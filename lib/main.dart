@@ -8,6 +8,7 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/intro_zero.dart';
 import 'package:swassistant/ui/screens/dice_roller.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
+import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/ui/screens/gm_mode.dart';
 import 'package:swassistant/ui/screens/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -56,23 +57,36 @@ class SWAppState extends State<SWApp> {
     return MaterialApp(
       title: 'SWAssistant',
       onGenerateRoute: (settings) {
-        Widget widy;
+        Widget? widy;
         if(settings.name?.startsWith("/edit/") == true){
-          var ed = settings.arguments! as Editable;
-          return ed.getRoute();
-        }
-        if(settings.name == "/vehicles"){
+          Editable? ed;
+          if(settings.arguments != null) {
+            ed = settings.arguments as Editable;
+          } else {
+            ed = SW.of(context).findEditable(settings.name?.substring(6) ?? "");
+          }
+          if (ed != null) {
+            ed.route = PageRouteBuilder(
+              pageBuilder: (context, anim, secondaryAnim) => EditingEditable(ed!),
+              settings: RouteSettings(name: ed.uid),
+              maintainState: false,
+              transitionsBuilder: (context, anim, secondary, child) =>
+                FadeTransition(opacity: anim, child: child)
+            );
+            return ed.route;
+          }
+        }else if(settings.name == "/vehicles"){
           widy = const EditableList(EditableList.vehicle);
         }else if(settings.name == "/minions"){
           widy = const EditableList(EditableList.minion);
-        }else{
-          widy = const EditableList(EditableList.character);
         }
-        return MaterialPageRoute(
-          builder: (context) => widy,
+        widy ??= const EditableList(EditableList.character);
+        return PageRouteBuilder(
+          pageBuilder: (context, anim, secondaryAnim) => widy!,
           settings: settings,
           maintainState: false,
-          fullscreenDialog: true
+          transitionsBuilder: (context, anim, secondary, child) =>
+            FadeTransition(opacity: anim, child: child)
         );
       },
       localizationsDelegates: const [

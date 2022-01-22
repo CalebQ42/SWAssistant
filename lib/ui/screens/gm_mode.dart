@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/character.dart';
@@ -27,7 +28,6 @@ class GMMode extends StatelessWidget{
     return WillPopScope(
       onWillPop: (){
         if (message.backStack.length == 1 || message.backStack.isEmpty) {
-          // Navigator.of(context).overlay?.setState(() {});
           return Future.value(true);
         }
         message.backStack.removeLast();
@@ -116,6 +116,39 @@ class _BarState extends State<_GMModeBar>{
           onPressed: () =>
             SWDiceHolder().showDialog(context),
         ),
+        if(SW.of(context).getPreference(preferences.googleDrive, false))
+          IconButton(
+            icon: const Icon(Icons.sync),
+            onPressed: () {
+              var app = SW.of(context);
+              var messager = ScaffoldMessenger.of(context);
+              if(app.syncing) return;
+              messager.clearSnackBars();
+              messager.showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.driveSyncing),
+                )
+              );
+              app.syncCloud().then((value){
+                if (!value){
+                  messager.clearSnackBars();
+                  messager.showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.syncFail)
+                    )
+                  );
+                } else {
+                  messager.clearSnackBars();
+                  messager.showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.syncComplete)
+                    )
+                  );
+                  setState((){});
+                }
+              });
+            }
+          )
       ],
       additionalPopupActions: [
         if (editable is Character)

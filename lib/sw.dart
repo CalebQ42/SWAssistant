@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,6 +35,7 @@ class SW{
   bool firebaseAvailable = false;
   String saveDir = "";
   bool devMode = false;
+  bool syncing = false;
 
   late Function() topLevelUpdate;
   late Observatory observatory;
@@ -115,8 +115,8 @@ class SW{
     }
   }
 
-  bool remove(Editable editable, BuildContext context){
-    if(editable.route != null && observatory.containsRoute(route: editable.route) != null){
+  bool remove(Editable editable, BuildContext? context){
+    if(context != null && editable.route != null && observatory.containsRoute(route: editable.route) != null){
       Navigator.removeRoute(context, editable.route!);
     }
     if(editable is Character){
@@ -127,6 +127,18 @@ class SW{
       return removeVehicle(vehicle: editable);
     }
     return false;
+  }
+
+  Editable? findEditable(String uid) {
+    try {
+      return <Editable>[
+        ..._characters,
+        ..._minions,
+        ..._vehicles
+      ].firstWhere((element) => element.uid == uid);
+    }catch(e){
+      return null;
+    }
   }
   
   List<Character> characters({String search = "", String? category}){
@@ -243,141 +255,10 @@ class SW{
     }
   }
 
-  Future<bool> driveInit() async{
-    if(driver != null && driver!.isReady()) return true;
+  Future<List<Editable>?> downloadAndMatch() async{
     driver ??= Driver();
-    if(!driver!.isReady()){
-      if(!await driver!.init()){
-        return false;
-      }
-    }
-    var okay = await driver!.setWD("SWChars");
-    return okay;
-  }
-
-  Future<bool> initialSync(BuildContext context) async{
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (c) =>
-        AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircularProgressIndicator(),
-              Container(height: 10),
-              Text(
-                AppLocalizations.of(context)!.driveSyncing,
-                textAlign: TextAlign.center,
-              )
-            ]
-          )
-        )
-    );
-    var okay = await driveInit();
-    if(!okay){
-      Navigator.pop(context);
-      return false;
-    }
-    var all = <Editable>[
-      ..._characters,
-      ..._minions,
-      ..._vehicles
-    ];
-    var loadWaiting = 0;
-    for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
-      if(fil.id == null || fil.name == null || fil.modifiedTime == null) continue;
-      var uid = fil.appProperties?["uid"];
-      if (uid == null) {
-        Editable ed;
-        if(fil.name!.endsWith(".swcharacter")){
-          ed = Character(app: this);
-        } else if(fil.name!.endsWith(".swvehicle")){
-          ed = Vehicle(app: this);
-        } else if(fil.name!.endsWith(".swminion")){
-          ed = Minion(app: this);
-        } else {
-          continue;
-        }
-        loadWaiting++;
-        await ed.cloudLoad(this, fil.id!).then((value) async {
-          Editable? matchEd;
-          try {
-            matchEd = all.firstWhere((element) => element.uid == ed.uid);
-          }catch(e){}
-          if(matchEd == null){
-            await ed.save(app: this, localOnly: true);
-            add(ed);
-            loadWaiting--;
-            return;
-          }
-          matchEd.driveId = fil.id!;
-          var local = File(matchEd.getFileLocation(this));
-          if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
-            await matchEd.cloudLoad(this, fil.id!);
-            await matchEd.save(app: this, localOnly: true);
-          } else {
-            await matchEd.cloudSave(this);
-          }
-          all.remove(matchEd);
-          loadWaiting--;
-        });
-      } else {
-        Editable? matchEd;
-        try {
-          matchEd = all.firstWhere((element) => element.uid == uid);
-        }catch(e){}
-        if(matchEd == null){
-          Editable ed;
-          if(fil.name!.endsWith(".swcharacter")){
-            ed = Character(app: this);
-          } else if(fil.name!.endsWith(".swvehicle")){
-            ed = Vehicle(app: this);
-          } else if(fil.name!.endsWith(".swminion")){
-            ed = Minion(app: this);
-          } else {
-            continue;
-          }
-          loadWaiting++;
-          await ed.cloudLoad(this, fil.id!).then((value) async {
-            await ed.save(app: this, localOnly: true);
-            add(ed);
-            loadWaiting--;
-          });
-          continue;
-        }
-        matchEd.driveId = fil.id!;
-        var local = File(matchEd.getFileLocation(this));
-        if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
-          loadWaiting++;
-          await matchEd.cloudLoad(this, fil.id!).then((value) async {
-            await matchEd!.save(app: this, localOnly: true);
-            loadWaiting--;
-          });
-        } else {
-          loadWaiting++;
-          matchEd.cloudSave(this).then((value) => loadWaiting--);
-        }
-        all.remove(matchEd);
-      }
-    }
-    while(loadWaiting > 0) {
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
-    for (var ed in all) {
-      loadWaiting++;
-      ed.cloudSave(this).then((value) => loadWaiting--);
-    }
-    while(loadWaiting > 0) {
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
-    Navigator.pop(context);
-    return true;
-  }
-  
-  Future<bool> syncCloud() async{
-    var okay = await driveInit();
-    if(!okay) return false;
+    var okay = await driver!.ready("SWChars");
+    if(!okay) return null;
     var all = <Editable>[
       ..._characters,
       ..._minions,
@@ -403,7 +284,9 @@ class SW{
           Editable? matchEd;
           try {
             matchEd = all.firstWhere((element) => element.uid == ed.uid);
-          }catch(e){}
+          }catch(e){
+            matchEd = null;
+          }
           if(matchEd == null){
             await ed.save(app: this, localOnly: true);
             add(ed);
@@ -422,11 +305,12 @@ class SW{
           loadWaiting--;
         });
       } else {
-        print(uid);
         Editable? matchEd;
         try {
           matchEd = all.firstWhere((element) => element.uid == uid);
-        }catch(e){}
+        }catch(e){
+          matchEd = null;
+        }
         if(matchEd == null){
           Editable ed;
           if(fil.name!.endsWith(".swcharacter")){
@@ -462,9 +346,64 @@ class SW{
       }
     }
     while(loadWaiting > 0) {
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 10));
     }
-    return false;
+    return all;
+  }
+
+  Future<bool> initialSync([BuildContext? context]) async{
+    if(context != null){
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (c) =>
+          AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(),
+                Container(height: 10),
+                Text(
+                  AppLocalizations.of(context)!.driveSyncing,
+                  textAlign: TextAlign.center,
+                )
+              ]
+            )
+          )
+      );
+    }
+    var toUpload = await downloadAndMatch();
+    if(toUpload == null){
+      if(context != null) {
+        Navigator.pop(context);
+      }
+      return false;
+    }
+    var uploadWaiting = 0;
+    for (var ed in toUpload) {
+      uploadWaiting++;
+      ed.cloudSave(this).then((value) => uploadWaiting--);
+    }
+    while(uploadWaiting > 0) {
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+    if(context != null) Navigator.pop(context);
+    return true;
+  }
+  
+  Future<bool> syncCloud([BuildContext? context]) async{
+    syncing = true;
+    var toDelete = await downloadAndMatch();
+    if(toDelete == null){
+      syncing = false;
+      return false;
+    }
+    for(var ed in toDelete) {
+      ed.delete(this);
+      remove(ed, context);
+    }
+    syncing = false;
+    return true;
   }
 
   dynamic getPreference(String preference, dynamic defaultValue) =>
@@ -515,7 +454,12 @@ class SW{
         )
     );
     if (getPreference(preferences.googleDrive, false)){
-      await syncCloud();
+      if(getPreference(preferences.driveFirstLoad, true)){
+        await initialSync();
+      }else{
+        await syncCloud();
+        prefs.setBool(preferences.driveFirstLoad, false);
+      }
     }
     if(getPreference(preferences.firebase, true)){
       try{

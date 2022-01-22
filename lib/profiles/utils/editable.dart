@@ -110,7 +110,7 @@ abstract class Editable extends JsonSavable{
     desc = json["description"] ?? "";
     if (json["show cards"] != null){
       showCard = json["show cards"].cast<bool>();
-      if(showCard.length != cardNum){
+      if(showCard.length < cardNum){
         showCard.addAll(List.filled(cardNum - showCard.length, false));
       }
     }
@@ -175,15 +175,6 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  Route getRoute(){
-    route = MaterialPageRoute(
-      builder: (BuildContext bc) => EditingEditable(this),
-      settings: RouteSettings(name: uid.toString() + fileExtension),
-      maintainState: false,
-    );
-    return route!;
-  }
-
   String getFileLocation(SW sw) => loc ?? sw.saveDir + "/" + uid.toString() + fileExtension;
   
   Future<void> save({String filename = "", BuildContext? context, SW? app, bool localOnly = false}) async{
@@ -222,8 +213,10 @@ abstract class Editable extends JsonSavable{
 
   Future<String?> getDriveId(SW app) async {
     if (driveId == null){
-      if(app.driver == null || !app.driver!.isReady()) return null;
+      if(app.driver == null || !await app.driver!.ready()) return null;
       var newId = await app.driver!.getID(uid+fileExtension);
+      if(newId == null){
+      }
       newId ??= await app.driver!.createFile(
         uid + fileExtension,
         appProperties: {"uid" : uid}
@@ -236,8 +229,7 @@ abstract class Editable extends JsonSavable{
 
   Future<void> cloudSave(SW app) async {
     if(!_cloudSaving && !_cloudDefered) {
-      _cloudSaving = true;
-      if(app.driver == null || !app.driver!.isReady()){
+      if(app.driver == null || !await app.driver!.ready()){
         _cloudSaving = false;
         return;
       }
@@ -263,7 +255,7 @@ abstract class Editable extends JsonSavable{
     loadJson(jsonDecode(file.readAsStringSync()));
   }
   Future<void> cloudLoad(SW app, String id, {bool overwriteId = true}) async {
-    if(app.driver == null || !app.driver!.isReady()) return;
+    if(app.driver == null || !await app.driver!.ready()) return;
     var media = await app.driver!.getContents(id);
     if (media == null) return;
     List<int> out = [];

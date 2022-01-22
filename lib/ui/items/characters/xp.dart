@@ -22,16 +22,6 @@ class XP extends StatelessWidget{
         Row(
           children: [
             Expanded(
-              child: Center(child: Text(AppLocalizations.of(context)!.current)),
-            ),
-            Expanded(
-              child: Center(child: Text(AppLocalizations.of(context)!.total)),
-            )
-          ]
-        ),
-        Row(
-          children: [
-            Expanded(
               child: EditingText(
                 editing: editing,
                 initialText: character.xpCur.toString(),
@@ -45,6 +35,7 @@ class XP extends StatelessWidget{
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,
+                title: AppLocalizations.of(context)!.current,
               ),
             ),
             Expanded(
@@ -61,6 +52,7 @@ class XP extends StatelessWidget{
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,
+                title: AppLocalizations.of(context)!.total,
               ),
             ),
           ],

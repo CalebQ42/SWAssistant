@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
+import 'package:swassistant/dice/dice_results.dart';
 import 'package:swassistant/dice/swdice.dart' as swdice;
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
@@ -9,8 +10,9 @@ import 'package:swassistant/utils/json_savable.dart';
 class SWDiceHolder extends JsonSavable{
 
   int ability, proficiency, difficulty, challenge, boost, setback, force;
+  WeaponPack? weaponPack;
 
-  SWDiceHolder({this.ability=0, this.proficiency=0, this.difficulty=0, this.challenge=0, this.boost=0, this.setback=0, this.force=0});
+  SWDiceHolder({this.ability=0, this.proficiency=0, this.difficulty=0, this.challenge=0, this.boost=0, this.setback=0, this.force=0, this.weaponPack});
   SWDiceHolder.fromJson(Map<String,dynamic> json) :
     ability = json["ability"] ?? 0,
     proficiency = json["proficiency"] ?? 0,
@@ -78,13 +80,13 @@ class SWDiceHolder extends JsonSavable{
         ),
       buttons: (context) => [
         TextButton(
-          child: Text(AppLocalizations.of(context)!.roll),
+          child: Text((weaponPack == null) ? AppLocalizations.of(context)!.roll : AppLocalizations.of(context)!.fire),
           onPressed: (){
             Navigator.of(context).pop();
             var res = getDice(context).roll();
             res.showCombinedResults(context,
               noSuccess: ability == 0 && challenge == 0 && difficulty == 0 &&
-                proficiency == 0 && boost == 0 && setback == 0
+                proficiency == 0 && boost == 0 && setback == 0, weaponPack: weaponPack
             );
           },
         ),

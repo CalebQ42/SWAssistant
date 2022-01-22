@@ -8,9 +8,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Morality extends StatefulWidget with StatefulCard{
 
-  Morality({Key? key}) : super(key: key);
+  Morality({Key? key, required this.holder}) : super(key: key);
 
-  final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
+  final EditableContentStatefulHolder holder;
 
   @override
   State<StatefulWidget> createState() => MoralityState();
@@ -69,31 +69,19 @@ class MoralityState extends State<Morality>{
     return Column(
       children: [
         Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-              child: Text(AppLocalizations.of(context)!.morality, textAlign: TextAlign.center,),
-            ),
-            Container(width: 10),
-            Expanded(
-              child: Text(AppLocalizations.of(context)!.conflict, textAlign: TextAlign.center),
-            )
-          ],
-        ),
-        Container(height: 5,),
-        Row(
-          children: [
-            Expanded(
-              child: Center(
-                child: EditingText(
-                  editing: editing,
-                  initialText: character.morality.toString(),
-                  controller: moralityController,
-                  textType: TextInputType.number,
-                  defaultSave: true,
-                  textAlign: TextAlign.center,
-                  fieldAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline6,
-                )
+              child: EditingText(
+                editing: editing,
+                initialText: character.morality.toString(),
+                controller: moralityController,
+                textType: TextInputType.number,
+                defaultSave: true,
+                textAlign: TextAlign.center,
+                fieldAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline6,
+                title: AppLocalizations.of(context)!.morality,
               )
             ),
             Expanded(
@@ -101,26 +89,30 @@ class MoralityState extends State<Morality>{
                 controller: conflictController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.conflict,
+                ),
                 // decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
                 textAlign: TextAlign.center,
               )
             )
           ],
         ),
-        Container(height: 5,),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(AppLocalizations.of(context)!.darkSide),
-              Switch(
+        Container(height: 15),
+        Row(
+          children: [
+            Expanded(
+              child: SwitchListTile(
+                title: Text(AppLocalizations.of(context)!.darkSide),
                 value: character.darkSide,
                 onChanged: (b) => setState((){
                   character.darkSide = b;
                   character.save(context: context);
                 }),
-              ),
-              ElevatedButton(
+              )
+            ),
+            Expanded(
+              child: ElevatedButton(
                 child: Text(AppLocalizations.of(context)!.resolveConflict),
                 onPressed: (){
                   var conflict = int.tryParse(conflictController!.text);
@@ -144,22 +136,12 @@ class MoralityState extends State<Morality>{
                   });
                 },
               ),
-            ],
-          )
-        ),
-        Container(height: 5,),
-        Row(
-          children: [
-            Expanded(
-              child: Center(child: Text(AppLocalizations.of(context)!.emoStr, style: Theme.of(context).textTheme.subtitle1,)),
-            ),
-            Expanded(
-              child: Center(child: Text(AppLocalizations.of(context)!.emoWeak, style: Theme.of(context).textTheme.subtitle1,))
             )
-          ]
+          ],
         ),
-        Container(height: 5),
+        Container(height: 15),
         Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
               child: EditingText(
@@ -168,8 +150,7 @@ class MoralityState extends State<Morality>{
                 controller: strengthController,
                 defaultSave: true,
                 textCapitalization: TextCapitalization.words,
-                textAlign: TextAlign.center,
-                fieldAlign: TextAlign.center,
+                title: AppLocalizations.of(context)!.emoStr
               )
             ),
             Expanded(
@@ -179,8 +160,7 @@ class MoralityState extends State<Morality>{
                 controller: weaknessController,
                 defaultSave: true,
                 textCapitalization: TextCapitalization.words,
-                textAlign: TextAlign.center,
-                fieldAlign: TextAlign.center,
+                title: AppLocalizations.of(context)!.emoWeak
               )
             )
           ]

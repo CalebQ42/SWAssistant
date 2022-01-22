@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/sides.dart';
+import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
+class WeaponPack{
+  Weapon weapon;
+  int brawn;
+
+  WeaponPack(this.weapon, [this.brawn = 0]);
+}
+
 class DiceResults{
 
-  final List<dynamic> _resultsMasterList = const [];
-  Map<String,int> results = {};
+  final List<dynamic> _resultsMasterList = [];
+  final Map<String,int> results = {};
 
   bool subtractMode = false;
 
@@ -24,7 +32,7 @@ class DiceResults{
 
   int getResult(String name) => results[name] ?? 0;
 
-  void showCombinedResults(BuildContext context,{bool noSuccess = false}){
+  void showCombinedResults(BuildContext context, {bool noSuccess = false, WeaponPack? weaponPack}){
     bool isSuccess = true;
     var success = (getResult(AppLocalizations.of(context)!.success) + getResult(AppLocalizations.of(context)!.triumph)) - (getResult(AppLocalizations.of(context)!.failure) + getResult(AppLocalizations.of(context)!.despair));
     if(success <= 0){
@@ -43,14 +51,22 @@ class DiceResults{
           child: Text(AppLocalizations.of(context)!.edit),
           onPressed: (){
             Navigator.pop(context);
-            showResultsEdit(context, noSuccess: noSuccess);
+            showResultsEdit(context, weaponPack: weaponPack, noSuccess: noSuccess);
           },
         )],
       child: (context) =>
         Column(
           children: [
-            if(!noSuccess) Center(
+            if(!noSuccess && weaponPack == null) Center(
               child: Text(success.toString() + (isSuccess ? " " + AppLocalizations.of(context)!.success : " " + AppLocalizations.of(context)!.failure),
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+            if(weaponPack != null) Center(
+              child: Text(
+                isSuccess ? (weaponPack.weapon.addBrawn ? weaponPack.weapon.damage + success + weaponPack.brawn :
+                  weaponPack.weapon.damage + success).toString() + " " + AppLocalizations.of(context)!.damage :
+                    success.toString() + " " + AppLocalizations.of(context)!.failure,
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
@@ -78,13 +94,62 @@ class DiceResults{
               child: Text(results[AppLocalizations.of(context)!.darkSide].toString() + " " + AppLocalizations.of(context)!.darkSide,
                 style: Theme.of(context).textTheme.headline6,
               )
-            )
+            ),
+            if(weaponPack != null && (weaponPack.weapon.critical > 0 || weaponPack.weapon.characteristics.isNotEmpty)) ...[
+              Container(height: 15,),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(AppLocalizations.of(context)!.characteristic),
+                    flex: 4
+                  ),
+                  Expanded(
+                    child: Center(child: Text(AppLocalizations.of(context)!.advantageShort)),
+                  )
+                ]
+              ),
+              const Divider(),
+              if(weaponPack.weapon.critical > 0) Row(
+                children: [
+                  Expanded(
+                    child: Text(AppLocalizations.of(context)!.critical),
+                    flex: 4
+                  ),
+                  Expanded(
+                    child: Center(child: Text(weaponPack.weapon.critical.toString())),
+                  )
+                ],
+              ), ...(){
+                if(weaponPack.weapon.characteristics.isEmpty){
+                  return <Widget>[];
+                }
+                return List<Widget>.generate(weaponPack.weapon.characteristics.length,
+                  (index){
+                    var charText = weaponPack.weapon.characteristics[index].name;
+                    if(weaponPack.weapon.characteristics[index].value != 0){
+                      charText += " " + weaponPack.weapon.characteristics[index].value.toString();
+                    }
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Text(charText),
+                          flex: 4,
+                        ),
+                        Expanded(
+                          child: Center(child: Text(weaponPack.weapon.characteristics[index].advantage.toString())),
+                        )
+                      ],
+                    );
+                  }
+                );
+              }()
+            ]
           ]
         )
     ).show(context);
   }
 
-  void showResultsEdit(BuildContext context,{bool noSuccess = false, void Function(BuildContext, DiceResults)? alternateReturn}) =>
+  void showResultsEdit(BuildContext context,{bool noSuccess = false, WeaponPack? weaponPack, void Function(BuildContext, DiceResults)? alternateReturn}) =>
     Bottom(
       buttons: (context) => [
         TextButton(
@@ -95,7 +160,7 @@ class DiceResults{
               if(!noSuccess && getResult(AppLocalizations.of(context)!.success) == 0 && getResult(AppLocalizations.of(context)!.failure) == 0){
                 noSuccess = false;
               }
-              showCombinedResults(context, noSuccess: noSuccess);
+              showCombinedResults(context, weaponPack: weaponPack, noSuccess: noSuccess);
             }else{
               alternateReturn(context, this);
             }

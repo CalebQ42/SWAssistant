@@ -15,6 +15,7 @@ String ads = "adsOn";
 String firstStart = "first";
 String startCount = "startCount";
 String startingScreen = "startScreen";
+String driveFirstLoad = "driveFirstLoad";
 
 //Theme prefs
 String forceLight = "forceLight";

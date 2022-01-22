@@ -120,6 +120,10 @@ class Character extends Editable with Creature{
 
   @override
   void loadJson(Map<String,dynamic> json){
+    disableDuty = json["disable duty"] ?? false;
+    disableForce = json["disable force"] ?? false;
+    disableObligation = json["disable obligation"] ?? false;
+    disableMorality = json["disable morality"] ?? false;
     super.loadJson(json);
     creatureLoadJson(json);
     species = json["species"] ?? "";
@@ -162,10 +166,6 @@ class Character extends Editable with Creature{
     darkSide = json["dark side"] ?? false;
     age = json["age"] ?? 0;
     encumCap = json["encumbrance capacity"] ?? 0;
-    disableDuty = json["disable duty"] ?? false;
-    disableForce = json["disable force"] ?? false;
-    disableObligation = json["disable obligation"] ?? false;
-    disableMorality = json["disable morality"] ?? false;
   }
 
   @override
@@ -198,6 +198,7 @@ class Character extends Editable with Creature{
     })..addAll(creatureSaveJson());
 
   var invHold = EditableContentStatefulHolder();
+  var morHold = EditableContentStatefulHolder();
 
   @override
   List<EditableContent> cardContents(BuildContext context) => 
@@ -272,7 +273,7 @@ class Character extends Editable with Creature{
       ),
       if(!disableMorality) EditableContent(
         key: const Key("morality"),
-        stateful: Morality()
+        stateful: Morality(holder: morHold)
       ),
       if(!disableDuty) EditableContent(
         key: const Key("duty"),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
+import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
@@ -217,12 +218,65 @@ class EditableListState extends State<EditableList>{
           bottom: PreferredSize(
             child: catSelector,
             preferredSize: const Size.fromHeight(50)
-          )
+          ),
+          additionalActions: [
+            if(app.getPreference(preferences.googleDrive, false))
+              IconButton(
+                icon: const Icon(Icons.sync),
+                onPressed: () {
+                  var messager = ScaffoldMessenger.of(context);
+                  if(app.syncing) return;
+                  messager.clearSnackBars();
+                  messager.showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.driveSyncing),
+                    )
+                  );
+                  app.syncCloud(context).then((value){
+                    if (!value){
+                      messager.clearSnackBars();
+                      messager.showSnackBar(
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!.syncFail)
+                        )
+                      );
+                    } else {
+                      messager.clearSnackBars();
+                      messager.showSnackBar(
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!.syncComplete)
+                        )
+                      );
+                      setState((){});
+                    }
+                  });
+                }
+              )
+          ],
         ),
         drawer: const SWDrawer(),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: (){
+            if(SW.of(context).getPreference(preferences.googleDrive, false)) {
+              if(SW.of(context).syncing){
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+                  )
+                );
+                return;
+              }else if (!SW.of(context).driver!.readySync()) {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+                  )
+                );
+                return;
+              }
+            }
             Editable newEd;
             switch(type){
               case 0:
@@ -274,6 +328,27 @@ class EditableCard extends StatelessWidget{
   Widget build(BuildContext context) =>
     Dismissible(
       key: Key(Editable.of(context).uid),
+      confirmDismiss: (_) async {
+        if(!SW.of(context).getPreference(preferences.googleDrive, false)) return true;
+        if(SW.of(context).syncing){
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+            )
+          );
+          return false;
+        }else if (!SW.of(context).driver!.readySync()) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+            )
+          );
+          return false;
+        }
+        return true;
+      },
       onDismissed: (_) {
         onDismiss();
       },
@@ -298,9 +373,13 @@ class EditableCard extends StatelessWidget{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  Editable.of(context).name,
-                  style: Theme.of(context).textTheme.headlineSmall
+                Hero(
+                  transitionOnUserGestures: true,
+                  tag: Editable.of(context).uid,
+                  child: Text(
+                    Editable.of(context).name,
+                    style: Theme.of(context).textTheme.headlineSmall
+                  )
                 ),
                 if(onTap != null) Container(height: 10),
                 if(onTap != null) Align(

@@ -42,6 +42,33 @@ class _EditingEditableState extends State<EditingEditable>{
       elevation: 8.0,
       showSelectedLabels: true,
     );
+    var main = GestureDetector(
+      onHorizontalDragEnd: (deets){
+        if(_index == 0 && (deets.primaryVelocity ?? 0) < -1500){
+          setState(() => _index = 1);
+        } else if(_index == 1 && (deets.primaryVelocity ?? 0) > 1500){
+          setState(() => _index = 0);
+        }
+      },
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (child, anim){
+          Tween<Offset> twen;
+          if(child is EditableCards) {
+            twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
+          } else {
+            twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
+          }
+          return ClipRect(
+            child: SlideTransition(
+              position: twen.animate(anim),
+              child: child,
+            )
+          );
+        },
+        child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
+      )
+    );
     Widget body;
     if(!widget.contained) {
       body = Scaffold(
@@ -137,46 +164,14 @@ class _EditingEditableState extends State<EditingEditable>{
             ).show(context),
           },
         ),
-        body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (child, anim){
-            Tween<Offset> twen;
-            if(child is EditableCards) {
-              twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
-            } else {
-              twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
-            }
-            return ClipRect(
-              child: SlideTransition(
-                position: twen.animate(anim),
-                child: child,
-              )
-            );
-          },
-          child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
-        )
+        body: main
       );
     } else {
       body = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, anim){
-                Tween<Offset> twen;
-                if(child is EditableCards) {
-                  twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
-                } else {
-                  twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
-                }
-                return SlideTransition(
-                  position: twen.animate(anim),
-                  child: child,
-                );
-              },
-              child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
-            )
+            child: main
           ),
           bottomNav
         ],
