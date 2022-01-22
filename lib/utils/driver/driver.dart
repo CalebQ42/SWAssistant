@@ -17,7 +17,6 @@ class Driver{
     try{
       gsi ??= GoogleSignIn(scopes: [DriveApi.driveAppdataScope]);
       if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
-        print("Re-auth");
         await gsi!.signInSilently();
         if(gsi!.currentUser == null) gsi!.signIn();
       }

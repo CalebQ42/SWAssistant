@@ -346,7 +346,7 @@ class SW{
       }
     }
     while(loadWaiting > 0) {
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
     return all;
   }
@@ -385,7 +385,7 @@ class SW{
       ed.cloudSave(this).then((value) => uploadWaiting--);
     }
     while(uploadWaiting > 0) {
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
     if(context != null) Navigator.pop(context);
     return true;
