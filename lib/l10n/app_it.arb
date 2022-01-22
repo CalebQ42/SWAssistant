@@ -26,6 +26,13 @@
     "importNone": "Sembra che tu non abbia selezionato alcun file",
     "loadingDialog": "Caricamento...",
     "driveSyncing": "Sincronizzazione con Google Drive",
+    "syncFail": "Syncing failed",
+    "syncComplete": "Syncing Complete",
+    "driveSyncingNotice": "Google Drive is syncing",
+    "@driveSyncingNotice": {
+        "description": "Shown when the user tries to do an action while Google Drive is syncing."
+    },
+    "driveDisconnectNotice": "Google Drive is disconnect",
     "gmModeTap": "Seleziona un profilo a sinistra da editare.",
     "gmModeType": "Genere...",
     "@gmModeType": {
