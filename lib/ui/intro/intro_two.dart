@@ -21,10 +21,11 @@ class _IntroTwoState extends State{
     IntroScreen(
       nextScreenAction: () {
         SW.of(context).prefs.setBool(preferences.firstStart, false);
-        SW.of(context).postInit(context).whenComplete(() =>
+        SW.of(context).postInit(context).whenComplete(() {
+          SW.of(context).prefs.setBool(preferences.driveFirstLoad, false);
           Navigator.pushNamedAndRemoveUntil(
-            context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false)
-        );
+            context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
+        });
       },
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 500),

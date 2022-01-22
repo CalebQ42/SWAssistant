@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
@@ -22,9 +23,10 @@ class IntroZero extends StatelessWidget{
     IntroScreen(
       nextScreen: const IntroOne(),
       prevScreenAction: SW.of(context).devMode ? () =>
-        SW.of(context).postInit(context).whenComplete(() =>
-          Navigator.of(context).pushNamedAndRemoveUntil("/characters", (route) => false)
-        ) : null,
+        SW.of(context).postInit(context).whenComplete(() {
+          SW.of(context).prefs.setBool(preferences.driveFirstLoad, true);
+          Navigator.of(context).pushNamedAndRemoveUntil("/characters", (route) => false);
+        }) : null,
       defPrevScreen: false,
       prevScreenIcon: const Icon(Icons.exit_to_app),
       child: ConstrainedBox(

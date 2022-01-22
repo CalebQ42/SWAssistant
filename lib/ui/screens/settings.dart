@@ -78,6 +78,7 @@ class SettingsState extends State{
             onChanged: (b) {
               if (b) {
                 app.initialSync(context).then((value) {
+                  app.prefs.setBool(preferences.driveFirstLoad, false);
                   app.prefs.setBool(preferences.googleDrive, b);
                   setState(() {});
                 });

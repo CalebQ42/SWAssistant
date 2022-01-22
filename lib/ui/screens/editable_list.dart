@@ -40,8 +40,36 @@ class EditableListState extends State<EditableList>{
     listKey = GlobalKey();
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
+    Future(() async {
+      while(!mounted){
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+      if(!SW.of(context).getPreference(preferences.googleDrive, false) && SW.of(context).getPreference(preferences.driveFirstLoad, true)){
+        SW.of(context).prefs.setBool(preferences.driveFirstLoad, false);
+        showDialog(
+          context: context,
+          builder: (c) => AlertDialog(
+            content: Text(
+              AppLocalizations.of(context)!.driveFirstLaunch
+            ),
+            actions: [
+              TextButton(
+                child: Text(MaterialLocalizations.of(context).continueButtonLabel),
+                onPressed: () => Navigator.popAndPushNamed(context, "/settings"),
+              ),
+              TextButton(
+                child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                onPressed: () => Navigator.pop(context)
+              )
+            ],
+          )
+        );
+      }
+    });
     var app = SW.of(context);
     var oldLen = list.length;
     List<DropdownMenuItem<String>> categories;

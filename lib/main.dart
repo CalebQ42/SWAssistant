@@ -75,6 +75,14 @@ class SWAppState extends State<SWApp> {
             );
             return ed.route;
           }
+        }else if(settings.name == "/gm") {
+          widy = GMMode();
+        } else if(settings.name == "/dice") {
+          widy = DiceRoller();
+        } else if(settings.name == "/settings") {
+          widy = const Settings();
+        } else if(settings.name == "/intro") {
+          widy = const IntroZero();
         }else if(settings.name == "/vehicles"){
           widy = const EditableList(EditableList.vehicle);
         }else if(settings.name == "/minions"){
@@ -156,13 +164,6 @@ class SWAppState extends State<SWApp> {
         SW.of(context).observatory
       ],
       initialRoute: widget.init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
-      routes: {
-        "/gm" : (context) => GMMode(),
-        // "/download" : (context) => Downloads(),
-        "/dice" : (context) => DiceRoller(),
-        "/settings" : (context) => const Settings(),
-        "/intro" : (context) => const IntroZero(),
-      },
     );
   }
 }
