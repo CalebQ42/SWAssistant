@@ -113,6 +113,8 @@ abstract class Editable extends JsonSavable{
       if(showCard.length < cardNum){
         showCard.addAll(List.filled(cardNum - showCard.length, false));
       }
+    }else {
+      showCard = List.filled(cardNum, false, growable: false);
     }
     if (json["Inventory"] != null){
       inventory = [];
