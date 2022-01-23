@@ -26,5 +26,13 @@ class Item implements JsonSavable{
     "description" : desc,
     "count" : count,
     "encumbrance" : encum
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "description": "",
+    "count": 1,
+    "encumbrance": 0,
   };
 }

@@ -22,5 +22,12 @@ class Talent implements JsonSavable{
     "name" : name,
     "description" : desc,
     "value" : value
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "description": "",
+    "value": -1,
   };
 }

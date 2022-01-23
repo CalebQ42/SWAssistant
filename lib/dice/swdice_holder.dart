@@ -31,7 +31,18 @@ class SWDiceHolder extends JsonSavable{
     "boost" : boost,
     "setback" : setback,
     "force" : setback
-  }..removeWhere((key, value) => value == 0);
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "ability" : 0,
+    "proficiency" : 0,
+    "difficulty" : 0,
+    "challenge" : 0,
+    "boost" : 0,
+    "setback" : 0,
+    "force" : 0
+  };
 
   void addDice(SWDiceHolder toAdd){
     ability += toAdd.ability;

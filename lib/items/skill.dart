@@ -34,6 +34,14 @@ class Skill implements JsonSavable{
     "value" : value,
     "base" : base,
     "career" : career
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "value": -1,
+    "base": -1,
+    "career": false,
   };
 
   SWDiceHolder getDice(Creature creature) {

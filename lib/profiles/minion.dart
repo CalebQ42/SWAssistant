@@ -85,15 +85,27 @@ class Minion extends Editable with Creature{
   }
 
   @override
-  Map<String,dynamic> toJson() =>
-    super.toJson()..addAll({
-      "wound threshold per minion": woundThreshInd,
-      "minion number": minionNum,
-      "Saved": {
-        "Inventory" : List.generate(savedInv.length, (index) => savedInv[index].toJson()),
-        "Weapons" : List.generate(savedWeapons.length, (index) => savedWeapons[index].toJson())
-      }
-    })..addAll(creatureSaveJson());
+  Map<String,dynamic> toJson() => {
+    ...super.toJson(),
+    "wound threshold per minion": woundThreshInd,
+    "minion number": minionNum,
+    "Saved": {
+      "Inventory" : List.generate(savedInv.length, (index) => savedInv[index].toJson()),
+      "Weapons" : List.generate(savedWeapons.length, (index) => savedWeapons[index].toJson())
+    }
+  }..addAll(creatureSaveJson())..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String,dynamic> get zeroValue => {
+    ...super.zeroValue,
+    ...creatureZeroValue,
+    "wound threshold per minion": 0,
+    "minion number": 0,
+    "Saved": {
+      "Inventory": <Map<String,dynamic>>[],
+      "Weapons": <Map<String,dynamic>>[]
+    }
+  };
 
   EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
   EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();

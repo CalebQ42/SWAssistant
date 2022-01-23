@@ -18,5 +18,11 @@ class ForcePower implements JsonSavable{
   Map<String, dynamic> toJson() => {
     "name" : name,
     "description" : desc
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "description": ""
   };
 }

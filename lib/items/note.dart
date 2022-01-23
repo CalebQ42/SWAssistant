@@ -18,5 +18,12 @@ class Note implements JsonSavable{
     "title": title,
     "note": note,
     "align": align
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "title": "",
+    "note": "",
+    "align": 0,
   };
 }

@@ -169,33 +169,62 @@ class Character extends Editable with Creature{
   }
 
   @override
-  Map<String,dynamic> toJson() => 
-    super.toJson()..addAll({
-      "species": species,
-      "career": career,
-      "Specializations": specializations,
-      "Force Powers": List.generate(forcePowers.length, (index) => forcePowers[index].toJson()),
-      "motivation": motivation,
-      "emotional strength": emotionalStr,
-      "emotional weakness": emotionalWeak,
-      "Dutys": List.generate(duties.length, (index) => duties[index].toJson()),
-      "Obligations": List.generate(obligations.length, (index) => obligations[index].toJson()),
-      "strain threshold": strainThresh,
-      "strain current": strainCur,
-      "xp total": xpTot,
-      "xp current": xpCur,
-      "force rating": force,
-      "credits": credits,
-      "morality": morality,
-      "conflict": conflict,
-      "dark side": darkSide,
-      "age": age,
-      "encumbrance capacity": encumCap,
-      "disable force": disableForce,
-      "disable duty": disableDuty,
-      "disable obligation": disableObligation,
-      "disable morality": disableMorality,
-    })..addAll(creatureSaveJson());
+  Map<String,dynamic> toJson() => {
+    ...super.toJson(),
+    "species": species,
+    "career": career,
+    "Specializations": specializations,
+    "Force Powers": List.generate(forcePowers.length, (index) => forcePowers[index].toJson()),
+    "motivation": motivation,
+    "emotional strength": emotionalStr,
+    "emotional weakness": emotionalWeak,
+    "Dutys": List.generate(duties.length, (index) => duties[index].toJson()),
+    "Obligations": List.generate(obligations.length, (index) => obligations[index].toJson()),
+    "strain threshold": strainThresh,
+    "strain current": strainCur,
+    "xp total": xpTot,
+    "xp current": xpCur,
+    "force rating": force,
+    "credits": credits,
+    "morality": morality,
+    "conflict": conflict,
+    "dark side": darkSide,
+    "age": age,
+    "encumbrance capacity": encumCap,
+    "disable force": disableForce,
+    "disable duty": disableDuty,
+    "disable obligation": disableObligation,
+    "disable morality": disableMorality,
+  }..addAll(creatureSaveJson())..removeWhere((key, value) {
+    if (value is List && value.isEmpty) return true;
+    return zeroValue[key] == value;
+  });
+
+  @override
+  Map<String,dynamic> get zeroValue => {
+    ...super.zeroValue,
+    ...creatureZeroValue,
+    "disable duty": false,
+    "disable force": false,
+    "disable obligation": false,
+    "disable morality": false,
+    "species": "",
+    "career": "",
+    "motivation": "",
+    "emotional strength": "",
+    "emotional weakness": "",
+    "strain threshold": 0,
+    "strain current": 0,
+    "xp total": 0,
+    "xp current": 0,
+    "force rating": 0,
+    "credits": 0,
+    "morality": 0,
+    "conflict": 0,
+    "dark side": false,
+    "age": 0,
+    "encumbrance capacity": 0,
+  };
 
   var invHold = EditableContentStatefulHolder();
   var morHold = EditableContentStatefulHolder();

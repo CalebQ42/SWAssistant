@@ -93,23 +93,44 @@ class Vehicle extends Editable{
   }
 
   @override
-  Map<String,dynamic> toJson() => 
-    super.toJson()..addAll({
-      "silhouette": silhouette,
-      "speed": speed,
-      "handling": handling,
-      "armor": armor,
-      "defense": defense,
-      "total defense": totalDefense,
-      "hull trauma threshold": hullTraumaThresh,
-      "hull trauma current": hullTraumaCur,
-      "system stress threshold": sysStressThresh,
-      "system stress current": sysStressCur,
-      "encumbrance capacity": encumCap,
-      "passenger capacity": passengerCapacity,
-      "hard points": hp,
-      "model": model,
-    });
+  Map<String,dynamic> toJson() => {
+    ...super.toJson(),
+    "silhouette": silhouette,
+    "speed": speed,
+    "handling": handling,
+    "armor": armor,
+    "defense": defense,
+    "total defense": totalDefense,
+    "hull trauma threshold": hullTraumaThresh,
+    "hull trauma current": hullTraumaCur,
+    "system stress threshold": sysStressThresh,
+    "system stress current": sysStressCur,
+    "encumbrance capacity": encumCap,
+    "passenger capacity": passengerCapacity,
+    "hard points": hp,
+    "model": model,
+  }..removeWhere((key, value) {
+    if(key == "defense" && (value as List<int>).every((element) => element == 0)) return true;
+    return zeroValue[key] == value;
+  });
+
+  @override
+  Map<String,dynamic> get zeroValue => {
+    ...super.zeroValue,
+    "silhouette": 0,
+    "speed": 0,
+    "handling": 0,
+    "armor": 0,
+    "total defense": 0,
+    "hull trauma threshold": 0,
+    "hull trauma current": 0,
+    "system stress threshold": 0,
+    "system stress current": 0,
+    "encumbrance capacity": 0,
+    "passenger capacity": 0,
+    "hard points": 0,
+    "model": "",
+  };
 
   var invHold = EditableContentStatefulHolder();
   var defHold = EditableContentStatefulHolder();

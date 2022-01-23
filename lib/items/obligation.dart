@@ -23,5 +23,12 @@ class Obligation implements JsonSavable{
     "name" : name,
     "value" : value,
     "description" : desc
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "description": "",
+    "value": -1,
   };
 }

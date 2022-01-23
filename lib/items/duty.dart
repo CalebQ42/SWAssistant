@@ -23,5 +23,12 @@ class Duty implements JsonSavable{
     "name" : name,
     "value" : value,
     "description" : desc
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "value": -1,
+    "description": "",
   };
 }

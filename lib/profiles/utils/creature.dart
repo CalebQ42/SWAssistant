@@ -68,6 +68,18 @@ mixin Creature on Editable{
     "melee defense": defMelee,
     "ranged defense": defRanged,
     "soak": soak
+  }..removeWhere((key, value) {
+    if (key == "characteristics" && (value as List<int>).every((element) => element == 0)) return true;
+    if (value is List && value.isEmpty) return true;
+    return false;
+  });
+
+  Map<String,dynamic> get creatureZeroValue => {
+    "wound threshold": 0,
+    "wound current": 0,
+    "melee defense": 0,
+    "ranged defense": 0,
+    "soak": 0,
   };
 
   static Creature? of(BuildContext context){

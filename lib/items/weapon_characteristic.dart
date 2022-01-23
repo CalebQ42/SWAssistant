@@ -23,5 +23,12 @@ class WeaponCharacteristic implements JsonSavable{
     "name" : name,
     "value" : value,
     "advantage" : advantage
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "value": -1,
+    "advantage": -1,
   };
 }

@@ -140,8 +140,21 @@ abstract class Editable extends JsonSavable{
       "description" : desc,
       "show cards" : showCard,
       "Inventory" : List.generate(inventory.length, (index) => inventory[index].toJson()),
-    };
+    }..removeWhere((key, value){
+      if (key == "show cards" && (value as List<bool>).every((element) => !element)) return true;
+      if (value is List && value.isEmpty) return true;
+      return false;
+    });
   }
+
+  @override
+  @mustCallSuper
+  Map<String,dynamic> get zeroValue => {
+    "uid": "",
+    "name": "",
+    "category": "",
+    "description": "",
+  };
 
   List<Widget> cards(BuildContext context){
     var cards = <Widget>[];
@@ -190,6 +203,7 @@ abstract class Editable extends JsonSavable{
     }
     if(!_saving && !_defered){
       _saving = true;
+      print(toJson());
       var file = File(filename);
       File? backup;
       if(file.existsSync()){

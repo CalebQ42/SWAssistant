@@ -22,5 +22,12 @@ class CriticalInjury implements JsonSavable{
     "name" : name,
     "description" : desc,
     "severity" : severity
+  }..removeWhere((key, value) => zeroValue[key] == value);
+
+  @override
+  Map<String, dynamic> get zeroValue => {
+    "name": "",
+    "description": "",
+    "severity": 0,
   };
 }
