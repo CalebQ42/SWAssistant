@@ -13,27 +13,49 @@ class EditableCards extends StatelessWidget{
   Widget build(BuildContext context) {
     var cards = Editable.of(context).cards(context);
     double width = min(w ?? MediaQuery.of(context).size.height, 350);
-    int rows = (MediaQuery.of(context).size.width / width).floor();
-    width = w ?? MediaQuery.of(context).size.width / rows;
+    int rows = ((w ?? MediaQuery.of(context).size.width) / width).floor();
+    List<List<Widget>> columns = [];
+    int leftovers = (cards.length-2) % rows;
+    for(var i = 1; i<=rows; i++){
+      columns.add(
+        List.generate(((cards.length-2-leftovers)/rows).floor(), (index) =>
+          Container(
+            key: ValueKey(index*rows+i),
+            child: cards[index*rows+i]
+          )
+        )
+      );
+    }
     return SingleChildScrollView(
+      physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           cards[0],
-          Wrap(
-            alignment: WrapAlignment.spaceEvenly,
-            children: List<Widget>.generate(cards.length-1, (index){
-              return ConstrainedBox(
-                key: ValueKey(index),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(rows,
+              (i) => Expanded(child: Wrap(
+                children: columns[i]
+              ))
+            )
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(leftovers, (i) =>
+              ConstrainedBox(
+                key: ValueKey(cards.length-leftovers+i-1),
                 constraints: BoxConstraints(
-                  maxWidth: width
+                  maxWidth: (w ?? MediaQuery.of(context).size.width)/rows
                 ),
-                child: cards[index+1]
-              );
-            }),
-          )
+                child: cards[cards.length-leftovers+i-1]
+              )
+            )
+          ),
+          cards[cards.length-1]
         ]
       )
     );
   }
+
+
 }

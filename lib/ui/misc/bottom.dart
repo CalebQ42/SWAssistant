@@ -20,6 +20,7 @@ class Bottom extends StatelessWidget{
           ConstrainedBox(
             constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.50),
             child: SingleChildScrollView(
+              physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
               primary: false,
               child: Padding(
                 padding: padding ? const EdgeInsets.only(

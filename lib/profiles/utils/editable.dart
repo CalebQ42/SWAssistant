@@ -32,7 +32,7 @@ abstract class Editable extends JsonSavable{
   String desc = "";
   List<Item> inventory = [];
 
-  List<bool> showCard = [];
+  Map<String,bool> showCard = {};
   Route? route;
 
   String get fileExtension;
@@ -48,7 +48,6 @@ abstract class Editable extends JsonSavable{
   bool _cloudDefered = false;
 
   Editable({this.name = "", bool saveOnCreation = false, required SW app}) : uid = const Uuid().v4(){
-    showCard = List.filled(cardNum, false, growable: false);
     if(saveOnCreation){
       save(app: app);
     }
@@ -75,7 +74,7 @@ abstract class Editable extends JsonSavable{
       criticalInjuries = List.from(editable.criticalInjuries),
       desc = editable.desc,
       inventory = editable.inventory {
-      showCard = List.filled(cardNum, false);
+      showCard = {};
       if (!(this is Character || this is Vehicle || this is Minion)){
         throw("Must be overridden by child");
       }
@@ -108,14 +107,7 @@ abstract class Editable extends JsonSavable{
       }
     }
     desc = json["description"] ?? "";
-    if (json["show cards"] != null){
-      showCard = json["show cards"].cast<bool>();
-      if(showCard.length < cardNum){
-        showCard.addAll(List.filled(cardNum - showCard.length, false));
-      }
-    }else {
-      showCard = List.filled(cardNum, false, growable: false);
-    }
+    showCard = ((json["show cards v2"] ?? <String,dynamic>{}) as Map<String,dynamic>).cast();
     if (json["Inventory"] != null){
       inventory = [];
       if(json["Inventory"] != null){
@@ -140,10 +132,10 @@ abstract class Editable extends JsonSavable{
       "name" : name,
       "category" : category,
       "description" : desc,
-      "show cards" : showCard,
+      "show cards v2" : showCard,
       "Inventory" : List.generate(inventory.length, (index) => inventory[index].toJson()),
     }..removeWhere((key, value){
-      if (key == "show cards" && (value as List<bool>).every((element) => !element)) return true;
+      if (key == "show cards v2" && (value as Map<String, bool>).values.every((element) => !element)) return true;
       if (value is List && value.isEmpty) return true;
       return false;
     });
@@ -171,11 +163,11 @@ abstract class Editable extends JsonSavable{
     for (int i = 0; i < contents.length; i++){
       cards.add(
         InfoCard(
-          shown: showCard[i],
+          shown: showCard[names[i]] ?? false,
           contents: contents[i],
           title: names[i],
           onHideChange: (bool b, refresh) {
-            showCard[i]=b;
+            showCard[names[i]]=b;
             if (!b){
               contents[i].stateful?.getHolder().editing = false;
               if(contents[i].stateful?.getHolder().reloadFunction != null){
@@ -205,7 +197,6 @@ abstract class Editable extends JsonSavable{
     }
     if(!_saving && !_defered){
       _saving = true;
-      print(toJson());
       var file = File(filename);
       File? backup;
       if(file.existsSync()){
@@ -254,7 +245,7 @@ abstract class Editable extends JsonSavable{
         _cloudSaving = false;
         return;
       }
-      var data = jsonEncode(toJson()).codeUnits;
+      var data = jsonEncode(toJson()..remove("show cards")..remove("show cards v2")).codeUnits;
       await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
       _cloudSaving = false;
     } else if (!_cloudDefered) {
@@ -278,7 +269,7 @@ abstract class Editable extends JsonSavable{
     await for(var tmp in media.stream){
       out.addAll(tmp);
     }
-    loadJson(jsonDecode(String.fromCharCodes(out)));
+    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>)..remove("show cards")..remove("show cards v2"));
     if(overwriteId) driveId = id;
   }
   void delete(SW app){

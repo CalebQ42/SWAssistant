@@ -27,7 +27,11 @@ class _EditingEditableState extends State<EditingEditable>{
 
   int _index = 0;
 
+  bool animating = false;
+
   _EditingEditableState();
+
+  var pager = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,38 +41,57 @@ class _EditingEditableState extends State<EditingEditable>{
         BottomNavigationBarItem(icon: const Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
         BottomNavigationBarItem(icon: const Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
       ],
-      onTap: (value) => setState(() => _index = value),
+      onTap: (value) {
+        animating = true;
+        pager.animateToPage(value, duration: const Duration(milliseconds: 500), curve: Curves.easeOutBack).whenComplete(() {
+          animating = false;
+          setState(() => _index = value);
+        });
+      },
       currentIndex: _index,
       elevation: 8.0,
       showSelectedLabels: true,
     );
-    var main = GestureDetector(
-      onHorizontalDragEnd: (deets){
-        if(_index == 0 && (deets.primaryVelocity ?? 0) < -1500){
-          setState(() => _index = 1);
-        } else if(_index == 1 && (deets.primaryVelocity ?? 0) > 1500){
-          setState(() => _index = 0);
+    var main = PageView(
+      physics: const PageScrollPhysics(parent: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())),
+      children: [
+        EditableCards(w: widget.w),
+        EditableNotes()
+      ],
+      controller: pager,
+      onPageChanged: (i){
+        if (!animating){
+          setState(() => _index = i);
         }
       },
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        transitionBuilder: (child, anim){
-          Tween<Offset> twen;
-          if(child is EditableCards) {
-            twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
-          } else {
-            twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
-          }
-          return ClipRect(
-            child: SlideTransition(
-              position: twen.animate(anim),
-              child: child,
-            )
-          );
-        },
-        child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
-      )
     );
+    // var main = GestureDetector(
+    //   onHorizontalDragEnd: (deets){
+    //     if(_index == 0 && (deets.primaryVelocity ?? 0) < -1500){
+    //       setState(() => _index = 1);
+    //     } else if(_index == 1 && (deets.primaryVelocity ?? 0) > 1500){
+    //       setState(() => _index = 0);
+    //     }
+    //   },
+    //   child: AnimatedSwitcher(
+    //     duration: const Duration(milliseconds: 300),
+    //     transitionBuilder: (child, anim){
+    //       Tween<Offset> twen;
+    //       if(child is EditableCards) {
+    //         twen = Tween(begin: const Offset(-1.0, 0), end: Offset.zero);
+    //       } else {
+    //         twen = Tween(begin: const Offset(1.0, 0), end: Offset.zero);
+    //       }
+    //       return ClipRect(
+    //         child: SlideTransition(
+    //           position: twen.animate(anim),
+    //           child: child,
+    //         )
+    //       );
+    //     },
+    //     child: _index == 0 ? EditableCards(w: widget.w) : EditableNotes()
+    //   )
+    // );
     Widget body;
     if(!widget.contained) {
       body = Scaffold(

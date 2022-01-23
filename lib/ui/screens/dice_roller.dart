@@ -34,6 +34,7 @@ class DiceRoller extends StatelessWidget{
         child: const Icon(Icons.casino),
       ),
       body: SingleChildScrollView(
+        physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
         padding: const EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

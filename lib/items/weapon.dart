@@ -13,7 +13,7 @@ class Weapon implements JsonSavable{
   int hp;
   //0-Engaged, 1-Short, 2-Medium, 3-Long, 4-Extreme
   int range;
-  //0-Brawl, 1-Gunner, 2-Lightsaber, 3-Melee, 4-Ranged(Light), 5-Ranged(Heavy)
+  //0-Brawl, 1-Gunner, 2-Lightsaber, 3-Melee, 4-Ranged(Heavy), 5-Ranged(Light)
   int skill;
   int skillBase;
   List<WeaponCharacteristic> characteristics;

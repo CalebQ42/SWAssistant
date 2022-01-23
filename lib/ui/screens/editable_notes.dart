@@ -21,6 +21,7 @@ class EditableNotes extends StatelessWidget{
         },
       ),
       body: AnimatedList(
+        physics: const PageScrollPhysics(parent: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())),
         key: listy,
         initialItemCount: Editable.of(context).notes.length,
         itemBuilder: (context, index, anim) =>

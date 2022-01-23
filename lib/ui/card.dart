@@ -11,7 +11,7 @@ class InfoCard extends StatefulWidget{
   final InfoCardHolder holder = InfoCardHolder();
   final Function(bool b, Function() refreshList) onHideChange;
 
-  InfoCard({Key? key, shown = true, required Widget contents, String title = "", required this.onHideChange}) : super(key: key){
+  InfoCard({Key? key, bool shown = true, required Widget contents, String title = "", required this.onHideChange}) : super(key: key){
     holder.shown = shown;
     holder.contents = contents;
     holder.title = title;

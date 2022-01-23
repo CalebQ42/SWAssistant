@@ -109,7 +109,7 @@ class MinionWoundState extends State<MinionWound>{
             }
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
-              if(minion.showCard[0] && widget.numHolder.reloadFunction != null){
+              if(minion.showCard[AppLocalizations.of(context)!.basicInfo] == true && widget.numHolder.reloadFunction != null){
                 widget.numHolder.reloadFunction!();
               }
             }
