@@ -18,7 +18,7 @@ class Driver{
       gsi ??= GoogleSignIn(scopes: [DriveApi.driveAppdataScope]);
       if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
         await gsi!.signInSilently();
-        if(gsi!.currentUser == null) gsi!.signIn();
+        if(gsi!.currentUser == null) await gsi!.signIn();
       }
       if(gsi!.currentUser == null) return false;
       api = DriveApi((await gsi!.authenticatedClient())!);
