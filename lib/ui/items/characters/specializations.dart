@@ -3,12 +3,21 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/dialogs/character/specialization_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Specializations extends StatelessWidget{
+class Specializations extends StatefulWidget{
 
-  final bool editing;
-  final Function() refresh;
+  const Specializations({Key? key}) : super(key: key);
 
-  const Specializations({required this.editing, required this.refresh, Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => _SpecializationsState();
+
+}
+
+class _SpecializationsState extends State<Specializations>
+  // with StatefulCard
+  {
+
+  bool edit = false;
+  set editing(bool b) => editing = b;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +34,7 @@ class Specializations extends StatelessWidget{
                 child: Text(character.specializations[index])
               ),
               AnimatedSwitcher(
-                child: editing ? ButtonBar(
+                child: edit ? ButtonBar(
                   buttonPadding: EdgeInsets.zero,
                   children: [
                     IconButton(
@@ -34,8 +43,7 @@ class Specializations extends StatelessWidget{
                       constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                       onPressed: (){
                         var temp = character.specializations[index];
-                        character.specializations.removeAt(index);
-                        refresh();
+                        setState(() => character.specializations.removeAt(index));
                         character.save(context: context);
                         ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -44,8 +52,7 @@ class Specializations extends StatelessWidget{
                             action: SnackBarAction(
                               label: AppLocalizations.of(context)!.undo,
                               onPressed: (){
-                                character.specializations.insert(index,temp);
-                                refresh();
+                                setState(() => character.specializations.insert(index,temp));
                                 character.save(context: context);
                               },
                             ),
@@ -60,8 +67,7 @@ class Specializations extends StatelessWidget{
                       onPressed: () =>
                         SpecializationEditDialog(
                           onClose: (specialization){
-                            character.specializations[index] = specialization;
-                            refresh();
+                            setState(() => character.specializations[index] = specialization);
                             character.save(context: context);
                           },
                           specialization: character.specializations[index]
@@ -72,7 +78,7 @@ class Specializations extends StatelessWidget{
                 duration: const Duration(milliseconds: 250),
                 transitionBuilder: (child, anim){
                   var offset = const Offset(1,0);
-                  if((!editing && child is ButtonBar) || (editing && child is Container)){
+                  if((!edit && child is ButtonBar) || (edit && child is Container)){
                     offset = const Offset(-1,0);
                   }
                   return ClipRect(
@@ -95,14 +101,13 @@ class Specializations extends StatelessWidget{
         )..add(
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>
                   SpecializationEditDialog(
                     onClose: (specialization){
-                      character.specializations.add(specialization);
-                      refresh();
+                      setState(() => character.specializations.add(specialization));
                       character.save(context: context);
                     },
                     specialization: ""

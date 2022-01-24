@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/obligation.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/dialogs/character/obli_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
-class Obligations extends StatelessWidget{
+//TODO: Convert to EditContent compatible. VS Code is having a stroke.
 
-  final Function() refresh;
-  final bool editing;
+class Obligations extends StatefulWidget{
 
-  const Obligations({required this.refresh, required this.editing, Key? key}) : super(key: key);
+  const Obligations({Key? key}) : super(key: key);
 
+}
+
+class _ObligationsState extends State<Obligations> with StatefulCard {
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);

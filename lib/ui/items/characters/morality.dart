@@ -6,6 +6,8 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+//TODO: Convert to EditContent compatible. VS Code is having a stroke.
+
 class Morality extends StatefulWidget{
 
   const Morality({Key? key}) : super(key: key);
@@ -14,9 +16,9 @@ class Morality extends StatefulWidget{
   State<StatefulWidget> createState() => MoralityState();
 }
 
-class MoralityState extends State<Morality> with StatefulCard{
+class MoralityState extends State<Morality> with StatefulCard {
 
-  bool editing = false;
+  bool edit = false;
 
   set editing(bool b) => editing = b;
 

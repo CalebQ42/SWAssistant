@@ -164,6 +164,7 @@ class _EditContentState extends State<EditContent>{
   void initState() {
     super.initState();
     editing = widget.defaultEdit != null ? widget.defaultEdit!() : false;
+    if(widget.contentKey != null) widget.contentKey!.currentState?.editing = editing;
   }
 
   @override
