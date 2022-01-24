@@ -384,7 +384,7 @@ class EditableCard extends StatelessWidget{
               children: [
                 Hero(
                   transitionOnUserGestures: true,
-                  tag: Editable.of(context).uid,
+                  tag: onTap != null ? UniqueKey() : Editable.of(context).uid,
                   child: Text(
                     Editable.of(context).name,
                     style: Theme.of(context).textTheme.headlineSmall

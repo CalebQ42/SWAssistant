@@ -37,6 +37,7 @@ class GMMode extends StatelessWidget{
         return Future.value(false);
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
           child: _GMModeBar(message),
           preferredSize: Size.fromHeight(Theme.of(context).appBarTheme.toolbarHeight ?? 55),
@@ -66,7 +67,6 @@ class GMMode extends StatelessWidget{
               )
             ),
             Expanded(
-              key: ValueKey(remain),
               child: _GMModeEditor(message, remain)
             )
           ],
@@ -280,7 +280,7 @@ class _GMModeState extends State<_GMModeEditor>{
         )
       ) : EditingEditable(
         curEdit!,
-        key: Key(curEdit!.uid.toString() + curEdit!.fileExtension),
+        key: Key(curEdit!.uid),
         contained: true,
         w: widget.width,
       )
