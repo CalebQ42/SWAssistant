@@ -4,12 +4,21 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/dialogs/creature/skill_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/editable_common.dart';
 
-class Skills extends StatelessWidget{
-  final bool editing;
-  final Function() refresh;
+class Skills extends StatefulWidget{
 
-  const Skills({required this.editing, required this.refresh, Key? key}) : super(key: key);
+  const Skills({Key? key}) : super(key: key);
+
+  @override
+  State createState() => SkillsState();
+}
+
+class SkillsState extends State<Skills> with StatefulCard {
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   @override
   Widget build(BuildContext context){
@@ -30,11 +39,11 @@ class Skills extends StatelessWidget{
               flex: 7
             ),
             AnimatedSwitcher(
-              child: !editing && creature is Character ? Padding(
+              child: !edit && creature is Character ? Padding(
                 child:Text(creature.skills[index].value.toString()),
                 padding: const EdgeInsets.all(12)
               )
-              : !editing ? Container(height: 40,) : ButtonBar(
+              : !edit ? Container(height: 40,) : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   IconButton(
@@ -43,8 +52,7 @@ class Skills extends StatelessWidget{
                     icon: const Icon(Icons.delete_forever),
                     onPressed: (){
                       var temp = Skill.from(creature.skills[index]);
-                      creature.skills.removeAt(index);
-                      refresh();
+                      setState(() => creature.skills.removeAt(index));
                       creature.save(context: context);
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -53,8 +61,7 @@ class Skills extends StatelessWidget{
                           action: SnackBarAction(
                             label: AppLocalizations.of(context)!.undo,
                             onPressed: (){
-                              creature.skills.insert(index, temp);
-                              refresh();
+                              setState(() => creature.skills.insert(index, temp));
                               creature.save(context: context);
                             }
                           ),
@@ -69,8 +76,7 @@ class Skills extends StatelessWidget{
                       SkillEditDialog(
                         creature: creature,
                         onClose: (skill){
-                          creature.skills[index] = skill;
-                          refresh();
+                          setState(() => creature.skills[index] = skill);
                           creature.save(context: context);
                         },
                         sk: creature.skills[index]
@@ -81,7 +87,7 @@ class Skills extends StatelessWidget{
               duration: const Duration(milliseconds: 250),
               transitionBuilder: (child, anim){
                 var offset = const Offset(1,0);
-                if((!editing && child is ButtonBar) || (editing && child is Padding)){
+                if((!edit && child is ButtonBar) || (edit && child is Padding)){
                   offset = const Offset(-1,0);
                 }
                 return ClipRect(
@@ -112,15 +118,14 @@ class Skills extends StatelessWidget{
           ),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>
                   SkillEditDialog(
                     creature: creature,
                     onClose: (skill){
-                      creature.skills.add(skill);
-                      refresh();
+                      setState(() => creature.skills.add(skill));
                       creature.save(context: context);
                     },
                   ).show(context)

@@ -5,9 +5,8 @@ import 'package:swassistant/ui/editable_common.dart';
 class Description extends StatelessWidget{
 
   final bool editing;
-  final EditableContentState state;
 
-  const Description({required this.editing, required this.state, Key? key}) : super(key: key);
+  const Description({required this.editing, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

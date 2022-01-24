@@ -9,9 +9,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class InfoCard extends StatefulWidget{
 
   final InfoCardHolder holder = InfoCardHolder();
-  final Function(bool b, Function() refreshList) onHideChange;
+  // final void Function(bool b, Function() refreshList) onHideChange;
 
-  InfoCard({Key? key, bool shown = true, required Widget contents, String title = "", required this.onHideChange}) : super(key: key){
+  InfoCard({Key? key, bool shown = true, required Widget contents, String title = ""}) : super(key: key){
     holder.shown = shown;
     holder.contents = contents;
     holder.title = title;
@@ -39,7 +39,6 @@ class _InfoCardState extends State<InfoCard>{
       children: [widget.holder.contents],
       onExpansionChanged: (b){
         setState((){
-          widget.onHideChange(b, () => setState((){}));
           widget.holder.shown = b;
         });
       },

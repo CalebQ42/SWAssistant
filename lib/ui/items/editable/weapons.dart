@@ -9,12 +9,21 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/weapon_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/editable_common.dart';
 
-class Weapons extends StatelessWidget{
-  final bool editing;
-  final Function() refresh;
+class Weapons extends StatefulWidget{
 
-  const Weapons({Key? key, required this.editing, required this.refresh}) : super(key: key);
+  const Weapons({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => WeaponsState();
+}
+
+class WeaponsState extends State<Weapons> with StatefulCard{
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +155,7 @@ class Weapons extends StatelessWidget{
             ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
-              child: !editing ? Container(height: 24,)
+              child: !edit ? Container(height: 24,)
               : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
                 children: [
@@ -155,8 +164,7 @@ class Weapons extends StatelessWidget{
                     icon: const Icon(Icons.delete_forever),
                     onPressed: (){
                       var temp = Weapon.from(editable.weapons[i]);
-                      editable.weapons.removeAt(i);
-                      refresh();
+                      setState(() => editable.weapons.removeAt(i));
                       editable.save(context: context);
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -165,8 +173,7 @@ class Weapons extends StatelessWidget{
                           action: SnackBarAction(
                             label: AppLocalizations.of(context)!.undo,
                             onPressed: (){
-                              editable.weapons.insert(i, temp);
-                              refresh();
+                              setState(() => editable.weapons.insert(i, temp));
                               editable.save(context: context);
                             },
                           ),
@@ -181,8 +188,7 @@ class Weapons extends StatelessWidget{
                       WeaponEditDialog(
                         editable: editable,
                         onClose: (weapon){
-                          editable.weapons[i] = weapon;
-                          refresh();
+                          setState(() => editable.weapons[i] = weapon);
                           editable.save(context: context);
                         },
                         weap: editable.weapons[i]
@@ -192,7 +198,7 @@ class Weapons extends StatelessWidget{
               ),
               transitionBuilder: (child, anim){
                 var offset = const Offset(1,0);
-                if((!editing && child is ButtonBar) || (editing && child is Container)){
+                if((!edit && child is ButtonBar) || (edit && child is Container)){
                   offset = const Offset(-1,0);
                 }
                 return ClipRect(
@@ -228,15 +234,14 @@ class Weapons extends StatelessWidget{
                 axisAlignment: -1.0,
               );
             },
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>
                   WeaponEditDialog(
                     editable: editable,
                     onClose: (weapon){
-                      editable.weapons.add(weapon);
-                      refresh();
+                      setState(() => editable.weapons.add(weapon));
                       editable.save(context: context);
                     }
                   ).show(context),

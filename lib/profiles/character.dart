@@ -226,101 +226,103 @@ class Character extends Editable with Creature{
     "encumbrance capacity": 0,
   };
 
-  var invHold = EditableContentStatefulHolder();
-  var morHold = EditableContentStatefulHolder();
+  var invKey = GlobalKey<InventoryState>();
+  var morKey = GlobalKey<MoralityState>();
+  var woundStrainKey = GlobalKey<WoundStrainState>();
+  var skillKey = GlobalKey<SkillsState>();
+  var weaponsKey = GlobalKey<WeaponsState>();
+  var injKey = GlobalKey<CritState>();
+  var specKey = GlobalKey<SpecializationsState>();
 
   @override
-  List<EditableContent> cardContents(BuildContext context) => 
-    <EditableContent>[
-      EditableContent(
+  List<EditContent> cardContents(BuildContext context) => 
+    <EditContent>[
+      EditContent(
         key: const Key("info"),
-        builder: (b, refresh, state) =>
-          CharacterInfo(editing: b, state: state)
+        contentBuilder: (b) => CharacterInfo(editing: b)
       ),
-      EditableContent(
+      EditContent(
         key: const Key("wound"),
-        builder: (b, refresh, state) =>
-          WoundStrain(editing: b, state: state),
-        defaultEditingState: () => soak == 0 && woundThresh == 0 && strainThresh == 0
+        content: WoundStrain(key: woundStrainKey),
+        contentKey: woundStrainKey,
+        defaultEdit: () => soak == 0 && woundThresh == 0 && strainThresh == 0
       ),
-      EditableContent(
+      EditContent(
         key: const Key("characteristics"),
-        builder: (b, refresh, state) =>
-          Characteristics(editing: b, state: state),
-        defaultEditingState: () => charVals.every((element) => element == 0)
+        contentBuilder: (b) => Characteristics(editing: b),
+        defaultEdit: () => charVals.every((element) => element == 0)
       ),
-      EditableContent(
+      EditContent(
         key: const Key("skills"),
-        builder: (b, refresh, state) =>
-          Skills(editing:b, refresh: refresh),
-        defaultEditingState: () => skills.isEmpty
+        content: Skills(key: skillKey),
+        contentKey: skillKey,
+        defaultEdit: () => skills.isEmpty
       ),
-      EditableContent(
+      EditContent(
         key: const Key("defense"),
-        builder: (b, refresh, state) =>
-          Defense(editing: b, state: state)
+        contentBuilder: (b) => Defense(editing: b)
       ),
-      EditableContent(
+      EditContent(
         key: const Key("weapons"),
-        builder: (b, refresh, state) =>
-          Weapons(editing: b, refresh: refresh),
-        defaultEditingState: () => weapons.isEmpty
+        content: Weapons(key: weaponsKey),
+        contentKey: weaponsKey,
+        defaultEdit: () => weapons.isEmpty
       ),
-      EditableContent(
+      EditContent(
         key: const Key("critInj"),
-        builder: (b, refresh, state) =>
-          CriticalInjuries(editing: b, refresh: refresh),
-        defaultEditingState: () => criticalInjuries.isEmpty
+        content: CriticalInjuries(key: injKey),
+        contentKey: injKey,
+        defaultEdit: () => criticalInjuries.isEmpty
       ),
-      EditableContent(
+      EditContent(
         key: const Key("special"),
-        builder: (b, refresh, state) =>
-          Specializations(editing: b, refresh: refresh,),
-        defaultEditingState: () => specializations.isEmpty
+        content: Specializations(key: specKey),
+        contentKey: specKey,
+        defaultEdit: () => specializations.isEmpty
       ),
-      EditableContent(
+      EditContent(
         key: const Key("tal"),
         builder: (b, refresh, state) =>
           Talents(editing: b, refresh: refresh,),
-        defaultEditingState: () => talents.isEmpty
+        defaultEdit: () => talents.isEmpty
       ),
-      if(!disableForce) EditableContent(
+      if(!disableForce) EditContent(
         key: const Key("fp"),
         builder: (b, refresh, state) =>
           ForcePowers(editing: b, refresh: refresh, state: state),
-        defaultEditingState: () => forcePowers.isEmpty && force == 0
+        defaultEdit: () => forcePowers.isEmpty && force == 0
       ),
-      EditableContent(
+      EditContent(
         key: const Key("xp"),
         builder: (b, refresh, state) =>
           XP(editing: b, refresh: refresh, state: state)
       ),
-      EditableContent(
+      EditContent(
         key: const Key("inv"),
         stateful: Inventory(holder: invHold),
-        defaultEditingState: () => inventory.isEmpty
+        defaultEdit: () => inventory.isEmpty
       ),
-      if(!disableMorality) EditableContent(
+      if(!disableMorality) EditContent(
         key: const Key("morality"),
         stateful: Morality(holder: morHold)
       ),
-      if(!disableDuty) EditableContent(
+      if(!disableDuty) EditContent(
         key: const Key("duty"),
         builder: (b, refresh, state) =>
           Duties(editing: b, refresh: refresh),
-        defaultEditingState: () => duties.isEmpty
+        defaultEdit: () => duties.isEmpty
       ),
-      if(!disableObligation) EditableContent(
+      if(!disableObligation) EditContent(
         key: const Key("obli"),
         builder: (b, refresh, state) =>
           Obligations(editing: b, refresh: refresh),
-        defaultEditingState: () => obligations.isEmpty
+        defaultEdit: () => obligations.isEmpty
       ),
-      EditableContent(
+      EditContent(
         key: const Key("desc"),
         builder: (b, refresh, state) =>
           Description(editing: b, state: state),
-        defaultEditingState: () => desc == ""
+        defaultEdit: () => desc == ""
       )
     ];
 

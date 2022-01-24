@@ -3,33 +3,26 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class VehicleDefense extends StatefulWidget implements StatefulCard{
+class VehicleDefense extends StatefulWidget{
 
-  final EditableContentStatefulHolder holder;
-
-  const VehicleDefense({Key? key, required this.holder}) : super(key: key);
+  const VehicleDefense({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _VehicleDefenseState();
 
-  @override
-  EditableContentStatefulHolder getHolder() => holder;
-
 }
 
-class _VehicleDefenseState extends State<VehicleDefense>{
+class _VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   TextEditingController? totalDefenseCont;
   TextEditingController? foreDefenseCont;
   TextEditingController? aftDefenseCont;
   TextEditingController? portDefenseCont;
   TextEditingController? starboardDefenseCont;
-
-  @override
-  void initState(){
-    super.initState();
-    widget.holder.reloadFunction = () => setState((){});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +36,7 @@ class _VehicleDefenseState extends State<VehicleDefense>{
         setState(() => vehicle.totalDefense = int.tryParse(totalDefenseCont!.text) ?? 0)
       );
     var total = EditingText(
-      editing: widget.holder.editing,
+      editing: edit,
       initialText: vehicle.totalDefense.toString(),
       controller: totalDefenseCont,
       textType: TextInputType.number,
@@ -55,7 +48,7 @@ class _VehicleDefenseState extends State<VehicleDefense>{
         setState(() => vehicle.defense[0] = int.tryParse(foreDefenseCont!.text) ?? 0)
       );
     var fore = EditingText(
-      editing: widget.holder.editing,
+      editing: edit,
       initialText: vehicle.defense[0].toString(),
       controller: foreDefenseCont,
       textType: TextInputType.number,
@@ -67,7 +60,7 @@ class _VehicleDefenseState extends State<VehicleDefense>{
         setState(() => vehicle.defense[1] = int.tryParse(portDefenseCont!.text) ?? 0)
       );
     var port = EditingText(
-      editing: widget.holder.editing,
+      editing: edit,
       initialText: vehicle.defense[1].toString(),
       controller: portDefenseCont,
       textType: TextInputType.number,
@@ -79,7 +72,7 @@ class _VehicleDefenseState extends State<VehicleDefense>{
         setState(() => vehicle.defense[2] = int.tryParse(starboardDefenseCont!.text) ?? 0)
       );
     var starboard = EditingText(
-      editing: widget.holder.editing,
+      editing: edit,
       initialText: vehicle.defense[2].toString(),
       controller: starboardDefenseCont,
       textType: TextInputType.number,
@@ -91,7 +84,7 @@ class _VehicleDefenseState extends State<VehicleDefense>{
         setState(() => vehicle.defense[3] = int.tryParse(aftDefenseCont!.text) ?? 0)
       );
     var aft = EditingText(
-      editing: widget.holder.editing,
+      editing: edit,
       initialText: vehicle.defense[3].toString(),
       controller: aftDefenseCont,
       textType: TextInputType.number,

@@ -1,32 +1,27 @@
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/items/minion/minion_info.dart';
 import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MinionWound extends StatefulWidget with StatefulCard{
+class MinionWound extends StatefulWidget{
 
-  final EditableContentStatefulHolder holder;
-  final EditableContentStatefulHolder numHolder;
+  final GlobalKey<MinInfoState> numState;
 
-  MinionWound({required this.holder, required this.numHolder, Key? key}) : super(key: key);
+  const MinionWound({required this.numState, Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MinionWoundState();
-
-  @override
-  EditableContentStatefulHolder getHolder() => holder;
 }
 
-class MinionWoundState extends State<MinionWound>{
+class MinionWoundState extends State<MinionWound> with StatefulCard{
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   TextEditingController? indWoundController;
-
-  @override
-  void initState(){
-    super.initState();
-    widget.holder.reloadFunction = () => setState((){});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +51,7 @@ class MinionWoundState extends State<MinionWound>{
               width: 50,
               height: 25,
               child: EditingText(
-                editing: widget.holder.editing,
+                editing: edit,
                 initialText: minion.soak.toString(),
                 controller: (){
                   var controller = TextEditingController(text: minion.soak.toString());
@@ -82,7 +77,7 @@ class MinionWoundState extends State<MinionWound>{
               width: 50,
               height: 25,
               child: EditingText(
-                editing: widget.holder.editing,
+                editing: edit,
                 initialText: minion.woundThreshInd.toString(),
                 controller: indWoundController,
                 textType: TextInputType.number,
@@ -109,8 +104,8 @@ class MinionWoundState extends State<MinionWound>{
             }
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
-              if(minion.showCard[AppLocalizations.of(context)!.basicInfo] == true && widget.numHolder.reloadFunction != null){
-                widget.numHolder.reloadFunction!();
+              if(minion.showCard[AppLocalizations.of(context)!.basicInfo] == true){
+                widget.numState.currentState?.setState(() {});
               }
             }
             minion.save(context: context);

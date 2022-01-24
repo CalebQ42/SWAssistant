@@ -4,13 +4,19 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class XP extends StatelessWidget{
+class XP extends StatefulWidget{
 
-  final bool editing;
-  final Function() refresh;
-  final EditableContentState state;
+  const XP({Key? key}) : super(key: key);
 
-  const XP({required this.editing, required this.refresh, required this.state, Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => XPState();
+}
+
+class XPState extends State<XP> with StatefulCard {
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   @override
   Widget build(BuildContext context){
@@ -23,7 +29,7 @@ class XP extends StatelessWidget{
           children: [
             Expanded(
               child: EditingText(
-                editing: editing,
+                editing: edit,
                 initialText: character.xpCur.toString(),
                 controller: (){
                   var cont = TextEditingController(text: character.xpCur.toString());
@@ -40,7 +46,7 @@ class XP extends StatelessWidget{
             ),
             Expanded(
               child: EditingText(
-                editing: editing,
+                editing: edit,
                 initialText: character.xpTot.toString(),
                 controller: (){
                   var cont = TextEditingController(text: character.xpTot.toString());
@@ -76,7 +82,7 @@ class XP extends StatelessWidget{
                       character.xpCur += adding;
                     }
                     xpAddController.text = "";
-                    refresh();
+                    setState(() {});
                   }
                 },
               ),
@@ -91,7 +97,7 @@ class XP extends StatelessWidget{
                     character.xpCur += adding;
                   }
                   xpAddController.text = "";
-                  refresh();
+                  setState(() {});
                 }
               },
               icon: const Icon(Icons.add),

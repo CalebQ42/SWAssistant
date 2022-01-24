@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/dialogs/character/specialization_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/editable_common.dart';
 
 class Specializations extends StatefulWidget{
 
   const Specializations({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SpecializationsState();
+  State<StatefulWidget> createState() => SpecializationsState();
 
 }
 
-class _SpecializationsState extends State<Specializations>
-  // with StatefulCard
-  {
+class SpecializationsState extends State<Specializations> with StatefulCard {
 
   bool edit = false;
-  set editing(bool b) => editing = b;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   @override
   Widget build(BuildContext context) {

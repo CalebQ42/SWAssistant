@@ -7,12 +7,19 @@ import 'package:swassistant/ui/dialogs/character/fp_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
-class ForcePowers extends StatelessWidget{
+class ForcePowers extends StatefulWidget{
 
-  final bool editing;
-  final Function() refresh;
+  const ForcePowers({Key? key}) : super(key: key);
+  
+  @override
+  State<StatefulWidget> createState() => ForcePowerState();
+}
 
-  const ForcePowers({required this.editing, required this.refresh, Key? key}) : super(key: key);
+class ForcePowerState extends State<ForcePowers> with StatefulCard{
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class ForcePowers extends StatelessWidget{
               SizedBox(
                 width: 50,
                 child: EditingText(
-                  editing: editing,
+                  editing: edit,
                   initialText: character.force.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
@@ -78,7 +85,7 @@ class ForcePowers extends StatelessWidget{
                   child: Text(character.forcePowers[index].name),
                 ),
                 AnimatedSwitcher(
-                  child: editing ? ButtonBar(
+                  child: edit ? ButtonBar(
                     buttonPadding: EdgeInsets.zero,
                     children: [
                       IconButton(
@@ -87,8 +94,7 @@ class ForcePowers extends StatelessWidget{
                         constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
                           var temp = ForcePower.from(character.forcePowers[index]);
-                          character.forcePowers.removeAt(index);
-                          refresh();
+                          setState(() => character.forcePowers.removeAt(index));
                           character.save(context: context);
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -97,8 +103,7 @@ class ForcePowers extends StatelessWidget{
                               action: SnackBarAction(
                                 label: AppLocalizations.of(context)!.undo,
                                 onPressed: (){
-                                  character.forcePowers.insert(index, temp);
-                                  refresh();
+                                  setState(() => character.forcePowers.insert(index, temp));
                                   character.save(context: context);
                                 },
                               ),
@@ -113,8 +118,7 @@ class ForcePowers extends StatelessWidget{
                         onPressed: () =>
                           ForcePowerEditDialog(
                             onClose: (forcePower){
-                              character.forcePowers[index] = forcePower;
-                              refresh();
+                              setState(() => character.forcePowers[index] = forcePower);
                               character.save(context: context);
                             },
                             power: character.forcePowers[index],
@@ -125,7 +129,7 @@ class ForcePowers extends StatelessWidget{
                   duration: const Duration(milliseconds: 250),
                   transitionBuilder: (child, anim){
                     var offset = const Offset(1,0);
-                    if((!editing && child is ButtonBar) || (editing && child is Container)){
+                    if((!edit && child is ButtonBar) || (edit && child is Container)){
                       offset = const Offset(-1,0);
                     }
                     return ClipRect(
@@ -148,14 +152,13 @@ class ForcePowers extends StatelessWidget{
           )
         ), AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>
                   ForcePowerEditDialog(
                     onClose: (forcePower){
-                      character.forcePowers.add(forcePower);
-                      refresh();
+                      setState(() => character.forcePowers.add(forcePower));
                       character.save(context: context);
                     },
                   ).show(context)

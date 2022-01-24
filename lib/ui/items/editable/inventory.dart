@@ -10,33 +10,21 @@ import 'package:swassistant/ui/dialogs/editable/item_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
-class Inventory extends StatefulWidget with StatefulCard{
+class Inventory extends StatefulWidget {
 
-  final EditableContentStatefulHolder holder;
-
-  const Inventory({required this.holder, Key? key}) : super(key: key);
+  const Inventory({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => InventoryState();
-
-  @override
-  EditableContentStatefulHolder getHolder() => holder;
 }
-class InventoryState extends State<Inventory>{
+class InventoryState extends State<Inventory> with StatefulCard{
 
-  bool editing = false;
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   TextEditingController? creditController;
   TextEditingController? encumController;
-
-  @override
-  void initState() {
-    super.initState();
-    editing = widget.holder.editing;
-    widget.holder.reloadFunction = () => setState(() =>
-      editing = widget.holder.editing
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +101,7 @@ class InventoryState extends State<Inventory>{
                 width: 75,
                 height: 25,
                 child: EditingText(
-                  editing: editing,
+                  editing: edit,
                   initialText: editable.credits.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
@@ -133,7 +121,7 @@ class InventoryState extends State<Inventory>{
                 width: 50,
                 height: 25,
                 child: EditingText(
-                  editing: editing,
+                  editing: edit,
                   initialText: editable.encumCap.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
@@ -153,7 +141,7 @@ class InventoryState extends State<Inventory>{
                 width: 50,
                 height: 25,
                 child: EditingText(
-                  editing: editing,
+                  editing: edit,
                   initialText: editable.encumCap.toString(),
                   collapsed: true,
                   fieldAlign: TextAlign.center,
@@ -213,7 +201,7 @@ class InventoryState extends State<Inventory>{
                   child: Text(editable.inventory[index].name),
                 ),
                 AnimatedSwitcher(
-                  child: editing ? ButtonBar(
+                  child: edit ? ButtonBar(
                     buttonPadding: EdgeInsets.zero,
                     children: [
                       IconButton(
@@ -261,7 +249,7 @@ class InventoryState extends State<Inventory>{
                   duration: const Duration(milliseconds: 250),
                   transitionBuilder: (child, anim){
                     var offset = const Offset(1,0);
-                    if((!editing && child is ButtonBar) || (editing && child is Container)){
+                    if((!edit && child is ButtonBar) || (edit && child is Container)){
                       offset = const Offset(-1,0);
                     }
                     return ClipRect(
@@ -284,7 +272,7 @@ class InventoryState extends State<Inventory>{
           )
         ), AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>

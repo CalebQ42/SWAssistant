@@ -217,6 +217,6 @@ class _EditContentState extends State<EditContent>{
   }
 }
 
-mixin StatefulCard on State{
+mixin StatefulCard<T extends StatefulWidget> on State<T> {
   set editing(bool b);
 }

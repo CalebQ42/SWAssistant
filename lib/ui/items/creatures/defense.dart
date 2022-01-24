@@ -4,10 +4,10 @@ import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Defense extends StatelessWidget{
-  final bool editing;
-  final EditableContentState state;
 
-  const Defense({required this.editing, required this.state, Key? key}) : super(key: key);
+  final bool editing;
+
+  const Defense({required this.editing, Key? key}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {

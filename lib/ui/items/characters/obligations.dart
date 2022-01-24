@@ -4,18 +4,23 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/dialogs/character/obli_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
-
-//TODO: Convert to EditContent compatible. VS Code is having a stroke.
 
 class Obligations extends StatefulWidget{
 
   const Obligations({Key? key}) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() => _ObligationsState();
+
 }
 
 class _ObligationsState extends State<Obligations> with StatefulCard {
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
+
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
@@ -34,7 +39,7 @@ class _ObligationsState extends State<Obligations> with StatefulCard {
                   child: Text(character.obligations[index].name)
                 ),
                 AnimatedSwitcher(
-                  child: editing ? ButtonBar(
+                  child: edit ? ButtonBar(
                     buttonPadding: EdgeInsets.zero,
                     children: [
                       IconButton(
@@ -43,8 +48,7 @@ class _ObligationsState extends State<Obligations> with StatefulCard {
                         constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
                           var tmp = Obligation.from(character.obligations[index]);
-                          character.obligations.removeAt(index);
-                          refresh();
+                          setState(() => character.obligations.removeAt(index));
                           character.save(context: context);
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -52,8 +56,7 @@ class _ObligationsState extends State<Obligations> with StatefulCard {
                             action: SnackBarAction(
                               label: AppLocalizations.of(context)!.undo,
                               onPressed: (){
-                                character.obligations.insert(index, tmp);
-                                refresh();
+                                setState(() => character.obligations.insert(index, tmp));
                                 character.save(context: context);
                               },
                             ),
@@ -68,8 +71,7 @@ class _ObligationsState extends State<Obligations> with StatefulCard {
                           ObligationEditDialog(
                             obli: character.obligations[index],
                             onClose: (obligation){
-                              character.obligations[index] = obligation;
-                              refresh();
+                              setState(() => character.obligations[index] = obligation);
                               character.save(context: context);
                             },
                           ).show(context)
@@ -82,7 +84,7 @@ class _ObligationsState extends State<Obligations> with StatefulCard {
                   duration: const Duration(milliseconds: 250),
                   transitionBuilder: (child, anim){
                     var offset = const Offset(1,0);
-                    if((!editing && child is ButtonBar) || (editing && child is Padding)){
+                    if((!edit && child is ButtonBar) || (edit && child is Padding)){
                       offset = const Offset(-1,0);
                     }
                     return ClipRect(
@@ -135,14 +137,13 @@ class _ObligationsState extends State<Obligations> with StatefulCard {
                 child: child,
                 axisAlignment: -1.0
               ),
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>
                   ObligationEditDialog(
                     onClose: (obligation){
-                      character.obligations.add(obligation);
-                      refresh();
+                      setState(() => character.obligations.add(obligation));
                       character.save(context: context);
                     }
                   ).show(context),

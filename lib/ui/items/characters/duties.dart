@@ -3,14 +3,23 @@ import 'package:swassistant/items/duty.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/dialogs/character/duty_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
-class Duties extends StatelessWidget{
+class Duties extends StatefulWidget{
 
-  final Function() refresh;
-  final bool editing;
+  const Duties({Key? key}) : super(key: key);
 
-  const Duties({required this.refresh, required this.editing, Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => DutiesState();
+
+}
+
+class DutiesState extends State<Duties> with StatefulCard {
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +39,7 @@ class Duties extends StatelessWidget{
                   child: Text(character.duties[index].name)
                 ),
                 AnimatedSwitcher(
-                  child: editing ? ButtonBar(
+                  child: edit ? ButtonBar(
                     buttonPadding: EdgeInsets.zero,
                     children: [
                       IconButton(
@@ -39,8 +48,7 @@ class Duties extends StatelessWidget{
                         constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
                           var tmp = Duty.from(character.duties[index]);
-                          character.duties.removeAt(index);
-                          refresh();
+                          setState(() => character.duties.removeAt(index));
                           character.save(context: context);
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -48,8 +56,7 @@ class Duties extends StatelessWidget{
                             action: SnackBarAction(
                               label: AppLocalizations.of(context)!.undo,
                               onPressed: (){
-                                character.duties.insert(index, tmp);
-                                refresh();
+                                setState(() => character.duties.insert(index, tmp));
                                 character.save(context: context);
                               },
                             ),
@@ -64,8 +71,7 @@ class Duties extends StatelessWidget{
                           DutyEditDialog(
                             d: character.duties[index],
                             onClose: (duty){
-                              character.duties[index] = duty;
-                              refresh();
+                              setState(() => character.duties[index] = duty);
                               character.save(context: context);
                             },
                           ).show(context)
@@ -78,7 +84,7 @@ class Duties extends StatelessWidget{
                   duration: const Duration(milliseconds: 250),
                   transitionBuilder: (child, anim){
                     var offset = const Offset(1,0);
-                    if((!editing && child is ButtonBar) || (editing && child is Padding)){
+                    if((!edit && child is ButtonBar) || (edit && child is Padding)){
                       offset = const Offset(-1,0);
                     }
                     return ClipRect(
@@ -131,14 +137,13 @@ class Duties extends StatelessWidget{
                 child: child,
                 axisAlignment: -1.0
               ),
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>
                   DutyEditDialog(
                     onClose: (duty){
-                      character.duties.add(duty);
-                      refresh();
+                      setState(() => character.duties.add(duty));
                       character.save(context: context);
                     }
                   ).show(context),

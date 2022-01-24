@@ -283,7 +283,7 @@ abstract class Editable extends JsonSavable{
   void updateShortcut(){}
   void deleteShortcut(){}
 
-  List<EditableContent> cardContents(BuildContext context);
+  List<EditContent> cardContents(BuildContext context);
 
   List<String> cardNames(BuildContext context);
 

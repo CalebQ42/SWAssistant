@@ -6,8 +6,6 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-//TODO: Convert to EditContent compatible. VS Code is having a stroke.
-
 class Morality extends StatefulWidget{
 
   const Morality({Key? key}) : super(key: key);
@@ -16,25 +14,16 @@ class Morality extends StatefulWidget{
   State<StatefulWidget> createState() => MoralityState();
 }
 
-class MoralityState extends State<Morality> with StatefulCard {
+class MoralityState extends State with StatefulCard {
 
   bool edit = false;
-
-  set editing(bool b) => editing = b;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   TextEditingController? moralityController;
   TextEditingController? conflictController;
   TextEditingController? strengthController;
   TextEditingController? weaknessController;
-
-  @override
-  void initState() {
-    super.initState();
-    editing = widget.holder.editing;
-    widget.holder.reloadFunction = () => setState(() =>
-      editing = widget.holder.editing
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +61,7 @@ class MoralityState extends State<Morality> with StatefulCard {
           children: [
             Expanded(
               child: EditingText(
-                editing: editing,
+                editing: edit,
                 initialText: character.morality.toString(),
                 controller: moralityController,
                 textType: TextInputType.number,
@@ -144,7 +133,7 @@ class MoralityState extends State<Morality> with StatefulCard {
           children: [
             Expanded(
               child: EditingText(
-                editing: editing,
+                editing: edit,
                 initialText: character.emotionalStr,
                 controller: strengthController,
                 defaultSave: true,
@@ -154,7 +143,7 @@ class MoralityState extends State<Morality> with StatefulCard {
             ),
             Expanded(
               child: EditingText(
-                editing: editing,
+                editing: edit,
                 initialText: character.emotionalWeak,
                 controller: weaknessController,
                 defaultSave: true,

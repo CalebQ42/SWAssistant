@@ -43,7 +43,7 @@ class NoteCard extends StatelessWidget{
 
   final int index;
   final GlobalKey<AnimatedListState> list;
-  final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
+  final GlobalKey<_NoteCardState> contentKey = GlobalKey();
 
   NoteCard({Key? key, required this.index, required this.list}) : super(key: key);
 
@@ -54,8 +54,8 @@ class NoteCard extends StatelessWidget{
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: EditableContent(
-            editingButtons: () => [
+          child: EditContent(
+            extraEditButtons: (context) => [
               IconButton(
                 iconSize: 20.0,
                 splashRadius: 20,
@@ -63,12 +63,8 @@ class NoteCard extends StatelessWidget{
                 constraints: BoxConstraints.tight(const Size.square(30.0)),
                 icon: const Icon(Icons.format_align_left),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
-                onPressed: () {
-                  Editable.of(context).notes[index].align = 0;
-                  if(holder.reloadFunction != null) {
-                    holder.reloadFunction!();
-                  }
-                }
+                onPressed: () =>
+                  contentKey.currentState?.setState(() => Editable.of(context).notes[index].align = 0)
               ),
               IconButton(
                 iconSize: 20.0,
@@ -77,12 +73,8 @@ class NoteCard extends StatelessWidget{
                 constraints: BoxConstraints.tight(const Size.square(30.0)),
                 icon: const Icon(Icons.format_align_center),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
-                onPressed: () {
-                  Editable.of(context).notes[index].align = 1;
-                  if(holder.reloadFunction != null) {
-                    holder.reloadFunction!();
-                  }
-                }
+                onPressed: () =>
+                  contentKey.currentState?.setState(() => Editable.of(context).notes[index].align = 1)
               ),
               IconButton(
                 iconSize: 20.0,
@@ -91,15 +83,11 @@ class NoteCard extends StatelessWidget{
                 constraints: BoxConstraints.tight(const Size.square(30.0)),
                 icon: const Icon(Icons.format_align_right),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
-                onPressed: () {
-                  Editable.of(context).notes[index].align = 2;
-                  if(holder.reloadFunction != null) {
-                    holder.reloadFunction!();
-                  }
-                }
+                onPressed: () =>
+                  contentKey.currentState?.setState(() => Editable.of(context).notes[index].align = 2)
               )
             ],
-            stateful: NoteCardContents(holder: holder, index: index),
+            content: NoteCardContents(index: index),
           ),
         )
       ),
@@ -125,29 +113,23 @@ class NoteCard extends StatelessWidget{
     );
 }
 
-class NoteCardContents extends StatefulWidget with StatefulCard{
+class NoteCardContents extends StatefulWidget{
 
   final int index;
-  final EditableContentStatefulHolder holder;
 
-  NoteCardContents({Key? key, required this.index, required this.holder}) : super(key: key);
+  const NoteCardContents({Key? key, required this.index}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NoteCardState();
-
-  @override
-  EditableContentStatefulHolder getHolder() => holder;
 }
 
-class _NoteCardState extends State<NoteCardContents>{
+class _NoteCardState extends State<NoteCardContents> with StatefulCard{
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   TextEditingController? control;
-
-  @override
-  void initState(){
-    super.initState();
-    widget.holder.reloadFunction = () => setState((){});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +149,7 @@ class _NoteCardState extends State<NoteCardContents>{
         align = TextAlign.right;
     }
     return EditingText(
-      editing: widget.holder.editing,
+      editing: edit,
       initialText: Editable.of(context).notes[widget.index].note,
       defaultSave: true,
       controller: control,

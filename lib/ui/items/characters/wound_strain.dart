@@ -6,12 +6,19 @@ import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class WoundStrain extends StatelessWidget{
+class WoundStrain extends StatefulWidget{
 
-  final bool editing;
-  final EditableContentState state;
+  const WoundStrain({Key? key}) : super(key: key);
 
-  const WoundStrain({required this.editing, required this.state, Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => WoundStrainState();
+}
+
+class WoundStrainState extends State<WoundStrain> with StatefulCard {
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,7 @@ class WoundStrain extends StatelessWidget{
               width: 50,
               height: 25,
               child: EditingText(
-                editing: editing,
+                editing: edit,
                 initialText: character.soak.toString(),
                 collapsed: true,
                 fieldAlign: TextAlign.center,
@@ -67,7 +74,7 @@ class WoundStrain extends StatelessWidget{
                       )
                     );
                   },
-                  child: !editing ? Column(
+                  child: !edit ? Column(
                     children: [
                       Center(child: Text(AppLocalizations.of(context)!.wound)),
                       UpDownStat(
@@ -123,7 +130,7 @@ class WoundStrain extends StatelessWidget{
                       )
                     );
                   },
-                  child: !editing ? Column(
+                  child: !edit ? Column(
                     children: [
                       Center(child: Text(AppLocalizations.of(context)!.strain),),
                       UpDownStat(

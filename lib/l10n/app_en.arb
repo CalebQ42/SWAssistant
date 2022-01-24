@@ -344,6 +344,7 @@
     "deletedMinion": "Minion Deleted",
     "deletedVehicle": "Vehicle Deleted",
     "deletedNote": "Note Deleted",
+    "deletedInjury": "Critical Injury Deleted",
     "undo": "Undo",
 
     "fire": "Fire!",

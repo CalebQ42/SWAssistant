@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/crit_inj_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/editable_common.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
-class CriticalInjuries extends StatelessWidget{
-  final bool editing;
-  final Function() refresh;
+class CriticalInjuries extends StatefulWidget{
 
-  const CriticalInjuries({required this.editing, required this.refresh, Key? key}) : super(key: key);
+  const CriticalInjuries({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => CritState();
+}
+
+class CritState extends State<CriticalInjuries> with StatefulCard{
+
+  bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
   
   @override
   Widget build(BuildContext context) {
@@ -69,7 +79,7 @@ class CriticalInjuries extends StatelessWidget{
             ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
-              child: !editing ? Container(height: 24,)
+              child: !edit ? Container(height: 24,)
               : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
                 children: [
@@ -77,9 +87,22 @@ class CriticalInjuries extends StatelessWidget{
                     constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: const Icon(Icons.delete_forever),
                     onPressed: (){
-                      editable.criticalInjuries.removeAt(i);
-                      refresh();
+                      var temp = CriticalInjury.from(editable.criticalInjuries[i]);
+                      setState(() => editable.criticalInjuries.removeAt(i));
                       editable.save(context: context);
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!.deletedInjury),
+                          action: SnackBarAction(
+                            label: AppLocalizations.of(context)!.undo,
+                            onPressed: (){
+                              setState(() => editable.criticalInjuries.insert(i, temp));
+                              editable.save(context: context);
+                            }
+                          ),
+                        )
+                      );
                     }
                   ),
                   IconButton(
@@ -88,8 +111,7 @@ class CriticalInjuries extends StatelessWidget{
                     onPressed: () =>
                       CriticalInjuryEditDialog(
                         onClose: (criticalinjury){
-                          editable.criticalInjuries[i] = criticalinjury;
-                          refresh();
+                          setState(() => editable.criticalInjuries[i] = criticalinjury);
                           editable.save(context: context);
                         },
                         inj: editable.criticalInjuries[i]
@@ -99,7 +121,7 @@ class CriticalInjuries extends StatelessWidget{
               ),
               transitionBuilder: (child, anim){
                 var offset = const Offset(1,0);
-                if((!editing && child is ButtonBar) || (editing && child is Container)){
+                if((!edit && child is ButtonBar) || (edit && child is Container)){
                   offset = const Offset(-1,0);
                 }
                 return ClipRect(
@@ -135,14 +157,13 @@ class CriticalInjuries extends StatelessWidget{
                 axisAlignment: -1.0,
               );
             },
-            child: editing ? Center(
+            child: edit ? Center(
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () =>
                   CriticalInjuryEditDialog(
                     onClose: (criticalinjury){
-                      editable.criticalInjuries.add(criticalinjury);
-                      refresh();
+                      setState(() => editable.criticalInjuries.add(criticalinjury));
                       editable.save(context: context);
                     }
                   ).show(context)
