@@ -53,7 +53,9 @@ class _EditingEditableState extends State<EditingEditable>{
       showSelectedLabels: true,
     );
     var main = PageView(
-      physics: const PageScrollPhysics(parent: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())),
+      key: Key(widget.profile.uid),
+      restorationId: widget.profile.uid,
+      physics: const BouncingScrollPhysics(),
       children: [
         EditableCards(w: widget.w),
         EditableNotes()

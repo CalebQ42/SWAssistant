@@ -27,7 +27,7 @@ class EditableCards extends StatelessWidget{
       );
     }
     return SingleChildScrollView(
-      physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
+      physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
           cards[0],

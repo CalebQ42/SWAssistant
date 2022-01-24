@@ -10,42 +10,32 @@ class EditableNotes extends StatelessWidget{
 
   EditableNotes({Key? key}) : super(key: key);
 
-  final ScrollController scroll = ScrollController();
-
   @override
   Widget build(BuildContext context) =>
-    Stack(
-      children: [
-        AnimatedList(
-          physics: const PageScrollPhysics(parent: BouncingScrollPhysics()),
-          key: listy,
-          initialItemCount: Editable.of(context).notes.length,
-          controller: scroll,
-          itemBuilder: (context, index, anim) =>
-            SlideTransition(
-              position: Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).animate(anim),
-              child: NoteCard(
-                key: ValueKey(index),
-                index: index,
-                list: listy,
-              )
-            ),
-          padding: const EdgeInsets.only(bottom: 75)
-        ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: Padding(
-            padding: const  EdgeInsets.only(bottom: 15, right: 15),
-            child: FloatingActionButton(
-              child: const Icon(Icons.note_add),
-              onPressed: (){
-                Editable.of(context).notes.add(Note());
-                listy.currentState?.insertItem(Editable.of(context).notes.length-1);
-              },
+    Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: AnimatedList(
+        physics: const BouncingScrollPhysics(),
+        key: listy,
+        initialItemCount: Editable.of(context).notes.length,
+        itemBuilder: (context, index, anim) =>
+          SlideTransition(
+            position: Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).animate(anim),
+            child: NoteCard(
+              key: ValueKey(index),
+              index: index,
+              list: listy,
             )
-          )
-        )
-      ]
+          ),
+        padding: const EdgeInsets.only(bottom: 75)
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.note_add),
+        onPressed: (){
+          Editable.of(context).notes.add(Note());
+          listy.currentState?.insertItem(Editable.of(context).notes.length-1);
+        },
+      ),
     );
 }
 
@@ -53,9 +43,9 @@ class NoteCard extends StatelessWidget{
 
   final int index;
   final GlobalKey<AnimatedListState> list;
-  final EditableContentStatefulHolder holder;
+  final EditableContentStatefulHolder holder = EditableContentStatefulHolder();
 
-  NoteCard({Key? key, required this.index, required this.list}) : holder = EditableContentStatefulHolder(), super(key: key);
+  NoteCard({Key? key, required this.index, required this.list}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

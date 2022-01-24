@@ -204,7 +204,7 @@ class EditableListState extends State<EditableList>{
         });
       }),
       child: AnimatedList(
-        physics: const ScrollPhysics(parent: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         key: listKey,
         initialItemCount: list.length,
         padding: const EdgeInsets.only(bottom: 80),

@@ -29,7 +29,7 @@ class SettingsState extends State{
       ),
       drawer: const SWDrawer(),
       body: ListView(
-        physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
+        physics: const BouncingScrollPhysics(),
         children: [
           SwitchListTile(
             value: app.getPreference(preferences.forceLight, false),
