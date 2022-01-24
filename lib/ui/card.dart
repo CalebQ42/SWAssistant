@@ -68,8 +68,8 @@ class _NameCardContentState extends State<NameCardContent>{
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
-    return EditableContent(
-      builder: (b, refresh, state) =>
+    return EditContent(
+      contentBuilder: (b) =>
         EditingText(
           heroTag: editable.uid,
           editing: b,
@@ -87,7 +87,7 @@ class _NameCardContentState extends State<NameCardContent>{
           defaultSave: true,
           textCapitalization: TextCapitalization.words,
         ),
-      defaultEditingState: () {
+      defaultEdit: () {
         switch(editable.runtimeType){
           case Character:
             return editable.name == AppLocalizations.of(context)!.newCharacter;

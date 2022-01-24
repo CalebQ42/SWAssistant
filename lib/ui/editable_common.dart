@@ -134,98 +134,80 @@ class EditingText extends StatelessWidget {
   }
 }
 
-class EditableContent extends StatefulWidget{
+class EditContent extends StatefulWidget{
 
-  final Widget Function(bool editing, Function() refresh, EditableContentState state)? builder;
-  final bool Function()? defaultEditingState;
-  final bool editButton;
-  final List<Widget> Function()? additionalButtons;
-  final List<Widget> Function()? editingButtons;
+  final GlobalKey<StatefulCard>? contentKey;
+  final Widget? content;
+  final Widget Function(bool b)? contentBuilder;
+  final bool Function()? defaultEdit;
 
-  final StatefulCard? stateful;
+  final List<Widget> Function(BuildContext, bool)? extraButtons;
+  final List<Widget> Function(BuildContext)? extraEditButtons;
 
-  const EditableContent({Key? key, this.builder, this.stateful, this.defaultEditingState, this.editButton = true, this.additionalButtons, this.editingButtons}) : super(key: key);
+  const EditContent({Key? key,
+    this.contentKey,
+    this.content,
+    this.contentBuilder,
+    this.defaultEdit,
+    this.extraButtons, 
+    this.extraEditButtons}) : super(key: key);
 
   @override
-  State<EditableContent> createState() => EditableContentState();
+  State<StatefulWidget> createState() => _EditContentState();
 }
 
-class EditableContentState extends State<EditableContent>{
-  
+class _EditContentState extends State<EditContent>{
+
   late bool editing;
 
   @override
   void initState() {
     super.initState();
-    editing = (widget.defaultEditingState == null) ? false : widget.defaultEditingState!();
-    if(widget.builder == null && widget.stateful == null) throw("Either a builder or stateful MUST be provided");
-    if(widget.stateful != null) widget.stateful!.getHolder().editing = editing;
+    editing = widget.defaultEdit != null ? widget.defaultEdit!() : false;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> addButtons;
-    if(widget.additionalButtons != null){
-      addButtons = widget.additionalButtons!();
-    }else{
-      addButtons = [];
-    }
-    var bottomButtons = List<Widget>.from(addButtons);
-    if(widget.editButton){
-      bottomButtons.add(
-        Tooltip(
-          message: AppLocalizations.of(context)!.edit,
-          child: IconButton(
-            iconSize: 20.0,
-            splashRadius: 20,
-            padding: const EdgeInsets.all(5.0),
-            constraints: BoxConstraints.tight(const Size.square(30.0)),
-            icon: const Icon(Icons.edit),
-            color: editing ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),
-            onPressed: () {
-              if(widget.stateful == null){
-                setState(() => editing = !editing);
-              }else{
-                editing = !editing;
-                widget.stateful!.getHolder().editing = editing;
-                if (widget.stateful!.getHolder().reloadFunction != null){
-                  widget.stateful!.getHolder().reloadFunction!();
-                }
-                setState(() {});
-              }
-            }
-          )
-        )
-      );
+    if((widget.contentKey == null || widget.content == null) && widget.contentBuilder == null){
+      throw("either contentKey and content needs to be provided, or contentBuilder");
     }
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        widget.builder != null ? widget.builder!(
-          editing,
-          () => setState((){}),
-          this
-        ) : widget.stateful!,
+      children: [
+        Expanded(child: widget.content ?? widget.contentBuilder!(editing)),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            if(widget.editingButtons != null) AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
+            if(widget.extraEditButtons != null) AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
               transitionBuilder: (child, anim) =>
-                ClipRect(
-                  child: SlideTransition(
-                    position: Tween(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
-                    child: child,
-                  )
+                SlideTransition(
+                  position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
+                  child: child,
                 ),
-              child: (!editing) ? Container() : ButtonBar(
-                buttonPadding: const EdgeInsets.symmetric(horizontal: 5),
-                children: widget.editingButtons!()
-              )
+              child: (editing) ? ButtonBar(
+                children: widget.extraEditButtons!(context)
+              ) : Container(),
             ),
-            if(widget.editButton || addButtons.isNotEmpty) ButtonBar(
-              buttonPadding: const EdgeInsets.symmetric(horizontal: 5),
-              children: bottomButtons
+            if(widget.extraButtons != null) ...widget.extraButtons!(context, editing),
+            Tooltip(
+              message: AppLocalizations.of(context)!.edit,
+              child: IconButton(
+                iconSize: 20.0,
+                splashRadius: 20,
+                padding: const EdgeInsets.all(5.0),
+                constraints: BoxConstraints.tight(const Size.square(30.0)),
+                icon: const Icon(Icons.edit),
+                color: editing ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),
+                onPressed: () {
+                  if(widget.contentKey != null){
+                    widget.contentKey!.currentState?.setState(() {
+                      widget.contentKey!.currentState?.editing = !editing;
+                    });
+                  }
+                  setState(() => editing = !editing);
+                }
+              )
             )
           ]
         )
@@ -234,13 +216,6 @@ class EditableContentState extends State<EditableContent>{
   }
 }
 
-class EditableContentStatefulHolder{
-  Function()? reloadFunction;
-  bool editing;
-
-  EditableContentStatefulHolder({this.reloadFunction, this.editing = false});
-}
-
-mixin StatefulCard on StatefulWidget{
-  EditableContentStatefulHolder getHolder();
+mixin StatefulCard on State{
+  set editing(bool b);
 }

@@ -7,9 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class CharacterInfo extends StatelessWidget{
 
   final bool editing;
-  final EditableContentState state;
 
-  const CharacterInfo({required this.editing, required this.state, Key? key}) : super(key: key);
+  const CharacterInfo({required this.editing, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

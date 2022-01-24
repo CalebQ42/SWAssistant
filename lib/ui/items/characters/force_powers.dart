@@ -11,9 +11,8 @@ class ForcePowers extends StatelessWidget{
 
   final bool editing;
   final Function() refresh;
-  final EditableContentState state;
 
-  const ForcePowers({required this.editing, required this.refresh, required this.state, Key? key}) : super(key: key);
+  const ForcePowers({required this.editing, required this.refresh, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

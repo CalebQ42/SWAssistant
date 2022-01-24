@@ -6,22 +6,19 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Morality extends StatefulWidget with StatefulCard{
+class Morality extends StatefulWidget{
 
-  Morality({Key? key, required this.holder}) : super(key: key);
-
-  final EditableContentStatefulHolder holder;
+  const Morality({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MoralityState();
-
-  @override
-  EditableContentStatefulHolder getHolder() => holder;
 }
 
-class MoralityState extends State<Morality>{
+class MoralityState extends State<Morality> with StatefulCard{
 
   bool editing = false;
+
+  set editing(bool b) => editing = b;
 
   TextEditingController? moralityController;
   TextEditingController? conflictController;
