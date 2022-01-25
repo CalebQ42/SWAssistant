@@ -132,43 +132,43 @@ class Vehicle extends Editable{
     "model": "",
   };
 
-  var invHold = EditableContentStatefulHolder();
-  var defHold = EditableContentStatefulHolder();
+  var defKey = GlobalKey<VehicleDefenseState>();
+  var weaponKey = GlobalKey<WeaponsState>();
+  var invKey = GlobalKey<InventoryState>();
+  var injKey = GlobalKey<CritState>();
 
   @override
-  List<EditableContent> cardContents(BuildContext context) =>
-    <EditableContent>[
-      EditableContent(
-        builder: (b, refresh, state) =>
-          VehicleInfo(editing: b, state: state)
-      ),
-      EditableContent(
-        stateful: VehicleDefense(holder: defHold)
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          VehicleDamage(editing: b, state: state)
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          Weapons(editing: b, refresh: refresh),
-        defaultEditingState: () => weapons.isEmpty,
-      ),
-      EditableContent(
-        stateful: Inventory(holder: invHold),
-        defaultEditingState: () => inventory.isEmpty,
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          CriticalInjuries(editing: b, refresh: refresh),
-        defaultEditingState: () => criticalInjuries.isEmpty,
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          Description(editing: b, state: state),
-        defaultEditingState: () => desc == "",
-      ),
-    ];
+  List<EditContent> cardContents(BuildContext context) => [
+    EditContent(
+      contentBuilder: (b) => VehicleInfo(editing: b)
+    ),
+    EditContent(
+      content: VehicleDefense(key: defKey),
+      contentKey: defKey
+    ),
+    EditContent(
+      contentBuilder: (b) => VehicleDamage(editing: b)
+    ),
+    EditContent(
+      content: Weapons(key: weaponKey),
+      contentKey: weaponKey,
+      defaultEdit: () => weapons.isEmpty,
+    ),
+    EditContent(
+      content: Inventory(key: invKey),
+      contentKey: invKey,
+      defaultEdit: () => inventory.isEmpty,
+    ),
+    EditContent(
+      content: CriticalInjuries(key: injKey),
+      contentKey: injKey,
+      defaultEdit: () => criticalInjuries.isEmpty,
+    ),
+    EditContent(
+      contentBuilder: (b) => Description(editing: b),
+      defaultEdit: () => desc == "",
+    ),
+  ];
 
   static Vehicle? of(BuildContext context){
     var ed = Editable.of(context);

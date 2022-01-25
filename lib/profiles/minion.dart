@@ -107,165 +107,163 @@ class Minion extends Editable with Creature{
     }
   };
 
-  EditableContentStatefulHolder woundHolder = EditableContentStatefulHolder();
-  EditableContentStatefulHolder numHolder = EditableContentStatefulHolder();
-  EditableContentStatefulHolder invHolder = EditableContentStatefulHolder();
+  var infoKey = GlobalKey<MinInfoState>();
+  var woundKey = GlobalKey<MinionWoundState>();
+  var skillKey = GlobalKey<SkillsState>();
+  var weaponKey = GlobalKey<WeaponsState>();
+  var talentKey = GlobalKey<TalentsState>();
+  var invKey = GlobalKey<InventoryState>();
+  var injKey = GlobalKey<CritState>();
 
   @override
-  List<EditableContent> cardContents(BuildContext context) {
-    Function()? weaponsRefresh;
-    woundCurTemp = woundCur;
-    return [
-      EditableContent(
-        stateful: MinInfo(woundHolder: woundHolder, holder: numHolder),
-        editButton: true
-      ),
-      EditableContent(
-        stateful: MinionWound(holder: woundHolder, numHolder: numHolder),
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          Characteristics(editing: b, state: state)
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          Skills(editing: b, refresh: refresh),
-        defaultEditingState: () => skills.isEmpty
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          Defense(editing: b, state: state)
-      ),
-      EditableContent(
-        builder: (b, refresh, state){
-          if (weaponsRefresh != null) weaponsRefresh = refresh;
-          return Weapons(editing: b, refresh: refresh);
-        },
-        defaultEditingState: () => weapons.isEmpty,
-        additionalButtons: () => [
-          Tooltip(
-            message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
-            child: IconButton(
-              iconSize: 20.0,
-              splashRadius: 20,
-              padding: const EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(const Size.square(30.0)),
-              icon: const Icon(Icons.restore),
-              onPressed: savedWeapons.isEmpty ? null : (){
-                var tmp = List.of(weapons);
-                weapons = List.of(savedWeapons);
-                if (weaponsRefresh != null) weaponsRefresh!();
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.weaponsRestored),
-                    action: SnackBarAction(
-                      label: AppLocalizations.of(context)!.undo,
-                      onPressed: (){
-                        weapons = tmp;
-                        if (weaponsRefresh != null) weaponsRefresh!();
-                      },
-                    ),
-                  )
-                );
-              }
-            )
-          ),
-          Tooltip(
-            message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeapons : AppLocalizations.of(context)!.overwriteWeapons,
-            child: IconButton(
-              iconSize: 20.0,
-              splashRadius: 20,
-              padding: const EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(const Size.square(30.0)),
-              icon: Icon(savedWeapons.isEmpty ? Icons.save_outlined : Icons.save),
-              onPressed: (){
-                var reload = (savedWeapons.isEmpty && weapons.isNotEmpty) || (savedWeapons.isNotEmpty && weapons.isEmpty);
-                savedWeapons = List.of(weapons);
-                if(reload && weaponsRefresh != null) weaponsRefresh!();
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.weaponsSaved),
-                  )
-                );
-              }
-            )
-          ),
-        ]
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          Talents(editing: b, refresh: refresh),
-        defaultEditingState: () => talents.isEmpty,
-      ),
-      EditableContent(
-        stateful: Inventory(holder: invHolder),
-        defaultEditingState: () => inventory.isEmpty,
-        additionalButtons: () => [
-          Tooltip(
-            message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
-            child: IconButton(
-              iconSize: 20.0,
-              splashRadius: 20,
-              padding: const EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(const Size.square(30.0)),
-              icon: Icon(savedInv.isEmpty ? Icons.restore_outlined : Icons.restore),
-              onPressed: savedInv.isEmpty ? null : (){
-                var tmp = List.of(inventory);
-                inventory = List.of(savedInv);
-                if(invHolder.reloadFunction != null) invHolder.reloadFunction!();
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.inventoryRestored),
-                    action: SnackBarAction(
-                      label: AppLocalizations.of(context)!.undo,
-                      onPressed: (){
-                        inventory = tmp;
-                        if(invHolder.reloadFunction != null) invHolder.reloadFunction!();
-                      },
-                    ),
-                  )
-                );
-              }
-            )
-          ),
-          Tooltip(
-            message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventory : AppLocalizations.of(context)!.overwriteInventory,
-            child: IconButton(
-              iconSize: 20.0,
-              splashRadius: 20,
-              padding: const EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(const Size.square(30.0)),
-              icon: Icon(savedInv.isEmpty ? Icons.save_outlined : Icons.save),
-              onPressed: (){
-                var refresh = (savedInv.isEmpty && inventory.isNotEmpty) || (savedInv.isNotEmpty && inventory.isEmpty);
-                savedInv = List.of(inventory);
-                if(refresh && invHolder.reloadFunction != null) invHolder.reloadFunction!();
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.inventorySaved),
-                  )
-                );
-              }
-            )
+  List<EditContent> cardContents(BuildContext context) => [
+    EditContent(
+      content: MinInfo(woundKey: woundKey, key: infoKey),
+      contentKey: infoKey,
+    ),
+    EditContent(
+      content: MinionWound(numKey: infoKey, key: woundKey),
+      contentKey: woundKey,
+    ),
+    EditContent(
+      contentBuilder: (b) => Characteristics(editing: b)
+    ),
+    EditContent(
+      content: Skills(key: skillKey),
+      contentKey: skillKey,
+      defaultEdit: () => skills.isEmpty
+    ),
+    EditContent(
+      contentBuilder: (b) => Defense(editing: b)
+    ),
+    EditContent(
+      content: Weapons(key: weaponKey),
+      contentKey: weaponKey,
+      defaultEdit: () => weapons.isEmpty,
+      extraButtons: (context, b) => [
+        Tooltip(
+          message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
+          child: IconButton(
+            iconSize: 20.0,
+            splashRadius: 20,
+            padding: const EdgeInsets.all(5.0),
+            constraints: BoxConstraints.tight(const Size.square(30.0)),
+            icon: const Icon(Icons.restore),
+            onPressed: savedWeapons.isEmpty ? null : (){
+              var tmp = List.of(weapons);
+              weapons = List.of(savedWeapons);
+              weaponKey.currentState?.setState((){});
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.weaponsRestored),
+                  action: SnackBarAction(
+                    label: AppLocalizations.of(context)!.undo,
+                    onPressed: (){
+                      weapons = tmp;
+                      weaponKey.currentState?.setState((){});
+                    },
+                  ),
+                )
+              );
+            }
           )
-        ],
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          CriticalInjuries(editing: b, refresh: refresh),
-        defaultEditingState: () => criticalInjuries.isEmpty
-      ),
-      EditableContent(
-        builder: (b, refresh, state) =>
-          Description(editing: b, state: state),
-        defaultEditingState: () => desc == ""
-      ),
-    ];
-  }
+        ),
+        Tooltip(
+          message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeapons : AppLocalizations.of(context)!.overwriteWeapons,
+          child: IconButton(
+            iconSize: 20.0,
+            splashRadius: 20,
+            padding: const EdgeInsets.all(5.0),
+            constraints: BoxConstraints.tight(const Size.square(30.0)),
+            icon: Icon(savedWeapons.isEmpty ? Icons.save_outlined : Icons.save),
+            onPressed: (){
+              var reload = (savedWeapons.isEmpty && weapons.isNotEmpty) || (savedWeapons.isNotEmpty && weapons.isEmpty);
+              savedWeapons = List.of(weapons);
+              if(reload) weaponKey.currentState?.setState((){});
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.weaponsSaved),
+                )
+              );
+            }
+          )
+        ),
+      ]
+    ),
+    EditContent(
+      content: Talents(key: talentKey),
+      contentKey: talentKey,
+      defaultEdit: () => talents.isEmpty,
+    ),
+    EditContent(
+      content: Inventory(key: invKey),
+      contentKey: invKey,
+      defaultEdit: () => inventory.isEmpty,
+      extraButtons: (context, b) => [
+        Tooltip(
+          message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
+          child: IconButton(
+            iconSize: 20.0,
+            splashRadius: 20,
+            padding: const EdgeInsets.all(5.0),
+            constraints: BoxConstraints.tight(const Size.square(30.0)),
+            icon: Icon(savedInv.isEmpty ? Icons.restore_outlined : Icons.restore),
+            onPressed: savedInv.isEmpty ? null : (){
+              var tmp = List.of(inventory);
+              inventory = List.of(savedInv);
+              invKey.currentState?.setState(() {});
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.inventoryRestored),
+                  action: SnackBarAction(
+                    label: AppLocalizations.of(context)!.undo,
+                    onPressed: (){
+                      inventory = tmp;
+                      invKey.currentState?.setState(() {});
+                    },
+                  ),
+                )
+              );
+            }
+          )
+        ),
+        Tooltip(
+          message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventory : AppLocalizations.of(context)!.overwriteInventory,
+          child: IconButton(
+            iconSize: 20.0,
+            splashRadius: 20,
+            padding: const EdgeInsets.all(5.0),
+            constraints: BoxConstraints.tight(const Size.square(30.0)),
+            icon: Icon(savedInv.isEmpty ? Icons.save_outlined : Icons.save),
+            onPressed: (){
+              var refresh = (savedInv.isEmpty && inventory.isNotEmpty) || (savedInv.isNotEmpty && inventory.isEmpty);
+              savedInv = List.of(inventory);
+              if(refresh) invKey.currentState?.setState(() {});
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.inventorySaved),
+                )
+              );
+            }
+          )
+        )
+      ],
+    ),
+    EditContent(
+      content: CriticalInjuries(key: injKey),
+      contentKey: injKey,
+      defaultEdit: () => criticalInjuries.isEmpty
+    ),
+    EditContent(
+      contentBuilder: (b) =>
+        Description(editing: b),
+      defaultEdit: () => desc == ""
+    ),
+  ];
 
   static Minion? of(BuildContext context){
     var ed = Editable.of(context);

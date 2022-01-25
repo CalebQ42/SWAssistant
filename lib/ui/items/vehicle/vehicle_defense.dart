@@ -8,11 +8,11 @@ class VehicleDefense extends StatefulWidget{
   const VehicleDefense({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _VehicleDefenseState();
+  State<StatefulWidget> createState() => VehicleDefenseState();
 
 }
 
-class _VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
+class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
 
   bool edit = false;
   @override

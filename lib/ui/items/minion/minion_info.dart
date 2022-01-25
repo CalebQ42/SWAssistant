@@ -8,9 +8,9 @@ import '../../editable_common.dart';
 
 class MinInfo extends StatefulWidget{
 
-  final GlobalKey<MinionWoundState> woundState;
+  final GlobalKey<MinionWoundState> woundKey;
 
-  const MinInfo({required this.woundState, Key? key}) : super(key: key);
+  const MinInfo({required this.woundKey, Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MinInfoState();
@@ -54,7 +54,7 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            widget.woundState.currentState?.setState(() {});
+            widget.woundKey.currentState?.setState(() {});
           },
           onUpPressed: (){
             minion.minionNum++;
@@ -62,7 +62,7 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            widget.woundState.currentState?.setState(() {});
+            widget.woundKey.currentState?.setState(() {});
           },
           getValue: () => minion.minionNum,
         )

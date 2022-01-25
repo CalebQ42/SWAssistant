@@ -11,11 +11,11 @@ class Obligations extends StatefulWidget{
   const Obligations({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ObligationsState();
+  State<StatefulWidget> createState() => ObligationsState();
 
 }
 
-class _ObligationsState extends State<Obligations> with StatefulCard {
+class ObligationsState extends State<Obligations> with StatefulCard {
 
   bool edit = false;
   @override

@@ -7,9 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MinionWound extends StatefulWidget{
 
-  final GlobalKey<MinInfoState> numState;
+  final GlobalKey<MinInfoState> numKey;
 
-  const MinionWound({required this.numState, Key? key}) : super(key: key);
+  const MinionWound({required this.numKey, Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MinionWoundState();
@@ -105,7 +105,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
               if(minion.showCard[AppLocalizations.of(context)!.basicInfo] == true){
-                widget.numState.currentState?.setState(() {});
+                widget.numKey.currentState?.setState(() {});
               }
             }
             minion.save(context: context);
