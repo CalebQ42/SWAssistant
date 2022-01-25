@@ -135,6 +135,15 @@ class WeaponsState extends State<Weapons> with StatefulCard{
               );
               if(skill.name != "" && skill.base == editable.weapons[i].skillBase){
                 var hold = skill.getDice(editable);
+                var accInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicAccurate);
+                var inaccInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicInaccurate);
+                //TODO: all passive characteristics
+                if(accInd != -1){
+                  hold.boost = editable.weapons[i].characteristics[accInd].value ?? 1;
+                }
+                if(inaccInd != -1){
+                  hold.setback = editable.weapons[i].characteristics[inaccInd].value ?? 1;
+                }
                 hold.weaponPack = pack;
                 hold.showDialog(context);
               }else{
@@ -169,6 +178,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                     onPressed: (){
                       var temp = Weapon.from(editable.weapons[i]);
                       setState(() => editable.weapons.removeAt(i));
+                      editable.invKey.currentState?.update(() {});
                       editable.save(context: context);
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -178,6 +188,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                             label: AppLocalizations.of(context)!.undo,
                             onPressed: (){
                               setState(() => editable.weapons.insert(i, temp));
+                                editable.invKey.currentState?.update(() {});
                               editable.save(context: context);
                             },
                           ),
@@ -192,7 +203,12 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                       WeaponEditDialog(
                         editable: editable,
                         onClose: (weapon){
-                          setState(() => editable.weapons[i] = weapon);
+                          if(editable.weapons[i].encumbrance != weapon.encumbrance){
+                            setState(() => editable.weapons[i] = weapon);
+                            editable.invKey.currentState?.update(() {});
+                          } else {
+                            setState(() => editable.weapons[i] = weapon);
+                          }
                           editable.save(context: context);
                         },
                         weap: editable.weapons[i]

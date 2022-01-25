@@ -32,6 +32,8 @@ class _EditingEditableState extends State<EditingEditable>{
   _EditingEditableState();
 
   var pager = PageController();
+  Widget? cards;
+  GlobalKey cardKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +54,14 @@ class _EditingEditableState extends State<EditingEditable>{
       elevation: 8.0,
       showSelectedLabels: true,
     );
+    cards ??= EditableCards(key: cardKey);
     var main = PageView(
       key: Key(widget.profile.uid),
       restorationId: widget.profile.uid,
       physics: const BouncingScrollPhysics(),
-      children: const [
-        EditableCards(),
-        EditableNotes()
+      children: [
+        cards!,
+        const EditableNotes()
       ],
       controller: pager,
       onPageChanged: (i){
@@ -137,14 +140,14 @@ class _EditingEditableState extends State<EditingEditable>{
           ],
           backgroundColor: Theme.of(context).primaryColor,
           popupFunctions: {
-            "disableForce": () => setState(() => (widget.profile as Character)
-                .disableForce = !(widget.profile as Character).disableForce),
-            "disableDuty": () => setState(() => (widget.profile as Character)
-                .disableDuty = !(widget.profile as Character).disableDuty),
-            "disableObligation": () => setState(() =>
-              (widget.profile as Character).disableObligation = !(widget.profile as Character).disableObligation),
-            "disableMorality": () => setState(() => (widget.profile as Character)
-                .disableMorality = !(widget.profile as Character).disableMorality),
+            "disableForce": () => setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
+                .disableForce = !(widget.profile as Character).disableForce)),
+            "disableDuty": () => setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
+                .disableDuty = !(widget.profile as Character).disableDuty)),
+            "disableObligation": () => setState(() => cardKey.currentState?.setState(() =>
+              (widget.profile as Character).disableObligation = !(widget.profile as Character).disableObligation)),
+            "disableMorality": () => setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
+                .disableMorality = !(widget.profile as Character).disableMorality)),
             "clone": () => Bottom(
               child: (context) {
                 var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(widget.profile.name));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/items/weapon.dart';
+import 'package:swassistant/items/weapon_characteristic.dart';
 import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
@@ -44,6 +45,10 @@ class DiceResults{
     if(advantage < 0){
       isAdvantaged = false;
       advantage = advantage.abs();
+    }
+    List<WeaponCharacteristic>? advChars;
+    if(weaponPack != null){
+      advChars = weaponPack.weapon.characteristics.where((element) => element.advantage != null).toList();
     }
     Bottom(
       buttons: (context) =>
@@ -95,7 +100,7 @@ class DiceResults{
                 style: Theme.of(context).textTheme.headline6,
               )
             ),
-            if(weaponPack != null && (weaponPack.weapon.critical > 0 || weaponPack.weapon.characteristics.isNotEmpty)) ...[
+            if(weaponPack != null && (weaponPack.weapon.critical > 0 || (advChars != null && advChars.isNotEmpty))) ...[
               Container(height: 15,),
               Row(
                 children: [
@@ -120,14 +125,14 @@ class DiceResults{
                   )
                 ],
               ), ...(){
-                if(weaponPack.weapon.characteristics.isEmpty){
+                if(advChars!.isEmpty){
                   return <Widget>[];
                 }
-                return List<Widget>.generate(weaponPack.weapon.characteristics.length,
+                return List<Widget>.generate(advChars.length,
                   (index){
-                    var charText = weaponPack.weapon.characteristics[index].name;
-                    if(weaponPack.weapon.characteristics[index].value != 0){
-                      charText += " " + weaponPack.weapon.characteristics[index].value.toString();
+                    var charText = advChars![index].name;
+                    if(advChars[index].value != 0){
+                      charText += " " + advChars[index].value.toString();
                     }
                     return Row(
                       children: [
@@ -136,7 +141,7 @@ class DiceResults{
                           flex: 4,
                         ),
                         Expanded(
-                          child: Center(child: Text(weaponPack.weapon.characteristics[index].advantage.toString())),
+                          child: Center(child: Text(advChars[index].advantage.toString())),
                         )
                       ],
                     );

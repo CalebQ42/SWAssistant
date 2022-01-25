@@ -133,9 +133,6 @@ class Vehicle extends Editable{
   };
 
   var defKey = GlobalKey<VehicleDefenseState>();
-  var weaponKey = GlobalKey<WeaponsState>();
-  var invKey = GlobalKey<InventoryState>();
-  var injKey = GlobalKey<CritState>();
 
   @override
   List<EditContent> cardContents(BuildContext context) => [

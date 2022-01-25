@@ -226,12 +226,9 @@ class Character extends Editable with Creature{
     "encumbrance capacity": 0,
   };
 
-  var invKey = GlobalKey<InventoryState>();
   var morKey = GlobalKey<MoralityState>();
   var woundStrainKey = GlobalKey<WoundStrainState>();
   var skillKey = GlobalKey<SkillsState>();
-  var weaponsKey = GlobalKey<WeaponsState>();
-  var injKey = GlobalKey<CritState>();
   var specKey = GlobalKey<SpecializationsState>();
   var talentKey = GlobalKey<TalentsState>();
   var fpKey = GlobalKey<ForcePowerState>();
@@ -268,8 +265,8 @@ class Character extends Editable with Creature{
     ),
     EditContent(
       key: const Key("weapons"),
-      content: Weapons(key: weaponsKey),
-      contentKey: weaponsKey,
+      content: Weapons(key: weaponKey),
+      contentKey: weaponKey,
       defaultEdit: () => weapons.isEmpty
     ),
     EditContent(

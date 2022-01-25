@@ -110,19 +110,16 @@ class Minion extends Editable with Creature{
   var infoKey = GlobalKey<MinInfoState>();
   var woundKey = GlobalKey<MinionWoundState>();
   var skillKey = GlobalKey<SkillsState>();
-  var weaponKey = GlobalKey<WeaponsState>();
   var talentKey = GlobalKey<TalentsState>();
-  var invKey = GlobalKey<InventoryState>();
-  var injKey = GlobalKey<CritState>();
 
   @override
   List<EditContent> cardContents(BuildContext context) => [
     EditContent(
-      content: MinInfo(woundKey: woundKey, key: infoKey),
+      content: MinInfo(key: infoKey),
       contentKey: infoKey,
     ),
     EditContent(
-      content: MinionWound(numKey: infoKey, key: woundKey),
+      content: MinionWound(key: woundKey),
       contentKey: woundKey,
     ),
     EditContent(

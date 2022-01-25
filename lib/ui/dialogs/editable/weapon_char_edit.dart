@@ -15,6 +15,8 @@ class WeaponCharacteristicDialog{
   late TextEditingController valueController;
   late TextEditingController advantageController;
 
+  //TODO: passive characteristics
+
   WeaponCharacteristicDialog({WeaponCharacteristic? characteristic, required this.onClose}) :
     wc = characteristic == null ? WeaponCharacteristic() : WeaponCharacteristic.from(characteristic){
     nameController = TextEditingController(text: wc.name)
@@ -22,20 +24,20 @@ class WeaponCharacteristicDialog{
           wc.name = nameController.text;
           bot.updateButtons();
         });
-    valueController = TextEditingController(text: wc.value != -1 ? wc.value.toString() : "")
+    valueController = TextEditingController(text: wc.value?.toString() ?? "")
         ..addListener(() {
-          wc.value = int.tryParse(valueController.text) ?? -1;
+          wc.value = int.tryParse(valueController.text);
           bot.updateButtons();
         });
-    advantageController = TextEditingController(text: wc.advantage != -1 ? wc.advantage.toString() : "")
+    advantageController = TextEditingController(text: wc.advantage?.toString() ?? "")
         ..addListener(() {
-          wc.advantage = int.tryParse(advantageController.text) ?? -1;
+          wc.advantage = int.tryParse(advantageController.text);
           bot.updateButtons();
         });
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          onPressed: wc.name != "" && wc.value != -1 && wc.advantage != -1 ? (){
+          onPressed: wc.name != "" ? (){
             onClose(wc);
             Navigator.of(context).pop();
           } : null,

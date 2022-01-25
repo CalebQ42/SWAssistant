@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/minion.dart';
-import 'package:swassistant/ui/items/minion/minion_wound.dart';
 import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -8,9 +7,7 @@ import '../../editable_common.dart';
 
 class MinInfo extends StatefulWidget{
 
-  final GlobalKey<MinionWoundState> woundKey;
-
-  const MinInfo({required this.woundKey, Key? key}) : super(key: key);
+  const MinInfo({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MinInfoState();
@@ -56,7 +53,7 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            widget.woundKey.currentState?.setState(() {});
+            minion.woundKey.currentState?.setState(() {});
           },
           onUpPressed: (){
             minion.minionNum++;
@@ -64,7 +61,7 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
             minion.woundCurTemp = minion.woundCur;
             minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
-            widget.woundKey.currentState?.setState(() {});
+            minion.woundKey.currentState?.setState(() {});
           },
           getValue: () => minion.minionNum,
         )

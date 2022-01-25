@@ -1,15 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/ui/editable_common.dart';
-import 'package:swassistant/ui/items/minion/minion_info.dart';
 import 'package:swassistant/ui/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MinionWound extends StatefulWidget{
 
-  final GlobalKey<MinInfoState> numKey;
-
-  const MinionWound({required this.numKey, Key? key}) : super(key: key);
+  const MinionWound({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MinionWoundState();
@@ -107,7 +104,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
             if(minion.minionNum != minNum){
               minion.minionNum = minNum;
               if(minion.showCard[AppLocalizations.of(context)!.basicInfo] == true){
-                widget.numKey.currentState?.setState(() {});
+                minion.infoKey.currentState?.setState(() {});
               }
             }
             minion.save(context: context);

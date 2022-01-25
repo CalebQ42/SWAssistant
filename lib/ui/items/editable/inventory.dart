@@ -120,7 +120,14 @@ class InventoryState extends State<Inventory> with StatefulCard{
           if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Center(child: Text(AppLocalizations.of(context)!.encumCap)),
+              Text(AppLocalizations.of(context)!.encum + ":"),
+              Container(width: 10),
+              SizedBox(
+                width: 50,
+                height: 25,
+                child: Center(child: Text(encumTot.toString()))
+              ),
+              const Text("/"),
               SizedBox(
                 width: 50,
                 height: 25,
@@ -128,7 +135,6 @@ class InventoryState extends State<Inventory> with StatefulCard{
                   editing: edit,
                   initialText: editable.encumCap.toString(),
                   collapsed: true,
-                  fieldAlign: TextAlign.center,
                   fieldInsets: const EdgeInsets.all(3),
                   controller: encumController,
                   textType: TextInputType.number,
@@ -140,7 +146,14 @@ class InventoryState extends State<Inventory> with StatefulCard{
           if(editable is Vehicle) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Center(child: Text(AppLocalizations.of(context)!.encumCap)),
+              Text(AppLocalizations.of(context)!.encum + ":"),
+              Container(width: 10),
+              SizedBox(
+                width: 50,
+                height: 25,
+                child: Center(child: Text(encumTot.toString()))
+              ),
+              const Text("/"),
               SizedBox(
                 width: 50,
                 height: 25,
@@ -148,7 +161,6 @@ class InventoryState extends State<Inventory> with StatefulCard{
                   editing: edit,
                   initialText: editable.encumCap.toString(),
                   collapsed: true,
-                  fieldAlign: TextAlign.center,
                   fieldInsets: const EdgeInsets.all(3),
                   controller: encumController,
                   textType: TextInputType.number,
@@ -202,7 +214,8 @@ class InventoryState extends State<Inventory> with StatefulCard{
             child: Row(
               children: [
                 Expanded(
-                  child: Text(editable.inventory[index].name),
+                  child: Text((editable.inventory[index].count > 1 ? editable.inventory[index].count.toString() + " " : "" )
+                    + editable.inventory[index].name),
                 ),
                 AnimatedSwitcher(
                   child: edit ? ButtonBar(

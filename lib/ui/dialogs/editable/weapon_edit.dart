@@ -253,9 +253,10 @@ class _CharacteristicsState extends State<_WeaponCharacteristics>{
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(widget.weapon.characteristics[i].name + " " + widget.weapon.characteristics[i].value.toString()),
+                      child: Text(widget.weapon.characteristics[i].name +
+                        (widget.weapon.characteristics[i].value != null ? " " + widget.weapon.characteristics[i].value.toString() : "")),
                     ),
-                    Text(widget.weapon.characteristics[i].advantage.toString())
+                    if(widget.weapon.characteristics[i].advantage != null) Text(widget.weapon.characteristics[i].advantage.toString())
                   ],
                 )
               )

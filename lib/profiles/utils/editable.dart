@@ -10,6 +10,9 @@ import 'package:swassistant/items/note.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/ui/card.dart';
 import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/items/editable/critical_injuries.dart';
+import 'package:swassistant/ui/items/editable/inventory.dart';
+import 'package:swassistant/ui/items/editable/weapons.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
 import 'package:uuid/uuid.dart';
@@ -46,6 +49,10 @@ abstract class Editable extends JsonSavable{
   bool _cloudSaving = false;
   String? driveId;
   bool _cloudDefered = false;
+  //Universal Keys
+  var invKey = GlobalKey<InventoryState>();
+  var injKey = GlobalKey<CritState>();
+  var weaponKey = GlobalKey<WeaponsState>();
 
   Editable({this.name = "", bool saveOnCreation = false, required SW app}) : uid = const Uuid().v4(){
     if(saveOnCreation){

@@ -1,12 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:swassistant/utils/json_savable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeaponCharacteristic implements JsonSavable{
 
   String name;
-  int value;
-  int advantage;
+  int? value;
+  int? advantage;
 
-  WeaponCharacteristic({this.name = "", this.value = -1, this.advantage = -1});
+  WeaponCharacteristic({this.name = "", this.value, this.advantage});
 
   WeaponCharacteristic.from(WeaponCharacteristic wc) :
       name = wc.name,
@@ -15,8 +17,8 @@ class WeaponCharacteristic implements JsonSavable{
 
   WeaponCharacteristic.fromJson(Map<String,dynamic> json) :
       name = json["name"] ?? "",
-      value = json["value"] ?? -1,
-      advantage = json["advantage"] ?? -1;
+      value = json["value"],
+      advantage = json["advantage"];
 
   @override
   Map<String,dynamic> toJson() => {
@@ -28,7 +30,17 @@ class WeaponCharacteristic implements JsonSavable{
   @override
   Map<String, dynamic> get zeroValue => {
     "name": "",
-    "value": -1,
-    "advantage": -1,
+    "value": null,
+    "advantage": null,
   };
+
+  static List<String> passive(BuildContext context) => [
+    AppLocalizations.of(context)!.characteristicAccurate,
+    AppLocalizations.of(context)!.characteristicBreach,
+    AppLocalizations.of(context)!.characteristicCumbersome,
+    AppLocalizations.of(context)!.characteristicInaccurate,
+    AppLocalizations.of(context)!.characteristicInferior,
+    AppLocalizations.of(context)!.characteristicPierce,
+    AppLocalizations.of(context)!.characteristicVicious,
+  ];
 }
