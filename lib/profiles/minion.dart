@@ -151,18 +151,15 @@ class Minion extends Editable with Creature{
             icon: const Icon(Icons.restore),
             onPressed: savedWeapons.isEmpty ? null : (){
               var tmp = List.of(weapons);
-              weapons = List.of(savedWeapons);
-              weaponKey.currentState?.setState((){});
+              weaponKey.currentState?.update(() => weapons = List.of(savedWeapons));
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(AppLocalizations.of(context)!.weaponsRestored),
                   action: SnackBarAction(
                     label: AppLocalizations.of(context)!.undo,
-                    onPressed: (){
-                      weapons = tmp;
-                      weaponKey.currentState?.setState((){});
-                    },
+                    onPressed: () =>
+                      weaponKey.currentState?.update(() => weapons = tmp),
                   ),
                 )
               );
@@ -179,8 +176,7 @@ class Minion extends Editable with Creature{
             icon: Icon(savedWeapons.isEmpty ? Icons.save_outlined : Icons.save),
             onPressed: (){
               var reload = (savedWeapons.isEmpty && weapons.isNotEmpty) || (savedWeapons.isNotEmpty && weapons.isEmpty);
-              savedWeapons = List.of(weapons);
-              if(reload) weaponKey.currentState?.setState((){});
+              if(reload) weaponKey.currentState?.update(() => savedWeapons = List.of(weapons));
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -212,18 +208,15 @@ class Minion extends Editable with Creature{
             icon: Icon(savedInv.isEmpty ? Icons.restore_outlined : Icons.restore),
             onPressed: savedInv.isEmpty ? null : (){
               var tmp = List.of(inventory);
-              inventory = List.of(savedInv);
-              invKey.currentState?.setState(() {});
+              invKey.currentState?.update(() => inventory = List.of(savedInv));
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(AppLocalizations.of(context)!.inventoryRestored),
                   action: SnackBarAction(
                     label: AppLocalizations.of(context)!.undo,
-                    onPressed: (){
-                      inventory = tmp;
-                      invKey.currentState?.setState(() {});
-                    },
+                    onPressed: () =>
+                      invKey.currentState?.update(() => inventory = tmp),
                   ),
                 )
               );
@@ -240,8 +233,7 @@ class Minion extends Editable with Creature{
             icon: Icon(savedInv.isEmpty ? Icons.save_outlined : Icons.save),
             onPressed: (){
               var refresh = (savedInv.isEmpty && inventory.isNotEmpty) || (savedInv.isNotEmpty && inventory.isEmpty);
-              savedInv = List.of(inventory);
-              if(refresh) invKey.currentState?.setState(() {});
+              if(refresh) invKey.currentState?.update(() => savedInv = List.of(inventory));
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

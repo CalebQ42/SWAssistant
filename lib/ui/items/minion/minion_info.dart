@@ -21,6 +21,8 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => false;
 
   @override
   Widget build(BuildContext context){

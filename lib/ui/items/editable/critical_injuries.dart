@@ -19,7 +19,9 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
-  
+  @override
+  bool get defaultEdit => Editable.of(context).criticalInjuries.isEmpty;
+
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);

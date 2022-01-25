@@ -18,6 +18,8 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => Character.of(context)?.specializations.isEmpty ?? false;
 
   @override
   Widget build(BuildContext context) {

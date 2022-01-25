@@ -2,18 +2,23 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/ui/screens/gm_mode.dart';
 
-class EditableCards extends StatelessWidget{
+class EditableCards extends StatefulWidget{
 
-  final double? w;
+  const EditableCards({Key? key}) : super(key: key);
 
-  const EditableCards({this.w, Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => EditableCardsState();
+}
+
+class EditableCardsState extends State<EditableCards>{
 
   @override
   Widget build(BuildContext context) {
     var cards = Editable.of(context).cards(context);
-    double width = min(w ?? MediaQuery.of(context).size.height, 350);
-    int rows = ((w ?? MediaQuery.of(context).size.width) / width).floor();
+    double width = min(GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.height, 350);
+    int rows = ((GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.width) / width).floor();
     List<List<Widget>> columns = [];
     int leftovers = (cards.length-2) % rows;
     for(var i = 1; i<=rows; i++){
@@ -45,7 +50,7 @@ class EditableCards extends StatelessWidget{
               ConstrainedBox(
                 key: ValueKey(cards.length-leftovers+i-1),
                 constraints: BoxConstraints(
-                  maxWidth: (w ?? MediaQuery.of(context).size.width)/rows
+                  maxWidth: (GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.width)/rows
                 ),
                 child: cards[cards.length-leftovers+i-1]
               )

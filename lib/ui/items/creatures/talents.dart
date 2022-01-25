@@ -19,6 +19,8 @@ class TalentsState extends State<Talents> with StatefulCard {
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => Creature.of(context)?.talents.isEmpty ?? false;
 
   @override
   Widget build(BuildContext context) {

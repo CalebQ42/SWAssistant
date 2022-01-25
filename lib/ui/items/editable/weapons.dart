@@ -24,6 +24,10 @@ class WeaponsState extends State<Weapons> with StatefulCard{
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => Editable.of(context).weapons.isEmpty;
+
+  void update(void Function() updateFunc) => setState(updateFunc);
 
   @override
   Widget build(BuildContext context) {

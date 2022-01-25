@@ -153,19 +153,12 @@ class EditContent extends StatefulWidget{
     this.extraEditButtons}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _EditContentState();
+  State<StatefulWidget> createState() => EditContentState();
 }
 
-class _EditContentState extends State<EditContent>{
+class EditContentState extends State<EditContent> {
 
-  late bool editing;
-
-  @override
-  void initState() {
-    super.initState();
-    editing = widget.defaultEdit != null ? widget.defaultEdit!() : false;
-    if(widget.contentKey != null) widget.contentKey!.currentState?.editing = editing;
-  }
+  bool edit = false;
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +166,11 @@ class _EditContentState extends State<EditContent>{
       throw("either contentKey and content needs to be provided, or contentBuilder");
     }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(child: widget.content ?? widget.contentBuilder!(editing)),
+        ClipRect(
+          child: widget.content ?? widget.contentBuilder!(edit),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
@@ -182,15 +178,17 @@ class _EditContentState extends State<EditContent>{
             if(widget.extraEditButtons != null) AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               transitionBuilder: (child, anim) =>
-                SlideTransition(
-                  position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
-                  child: child,
+                ClipRect(
+                  child: SlideTransition(
+                    position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
+                    child: child,
+                  )
                 ),
-              child: (editing) ? ButtonBar(
+              child: (edit) ? ButtonBar(
                 children: widget.extraEditButtons!(context)
               ) : Container(),
             ),
-            if(widget.extraButtons != null) ...widget.extraButtons!(context, editing),
+            if(widget.extraButtons != null) ...widget.extraButtons!(context, edit),
             Tooltip(
               message: AppLocalizations.of(context)!.edit,
               child: IconButton(
@@ -199,14 +197,14 @@ class _EditContentState extends State<EditContent>{
                 padding: const EdgeInsets.all(5.0),
                 constraints: BoxConstraints.tight(const Size.square(30.0)),
                 icon: const Icon(Icons.edit),
-                color: editing ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),
+                color: edit ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),
                 onPressed: () {
                   if(widget.contentKey != null){
                     widget.contentKey!.currentState?.setState(() {
-                      widget.contentKey!.currentState?.editing = !editing;
+                      widget.contentKey!.currentState?.editing = !edit;
                     });
                   }
-                  setState(() => editing = !editing);
+                  setState(() => edit = !edit);
                 }
               )
             )
@@ -219,4 +217,11 @@ class _EditContentState extends State<EditContent>{
 
 mixin StatefulCard<T extends StatefulWidget> on State<T> {
   set editing(bool b);
+  bool get defaultEdit;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    editing = defaultEdit;
+  }
 }

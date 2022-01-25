@@ -22,6 +22,10 @@ class InventoryState extends State<Inventory> with StatefulCard{
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => Editable.of(context).inventory.isEmpty;
+
+  void update(void Function() updateFunc) => setState(updateFunc);
 
   TextEditingController? creditController;
   TextEditingController? encumController;

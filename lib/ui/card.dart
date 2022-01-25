@@ -7,15 +7,13 @@ import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InfoCard extends StatefulWidget{
+  
+  final String title;
+  final bool shown;
+  final Widget contents;
+  final void Function(bool)? onShowChanged;
 
-  final InfoCardHolder holder = InfoCardHolder();
-  // final void Function(bool b, Function() refreshList) onHideChange;
-
-  InfoCard({Key? key, bool shown = true, required Widget contents, String title = ""}) : super(key: key){
-    holder.shown = shown;
-    holder.contents = contents;
-    holder.title = title;
-  }
+  const InfoCard({Key? key, this.shown = true, required this.contents, this.title = "", this.onShowChanged}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _InfoCardState();
@@ -23,34 +21,37 @@ class InfoCard extends StatefulWidget{
 
 class _InfoCardState extends State<InfoCard>{
 
+  late bool shown;
+
   @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
+  void initState() {
+    super.initState();
+    shown = widget.shown;
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+    ExpansionTile(
       childrenPadding: const EdgeInsets.all(10),
       title: AnimatedAlign(
         curve: Curves.easeOutBack,
-        duration: const Duration(milliseconds: 500),
-        alignment: widget.holder.shown ? Alignment.center : Alignment.centerLeft,
-        child: Text(
-          widget.holder.title,
-          style: Theme.of(context).textTheme.subtitle1,
+        duration: const Duration(milliseconds: 300),
+        alignment: shown ? Alignment.center : Alignment.centerLeft,
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 300),
+          child: Text(widget.title,),
+          style: shown ? Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).primaryColor) : Theme.of(context).textTheme.subtitle1!,
         )
       ),
-      children: [widget.holder.contents],
+      children: [widget.contents],
       onExpansionChanged: (b){
         setState((){
-          widget.holder.shown = b;
+          shown = b;
         });
+        if(widget.onShowChanged != null) widget.onShowChanged!(b);
       },
-      initiallyExpanded: widget.holder.shown,
+      initiallyExpanded: shown,
     );
-  }
-}
-
-class InfoCardHolder{
-  bool shown = false;
-  late Widget contents;
-  String title = "";
 }
 
 class NameCardContent extends StatefulWidget{

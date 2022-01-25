@@ -62,7 +62,8 @@ class _IntroOneState extends State{
                 setState((){});
               } : null
             ),
-            // TODO: SwitchListTile(
+            // TODO:Ads
+            // SwitchListTile(
             //   title: const Text(
             //     "Ads (Not currently implemented)",
             //   ),

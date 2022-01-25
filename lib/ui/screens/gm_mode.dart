@@ -14,6 +14,18 @@ import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
+class GMModeSize extends InheritedWidget{
+
+  final double width; 
+  const GMModeSize({Key? key, required Widget child, required this.width}) : super(key: key, child: child);
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
+
+  static GMModeSize? of(BuildContext context) =>
+    context.dependOnInheritedWidgetOfExactType<GMModeSize>();
+}
+
 class GMMode extends StatelessWidget{
 
   final GMModeMessager message = GMModeMessager();
@@ -66,7 +78,10 @@ class GMMode extends StatelessWidget{
               )
             ),
             Expanded(
-              child: _GMModeEditor(message, remain)
+              child: GMModeSize(
+                width: remain,
+                child: _GMModeEditor(message)
+              )
             )
           ],
         ),
@@ -244,9 +259,8 @@ class _BarState extends State<_GMModeBar>{
 class _GMModeEditor extends StatefulWidget{
 
   final GMModeMessager message;
-  final double width;
 
-  const _GMModeEditor(this.message, this.width);
+  const _GMModeEditor(this.message);
 
   @override
   State<StatefulWidget> createState() => _GMModeState();
@@ -255,6 +269,7 @@ class _GMModeEditor extends StatefulWidget{
 class _GMModeState extends State<_GMModeEditor>{
 
   Editable? curEdit;
+  GlobalKey stuff = GlobalKey();
 
   @override
   void initState(){
@@ -279,8 +294,8 @@ class _GMModeState extends State<_GMModeEditor>{
         )
       ) : EditingEditable(
         curEdit!,
+        key: stuff,
         contained: true,
-        w: widget.width,
       )
     );
 }

@@ -4,29 +4,36 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EditableNotes extends StatelessWidget{
+class EditableNotes extends StatefulWidget{
 
-  final GlobalKey<AnimatedListState> listy = GlobalKey<AnimatedListState>(); 
+  const EditableNotes({Key? key}) : super(key: key);
 
-  EditableNotes({Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => EditableNotesState();
+}
+
+class EditableNotesState extends State{
+
+  final GlobalKey<AnimatedListState> listy = GlobalKey<AnimatedListState>();
 
   @override
   Widget build(BuildContext context) =>
     Scaffold(
-      resizeToAvoidBottomInset: false,
+      primary: false,
       body: AnimatedList(
         physics: const BouncingScrollPhysics(),
         key: listy,
         initialItemCount: Editable.of(context).notes.length,
-        itemBuilder: (context, index, anim) =>
-          SlideTransition(
+        itemBuilder: (context, index, anim) {
+          return SlideTransition(
             position: Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).animate(anim),
             child: NoteCard(
               key: ValueKey(index),
               index: index,
               list: listy,
             )
-          ),
+          );
+        },
         padding: const EdgeInsets.only(bottom: 75)
       ),
       floatingActionButton: FloatingActionButton(
@@ -64,7 +71,7 @@ class NoteCard extends StatelessWidget{
                 icon: const Icon(Icons.format_align_left),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
-                  contentKey.currentState?.setState(() => Editable.of(context).notes[index].align = 0)
+                  contentKey.currentState?.update(() => Editable.of(context).notes[index].align = 0)
               ),
               IconButton(
                 iconSize: 20.0,
@@ -74,7 +81,7 @@ class NoteCard extends StatelessWidget{
                 icon: const Icon(Icons.format_align_center),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
-                  contentKey.currentState?.setState(() => Editable.of(context).notes[index].align = 1)
+                  contentKey.currentState?.update(() => Editable.of(context).notes[index].align = 1)
               ),
               IconButton(
                 iconSize: 20.0,
@@ -84,10 +91,11 @@ class NoteCard extends StatelessWidget{
                 icon: const Icon(Icons.format_align_right),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
-                  contentKey.currentState?.setState(() => Editable.of(context).notes[index].align = 2)
+                  contentKey.currentState?.update(() => Editable.of(context).notes[index].align = 2)
               )
             ],
-            content: NoteCardContents(index: index),
+            content: NoteCardContents(index: index, key: contentKey),
+            contentKey: contentKey
           ),
         )
       ),
@@ -128,6 +136,10 @@ class _NoteCardState extends State<NoteCardContents> with StatefulCard{
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => Editable.of(context).notes[widget.index].note.isEmpty;
+
+  void update(void Function() updateFunc) => setState(updateFunc);
 
   TextEditingController? control;
 

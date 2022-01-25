@@ -56,8 +56,8 @@ class _EditingEditableState extends State<EditingEditable>{
       key: Key(widget.profile.uid),
       restorationId: widget.profile.uid,
       physics: const BouncingScrollPhysics(),
-      children: [
-        EditableCards(w: widget.w),
+      children: const [
+        EditableCards(),
         EditableNotes()
       ],
       controller: pager,

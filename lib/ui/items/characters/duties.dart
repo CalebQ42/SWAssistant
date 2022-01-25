@@ -20,6 +20,8 @@ class DutiesState extends State<Duties> with StatefulCard {
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => Character.of(context)?.duties.isEmpty ?? false;
 
   @override
   Widget build(BuildContext context) {

@@ -166,6 +166,10 @@ abstract class Editable extends JsonSavable{
           shown: showCard[names[i]] ?? false,
           contents: contents[i],
           title: names[i],
+          onShowChanged: (b) {
+            showCard[names[i]] = b;
+            save(context: context);
+          }
         )
       );
     }

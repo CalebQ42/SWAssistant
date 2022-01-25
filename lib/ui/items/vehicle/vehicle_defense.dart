@@ -17,6 +17,8 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => false;
 
   TextEditingController? totalDefenseCont;
   TextEditingController? foreDefenseCont;

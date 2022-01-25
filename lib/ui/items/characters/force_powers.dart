@@ -20,6 +20,8 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => Character.of(context)?.forcePowers.isEmpty ?? false;
 
   @override
   Widget build(BuildContext context) {
