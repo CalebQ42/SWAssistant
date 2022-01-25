@@ -156,9 +156,13 @@ class EditContent extends StatefulWidget{
   State<StatefulWidget> createState() => EditContentState();
 }
 
-class EditContentState extends State<EditContent> {
+class EditContentState extends State<EditContent> with StatefulCard {
 
   bool edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => widget.defaultEdit != null ? widget.defaultEdit!() : widget.contentKey?.currentState?.defaultEdit ?? false;
 
   @override
   Widget build(BuildContext context) {

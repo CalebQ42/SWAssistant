@@ -46,18 +46,24 @@ class EditableNotesState extends State{
     );
 }
 
-class NoteCard extends StatelessWidget{
+class NoteCard extends StatefulWidget{
 
   final int index;
   final GlobalKey<AnimatedListState> list;
-  final GlobalKey<_NoteCardState> contentKey = GlobalKey();
 
-  NoteCard({Key? key, required this.index, required this.list}) : super(key: key);
+  const NoteCard({Key? key, required this.index, required this.list}) : super(key: key);
+
+  @override
+  State<NoteCard> createState() => _NCState();
+}
+
+class _NCState extends State<NoteCard> {
+  final GlobalKey<_NoteCardState> contentKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) =>
     Dismissible(
-      key: ValueKey(index.toString() + Editable.of(context).notes[index].note),
+      key: ValueKey(widget.index.toString() + Editable.of(context).notes[widget.index].note),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -71,7 +77,7 @@ class NoteCard extends StatelessWidget{
                 icon: const Icon(Icons.format_align_left),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
-                  contentKey.currentState?.update(() => Editable.of(context).notes[index].align = 0)
+                  contentKey.currentState?.update(() => Editable.of(context).notes[widget.index].align = 0)
               ),
               IconButton(
                 iconSize: 20.0,
@@ -81,7 +87,7 @@ class NoteCard extends StatelessWidget{
                 icon: const Icon(Icons.format_align_center),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
-                  contentKey.currentState?.update(() => Editable.of(context).notes[index].align = 1)
+                  contentKey.currentState?.update(() => Editable.of(context).notes[widget.index].align = 1)
               ),
               IconButton(
                 iconSize: 20.0,
@@ -91,19 +97,20 @@ class NoteCard extends StatelessWidget{
                 icon: const Icon(Icons.format_align_right),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
-                  contentKey.currentState?.update(() => Editable.of(context).notes[index].align = 2)
+                  contentKey.currentState?.update(() => Editable.of(context).notes[widget.index].align = 2)
               )
             ],
-            content: NoteCardContents(index: index, key: contentKey),
-            contentKey: contentKey
+            content: NoteCardContents(index: widget.index, key: contentKey),
+            contentKey: contentKey,
+            defaultEdit: () => Editable.of(context).notes[widget.index].note.isEmpty,
           ),
         )
       ),
       onDismissed: (direction) {
         var editable = Editable.of(context);
-        var temp = Editable.of(context).notes[index];
-        editable.notes.removeAt(index);
-        list.currentState?.removeItem(index, (cont,anim) => Container());
+        var temp = Editable.of(context).notes[widget.index];
+        editable.notes.removeAt(widget.index);
+        widget.list.currentState?.removeItem(widget.index, (cont,anim) => Container());
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -111,8 +118,8 @@ class NoteCard extends StatelessWidget{
             action: SnackBarAction(
               label: AppLocalizations.of(context)!.undo,
               onPressed: (){
-                editable.notes.insert(index, temp);
-                list.currentState?.insertItem(index);
+                editable.notes.insert(widget.index, temp);
+                widget.list.currentState?.insertItem(widget.index);
               }
             ),
           )
