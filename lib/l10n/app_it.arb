@@ -26,13 +26,13 @@
     "importNone": "Sembra che tu non abbia selezionato alcun file",
     "loadingDialog": "Caricamento...",
     "driveSyncing": "Sincronizzazione con Google Drive",
-    "syncFail": "Syncing failed",
-    "syncComplete": "Syncing Complete",
-    "driveSyncingNotice": "Google Drive is syncing",
+    "syncFail": "Sincronizzazione fallita",
+    "syncComplete": "Sincronizzazione completata.",
+    "driveSyncingNotice": "Google Drive sta sincronizzando",
     "@driveSyncingNotice": {
         "description": "Shown when the user tries to do an action while Google Drive is syncing."
     },
-    "driveDisconnectNotice": "Google Drive is disconnect",
+    "driveDisconnectNotice": "Google Drive è disconnesso",
     "driveFirstLaunch": "Syncing your profiles to Google Drive is now available. Go to Settings to enable it?",
     "gmModeTap": "Seleziona un profilo a sinistra da editare.",
     "gmModeType": "Genere...",
