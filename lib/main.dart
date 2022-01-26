@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +178,7 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) && (Platform.isAndroid || Platform.isIOS)){
       FirebaseCrashlytics.instance.setCustomKey("page", route.settings.name ?? "unknown");
     }
     routeHistory.add(route);
@@ -186,7 +187,7 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) && (Platform.isAndroid || Platform.isIOS)){
       FirebaseCrashlytics.instance.setCustomKey("page", previousRoute?.settings.name ?? "unknown");
     }
     routeHistory.removeLast();

@@ -413,13 +413,15 @@ class SW{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
     var app = SW(prefs: prefs);
-    InAppPurchase.instance.purchaseStream.listen((event) {
-      for(var e in event){
-        if (e.pendingCompletePurchase){
-          InAppPurchase.instance.completePurchase(e);
+    if(Platform.isAndroid || Platform.isIOS){
+      InAppPurchase.instance.purchaseStream.listen((event) {
+        for(var e in event){
+          if (e.pendingCompletePurchase){
+            InAppPurchase.instance.completePurchase(e);
+          }
         }
-      }
-    });
+      });
+    }
     if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode){
       app.devMode = true;
     }
@@ -465,7 +467,7 @@ class SW{
       try{
         await Firebase.initializeApp();
         firebaseAvailable = true;
-        if(getPreference(preferences.crashlytics, true) && kDebugMode == false){
+        if(getPreference(preferences.crashlytics, true) && kDebugMode == false && (Platform.isAndroid || Platform.isIOS)){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         }else{
