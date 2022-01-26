@@ -33,7 +33,7 @@
         "description": "Shown when the user tries to do an action while Google Drive is syncing."
     },
     "driveDisconnectNotice": "Google Drive è disconnesso",
-    "driveFirstLaunch": "Syncing your profiles to Google Drive is now available. Go to Settings to enable it?",
+    "driveFirstLaunch": "La Sincronizzazione dei tuoi profili su Google Drive è ora disponibile. Vai su Impostazioni per abilitarlo?",
     "gmModeTap": "Seleziona un profilo a sinistra da editare.",
     "gmModeType": "Genere...",
     "@gmModeType": {
