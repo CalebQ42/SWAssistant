@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/sw.dart';
@@ -78,6 +79,7 @@ class SettingsState extends State{
             value: app.getPreference(preferences.googleDrive, false),
             onChanged: (b) {
               if (b) {
+                print("YOOD");
                 app.initialSync(context).then((value) {
                   app.prefs.setBool(preferences.driveFirstLoad, false);
                   app.prefs.setBool(preferences.googleDrive, b);
@@ -103,7 +105,7 @@ class SettingsState extends State{
                       TextButton(
                         onPressed: (){
                           app.prefs.setBool(preferences.firebase, b);
-                          if(Platform.isIOS) {
+                          if(!kIsWeb && Platform.isIOS) {
                             exit(0);
                           } else {
                             SystemNavigator.pop();

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
@@ -54,7 +55,7 @@ class IntroZero extends StatelessWidget{
               onPressed: () async {
                 //Android 10+ prevents full access to the filesystem. If older, we can access old profiles directly.
                 //Otherwise, we need to have the user manually select the profiles.
-                if (Platform.isAndroid && ((await DeviceInfoPlugin().androidInfo).version.sdkInt ?? 29) >= 29){
+                if (!kIsWeb && Platform.isAndroid && ((await DeviceInfoPlugin().androidInfo).version.sdkInt ?? 29) >= 29){
                   Bottom(
                     buttons: (context) => [
                       TextButton(

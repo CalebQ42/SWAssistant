@@ -413,7 +413,7 @@ class SW{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
     var app = SW(prefs: prefs);
-    if(Platform.isAndroid || Platform.isIOS){
+    if(!kIsWeb){
       InAppPurchase.instance.purchaseStream.listen((event) {
         for(var e in event){
           if (e.pendingCompletePurchase){
@@ -425,12 +425,14 @@ class SW{
     if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode){
       app.devMode = true;
     }
+    if(!kIsWeb){
     var dir = await getApplicationDocumentsDirectory();
-    app.saveDir = dir.path + "/SWChars";
-    if(!Directory(app.saveDir).existsSync()){
-      Directory(app.saveDir).createSync();
+      app.saveDir = dir.path + "/SWChars";
+      if(!Directory(app.saveDir).existsSync()){
+        Directory(app.saveDir).createSync();
+      }
+      app.loadAll();
     }
-    app.loadAll();
     app.observatory = Observatory(app);
     prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
     return app;
@@ -467,7 +469,7 @@ class SW{
       try{
         await Firebase.initializeApp();
         firebaseAvailable = true;
-        if(getPreference(preferences.crashlytics, true) && kDebugMode == false && (Platform.isAndroid || Platform.isIOS)){
+        if(getPreference(preferences.crashlytics, true) && kDebugMode == false){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         }else{

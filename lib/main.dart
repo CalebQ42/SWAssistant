@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/utils/editable.dart';
@@ -15,7 +15,7 @@ import 'package:swassistant/ui/screens/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Future<void> main() async =>
+Future<void> main() async {
   runZonedGuarded<Future<void>>(() async =>
     SW.baseInit().then(
       (app) =>
@@ -27,6 +27,7 @@ Future<void> main() async =>
         ))
     ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
   );
+}
 
 class SWApp extends StatefulWidget{
 
@@ -178,7 +179,7 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) && (Platform.isAndroid || Platform.isIOS)){
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
       FirebaseCrashlytics.instance.setCustomKey("page", route.settings.name ?? "unknown");
     }
     routeHistory.add(route);
@@ -187,7 +188,7 @@ class Observatory extends NavigatorObserver{
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true) && (Platform.isAndroid || Platform.isIOS)){
+    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
       FirebaseCrashlytics.instance.setCustomKey("page", previousRoute?.settings.name ?? "unknown");
     }
     routeHistory.removeLast();

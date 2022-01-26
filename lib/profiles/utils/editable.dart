@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
@@ -196,6 +197,7 @@ abstract class Editable extends JsonSavable{
     if(!localOnly && app != null && app.getPreference(preferences.googleDrive, false)) {
       cloudSave(app);
     }
+    if(kIsWeb) return;
     if(!_saving && !_defered){
       _saving = true;
       var file = File(filename);

@@ -19,6 +19,7 @@ class Driver{
       if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
         await gsi!.signInSilently();
         if(gsi!.currentUser == null) await gsi!.signIn();
+        print("NOOOO1");
       }
       if(gsi!.currentUser == null) return false;
       api = DriveApi((await gsi!.authenticatedClient())!);
