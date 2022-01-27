@@ -1,6 +1,7 @@
 {
     "introWelcome": "Welcome!",
     "introPage0Line1": "Thank you for trying SWAssistant. Before we get started, you first have to set up some preferences.",
+    "introPage0WebNotice": "As this is the web vesion, it makes use of Google Drive to save and load. After setup you will be asked to sign into Google.",
     "introPage0Line2": "Additionally, if you used a previous version of this app, we will need to import your old profiles first.",
     "introPage0ImportButton": "Import Profiles",
     "introPage0ManualImport": "Manual Import",
