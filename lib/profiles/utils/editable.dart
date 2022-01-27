@@ -239,6 +239,7 @@ abstract class Editable extends JsonSavable{
 
   Future<void> cloudSave(SW app) async {
     if(!_cloudSaving && !_cloudDefered) {
+      _cloudSaving = true;
       if(app.driver == null || !await app.driver!.ready()){
         _cloudSaving = false;
         return;
@@ -248,10 +249,11 @@ abstract class Editable extends JsonSavable{
         _cloudSaving = false;
         return;
       }
-      var data = jsonEncode(toJson()..remove("show cards")..remove("show cards v2")).codeUnits;
+      var data = jsonEncode(toJson()).codeUnits;
       await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
       _cloudSaving = false;
-    } else if (!_cloudDefered) {
+    }
+    if (!_cloudDefered) {
       _cloudDefered = true;
       while(_cloudSaving) {
         await Future.delayed(const Duration(milliseconds: 500));
@@ -272,7 +274,7 @@ abstract class Editable extends JsonSavable{
     await for(var tmp in media.stream){
       out.addAll(tmp);
     }
-    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>)..remove("show cards")..remove("show cards v2"));
+    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>));
     if(overwriteId) driveId = id;
   }
   void delete(SW app){

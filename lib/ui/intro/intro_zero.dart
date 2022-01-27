@@ -23,11 +23,16 @@ class IntroZero extends StatelessWidget{
   Widget build(BuildContext context) =>
     IntroScreen(
       nextScreen: const IntroOne(),
-      prevScreenAction: SW.of(context).devMode ? () =>
-        SW.of(context).postInit(context).whenComplete(() {
-          SW.of(context).prefs.setBool(preferences.driveFirstLoad, true);
-          Navigator.of(context).pushNamedAndRemoveUntil("/characters", (route) => false);
-        }) : null,
+      prevScreenAction: SW.of(context).devMode ? () {      
+        var app = SW.of(context);
+        app.prefs.setBool(preferences.driveFirstLoad, true);
+        app.prefs.setBool(preferences.firstStart, false);
+        if(kIsWeb) app.prefs.setBool(preferences.googleDrive, true);
+        app.postInit(context).whenComplete(() {
+          Navigator.pushNamedAndRemoveUntil(
+            context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
+        });
+      } : null,
       defPrevScreen: false,
       prevScreenIcon: const Icon(Icons.exit_to_app),
       child: ConstrainedBox(
@@ -46,16 +51,16 @@ class IntroZero extends StatelessWidget{
             ),
             const SizedBox(height:10),
             Text(
-              AppLocalizations.of(context)!.introPage0Line2,
+              (!kIsWeb) ? AppLocalizations.of(context)!.introPage0Line2 : AppLocalizations.of(context)!.introPage0WebNotice,
               textAlign: TextAlign.justify,
             ),
-            const SizedBox(height:5),
-            ElevatedButton(
+            if(!kIsWeb && Platform.isAndroid) const SizedBox(height:5),
+            if(!kIsWeb && Platform.isAndroid) ElevatedButton(
               child: Text(AppLocalizations.of(context)!.introPage0ImportButton),
               onPressed: () async {
                 //Android 10+ prevents full access to the filesystem. If older, we can access old profiles directly.
                 //Otherwise, we need to have the user manually select the profiles.
-                if (!kIsWeb && Platform.isAndroid && ((await DeviceInfoPlugin().androidInfo).version.sdkInt ?? 29) >= 29){
+                if (Platform.isAndroid && ((await DeviceInfoPlugin().androidInfo).version.sdkInt ?? 29) >= 29){
                   Bottom(
                     buttons: (context) => [
                       TextButton(

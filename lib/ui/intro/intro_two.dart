@@ -1,5 +1,6 @@
 //Other Settings.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/intro.dart';
@@ -20,9 +21,11 @@ class _IntroTwoState extends State{
   Widget build(BuildContext context) =>
     IntroScreen(
       nextScreenAction: () {
-        SW.of(context).prefs.setBool(preferences.firstStart, false);
-        SW.of(context).postInit(context).whenComplete(() {
-          SW.of(context).prefs.setBool(preferences.driveFirstLoad, false);
+        var app = SW.of(context);
+        app.prefs.setBool(preferences.driveFirstLoad, false);
+        app.prefs.setBool(preferences.firstStart, false);
+        if(kIsWeb) app.prefs.setBool(preferences.googleDrive, true);
+        app.postInit(context).whenComplete(() {
           Navigator.pushNamedAndRemoveUntil(
             context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
         });
@@ -37,7 +40,7 @@ class _IntroTwoState extends State{
               style: Theme.of(context).textTheme.headline4
             ),
             const SizedBox(height: 10),
-            SwitchListTile(
+            if(!kIsWeb) SwitchListTile(
               title: Text(
                 AppLocalizations.of(context)!.cloudSave
               ),

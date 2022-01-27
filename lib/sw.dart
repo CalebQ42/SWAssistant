@@ -9,6 +9,7 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swassistant/firebase_options.dart';
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -426,7 +427,7 @@ class SW{
       app.devMode = true;
     }
     if(!kIsWeb){
-    var dir = await getApplicationDocumentsDirectory();
+      var dir = await getApplicationDocumentsDirectory();
       app.saveDir = dir.path + "/SWChars";
       if(!Directory(app.saveDir).existsSync()){
         Directory(app.saveDir).createSync();
@@ -457,17 +458,11 @@ class SW{
           )
         )
     );
-    if (getPreference(preferences.googleDrive, false)){
-      if(getPreference(preferences.driveFirstLoad, true)){
-        await initialSync();
-      }else{
-        await syncCloud();
-        prefs.setBool(preferences.driveFirstLoad, false);
-      }
-    }
     if(getPreference(preferences.firebase, true)){
       try{
-        await Firebase.initializeApp();
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
         firebaseAvailable = true;
         if(getPreference(preferences.crashlytics, true) && kDebugMode == false){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -477,6 +472,14 @@ class SW{
         }
       }catch (e){
         firebaseAvailable = false;
+      }
+    }
+    if (getPreference(preferences.googleDrive, false)){
+      if(getPreference(preferences.driveFirstLoad, true)){
+        await initialSync();
+      }else{
+        await syncCloud();
+        prefs.setBool(preferences.driveFirstLoad, false);
       }
     }
     Navigator.of(context).pop();

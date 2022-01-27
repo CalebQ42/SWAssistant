@@ -11,6 +11,13 @@ class Driver{
   //ready returns whether the driver is ready to use. If the driver is not ready, it tries to initialize it.
   Future<bool> ready([String? wdFolder]) async {
     if(gsi != null && gsi!.currentUser != null && api != null){
+      if(!(await gsi!.isSignedIn())){
+        if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
+          await gsi!.signInSilently();
+          if(gsi!.currentUser == null) await gsi!.signIn();
+        }
+        if(gsi!.currentUser == null || !(await gsi!.isSignedIn())) return false;
+      }
       api = DriveApi((await gsi!.authenticatedClient())!);
       return true;
     }
@@ -19,11 +26,11 @@ class Driver{
       if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
         await gsi!.signInSilently();
         if(gsi!.currentUser == null) await gsi!.signIn();
-        print("NOOOO1");
       }
       if(gsi!.currentUser == null) return false;
       api = DriveApi((await gsi!.authenticatedClient())!);
     } catch(e) {
+      print(e);
       return false;
     }
     if(wdFolder != null) await setWD(wdFolder);

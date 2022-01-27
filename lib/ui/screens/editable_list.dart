@@ -262,6 +262,33 @@ class EditableListState extends State<EditableList>{
             child: catSelector,
             preferredSize: const Size.fromHeight(50)
           ),
+          additionalActions: [
+            IconButton(
+              icon: const Icon(Icons.sync),
+              onPressed: () async {
+                if(app.syncing) return;
+                var messager = ScaffoldMessenger.of(context);
+                messager.clearSnackBars();
+                messager.showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+                  )
+                );
+                await app.syncCloud(context).then((value){
+                  messager.clearSnackBars();
+                  setState(() {});
+                  if (!value){
+                    messager.showSnackBar(
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.syncFail)
+                      )
+                    );
+                  }
+
+                });
+              },
+            )
+          ],
         ),
         drawer: const SWDrawer(),
         floatingActionButton: FloatingActionButton(

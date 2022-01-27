@@ -79,6 +79,7 @@ class GMMode extends StatelessWidget{
             ),
             Expanded(
               child: GMModeSize(
+                key: ValueKey(remain),
                 width: remain,
                 child: _GMModeEditor(message)
               )

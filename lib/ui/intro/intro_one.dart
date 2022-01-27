@@ -1,5 +1,6 @@
 //firebase options.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/intro.dart';
@@ -36,8 +37,8 @@ class _IntroOneState extends State{
               AppLocalizations.of(context)!.introPage1FirebaseExplaination,
               textAlign: TextAlign.justify,
             ),
-            const SizedBox(height: 20),
-            Text(
+            if(!kIsWeb) const SizedBox(height: 20),
+            if(!kIsWeb) Text(
               AppLocalizations.of(context)!.introPage1CrashReportingExplaination,
               textAlign: TextAlign.justify,
             ),
@@ -52,7 +53,7 @@ class _IntroOneState extends State{
                 setState((){});
               }
             ),
-            SwitchListTile(
+            if(!kIsWeb) SwitchListTile(
               title: Text(
                 AppLocalizations.of(context)!.crashReporting,
               ),

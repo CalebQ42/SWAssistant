@@ -73,13 +73,12 @@ class SettingsState extends State{
             },
             title: Text(AppLocalizations.of(context)!.colorDice),
           ),
-          const Divider(),
-          SwitchListTile(
+          if(!kIsWeb) const Divider(),
+          if(!kIsWeb) SwitchListTile(
             title: Text(AppLocalizations.of(context)!.cloudSave),
             value: app.getPreference(preferences.googleDrive, false),
             onChanged: (b) {
               if (b) {
-                print("YOOD");
                 app.initialSync(context).then((value) {
                   app.prefs.setBool(preferences.driveFirstLoad, false);
                   app.prefs.setBool(preferences.googleDrive, b);
