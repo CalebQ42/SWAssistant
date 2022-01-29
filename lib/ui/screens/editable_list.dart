@@ -42,11 +42,12 @@ class EditableListState extends State<EditableList>{
 
   @override
   Widget build(BuildContext context) {
-    Future(() async {
-      while(!mounted){
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
-      if(!SW.of(context).getPreference(preferences.googleDrive, false) && SW.of(context).getPreference(preferences.driveFirstLoad, true)){
+    if(!SW.of(context).getPreference(preferences.googleDrive, false) && SW.of(context).getPreference(preferences.driveFirstLoad, true)){
+      //TODO: update driveFirstLoad if google drive is already on.
+      Future(() async {
+        while(!mounted){
+          await Future.delayed(const Duration(milliseconds: 100));
+        }
         SW.of(context).prefs.setBool(preferences.driveFirstLoad, false);
         showDialog(
           context: context,
@@ -66,8 +67,8 @@ class EditableListState extends State<EditableList>{
             ],
           )
         );
-      }
-    });
+      });
+    }
     var app = SW.of(context);
     var oldLen = list.length;
     List<DropdownMenuItem<String>> categories;
