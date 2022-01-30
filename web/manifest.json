@@ -1,5 +1,6 @@
 {
     "name": "SWAssistant",
+    "scope": ".",
     "short_name": "SWAssistant",
     "start_url": ".",
     "display": "fullscreen",
