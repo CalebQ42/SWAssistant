@@ -19,6 +19,7 @@ class EditableCardsState extends State<EditableCards>{
     var cards = Editable.of(context).cards(context);
     double width = min(GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.height, 350);
     int rows = ((GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.width) / width).floor();
+    if(rows == 0) rows = 1;
     List<List<Widget>> columns = [];
     int leftovers = (cards.length-2) % rows;
     for(var i = 1; i<=rows; i++){
