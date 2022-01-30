@@ -477,9 +477,9 @@ class SW{
     if (getPreference(preferences.googleDrive, false)){
       if(getPreference(preferences.driveFirstLoad, true)){
         await initialSync();
+        prefs.setBool(preferences.driveFirstLoad, false);
       }else{
         await syncCloud();
-        prefs.setBool(preferences.driveFirstLoad, false);
       }
     }
     Navigator.of(context).pop();

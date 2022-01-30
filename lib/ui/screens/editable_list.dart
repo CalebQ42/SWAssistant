@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
@@ -18,7 +19,9 @@ class EditableList extends StatefulWidget{
   final int type;
   final void Function(Editable)? onTap;
 
-  const EditableList(this.type, {Key? key, this.onTap}) : super(key: key);
+  final String? uidToLoad;
+
+  const EditableList(this.type, {Key? key, this.onTap, this.uidToLoad}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => EditableListState();
@@ -31,24 +34,26 @@ class EditableListState extends State<EditableList>{
   String? cat;
   String search = "";
 
-  late GlobalKey<AnimatedListState> listKey;
+  bool first = true;
+
+  late GlobalKey<AnimatedListState> listKey =  GlobalKey();
+  late GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
     type = widget.type;
-    listKey = GlobalKey();
   }
 
   @override
   Widget build(BuildContext context) {
-    if(!SW.of(context).getPreference(preferences.googleDrive, false) && SW.of(context).getPreference(preferences.driveFirstLoad, true)){
-      //TODO: update driveFirstLoad if google drive is already on.
+    var app = SW.of(context);
+    if(!kIsWeb && !app.getPreference(preferences.googleDrive, false) && app.getPreference(preferences.driveFirstLoad, true)){
       Future(() async {
         while(!mounted){
           await Future.delayed(const Duration(milliseconds: 100));
         }
-        SW.of(context).prefs.setBool(preferences.driveFirstLoad, false);
+        app.prefs.setBool(preferences.driveFirstLoad, false);
         showDialog(
           context: context,
           builder: (c) => AlertDialog(
@@ -69,7 +74,43 @@ class EditableListState extends State<EditableList>{
         );
       });
     }
-    var app = SW.of(context);
+    if(widget.uidToLoad != null){
+      Future(() async {
+        while(!mounted) {
+          await Future.delayed(const Duration(milliseconds: 50));
+        }
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) =>
+            AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  Container(height: 10),
+                  Text(
+                    AppLocalizations.of(context)!.loadingDialog,
+                    textAlign: TextAlign.center,
+                  )
+                ]
+              )
+            )
+        );
+        await app.syncCloud(context).then((value) {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, "/edit/" + widget.uidToLoad!);
+        });
+      });
+    } else if(kIsWeb && first){
+      first = false;
+      Future(() async {
+        while(!mounted) {
+          await Future.delayed(const Duration(milliseconds: 50));
+        }
+        refreshKey.currentState?.show();
+      });
+    }
     var oldLen = list.length;
     List<DropdownMenuItem<String>> categories;
     switch(type){
@@ -190,10 +231,13 @@ class EditableListState extends State<EditableList>{
       )
     );
     var mainList = RefreshIndicator(
+      key: refreshKey,
       onRefresh: () => Future(() async {
         if(app.syncing) return;
         var messager = ScaffoldMessenger.of(context);
         await app.syncCloud(context).then((value){
+          messager.clearSnackBars();
+          setState(() {});
           if (!value){
             messager.clearSnackBars();
             messager.showSnackBar(
@@ -266,28 +310,8 @@ class EditableListState extends State<EditableList>{
           additionalActions: [
             IconButton(
               icon: const Icon(Icons.sync),
-              onPressed: () async {
-                if(app.syncing) return;
-                var messager = ScaffoldMessenger.of(context);
-                messager.clearSnackBars();
-                messager.showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
-                  )
-                );
-                await app.syncCloud(context).then((value){
-                  messager.clearSnackBars();
-                  setState(() {});
-                  if (!value){
-                    messager.showSnackBar(
-                      SnackBar(
-                        content: Text(AppLocalizations.of(context)!.syncFail)
-                      )
-                    );
-                  }
-
-                });
-              },
+              onPressed: () =>
+                refreshKey.currentState?.show(),
             )
           ],
         ),

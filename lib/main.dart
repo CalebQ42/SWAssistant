@@ -50,11 +50,12 @@ class SWAppState extends State<SWApp> {
     const inputTheme = InputDecorationTheme(
       border: OutlineInputBorder(),
     );
-    const bottomSheetTheme = BottomSheetThemeData(
-      shape: RoundedRectangleBorder(
+    var bottomSheetTheme = BottomSheetThemeData(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(15))
       ),
-      clipBehavior: Clip.antiAlias
+      clipBehavior: Clip.antiAlias,
+      constraints: BoxConstraints.loose(const Size.fromWidth(600)),
     );
     return MaterialApp(
       title: 'SWAssistant',
@@ -70,12 +71,14 @@ class SWAppState extends State<SWApp> {
           if (ed != null) {
             ed.route = PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) => EditingEditable(ed!),
-              settings: RouteSettings(name: ed.uid),
+              settings: RouteSettings(name: "/edit/" + ed.uid),
               maintainState: false,
               transitionsBuilder: (context, anim, secondary, child) =>
                 FadeTransition(opacity: anim, child: child)
             );
             return ed.route;
+          } else {
+            widy = EditableList(EditableList.character, uidToLoad: settings.name?.substring(6));
           }
         }else if(settings.name == "/gm") {
           widy = GMMode();
@@ -90,7 +93,10 @@ class SWAppState extends State<SWApp> {
         }else if(settings.name == "/minions"){
           widy = const EditableList(EditableList.minion);
         }
-        widy ??= const EditableList(EditableList.character);
+        if (widy == null){
+          settings = settings.copyWith(name: "/characters");
+          widy ??= const EditableList(EditableList.character);
+        }
         return PageRouteBuilder(
           pageBuilder: (context, anim, secondaryAnim) => widy!,
           settings: settings,
