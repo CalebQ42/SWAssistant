@@ -314,7 +314,7 @@
         "description": "Shortened form of advantage. Should be 2 or 3 characters long"
     },
     "forceDark": "Forza Lato Scuro",
-    "forceLight": "Force Light Side",
+    "forceLight": "Forza tema chiaro",
     "amoledTheme": "Tema Scuro Amoled (Pitch Black)",
     "colorDice": "Colore Lancia Dadi",
     "firebaseOnNotice": "Attivare Firebase richiede un riavvio dell'app. Continuare?",
