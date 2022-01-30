@@ -3,7 +3,7 @@ description: Character sheet and dice app for the FFG Star Wars tabletop RPG
 
 publish_to: 'none'
 
-version: 3.1.4+146
+version: 3.1.5+147
 
 environment:
   sdk: ">=2.16.0-134.1.beta <3.0.0"
@@ -42,5 +42,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/testing/
     - assets/

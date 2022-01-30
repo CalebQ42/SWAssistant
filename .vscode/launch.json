@@ -1,25 +1,14 @@
 {
     "configurations": [
         {
-            "name": "Flutter",
-            "program": "lib/main.dart",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "Flutter (Web)",
+            "name": "Test",
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart",
             "args": [
-                "-d",
-                "chrome",
-                "--web-hostname",
-                "localhost",
                 "--web-port",
                 "7357"
-            ],
-
-        }
+            ]
+        },
     ]
 }
