@@ -353,6 +353,7 @@ class SW{
   }
 
   Future<bool> initialSync([BuildContext? context]) async{
+    syncing = true;
     if(context != null){
       showDialog(
         barrierDismissible: false,
@@ -378,6 +379,7 @@ class SW{
       if(context != null) {
         Navigator.pop(context);
       }
+      syncing = false;
       return false;
     }
     var uploadWaiting = 0;
@@ -389,6 +391,7 @@ class SW{
       await Future.delayed(const Duration(milliseconds: 100));
     }
     if(context != null) Navigator.pop(context);
+    syncing = false;
     return true;
   }
   

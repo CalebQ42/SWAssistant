@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/donate.dart';
+import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/test.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -159,6 +163,7 @@ class SWDrawer extends StatelessWidget{
               }
             }
           ),
+          //TODO: Guide
           // ListTile(
           //   title: Text(AppLocalizations.of(context)!.guide),
           //   leading: Icon(Icons.book),
@@ -190,11 +195,30 @@ class SWDrawer extends StatelessWidget{
           ListTile(
             title: Text(AppLocalizations.of(context)!.donate),
             leading: const Icon(Icons.monetization_on_outlined),
-            onTap: (){
+            onTap: () async{
               Navigator.of(context).pop();
-              Bottom(
-                child: (context) => const DonateDialog(),
-              ).show(context);
+              if(kIsWeb){
+                await launch("https://github.com/sponsors/CalebQ42");
+              }else if(Platform.isAndroid || Platform.isIOS){
+                if (!await InAppPurchase.instance.isAvailable()){
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppLocalizations.of(context)!.gPlayUnavailable),
+                  ));
+                }else{
+                  InAppPurchase.instance.queryProductDetails({
+                    "donate1",
+                    "donate5",
+                    "donate10",
+                    "donate20",
+                  }).then((value) {
+                    Navigator.of(context).pop();
+                    GPlayDonateDialog(value.productDetails).show(context);
+                  });
+                }
+              }else{
+                await launch("https://github.com/sponsors/CalebQ42");
+              }
             }
           ),
           if(kDebugMode) ListTile(

@@ -20,9 +20,7 @@ Future<void> main() async {
     SW.baseInit().then(
       (app) =>
         runApp(SWWidget(
-          child: SWApp(
-            init: (app.devMode || app.getPreference(preferences.firstStart, true)) ? "/intro" : null
-          ),
+          child: const SWApp(),
           app: app
         ))
     ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
@@ -60,6 +58,15 @@ class SWAppState extends State<SWApp> {
     return MaterialApp(
       title: 'SWAssistant',
       onGenerateRoute: (settings) {
+        if(SW.of(context).getPreference(preferences.firstStart, true)){
+          return PageRouteBuilder(
+            pageBuilder: (context, anim, secondaryAnim) => const IntroZero(),
+            settings: settings.copyWith(name: "/intro"),
+            maintainState: false,
+            transitionsBuilder: (context, anim, secondary, child) =>
+              FadeTransition(opacity: anim, child: child)
+          );
+        }
         Widget? widy;
         if(settings.name?.startsWith("/edit/") == true){
           Editable? ed;
