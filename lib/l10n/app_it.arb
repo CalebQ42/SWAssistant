@@ -233,8 +233,8 @@
             }
         }
     },
-    "emoStr": "Emotional Strength:",
-    "emoWeak": "Emotional Weakness:",
+    "emoStr": "Forza Emozionale:",
+    "emoWeak": "Debolezza Emozionale:",
     "wound": "Ferita",
     "maxWound": "Massima Ferita",
     "strain": "Strain",
