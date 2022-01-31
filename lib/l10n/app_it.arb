@@ -221,7 +221,7 @@
     "age": "Età",
     "motivation": "Motivation",
     "forceRating": "Classificazione della Forza:",
-    "conflict": "Conflict",
+    "conflict": "Conflitto",
     "resolveConflict": "Risolvi conflitto:",
     "conflictResult": "Il tuo risultato è {result}",
     "@conflictResult": {
@@ -274,7 +274,7 @@
     "silhouette": "Sagoma",
     "speed": "Velocità",
     "armor": "Armatura",
-    "handling": "Handling",
+    "handling": "Manovrabilità",
     "passengers": "Passeggeri",
     "soak": "Fradicio",
     "disableForce": "Disable Force",
