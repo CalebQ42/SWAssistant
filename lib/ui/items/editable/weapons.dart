@@ -9,7 +9,7 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/weapon_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/misc/editable_common.dart';
 
 class Weapons extends StatefulWidget{
 

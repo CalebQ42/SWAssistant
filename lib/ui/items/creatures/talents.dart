@@ -3,7 +3,7 @@ import 'package:swassistant/items/talent.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/dialogs/creature/talent_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/misc/editable_common.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
 class Talents extends StatefulWidget{

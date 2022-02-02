@@ -283,6 +283,10 @@
             }
         }
     },
+    "stimpacks": "Stimpacks",
+    "emergencyRepairPatches": "Emergency Repair Patches",
+    "healsUsedToday": "Heals Used Today:",
+    "heal": "Heal",
 
     "current": "Current:",
     "total": "Total:",

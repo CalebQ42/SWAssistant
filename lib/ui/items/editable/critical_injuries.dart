@@ -3,7 +3,7 @@ import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/crit_inj_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/misc/editable_common.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 
 class CriticalInjuries extends StatefulWidget{

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swassistant/firebase_options.dart';
@@ -40,6 +41,7 @@ class SW{
 
   late Function() topLevelUpdate;
   late Observatory observatory;
+  late PackageInfo package;
 
   Driver? driver;
 
@@ -438,6 +440,7 @@ class SW{
       app.loadAll();
     }
     app.observatory = Observatory(app);
+    app.package = await PackageInfo.fromPlatform();
     prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
     return app;
   }
@@ -467,7 +470,7 @@ class SW{
           options: DefaultFirebaseOptions.currentPlatform,
         );
         firebaseAvailable = true;
-        if(getPreference(preferences.crashlytics, true) && kDebugMode == false){
+        if(!kIsWeb && getPreference(preferences.crashlytics, true) && kDebugMode == false){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         }else{

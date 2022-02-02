@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 class UpDownStat extends StatefulWidget{
 
-  final Function() onUpPressed;
-  final Function() onDownPressed;
+  final void Function() onUpPressed;
+  final void Function() onDownPressed;
   final int Function() getValue;
   final int? max;
-  final Function()? getMax;
+  final int Function()? getMax;
   final int? min;
-  final bool allowNegative;
+  final int Function()? getMin;
   final Color? textColor;
   final TextStyle? style;
 
-  const UpDownStat({Key? key, required this.onUpPressed, required this.onDownPressed, required this.getValue, this.max, this.getMax, int? min,
-    this.allowNegative = false, this.textColor, this.style}) : min = min ?? (allowNegative ? null : 0), super(key: key);
+  const UpDownStat({Key? key, required this.onUpPressed, required this.onDownPressed, required this.getValue, this.max, this.getMax, this.min,
+    this.getMin, this.textColor, this.style}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _UpDownStatState();
@@ -32,7 +32,7 @@ class _UpDownStatState extends State<UpDownStat>{
           child: IconButton(
             icon: Icon(Icons.remove, color: widget.textColor),
             onPressed: (){
-              if(widget.min == null || widget.getValue() > widget.min!){
+              if((widget.min == null && widget.getMin == null) || widget.getValue() > (widget.getMin == null ? widget.min! : widget.getMin!())){
                 up = false;
                 widget.onDownPressed();
                 setState((){});
@@ -43,13 +43,10 @@ class _UpDownStatState extends State<UpDownStat>{
         Expanded(
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 150),
-            child: ConstrainedBox(
+            child: Text(
+              widget.getValue().toString(),
               key: ValueKey(widget.getValue()),
-              child: Text(
-                widget.getValue().toString(),
-                style: widget.style ?? Theme.of(context).textTheme.bodyText2?.copyWith(color: widget.textColor),
-              ),
-              constraints: const BoxConstraints(maxWidth: 100),
+              style: widget.style ?? Theme.of(context).textTheme.headline5?.copyWith(color: widget.textColor),
             ),
             transitionBuilder: (wid, anim){
               Tween<Offset> offset;
@@ -71,7 +68,7 @@ class _UpDownStatState extends State<UpDownStat>{
           child: IconButton(
             icon: Icon(Icons.add, color: widget.textColor),
             onPressed: (){
-              if((widget.max == null && widget.getMax == null) || widget.getValue() < (widget.getMax == null ? widget.max : widget.getMax!())){
+              if((widget.max == null && widget.getMax == null) || widget.getValue() < (widget.getMax == null ? widget.max! : widget.getMax!())){
                 up = true;
                 widget.onUpPressed();
                 setState((){});

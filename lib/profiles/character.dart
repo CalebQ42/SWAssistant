@@ -6,7 +6,7 @@ import 'package:swassistant/items/duty.dart';
 import 'package:swassistant/items/force_power.dart';
 import 'package:swassistant/items/obligation.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/misc/editable_common.dart';
 import 'package:swassistant/ui/items/characters/duties.dart';
 import 'package:swassistant/ui/items/characters/morality.dart';
 import 'package:swassistant/ui/items/characters/obligations.dart';
@@ -46,6 +46,9 @@ class Character extends Editable with Creature{
   bool darkSide = false;
   int age = 0;
   int encumCap = 0;
+
+  bool useRepair = false;
+  int healsToday = 0;
 
   bool disableForce = false;
   bool disableDuty = false;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/items/force_power.dart';
 import 'package:swassistant/profiles/character.dart';
-import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/misc/editable_common.dart';
 import 'package:swassistant/ui/dialogs/character/fp_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';

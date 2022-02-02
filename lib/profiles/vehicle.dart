@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/editable_common.dart';
+import 'package:swassistant/ui/misc/editable_common.dart';
 import 'package:swassistant/ui/items/editable/critical_injuries.dart';
 import 'package:swassistant/ui/items/editable/description.dart';
 import 'package:swassistant/ui/items/editable/inventory.dart';

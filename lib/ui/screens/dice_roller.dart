@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/dice/sides.dart';
-import 'package:swassistant/ui/common.dart';
+import 'package:swassistant/ui/misc/common.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
