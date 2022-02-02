@@ -464,6 +464,7 @@ class SW{
         firebaseAvailable = false;
       }
     }
+    if (kIsWeb) prefs.setBool(preferences.googleDrive,true);
     if (getPreference(preferences.googleDrive, false)){
       if(getPreference(preferences.driveFirstLoad, true)){
         if(await initialSync()){
