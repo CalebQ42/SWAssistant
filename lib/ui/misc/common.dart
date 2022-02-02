@@ -25,7 +25,7 @@ class SWAppBar extends AppBar{
   ];
 
   static Map<String, Function> defFunctions = {
-    "translate" : () => _launchURL("https://crowdin.com/project/swrpg"),
+    "translate" : () => _launchURL("https://crwd.in/swrpg"),
     "discuss" : () => _launchURL("https://github.com/CalebQ42/SWAssistant/discussions")
   };
 
