@@ -241,7 +241,6 @@
     "damageLevel3": "Moderate",
     "damageLevel4": "Major",
     "damageLevel5": "Broken",
-    "skillBase": "Skill Base",
     "addCharacteristic": "Add Characteristic",
     "addBrawn": "Add Brawn to Damage",
     "loaded": "Loaded",
@@ -287,6 +286,7 @@
     "emergencyRepairPatches": "Emergency Repair Patches",
     "healsUsedToday": "Heals Used Today:",
     "heal": "Heal",
+    "reset": "Reset",
 
     "current": "Current:",
     "total": "Total:",

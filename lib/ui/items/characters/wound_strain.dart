@@ -315,25 +315,34 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
           ],
         ),
         Container(height: 10),
-        ElevatedButton(
-          onPressed: (){
-            if(healingItem != null && healingItem!.count > 0 && character.healsToday < 5 && character.woundCur < character.woundThresh){
-              setState(() {
-                if(character.useRepair){
-                  character.woundCur += 3;
-                }else{
-                  character.woundCur += 5-character.healsToday;
+        ButtonBar(
+          alignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: (){
+                if(healingItem != null && healingItem!.count > 0 && character.healsToday < 5 && character.woundCur < character.woundThresh){
+                  setState(() {
+                    if(character.useRepair){
+                      character.woundCur += 3;
+                    }else{
+                      character.woundCur += 5-character.healsToday;
+                    }
+                    if(character.woundCur > character.woundThresh){
+                      character.woundCur = character.woundThresh;
+                    }
+                    character.healsToday++;
+                    healingItem!.count--;
+                  });
                 }
-                if(character.woundCur > character.woundThresh){
-                  character.woundCur = character.woundThresh;
-                }
-                character.healsToday++;
-                healingItem!.count--;
-              });
-            }
-          },
-          child: Text(AppLocalizations.of(context)!.heal)
-        ),
+              },
+              child: Text(AppLocalizations.of(context)!.heal)
+            ),
+            ElevatedButton(
+              onPressed: () => setState(() => character.healsToday = 0),
+              child: Text(AppLocalizations.of(context)!.reset)
+            )
+          ]
+        )
       ],
     );
   }

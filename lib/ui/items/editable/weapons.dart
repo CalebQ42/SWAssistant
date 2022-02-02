@@ -134,7 +134,11 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                 orElse: () => Skill(value: 0)
               );
               if(skill.name != "" && skill.base == editable.weapons[i].skillBase){
-                var hold = skill.getDice(editable);
+                var hold = SWDiceHolder(
+                  ability: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs(),
+                  proficiency: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
+                  weaponPack: pack,
+                );
                 var accInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicAccurate);
                 var inaccInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicInaccurate);
                 //TODO: all passive characteristics

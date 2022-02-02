@@ -400,7 +400,7 @@ class _WeaponState extends State<_WeaponDropdowns>{
           Container(height: 10),
           InputDecorator(
             decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.skillBase,
+              labelText: AppLocalizations.of(context)!.characteristic,
             ),
             child: DropdownButton<int>(
               isDense: true,
@@ -418,7 +418,7 @@ class _WeaponState extends State<_WeaponDropdowns>{
                 widget.weapon.skillBase = value ?? -1;
                 widget.bot.updateButtons();
               }),
-              hint: Text(AppLocalizations.of(context)!.skillBase),
+              hint: Text(AppLocalizations.of(context)!.characteristic),
             )
           ),
         ]

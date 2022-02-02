@@ -169,6 +169,8 @@ class Character extends Editable with Creature{
     darkSide = json["dark side"] ?? false;
     age = json["age"] ?? 0;
     encumCap = json["encumbrance capacity"] ?? 0;
+    useRepair = json["use repair"] ?? false;
+    healsToday = json["heals today"] ?? 0;
   }
 
   @override
@@ -198,6 +200,8 @@ class Character extends Editable with Creature{
     "disable duty": disableDuty,
     "disable obligation": disableObligation,
     "disable morality": disableMorality,
+    "use repair": useRepair,
+    "heals today": healsToday,
   }..addAll(creatureSaveJson())..removeWhere((key, value) {
     if (value is List && value.isEmpty) return true;
     return zeroValue[key] == value;
@@ -227,6 +231,8 @@ class Character extends Editable with Creature{
     "dark side": false,
     "age": 0,
     "encumbrance capacity": 0,
+    "use repair": false,
+    "heals today": 0,
   };
 
   var morKey = GlobalKey<MoralityState>();
