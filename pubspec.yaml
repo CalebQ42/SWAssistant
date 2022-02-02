@@ -3,7 +3,7 @@ description: Character sheet and dice app for the FFG Star Wars TTRPG
 
 publish_to: 'none'
 
-version: 3.1.6+148
+version: 3.1.7+149
 
 environment:
   sdk: ">=2.16.0-134.1.beta <3.0.0"
@@ -21,7 +21,6 @@ dependencies:
   path_provider: ^2.0.8
   cupertino_icons: ^1.0.4
   url_launcher: ^6.0.18
-  permission_handler: ^8.3.0
   file_picker: ^4.3.3
   # flutter_speed_dial: ^5.0.0+1
   in_app_purchase: ^2.0.1
