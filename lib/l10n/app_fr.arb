@@ -35,6 +35,7 @@
     },
     "driveDisconnectNotice": "Google Drive is disconnect",
     "driveFirstLaunch": "Syncing your profiles to Google Drive is now available. Go to Settings to enable it?",
+    "driveEnableFail": "Google Drive failed to initialize",
     "gmModeTap": "Select a profile on the left to edit.",
     "gmModeType": "Type...",
     "@gmModeType": {
