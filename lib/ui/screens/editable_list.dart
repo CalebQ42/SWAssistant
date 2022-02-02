@@ -97,9 +97,25 @@ class EditableListState extends State<EditableList>{
               )
             )
         );
-        await app.syncCloud(context).then((value) {
+        var syncSuccess = false;
+        if(app.getPreference(preferences.driveFirstLoad, true)){
+          syncSuccess = await app.initialSync();
+        }else{
+          syncSuccess = await app.syncCloud();
+        }
+        if(syncSuccess){
+          app.prefs.setBool(preferences.driveFirstLoad, false);
           Navigator.pop(context);
           Navigator.pushNamed(context, "/edit/" + widget.uidToLoad!);
+        }else{
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.syncFail)
+            )
+          );
+        }
+        await app.syncCloud(context).then((value) {
         });
       });
     } else if(kIsWeb && first){
