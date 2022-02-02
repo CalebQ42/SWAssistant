@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/ui/dialogs/donate.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/test.dart';

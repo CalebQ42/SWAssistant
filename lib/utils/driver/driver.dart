@@ -30,7 +30,6 @@ class Driver{
       if(gsi!.currentUser == null) return false;
       api = DriveApi((await gsi!.authenticatedClient())!);
     } catch(e) {
-      print(e);
       return false;
     }
     if(wdFolder != null) await setWD(wdFolder);
