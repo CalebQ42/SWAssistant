@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/utils/editable.dart';
@@ -10,6 +11,7 @@ import 'package:swassistant/ui/screens/dice_roller.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/ui/screens/gm_mode.dart';
+import 'package:swassistant/ui/screens/loading.dart';
 import 'package:swassistant/ui/screens/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,7 +24,16 @@ Future<void> main() async {
           child: const SWApp(),
           app: app
         ))
-    ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
+    ), (error, stack) {
+      if(kDebugMode || kProfileMode){
+        // ignore: avoid_print
+        print(error);
+        // ignore: avoid_print
+        print(stack);
+      }else{
+        FirebaseCrashlytics.instance.recordError(error, stack);
+      }
+    }
   );
 }
 
@@ -37,6 +48,8 @@ class SWApp extends StatefulWidget{
 }
 
 class SWAppState extends State<SWApp> {
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +74,15 @@ class SWAppState extends State<SWApp> {
           return PageRouteBuilder(
             pageBuilder: (context, anim, secondaryAnim) => const IntroZero(),
             settings: settings.copyWith(name: "/intro"),
+            maintainState: false,
+            transitionsBuilder: (context, anim, secondary, child) =>
+              FadeTransition(opacity: anim, child: child)
+          );
+        }
+        if(!SW.of(context).initialized){
+          return PageRouteBuilder(
+            pageBuilder: (context, anim, secondaryAnim) => Loading(afterLoad: settings),
+            settings: const RouteSettings(name: "/loading"),
             maintainState: false,
             transitionsBuilder: (context, anim, secondary, child) =>
               FadeTransition(opacity: anim, child: child)

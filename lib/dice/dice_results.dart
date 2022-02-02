@@ -69,8 +69,8 @@ class DiceResults{
             ),
             if(weaponPack != null) Center(
               child: Text(
-                isSuccess ? (weaponPack.weapon.addBrawn ? weaponPack.weapon.damage + success + weaponPack.brawn :
-                  weaponPack.weapon.damage + success).toString() + " " + AppLocalizations.of(context)!.damage :
+                isSuccess ? (weaponPack.weapon.addBrawn ? weaponPack.weapon.damage! + success + weaponPack.brawn :
+                  weaponPack.weapon.damage! + success).toString() + " " + AppLocalizations.of(context)!.damage :
                     success.toString() + " " + AppLocalizations.of(context)!.failure,
                 style: Theme.of(context).textTheme.headline6,
               ),
@@ -100,7 +100,7 @@ class DiceResults{
                 style: Theme.of(context).textTheme.headline6,
               )
             ),
-            if(weaponPack != null && (weaponPack.weapon.critical > 0 || (advChars != null && advChars.isNotEmpty))) ...[
+            if(weaponPack != null && ((weaponPack.weapon.critical ?? 0) > 0 || (advChars != null && advChars.isNotEmpty))) ...[
               Container(height: 15,),
               Row(
                 children: [
@@ -114,7 +114,7 @@ class DiceResults{
                 ]
               ),
               const Divider(),
-              if(weaponPack.weapon.critical > 0) Row(
+              if((weaponPack.weapon.critical ?? 0) > 0) Row(
                 children: [
                   Expanded(
                     child: Text(AppLocalizations.of(context)!.critical),

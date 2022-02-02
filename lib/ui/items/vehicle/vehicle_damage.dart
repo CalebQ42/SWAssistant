@@ -81,7 +81,7 @@ class VehicleDamage extends StatelessWidget{
                   ),
                   transitionBuilder: (child, anim){
                     Tween<Offset> offset;
-                    if((!editing && child is TextField) || (editing && child is Column)){
+                    if(child is TextField){
                       offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
                     }else{
                       offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);
@@ -133,7 +133,7 @@ class VehicleDamage extends StatelessWidget{
                   ),
                   transitionBuilder: (child, anim){
                     Tween<Offset> offset;
-                    if((!editing && child is TextField) || (editing && child is Column)){
+                    if(child is TextField){
                       offset = Tween(begin: const Offset(0.0,-1.0), end: Offset.zero);
                     }else{
                       offset = Tween(begin: const Offset(0.0,1.0), end: Offset.zero);

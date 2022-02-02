@@ -9,26 +9,26 @@ class DutyEditDialog {
   final Duty duty;
   final Function(Duty) onClose;
 
-  late TextEditingController nameController;
-  late TextEditingController valueController;
-  late TextEditingController descController;
+  TextEditingController? nameController;
+  TextEditingController? valueController;
+  TextEditingController? descController;
 
   late Bottom bot;
 
   DutyEditDialog({Duty? d, required this.onClose}) : duty = d != null ? Duty.from(d) : Duty(){
-    nameController = TextEditingController(text: duty.name)
+    nameController ??= TextEditingController(text: duty.name)
       ..addListener(() {
-        duty.name = nameController.text;
+        duty.name = nameController!.text;
         bot.updateButtons();
       });
-    valueController = TextEditingController(text: duty.value != -1 ? duty.value.toString() : "")
+    valueController ??= TextEditingController(text: duty.value?.toString())
       ..addListener(() {
-        duty.value = int.tryParse(valueController.text) ?? -1;
+        duty.value = int.tryParse(valueController!.text);
         bot.updateButtons();
       });
-    descController = TextEditingController(text: duty.desc)
+    descController ??= TextEditingController(text: duty.desc)
       ..addListener(() =>
-        duty.desc = descController.text
+        duty.desc = descController!.text
       );
     bot = Bottom(
       child: (context) =>
@@ -66,7 +66,7 @@ class DutyEditDialog {
       buttons: (context) => [
         TextButton(
           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-          onPressed: duty.name != "" && duty.value != -1 ? (){
+          onPressed: duty.name != "" && duty.value != null ? (){
             onClose(duty);
             Navigator.pop(context);
           } : null,

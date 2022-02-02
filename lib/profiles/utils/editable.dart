@@ -74,18 +74,18 @@ abstract class Editable extends JsonSavable{
   }
 
   Editable.from(Editable editable) :
-      uid = const Uuid().v4(),
-      name = editable.name,
-      notes = List.from(editable.notes),
-      weapons = List.from(editable.weapons),
-      category = editable.category,
-      criticalInjuries = List.from(editable.criticalInjuries),
-      desc = editable.desc,
-      inventory = editable.inventory {
-      showCard = {};
-      if (!(this is Character || this is Vehicle || this is Minion)){
-        throw("Must be overridden by child");
-      }
+    uid = const Uuid().v4(),
+    name = editable.name,
+    notes = List.from(editable.notes),
+    weapons = List.from(editable.weapons),
+    category = editable.category,
+    criticalInjuries = List.from(editable.criticalInjuries),
+    desc = editable.desc,
+    inventory = editable.inventory {
+    showCard = {};
+    if (!(this is Character || this is Vehicle || this is Minion)){
+      throw("Must be overridden by child");
+    }
   }
 
   @mustCallSuper
@@ -252,8 +252,7 @@ abstract class Editable extends JsonSavable{
       var data = jsonEncode(toJson()).codeUnits;
       await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
       _cloudSaving = false;
-    }
-    if (!_cloudDefered) {
+    }else if (!_cloudDefered) {
       _cloudDefered = true;
       while(_cloudSaving) {
         await Future.delayed(const Duration(milliseconds: 500));
@@ -278,9 +277,24 @@ abstract class Editable extends JsonSavable{
     if(overwriteId) driveId = id;
   }
   void delete(SW app){
-    var fil = File(getFileLocation(app));
-    fil.deleteSync();
-    if(driveId != null) app.driver?.delete(driveId!);
+    if(!_saving && !_defered && !_cloudDefered && !_cloudSaving){
+      var fil = File(getFileLocation(app));
+      fil.deleteSync();
+      if(driveId != null) app.driver?.delete(driveId!);
+    }else{
+      Future(() async {
+        while(_saving || _defered || _cloudDefered || _cloudSaving){
+          await Future.delayed(const Duration(milliseconds: 200));
+        }
+        _saving = true;
+        _cloudSaving = true;
+        var fil = File(getFileLocation(app));
+        fil.deleteSync();
+        if(driveId != null) await app.driver?.delete(driveId!);
+        _saving = false;
+        _cloudSaving = false;
+      });
+    }
   }
 
   void addShortcut(){}

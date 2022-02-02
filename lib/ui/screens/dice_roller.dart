@@ -83,7 +83,7 @@ class _InstantDiceCard extends StatefulWidget{
 
 class _InstantState extends State<_InstantDiceCard>{
 
-  int result = -1;
+  int? result;
 
   @override
   Widget build(BuildContext context) =>
@@ -104,7 +104,7 @@ class _InstantState extends State<_InstantDiceCard>{
               Row(
                 children: [
                   Expanded(child: Text(
-                    result == -1 ? "" : result.toString(),
+                    result?.toString() ?? "",
                     textAlign: TextAlign.center,
                   )),
                   Expanded(child: TextButton(
@@ -113,7 +113,7 @@ class _InstantState extends State<_InstantDiceCard>{
                         name: "die",
                         sides: List<SimpleSide>.generate(widget.sides, (i) => SimpleSide((i+1).toString()))
                       ).roll();
-                      setState(() => result = int.tryParse(res.toString()) ?? -1);
+                      setState(() => result = int.tryParse(res.toString()));
                     },
                     child: Text(AppLocalizations.of(context)!.roll)
                   ))

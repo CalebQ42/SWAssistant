@@ -130,13 +130,13 @@ class WeaponsState extends State<Weapons> with StatefulCard{
             var pack = WeaponPack(editable.weapons[i], (editable is Creature) ? editable.charVals[0] : 0);
             if(editable is Creature){
               var skill = editable.skills.firstWhere(
-                (element) => element.name == Weapon.weaponSkills(context)[editable.weapons[i].skill],
-                orElse: () => Skill(value: 0)
+                (element) => element.name == Weapon.weaponSkills(context)[editable.weapons[i].skill!],
+                orElse: () => Skill()
               );
               if(skill.name != "" && skill.base == editable.weapons[i].skillBase){
                 var hold = SWDiceHolder(
-                  ability: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs(),
-                  proficiency: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
+                  ability: (skill.value! - editable.charVals[editable.weapons[i].skillBase!]).abs(),
+                  proficiency: min(skill.value!, editable.charVals[editable.weapons[i].skillBase!]),
                   weaponPack: pack,
                 );
                 var accInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicAccurate);
@@ -152,8 +152,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                 hold.showDialog(context);
               }else{
                 SWDiceHolder(
-                  ability: (skill.value - editable.charVals[editable.weapons[i].skillBase]).abs(),
-                  proficiency: min(skill.value, editable.charVals[editable.weapons[i].skillBase]),
+                  ability: editable.charVals[editable.weapons[i].skillBase!],
                   weaponPack: pack,
                 ).showDialog(context);
               }

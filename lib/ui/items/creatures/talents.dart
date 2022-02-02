@@ -63,7 +63,7 @@ class TalentsState extends State<Talents> with StatefulCard {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(creature.talents[index].name + (creature.talents[index].value > 1 ? " " + creature.talents[index].value.toString() : "")),
+                  child: Text(creature.talents[index].name + (creature.talents[index].value! > 1 ? " " + creature.talents[index].value.toString() : "")),
                 ),
                 AnimatedSwitcher(
                   child: edit ? ButtonBar(

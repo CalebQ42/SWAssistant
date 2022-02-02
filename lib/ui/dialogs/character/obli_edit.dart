@@ -11,25 +11,25 @@ class ObligationEditDialog{
 
   late Bottom bot;
 
-  late TextEditingController nameController;
-  late TextEditingController valueController;
-  late TextEditingController descController;
+  TextEditingController? nameController;
+  TextEditingController? valueController;
+  TextEditingController? descController;
 
   ObligationEditDialog({Obligation? obli, required this.onClose}) :
     obligation = obli != null ? Obligation.from(obli) : Obligation(){
-    nameController = TextEditingController(text: obligation.name)
+    nameController ??= TextEditingController(text: obligation.name)
       ..addListener(() {
-        obligation.name = nameController.text;
+        obligation.name = nameController!.text;
         bot.updateButtons();
       });
-    valueController = TextEditingController(text: obligation.value != -1 ? obligation.value.toString() : "")
+    valueController ??= TextEditingController(text: obligation.value?.toString())
       ..addListener(() {
-        obligation.value = int.tryParse(valueController.text) ?? -1;
+        obligation.value = int.tryParse(valueController!.text);
         bot.updateButtons();
       });
-    descController = TextEditingController(text: obligation.desc)
+    descController ??= TextEditingController(text: obligation.desc)
       ..addListener(() =>
-        obligation.desc = descController.text
+        obligation.desc = descController!.text
       );
     bot = Bottom(
       child: (context) =>
@@ -67,7 +67,7 @@ class ObligationEditDialog{
       buttons: (context) =>[
         TextButton(
           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-          onPressed: obligation.name != "" && obligation.value != -1 ? (){
+          onPressed: obligation.name != "" && obligation.value != null ? (){
             onClose(obligation);
             Navigator.pop(context);
           } : null,

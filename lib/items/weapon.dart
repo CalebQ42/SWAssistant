@@ -7,38 +7,35 @@ import 'weapon_characteristic.dart';
 
 class Weapon implements JsonSavable{
 
-  String name;
-  int damage;
-  int critical;
-  int hp;
+  String name = "";
+  int? damage;
+  int? critical;
+  int hp = 0;
   //0-Engaged, 1-Short, 2-Medium, 3-Long, 4-Extreme
-  int range;
+  int range = 0;
   //0-Brawl, 1-Gunner, 2-Lightsaber, 3-Melee, 4-Ranged(Heavy), 5-Ranged(Light)
-  int skill;
-  int skillBase;
-  List<WeaponCharacteristic> characteristics;
-  bool addBrawn;
-  bool loaded;
-  bool limitedAmmo;
+  int? skill;
+  int? skillBase;
+  List<WeaponCharacteristic> characteristics = [];
+  bool addBrawn = false;
+  bool loaded = true;
+  bool limitedAmmo = false;
   //0-None, 1-Minor, 2-Major, 3-Maor
-  int itemState;
-  int ammo;
-  String firingArc;
-  int encumbrance;
+  int itemState = 0;
+  int ammo = 0;
+  String firingArc = "";
+  int encumbrance = 0;
 
-  Weapon({this.name = "", this.damage = -1, this.critical = -1, this.hp = 0, this.range = 0,
-    this.skill = -1, this.skillBase = -1, this.characteristics = const [], this.addBrawn = false,
-    this.loaded = true, this.limitedAmmo = false, this.itemState = 0, this.ammo = 0,
-    this.firingArc = "", this.encumbrance = 0});
+  Weapon();
 
   Weapon.fromJson(Map<String,dynamic> json) :
     name = json["name"] ?? "",
-    damage = json["damage"] ?? -1,
-    critical = json["critical rating"] ?? -1,
+    damage = json["damage"],
+    critical = json["critical rating"],
     hp = json["hard points"] ?? 0,
     range = json["range"] ?? 0,
-    skill = json["skill"] ?? -1,
-    skillBase = json["base"] ?? -1,
+    skill = json["skill"],
+    skillBase = json["base"],
     addBrawn = json["add brawn"] ?? false,
     loaded = json["loaded"] ?? true,
     limitedAmmo = json["limited ammo"] ?? false,
@@ -96,12 +93,8 @@ class Weapon implements JsonSavable{
   @override
   Map<String, dynamic> get zeroValue => {
     "name": "",
-    "damage": -1,
-    "critical rating": -1,
     "hard points": 0,
     "range": 0,
-    "skill": -1,
-    "base": -1,
     "add brawn": false,
     "loaded": true,
     "limited ammo": false,

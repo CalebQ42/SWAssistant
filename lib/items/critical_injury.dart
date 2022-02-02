@@ -1,11 +1,11 @@
 import 'package:swassistant/utils/json_savable.dart';
 
 class CriticalInjury implements JsonSavable{
-  String name;
-  String desc;
-  int severity;
+  String name = "";
+  String desc = "";
+  int severity = 0;
 
-  CriticalInjury({this.name = "", this.desc = "", this.severity = 0});
+  CriticalInjury();
   
   CriticalInjury.from(CriticalInjury criticalInjury) :
     name = criticalInjury.name,

@@ -17,18 +17,18 @@ class SkillEditDialog{
   late TextEditingController valueController;
 
   SkillEditDialog({required this.onClose, Skill? sk, required this.creature}) :
-      skill = sk == null ? Skill() : 
+      skill = (sk == null) ? Skill() : 
       creature is Character ? Skill.from(sk) : Skill.from(sk..value = 0){
-    valueController = TextEditingController(text: skill.value != -1 ? skill.value.toString() : "")
+    valueController = TextEditingController(text: skill.value?.toString())
       ..addListener(() {
-        skill.value = int.tryParse(valueController.text) ?? -1;
+        skill.value = int.tryParse(valueController.text);
         bot.updateButtons();
       });
     bot = Bottom(
       buttons: (context) => [
         TextButton(
           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-          onPressed: skill.name != "" && skill.name != null && skill.base != -1 && (creature is Character ? skill.value != -1 : true) ? (){
+          onPressed: skill.name != "" && skill.name != null && skill.base != null && (creature is Character ? skill.value != null : true) ? (){
             onClose(skill);
             Navigator.of(context).pop();
           } : null,
@@ -168,9 +168,9 @@ class _SkillSelectorState extends State<_SkillSelector>{
                 value: i
               )
             ),
-            value: widget.skill.base == -1 ? null : widget.skill.base,
+            value: widget.skill.base,
             onChanged: (value) {
-              setState(() => widget.skill.base = value ?? -1);
+              setState(() => widget.skill.base = value);
               widget.bot.updateButtons();
             }
           )

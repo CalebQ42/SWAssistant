@@ -1,10 +1,10 @@
 import 'package:swassistant/utils/json_savable.dart';
 
 class Item implements JsonSavable{
-  String name;
-  String desc;
-  int count;
-  int encum;
+  String name = "";
+  String desc = "";
+  int count = 1;
+  int encum = 0;
 
   Item({this.name = "", this.desc = "", this.count = 1, this.encum = 0});
 

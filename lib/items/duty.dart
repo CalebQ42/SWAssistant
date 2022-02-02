@@ -2,15 +2,15 @@ import 'package:swassistant/utils/json_savable.dart';
 
 class Duty implements JsonSavable{
 
-  String name;
-  int value;
-  String desc;
+  String name = "";
+  int? value;
+  String desc = "";
 
-  Duty({this.name = "", this.value = -1, this.desc = ""});
+  Duty();
 
   Duty.fromJson(Map<String,dynamic> json) :
       name = json["name"] ?? "",
-      value = json["value"] ?? -1,
+      value = json["value"],
       desc = json["description"] ?? "";
 
   Duty.from(Duty duty) :
@@ -21,14 +21,13 @@ class Duty implements JsonSavable{
   @override
   Map<String,dynamic> toJson() => {
     "name" : name,
-    "value" : value,
+    "value" : null,
     "description" : desc
   }..removeWhere((key, value) => zeroValue[key] == value);
 
   @override
   Map<String, dynamic> get zeroValue => {
     "name": "",
-    "value": -1,
     "description": "",
   };
 }

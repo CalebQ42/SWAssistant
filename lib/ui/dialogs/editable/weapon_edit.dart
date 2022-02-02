@@ -19,48 +19,48 @@ class WeaponEditDialog{
 
   late Bottom bot;
 
-  late TextEditingController nameController;
-  late TextEditingController damageController;
-  late TextEditingController criticalController;
-  late TextEditingController hpController;
-  late TextEditingController encumbranceController;
-  late TextEditingController arcController;
+  TextEditingController? nameController;
+  TextEditingController? damageController;
+  TextEditingController? criticalController;
+  TextEditingController? hpController;
+  TextEditingController? encumbranceController;
+  TextEditingController? arcController;
 
   WeaponEditDialog({required this.onClose, Weapon? weap, required this.editable}) :
     weapon = weap == null ? Weapon() : Weapon.from(weap){
-    nameController = TextEditingController(text: weapon.name)
+    nameController ??= TextEditingController(text: weapon.name)
         ..addListener(() {
-          weapon.name = nameController.text;
+          weapon.name = nameController!.text;
           bot.updateButtons();
         });
-    damageController = TextEditingController(text: weapon.damage != -1 ? weapon.damage.toString() : "")
+    damageController ??= TextEditingController(text: weapon.damage?.toString())
         ..addListener(() {
-          weapon.damage = int.tryParse(damageController.text) ?? -1;
+          weapon.damage = int.tryParse(damageController!.text);
           bot.updateButtons();
         });
-    criticalController = TextEditingController(text: weapon.critical != -1 ? weapon.critical.toString() : "")
+    criticalController ??= TextEditingController(text: weapon.critical?.toString())
         ..addListener(() {
-          weapon.critical = int.tryParse(criticalController.text) ?? -1;
+          weapon.critical = int.tryParse(criticalController!.text);
           bot.updateButtons();
         });
-    hpController = TextEditingController(text: weapon.hp.toString())
+    hpController ??= TextEditingController(text: weapon.hp.toString())
         ..addListener(() =>
-          weapon.hp = int.tryParse(hpController.text) ?? 0
+          weapon.hp = int.tryParse(hpController!.text) ?? 0
         );
-    encumbranceController = TextEditingController(text: weapon.encumbrance.toString())
+    encumbranceController ??= TextEditingController(text: weapon.encumbrance.toString())
         ..addListener(() =>
-          weapon.encumbrance = int.tryParse(encumbranceController.text) ?? 0
+          weapon.encumbrance = int.tryParse(encumbranceController!.text) ?? 0
         );
-    arcController = TextEditingController(text: weapon.firingArc)
+    arcController ??= TextEditingController(text: weapon.firingArc)
         ..addListener(() =>
-          weapon.firingArc = arcController.text
+          weapon.firingArc = arcController!.text
         );
     bot = Bottom(
       buttons: (context) => [
         TextButton(
           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-          onPressed: weapon.name != "" && weapon.damage != -1 && weapon.critical != -1
-              && weapon.skill != -1 && weapon.skillBase != -1 ? (){
+          onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null
+              && weapon.skill != null && weapon.skillBase != null ? (){
             onClose(weapon);
             Navigator.of(context).pop();
           } : null,
@@ -388,10 +388,10 @@ class _WeaponState extends State<_WeaponDropdowns>{
                   value: i
                 )
               ),
-              value: widget.weapon.skill == -1 ? null : widget.weapon.skill,
+              value: widget.weapon.skill,
               onChanged: (value) => setState((){
-                widget.weapon.skill = value ?? -1;
-                widget.weapon.skillBase = Skill.skillsList(context)[weaponSkills[widget.weapon.skill]]!;
+                widget.weapon.skill = value;
+                widget.weapon.skillBase = Skill.skillsList(context)[weaponSkills[widget.weapon.skill!]]!;
                 widget.bot.updateButtons();
               }),
               hint: Text(AppLocalizations.of(context)!.skill),
@@ -413,9 +413,9 @@ class _WeaponState extends State<_WeaponDropdowns>{
                   value: i
                 )
               ),
-              value: widget.weapon.skillBase == -1 ? null : widget.weapon.skillBase,
+              value: widget.weapon.skillBase,
               onChanged: (value) => setState(() {
-                widget.weapon.skillBase = value ?? -1;
+                widget.weapon.skillBase = value;
                 widget.bot.updateButtons();
               }),
               hint: Text(AppLocalizations.of(context)!.characteristic),

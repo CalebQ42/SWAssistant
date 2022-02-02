@@ -1,10 +1,10 @@
 import 'package:swassistant/utils/json_savable.dart';
 
 class ForcePower implements JsonSavable{
-  String name;
-  String desc;
+  String name = "";
+  String desc = "";
 
-  ForcePower({this.name = "", this.desc = ""});
+  ForcePower();
 
   ForcePower.fromJson(Map<String,dynamic> json) :
       name = json["name"] ?? "",

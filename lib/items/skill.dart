@@ -10,16 +10,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Skill implements JsonSavable{
   String? name;
-  int value;
-  int base;
-  bool career;
+  int? value;
+  int? base;
+  bool career = false;
 
-  Skill({this.name, this.value = -1, this.base = -1, this.career = false});
+  Skill();
 
   Skill.fromJson(Map<String,dynamic> json) :
       name = json["name"] ?? "",
-      value = json["value"] ?? -1,
-      base = json["base"] ?? -1,
+      value = json["value"],
+      base = json["base"],
       career = json["career"] ?? false;
 
   Skill.from(Skill skill) :
@@ -39,21 +39,19 @@ class Skill implements JsonSavable{
   @override
   Map<String, dynamic> get zeroValue => {
     "name": "",
-    "value": -1,
-    "base": -1,
     "career": false,
   };
 
   SWDiceHolder getDice(Creature creature) {
     if(creature is Character){
       return SWDiceHolder(
-        ability: (creature.charVals[base] - value).abs(),
-        proficiency: min(creature.charVals[base], value)
+        ability: (creature.charVals[base!] - value!).abs(),
+        proficiency: min(creature.charVals[base!], value!)
       );
     }else if(creature is Minion){
       return SWDiceHolder(
-        ability: (creature.charVals[base] - creature.minionNum).abs(),
-        proficiency: min(creature.charVals[base], creature.minionNum)
+        ability: (creature.charVals[base!] - creature.minionNum).abs(),
+        proficiency: min(creature.charVals[base!], creature.minionNum)
       );
     }
     return SWDiceHolder();

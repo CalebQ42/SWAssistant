@@ -30,8 +30,6 @@ class WeaponCharacteristic implements JsonSavable{
   @override
   Map<String, dynamic> get zeroValue => {
     "name": "",
-    "value": null,
-    "advantage": null,
   };
 
   static List<String> passive(BuildContext context) => [

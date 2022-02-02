@@ -11,31 +11,31 @@ class TalentEditDialog{
 
   late Bottom bot;
 
-  late TextEditingController nameController;
-  late TextEditingController valueController;
-  late TextEditingController descController;
+  TextEditingController? nameController;
+  TextEditingController? valueController;
+  TextEditingController? descController;
 
   TalentEditDialog({Talent? tal, required this.onClose}) :
     talent = tal == null ? Talent() : Talent.from(tal){
-    nameController = TextEditingController(text: talent.name)
+    nameController ??= TextEditingController(text: talent.name)
       ..addListener(() {
-        talent.name = nameController.text;
+        talent.name = nameController!.text;
         bot.updateButtons();
       });
-    valueController = TextEditingController(text: talent.value == -1 ? "" : talent.value.toString())
+    valueController ??= TextEditingController(text: talent.value?.toString())
       ..addListener(() {
-        talent.value = int.tryParse(valueController.text) ?? -1;
+        talent.value = int.tryParse(valueController!.text);
         bot.updateButtons();
       });
-    descController = TextEditingController(text: talent.desc)
+    descController ??= TextEditingController(text: talent.desc)
       ..addListener(() =>
-        talent.desc = descController.text
+        talent.desc = descController!.text
       );
     bot = Bottom(
       buttons: (context) => [
         TextButton(
           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-          onPressed: talent.name != "" && talent.value != -1 ? (){
+          onPressed: talent.name != "" && talent.value != null ? (){
             onClose(talent);
             Navigator.of(context).pop();
           } : null,

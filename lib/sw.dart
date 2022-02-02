@@ -43,6 +43,8 @@ class SW{
   late Observatory observatory;
   late PackageInfo package;
 
+  bool initialized = false;
+
   Driver? driver;
 
   SW({required this.prefs});
@@ -445,25 +447,7 @@ class SW{
     return app;
   }
 
-  Future<void> postInit(BuildContext context) async{
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) =>
-        AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircularProgressIndicator(),
-              Container(height: 10),
-              Text(
-                AppLocalizations.of(context)!.loadingDialog,
-                textAlign: TextAlign.center,
-              )
-            ]
-          )
-        )
-    );
+  Future<void> postInit() async{
     if(getPreference(preferences.firebase, true)){
       try{
         await Firebase.initializeApp(
@@ -484,20 +468,12 @@ class SW{
       if(getPreference(preferences.driveFirstLoad, true)){
         if(await initialSync()){
           prefs.setBool(preferences.driveFirstLoad, false);
-        }else{
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context)!.syncFail),)
-          );
         }
       }else{
-        if(!await syncCloud()){
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context)!.syncFail),)
-          );
-        }
+        await syncCloud();
       }
     }
-    Navigator.of(context).pop();
+    initialized = true;
   }
 
   void manualImport(BuildContext context){

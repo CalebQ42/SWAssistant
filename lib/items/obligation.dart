@@ -2,15 +2,15 @@ import 'package:swassistant/utils/json_savable.dart';
 
 class Obligation implements JsonSavable{
 
-  String name;
-  int value;
-  String desc;
+  String name = "";
+  int? value;
+  String desc = "";
 
-  Obligation({this.name = "", this.value = -1, this.desc = ""});
+  Obligation();
 
   Obligation.fromJson(Map<String,dynamic> json) :
     name = json["name"] ?? "",
-    value = json["value"] ?? -1,
+    value = json["value"],
     desc = json["description"] ?? "";
 
   Obligation.from(Obligation obligation) :
@@ -29,6 +29,5 @@ class Obligation implements JsonSavable{
   Map<String, dynamic> get zeroValue => {
     "name": "",
     "description": "",
-    "value": -1,
   };
 }

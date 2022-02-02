@@ -24,11 +24,8 @@ class _IntroTwoState extends State{
         var app = SW.of(context);
         app.prefs.setBool(preferences.driveFirstLoad, false);
         app.prefs.setBool(preferences.firstStart, false);
-        if(kIsWeb) app.prefs.setBool(preferences.googleDrive, true);
-        app.postInit(context).whenComplete(() {
-          Navigator.pushNamedAndRemoveUntil(
-            context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
-        });
+        Navigator.pushNamedAndRemoveUntil(
+          context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
       },
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 500),

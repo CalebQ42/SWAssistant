@@ -1,16 +1,16 @@
 import 'package:swassistant/utils/json_savable.dart';
 
 class Talent implements JsonSavable{
-  String name;
-  String desc;
-  int value;
+  String name = "";
+  String desc = "";
+  int? value;
 
-  Talent({this.name = "", this.desc = "", this.value = -1});
+  Talent();
 
   Talent.fromJson(Map<String, dynamic> json) :
       name = json["name"] ?? "",
       desc = json["description"] ?? "",
-      value = json["value"] ?? -1;
+      value = json["value"];
 
   Talent.from(Talent talent) :
       name = talent.name,
@@ -28,6 +28,5 @@ class Talent implements JsonSavable{
   Map<String, dynamic> get zeroValue => {
     "name": "",
     "description": "",
-    "value": -1,
   };
 }
