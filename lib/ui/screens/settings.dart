@@ -78,11 +78,18 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.cloudSave),
             value: app.getPreference(preferences.googleDrive, false),
             onChanged: (b) {
+              var message = ScaffoldMessenger.of(context);
               if (b) {
                 app.initialSync(context).then((value) {
-                  app.prefs.setBool(preferences.driveFirstLoad, false);
-                  app.prefs.setBool(preferences.googleDrive, b);
-                  setState(() {});
+                  if(value){
+                    app.prefs.setBool(preferences.driveFirstLoad, false);
+                    app.prefs.setBool(preferences.googleDrive, b);
+                    setState(() {});
+                  }else{
+                    message.showSnackBar(
+                      SnackBar(content: Text(AppLocalizations.of(context)!.driveEnableFail))
+                    );
+                  }
                 });
               } else {
                 if(app.driver != null) app.driver!.gsi?.disconnect();
@@ -140,7 +147,7 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.ads),
             value: app.getPreference(preferences.ads, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b) {
-              //TOOD
+              //TODO
               app.prefs.setBool(preferences.ads, b);
               setState((){});
             } : null,

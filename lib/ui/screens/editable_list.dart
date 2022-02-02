@@ -235,18 +235,33 @@ class EditableListState extends State<EditableList>{
       onRefresh: () => Future(() async {
         if(app.syncing) return;
         var messager = ScaffoldMessenger.of(context);
-        await app.syncCloud(context).then((value){
-          messager.clearSnackBars();
-          setState(() {});
-          if (!value){
-            messager.clearSnackBars();
-            messager.showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)!.syncFail)
-              )
-            );
+        if (app.getPreference(preferences.googleDrive, false)){
+          if(app.getPreference(preferences.driveFirstLoad, true)){
+            if(await app.initialSync()){
+              app.prefs.setBool(preferences.driveFirstLoad, false);
+              messager.clearSnackBars();
+              setState(() {});
+            }else{
+              messager.clearSnackBars();
+              messager.showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.syncFail)
+                )
+              );
+            }
+          }else{
+            if(!await app.syncCloud()){
+              messager.clearSnackBars();
+              messager.showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.syncFail)
+                )
+              );
+            }else{
+              setState(() {});
+            }
           }
-        });
+        }
       }),
       child: AnimatedList(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),

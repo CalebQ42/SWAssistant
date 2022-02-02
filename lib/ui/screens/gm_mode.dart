@@ -131,39 +131,39 @@ class _BarState extends State<_GMModeBar>{
           onPressed: () =>
             SWDiceHolder().showDialog(context),
         ),
-        if(SW.of(context).getPreference(preferences.googleDrive, false))
-          IconButton(
-            icon: const Icon(Icons.sync),
-            onPressed: () {
-              var app = SW.of(context);
-              var messager = ScaffoldMessenger.of(context);
-              if(app.syncing) return;
-              messager.clearSnackBars();
-              messager.showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.driveSyncing),
-                )
-              );
-              app.syncCloud().then((value){
-                if (!value){
-                  messager.clearSnackBars();
-                  messager.showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context)!.syncFail)
-                    )
-                  );
-                } else {
-                  messager.clearSnackBars();
-                  messager.showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context)!.syncComplete)
-                    )
-                  );
-                  setState((){});
-                }
-              });
-            }
-          )
+        // if(SW.of(context).getPreference(preferences.googleDrive, false))
+        //   IconButton(
+        //     icon: const Icon(Icons.sync),
+        //     onPressed: () {
+        //       var app = SW.of(context);
+        //       var messager = ScaffoldMessenger.of(context);
+        //       if(app.syncing) return;
+        //       messager.clearSnackBars();
+        //       messager.showSnackBar(
+        //         SnackBar(
+        //           content: Text(AppLocalizations.of(context)!.driveSyncing),
+        //         )
+        //       );
+        //       app.syncCloud().then((value){
+        //         if (!value){
+        //           messager.clearSnackBars();
+        //           messager.showSnackBar(
+        //             SnackBar(
+        //               content: Text(AppLocalizations.of(context)!.syncFail)
+        //             )
+        //           );
+        //         } else {
+        //           messager.clearSnackBars();
+        //           messager.showSnackBar(
+        //             SnackBar(
+        //               content: Text(AppLocalizations.of(context)!.syncComplete)
+        //             )
+        //           );
+        //           setState((){});
+        //         }
+        //       });
+        //     }
+        //   )
       ],
       additionalPopupActions: [
         if (editable is Character)

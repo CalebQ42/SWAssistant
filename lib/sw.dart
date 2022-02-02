@@ -482,10 +482,19 @@ class SW{
     }
     if (getPreference(preferences.googleDrive, false)){
       if(getPreference(preferences.driveFirstLoad, true)){
-        await initialSync();
-        prefs.setBool(preferences.driveFirstLoad, false);
+        if(await initialSync()){
+          prefs.setBool(preferences.driveFirstLoad, false);
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.syncFail),)
+          );
+        }
       }else{
-        await syncCloud();
+        if(!await syncCloud()){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.syncFail),)
+          );
+        }
       }
     }
     Navigator.of(context).pop();
