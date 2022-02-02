@@ -211,7 +211,6 @@
     "damageLevel3": "Mittelschwer",
     "damageLevel4": "Schwer",
     "damageLevel5": "Broken",
-    "skillBase": "Skill Base",
     "addCharacteristic": "Add Characteristic",
     "addBrawn": "Add Brawn to Damage",
     "loaded": "Geladen",
@@ -249,6 +248,11 @@
             }
         }
     },
+    "stimpacks": "Stimpacks",
+    "emergencyRepairPatches": "Emergency Repair Patches",
+    "healsUsedToday": "Heals Used Today:",
+    "heal": "Heal",
+    "reset": "Reset",
     "current": "Current:",
     "total": "Total:",
     "addXP": "Add XP",
