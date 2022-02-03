@@ -249,7 +249,6 @@ class EditableListState extends State<EditableList>{
             if(await app.initialSync()){
               app.prefs.setBool(preferences.driveFirstLoad, false);
               messager.clearSnackBars();
-              setState(() {});
             }else{
               messager.clearSnackBars();
               messager.showSnackBar(
@@ -266,11 +265,10 @@ class EditableListState extends State<EditableList>{
                   content: Text(AppLocalizations.of(context)!.syncFail)
                 )
               );
-            }else{
-              setState(() {});
             }
           }
         }
+        setState(() {});
       }),
       child: AnimatedList(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),

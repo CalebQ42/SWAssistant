@@ -278,8 +278,10 @@ abstract class Editable extends JsonSavable{
   }
   void delete(SW app){
     if(!_saving && !_defered && !_cloudDefered && !_cloudSaving){
-      var fil = File(getFileLocation(app));
-      fil.deleteSync();
+      if(!kIsWeb) {
+        var fil = File(getFileLocation(app));
+        fil.deleteSync();
+      }
       if(driveId != null) app.driver?.delete(driveId!);
     }else{
       Future(() async {
