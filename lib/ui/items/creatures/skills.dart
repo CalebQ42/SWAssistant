@@ -35,7 +35,7 @@ class SkillsState extends State<Skills> with StatefulCard {
         child: Row(
           children: [
             Expanded(
-              child: Text(creature.skills[index].name!,
+              child: Text((creature.skills[index].career ? "* " : "") + creature.skills[index].name!,
                 style: TextStyle(fontWeight: creature.skills[index].career ? FontWeight.bold : FontWeight.normal)
               ),
               flex: 7
@@ -49,7 +49,7 @@ class SkillsState extends State<Skills> with StatefulCard {
                 buttonPadding: EdgeInsets.zero,
                 children: [
                   IconButton(
-                    iconSize: 24.0,
+                    splashRadius: 20,
                     constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: const Icon(Icons.delete_forever),
                     onPressed: (){
@@ -72,6 +72,7 @@ class SkillsState extends State<Skills> with StatefulCard {
                     }
                   ),
                   IconButton(
+                    splashRadius: 20,
                     constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                     icon: const Icon(Icons.edit),
                     onPressed: () =>
@@ -89,7 +90,7 @@ class SkillsState extends State<Skills> with StatefulCard {
               duration: const Duration(milliseconds: 250),
               transitionBuilder: (child, anim){
                 var offset = const Offset(1,0);
-                if((!edit && child is ButtonBar) || (edit && child is Padding)){
+                if(child is Padding){
                   offset = const Offset(-1,0);
                 }
                 return ClipRect(

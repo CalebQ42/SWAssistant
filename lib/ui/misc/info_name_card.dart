@@ -45,6 +45,7 @@ class _InfoCardState extends State<InfoCard>{
         )
       ),
       children: [widget.contents],
+      expandedAlignment: Alignment.topCenter,
       onExpansionChanged: (b){
         setState((){
           shown = b;

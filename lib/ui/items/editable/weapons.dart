@@ -9,6 +9,7 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/weapon_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 
 class Weapons extends StatefulWidget{
@@ -36,81 +37,6 @@ class WeaponsState extends State<Weapons> with StatefulCard{
       InkResponse(
         containedInkWell: true,
         highlightShape: BoxShape.rectangle,
-        //TODO: Make nice weapon info displya.
-        // onLongPress: () =>
-        //   Bottom(
-        //     child: (context) =>
-        //       Wrap(
-        //         alignment: WrapAlignment.center,
-        //         children: [
-        //           Container(height: 15),
-        //           Center(
-        //             child: Text(
-        //               editable.weapons[i].name,
-        //               style: Theme.of(context).textTheme.headline5,
-        //               textAlign: TextAlign.center,
-        //             )
-        //           ),
-        //           Container(height: 5,),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.damage + ": " + editable.weapons[i].damage.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 5),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.critical + ": " + editable.weapons[i].critical.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 5),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 5),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 5),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 5),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 5),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 5),
-        //           Center(
-        //             child: Text(
-        //               AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
-        //               style: Theme.of(context).textTheme.bodyText1,
-        //             ),
-        //           ),
-        //           Container(height: 10),
-        //         ],
-        //       )
-        //   ).show(context),
         onTap: (){
           if(editable.weapons[i].itemState == 4){
             ScaffoldMessenger.of(context).clearSnackBars();
@@ -169,6 +95,197 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                 child: Text(editable.weapons[i].name)
               )
             ),
+            ButtonBar(
+              buttonPadding: EdgeInsets.zero,
+              children: [
+                IconButton(
+                  constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                  icon: const Icon(Icons.info_outline),
+                  splashRadius: 20,
+                  onPressed: () =>
+                    Bottom(
+                      child: (context) {
+                        String range;
+                        switch(editable.weapons[i].range){
+                          case 0:
+                            range = AppLocalizations.of(context)!.rangeLevel1;
+                            break;
+                          case 1:
+                            range = AppLocalizations.of(context)!.rangeLevel2;
+                            break;
+                          case 2:
+                            range = AppLocalizations.of(context)!.rangeLevel3;
+                            break;
+                          case 3:
+                            range = AppLocalizations.of(context)!.rangeLevel4;
+                            break;
+                          default:
+                            range = AppLocalizations.of(context)!.rangeLevel5;
+                            break;
+                        }
+                        String weapDamage = "";
+                        switch(editable.weapons[i].itemState){
+                          case 1:
+                            weapDamage = AppLocalizations.of(context)!.damageLevel2;
+                            break;
+                          case 2:
+                            weapDamage = AppLocalizations.of(context)!.damageLevel3;
+                            break;
+                          case 3:
+                            weapDamage = AppLocalizations.of(context)!.damageLevel4;
+                            break;
+                          case 4:
+                            weapDamage = AppLocalizations.of(context)!.damageLevel5;
+                            break;
+                        }
+                        String skill;
+                        switch(editable.weapons[i].skill){
+                          case 0:
+                            skill = AppLocalizations.of(context)!.skills3;
+                            break;
+                          case 1:
+                            skill = AppLocalizations.of(context)!.skills11;
+                            break;
+                          case 2:
+                            skill = AppLocalizations.of(context)!.skills13;
+                            break;
+                          case 3:
+                            skill = AppLocalizations.of(context)!.skills16;
+                            break;
+                          case 4:
+                            skill = AppLocalizations.of(context)!.skills21;
+                            break;
+                          default:
+                            skill = AppLocalizations.of(context)!.skills22;
+                            break;
+                        }
+                        String characteristic;
+                        switch(editable.weapons[i].skillBase){
+                          case 0:
+                            characteristic = AppLocalizations.of(context)!.brawn;
+                            break;
+                          case 1:
+                            characteristic = AppLocalizations.of(context)!.agility;
+                            break;
+                          case 2:
+                            characteristic = AppLocalizations.of(context)!.intellect;
+                            break;
+                          case 3:
+                            characteristic = AppLocalizations.of(context)!.cunning;
+                            break;
+                          case 4:
+                            characteristic = AppLocalizations.of(context)!.willpower;
+                            break;
+                          default:
+                            characteristic = AppLocalizations.of(context)!.presence;
+                            break;
+                        }
+                        return Wrap(
+                          alignment: WrapAlignment.center,
+                          children: [
+                            Container(height: 15),
+                            Center(
+                              child: Text(
+                                editable.weapons[i].name,
+                                style: Theme.of(context).textTheme.headline5,
+                                textAlign: TextAlign.center,
+                              )
+                            ),
+                            Container(height: 5),
+                            Center(
+                              child: Text(
+                                skill + " (" + characteristic + ")",
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            if(!editable.weapons[i].loaded) Container(height: 5),
+                            if(!editable.weapons[i].loaded) Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.weaponOutOfAmmo,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            if(weapDamage != "") Container(height: 5),
+                            if(weapDamage != "") Center(
+                              child: Text(
+                                weapDamage + " " + AppLocalizations.of(context)!.itemDamage,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            Container(height: 5,),
+                            Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.damage + ": " + editable.weapons[i].damage.toString() +
+                                  (editable.weapons[i].addBrawn ? " + " + AppLocalizations.of(context)!.brawn : ""),
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            Container(height: 5),
+                            Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.critical + ": " + editable.weapons[i].critical.toString(),
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            Container(height: 5),
+                            Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            Container(height: 5),
+                            Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.encum + ": " + editable.weapons[i].encumbrance.toString(),
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            Container(height: 5),
+                            Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.range + ": " + range,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            if(editable.weapons[i].limitedAmmo) Container(height: 5),
+                            if(editable.weapons[i].limitedAmmo) Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.ammo + ": " + editable.weapons[i].ammo.toString(),
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                            if(editable.weapons[i].characteristics.isNotEmpty) Container(height: 10),
+                            if(editable.weapons[i].characteristics.isNotEmpty) Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.characteristicPlural,
+                                style: Theme.of(context).textTheme.headline6
+                              )
+                            ),
+                            if(editable.weapons[i].characteristics.isNotEmpty) ...List.generate(
+                              editable.weapons[i].characteristics.length * 2,
+                              (ch){
+                                if(ch%2 == 0) return Container(height:5);
+                                var char = editable.weapons[i].characteristics[(ch/2).floor()];
+                                String out = char.name;
+                                if(char.value != 1 && char.value != null) out += " " + char.value.toString();
+                                if(char.advantage != null) out += " " + AppLocalizations.of(context)!.advNeeded + ": " + char.advantage.toString();
+                                return Center(
+                                  child: Text(
+                                    out,
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                );
+                              }
+                            ),
+                            Container(height: 10)
+                          ],
+                        );
+                      }
+                    ).show(context),
+                )
+              ]
+            ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: !edit ? Container(height: 24,)
@@ -221,7 +338,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
               ),
               transitionBuilder: (child, anim){
                 var offset = const Offset(1,0);
-                if((!edit && child is ButtonBar) || (edit && child is Container)){
+                if(child is Container){
                   offset = const Offset(-1,0);
                 }
                 return ClipRect(

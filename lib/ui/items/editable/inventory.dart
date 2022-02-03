@@ -175,48 +175,55 @@ class InventoryState extends State<Inventory> with StatefulCard{
             style: TextStyle(color: Theme.of(context).errorColor),
             textAlign: TextAlign.center,
           ), ...List.generate(
-          editable.inventory.length,
-          (index) => InkResponse(
-            containedInkWell: true,
-            highlightShape: BoxShape.rectangle,
-            onTap: () =>
-              Bottom(
-                child: (context) =>
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      Container(height: 15),
-                      Center(
-                        child: Text(
-                          editable.inventory[index].name,
-                          style: Theme.of(context).textTheme.headline5,
-                          textAlign: TextAlign.center,
-                        )
-                      ),
-                      Container(height: 5,),
-                      Center(
-                        child: Text(
-                          AppLocalizations.of(context)!.count + ": " + editable.inventory[index].count.toString(),
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                      Container(height: 5),
-                      Center(
-                        child: Text(
-                          AppLocalizations.of(context)!.encum + ": " + editable.inventory[index].encum.toString(),
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                      Container(height: 10),
-                      if(editable.inventory[index].desc != "") Text(editable.inventory[index].desc)
-                    ],
-                  )
-              ).show(context),
-            child: Row(
+            editable.inventory.length,
+            (index) => Row(
               children: [
                 Expanded(
                   child: Text((editable.inventory[index].count != 1 ? editable.inventory[index].count.toString() + " " : "" )
                     + editable.inventory[index].name),
+                ),
+                ButtonBar(
+                  buttonPadding: EdgeInsets.zero,
+                  children: [
+                    IconButton(
+                      constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                      icon: const Icon(Icons.info_outline),
+                      splashRadius: 20,
+                      onPressed: () =>
+                        Bottom(
+                          child: (context) =>
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              children: [
+                                Container(height: 15),
+                                Center(
+                                  child: Text(
+                                    editable.inventory[index].name,
+                                    style: Theme.of(context).textTheme.headline5,
+                                    textAlign: TextAlign.center,
+                                  )
+                                ),
+                                Container(height: 5,),
+                                Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)!.count + ": " + editable.inventory[index].count.toString(),
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ),
+                                Container(height: 5),
+                                Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)!.encum + ": " + editable.inventory[index].encum.toString(),
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ),
+                                Container(height: 10),
+                                if(editable.inventory[index].desc != "") Text(editable.inventory[index].desc)
+                              ],
+                            )
+                        ).show(context),
+                    )
+                  ]
                 ),
                 AnimatedSwitcher(
                   child: edit ? ButtonBar(
@@ -224,7 +231,6 @@ class InventoryState extends State<Inventory> with StatefulCard{
                     children: [
                       IconButton(
                         icon: const Icon(Icons.delete_forever),
-                        iconSize: 24.0,
                         constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
                           var temp = Item.from(editable.inventory[index]);
@@ -255,7 +261,6 @@ class InventoryState extends State<Inventory> with StatefulCard{
                       ),
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        iconSize: 24.0,
                         constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: () =>
                           ItemEditDialog(
@@ -277,11 +282,11 @@ class InventoryState extends State<Inventory> with StatefulCard{
                           ).show(context)
                       )
                     ],
-                  ) : Container(height: 40),
-                  duration: const Duration(milliseconds: 250),
+                  ) : Container(),
+                  duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, anim){
                     var offset = const Offset(1,0);
-                    if((!edit && child is ButtonBar) || (edit && child is Container)){
+                    if(child is Container){
                       offset = const Offset(-1,0);
                     }
                     return ClipRect(
@@ -301,8 +306,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
                 )
               ],
             )
-          )
-        ), AnimatedSwitcher(
+          ), AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             child: edit ? Center(
               child: IconButton(
