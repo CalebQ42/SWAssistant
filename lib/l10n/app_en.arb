@@ -245,7 +245,7 @@
     "addCharacteristic": "Add Characteristic",
     "addBrawn": "Add Brawn to Damage",
     "loaded": "Loaded",
-    "slugthrower": "Slugthrower (Needs Ammo)",
+    "limitedAmmo": "Limited Ammo",
     "ammo": "Ammo",
 
     "species": "Species",

@@ -206,7 +206,7 @@ class _AmmoState extends State<_WeaponAmmo>{
         SwitchListTile(
           value: widget.weapon.limitedAmmo,
           onChanged: (value) => setState(() => widget.weapon.limitedAmmo = value),
-          title: Text(AppLocalizations.of(context)!.slugthrower)
+          title: Text(AppLocalizations.of(context)!.limitedAmmo)
         ),
       ],
     );
