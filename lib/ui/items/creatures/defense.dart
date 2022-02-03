@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
-import 'package:swassistant/ui/misc/editable_common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Defense extends StatelessWidget{
 

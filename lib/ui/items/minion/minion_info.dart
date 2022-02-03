@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../misc/editable_common.dart';
+import '../../misc/edit_content.dart';
 
 class MinInfo extends StatefulWidget{
 

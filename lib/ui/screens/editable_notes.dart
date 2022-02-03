@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/note.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/misc/editable_common.dart';
+import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/editing_text.dart';
 
 class EditableNotes extends StatefulWidget{
 

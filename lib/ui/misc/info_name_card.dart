@@ -4,7 +4,8 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/editable_common.dart';
+import 'package:swassistant/ui/misc/edit_content.dart';
+import 'package:swassistant/ui/misc/editing_text.dart';
 
 class InfoCard extends StatefulWidget{
   

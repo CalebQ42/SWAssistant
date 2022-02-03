@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/minion.dart';
-import 'package:swassistant/ui/misc/editable_common.dart';
+import 'package:swassistant/ui/misc/edit_content.dart';
+import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

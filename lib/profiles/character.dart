@@ -6,7 +6,7 @@ import 'package:swassistant/items/duty.dart';
 import 'package:swassistant/items/force_power.dart';
 import 'package:swassistant/items/obligation.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/misc/editable_common.dart';
+import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/items/characters/duties.dart';
 import 'package:swassistant/ui/items/characters/morality.dart';
 import 'package:swassistant/ui/items/characters/obligations.dart';

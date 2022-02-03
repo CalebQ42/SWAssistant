@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/obligation.dart';
 import 'package:swassistant/profiles/character.dart';
-import 'package:swassistant/ui/misc/editable_common.dart';
+import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/character/obli_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';

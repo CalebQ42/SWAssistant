@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
-import 'package:swassistant/ui/misc/editable_common.dart';
+import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Characteristics extends StatelessWidget{
 
