@@ -106,7 +106,8 @@ class EditableListState extends State<EditableList>{
         if(syncSuccess){
           app.prefs.setBool(preferences.driveFirstLoad, false);
           Navigator.pop(context);
-          Navigator.pushNamed(context, "/edit/" + widget.uidToLoad!);
+          var ed = app.findEditable(widget.uidToLoad!);
+          if(ed != null) Navigator.pushNamed(context, "/edit/" + widget.uidToLoad!, arguments: ed);
         }else{
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
