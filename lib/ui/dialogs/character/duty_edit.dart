@@ -9,27 +9,23 @@ class DutyEditDialog {
   final Duty duty;
   final Function(Duty) onClose;
 
-  TextEditingController? nameController;
-  TextEditingController? valueController;
-  TextEditingController? descController;
-
   late Bottom bot;
 
   DutyEditDialog({Duty? d, required this.onClose}) : duty = d != null ? Duty.from(d) : Duty(){
-    nameController ??= TextEditingController(text: duty.name)
-      ..addListener(() {
-        duty.name = nameController!.text;
-        bot.updateButtons();
-      });
-    valueController ??= TextEditingController(text: duty.value?.toString())
-      ..addListener(() {
-        duty.value = int.tryParse(valueController!.text);
-        bot.updateButtons();
-      });
-    descController ??= TextEditingController(text: duty.desc)
-      ..addListener(() =>
-        duty.desc = descController!.text
-      );
+    var nameController = TextEditingController(text: duty.name);
+    nameController.addListener(() {
+      duty.name = nameController.text;
+      bot.updateButtons();
+    });
+    var valueController = TextEditingController(text: duty.value?.toString());
+    valueController.addListener(() {
+      duty.value = int.tryParse(valueController.text);
+      bot.updateButtons();
+    });
+    var descController = TextEditingController(text: duty.desc);
+    descController.addListener(() =>
+      duty.desc = descController.text
+    );
     bot = Bottom(
       child: (context) =>
         Wrap(

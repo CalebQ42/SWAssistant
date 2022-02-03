@@ -11,29 +11,25 @@ class WeaponCharacteristicDialog{
 
   late Bottom bot;
 
-  late TextEditingController nameController;
-  late TextEditingController valueController;
-  late TextEditingController advantageController;
-
   //TODO: passive characteristics
 
   WeaponCharacteristicDialog({WeaponCharacteristic? characteristic, required this.onClose}) :
     wc = characteristic == null ? WeaponCharacteristic() : WeaponCharacteristic.from(characteristic){
-    nameController = TextEditingController(text: wc.name)
-        ..addListener(() {
-          wc.name = nameController.text;
-          bot.updateButtons();
-        });
-    valueController = TextEditingController(text: wc.value?.toString() ?? "")
-        ..addListener(() {
-          wc.value = int.tryParse(valueController.text);
-          bot.updateButtons();
-        });
-    advantageController = TextEditingController(text: wc.advantage?.toString() ?? "")
-        ..addListener(() {
-          wc.advantage = int.tryParse(advantageController.text);
-          bot.updateButtons();
-        });
+    var nameController = TextEditingController(text: wc.name);
+    nameController.addListener(() {
+      wc.name = nameController.text;
+      bot.updateButtons();
+    });
+    var valueController = TextEditingController(text: wc.value?.toString() ?? "");
+    valueController.addListener(() {
+      wc.value = int.tryParse(valueController.text);
+      bot.updateButtons();
+    });
+    var advantageController = TextEditingController(text: wc.advantage?.toString() ?? "");
+    advantageController.addListener(() {
+      wc.advantage = int.tryParse(advantageController.text);
+      bot.updateButtons();
+    });
     bot = Bottom(
       buttons: (context) => [
         TextButton(

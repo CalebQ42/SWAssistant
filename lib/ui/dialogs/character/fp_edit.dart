@@ -8,20 +8,17 @@ class ForcePowerEditDialog{
   final ForcePower fp;
   final Function(ForcePower) onClose;
 
-  late TextEditingController nameController;
-  late TextEditingController descController;
-
   late Bottom bot;
 
   ForcePowerEditDialog({ForcePower? power, required this.onClose}) :
     fp = power == null ? ForcePower() : ForcePower.from(power){
-    nameController = TextEditingController(text: fp.name)
-      ..addListener(() {
-        fp.name = nameController.text;
-        bot.updateButtons();
-      });
-    descController = TextEditingController(text: fp.desc)
-      ..addListener(() => fp.desc = descController.text);
+    var nameController = TextEditingController(text: fp.name);
+    nameController.addListener(() {
+      fp.name = nameController.text;
+      bot.updateButtons();
+    });
+    var descController = TextEditingController(text: fp.desc);
+    descController.addListener(() => fp.desc = descController.text);
     bot = Bottom(
       buttons: (context) => [
         TextButton(

@@ -11,32 +11,27 @@ class ItemEditDialog{
   final Editable editable;
   final Item item;
 
-  late TextEditingController nameController;
-  late TextEditingController countController;
-  late TextEditingController encumController;
-  late TextEditingController descController;
-
   late Bottom bot;
 
   ItemEditDialog({required this.onClose, Item? it, required this.editable}) :
     item = it == null ? Item() : Item.from(it){
-    nameController = TextEditingController(text: item.name)
-      ..addListener(() {
-        item.name = nameController.text;
-        bot.updateButtons();
-      });
-    countController = TextEditingController(text: item.count.toString())
-      ..addListener(() =>
-        item.count = int.tryParse(countController.text) ?? 1
-      );
-    encumController = TextEditingController(text: item.encum.toString())
-      ..addListener(() =>
-        item.encum = int.tryParse(encumController.text) ?? 0
-      );
-    descController = TextEditingController(text: item.desc)
-      ..addListener(() =>
-        item.desc = descController.text
-      );
+    var nameController = TextEditingController(text: item.name);
+    nameController.addListener(() {
+      item.name = nameController.text;
+      bot.updateButtons();
+    });
+    var countController = TextEditingController(text: item.count.toString());
+    countController.addListener(() =>
+      item.count = int.tryParse(countController.text) ?? 1
+    );
+    var encumController = TextEditingController(text: item.encum.toString());
+    encumController.addListener(() =>
+      item.encum = int.tryParse(encumController.text) ?? 0
+    );
+    var descController = TextEditingController(text: item.desc);
+    descController.addListener(() =>
+      item.desc = descController.text
+    );
     bot = Bottom(
       buttons: (context) => [
         TextButton(

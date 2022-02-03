@@ -19,42 +19,35 @@ class WeaponEditDialog{
 
   late Bottom bot;
 
-  TextEditingController? nameController;
-  TextEditingController? damageController;
-  TextEditingController? criticalController;
-  TextEditingController? hpController;
-  TextEditingController? encumbranceController;
-  TextEditingController? arcController;
-
   WeaponEditDialog({required this.onClose, Weapon? weap, required this.editable}) :
     weapon = weap == null ? Weapon() : Weapon.from(weap){
-    nameController ??= TextEditingController(text: weapon.name)
-        ..addListener(() {
-          weapon.name = nameController!.text;
-          bot.updateButtons();
-        });
-    damageController ??= TextEditingController(text: weapon.damage?.toString())
-        ..addListener(() {
-          weapon.damage = int.tryParse(damageController!.text);
-          bot.updateButtons();
-        });
-    criticalController ??= TextEditingController(text: weapon.critical?.toString())
-        ..addListener(() {
-          weapon.critical = int.tryParse(criticalController!.text);
-          bot.updateButtons();
-        });
-    hpController ??= TextEditingController(text: weapon.hp.toString())
-        ..addListener(() =>
-          weapon.hp = int.tryParse(hpController!.text) ?? 0
-        );
-    encumbranceController ??= TextEditingController(text: weapon.encumbrance.toString())
-        ..addListener(() =>
-          weapon.encumbrance = int.tryParse(encumbranceController!.text) ?? 0
-        );
-    arcController ??= TextEditingController(text: weapon.firingArc)
-        ..addListener(() =>
-          weapon.firingArc = arcController!.text
-        );
+    var nameController = TextEditingController(text: weapon.name);
+    nameController.addListener(() {
+      weapon.name = nameController.text;
+      bot.updateButtons();
+    });
+    var damageController = TextEditingController(text: weapon.damage?.toString());
+    damageController.addListener(() {
+      weapon.damage = int.tryParse(damageController.text);
+      bot.updateButtons();
+    });
+    var criticalController = TextEditingController(text: weapon.critical?.toString());
+    criticalController.addListener(() {
+      weapon.critical = int.tryParse(criticalController.text);
+      bot.updateButtons();
+    });
+    var hpController = TextEditingController(text: weapon.hp.toString());
+    hpController.addListener(() =>
+      weapon.hp = int.tryParse(hpController.text) ?? 0
+    );
+    var encumbranceController = TextEditingController(text: weapon.encumbrance.toString());
+    encumbranceController.addListener(() =>
+      weapon.encumbrance = int.tryParse(encumbranceController.text) ?? 0
+    );
+    var arcController = TextEditingController(text: weapon.firingArc);
+    arcController.addListener(() =>
+      weapon.firingArc = arcController.text
+    );
     bot = Bottom(
       buttons: (context) => [
         TextButton(

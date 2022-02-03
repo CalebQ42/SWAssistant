@@ -53,7 +53,7 @@ class _IntroOneState extends State{
                 setState((){});
               }
             ),
-            if(!kIsWeb) SwitchListTile(
+            SwitchListTile(
               title: Text(
                 AppLocalizations.of(context)!.crashReporting,
               ),

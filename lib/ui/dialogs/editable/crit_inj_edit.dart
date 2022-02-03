@@ -7,22 +7,19 @@ class CriticalInjuryEditDialog {
   final CriticalInjury criticalInjury;
   final Function(CriticalInjury) onClose;
 
-  late TextEditingController nameController;
-  late TextEditingController descController;
-
   late Bottom bot;
 
   CriticalInjuryEditDialog({CriticalInjury? inj, required this.onClose}) :
     criticalInjury = inj == null ? CriticalInjury() : CriticalInjury.from(inj){
-    nameController = TextEditingController(text: criticalInjury.name)
-        ..addListener(() {
-          criticalInjury.name = nameController.text;
-          bot.updateButtons();
-        });
-    descController = TextEditingController(text: criticalInjury.desc)
-        ..addListener(() =>
-          criticalInjury.desc = descController.text
-        );
+    var nameController = TextEditingController(text: criticalInjury.name);
+    nameController.addListener(() {
+      criticalInjury.name = nameController.text;
+      bot.updateButtons();
+    });
+    var descController = TextEditingController(text: criticalInjury.desc);
+    descController.addListener(() =>
+      criticalInjury.desc = descController.text
+    );
     bot = Bottom(
       buttons: (context) => [
         TextButton(

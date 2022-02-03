@@ -7,7 +7,8 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/common.dart';
+import 'package:swassistant/ui/misc/sw_appbar.dart';
+import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
 class EditableList extends StatefulWidget{
@@ -117,14 +118,6 @@ class EditableListState extends State<EditableList>{
         }
         await app.syncCloud(context).then((value) {
         });
-      });
-    } else if(kIsWeb && first){
-      first = false;
-      Future(() async {
-        while(!mounted) {
-          await Future.delayed(const Duration(milliseconds: 50));
-        }
-        refreshKey.currentState?.show();
       });
     }
     var oldLen = list.length;

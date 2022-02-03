@@ -7,16 +7,14 @@ class SpecializationEditDialog{
   final Function(String) onClose;
   String specialization;
 
-  late TextEditingController specCont;
-
   late Bottom bot;
 
   SpecializationEditDialog({required this.onClose, this.specialization = ""}){
-    specCont = TextEditingController(text: specialization)
-      ..addListener(() {
-        specialization = specCont.text;
-        bot.updateButtons();
-      });
+    var specCont = TextEditingController(text: specialization);
+    specCont.addListener(() {
+      specialization = specCont.text;
+      bot.updateButtons();
+    });
     bot = Bottom(
       child: (context) =>
         Wrap(

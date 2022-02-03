@@ -11,26 +11,22 @@ class ObligationEditDialog{
 
   late Bottom bot;
 
-  TextEditingController? nameController;
-  TextEditingController? valueController;
-  TextEditingController? descController;
-
   ObligationEditDialog({Obligation? obli, required this.onClose}) :
     obligation = obli != null ? Obligation.from(obli) : Obligation(){
-    nameController ??= TextEditingController(text: obligation.name)
-      ..addListener(() {
-        obligation.name = nameController!.text;
-        bot.updateButtons();
-      });
-    valueController ??= TextEditingController(text: obligation.value?.toString())
-      ..addListener(() {
-        obligation.value = int.tryParse(valueController!.text);
-        bot.updateButtons();
-      });
-    descController ??= TextEditingController(text: obligation.desc)
-      ..addListener(() =>
-        obligation.desc = descController!.text
-      );
+    var nameController = TextEditingController(text: obligation.name);
+    nameController.addListener(() {
+      obligation.name = nameController.text;
+      bot.updateButtons();
+    });
+    var valueController = TextEditingController(text: obligation.value?.toString());
+    valueController.addListener(() {
+      obligation.value = int.tryParse(valueController.text);
+      bot.updateButtons();
+    });
+    var descController = TextEditingController(text: obligation.desc);
+    descController.addListener(() =>
+      obligation.desc = descController.text
+    );
     bot = Bottom(
       child: (context) =>
         Wrap(

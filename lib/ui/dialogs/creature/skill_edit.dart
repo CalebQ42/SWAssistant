@@ -14,16 +14,14 @@ class SkillEditDialog{
 
   late Bottom bot;
 
-  late TextEditingController valueController;
-
   SkillEditDialog({required this.onClose, Skill? sk, required this.creature}) :
       skill = (sk == null) ? Skill() : 
       creature is Character ? Skill.from(sk) : Skill.from(sk..value = 0){
-    valueController = TextEditingController(text: skill.value?.toString())
-      ..addListener(() {
-        skill.value = int.tryParse(valueController.text);
-        bot.updateButtons();
-      });
+    var valueController = TextEditingController(text: skill.value?.toString());
+    valueController.addListener(() {
+      skill.value = int.tryParse(valueController.text);
+      bot.updateButtons();
+    });
     bot = Bottom(
       buttons: (context) => [
         TextButton(
@@ -90,10 +88,10 @@ class _SkillSelectorState extends State<_SkillSelector>{
   void initState() {
     super.initState();
     skillController = TextEditingController(text: widget.skill.name)
-      ..addListener(() {
-        widget.skill.name = skillController.text;
-        widget.bot.updateButtons();
-      });
+    ..addListener(() {
+      widget.skill.name = skillController.text;
+      widget.bot.updateButtons();
+    });
   }
 
   @override

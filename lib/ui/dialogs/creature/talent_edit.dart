@@ -11,26 +11,22 @@ class TalentEditDialog{
 
   late Bottom bot;
 
-  TextEditingController? nameController;
-  TextEditingController? valueController;
-  TextEditingController? descController;
-
   TalentEditDialog({Talent? tal, required this.onClose}) :
     talent = tal == null ? Talent() : Talent.from(tal){
-    nameController ??= TextEditingController(text: talent.name)
-      ..addListener(() {
-        talent.name = nameController!.text;
-        bot.updateButtons();
-      });
-    valueController ??= TextEditingController(text: talent.value?.toString())
-      ..addListener(() {
-        talent.value = int.tryParse(valueController!.text);
-        bot.updateButtons();
-      });
-    descController ??= TextEditingController(text: talent.desc)
-      ..addListener(() =>
-        talent.desc = descController!.text
-      );
+    var nameController = TextEditingController(text: talent.name);
+    nameController.addListener(() {
+      talent.name = nameController.text;
+      bot.updateButtons();
+    });
+    var valueController = TextEditingController(text: talent.value?.toString());
+    valueController.addListener(() {
+      talent.value = int.tryParse(valueController.text);
+      bot.updateButtons();
+    });
+    var descController = TextEditingController(text: talent.desc);
+    descController.addListener(() =>
+      talent.desc = descController.text
+    );
     bot = Bottom(
       buttons: (context) => [
         TextButton(

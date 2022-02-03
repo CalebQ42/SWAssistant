@@ -4,55 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:swassistant/sw.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/test.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/test.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-
-class SWAppBar extends AppBar{
-
-  static List<PopupMenuItem> defPopup(BuildContext context) =>[
-    PopupMenuItem(
-      value: "translate",
-      child: Text(AppLocalizations.of(context)!.translate),
-    ),
-    PopupMenuItem(
-      value: "discuss",
-      child: Text(AppLocalizations.of(context)!.discuss)
-    )
-  ];
-
-  static Map<String, Function> defFunctions = {
-    "translate" : () => _launchURL("https://crwd.in/swrpg"),
-    "discuss" : () => _launchURL("https://github.com/CalebQ42/SWAssistant/discussions")
-  };
-
-  SWAppBar(BuildContext context, {Key? key, Widget? title, List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions,
-      Map<String, Function>? popupFunctions, PreferredSizeWidget? bottom, required Color backgroundColor}) : 
-        super(key: key, backgroundColor: backgroundColor, title: title, actions: _getActions(context, additionalActions, additionalPopupActions, popupFunctions), bottom: bottom);
-
-  static List<Widget> _getActions(BuildContext context, List<Widget>? additionalActions, List<PopupMenuItem>? additionalPopupActions, Map<String, Function>? popupFunctions) =>
-    <Widget>[...?additionalActions, _getPopupMenu(context, additionalPopupActions ?? [], popupFunctions ?? {})];
-  
-  static PopupMenuButton _getPopupMenu(BuildContext context, List<PopupMenuItem> additionalPopupActions, Map<String, Function> popupFunctions){
-    popupFunctions.addAll(defFunctions);
-    additionalPopupActions.addAll(defPopup(context));
-    return PopupMenuButton(
-      itemBuilder: (context) => additionalPopupActions,
-      onSelected:(t) {
-        if(popupFunctions[t] != null){
-          popupFunctions[t]!();
-        }
-      }
-    );
-  }
-
-  static void _launchURL(String url) async {
-    if (!await launch(url)) throw 'Could not launch $url';
-  }
-}
 
 class SWDrawer extends StatelessWidget{
 
@@ -68,7 +24,7 @@ class SWDrawer extends StatelessWidget{
           DrawerHeader(
             child: const Text("SWAssistant"),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor
+              color: Theme.of(context).primaryColor,
             )
           ),
           ListTile(
@@ -86,7 +42,6 @@ class SWDrawer extends StatelessWidget{
             }
           ),
           const Divider(),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),child:Text("Profiles")),
           ListTile(
             title: Text(AppLocalizations.of(context)!.characters),
             leading: const Icon(Icons.face),
@@ -144,10 +99,6 @@ class SWDrawer extends StatelessWidget{
           //   }
           // ),
           const Divider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-            child: Text(AppLocalizations.of(context)!.otherStuff)
-          ),
           ListTile(
             title: Text(AppLocalizations.of(context)!.dice),
             leading: const Icon(Icons.casino),
@@ -162,6 +113,7 @@ class SWDrawer extends StatelessWidget{
               }
             }
           ),
+          const Divider(),
           //TODO: Guide
           // ListTile(
           //   title: Text(AppLocalizations.of(context)!.guide),
@@ -189,6 +141,18 @@ class SWDrawer extends StatelessWidget{
                 Navigator.of(context).pushNamed("/settings");
               }
             }
+          ),
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.discuss),
+            leading: const Icon(Icons.announcement),
+            onTap: () async =>
+              await launch("https://github.com/CalebQ42/SWAssistant/discussions")
+          ),
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.translate),
+            leading: const Icon(Icons.translate),
+            onTap: () async =>
+              await launch("https://crwd.in/swrpg")
           ),
           const Divider(),
           ListTile(

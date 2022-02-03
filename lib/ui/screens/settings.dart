@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
-import 'package:swassistant/ui/misc/common.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/sw_appbar.dart';
+import 'package:swassistant/ui/misc/sw_drawer.dart';
 
 class Settings extends StatefulWidget{
 
@@ -131,8 +132,8 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.firebase),
             subtitle: Text(AppLocalizations.of(context)!.firebaseSubtitle),
           ),
-          if(!kIsWeb) const Divider(),
-          if(!kIsWeb) SwitchListTile(
+          const Divider(),
+          SwitchListTile(
             value: app.getPreference(preferences.crashlytics, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b){
               FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b);
