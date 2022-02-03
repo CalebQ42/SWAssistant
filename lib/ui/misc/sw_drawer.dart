@@ -19,6 +19,7 @@ class SWDrawer extends StatelessWidget{
     Drawer(
       key: const Key("SWDrawerKey"),
       child: ListView(
+        controller: ScrollController(),
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(

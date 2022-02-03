@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/sw_appbar.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
 
 class Settings extends StatefulWidget{
@@ -24,8 +23,7 @@ class SettingsState extends State{
   Widget build(BuildContext context){
     var app = SW.of(context);
     return Scaffold(
-      appBar: SWAppBar(
-        context,
+      appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settings),
         backgroundColor: Theme.of(context).primaryColor
       ),

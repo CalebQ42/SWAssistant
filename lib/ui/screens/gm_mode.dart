@@ -9,7 +9,6 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/ui/misc/sw_appbar.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
@@ -121,138 +120,108 @@ class _BarState extends State<_GMModeBar>{
 
   @override
   Widget build(BuildContext context) =>
-    SWAppBar(
-      context,
+    AppBar(
       backgroundColor: Theme.of(context).primaryColor,
-      additionalActions: [
+      actions: [
         IconButton(
           icon: const Icon(Icons.casino_outlined),
           onPressed: () =>
             SWDiceHolder().showDialog(context),
         ),
-        // if(SW.of(context).getPreference(preferences.googleDrive, false))
-        //   IconButton(
-        //     icon: const Icon(Icons.sync),
-        //     onPressed: () {
-        //       var app = SW.of(context);
-        //       var messager = ScaffoldMessenger.of(context);
-        //       if(app.syncing) return;
-        //       messager.clearSnackBars();
-        //       messager.showSnackBar(
-        //         SnackBar(
-        //           content: Text(AppLocalizations.of(context)!.driveSyncing),
-        //         )
-        //       );
-        //       app.syncCloud().then((value){
-        //         if (!value){
-        //           messager.clearSnackBars();
-        //           messager.showSnackBar(
-        //             SnackBar(
-        //               content: Text(AppLocalizations.of(context)!.syncFail)
-        //             )
-        //           );
-        //         } else {
-        //           messager.clearSnackBars();
-        //           messager.showSnackBar(
-        //             SnackBar(
-        //               content: Text(AppLocalizations.of(context)!.syncComplete)
-        //             )
-        //           );
-        //           setState((){});
-        //         }
-        //       });
-        //     }
-        //   )
+        PopupMenuButton(
+          itemBuilder: (c) => [
+            if (editable is Character)
+              CheckedPopupMenuItem(
+                checked: (editable as Character).disableForce,
+                child: Text(AppLocalizations.of(context)!.disableForce),
+                value: "disableForce"
+              ),
+            if (editable is Character)
+              CheckedPopupMenuItem(
+                checked: (editable as Character).disableMorality,
+                child: Text(AppLocalizations.of(context)!.disableMorality),
+                value: "disableMorality"
+              ),
+            if (editable is Character)
+              CheckedPopupMenuItem(
+                checked: (editable as Character).disableDuty,
+                child: Text(AppLocalizations.of(context)!.disableDuty),
+                value: "disableDuty"
+              ),
+            if (editable is Character)
+              CheckedPopupMenuItem(
+                checked: (editable as Character).disableObligation,
+                child: Text(AppLocalizations.of(context)!.disableObligation),
+                value: "disableObligation"
+              ),
+            if (editable != null)
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
+          ],
+          onSelected: (value) {
+            switch(value){
+              case "disableForce":
+                setState(() => (editable as Character).disableForce = !(editable as Character).disableForce);
+                widget.message.editingState();
+                break;
+              case "disableDuty":
+                setState(() => (editable as Character).disableDuty = !(editable as Character).disableDuty);
+                widget.message.editingState();
+                break;
+              case "disableObligation":
+                setState(() => (editable as Character).disableObligation = !(editable as Character).disableObligation);
+                widget.message.editingState();
+                break;
+              case "disableMorality":
+                setState(() => (editable as Character).disableMorality = !(editable as Character).disableMorality);
+                widget.message.editingState();
+                break;
+              case "clone":
+                Bottom(
+                  child: (context) {
+                    var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(editable!.name));
+                    return Wrap(
+                      children: [
+                        Container(height: 10),
+                        TextField(
+                          controller: nameController,
+                          decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
+                        ),
+                        ButtonBar(
+                          children: [
+                            TextButton(
+                              child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+                              onPressed: () {
+                                Editable out;
+                                if (editable is Character) {
+                                  out = Character.from(editable as Character);
+                                } else if (editable is Minion) {
+                                  out = Minion.from(editable as Minion);
+                                } else if (editable is Vehicle) {
+                                  out = Vehicle.from(editable as Vehicle);
+                                } else {
+                                  throw "Unsupported Editable Type";
+                                }
+                                out.name = nameController.text;
+                                SW.of(context).add(out);
+                                out.save(context: context);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                              onPressed: () =>
+                                Navigator.of(context).pop()
+                            )
+                          ],
+                        )
+                      ],
+                    );
+                  }
+                ).show(context);
+            }
+          },
+        )
       ],
-      additionalPopupActions: [
-        if (editable is Character)
-          CheckedPopupMenuItem(
-            checked: (editable as Character).disableForce,
-            child: Text(AppLocalizations.of(context)!.disableForce),
-            value: "disableForce"
-          ),
-        if (editable is Character)
-          CheckedPopupMenuItem(
-            checked: (editable as Character).disableMorality,
-            child: Text(AppLocalizations.of(context)!.disableMorality),
-            value: "disableMorality"
-          ),
-        if (editable is Character)
-          CheckedPopupMenuItem(
-            checked: (editable as Character).disableDuty,
-            child: Text(AppLocalizations.of(context)!.disableDuty),
-            value: "disableDuty"
-          ),
-        if (editable is Character)
-          CheckedPopupMenuItem(
-            checked: (editable as Character).disableObligation,
-            child: Text(AppLocalizations.of(context)!.disableObligation),
-            value: "disableObligation"
-          ),
-        if (editable != null)
-          PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
-      ],
-      popupFunctions: editable != null ? {
-        "disableForce": () {
-          setState(() => (editable as Character).disableForce = !(editable as Character).disableForce);
-          widget.message.editingState();
-        },
-        "disableDuty": () {
-          setState(() => (editable as Character).disableDuty = !(editable as Character).disableDuty);
-          widget.message.editingState();
-        },
-        "disableObligation": () {
-          setState(() => (editable as Character).disableObligation = !(editable as Character).disableObligation);
-          widget.message.editingState();
-        },
-        "disableMorality": () {
-          setState(() => (editable as Character).disableMorality = !(editable as Character).disableMorality);
-          widget.message.editingState();
-        },
-        "clone": () => Bottom(
-          child: (context) {
-            var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(editable!.name));
-            return Wrap(
-              children: [
-                Container(height: 10),
-                TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
-                ),
-                ButtonBar(
-                  children: [
-                    TextButton(
-                      child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                      onPressed: () {
-                        Editable out;
-                        if (editable is Character) {
-                          out = Character.from(editable as Character);
-                        } else if (editable is Minion) {
-                          out = Minion.from(editable as Minion);
-                        } else if (editable is Vehicle) {
-                          out = Vehicle.from(editable as Vehicle);
-                        } else {
-                          throw "Unsupported Editable Type";
-                        }
-                        out.name = nameController.text;
-                        SW.of(context).add(out);
-                        out.save(context: context);
-                        Navigator.of(context).pop();
-                        widget.message.listKey.currentState?.setState(() {});
-                      },
-                    ),
-                    TextButton(
-                      child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                      onPressed: () =>
-                        Navigator.of(context).pop()
-                    )
-                  ],
-                )
-              ],
-            );
-          }
-        ).show(context)
-      } : null
     );
 }
 

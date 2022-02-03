@@ -6,7 +6,6 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/ui/misc/sw_appbar.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
@@ -103,95 +102,107 @@ class _EditingEditableState extends State<EditingEditable>{
       body = Scaffold(
         drawer: const SWDrawer(),
         bottomNavigationBar: bottomNav,
-        appBar: SWAppBar(
-          context,
-          additionalActions: [
+        appBar: AppBar(
+          actions: [
             IconButton(
               icon: const Icon(Icons.casino_outlined),
               onPressed: () =>
                 SWDiceHolder().showDialog(context),
             ),
-          ],
-          additionalPopupActions: [
-            if (widget.profile is Character)
-              CheckedPopupMenuItem(
-                checked: (widget.profile as Character).disableForce,
-                child: Text(AppLocalizations.of(context)!.disableForce),
-                value: "disableForce"
-              ),
-            if (widget.profile is Character)
-              CheckedPopupMenuItem(
-                checked: (widget.profile as Character).disableMorality,
-                child: Text(AppLocalizations.of(context)!.disableMorality),
-                value: "disableMorality"
-              ),
-            if (widget.profile is Character)
-              CheckedPopupMenuItem(
-                checked: (widget.profile as Character).disableDuty,
-                child: Text(AppLocalizations.of(context)!.disableDuty),
-                value: "disableDuty"
-              ),
-            if (widget.profile is Character)
-              CheckedPopupMenuItem(
-                checked: (widget.profile as Character).disableObligation,
-                child: Text(AppLocalizations.of(context)!.disableObligation),
-                value: "disableObligation"
-              ),
-            PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
+            PopupMenuButton(
+              itemBuilder: (c) => [
+                if (widget.profile is Character)
+                  CheckedPopupMenuItem(
+                    checked: (widget.profile as Character).disableForce,
+                    child: Text(AppLocalizations.of(context)!.disableForce),
+                    value: "disableForce"
+                  ),
+                if (widget.profile is Character)
+                  CheckedPopupMenuItem(
+                    checked: (widget.profile as Character).disableMorality,
+                    child: Text(AppLocalizations.of(context)!.disableMorality),
+                    value: "disableMorality"
+                  ),
+                if (widget.profile is Character)
+                  CheckedPopupMenuItem(
+                    checked: (widget.profile as Character).disableDuty,
+                    child: Text(AppLocalizations.of(context)!.disableDuty),
+                    value: "disableDuty"
+                  ),
+                if (widget.profile is Character)
+                  CheckedPopupMenuItem(
+                    checked: (widget.profile as Character).disableObligation,
+                    child: Text(AppLocalizations.of(context)!.disableObligation),
+                    value: "disableObligation"
+                  ),
+                PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
+              ],
+              onSelected: (value) {
+                switch(value){
+                  case "disableForce":
+                    setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
+                      .disableForce = !(widget.profile as Character).disableForce));
+                    break;
+                  case "disableDuty":
+                    setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
+                      .disableDuty = !(widget.profile as Character).disableDuty));
+                    break;
+                  case "disableObligation":
+                    setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
+                      .disableObligation = !(widget.profile as Character).disableObligation));
+                    break;
+                  case "disableMorality":
+                    setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
+                      .disableMorality = !(widget.profile as Character).disableMorality));
+                    break;
+                  case "clone":
+                    Bottom(
+                      child: (context) {
+                        var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(widget.profile.name));
+                        return Wrap(
+                          children: [
+                            Container(height: 10),
+                            TextField(
+                              controller: nameController,
+                              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
+                            ),
+                            ButtonBar(
+                              children: [
+                                TextButton(
+                                  child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+                                  onPressed: () {
+                                    Editable out;
+                                    if (widget.profile is Character) {
+                                      out = Character.from(widget.profile as Character);
+                                    } else if (widget.profile is Minion) {
+                                      out = Minion.from(widget.profile as Minion);
+                                    } else if (widget.profile is Vehicle) {
+                                      out = Vehicle.from(widget.profile as Vehicle);
+                                    } else {
+                                      throw "Unsupported Editable Type";
+                                    }
+                                    out.name = nameController.text;
+                                    SW.of(context).add(out);
+                                    out.save(context: context);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                                  onPressed: () =>
+                                    Navigator.of(context).pop()
+                                )
+                              ],
+                            )
+                          ],
+                        );
+                      }
+                    ).show(context);
+                }
+              },
+            )
           ],
           backgroundColor: Theme.of(context).primaryColor,
-          popupFunctions: {
-            "disableForce": () => setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
-                .disableForce = !(widget.profile as Character).disableForce)),
-            "disableDuty": () => setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
-                .disableDuty = !(widget.profile as Character).disableDuty)),
-            "disableObligation": () => setState(() => cardKey.currentState?.setState(() =>
-              (widget.profile as Character).disableObligation = !(widget.profile as Character).disableObligation)),
-            "disableMorality": () => setState(() => cardKey.currentState?.setState(() => (widget.profile as Character)
-                .disableMorality = !(widget.profile as Character).disableMorality)),
-            "clone": () => Bottom(
-              child: (context) {
-                var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(widget.profile.name));
-                return Wrap(
-                  children: [
-                    Container(height: 10),
-                    TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
-                    ),
-                    ButtonBar(
-                      children: [
-                        TextButton(
-                          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                          onPressed: () {
-                            Editable out;
-                            if (widget.profile is Character) {
-                              out = Character.from(widget.profile as Character);
-                            } else if (widget.profile is Minion) {
-                              out = Minion.from(widget.profile as Minion);
-                            } else if (widget.profile is Vehicle) {
-                              out = Vehicle.from(widget.profile as Vehicle);
-                            } else {
-                              throw "Unsupported Editable Type";
-                            }
-                            out.name = nameController.text;
-                            SW.of(context).add(out);
-                            out.save(context: context);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                          onPressed: () =>
-                            Navigator.of(context).pop()
-                        )
-                      ],
-                    )
-                  ],
-                );
-              }
-            ).show(context),
-          },
         ),
         body: main
       );

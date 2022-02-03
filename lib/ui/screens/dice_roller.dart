@@ -6,7 +6,6 @@ import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/sw_appbar.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
 
 class DiceRoller extends StatelessWidget{
@@ -22,8 +21,7 @@ class DiceRoller extends StatelessWidget{
     width = MediaQuery.of(context).size.width / rows;
     return Scaffold(
       drawer: const SWDrawer(),
-      appBar: SWAppBar(
-        context,
+      appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.dice),
         backgroundColor: Theme.of(context).primaryColor,
       ),

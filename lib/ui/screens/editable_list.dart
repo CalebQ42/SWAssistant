@@ -7,7 +7,6 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/sw_appbar.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
@@ -324,14 +323,13 @@ class EditableListState extends State<EditableList>{
     );
     return (widget.onTap == null) ?
       Scaffold(
-        appBar: SWAppBar(
-          context,
+        appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           bottom: PreferredSize(
             child: catSelector,
             preferredSize: const Size.fromHeight(50)
           ),
-          additionalActions: [
+          actions: [
             IconButton(
               icon: const Icon(Icons.sync),
               onPressed: () =>
