@@ -249,10 +249,10 @@
             }
         }
     },
-    "stimpacks": "Stimpacks",
+    "stimpacks": "Stimpack",
     "emergencyRepairPatches": "Emergency Repair Patches",
-    "healsUsedToday": "Heals Used Today:",
-    "heal": "Heal",
+    "healsUsedToday": "Cure Usate Oggi:",
+    "heal": "Cura",
     "reset": "Reset",
     "current": "Attuale:",
     "total": "Totale:",
