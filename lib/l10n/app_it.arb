@@ -102,7 +102,7 @@
     "newCharacter": "Nuovo Personaggio",
     "newMinion": "Nuovo PNG",
     "newVehicle": "Nuovo Veicolo",
-    "woundStrain": "Ferita e Fatica",
+    "woundStrain": "Ferite e Fatica",
     "specializationPlural": "Specializzazioni",
     "forcePowerPlural": "Poteri della Forza",
     "xp": "XP",
@@ -238,7 +238,7 @@
     "wound": "Ferita",
     "maxWound": "Massima Ferita",
     "strain": "Fatica",
-    "maxStrain": "Max Strain",
+    "maxStrain": "Fatica Massima",
     "max": "Max: {number}",
     "@max": {
         "description": "Used to display the max wound, strain, threashhold, and stress",
