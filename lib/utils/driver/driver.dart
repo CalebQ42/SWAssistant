@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:simple_connection_checker/simple_connection_checker.dart';
 import 'package:swassistant/utils/driver/query.dart';
 
 class Driver{
@@ -8,8 +11,19 @@ class Driver{
   DriveApi? api;
   GoogleSignIn? gsi;
 
+  StreamSubscription<bool>? sub;
+  bool internetAvailable = true;
+
   //ready returns whether the driver is ready to use. If the driver is not ready, it tries to initialize it.
   Future<bool> ready([String? wdFolder]) async {
+    if(sub == null){
+      var checker = SimpleConnectionChecker();
+      sub = checker.onConnectionChange.listen((event) {
+        internetAvailable = event;
+      });
+      if(!await SimpleConnectionChecker.isConnectedToInternet()) return false;
+    }
+    if(!internetAvailable) return false;
     if(gsi != null && gsi!.currentUser != null && api != null){
       if(!(await gsi!.isSignedIn())){
         if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
@@ -36,10 +50,9 @@ class Driver{
     return true;
   }
 
-  //readySync is similar to ready, except does NOT try to initialize the driver. Use ready when possible.
-  bool readySync() {
-    return gsi != null && gsi!.currentUser != null && api != null;
-  }
+  //readySync is similar to ready, except does NOT try to initialize the driver and can be used syncronysly. Use ready when possible.
+  bool readySync() =>
+    internetAvailable && gsi != null && gsi!.currentUser != null && api != null;
 
   Future<bool> setWD(String folder) async {
     if(!await ready()) return false;

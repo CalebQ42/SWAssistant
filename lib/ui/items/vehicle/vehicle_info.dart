@@ -167,7 +167,7 @@ class VehicleInfo extends StatelessWidget{
             var controller = TextEditingController(text:vehicle.category);
             controller.addListener((){
               vehicle.category = controller.text;
-              SW.of(context).updateCharacterCategories();
+              SW.of(context).updateCategory(vehicle, controller.text);
             });
             return controller;
           }(),

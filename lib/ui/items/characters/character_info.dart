@@ -106,7 +106,7 @@ class CharacterInfo extends StatelessWidget{
             var controller = TextEditingController(text:character.category);
             controller.addListener((){
               character.category = controller.text;
-              SW.of(context).updateCharacterCategories();
+              SW.of(context).updateCategory(character, controller.text);
             });
             return controller;
           }(),

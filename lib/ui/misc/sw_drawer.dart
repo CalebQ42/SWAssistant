@@ -85,6 +85,20 @@ class SWDrawer extends StatelessWidget{
               }
             }
           ),
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.trash),
+            leading: const Icon(Icons.delete),
+            onTap: (){
+              Navigator.of(context).pop();
+              var out = SW.of(context).observatory.containsRoute(name: "/trash");
+              if(out != null){
+                Navigator.of(context).removeRoute(out);
+                Navigator.of(context).pushNamed("/trash");
+              }else{
+                Navigator.of(context).pushNamed("/trash");
+              }
+            }
+          ),
           //TODO: Downloads
           // ListTile(
           //   title: Text(AppLocalizations.of(context)!.download),

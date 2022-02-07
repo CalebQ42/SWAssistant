@@ -49,8 +49,6 @@ class SWApp extends StatefulWidget{
 
 class SWAppState extends State<SWApp> {
 
-
-
   @override
   Widget build(BuildContext context) {
     SW.of(context).topLevelUpdate = () => setState(() {});

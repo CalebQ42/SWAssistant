@@ -47,68 +47,69 @@ class SW{
 
   Driver? driver;
 
+  final List<Editable> trashCan = [];
+
   SW({required this.prefs});
 
   void loadAll(){
     _minions.clear();
     _characters.clear();
     _vehicles.clear();
-    Directory(saveDir).listSync().forEach((element) {
-      if(element.path.endsWith(".backup")){
-        return;
-      }
+    for(var element in Directory(saveDir).listSync()) {
       var backup = File(element.path+".backup");
       if(backup.existsSync()){
         File(element.path).deleteSync();
-        backup.copySync(element.path);
-        backup.deleteSync();
-        element = File(element.path);
+        backup.rename(element.path);
       }
+      Editable? ed;
       if(element.path.endsWith(".swcharacter")){
-        _characters.add(Character.load(element, this));
+        ed = Character.load(element, this);
       }else if(element.path.endsWith(".swminion")){
-        _minions.add(Minion.load(element, this));
+        ed = Minion.load(element, this);
       }else if(element.path.endsWith(".swvehicle")){
-        _vehicles.add(Vehicle.load(element, this));
+        ed = Vehicle.load(element, this);
       }
-    });
-    updateCharacterCategories();
-    updateVehicleCategories();
-    updateMinionCategories();
+      if(ed == null) return;
+      if(ed.trashed){
+        trashCan.add(ed);
+      }else{
+        add(ed);
+      }
+    }
   }
 
-  void loadMinions(){
-    _minions.clear();
-    Directory(saveDir).listSync().forEach((element) {
-      if(element.path.endsWith(".swminion")){
-        var temp = Minion.load(element, this);
-        _minions.add(temp);
-      }
-    });
-    updateMinionCategories();
-  }
+  // void loadMinions(){
+  //   _minions.clear();
+  //   Directory(saveDir).listSync().forEach((element) {
+  //     if(element.path.endsWith(".swminion")){
+  //       var temp = Minion.load(element, this);
+  //       _minions.add(temp);
+  //     }
+  //   });
+  //   updateMinionCategories();
+  // }
 
-  void loadCharacters(){
-    _characters.clear();
-    Directory(saveDir).listSync().forEach((element) {
-      if(element.path.endsWith(".swcharacter")){
-        var temp = Character.load(element, this);
-        _characters.add(temp);
-      }
-    });
-    updateCharacterCategories();
-  }
+  // void loadCharacters(){
+  //   _characters.clear();
+  //   Directory(saveDir).listSync().forEach((element) {
+  //     if(element.path.endsWith(".swcharacter")){
+  //       var temp = Character.load(element, this);
+  //       _characters.add(temp);
+  //     }
+  //   });
+  //   updateCharacterCategories();
+  // }
 
-  void loadVehicles(){
-    _vehicles.clear();
-    Directory(saveDir).listSync().forEach((element) {
-      if(element.path.endsWith(".swvehicle")){
-        var temp = Vehicle.load(element, this);
-        _vehicles.add(temp);
-      }
-    });
-    updateVehicleCategories();
-  }
+  // void loadVehicles(){
+  //   _vehicles.clear();
+  //   Directory(saveDir).listSync().forEach((element) {
+  //     if(element.path.endsWith(".swvehicle")){
+  //       var temp = Vehicle.load(element, this);
+  //       _vehicles.add(temp);
+  //     }
+  //   });
+  //   updateVehicleCategories();
+  // }
 
   void add(Editable editable){
     if(editable is Character){
@@ -120,18 +121,17 @@ class SW{
     }
   }
 
-  bool remove(Editable editable, BuildContext? context){
+  void remove(Editable editable, BuildContext? context){
     if(context != null && editable.route != null && observatory.containsRoute(route: editable.route) != null){
       Navigator.removeRoute(context, editable.route!);
     }
     if(editable is Character){
-      return removeCharacter(character: editable);
+      removeCharacter(editable);
     }else if(editable is Minion){
-      return removeMinion(minion: editable);
+      removeMinion(editable);
     }else if(editable is Vehicle){
-      return removeVehicle(vehicle: editable);
+      removeVehicle(editable);
     }
-    return false;
   }
 
   Editable? findEditable(String uid) {
@@ -145,6 +145,30 @@ class SW{
       return null;
     }
   }
+
+  void updateCategory(Editable ed, String newCat) {
+    switch(ed.runtimeType){
+      case Character:
+        if(characters(category: ed.category).length == 1){
+          charCats.remove(ed.category);
+        }
+        if(newCat != "" && !charCats.contains(newCat)) charCats.add(newCat);
+        break;
+      case Minion:
+        if(minions(category: ed.category).length == 1){
+          minCats.remove(ed.category);
+        }
+        if(newCat != "" && !minCats.contains(newCat)) minCats.add(newCat);
+        break;
+      case Vehicle:
+        if(vehicles(category: ed.category).length == 1){
+          vehCats.remove(ed.category);
+        }
+        if(newCat != "" && !vehCats.contains(newCat)) vehCats.add(newCat);
+        break;
+    }
+    ed.category = newCat;
+  }
   
   List<Character> characters({String search = "", String? category}){
     if(search == "" && category == null){
@@ -155,32 +179,17 @@ class SW{
     return _characters.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
-  bool removeCharacter({String? uid, Character? character}){
-    var success = false;
-    if(character != null){
-      success = _characters.remove(character);
-    }else if(uid != null){
-      character = _characters.firstWhere((element) => element.uid == uid);
-      success = _characters.remove(character);
+  void removeCharacter(Character character){
+    _characters.remove(character);
+    if(character.category != "" && characters(category: character.category).isEmpty){
+      charCats.remove(character.category);
     }
-    if(success && character != null && characters(category: character.category).isEmpty){
-      updateCharacterCategories();
-    }
-    return success;
   }
 
   void addCharacter(Character character){
     _characters.add(character);
-    //TODO: Better insertion.
-    updateCharacterCategories();
-  }
-
-  void updateCharacterCategories(){
-    charCats.clear();
-    for(var char in _characters){
-      if(char.category != "" && !charCats.contains(char.category)){
-        charCats.add(char.category);
-      }
+    if(character.category != "" && !charCats.contains(character.category)){
+      charCats.add(character.category);
     }
   }
 
@@ -193,32 +202,17 @@ class SW{
     return _minions.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
-  bool removeMinion({String? uid, Minion? minion}){
-    var success = false;
-    if(minion != null){
-      success = _minions.remove(minion);
-    }else if(uid != null){
-      minion = _minions.firstWhere((element) => element.uid == uid);
-      success = _minions.remove(minion);
+  void removeMinion(Minion minion){
+    _minions.remove(minion);
+    if(minion.category != "" && minions(category: minion.category).isEmpty){
+      minCats.remove(minion.category);
     }
-    if(success && minion != null && minions(category: minion.category).isEmpty){
-      updateMinionCategories();
-    }
-    return success;
   }
 
   void addMinion(Minion minion){
     _minions.add(minion);
-    //TODO: Better insertion.
-    updateMinionCategories();
-  }
-
-  void updateMinionCategories(){
-    minCats.clear();
-    for(var min in _minions){
-      if(min.category != "" && !minCats.contains(min.category)){
-        minCats.add(min.category);
-      }
+    if(minion.category != "" && !minCats.contains(minion.category)){
+      minCats.add(minion.category);
     }
   }
 
@@ -231,32 +225,17 @@ class SW{
     return _vehicles.where((element) => element.name.toLowerCase().contains(search.toLowerCase()) && element.category == category).toList();
   }
 
-  bool removeVehicle({String? uid, Vehicle? vehicle}){
-    var success = false;
-    if(vehicle != null){
-      success = _vehicles.remove(vehicle);
-    }else if(uid != null){
-      vehicle = _vehicles.firstWhere((element) => element.uid == uid);
-      success = _vehicles.remove(vehicle);
+  void removeVehicle(Vehicle vehicle){
+    _vehicles.remove(vehicle);
+    if(vehicle.category != "" && vehicles(category: vehicle.category).isEmpty){
+      vehCats.remove(vehicle.category);
     }
-    if(success && vehicle != null && vehicles(category: vehicle.category).isEmpty){
-      updateVehicleCategories();
-    }
-    return success;
   }
 
   void addVehicle(Vehicle vehicle){
     _vehicles.add(vehicle);
-    //TODO: Better insertion.
-    updateVehicleCategories();
-  }
-  
-  void updateVehicleCategories(){
-    vehCats.clear();
-    for(var veh in _vehicles){
-      if(veh.category != "" && !vehCats.contains(veh.category)){
-        vehCats.add(veh.category);
-      }
+    if(vehicle.category != "" && !vehCats.contains(vehicle.category)){
+      vehCats.add(vehicle.category);
     }
   }
 

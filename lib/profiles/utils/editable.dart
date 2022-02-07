@@ -39,6 +39,9 @@ abstract class Editable extends JsonSavable{
   Map<String,bool> showCard = {};
   Route? route;
 
+  bool trashed = false;
+  DateTime? trashTime;
+
   String get fileExtension;
   int get cardNum;
 
@@ -124,6 +127,10 @@ abstract class Editable extends JsonSavable{
         }
       }
     }
+    if(json["trashed time"] != null){
+      trashTime = DateTime.tryParse(json["delete time"]);
+    }
+    trashed = json["trashed"] ?? false;
   }
 
   @override
@@ -142,6 +149,8 @@ abstract class Editable extends JsonSavable{
       "description" : desc,
       "show cards v2" : showCard,
       "Inventory" : List.generate(inventory.length, (index) => inventory[index].toJson()),
+      "trashed time" : trashTime?.toIso8601String(),
+      "trashed": trashed,
     }..removeWhere((key, value){
       if (key == "show cards v2" && (value as Map<String, bool>).values.every((element) => !element)) return true;
       if (value is List && value.isEmpty) return true;
@@ -156,6 +165,7 @@ abstract class Editable extends JsonSavable{
     "name": "",
     "category": "",
     "description": "",
+    "trashed": false,
   };
 
   List<Widget> cards(BuildContext context){
