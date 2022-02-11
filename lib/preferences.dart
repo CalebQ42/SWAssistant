@@ -21,3 +21,5 @@ String driveFirstLoad = "driveFirstLoad";
 String forceLight = "forceLight";
 String forceDark = "forceDark";
 String amoled = "amoledTheme";
+
+String initialTrash = "initaialTrash";

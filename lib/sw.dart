@@ -121,7 +121,7 @@ class SW{
     }
   }
 
-  void remove(Editable editable, BuildContext? context){
+  void remove(Editable editable, [BuildContext? context]){
     if(context != null && editable.route != null && observatory.containsRoute(route: editable.route) != null){
       Navigator.removeRoute(context, editable.route!);
     }
@@ -246,7 +246,8 @@ class SW{
     var all = <Editable>[
       ..._characters,
       ..._minions,
-      ..._vehicles
+      ..._vehicles,
+      ...trashCan,
     ];
     var loadWaiting = 0;
     for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
@@ -264,7 +265,7 @@ class SW{
           continue;
         }
         loadWaiting++;
-        await ed.cloudLoad(this, fil.id!).then((value) async {
+        ed.cloudLoad(this, fil.id!).then((value) async {
           Editable? matchEd;
           try {
             matchEd = all.firstWhere((element) => element.uid == ed.uid);
@@ -273,10 +274,15 @@ class SW{
           }
           if(matchEd == null){
             await ed.save(app: this, localOnly: true);
-            add(ed);
+            if(ed.trashed){
+              trashCan.add(ed);
+            } else {
+              add(ed);
+            }
             loadWaiting--;
             return;
           }
+          var preTrashed = matchEd.trashed;
           matchEd.driveId = fil.id!;
           var local = File(matchEd.getFileLocation(this));
           if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
@@ -286,6 +292,15 @@ class SW{
             await matchEd.cloudSave(this);
           }
           all.remove(matchEd);
+          if(matchEd.trashed != preTrashed){
+            if(matchEd.trashed){
+              remove(matchEd);
+              trashCan.add(matchEd);
+            }else{
+              trashCan.remove(matchEd);
+              add(matchEd);
+            }
+          }
           loadWaiting--;
         });
       } else {
@@ -307,18 +322,23 @@ class SW{
             continue;
           }
           loadWaiting++;
-          await ed.cloudLoad(this, fil.id!).then((value) async {
+          ed.cloudLoad(this, fil.id!).then((value) async {
             await ed.save(app: this, localOnly: true);
-            add(ed);
+            if(ed.trashed){
+              trashCan.add(ed);
+            }else{
+              add(ed);
+            }
             loadWaiting--;
           });
           continue;
         }
+        var preTrashed = matchEd.trashed;
         matchEd.driveId = fil.id!;
         var local = File(matchEd.getFileLocation(this));
         if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
           loadWaiting++;
-          await matchEd.cloudLoad(this, fil.id!).then((value) async {
+          matchEd.cloudLoad(this, fil.id!).then((value) async {
             await matchEd!.save(app: this, localOnly: true);
             loadWaiting--;
           });
@@ -327,6 +347,15 @@ class SW{
           matchEd.cloudSave(this).then((value) => loadWaiting--);
         }
         all.remove(matchEd);
+        if(matchEd.trashed != preTrashed){
+          if(matchEd.trashed){
+            remove(matchEd);
+            trashCan.add(matchEd);
+          }else{
+            trashCan.remove(matchEd);
+            add(matchEd);
+          }
+        }
       }
     }
     while(loadWaiting > 0) {
@@ -386,8 +415,7 @@ class SW{
       return false;
     }
     for(var ed in toDelete) {
-      ed.delete(this);
-      remove(ed, context);
+      ed.trash(this);
     }
     syncing = false;
     return true;
@@ -451,6 +479,12 @@ class SW{
         }
       }else{
         await syncCloud();
+      }
+    }
+    for(var ed in trashCan){
+      if(ed.trashTime!.isBefore(DateTime.now().subtract(const Duration(days: 30)))){
+        trashCan.remove(ed);
+        ed.deletePermanently(this);
       }
     }
     initialized = true;

@@ -127,10 +127,12 @@ abstract class Editable extends JsonSavable{
         }
       }
     }
-    if(json["trashed time"] != null){
-      trashTime = DateTime.tryParse(json["delete time"]);
-    }
     trashed = json["trashed"] ?? false;
+    if(json["trashed time"] != null){
+      trashTime = DateTime.tryParse(json["trashed time"]) ?? DateTime.now();
+    }else if(trashed){
+      trashTime = DateTime.now();
+    }
   }
 
   @override
@@ -149,7 +151,7 @@ abstract class Editable extends JsonSavable{
       "description" : desc,
       "show cards v2" : showCard,
       "Inventory" : List.generate(inventory.length, (index) => inventory[index].toJson()),
-      "trashed time" : trashTime?.toIso8601String(),
+      "trashed time" : trashTime?.toUtc().toIso8601String() ?? DateTime.now().toUtc().toIso8601String(),
       "trashed": trashed,
     }..removeWhere((key, value){
       if (key == "show cards v2" && (value as Map<String, bool>).values.every((element) => !element)) return true;
@@ -286,13 +288,14 @@ abstract class Editable extends JsonSavable{
     loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>));
     if(overwriteId) driveId = id;
   }
-  void delete(SW app){
+
+  void trash(SW app){
+    app.remove(this);
+    app.trashCan.add(this);
     if(!_saving && !_defered && !_cloudDefered && !_cloudSaving){
-      if(!kIsWeb) {
-        var fil = File(getFileLocation(app));
-        fil.deleteSync();
-      }
-      if(driveId != null) app.driver?.delete(driveId!);
+      trashed = true;
+      trashTime = DateTime.now();
+      save(app: app);
     }else{
       Future(() async {
         while(_saving || _defered || _cloudDefered || _cloudSaving){
@@ -303,6 +306,32 @@ abstract class Editable extends JsonSavable{
         var fil = File(getFileLocation(app));
         fil.deleteSync();
         if(driveId != null) await app.driver?.delete(driveId!);
+        _saving = false;
+        _cloudSaving = false;
+        save(app: app);
+      });
+    }
+  }
+
+  void deletePermanently(SW app){
+    if(!_saving && !_defered && !_cloudDefered && !_cloudSaving){
+      if(!kIsWeb) {
+        var fil = File(getFileLocation(app));
+        fil.deleteSync();
+      }
+      if(driveId != null) app.driver?.delete(driveId!);
+      driveId = null;
+    }else{
+      Future(() async {
+        while(_saving || _defered || _cloudDefered || _cloudSaving){
+          await Future.delayed(const Duration(milliseconds: 200));
+        }
+        _saving = true;
+        _cloudSaving = true;
+        var fil = File(getFileLocation(app));
+        fil.deleteSync();
+        if(driveId != null) await app.driver?.delete(driveId!);
+        driveId = null;
         _saving = false;
         _cloudSaving = false;
       });

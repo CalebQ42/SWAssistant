@@ -281,26 +281,21 @@ class EditableListState extends State<EditableList>{
             child: InheritedEditable(
               child: EditableCard(
                 onTap: widget.onTap,
-                refreshList: () => setState((){}),
-                onDismiss: (){
+                onDismiss: () {
                   var tmp = list[i];
-                  list[i].delete(app);
+                  list[i].trash(app);
                   list.removeAt(i);
-                  app.remove(tmp, context);
-                  listKey.currentState?.removeItem(
-                    i,
-                    (context, animation) => Container()
-                  );
+                  listKey.currentState?.removeItem(i, (context, animation) => Container());
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
                         (tmp is Character) ?
-                          AppLocalizations.of(context)!.deletedCharacter
+                          AppLocalizations.of(context)!.characterTrashed
                         : (tmp is Minion) ?
-                          AppLocalizations.of(context)!.deletedMinion
+                          AppLocalizations.of(context)!.minionTrashed
                         :
-                          AppLocalizations.of(context)!.deletedVehicle
+                          AppLocalizations.of(context)!.vehicleTrashed
                       ),
                       action: SnackBarAction(
                         label: AppLocalizations.of(context)!.undo,
@@ -401,10 +396,9 @@ class EditableListState extends State<EditableList>{
 class EditableCard extends StatelessWidget{
 
   final void Function(Editable)? onTap;
-  final void Function() refreshList;
   final void Function() onDismiss;
 
-  const EditableCard({this.onTap, required this.refreshList, required this.onDismiss, Key? key}) : super(key: key);
+  const EditableCard({this.onTap, required this.onDismiss, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

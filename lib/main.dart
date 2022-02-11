@@ -15,6 +15,7 @@ import 'package:swassistant/ui/screens/loading.dart';
 import 'package:swassistant/ui/screens/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/screens/trash.dart';
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async =>
@@ -118,6 +119,8 @@ class SWAppState extends State<SWApp> {
           widy = const EditableList(EditableList.vehicle);
         }else if(settings.name == "/minions"){
           widy = const EditableList(EditableList.minion);
+        }else if(settings.name == "/trash"){
+          widy = TrashList();
         }
         if (widy == null){
           settings = settings.copyWith(name: "/characters");
