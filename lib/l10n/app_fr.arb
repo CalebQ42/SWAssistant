@@ -308,12 +308,33 @@
     "deletedTalent": "Talent Deleted",
     "deletedItem": "Item Deleted",
     "deletedWeapon": "Weapon Deleted",
-    "deletedCharacter": "Character Deleted",
-    "deletedMinion": "Minion Deleted",
-    "deletedVehicle": "Vehicle Deleted",
     "deletedNote": "Note Deleted",
     "deletedInjury": "Critical Injury Deleted",
     "undo": "Undo",
+    "characterTrashed": "Character moved to trash",
+    "minionTrashed": "Minion moved to trash",
+    "vehicleTrashed": "Vehicle moved to trash",
+    "deletedPermanently": "{name} deleted permanently",
+    "@deletedPermanently": {
+        "description": "Used when permanently deleting profiles from the trash can.",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Steve"
+            }
+        }
+    },
+    "restored": "Restored {name}",
+    "@restored": {
+        "description": "Used when restoring trashed profiles",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Steve"
+            }
+        }
+    },
+    "trashNotice": "Trashed profiles are deleted after 30 days",
     "fire": "Fire!",
     "advantageShort": "Adv",
     "@advantageShort": {
