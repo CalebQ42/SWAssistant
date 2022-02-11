@@ -308,12 +308,33 @@
     "deletedTalent": "Talento Eliminato",
     "deletedItem": "Oggetto cancellato.",
     "deletedWeapon": "Arma Eliminata",
-    "deletedCharacter": "Personaggio eliminato",
-    "deletedMinion": "PNG Eliminato",
-    "deletedVehicle": "Veicolo Eliminato",
     "deletedNote": "Nota Eliminata",
     "deletedInjury": "Infortunio Critico Eliminato",
     "undo": "Annulla",
+    "characterTrashed": "Character moved to trash",
+    "minionTrashed": "Minion moved to trash",
+    "vehicleTrashed": "Vehicle moved to trash",
+    "deletedPermanently": "{name} deleted permanently",
+    "@deletedPermanently": {
+        "description": "Used when permanently deleting profiles from the trash can.",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Steve"
+            }
+        }
+    },
+    "restored": "Restored {name}",
+    "@restored": {
+        "description": "Used when restoring trashed profiles",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Steve"
+            }
+        }
+    },
+    "trashNotice": "Trashed profiles are deleted after 30 days",
     "fire": "Fuoco!",
     "advantageShort": "Adv",
     "@advantageShort": {
