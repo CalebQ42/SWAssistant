@@ -415,7 +415,12 @@ class SW{
       return false;
     }
     for(var ed in toDelete) {
-      ed.trash(this);
+      if(ed.trashed){
+        trashCan.remove(ed);
+        ed.deletePermanently(this);
+      }else{
+        ed.trash(this);
+      }
     }
     syncing = false;
     return true;
