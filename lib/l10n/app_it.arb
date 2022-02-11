@@ -311,10 +311,10 @@
     "deletedNote": "Nota Eliminata",
     "deletedInjury": "Infortunio Critico Eliminato",
     "undo": "Annulla",
-    "characterTrashed": "Character moved to trash",
-    "minionTrashed": "Minion moved to trash",
-    "vehicleTrashed": "Vehicle moved to trash",
-    "deletedPermanently": "{name} deleted permanently",
+    "characterTrashed": "Personaggio spostato nel cestino",
+    "minionTrashed": "Minion spostato nel cestino",
+    "vehicleTrashed": "Veicolo spostato nel cestino",
+    "deletedPermanently": "{name} eliminato definitivamente",
     "@deletedPermanently": {
         "description": "Used when permanently deleting profiles from the trash can.",
         "placeholders": {
@@ -324,7 +324,7 @@
             }
         }
     },
-    "restored": "Restored {name}",
+    "restored": "Ripristinato {name}",
     "@restored": {
         "description": "Used when restoring trashed profiles",
         "placeholders": {
@@ -334,7 +334,7 @@
             }
         }
     },
-    "trashNotice": "Trashed profiles are deleted after 30 days",
+    "trashNotice": "I profili cestinati vengono eliminati dopo 30 giorni",
     "fire": "Fuoco!",
     "advantageShort": "Adv",
     "@advantageShort": {
