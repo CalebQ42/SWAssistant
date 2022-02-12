@@ -65,6 +65,7 @@
     "willpower": "Volonté",
     "presence": "Présence",
     "roll": "Lancer",
+    "rollCrit": "Roll Critical",
     "gmMode": "Mode MJ",
     "profiles": "Profils",
     "characters": "Personnages",
@@ -121,7 +122,6 @@
     "saveInventory": "Save inventory",
     "overwriteInventory": "Overwrite saved inventory",
     "inventorySaved": "Inventory Saved",
-    "damage": "Damage",
     "criticalHits": "Critical Hits",
     "basicInfo": "Basic Information",
     "defense": "Defense",
@@ -196,6 +196,7 @@
     "count": "Nombre",
     "encumTotal": "Encombrement (Total)",
     "advNeeded": "Avantage nécessaire",
+    "damage": "Damage",
     "critical": "Critique",
     "hardPoints": "Emplacements",
     "encum": "Encombrement",
@@ -218,6 +219,16 @@
     "loaded": "Chargé",
     "limitedAmmo": "Munitions Limitées",
     "ammo": "Munition",
+    "ignoreSoak": "Ignore {num} Soak",
+    "@ignoreSoak": {
+        "description": "Shown when weapons have at least one point in Pierce",
+        "placeholders": {
+            "num": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
     "species": "Espèces",
     "age": "Age",
     "motivation": "Motivation",
