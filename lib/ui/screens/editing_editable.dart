@@ -107,7 +107,7 @@ class _EditingEditableState extends State<EditingEditable>{
             IconButton(
               icon: const Icon(Icons.casino_outlined),
               onPressed: () =>
-                SWDiceHolder().showDialog(context),
+                SWDiceHolder().showDialog(context, showInstant: true),
             ),
             PopupMenuButton(
               itemBuilder: (c) => [

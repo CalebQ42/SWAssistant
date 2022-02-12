@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/dice_results.dart';
@@ -80,15 +82,9 @@ class SWDiceHolder extends JsonSavable{
     return Dice(name: "swdice Dice", dies: dice);
   }
 
-  void showDialog(BuildContext context){
-    Bottom(
-      child: (context) =>
-        Column(
-          children: List.generate(
-            7, (index) =>
-              DiceSelector(holder: this, type: index)
-          )
-        ),
+  void showDialog(BuildContext context, {bool showInstant = false}){
+    var bot = Bottom(
+      child: (context) => _DiceDialog(holder: this, showInstant: showInstant),
       buttons: (context) => [
         TextButton(
           child: Text((weaponPack == null) ? AppLocalizations.of(context)!.roll : AppLocalizations.of(context)!.fire),
@@ -105,6 +101,84 @@ class SWDiceHolder extends JsonSavable{
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
           onPressed: () => Navigator.of(context).pop(),
         )],
-    ).show(context);
+    );
+    return bot.show(context);
   }
+}
+
+class _DiceDialog extends StatefulWidget{
+
+  final bool showInstant;
+  final SWDiceHolder holder;
+
+  const _DiceDialog({Key? key, required this.holder, this.showInstant = false}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _DiceDialogState();
+}
+
+class _DiceDialogState extends State<_DiceDialog>{
+
+  int? d10Result;
+  int? d100Result;
+
+  @override
+  Widget build(BuildContext context) =>
+    Column(
+      children: List.generate(
+        7, (index) =>
+          DiceSelector(holder: widget.holder, type: index)
+      )..addAll([
+        if(widget.showInstant) Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children:[
+              Text(
+                "d10",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              Row(
+                children: [
+                  Expanded(child: TextButton(
+                    child: Text(AppLocalizations.of(context)!.roll),
+                    onPressed: () => setState(() => d10Result = Random().nextInt(10) + 1),
+                  )),
+                  Expanded(child: Text(
+                    d10Result?.toString() ?? "",
+                    textAlign: TextAlign.center,
+                  ))
+                ]
+              )
+            ]
+          )
+        ),
+        if(widget.showInstant) Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children:[
+              Text(
+                "d100",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              Row(
+                children: [
+                  Expanded(child: TextButton(
+                    child: Text(AppLocalizations.of(context)!.roll),
+                    onPressed: () => setState(() => d100Result = Random().nextInt(100) + 1),
+                  )),
+                  Expanded(child: Text(
+                    d100Result?.toString() ?? "",
+                    textAlign: TextAlign.center,
+                  ))
+                ]
+              )
+            ]
+          )
+        )
+      ])
+    );
 }

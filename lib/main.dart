@@ -120,7 +120,7 @@ class SWAppState extends State<SWApp> {
         }else if(settings.name == "/minions"){
           widy = const EditableList(EditableList.minion);
         }else if(settings.name == "/trash"){
-          widy = TrashList();
+          widy = const TrashList();
         }
         if (widy == null){
           settings = settings.copyWith(name: "/characters");
