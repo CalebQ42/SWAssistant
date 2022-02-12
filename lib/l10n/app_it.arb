@@ -65,6 +65,7 @@
     "willpower": "Volontà",
     "presence": "Presenza",
     "roll": "Roll",
+    "rollCrit": "Roll Critical",
     "gmMode": "Modalità GM",
     "profiles": "Profili",
     "characters": "Personaggi",
@@ -121,7 +122,6 @@
     "saveInventory": "Salva inventario",
     "overwriteInventory": "Sovrascrivi l'inventario salvato",
     "inventorySaved": "Inventario Salvato",
-    "damage": "Danno",
     "criticalHits": "Colpi Critici",
     "basicInfo": "Informazioni Di Base",
     "defense": "Difesa",
@@ -196,6 +196,7 @@
     "count": "Quantità",
     "encumTotal": "Ingombro (Totale)",
     "advNeeded": "Vantaggio necessario",
+    "damage": "Danno",
     "critical": "Critico",
     "hardPoints": "Punti Durezza",
     "encum": "Ingombro",
@@ -218,6 +219,16 @@
     "loaded": "Caricato",
     "limitedAmmo": "Munizioni Limitate",
     "ammo": "Munizioni",
+    "ignoreSoak": "Ignore {num} Soak",
+    "@ignoreSoak": {
+        "description": "Shown when weapons have at least one point in Pierce",
+        "placeholders": {
+            "num": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
     "species": "Specie",
     "age": "Età",
     "motivation": "Motivazione",
