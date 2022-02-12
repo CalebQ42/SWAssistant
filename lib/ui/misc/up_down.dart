@@ -16,12 +16,14 @@ class UpDownStat extends StatefulWidget{
     this.getMin, this.textColor, this.style}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _UpDownStatState();
+  State<StatefulWidget> createState() => UpDownStatState();
 }
 
-class _UpDownStatState extends State<UpDownStat>{
+class UpDownStatState extends State<UpDownStat>{
 
   bool up = false;
+
+  void update() => setState(() {});
 
   @override
   Widget build(BuildContext context) {

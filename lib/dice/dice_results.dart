@@ -237,7 +237,7 @@ class _CombinedDialogState extends State<_CombinedDialog>{
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        if(widget.weaponPack != null && isSuccess && pierceInd != null) Center(
+        if(widget.weaponPack != null && isSuccess && pierceInd != null && pierceInd != -1) Center(
           child: Text(
             AppLocalizations.of(context)!.ignoreSoak(widget.weaponPack!.weapon.characteristics[pierceInd].value ?? 1),
             style: Theme.of(context).textTheme.headline6?.apply(fontSizeFactor: .75),

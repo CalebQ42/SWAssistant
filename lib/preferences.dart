@@ -23,3 +23,7 @@ String forceDark = "forceDark";
 String amoled = "amoledTheme";
 
 String initialTrash = "initaialTrash";
+
+//destiny
+String destinyLight = "destinyLight";
+String destinyDark = "destinyDark";

@@ -21,7 +21,7 @@ class MoralityState extends State with StatefulCard {
   @override
   set editing(bool b) => setState(() => edit = b);
   @override
-  bool get defaultEdit => Character.of(context)?.forcePowers.isEmpty ?? false;
+  bool get defaultEdit => Character.of(context)?.morality == 0 && Character.of(context)?.conflict == 0;
 
   TextEditingController? moralityController;
   TextEditingController? conflictController;
@@ -76,15 +76,18 @@ class MoralityState extends State with StatefulCard {
               )
             ),
             Expanded(
-              child: TextField(
-                controller: conflictController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.conflict,
-                ),
-                // decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: TextField(
+                  controller: conflictController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.conflict,
+                  ),
+                  // decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
+                  textAlign: TextAlign.center,
+                )
               )
             )
           ],

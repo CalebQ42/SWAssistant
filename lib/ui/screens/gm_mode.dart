@@ -8,6 +8,7 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/dialogs/destiny.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
@@ -119,14 +120,19 @@ class _BarState extends State<_GMModeBar>{
   }
 
   @override
-  Widget build(BuildContext context) =>
-    AppBar(
+  Widget build(BuildContext context) {
+    return AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       actions: [
         IconButton(
+          icon: const Icon(Icons.tonality),
+          onPressed: () =>
+            DestinyDialog().show(context)
+        ),
+        IconButton(
           icon: const Icon(Icons.casino_outlined),
           onPressed: () =>
-            SWDiceHolder().showDialog(context),
+            SWDiceHolder().showDialog(context, showInstant: true),
         ),
         PopupMenuButton(
           itemBuilder: (c) => [
@@ -223,6 +229,7 @@ class _BarState extends State<_GMModeBar>{
         )
       ],
     );
+  }
 }
 
 class _GMModeEditor extends StatefulWidget{

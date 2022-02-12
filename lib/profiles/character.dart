@@ -317,6 +317,7 @@ class Character extends Editable with Creature{
       key: const Key("morality"),
       content: Morality(key: morKey),
       contentKey: morKey,
+      defaultEdit: () => morality == 0 && conflict == 0,
     ),
     if(!disableDuty) EditContent(
       key: const Key("duty"),
