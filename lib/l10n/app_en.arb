@@ -76,6 +76,8 @@
 
     "roll": "Roll",
 
+    "rollCrit": "Roll Critical",
+
     "gmMode": "GM Mode",
     "profiles": "Profiles",
     "characters": "Characters",
@@ -139,7 +141,6 @@
     "overwriteInventory": "Overwrite saved inventory",
     "inventorySaved": "Inventory Saved",
 
-    "damage": "Damage",
     "criticalHits": "Critical Hits",
     
     "basicInfo": "Basic Information",
@@ -248,6 +249,17 @@
     "loaded": "Loaded",
     "limitedAmmo": "Limited Ammo",
     "ammo": "Ammo",
+
+    "ignoreSoak": "Ignore {num} Soak",
+    "@ignoreSoak": {
+        "description": "Shown when weapons have at least one point in Pierce",
+        "placeholders": {
+            "num":{
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
 
     "species": "Species",
     "age": "Age",
