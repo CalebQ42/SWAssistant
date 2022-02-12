@@ -65,6 +65,7 @@
     "willpower": "Volontà",
     "presence": "Presenza",
     "roll": "Roll",
+    "rollCrit": "Roll Critical",
     "gmMode": "Modalità GM",
     "profiles": "Profili",
     "characters": "Personaggi",
@@ -121,7 +122,6 @@
     "saveInventory": "Salva inventario",
     "overwriteInventory": "Sovrascrivi l'inventario salvato",
     "inventorySaved": "Inventario Salvato",
-    "damage": "Danno",
     "criticalHits": "Colpi Critici",
     "basicInfo": "Informazioni Di Base",
     "defense": "Difesa",
@@ -196,10 +196,11 @@
     "count": "Quantità",
     "encumTotal": "Ingombro (Totale)",
     "advNeeded": "Vantaggio necessario",
+    "damage": "Danno",
     "critical": "Critico",
     "hardPoints": "Punti Durezza",
     "encum": "Ingombro",
-    "firingArc": "Firing Arc",
+    "firingArc": "Angolo di Tiro",
     "range": "Portata",
     "weapRange": "Gittata Arma",
     "rangeLevel1": "Ravvicinato",
@@ -218,6 +219,16 @@
     "loaded": "Caricato",
     "limitedAmmo": "Munizioni Limitate",
     "ammo": "Munizioni",
+    "ignoreSoak": "Ignore {num} Soak",
+    "@ignoreSoak": {
+        "description": "Shown when weapons have at least one point in Pierce",
+        "placeholders": {
+            "num": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
     "species": "Specie",
     "age": "Età",
     "motivation": "Motivazione",
@@ -308,12 +319,33 @@
     "deletedTalent": "Talento Eliminato",
     "deletedItem": "Oggetto cancellato.",
     "deletedWeapon": "Arma Eliminata",
-    "deletedCharacter": "Personaggio eliminato",
-    "deletedMinion": "PNG Eliminato",
-    "deletedVehicle": "Veicolo Eliminato",
     "deletedNote": "Nota Eliminata",
     "deletedInjury": "Infortunio Critico Eliminato",
     "undo": "Annulla",
+    "characterTrashed": "Personaggio spostato nel cestino",
+    "minionTrashed": "Minion spostato nel cestino",
+    "vehicleTrashed": "Veicolo spostato nel cestino",
+    "deletedPermanently": "{name} eliminato definitivamente",
+    "@deletedPermanently": {
+        "description": "Used when permanently deleting profiles from the trash can.",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Steve"
+            }
+        }
+    },
+    "restored": "Ripristinato {name}",
+    "@restored": {
+        "description": "Used when restoring trashed profiles",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Steve"
+            }
+        }
+    },
+    "trashNotice": "I profili cestinati vengono eliminati dopo 30 giorni",
     "fire": "Fuoco!",
     "advantageShort": "Adv",
     "@advantageShort": {
