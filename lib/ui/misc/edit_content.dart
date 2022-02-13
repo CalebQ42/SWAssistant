@@ -3,18 +3,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditContent extends StatefulWidget{
 
-  final GlobalKey<StatefulCard>? contentKey;
-  final Widget? content;
-  final Widget Function(bool b)? contentBuilder;
+  final GlobalKey<StatefulCard> contentKey;
+  final Widget content;
   final bool Function()? defaultEdit;
 
   final List<Widget> Function(BuildContext, bool)? extraButtons;
   final List<Widget> Function(BuildContext)? extraEditButtons;
 
   const EditContent({Key? key,
-    this.contentKey,
-    this.content,
-    this.contentBuilder,
+    required this.contentKey,
+    required this.content,
     this.defaultEdit,
     this.extraButtons, 
     this.extraEditButtons}) : super(key: key);
@@ -29,18 +27,15 @@ class EditContentState extends State<EditContent> with StatefulCard {
   @override
   set editing(bool b) => setState(() => edit = b);
   @override
-  bool get defaultEdit => widget.defaultEdit != null ? widget.defaultEdit!() : widget.contentKey?.currentState?.defaultEdit ?? false;
+  bool get defaultEdit => widget.defaultEdit != null ? widget.defaultEdit!() : widget.contentKey.currentState?.defaultEdit ?? false;
 
   @override
   Widget build(BuildContext context) {
-    if((widget.contentKey == null || widget.content == null) && widget.contentBuilder == null){
-      throw("either contentKey and content needs to be provided, or contentBuilder");
-    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ClipRect(
-          child: widget.content ?? widget.contentBuilder!(edit),
+          child: widget.content,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -70,11 +65,9 @@ class EditContentState extends State<EditContent> with StatefulCard {
                 icon: const Icon(Icons.edit),
                 color: edit ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),
                 onPressed: () {
-                  if(widget.contentKey != null){
-                    widget.contentKey!.currentState?.setState(() {
-                      widget.contentKey!.currentState?.editing = !edit;
-                    });
-                  }
+                  widget.contentKey.currentState?.setState(() {
+                    widget.contentKey.currentState?.editing = !edit;
+                  });
                   setState(() => edit = !edit);
                 }
               )
