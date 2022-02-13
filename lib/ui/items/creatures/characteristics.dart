@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
+import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
-class Characteristics extends StatelessWidget{
+class Characteristics extends StatefulWidget{
 
-  final bool editing;
+  const Characteristics({Key? key}) : super(key: key);
 
-  const Characteristics({required this.editing, Key? key}) : super(key: key);
+  @override
+  State<Characteristics> createState() => CharacteristicsState();
+}
+
+class CharacteristicsState extends State<Characteristics> with StatefulCard {
+
+  bool edit = false;
+
+  @override
+  set editing(bool b) => setState(() => edit = b);
+
+  @override
+  bool get defaultEdit => edit;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +60,7 @@ class Characteristics extends StatelessWidget{
       child: EditingText(
         onTap:() =>
           SWDiceHolder(ability: creature.charVals[charNum]).showDialog(context),
-        editing: editing,
+        editing: edit,
         initialText: creature.charVals[charNum].toString(),
         controller: (){
           var controller = TextEditingController(text: creature.charVals[charNum].toString());

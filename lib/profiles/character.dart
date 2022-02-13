@@ -235,6 +235,7 @@ class Character extends Editable with Creature{
     "heals today": 0,
   };
 
+  var infoKey = GlobalKey<CharacterInfoState>();
   var morKey = GlobalKey<MoralityState>();
   var woundStrainKey = GlobalKey<WoundStrainState>();
   var skillKey = GlobalKey<SkillsState>();
@@ -249,7 +250,9 @@ class Character extends Editable with Creature{
   List<EditContent> cardContents(BuildContext context) => [
     EditContent(
       key: const Key("info"),
-      contentBuilder: (b) => CharacterInfo(editing: b)
+      contentKey: infoKey,
+      content: CharacterInfo(key: infoKey),
+      defaultEdit: () => species == "" && age == 0 && motivation == "" && career == "" && category == "",
     ),
     EditContent(
       key: const Key("wound"),

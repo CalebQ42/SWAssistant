@@ -9,14 +9,16 @@ import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/items/item.dart';
 import 'package:swassistant/items/note.dart';
 import 'package:swassistant/items/weapon.dart';
-import 'package:swassistant/ui/misc/info_name_card.dart';
+import 'package:swassistant/ui/misc/info_card.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/items/editable/critical_injuries.dart';
 import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/editable/weapons.dart';
+import 'package:swassistant/ui/misc/name_card.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../character.dart';
 import '../minion.dart';
@@ -170,13 +172,26 @@ abstract class Editable extends JsonSavable{
     "trashed": false,
   };
 
+  GlobalKey<NameCardState> nameKey = GlobalKey(); 
+
   List<Widget> cards(BuildContext context){
     var cards = <Widget>[];
     var contents = cardContents(context);
     cards.add(
-      const Padding(
-        padding: EdgeInsets.all(10.0),
-        child: NameCardContent()
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: EditContent(
+          contentKey: nameKey,
+          content: NameCard(key: nameKey),
+          defaultEdit: () {
+            if(this is Character){
+              return name == AppLocalizations.of(context)!.newCharacter;
+            }else if(this is Minion){
+              return name == AppLocalizations.of(context)!.newMinion;
+            }
+            return name == AppLocalizations.of(context)!.newVehicle;
+          },
+        ),
       )
     );
     var names = cardNames(context);
