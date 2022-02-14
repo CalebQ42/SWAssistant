@@ -236,13 +236,15 @@ class Character extends Editable with Creature{
   };
 
   var infoKey = GlobalKey<CharacterInfoState>();
-  var morKey = GlobalKey<MoralityState>();
   var woundStrainKey = GlobalKey<WoundStrainState>();
+  var charKey = GlobalKey<CharacteristicsState>();
   var skillKey = GlobalKey<SkillsState>();
+  var defKey = GlobalKey<DefenseState>();
   var specKey = GlobalKey<SpecializationsState>();
   var talentKey = GlobalKey<TalentsState>();
   var fpKey = GlobalKey<ForcePowerState>();
   var xpKey = GlobalKey<XPState>();
+  var morKey = GlobalKey<MoralityState>();
   var dutyKey = GlobalKey<DutiesState>();
   var obliKey = GlobalKey<ObligationsState>();
 
@@ -262,7 +264,8 @@ class Character extends Editable with Creature{
     ),
     EditContent(
       key: const Key("characteristics"),
-      contentBuilder: (b) => Characteristics(editing: b),
+      contentKey: charKey,
+      content: Characteristics(key: charKey),
       defaultEdit: () => charVals.every((element) => element == 0)
     ),
     EditContent(
@@ -273,7 +276,9 @@ class Character extends Editable with Creature{
     ),
     EditContent(
       key: const Key("defense"),
-      contentBuilder: (b) => Defense(editing: b)
+      contentKey: defKey,
+      content:  Defense(key: defKey),
+      defaultEdit: () => defMelee == 0 && defRanged == 0,
     ),
     EditContent(
       key: const Key("weapons"),
@@ -336,8 +341,8 @@ class Character extends Editable with Creature{
     ),
     EditContent(
       key: const Key("desc"),
-      contentBuilder: (b) =>
-        Description(editing: b),
+      contentKey: descKey,
+      content: Description(key: descKey),
       defaultEdit: () => desc == ""
     )
   ];

@@ -27,32 +27,33 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
       character.career == "" && character.category == "";
   }
 
-  late TextEditingController speciesController;
-  late TextEditingController ageController;
-  late TextEditingController motivationController;
-  late TextEditingController careerController;
-  late TextEditingController categoryController;
+  TextEditingController? speciesController;
+  TextEditingController? ageController;
+  TextEditingController? motivationController;
+  TextEditingController? careerController;
+  TextEditingController? categoryController;
 
   @override
   void initState() {
     super.initState();
-    var character = Character.of(context)!;
-    speciesController = TextEditingController(text: character.species);
-    speciesController.addListener(() => character.species = speciesController.text);
-    ageController = TextEditingController(text: character.age.toString());
-    ageController.addListener(() => character.age = int.tryParse(ageController.text) ?? 0);
-    motivationController = TextEditingController(text: character.motivation);
-    motivationController.addListener(() => character.motivation = motivationController.text);
-    careerController = TextEditingController(text: character.career);
-    careerController.addListener(() => character.career = careerController.text);
-    categoryController = TextEditingController(text: character.category);
-    categoryController.addListener(() => SW.of(context).updateCategory(character, categoryController.text));
   }
 
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "CharacterInfo card on non Character";
+    if(speciesController == null){
+      speciesController = TextEditingController(text: character.species);
+      speciesController!.addListener(() => character.species = speciesController!.text);
+      ageController = TextEditingController(text: character.age.toString());
+      ageController!.addListener(() => character.age = int.tryParse(ageController!.text) ?? 0);
+      motivationController = TextEditingController(text: character.motivation);
+      motivationController!.addListener(() => character.motivation = motivationController!.text);
+      careerController = TextEditingController(text: character.career);
+      careerController!.addListener(() => character.career = careerController!.text);
+      categoryController = TextEditingController(text: character.category);
+      categoryController!.addListener(() => SW.of(context).updateCategory(character, categoryController!.text));
+    }
     var species = EditingText(
       editing: edit, 
       initialText: character.species,

@@ -20,10 +20,19 @@ class CharacteristicsState extends State<Characteristics> with StatefulCard {
   set editing(bool b) => setState(() => edit = b);
 
   @override
-  bool get defaultEdit => edit;
+  bool get defaultEdit => Creature.of(context)!.charVals.every((element) => element == 0);
+
+
+  List<TextEditingController>? charValControllers;
 
   @override
   Widget build(BuildContext context) {
+    if(charValControllers == null){
+      charValControllers = Creature.of(context)!.charVals.map((element) => TextEditingController(text: element.toString())).toList();
+      for(var i = 0; i < charValControllers!.length; i++){
+        charValControllers![i].addListener(() => Creature.of(context)!.charVals[i] = int.tryParse(charValControllers![i].text) ?? 0);
+      }
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -62,13 +71,7 @@ class CharacteristicsState extends State<Characteristics> with StatefulCard {
           SWDiceHolder(ability: creature.charVals[charNum]).showDialog(context),
         editing: edit,
         initialText: creature.charVals[charNum].toString(),
-        controller: (){
-          var controller = TextEditingController(text: creature.charVals[charNum].toString());
-          controller.addListener(() =>
-            creature.charVals[charNum] = int.tryParse(controller.text) ?? 0
-          );
-          return controller;
-        }(),
+        controller: charValControllers![charNum],
         fieldAlign: TextAlign.center,
         style: style,
         textType: TextInputType.number,

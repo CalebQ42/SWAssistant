@@ -162,7 +162,8 @@ class Vehicle extends Editable{
       defaultEdit: () => criticalInjuries.isEmpty,
     ),
     EditContent(
-      contentBuilder: (b) => Description(editing: b),
+      contentKey: descKey,
+      content: Description(key: descKey),
       defaultEdit: () => desc == "",
     ),
   ];

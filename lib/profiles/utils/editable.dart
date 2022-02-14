@@ -9,6 +9,7 @@ import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/items/item.dart';
 import 'package:swassistant/items/note.dart';
 import 'package:swassistant/items/weapon.dart';
+import 'package:swassistant/ui/items/editable/description.dart';
 import 'package:swassistant/ui/misc/info_card.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/items/editable/critical_injuries.dart';
@@ -56,9 +57,11 @@ abstract class Editable extends JsonSavable{
   String? driveId;
   bool _cloudDefered = false;
   //Universal Keys
+  var nameKey = GlobalKey<NameCardState>(); 
   var invKey = GlobalKey<InventoryState>();
   var injKey = GlobalKey<CritState>();
   var weaponKey = GlobalKey<WeaponsState>();
+  var descKey = GlobalKey<DescriptionState>();
 
   Editable({this.name = "", bool saveOnCreation = false, required SW app}) : uid = const Uuid().v4(){
     if(saveOnCreation){
@@ -171,8 +174,6 @@ abstract class Editable extends JsonSavable{
     "description": "",
     "trashed": false,
   };
-
-  GlobalKey<NameCardState> nameKey = GlobalKey(); 
 
   List<Widget> cards(BuildContext context){
     var cards = <Widget>[];

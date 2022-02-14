@@ -109,7 +109,9 @@ class Minion extends Editable with Creature{
 
   var infoKey = GlobalKey<MinInfoState>();
   var woundKey = GlobalKey<MinionWoundState>();
+  var charKey = GlobalKey<CharacteristicsState>();
   var skillKey = GlobalKey<SkillsState>();
+  var defKey = GlobalKey<DefenseState>();
   var talentKey = GlobalKey<TalentsState>();
 
   @override
@@ -123,7 +125,8 @@ class Minion extends Editable with Creature{
       contentKey: woundKey,
     ),
     EditContent(
-      contentBuilder: (b) => Characteristics(editing: b)
+      contentKey: charKey,
+      content: Characteristics(key: charKey),
     ),
     EditContent(
       content: Skills(key: skillKey),
@@ -131,7 +134,8 @@ class Minion extends Editable with Creature{
       defaultEdit: () => skills.isEmpty
     ),
     EditContent(
-      contentBuilder: (b) => Defense(editing: b)
+      contentKey: defKey,
+      content: Defense(key: defKey),
     ),
     EditContent(
       content: Weapons(key: weaponKey),
@@ -248,8 +252,8 @@ class Minion extends Editable with Creature{
       defaultEdit: () => criticalInjuries.isEmpty
     ),
     EditContent(
-      contentBuilder: (b) =>
-        Description(editing: b),
+      contentKey: descKey,
+      content: Description(key: descKey),
       defaultEdit: () => desc == ""
     ),
   ];
