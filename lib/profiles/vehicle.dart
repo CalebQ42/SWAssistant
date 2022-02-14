@@ -132,19 +132,24 @@ class Vehicle extends Editable{
     "model": "",
   };
 
+  var infoKey = GlobalKey<VehicleInfoState>();
   var defKey = GlobalKey<VehicleDefenseState>();
+  var damageKey = GlobalKey<VehicleDamageState>();
 
   @override
   List<EditContent> cardContents(BuildContext context) => [
     EditContent(
-      contentBuilder: (b) => VehicleInfo(editing: b)
+      contentKey: infoKey,
+      content: VehicleInfo(key: infoKey),
+      defaultEdit: () => silhouette == 0 && speed == 0 && armor == 0 && handling == 0 && hp == 0 && passengerCapacity == 0 && category == "",
     ),
     EditContent(
       content: VehicleDefense(key: defKey),
       contentKey: defKey
     ),
     EditContent(
-      contentBuilder: (b) => VehicleDamage(editing: b)
+      contentKey: damageKey,
+      content: VehicleDamage(key: damageKey)
     ),
     EditContent(
       content: Weapons(key: weaponKey),

@@ -56,12 +56,17 @@ abstract class Editable extends JsonSavable{
   bool _cloudSaving = false;
   String? driveId;
   bool _cloudDefered = false;
+  int _cloudVersion = -1;
+  bool _syncing = false;
+  bool _endSync = false;
   //Universal Keys
   var nameKey = GlobalKey<NameCardState>(); 
   var invKey = GlobalKey<InventoryState>();
   var injKey = GlobalKey<CritState>();
   var weaponKey = GlobalKey<WeaponsState>();
   var descKey = GlobalKey<DescriptionState>();
+
+  Function()? notesUpdate;
 
   Editable({this.name = "", bool saveOnCreation = false, required SW app}) : uid = const Uuid().v4(){
     if(saveOnCreation){
@@ -180,7 +185,7 @@ abstract class Editable extends JsonSavable{
     var contents = cardContents(context);
     cards.add(
       Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(4),
         child: EditContent(
           contentKey: nameKey,
           content: NameCard(key: nameKey),
@@ -191,8 +196,8 @@ abstract class Editable extends JsonSavable{
               return name == AppLocalizations.of(context)!.newMinion;
             }
             return name == AppLocalizations.of(context)!.newVehicle;
-          },
-        ),
+          }
+        )
       )
     );
     var names = cardNames(context);
@@ -226,7 +231,7 @@ abstract class Editable extends JsonSavable{
       cloudSave(app);
     }
     if(kIsWeb) return;
-    if(!_saving && !_defered){
+    if(!_saving && !_defered && !_syncing){
       _saving = true;
       var file = File(filename);
       File? backup;
@@ -239,7 +244,7 @@ abstract class Editable extends JsonSavable{
         backup.deleteSync();
       }
       _saving = false;
-    }else if(!_defered){
+    }else if(!_defered && !_syncing){
       _defered = true;
       while(_saving){
         await Future.delayed(const Duration(milliseconds: 250));
@@ -266,7 +271,7 @@ abstract class Editable extends JsonSavable{
   }
 
   Future<void> cloudSave(SW app) async {
-    if(!_cloudSaving && !_cloudDefered) {
+    if(!_cloudSaving && !_cloudDefered && !_syncing) {
       _cloudSaving = true;
       if(app.driver == null || !await app.driver!.ready()){
         _cloudSaving = false;
@@ -279,8 +284,12 @@ abstract class Editable extends JsonSavable{
       }
       var data = jsonEncode(toJson()).codeUnits;
       await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
+      var curFil = await app.driver!.getFile(id);
+      if(curFil != null) {
+        _cloudVersion = int.tryParse(curFil.version ?? "") ?? 0;
+      }
       _cloudSaving = false;
-    }else if (!_cloudDefered) {
+    }else if (!_cloudDefered && !_syncing) {
       _cloudDefered = true;
       while(_cloudSaving) {
         await Future.delayed(const Duration(milliseconds: 500));
@@ -289,12 +298,109 @@ abstract class Editable extends JsonSavable{
       cloudSave(app);
     }
   }
+
+  // Future<void> startSync(SW app) async{
+  //   _endSync = false;
+  //   var id = await getDriveId(app);
+  //   if (id == null) {
+  //     Future.delayed(const Duration(milliseconds: 2000));
+  //     startSync(app);
+  //     return;
+  //   }
+  //   while(!_endSync){
+  //     if(app.driver == null || !await app.driver!.ready()) Future.delayed(const Duration(milliseconds: 2000));
+  //     _syncing = true;
+  //     while(_cloudSaving || _saving){
+  //       await Future.delayed(const Duration(milliseconds: 200));
+  //     }
+  //     var curFil = await app.driver!.getFile(id);
+  //     if(curFil == null) {
+  //       _syncing = false;
+  //       Future.delayed(const Duration(milliseconds: 2000));
+  //       continue;
+  //     }
+  //     if((int.tryParse(curFil.version ?? "") ?? 0) > _cloudVersion){
+  //       var media = await app.driver!.getContents(id);
+  //       if (media == null) return;
+  //       List<int> out = [];
+  //       await for(var tmp in media.stream){
+  //         out.addAll(tmp);
+  //       }
+  //       await baseNewVersion((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>));
+  //       _cloudVersion = int.tryParse(curFil.version ?? "") ?? 0;
+  //     }
+  //     _syncing = false;
+  //   }
+  // }
+
+  // void endSync(){
+  //   _endSync = true;
+  // }
+
+  // Future<void> baseNewVersion(Map<String,dynamic> json) async{
+  //   List<void Function()> updates = [];
+  //   //TODO: Add more updates
+  //   if(json["name"] ?? "" != name) updates.add(() => nameKey.currentState?.setState(() {}));
+  //   var newNotes = <Note>[];
+  //   if (json["Notes"] != null){
+  //     for (Map<String, dynamic> arrMap in json["Notes"]){
+  //       newNotes.add(Note.fromJson(arrMap));
+  //     }
+  //   }
+  //   if(notes.length != newNotes.length || notes != newNotes){
+  //     updates.add(() {
+  //       if(notesUpdate != null) notesUpdate!();
+  //     });
+  //   }
+  //   var newWeapons = <Weapon>[];
+  //   if (json["Weapons"] != null){
+  //     for(Map<String,dynamic> arrMap in json["Weapons"]){
+  //       newWeapons.add(Weapon.fromJson(arrMap));
+  //     }
+  //   }
+  //   category = json["category"] ?? "";
+  //   if (json["Critical Injuries"] != null){
+  //     criticalInjuries = [];
+  //     for(Map<String,dynamic> arrMap in json["Critical Injuries"]){
+  //       criticalInjuries.add(CriticalInjury.fromJson(arrMap));
+  //     }
+  //   }
+  //   desc = json["description"] ?? "";
+  //   showCard = ((json["show cards v2"] ?? <String,dynamic>{}) as Map<String,dynamic>).cast();
+  //   if (json["Inventory"] != null){
+  //     inventory = [];
+  //     if(json["Inventory"] != null){
+  //       for(Map<String, dynamic> arrMap in json["Inventory"]){
+  //         inventory.add(Item.fromJson(arrMap));
+  //       }
+  //     }
+  //   }
+  //   trashed = json["trashed"] ?? false;
+  //   if(json["trashed time"] != null){
+  //     trashTime = DateTime.tryParse(json["trashed time"]) ?? DateTime.now();
+  //   }else if(trashed){
+  //     trashTime = DateTime.now();
+  //   }
+  //   await newVersion(json, updates);
+  //   loadJson(json);
+  //   for(var func in updates) {
+  //     func();
+  //   }
+  // }
+
+  // @mustCallSuper
+  // Future<void> newVersion(Map<String, dynamic> json, List<Function()> updateKeys);
+
   void load(String filename){
     var file = File(filename);
     loadJson(jsonDecode(file.readAsStringSync()));
   }
+
   Future<void> cloudLoad(SW app, String id, {bool overwriteId = true}) async {
     if(app.driver == null || !await app.driver!.ready()) return;
+    var fil = await app.driver!.getFile(id);
+    if(fil == null) return;
+    _cloudVersion = int.tryParse(fil.version ?? "") ?? 0;
     var media = await app.driver!.getContents(id);
     if (media == null) return;
     List<int> out = [];

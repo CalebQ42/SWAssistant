@@ -26,4 +26,10 @@ class Note implements JsonSavable{
     "note": "",
     "align": 0,
   };
+
+  @override
+  operator == (other) => other is Note && other.title == title && other.note == note && other.align == align;
+
+  @override
+  int get hashCode => title.hashCode + note.hashCode + align.hashCode;
 }

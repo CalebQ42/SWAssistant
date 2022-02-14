@@ -32,12 +32,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
   TextEditingController? motivationController;
   TextEditingController? careerController;
   TextEditingController? categoryController;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);

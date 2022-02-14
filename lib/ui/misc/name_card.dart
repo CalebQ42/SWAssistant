@@ -3,8 +3,8 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NameCard extends StatefulWidget {
 
@@ -29,20 +29,17 @@ class NameCardState extends State<NameCard> with StatefulCard {
   }
 
   @override
-  set editing(bool b) => setState(() => editing = b);
+  set editing(bool b) => setState(() => edit = b);
 
-  late TextEditingController nameController;
-
-  @override
-  void initState() {
-    super.initState();
-    nameController = TextEditingController(text: Editable.of(context).name);
-    nameController.addListener(() => Editable.of(context).name = nameController.text);
-  }
+  TextEditingController? nameController;
 
   @override
-  Widget build(BuildContext context) =>
-    EditingText(
+  Widget build(BuildContext context) {
+    if(nameController == null){
+      nameController = TextEditingController(text: Editable.of(context).name);
+      nameController!.addListener(() => Editable.of(context).name = nameController!.text);
+    }
+    return EditingText(
       editing: edit,
       heroTag: Editable.of(context).uid,
       editableBackup: Editable.of(context),
@@ -53,4 +50,5 @@ class NameCardState extends State<NameCard> with StatefulCard {
       defaultSave: true,
       textCapitalization: TextCapitalization.words,
     );
+  }
 }

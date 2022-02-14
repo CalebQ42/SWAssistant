@@ -3,25 +3,25 @@ import 'dart:async';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
-import 'package:simple_connection_checker/simple_connection_checker.dart';
 import 'package:swassistant/utils/driver/query.dart';
+import 'package:universal_internet_checker/universal_internet_checker.dart';
 
 class Driver{
   String wd = "appDataFolder";
   DriveApi? api;
   GoogleSignIn? gsi;
 
-  StreamSubscription<bool>? sub;
+  StreamSubscription? sub;
   bool internetAvailable = true;
 
   //ready returns whether the driver is ready to use. If the driver is not ready, it tries to initialize it.
   Future<bool> ready([String? wdFolder]) async {
     if(sub == null){
-      var checker = SimpleConnectionChecker();
+      var checker = UniversalInternetChecker();
       sub = checker.onConnectionChange.listen((event) {
-        internetAvailable = event;
+        internetAvailable = event == ConnectionStatus.online;
       });
-      if(!await SimpleConnectionChecker.isConnectedToInternet()) return false;
+      if(await UniversalInternetChecker.checkInternet() == ConnectionStatus.offline) return false;
     }
     if(!internetAvailable) return false;
     if(gsi != null && gsi!.currentUser != null && api != null){

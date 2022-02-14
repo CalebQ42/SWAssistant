@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/vehicle.dart';
+import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class VehicleDamage extends StatelessWidget{
+class VehicleDamage extends StatefulWidget{
 
-  final bool editing;
+  const VehicleDamage({Key? key}) : super(key: key);
 
-  const VehicleDamage({required this.editing, Key? key}) : super(key: key);
+  @override
+  State<VehicleDamage> createState() => VehicleDamageState();
+}
+
+class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
+
+  var edit = false;
+  @override
+  set editing(bool b) => setState(() => edit = b);
+  @override
+  bool get defaultEdit => false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +36,7 @@ class VehicleDamage extends StatelessWidget{
               width: 50,
               height: 25,
               child: EditingText(
-                editing: editing,
+                editing: edit,
                 initialText: vehicle.armor.toString(),
                 controller: (){
                   var controller = TextEditingController(text: vehicle.armor.toString());
@@ -50,7 +61,7 @@ class VehicleDamage extends StatelessWidget{
                 height: 80,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  child: !editing ? Column(
+                  child: !edit ? Column(
                     children: [
                       Text(AppLocalizations.of(context)!.hullTrauma, textAlign: TextAlign.center),
                       UpDownStat(
@@ -102,7 +113,7 @@ class VehicleDamage extends StatelessWidget{
                 height: 80,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  child: !editing ? Column(
+                  child: !edit ? Column(
                     children: [
                       Text(AppLocalizations.of(context)!.sysStress, textAlign: TextAlign.center),
                       UpDownStat(

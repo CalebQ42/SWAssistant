@@ -22,7 +22,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
   @override
   set editing(bool b) => setState(() => edit = b);
   @override
-  bool get defaultEdit => false;
+  bool get defaultEdit => Character.of(context)!.soak == 0 && Character.of(context)!.woundThresh == 0 && Character.of(context)!.strainThresh == 0;
   Item? healingItem;
 
   @override
