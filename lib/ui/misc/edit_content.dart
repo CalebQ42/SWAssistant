@@ -83,6 +83,8 @@ mixin StatefulCard<T extends StatefulWidget> on State<T> {
   set editing(bool b);
   bool get defaultEdit;
 
+  void refresh() => setState(() {});
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

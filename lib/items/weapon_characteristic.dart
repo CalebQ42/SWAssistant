@@ -32,6 +32,12 @@ class WeaponCharacteristic implements JsonSavable{
     "name": "",
   };
 
+  @override
+  operator ==(other) => other is WeaponCharacteristic && other.name == name && other.value == value && other.advantage == advantage;
+
+  @override
+  int get hashCode => hashValues(name, value, advantage);
+
   static List<String> passive(BuildContext context) => [
     AppLocalizations.of(context)!.characteristicAccurate,
     AppLocalizations.of(context)!.characteristicBreach,

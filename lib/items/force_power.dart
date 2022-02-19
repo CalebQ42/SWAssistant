@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:swassistant/utils/json_savable.dart';
 
 class ForcePower implements JsonSavable{
@@ -25,4 +27,10 @@ class ForcePower implements JsonSavable{
     "name": "",
     "description": ""
   };
+
+  @override
+  operator ==(other) => other is ForcePower && other.name == name && other.desc == desc;
+
+  @override
+  int get hashCode => hashValues(name.hashCode, desc.hashCode);
 }

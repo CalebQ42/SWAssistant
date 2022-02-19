@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:googleapis/cloudbuild/v1.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
@@ -61,6 +62,12 @@ class Skill implements JsonSavable{
   String toString(){
     return name! + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
   }
+
+  @override
+  operator ==(other) => other is Skill && other.name == name && other.value == value && other.base == base && other.career == career;
+
+  @override
+  int get hashCode => hashValues(name, value, base, career);
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   static Map<String, int> skillsList(BuildContext context) => {

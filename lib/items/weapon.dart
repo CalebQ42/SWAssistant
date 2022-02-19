@@ -104,6 +104,16 @@ class Weapon implements JsonSavable{
     "encumbrance": 0,
   };
 
+  @override
+  operator ==(other) => other is Weapon && other.name == name && other.damage == damage && other.critical == critical &&
+      other.hp == hp && other.range == range && other.skill == skill && other.skillBase == skillBase &&
+      other.addBrawn == addBrawn && other.loaded == loaded && other.limitedAmmo == limitedAmmo &&other.itemState == itemState &&
+      other.ammo == ammo && other.firingArc == firingArc && other.encumbrance == encumbrance && other.characteristics == characteristics;
+
+
+  @override
+  int get hashCode => hashValues(name, damage, critical, hp, range, skill, skillBase, addBrawn, loaded, limitedAmmo, itemState, ammo, firingArc, encumbrance, hashList(characteristics));
+
   static List<String> weaponSkills(BuildContext context) => [
     AppLocalizations.of(context)!.skills3,
     AppLocalizations.of(context)!.skills11,

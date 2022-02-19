@@ -7,7 +7,7 @@ class Bottom extends StatelessWidget{
   final Widget Function(BuildContext)? child;
   final bool padding;
 
-  final _BottomMessenger messenger = _BottomMessenger();
+  final GlobalKey<_ButtonState> butKey = GlobalKey();
 
   Bottom({this.buttons, this.background, required this.child, this.padding = true, Key? key}) : super(key: key);
 
@@ -35,14 +35,13 @@ class Bottom extends StatelessWidget{
           ),
           if(buttons != null) _BottomButtons(
             builder: buttons!,
-            messenger: messenger
           )
         ],
       )
     );
   }
 
-  void updateButtons() => messenger.updateButtons();
+  void updateButtons() => butKey.currentState?.refresh();
 
   void show(BuildContext context) =>
     showModalBottomSheet(
@@ -53,17 +52,10 @@ class Bottom extends StatelessWidget{
     );
 }
 
-class _BottomMessenger{
-  late Function() updateButtons;
-
-  _BottomMessenger();
-}
-
 class _BottomButtons extends StatefulWidget{
   final List<Widget> Function(BuildContext) builder;
-  final _BottomMessenger messenger;
 
-  const _BottomButtons({required this.builder, required this.messenger, Key? key}) : super(key: key);
+  const _BottomButtons({required this.builder, Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ButtonState();
@@ -71,11 +63,7 @@ class _BottomButtons extends StatefulWidget{
 
 class _ButtonState extends State<_BottomButtons>{
 
-  @override
-  void initState(){
-    super.initState();
-    widget.messenger.updateButtons = () => setState((){});
-  }
+  void refresh() => setState((){});
 
   @override
   Widget build(BuildContext context) =>

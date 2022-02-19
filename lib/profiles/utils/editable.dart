@@ -16,6 +16,7 @@ import 'package:swassistant/ui/items/editable/critical_injuries.dart';
 import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/editable/weapons.dart';
 import 'package:swassistant/ui/misc/name_card.dart';
+import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
 import 'package:uuid/uuid.dart';
@@ -52,6 +53,7 @@ abstract class Editable extends JsonSavable{
   bool _saving = false;
   String? loc;
   bool _defered = false;
+
   //Cloud Saving variables
   bool _cloudSaving = false;
   String? driveId;
@@ -59,12 +61,14 @@ abstract class Editable extends JsonSavable{
   int _cloudVersion = -1;
   bool _syncing = false;
   bool _endSync = false;
+
   //Universal Keys
   var nameKey = GlobalKey<NameCardState>(); 
   var invKey = GlobalKey<InventoryState>();
   var injKey = GlobalKey<CritState>();
   var weaponKey = GlobalKey<WeaponsState>();
   var descKey = GlobalKey<DescriptionState>();
+  var notesKey = GlobalKey<EditableNotesState>();
 
   Function()? notesUpdate;
 
@@ -299,6 +303,8 @@ abstract class Editable extends JsonSavable{
     }
   }
 
+  // TODO: real-ish time updating
+  //
   // Future<void> startSync(SW app) async{
   //   _endSync = false;
   //   var id = await getDriveId(app);
@@ -340,7 +346,7 @@ abstract class Editable extends JsonSavable{
   // Future<void> baseNewVersion(Map<String,dynamic> json) async{
   //   List<void Function()> updates = [];
   //   //TODO: Add more updates
-  //   if(json["name"] ?? "" != name) updates.add(() => nameKey.currentState?.setState(() {}));
+  //   if(json["name"] ?? "" != name) updates.add(() => nameKey.currentState?.refresh());
   //   var newNotes = <Note>[];
   //   if (json["Notes"] != null){
   //     for (Map<String, dynamic> arrMap in json["Notes"]){

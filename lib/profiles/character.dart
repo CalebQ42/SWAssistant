@@ -234,7 +234,7 @@ class Character extends Editable with Creature{
     "use repair": false,
     "heals today": 0,
   };
-
+  
   var infoKey = GlobalKey<CharacterInfoState>();
   var woundStrainKey = GlobalKey<WoundStrainState>();
   var charKey = GlobalKey<CharacteristicsState>();
