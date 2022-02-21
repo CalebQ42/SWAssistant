@@ -16,6 +16,7 @@ String firstStart = "first";
 String startCount = "startCount";
 String startingScreen = "startScreen";
 String driveFirstLoad = "driveFirstLoad";
+String newDrive = "newDrive";
 
 //Theme prefs
 String forceLight = "forceLight";

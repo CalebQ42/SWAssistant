@@ -239,10 +239,16 @@ class SW{
     }
   }
 
-  Future<List<Editable>?> downloadAndMatch() async{
-    driver ??= Driver();
-    var okay = await driver!.ready("SWChars");
-    if(!okay) return null;
+  Future<List<Editable>?> downloadAndMatch([String scope = drive.DriveApi.driveFileScope]) async{
+    if(driver != null && driver!.scope != scope){
+      driver!.changeScope(scope);
+      var okay = await driver!.setWD(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
+      if(!okay) return null;
+    }else{
+      driver ??= Driver(scope);
+      var okay = await driver!.ready(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
+      if(!okay) return null;
+    }
     var all = <Editable>[
       ..._characters,
       ..._minions,
@@ -302,7 +308,7 @@ class SW{
             }
           }
           loadWaiting--;
-        });
+        }, onError: (e) => loadWaiting--);
       } else {
         Editable? matchEd;
         try {
@@ -330,9 +336,10 @@ class SW{
               add(ed);
             }
             loadWaiting--;
-          });
+          }, onError: (e) => loadWaiting--);
           continue;
         }
+        all.remove(matchEd);
         var preTrashed = matchEd.trashed;
         matchEd.driveId = fil.id!;
         var local = File(matchEd.getFileLocation(this));
@@ -341,12 +348,11 @@ class SW{
           matchEd.cloudLoad(this, fil.id!).then((value) async {
             await matchEd!.save(app: this, localOnly: true);
             loadWaiting--;
-          });
+          }, onError: (e) => loadWaiting--);
         } else {
           loadWaiting++;
           matchEd.cloudSave(this).then((value) => loadWaiting--);
         }
-        all.remove(matchEd);
         if(matchEd.trashed != preTrashed){
           if(matchEd.trashed){
             remove(matchEd);
@@ -359,12 +365,12 @@ class SW{
       }
     }
     while(loadWaiting > 0) {
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 50));
     }
     return all;
   }
 
-  Future<bool> initialSync([BuildContext? context]) async{
+  Future<bool> initialSync({BuildContext? context, String scope = drive.DriveApi.driveFileScope}) async{
     syncing = true;
     if(context != null){
       showDialog(
@@ -386,7 +392,7 @@ class SW{
           )
       );
     }
-    var toUpload = await downloadAndMatch();
+    var toUpload = await downloadAndMatch(scope);
     if(toUpload == null){
       if(context != null) {
         Navigator.pop(context);
@@ -407,9 +413,9 @@ class SW{
     return true;
   }
   
-  Future<bool> syncCloud([BuildContext? context]) async{
+  Future<bool> syncCloud({BuildContext? context, String scope = drive.DriveApi.driveFileScope}) async{
     syncing = true;
-    var toDelete = await downloadAndMatch();
+    var toDelete = await downloadAndMatch(scope);
     if(toDelete == null){
       syncing = false;
       return false;
@@ -441,6 +447,9 @@ class SW{
           }
         }
       });
+    }
+    if (!app.getPreference(preferences.googleDrive, false) || app.getPreference(preferences.driveFirstLoad, true)) {
+      app.prefs.setBool(preferences.newDrive, true);
     }
     if (prefs.getBool(preferences.dev) ?? false || kDebugMode || kProfileMode){
       app.devMode = true;
@@ -481,6 +490,12 @@ class SW{
       if(getPreference(preferences.driveFirstLoad, true)){
         if(await initialSync()){
           prefs.setBool(preferences.driveFirstLoad, false);
+        }
+      }else if(!getPreference(preferences.newDrive, false)){
+        var okay = await syncCloud(scope: drive.DriveApi.driveAppdataScope);
+        if(okay){
+          driver!.changeScope(drive.DriveApi.driveFileScope);
+          await initialSync();
         }
       }else{
         await syncCloud();

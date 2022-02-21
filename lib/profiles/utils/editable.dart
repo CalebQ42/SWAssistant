@@ -165,7 +165,7 @@ abstract class Editable extends JsonSavable{
       "description" : desc,
       "show cards v2" : showCard,
       "Inventory" : List.generate(inventory.length, (index) => inventory[index].toJson()),
-      "trashed time" : trashTime?.toUtc().toIso8601String() ?? DateTime.now().toUtc().toIso8601String(),
+      "trashed time" : trashed ? trashTime?.toUtc().toIso8601String() ?? DateTime.now().toUtc().toIso8601String() : null,
       "trashed": trashed,
     }..removeWhere((key, value){
       if (key == "show cards v2" && (value as Map<String, bool>).values.every((element) => !element)) return true;
@@ -243,7 +243,7 @@ abstract class Editable extends JsonSavable{
         backup = file.renameSync(filename +".backup");
       }
       file.createSync();
-      file.writeAsStringSync(jsonEncode(toJson()));
+      file.writeAsStringSync(const JsonEncoder.withIndent("  ").convert(toJson()));
       if(backup!=null){
         backup.deleteSync();
       }
@@ -262,11 +262,10 @@ abstract class Editable extends JsonSavable{
     if (driveId == null){
       if(app.driver == null || !await app.driver!.ready()) return null;
       var newId = await app.driver!.getID(uid+fileExtension);
-      if(newId == null){
-      }
       newId ??= await app.driver!.createFile(
         uid + fileExtension,
-        appProperties: {"uid" : uid}
+        appProperties: {"uid" : uid},
+        mimeType: "application/json"
       );
       if (newId == null) return null;
       driveId = newId;
@@ -275,22 +274,28 @@ abstract class Editable extends JsonSavable{
   }
 
   Future<void> cloudSave(SW app) async {
+    if(app.driver == null || !await app.driver!.ready()){
+      await Future.delayed(const Duration(milliseconds: 250));
+      return;
+    }
     if(!_cloudSaving && !_cloudDefered && !_syncing) {
       _cloudSaving = true;
-      if(app.driver == null || !await app.driver!.ready()){
-        _cloudSaving = false;
-        return;
-      }
-      var id = await getDriveId(app);
-      if (id == null) {
-        _cloudSaving = false;
-        return;
-      }
-      var data = jsonEncode(toJson()).codeUnits;
-      await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
-      var curFil = await app.driver!.getFile(id);
-      if(curFil != null) {
-        _cloudVersion = int.tryParse(curFil.version ?? "") ?? 0;
+      try{
+        var id = await getDriveId(app);
+        if (id == null) {
+          _cloudSaving = false;
+          return;
+        }
+        var data = const JsonEncoder.withIndent("  ").convert(toJson()).codeUnits;
+        await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
+        var curFil = await app.driver!.getFile(id);
+        if(curFil != null) {
+          print(curFil.toJson());
+          _cloudVersion = int.tryParse(curFil.version ?? "") ?? 0;
+        }
+      }catch(e){
+        await Future.delayed(const Duration(milliseconds: 250));
+        cloudSave(app);
       }
       _cloudSaving = false;
     }else if (!_cloudDefered && !_syncing) {

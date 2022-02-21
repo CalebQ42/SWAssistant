@@ -7,12 +7,23 @@ import 'package:swassistant/utils/driver/query.dart';
 import 'package:universal_internet_checker/universal_internet_checker.dart';
 
 class Driver{
-  String wd = "appDataFolder";
+
+  String scope;
+
+  String wd;
   DriveApi? api;
   GoogleSignIn? gsi;
 
   StreamSubscription? sub;
   bool internetAvailable = true;
+
+  Driver(this.scope) : wd = scope == DriveApi.driveAppdataScope ? "appDataFolder" : "root";
+
+  void changeScope(String scope){
+    this.scope = scope;
+    gsi?.signOut();
+    wd = this.scope == DriveApi.driveAppdataScope ? "appDataFolder" : "root";
+  }
 
   //ready returns whether the driver is ready to use. If the driver is not ready, it tries to initialize it.
   Future<bool> ready([String? wdFolder]) async {
@@ -21,7 +32,7 @@ class Driver{
       sub = checker.onConnectionChange.listen((event) {
         internetAvailable = event == ConnectionStatus.online;
       });
-      if(await UniversalInternetChecker.checkInternet() == ConnectionStatus.offline) return false;
+      internetAvailable = await UniversalInternetChecker.checkInternet() != ConnectionStatus.offline;
     }
     if(!internetAvailable) return false;
     if(gsi != null && gsi!.currentUser != null && api != null){
@@ -36,7 +47,7 @@ class Driver{
       return true;
     }
     try{
-      gsi ??= GoogleSignIn(scopes: [DriveApi.driveAppdataScope]);
+      gsi ??= GoogleSignIn(scopes: [scope]);
       if(gsi!.currentUser == null || !(await gsi!.isSignedIn())){
         await gsi!.signInSilently();
         if(gsi!.currentUser == null) await gsi!.signIn();
@@ -57,7 +68,7 @@ class Driver{
   Future<bool> setWD(String folder) async {
     if(!await ready()) return false;
     if(folder == "" || folder == "/"){
-      wd = "appDataFolder";
+      wd = "root";
       return true;
     }
     var foldId = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime, createIfMissing: true);
@@ -71,7 +82,7 @@ class Driver{
     var foldID = await getIDFromRoot(folder, mimeType: DriveQueryBuilder.folderMime);
     if(foldID == null) return null;
     return (await api!.files.list(
-      spaces: "appDataFolder",
+      spaces: (scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive",
       q: "'" + foldID + "' in parents"
     )).files;
   }
@@ -81,7 +92,7 @@ class Driver{
     var foldID = await getID(folder, mimeType: DriveQueryBuilder.folderMime);
     if(foldID == null) return null;
     return (await api!.files.list(
-      spaces: "appDataFolder",
+      spaces: (scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive",
       q: "'" + foldID + "' in parents"
     )).files;
   }
@@ -89,7 +100,7 @@ class Driver{
   Future<String?> getIDFromRoot(String filename, {String? mimeType, bool createIfMissing = false}) async {
     if(!await ready()) return null;
     if(filename == "" || filename == "/") return "appDataFolder";
-    var parentID = "appDataFolder";
+    var parentID = "root";
     var split = filename.split("/");
     List<File>? out;
     for(int i = 0; i< split.length; i++){
@@ -104,7 +115,7 @@ class Driver{
       query.name = fold;
       query.parent = parentID;
       out = (await api!.files.list(
-        spaces: "appDataFolder",
+        spaces: (scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive",
         q: query.getQuery()
       )).files;
       if (out == null || out.isEmpty) {
@@ -150,7 +161,7 @@ class Driver{
       query.name = fold;
       query.parent = parentID;
       out = (await api!.files.list(
-        spaces: "appDataFolder",
+        spaces: (scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive",
         q: query.getQuery()
       )).files;
       if (out == null || out.isEmpty) {
@@ -180,13 +191,14 @@ class Driver{
 
   Future<String?> createFileFromRoot(String filename, {String? mimeType, Map<String, String?>? appProperties, String? description}) async{
     if(!await ready()) return null;
-    String? parent = 'appDataFolder';
+    String? parent = 'root';
     var lastInd = filename.lastIndexOf("/");
     if(lastInd != -1){
       parent = await getIDFromRoot(filename.substring(0,lastInd));
       if(parent == null) return null;
     }
     var fil = File(
+      spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
       modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,
@@ -201,6 +213,7 @@ class Driver{
   Future<String?> createFileWithParent(String filename, String parentId, {String? mimeType, Map<String, String?>? appProperties, String? description}) async {
     if(!await ready()) return null;
     var fil = File(
+      spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
       modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,
@@ -221,6 +234,7 @@ class Driver{
       if(parent == null) return null;
     }
     var fil = File(
+      spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
       modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,

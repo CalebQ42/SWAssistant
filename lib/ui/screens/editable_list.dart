@@ -116,8 +116,6 @@ class EditableListState extends State<EditableList>{
             )
           );
         }
-        await app.syncCloud(context).then((value) {
-        });
       });
     }
     var oldLen = list.length;
