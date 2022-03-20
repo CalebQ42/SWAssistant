@@ -79,8 +79,9 @@ class SettingsState extends State{
             onChanged: (b) {
               var message = ScaffoldMessenger.of(context);
               if (b) {
-                app.initialSync(context).then((value) {
+                app.initialSync(context: context).then((value) {
                   if(value){
+                    app.prefs.setBool(preferences.newDrive, true);
                     app.prefs.setBool(preferences.driveFirstLoad, false);
                     app.prefs.setBool(preferences.googleDrive, b);
                     setState(() {});
@@ -93,6 +94,7 @@ class SettingsState extends State{
               } else {
                 if(app.driver != null) app.driver!.gsi?.disconnect();
                 app.prefs.setBool(preferences.googleDrive, b);
+                app.prefs.setBool(preferences.driveFirstLoad, true);
               }
               setState(() {});
             }

@@ -435,6 +435,41 @@ class SW{
   dynamic getPreference(String preference, dynamic defaultValue) =>
     prefs.get(preference) ?? defaultValue;
 
+  Future<bool> sync() async{
+    print("1");
+    if (getPreference(preferences.googleDrive, false)){
+      print("2");
+      if(getPreference(preferences.driveFirstLoad, true)){
+        print("3");
+        if(await initialSync()){
+          print("4");
+          prefs.setBool(preferences.driveFirstLoad, false);
+          prefs.setBool(preferences.newDrive, true);
+          return true;
+        }
+        print("5");
+        driver = null;
+        return false;
+      }else if(!getPreference(preferences.newDrive, false)){
+        print("6");
+        if(await syncCloud(scope: drive.DriveApi.driveAppdataScope)){
+          print("7");
+          if(await initialSync(scope: drive.DriveApi.driveFileScope)){
+            print("8");
+            prefs.setBool(preferences.newDrive, true);
+            return true;
+          }
+        }
+        print("9");
+        driver = null;
+        return false;
+      }
+      print("10");
+      return await syncCloud();
+    }
+    return true;
+  }
+
   static Future<SW> baseInit() async{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
@@ -485,22 +520,9 @@ class SW{
         firebaseAvailable = false;
       }
     }
+    await sync();
     if (kIsWeb) prefs.setBool(preferences.googleDrive,true);
-    if (getPreference(preferences.googleDrive, false)){
-      if(getPreference(preferences.driveFirstLoad, true)){
-        if(await initialSync()){
-          prefs.setBool(preferences.driveFirstLoad, false);
-        }
-      }else if(!getPreference(preferences.newDrive, false)){
-        var okay = await syncCloud(scope: drive.DriveApi.driveAppdataScope);
-        if(okay){
-          driver!.changeScope(drive.DriveApi.driveFileScope);
-          await initialSync();
-        }
-      }else{
-        await syncCloud();
-      }
-    }
+    
     for(var ed in trashCan){
       if(ed.trashTime!.isBefore(DateTime.now().subtract(const Duration(days: 30)))){
         trashCan.remove(ed);

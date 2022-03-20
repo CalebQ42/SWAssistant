@@ -69,25 +69,26 @@ class SWAppState extends State<SWApp> {
     return MaterialApp(
       title: 'SWAssistant',
       onGenerateRoute: (settings) {
-        if(SW.of(context).getPreference(preferences.firstStart, true)){
-          return PageRouteBuilder(
-            pageBuilder: (context, anim, secondaryAnim) => const IntroZero(),
-            settings: settings.copyWith(name: "/intro"),
-            maintainState: false,
-            transitionsBuilder: (context, anim, secondary, child) =>
-              FadeTransition(opacity: anim, child: child)
-          );
-        }
-        if(!SW.of(context).initialized){
-          return PageRouteBuilder(
-            pageBuilder: (context, anim, secondaryAnim) => Loading(afterLoad: settings),
-            settings: const RouteSettings(name: "/loading"),
-            maintainState: false,
-            transitionsBuilder: (context, anim, secondary, child) =>
-              FadeTransition(opacity: anim, child: child)
-          );
-        }
+        print(settings.name);
+        print(SW.of(context).initialized);
         Widget? widy;
+        if(settings.name == "/dice") {
+          widy = DiceRoller();
+        }else if(settings.name == "/intro" || SW.of(context).getPreference(preferences.firstStart, true)) {
+          print("intro");
+          widy = const IntroZero();
+        }else{
+          print("UM");
+          if(!SW.of(context).initialized){
+            return PageRouteBuilder(
+              pageBuilder: (context, anim, secondaryAnim) => Loading(afterLoad: settings),
+              settings: const RouteSettings(name: "/loading"),
+              maintainState: false,
+              transitionsBuilder: (context, anim, secondary, child) =>
+                FadeTransition(opacity: anim, child: child)
+            );
+          }
+        }
         if(settings.name?.startsWith("/edit/") == true){
           Editable? ed;
           if(settings.arguments != null) {
@@ -109,12 +110,8 @@ class SWAppState extends State<SWApp> {
           }
         }else if(settings.name == "/gm") {
           widy = GMMode();
-        } else if(settings.name == "/dice") {
-          widy = DiceRoller();
         } else if(settings.name == "/settings") {
           widy = const Settings();
-        } else if(settings.name == "/intro") {
-          widy = const IntroZero();
         }else if(settings.name == "/vehicles"){
           widy = const EditableList(EditableList.vehicle);
         }else if(settings.name == "/minions"){
