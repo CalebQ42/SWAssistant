@@ -114,7 +114,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         )
       ],
     );
-    //TODO: Possibly move to dedicated modifications card
+    //TODO: Move to dedicated modifications card
     var hp = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[

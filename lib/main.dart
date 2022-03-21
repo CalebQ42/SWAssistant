@@ -69,16 +69,12 @@ class SWAppState extends State<SWApp> {
     return MaterialApp(
       title: 'SWAssistant',
       onGenerateRoute: (settings) {
-        print(settings.name);
-        print(SW.of(context).initialized);
         Widget? widy;
         if(settings.name == "/dice") {
           widy = DiceRoller();
         }else if(settings.name == "/intro" || SW.of(context).getPreference(preferences.firstStart, true)) {
-          print("intro");
           widy = const IntroZero();
         }else{
-          print("UM");
           if(!SW.of(context).initialized){
             return PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) => Loading(afterLoad: settings),

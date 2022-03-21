@@ -290,7 +290,6 @@ abstract class Editable extends JsonSavable{
         await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
         var curFil = await app.driver!.getFile(id);
         if(curFil != null) {
-          print(curFil.toJson());
           _cloudVersion = int.tryParse(curFil.version ?? "") ?? 0;
         }
       }catch(e){

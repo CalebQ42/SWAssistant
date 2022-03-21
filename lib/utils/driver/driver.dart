@@ -198,7 +198,7 @@ class Driver{
       if(parent == null) return null;
     }
     var fil = File(
-      spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
+      // spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
       modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,
@@ -213,7 +213,7 @@ class Driver{
   Future<String?> createFileWithParent(String filename, String parentId, {String? mimeType, Map<String, String?>? appProperties, String? description}) async {
     if(!await ready()) return null;
     var fil = File(
-      spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
+      // spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
       modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,
@@ -234,7 +234,7 @@ class Driver{
       if(parent == null) return null;
     }
     var fil = File(
-      spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
+      // spaces: [(scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive"],
       modifiedTime: DateTime.now(),
       appProperties: appProperties,
       description: description,

@@ -93,6 +93,7 @@ class SettingsState extends State{
                 });
               } else {
                 if(app.driver != null) app.driver!.gsi?.disconnect();
+                app.driver = null;
                 app.prefs.setBool(preferences.googleDrive, b);
                 app.prefs.setBool(preferences.driveFirstLoad, true);
               }

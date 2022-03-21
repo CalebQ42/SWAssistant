@@ -242,18 +242,16 @@ class EditableListState extends State<EditableList>{
       onRefresh: () => Future(() async {
         if(app.syncing) return;
         var messager = ScaffoldMessenger.of(context);
-        app.sync().then((b){
-          messager.clearSnackBars();
-          if (!b) {
-            messager.clearSnackBars();
-            messager.showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)!.syncFail)
-              )
-            );
-          }
-          setState(() {});
-        });
+        var b = await app.sync();
+        messager.clearSnackBars();
+        if (!b) {
+          messager.showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.syncFail)
+            )
+          );
+        }
+        setState(() {});
       }),
       child: AnimatedList(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
