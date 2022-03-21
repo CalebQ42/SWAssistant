@@ -65,7 +65,7 @@
     "willpower": "Volontà",
     "presence": "Presenza",
     "roll": "Roll",
-    "rollCrit": "Roll Critical",
+    "rollCrit": "Tira Critico",
     "gmMode": "Modalità GM",
     "profiles": "Profili",
     "characters": "Personaggi",
@@ -219,7 +219,7 @@
     "loaded": "Caricato",
     "limitedAmmo": "Munizioni Limitate",
     "ammo": "Munizioni",
-    "ignoreSoak": "Ignore {num} Soak",
+    "ignoreSoak": "Ignora {num} Assorbimento",
     "@ignoreSoak": {
         "description": "Shown when weapons have at least one point in Pierce",
         "placeholders": {
