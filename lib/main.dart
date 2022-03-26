@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/sw.dart';
+import 'package:swassistant/ui/frame.dart';
 import 'package:swassistant/ui/intro/intro_zero.dart';
 import 'package:swassistant/ui/screens/dice_roller.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
@@ -104,6 +105,8 @@ class SWAppState extends State<SWApp> {
           widy = const EditableList(EditableList.minion);
         }else if(settings.name == "/trash"){
           widy = const TrashList();
+        }else if(settings.name == "/test"){
+          widy = Frame();
         }
         if (widy == null){
           settings = settings.copyWith(name: "/characters");

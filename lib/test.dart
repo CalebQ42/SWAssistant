@@ -12,7 +12,9 @@ class TestScreen extends StatelessWidget{
         children: [
           Expanded(child: ElevatedButton(
             child: const Text("Test"),
-            onPressed: () async {}
+            onPressed: () async {
+              Navigator.pushNamed(context, "/test");
+            }
           ))
         ]
       )
