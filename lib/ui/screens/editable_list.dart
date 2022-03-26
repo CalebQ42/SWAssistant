@@ -327,7 +327,7 @@ class EditableListState extends State<EditableList>{
                   )
                 );
                 return;
-              }else if (!SW.of(context).driver!.readySync()) {
+              }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

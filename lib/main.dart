@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/utils/editable.dart';
@@ -25,16 +24,7 @@ Future<void> main() async {
           child: const SWApp(),
           app: app
         ))
-    ), (error, stack) {
-      if(kDebugMode || kProfileMode){
-        // ignore: avoid_print
-        print(error);
-        // ignore: avoid_print
-        print(stack);
-      }else{
-        FirebaseCrashlytics.instance.recordError(error, stack);
-      }
-    }
+    ), (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack)
   );
 }
 

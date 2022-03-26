@@ -46,6 +46,7 @@ class EditableCardsState extends State<EditableCards>{
             )
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(leftovers, (i) =>
               ConstrainedBox(
