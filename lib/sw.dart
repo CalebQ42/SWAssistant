@@ -241,7 +241,7 @@ class SW{
 
   Future<List<Editable>?> downloadAndMatch([String scope = drive.DriveApi.driveFileScope]) async{
     if(driver != null && driver!.scope != scope){
-      driver!.changeScope(scope);
+      await driver!.changeScope(scope);
       var okay = await driver!.setWD(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
       if(!okay) return null;
     }else{
@@ -436,6 +436,7 @@ class SW{
     prefs.get(preference) ?? defaultValue;
 
   Future<bool> sync() async{
+    print("Potatoe?");
     if (getPreference(preferences.googleDrive, false)){
       if(getPreference(preferences.driveFirstLoad, true)){
         if(await initialSync()){
@@ -446,7 +447,9 @@ class SW{
         driver = null;
         return false;
       }else if(!getPreference(preferences.newDrive, false)){
+        print("LA");
         if(await syncCloud(scope: drive.DriveApi.driveAppdataScope)){
+          print("HII");
           if(await initialSync(scope: drive.DriveApi.driveFileScope)){
             prefs.setBool(preferences.newDrive, true);
             return true;
