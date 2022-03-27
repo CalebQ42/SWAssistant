@@ -51,13 +51,15 @@ class SWAppState extends State<SWApp> {
       border: OutlineInputBorder(),
     );
     var bottomSheetTheme = BottomSheetThemeData(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(15))
+      shape: const BeveledRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25))
       ),
       clipBehavior: Clip.antiAlias,
       constraints: BoxConstraints.loose(const Size.fromWidth(600)),
     );
     return MaterialApp(
+      builder: (c, child) => Frame(child: child),
+      navigatorKey: SW.of(context).navy,
       title: 'SWAssistant',
       onGenerateRoute: (settings) {
         Widget? widy;
@@ -105,8 +107,6 @@ class SWAppState extends State<SWApp> {
           widy = const EditableList(EditableList.minion);
         }else if(settings.name == "/trash"){
           widy = const TrashList();
-        }else if(settings.name == "/test"){
-          widy = Frame();
         }
         if (widy == null){
           settings = settings.copyWith(name: "/characters");
@@ -183,10 +183,6 @@ class SWAppState extends State<SWApp> {
           inputDecorationTheme: inputTheme,
           snackBarTheme: snackTheme
         ),
-      navigatorObservers: [
-        SW.of(context).observatory
-      ],
-      initialRoute: widget.init ?? SW.of(context).getPreference(preferences.startingScreen, "/characters"),
     );
   }
 }

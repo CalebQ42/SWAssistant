@@ -47,9 +47,13 @@ class SW{
 
   Driver? driver;
 
+  GlobalKey<NavigatorState> navy = GlobalKey();
+
   final List<Editable> trashCan = [];
 
   SW({required this.prefs});
+
+  NavigatorState? nav() => navy.currentState;
 
   void loadAll(){
     _minions.clear();
