@@ -58,7 +58,13 @@ class SWAppState extends State<SWApp> {
       constraints: BoxConstraints.loose(const Size.fromWidth(600)),
     );
     return MaterialApp(
-      builder: (c, child) => Frame(child: child),
+      builder: (c, child) =>
+        Navigator(
+          onGenerateRoute: (rs) =>
+            MaterialPageRoute(
+              builder: (c) => Frame(child: child),
+            )
+        ),
       navigatorKey: SW.of(context).navy,
       title: 'SWAssistant',
       onGenerateRoute: (settings) {

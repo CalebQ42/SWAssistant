@@ -7,6 +7,7 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/frame.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
@@ -298,81 +299,92 @@ class EditableListState extends State<EditableList>{
           ),
       )
     );
-    return (widget.onTap == null) ?
-      Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          bottom: PreferredSize(
-            child: catSelector,
-            preferredSize: const Size.fromHeight(50)
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          decoration: ShapeDecoration(
+            color: Colors.red.shade700,
+            shape: Frame.of(context).topShape,
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.sync),
-              onPressed: () =>
-                refreshKey.currentState?.show(),
-            )
-          ],
-        ),
-        drawer: const SWDrawer(),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: (){
-            if(SW.of(context).getPreference(preferences.googleDrive, false)) {
-              if(SW.of(context).syncing){
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
-                  )
-                );
-                return;
-              }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
-                  )
-                );
-                return;
-              }
-            }
-            Editable newEd;
-            switch(type){
-              case 0:
-                newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
-                break;
-              case 1:
-                newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
-                break;
-              default:
-                newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
-            }
-            app.add(newEd);
-            Navigator.pushNamed(
-              context,
-              "/edit/" + newEd.uid,
-              arguments: newEd
-            );
-          },
-        ),
-        body: mainList
-      )
-    :
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            color: Theme.of(context).primaryColor,
-            child: catSelector,
-          ),
-          Expanded(child:
-            ClipRect(
-              child: mainList
-            )
+          child: Row(
+            children: [
+              Expanded(child: catSelector),
+              IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () => refreshKey.currentState?.show()
+              )
+            ],
           )
-        ]
-      );
+        ),
+        Expanded(child:
+          ClipRect(
+            child: mainList
+          )
+        )
+      ]
+    );
+    // return (widget.onTap == null) ?
+    //   Scaffold(
+    //     // appBar: AppBar(
+    //     //   backgroundColor: Theme.of(context).primaryColor,
+    //     //   bottom: PreferredSize(
+    //     //     child: catSelect or,
+    //     //     preferredSize: const Size.fromHeight(50)
+    //     //   ),
+    //     //   actions: [
+    //     //     IconButton(
+    //     //       icon: const Icon(Icons.sync),
+    //     //       onPressed: () =>
+    //     //         refreshKey.currentState?.show(),
+    //     //     )
+    //     //   ],
+    //     // ),
+    //     floatingActionButton: FloatingActionButton(
+    //       child: const Icon(Icons.add),
+    //       onPressed: (){
+    //         if(SW.of(context).getPreference(preferences.googleDrive, false)) {
+    //           if(SW.of(context).syncing){
+    //             ScaffoldMessenger.of(context).clearSnackBars();
+    //             ScaffoldMessenger.of(context).showSnackBar(
+    //               SnackBar(
+    //                 content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+    //               )
+    //             );
+    //             return;
+    //           }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
+    //             ScaffoldMessenger.of(context).clearSnackBars();
+    //             ScaffoldMessenger.of(context).showSnackBar(
+    //               SnackBar(
+    //                 content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+    //               )
+    //             );
+    //             return;
+    //           }
+    //         }
+    //         Editable newEd;
+    //         switch(type){
+    //           case 0:
+    //             newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
+    //             break;
+    //           case 1:
+    //             newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
+    //             break;
+    //           default:
+    //             newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
+    //         }
+    //         app.add(newEd);
+    //         Navigator.pushNamed(
+    //           context,
+    //           "/edit/" + newEd.uid,
+    //           arguments: newEd
+    //         );
+    //       },
+    //     ),
+    //     body: mainList
+    //   )
+    // :
   }
 }
 
