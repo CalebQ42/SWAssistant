@@ -10,12 +10,15 @@ import 'package:swassistant/items/item.dart';
 import 'package:swassistant/items/note.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/ui/items/editable/description.dart';
+import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/misc/info_card.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/items/editable/critical_injuries.dart';
 import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/editable/weapons.dart';
-import 'package:swassistant/ui/misc/name_card.dart';
+import 'package:swassistant/ui/items/name_card.dart';
+import 'package:swassistant/ui/misc/updating_switch_tile.dart';
+import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
@@ -193,6 +196,105 @@ abstract class Editable extends JsonSavable{
         child: EditContent(
           contentKey: nameKey,
           content: NameCard(key: nameKey),
+          extraButtons: (c, _) => [
+            if(this is Character) IconButton(
+              iconSize: 20.0,
+              splashRadius: 20,
+              padding: const EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(const Size.square(30.0)),
+              icon: const Icon(Icons.settings),
+              onPressed: () =>
+                Bottom(
+                  child: (con) =>
+                    Column(
+                      children: [
+                        UpdatingSwitchTile(
+                          value: (this as Character).disableForce,
+                          onChanged: (b) {
+                            (this as Character).disableForce = b;
+                            EditableCards.of(c).update();
+                          },
+                          title: Text(AppLocalizations.of(context)!.disableForce)
+                        ),
+                        UpdatingSwitchTile(
+                          value: (this as Character).disableMorality,
+                          onChanged: (b) {
+                            (this as Character).disableMorality = b;
+                            EditableCards.of(c).update();
+                          },
+                          title: Text(AppLocalizations.of(context)!.disableMorality)
+                        ),
+                        UpdatingSwitchTile(
+                          value: (this as Character).disableDuty,
+                          onChanged: (b) {
+                            (this as Character).disableDuty = b;
+                            EditableCards.of(c).update();
+                          },
+                          title: Text(AppLocalizations.of(context)!.disableDuty)
+                        ),
+                        UpdatingSwitchTile(
+                          value: (this as Character).disableObligation,
+                          onChanged: (b) {
+                            (this as Character).disableObligation = b;
+                            EditableCards.of(c).update();
+                          },
+                          title: Text(AppLocalizations.of(context)!.disableObligation)
+                        )
+                      ],
+                    )
+                )..show(context),
+            ),
+            IconButton(
+              iconSize: 20.0,
+              splashRadius: 20,
+              padding: const EdgeInsets.all(5.0),
+              constraints: BoxConstraints.tight(const Size.square(30.0)),
+              icon: const Icon(Icons.copy),
+              onPressed: () => 
+                Bottom(
+                  child: (context) {
+                    var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(name));
+                    return Wrap(
+                      children: [
+                        Container(height: 10),
+                        TextField(
+                          controller: nameController,
+                          decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
+                        ),
+                        ButtonBar(
+                          children: [
+                            TextButton(
+                              child: Text(MaterialLocalizations.of(context).saveButtonLabel),
+                              onPressed: () {
+                                Editable out;
+                                if (this is Character) {
+                                  out = Character.from(this as Character);
+                                } else if (this is Minion) {
+                                  out = Minion.from(this as Minion);
+                                } else if (this is Vehicle) {
+                                  out = Vehicle.from(this as Vehicle);
+                                } else {
+                                  throw "Unsupported Editable Type";
+                                }
+                                out.name = nameController.text;
+                                SW.of(context).add(out);
+                                out.save(context: context);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                              onPressed: () =>
+                                Navigator.of(context).pop()
+                            )
+                          ],
+                        )
+                      ],
+                    );
+                  }
+                ).show(context)
+            ),
+          ],
           defaultEdit: () {
             if(this is Character){
               return name == AppLocalizations.of(context)!.newCharacter;

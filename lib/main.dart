@@ -60,10 +60,11 @@ class SWAppState extends State<SWApp> {
     return MaterialApp(
       builder: (c, child) =>
         Navigator(
-          onGenerateRoute: (rs) =>
-            MaterialPageRoute(
+          onGenerateRoute: (rs) {
+            return MaterialPageRoute(
               builder: (c) => Frame(child: child),
-            )
+            );
+          },
         ),
       navigatorKey: SW.of(context).navy,
       title: 'SWAssistant',
@@ -71,6 +72,7 @@ class SWAppState extends State<SWApp> {
         SW.of(context).observatory
       ],
       onGenerateRoute: (settings) {
+        bool initSwitch = true;
         Widget? widy;
         if(settings.name == "/dice") {
           widy = DiceRoller();
@@ -80,7 +82,11 @@ class SWAppState extends State<SWApp> {
           if(!SW.of(context).initialized){
             return PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) {
-                Frame.of(context).hidden = true;
+                if(initSwitch){
+                  Frame.of(context).hidden = true;
+                  Frame.of(context).selected = "/loading";
+                  initSwitch = false;
+                }
                 return Loading(afterLoad: settings);
               },
               settings: const RouteSettings(name: "/loading"),
@@ -99,7 +105,11 @@ class SWAppState extends State<SWApp> {
           if (ed != null) {
             ed.route = PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) {
-                Frame.of(context).hidden = false;
+                if(initSwitch){
+                  Frame.of(context).hidden = false;
+                  Frame.of(context).selected = "/edit/" + ed!.uid.toString();
+                  initSwitch = false;
+                }
                 return EditingEditable(ed!);
               },
               settings: RouteSettings(name: "/edit/" + ed.uid),
@@ -127,7 +137,11 @@ class SWAppState extends State<SWApp> {
         }
         return PageRouteBuilder(
           pageBuilder: (context, anim, secondaryAnim) {
-            Frame.of(context).hidden = settings.name == "/intro";
+            if(initSwitch){
+              Frame.of(context).hidden = settings.name == "/intro";
+              Frame.of(context).selected = settings.name ?? "";
+              initSwitch = false;
+            }
             return widy!;
           },
           settings: settings,

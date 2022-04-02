@@ -12,8 +12,9 @@ class Loading extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    var nav = Navigator.of(context);
     SW.of(context).postInit().then((_){
-      Navigator.pushNamedAndRemoveUntil(context, afterLoad.name ?? "", (route) => false, arguments: afterLoad.arguments);
+      nav.pushNamedAndRemoveUntil(afterLoad.name ?? "", (route) => false, arguments: afterLoad.arguments);
     });
     return WillPopScope(
       onWillPop: () => Future.value(false),

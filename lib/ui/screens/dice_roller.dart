@@ -20,11 +20,6 @@ class DiceRoller extends StatelessWidget{
     int rows = (MediaQuery.of(context).size.width / width).floor();
     width = MediaQuery.of(context).size.width / rows;
     return Scaffold(
-      drawer: const SWDrawer(),
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.dice),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           holder.getDice(context).roll().showCombinedResults(context, noSuccess: holder.ability == 0 && holder.proficiency == 0

@@ -4,7 +4,6 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 
 class TrashList extends StatefulWidget{
@@ -33,11 +32,6 @@ class _TrashListState extends State<TrashList> {
       });
     }
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(AppLocalizations.of(context)!.trash),
-      ),
-      drawer: const SWDrawer(),
       body: AnimatedList(
         key: listKey,
         initialItemCount: app.trashCan.length,

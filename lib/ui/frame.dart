@@ -21,11 +21,21 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
   late AnimationController animCont;
   ScrollController scrol = ScrollController();
   bool _hidden = false;
+  String _selected = "";
 
   bool get hidden => _hidden;
   set hidden(bool b) {
     if(b != _hidden) {
       _hidden = b;
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        setState(() {});
+      });
+    }
+  }
+  set selected(String s) {
+    print("selected: " + s);
+    if(s != _selected) {
+      _selected = s;
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         setState(() {});
       });
@@ -101,24 +111,28 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         title: Text(AppLocalizations.of(context)!.gmMode),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/gm"),
         expanded: expanded,
+        selected: _selected == "/gm"
       ),
       NavItem(
         icon: const Icon(Icons.face),
         title: Text(AppLocalizations.of(context)!.characters),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/characters"),
         expanded: expanded,
+        selected: _selected == "/characters"
       ),
       NavItem(
         icon: const Icon(Icons.supervisor_account),
         title: Text(AppLocalizations.of(context)!.minions),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/minions"),
         expanded: expanded,
+        selected: _selected == "/minions"
       ),
       NavItem(
         icon: const Icon(Icons.motorcycle),
         title: Text(AppLocalizations.of(context)!.vehicles),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/vehicles"),
         expanded: expanded,
+        selected: _selected == "/vehicles"
       ),
       if((thin ? (height*.5) + 50 : height) >= 430) const Spacer(),
       NavItem(
@@ -126,12 +140,14 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         title: Text(AppLocalizations.of(context)!.settings),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/settings"),
         expanded: expanded,
+        selected: _selected == "/settings"
       ),
       NavItem(
         icon: const Icon(Icons.delete),
         title: Text(AppLocalizations.of(context)!.trash),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/trash"),
         expanded: expanded,
+        selected: _selected == "/trash"
       ),
       if(!thin) NavItem(
         icon: const Icon(Icons.casino_outlined),
@@ -152,7 +168,8 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         backgroundColor: Theme.of(context).primaryColor,
         body: Stack(
           children: [
-            Positioned(
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
               left: MediaQuery.of(context).padding.left,
               top: MediaQuery.of(context).padding.top,
               height: thin ? height*.5 : height,
@@ -166,7 +183,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
               )
             ),
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 100),
+              duration: const Duration(milliseconds: 300),
               left: hidden ? MediaQuery.of(context).padding.left : (thin ? 0 : 50) + MediaQuery.of(context).padding.left,
               top: hidden ? MediaQuery.of(context).padding.top : (thin ? 50 : 0) + MediaQuery.of(context).padding.top,
               height: hidden ? height : overlayH,
@@ -179,7 +196,12 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                     Card(
                       elevation: 10,
                       shape: shape,
-                      child: widget.child,
+                      child: MediaQuery(
+                        data: MediaQueryData(
+                          size: Size(overlayW, overlayH)
+                        ),
+                        child: widget.child ?? Container(),
+                      ),
                       margin: EdgeInsets.zero,
                       clipBehavior: Clip.hardEdge,
                     ),
@@ -215,8 +237,9 @@ class NavItem extends StatelessWidget{
   final bool expanded;
   final bool autoClose;
   final bool animate;
+  final bool selected;
 
-  const NavItem({Key? key, this.animate = true, this.autoClose = true, required this.title, required this.icon, this.onTap, required this.expanded}) : super(key: key);
+  const NavItem({Key? key, this.animate = true, this.autoClose = true, this.selected = false, required this.title, required this.icon, this.onTap, required this.expanded}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
@@ -235,7 +258,15 @@ class NavItem extends StatelessWidget{
           children: [
             Padding(
               padding: const EdgeInsets.all(15),
-              child: icon
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  icon,
+                  if(selected) const SizedBox(height: 5),
+                  if(selected) Container(width: 10, height: 2, color: Colors.white),
+                ],
+              )
             ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),

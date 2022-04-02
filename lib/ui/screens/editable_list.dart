@@ -306,21 +306,63 @@ class EditableListState extends State<EditableList>{
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
           color: Colors.red.shade700,
           child: Row(
             children: [
               Expanded(child: catSelector),
               IconButton(
-                icon: Icon(Icons.refresh),
+                icon: const Icon(Icons.refresh),
                 onPressed: () => refreshKey.currentState?.show()
               )
             ],
           )
         ),
         Expanded(child:
-          ClipRect(
-            child: mainList
+          Scaffold(
+            body: ClipRect(
+              child: mainList
+            ),
+            floatingActionButton: FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: (){
+                if(SW.of(context).getPreference(preferences.googleDrive, false)) {
+                  if(SW.of(context).syncing){
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+                      )
+                    );
+                    return;
+                  }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+                      )
+                    );
+                    return;
+                  }
+                }
+                Editable newEd;
+                switch(type){
+                  case 0:
+                    newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
+                    break;
+                  case 1:
+                    newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
+                    break;
+                  default:
+                    newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
+                }
+                app.add(newEd);
+                Navigator.pushNamed(
+                  context,
+                  "/edit/" + newEd.uid,
+                  arguments: newEd
+                );
+              },
+            ),
           )
         )
       ]
@@ -341,47 +383,6 @@ class EditableListState extends State<EditableList>{
     //     //     )
     //     //   ],
     //     // ),
-    //     floatingActionButton: FloatingActionButton(
-    //       child: const Icon(Icons.add),
-    //       onPressed: (){
-    //         if(SW.of(context).getPreference(preferences.googleDrive, false)) {
-    //           if(SW.of(context).syncing){
-    //             ScaffoldMessenger.of(context).clearSnackBars();
-    //             ScaffoldMessenger.of(context).showSnackBar(
-    //               SnackBar(
-    //                 content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
-    //               )
-    //             );
-    //             return;
-    //           }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
-    //             ScaffoldMessenger.of(context).clearSnackBars();
-    //             ScaffoldMessenger.of(context).showSnackBar(
-    //               SnackBar(
-    //                 content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
-    //               )
-    //             );
-    //             return;
-    //           }
-    //         }
-    //         Editable newEd;
-    //         switch(type){
-    //           case 0:
-    //             newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
-    //             break;
-    //           case 1:
-    //             newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
-    //             break;
-    //           default:
-    //             newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
-    //         }
-    //         app.add(newEd);
-    //         Navigator.pushNamed(
-    //           context,
-    //           "/edit/" + newEd.uid,
-    //           arguments: newEd
-    //         );
-    //       },
-    //     ),
     //     body: mainList
     //   )
     // :

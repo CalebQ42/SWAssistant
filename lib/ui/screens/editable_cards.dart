@@ -10,9 +10,13 @@ class EditableCards extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => EditableCardsState();
+
+  static EditableCardsState of(BuildContext context) => context.findAncestorStateOfType<EditableCardsState>()!;
 }
 
 class EditableCardsState extends State<EditableCards>{
+
+  void update() => setState(() {});
 
   @override
   Widget build(BuildContext context) {

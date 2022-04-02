@@ -37,8 +37,8 @@ class EditContentState extends State<EditContent> with StatefulCard {
         ClipRect(
           child: widget.content,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+        ButtonBar(
+          alignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
             if(widget.extraEditButtons != null) AnimatedSwitcher(
