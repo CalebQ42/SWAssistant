@@ -67,6 +67,9 @@ class SWAppState extends State<SWApp> {
         ),
       navigatorKey: SW.of(context).navy,
       title: 'SWAssistant',
+      navigatorObservers: [
+        SW.of(context).observatory
+      ],
       onGenerateRoute: (settings) {
         Widget? widy;
         if(settings.name == "/dice") {
@@ -76,11 +79,13 @@ class SWAppState extends State<SWApp> {
         }else{
           if(!SW.of(context).initialized){
             return PageRouteBuilder(
-              pageBuilder: (context, anim, secondaryAnim) => Loading(afterLoad: settings),
+              pageBuilder: (context, anim, secondaryAnim) {
+                Frame.of(context).hidden = true;
+                return Loading(afterLoad: settings);
+              },
               settings: const RouteSettings(name: "/loading"),
               maintainState: false,
-              transitionsBuilder: (context, anim, secondary, child) =>
-                FadeTransition(opacity: anim, child: child)
+              transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child),
             );
           }
         }
@@ -93,11 +98,13 @@ class SWAppState extends State<SWApp> {
           }
           if (ed != null) {
             ed.route = PageRouteBuilder(
-              pageBuilder: (context, anim, secondaryAnim) => EditingEditable(ed!),
+              pageBuilder: (context, anim, secondaryAnim) {
+                Frame.of(context).hidden = false;
+                return EditingEditable(ed!);
+              },
               settings: RouteSettings(name: "/edit/" + ed.uid),
               maintainState: false,
-              transitionsBuilder: (context, anim, secondary, child) =>
-                FadeTransition(opacity: anim, child: child)
+              transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
             );
             return ed.route;
           } else {
@@ -119,11 +126,13 @@ class SWAppState extends State<SWApp> {
           widy ??= const EditableList(EditableList.character);
         }
         return PageRouteBuilder(
-          pageBuilder: (context, anim, secondaryAnim) => widy!,
+          pageBuilder: (context, anim, secondaryAnim) {
+            Frame.of(context).hidden = settings.name == "/intro";
+            return widy!;
+          },
           settings: settings,
           maintainState: false,
-          transitionsBuilder: (context, anim, secondary, child) =>
-            FadeTransition(opacity: anim, child: child)
+          transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
         );
       },
       localizationsDelegates: const [
@@ -166,10 +175,10 @@ class SWAppState extends State<SWApp> {
               color: Colors.white
             ),
           ),
-          primaryColor: Colors.red,
+          primaryColor: Colors.red.shade600,
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.red,
-            primaryColorDark: Colors.red,
+            primaryColorDark: Colors.red.shade700,
             accentColor: Colors.lightBlueAccent,
             brightness: Brightness.dark
           ),
@@ -199,6 +208,11 @@ class Observatory extends NavigatorObserver{
   SW app;
 
   Observatory(this.app);
+
+  String currentRoute(){
+    if(routeHistory.isNotEmpty) return routeHistory.last.settings.name ?? "";
+    return "";
+  }
 
   @override
   void didPush(Route route, Route? previousRoute) {

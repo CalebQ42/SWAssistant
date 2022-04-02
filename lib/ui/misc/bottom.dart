@@ -18,7 +18,7 @@ class Bottom extends StatelessWidget{
       child: Wrap(
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.50),
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               primary: false,
@@ -45,6 +45,7 @@ class Bottom extends StatelessWidget{
 
   void show(BuildContext context) =>
     showModalBottomSheet(
+      useRootNavigator: true, 
       context: context,
       builder: (c) => this,
       backgroundColor: background,

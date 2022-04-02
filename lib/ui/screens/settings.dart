@@ -118,7 +118,7 @@ class SettingsState extends State{
                     TextButton(
                       child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
                       onPressed: () =>
-                        Navigator.pop(context)
+                        Navigator.of(context, rootNavigator: true).pop()
                     )
                   ],
                 )

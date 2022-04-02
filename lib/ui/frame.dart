@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/sw.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Frame extends StatefulWidget {
 
@@ -18,6 +19,18 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
 
   bool expanded = false;
   late AnimationController animCont;
+  ScrollController scrol = ScrollController();
+  bool _hidden = false;
+
+  bool get hidden => _hidden;
+  set hidden(bool b) {
+    if(b != _hidden) {
+      _hidden = b;
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        setState(() {});
+      });
+    }
+  }
 
   bool get thin => MediaQuery.of(context).size.height > MediaQuery.of(context).size.width - 50;
   BeveledRectangleBorder get shape {
@@ -31,17 +44,6 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       );
     }
   }
-  BeveledRectangleBorder get topShape {
-    if(thin){
-      return const BeveledRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25))
-      );
-    }else{
-      return const BeveledRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(25))
-      );
-    }
-  }
 
   @override
   void initState() {
@@ -51,8 +53,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
 
   void expand(){
     setState(() {
-      print("HII");
       expanded = !expanded;
+      if(scrol.hasClients){
+        scrol.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.linear);
+      }
       if(expanded){
         animCont.forward();
       }else{
@@ -61,19 +65,81 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    var overlayH = thin ? MediaQuery.of(context).size.height - 50 : MediaQuery.of(context).size.height;
-    var overlayW = thin ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width - 50;
+    var height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
+    var width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.left - MediaQuery.of(context).padding.right;
+    var overlayH = thin ? height - 50 : height;
+    var overlayW = thin ? width : width - 50;
     var tween = Tween<Offset>(
       begin: Offset.zero,
       end: Offset(
         thin ? 0 : 200 / overlayW,
-        thin ? ((MediaQuery.of(context).size.height*.5)-50) / overlayH : 0
+        thin ? ((height*.5)-50) / overlayH : 0
       )
     );
+    var chillin = [
+      Row(
+        children: [
+          Expanded(child: NavItem(
+            title: const Text("SWAssistant"),
+            icon: const Icon(Icons.menu),
+            expanded: expanded,
+            autoClose: false,
+            onTap: hidden ? null : expand,
+            // animate: false
+          )),
+          if(thin) IconButton(
+            onPressed: hidden ? null : () => SWDiceHolder().showDialog(context, showInstant: true),
+            icon: const Icon(Icons.casino_outlined)
+          )
+        ]
+      ),
+      if((thin ? (height*.5) + 50 : height) >= 430) const Spacer(),
+      NavItem(
+        icon: const Icon(Icons.contacts),
+        title: Text(AppLocalizations.of(context)!.gmMode),
+        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/gm"),
+        expanded: expanded,
+      ),
+      NavItem(
+        icon: const Icon(Icons.face),
+        title: Text(AppLocalizations.of(context)!.characters),
+        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/characters"),
+        expanded: expanded,
+      ),
+      NavItem(
+        icon: const Icon(Icons.supervisor_account),
+        title: Text(AppLocalizations.of(context)!.minions),
+        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/minions"),
+        expanded: expanded,
+      ),
+      NavItem(
+        icon: const Icon(Icons.motorcycle),
+        title: Text(AppLocalizations.of(context)!.vehicles),
+        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/vehicles"),
+        expanded: expanded,
+      ),
+      if((thin ? (height*.5) + 50 : height) >= 430) const Spacer(),
+      NavItem(
+        icon: const Icon(Icons.settings),
+        title: Text(AppLocalizations.of(context)!.settings),
+        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/settings"),
+        expanded: expanded,
+      ),
+      NavItem(
+        icon: const Icon(Icons.delete),
+        title: Text(AppLocalizations.of(context)!.trash),
+        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/trash"),
+        expanded: expanded,
+      ),
+      if(!thin) NavItem(
+        icon: const Icon(Icons.casino_outlined),
+        title: Text(AppLocalizations.of(context)!.dice),
+        onTap: hidden ? null : () => SWDiceHolder().showDialog(context, showInstant: true),
+        expanded: expanded,
+      )
+    ];
     return WillPopScope(
       onWillPop: () async {
         if(expanded){
@@ -87,55 +153,24 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         body: Stack(
           children: [
             Positioned(
-              height: thin ? MediaQuery.of(context).size.height*.5 : MediaQuery.of(context).size.height,
-              width: thin ? MediaQuery.of(context).size.width : 250,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: NavItem(
-                        title: Text("SWAssistant"),
-                        icon: Icon(Icons.menu),
-                        expanded: expanded,
-                        onTap: () {
-                          if(!expanded) expand();
-                        }
-                      )),
-                      if(thin) IconButton(
-                        onPressed: () => SWDiceHolder().showDialog(context, showInstant: true),
-                        icon: Icon(Icons.casino_outlined)
-                      )
-                    ]
-                  ),
-                  Spacer(),
-                  NavItem(
-                    icon: Icon(Icons.person),
-                    title: Text("Profile"),
-                    onTap: () => SW.of(context).nav()?.pushNamed("/characters"),
-                        expanded: expanded,
-                  ),
-                  Spacer(),
-                  NavItem(
-                    icon: Icon(Icons.settings),
-                    title: Text("Settings"),
-                    onTap: () => SW.of(context).nav()?.pushNamed("/settings"),
-                    expanded: expanded,
-                  ),
-                  if(!thin) NavItem(
-                    icon: Icon(Icons.casino_outlined),
-                    title: Text("Dice"),
-                    onTap: () => SWDiceHolder().showDialog(context, showInstant: true),
-                        expanded: expanded,
-                  )
-                ]
+              left: MediaQuery.of(context).padding.left,
+              top: MediaQuery.of(context).padding.top,
+              height: thin ? height*.5 : height,
+              width: thin ? width : 250,
+              child: ((thin ? (height*.5) + 50 : height) < 430) ? ListView(
+                controller: scrol,
+                children: chillin,
+                physics: !expanded || hidden ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
+              ) : Column(
+                children: chillin
               )
             ),
             AnimatedPositioned(
-              duration: Duration(milliseconds: 100),
-              left: thin ? 0 : 50,
-              top: thin ? 50 : 0,
-              height: overlayH,
-              width: overlayW,
+              duration: const Duration(milliseconds: 100),
+              left: hidden ? MediaQuery.of(context).padding.left : (thin ? 0 : 50) + MediaQuery.of(context).padding.left,
+              top: hidden ? MediaQuery.of(context).padding.top : (thin ? 50 : 0) + MediaQuery.of(context).padding.top,
+              height: hidden ? height : overlayH,
+              width: hidden ? width : overlayW,
               child: SlideTransition(
                 key: UniqueKey(),
                 position: tween.animate(animCont),
@@ -145,7 +180,8 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                       elevation: 10,
                       shape: shape,
                       child: widget.child,
-                      margin: EdgeInsets.zero
+                      margin: EdgeInsets.zero,
+                      clipBehavior: Clip.hardEdge,
                     ),
                     AnimatedSwitcher(
                       child: expanded ? GestureDetector(
@@ -177,8 +213,10 @@ class NavItem extends StatelessWidget{
   final Icon icon;
   final void Function()? onTap;
   final bool expanded;
+  final bool autoClose;
+  final bool animate;
 
-  const NavItem({Key? key, required this.title, required this.icon, this.onTap, required this.expanded}) : super(key: key);
+  const NavItem({Key? key, this.animate = true, this.autoClose = true, required this.title, required this.icon, this.onTap, required this.expanded}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
@@ -186,22 +224,25 @@ class NavItem extends StatelessWidget{
       containedInkWell: true,
       highlightShape: BoxShape.rectangle,
       onTap: () {
+        if(autoClose && Frame.of(context).expanded) Frame.of(context).expand();
         if(onTap != null) onTap!();
-        if(Frame.of(context).expanded) Frame.of(context).expand();
       },
       child: AnimatedAlign(
         duration: const Duration(milliseconds: 300),
-        alignment: expanded ? Alignment.center : Alignment.centerLeft,
+        alignment: (animate && expanded) ? Alignment.center : Alignment.centerLeft,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: icon
             ),
-            Align(
-              child: title,
-              alignment: Alignment.centerLeft,
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: Frame.of(context).thin || expanded ? Align(
+                child: title,
+                alignment: Alignment.centerLeft,
+              ) : Container()
             )
           ]
         )

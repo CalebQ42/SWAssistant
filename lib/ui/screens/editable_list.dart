@@ -64,11 +64,14 @@ class EditableListState extends State<EditableList>{
             actions: [
               TextButton(
                 child: Text(MaterialLocalizations.of(context).continueButtonLabel),
-                onPressed: () => Navigator.popAndPushNamed(context, "/settings"),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  Navigator.of(context).pushNamed("/settings");
+                }
               ),
               TextButton(
                 child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                onPressed: () => Navigator.pop(context)
+                onPressed: () => Navigator.of(context, rootNavigator: true).pop()
               )
             ],
           )
@@ -106,7 +109,7 @@ class EditableListState extends State<EditableList>{
         }
         if(syncSuccess){
           app.prefs.setBool(preferences.driveFirstLoad, false);
-          Navigator.pop(context);
+          Navigator.of(context, rootNavigator: true).pop();
           var ed = app.findEditable(widget.uidToLoad!);
           if(ed != null) Navigator.pushNamed(context, "/edit/" + widget.uidToLoad!, arguments: ed);
         }else{
@@ -303,11 +306,8 @@ class EditableListState extends State<EditableList>{
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          decoration: ShapeDecoration(
-            color: Colors.red.shade700,
-            shape: Frame.of(context).topShape,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          color: Colors.red.shade700,
           child: Row(
             children: [
               Expanded(child: catSelector),

@@ -81,7 +81,13 @@ class DiceSelector extends StatelessWidget{
     if (small){
       body = Container(
         child: body,
-        color: background,
+        decoration: small && type == 0 ? ShapeDecoration(
+          color: background,
+          shape: const BeveledRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25))
+          )
+        ) : null,
+        color: small && type != 0 ? background : null,
       );
     }
     return small ? body : Card(

@@ -399,7 +399,7 @@ class SW{
     var toUpload = await downloadAndMatch(scope);
     if(toUpload == null){
       if(context != null) {
-        Navigator.pop(context);
+        Navigator.of(context, rootNavigator: true).pop();
       }
       syncing = false;
       return false;
@@ -412,7 +412,7 @@ class SW{
     while(uploadWaiting > 0) {
       await Future.delayed(const Duration(milliseconds: 100));
     }
-    if(context != null) Navigator.pop(context);
+    if(context != null) Navigator.of(context, rootNavigator: true).pop();
     syncing = false;
     return true;
   }
@@ -529,7 +529,7 @@ class SW{
   void manualImport(BuildContext context){
     var message = ScaffoldMessenger.of(context);
     var locs = AppLocalizations.of(context)!;
-    var nav = Navigator.of(context);
+    var nav = Navigator.of(context, rootNavigator: true);
     showDialog(
       barrierDismissible: false,
       context: context,
