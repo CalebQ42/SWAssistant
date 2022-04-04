@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/utils/editable.dart';
@@ -57,19 +58,22 @@ class SWAppState extends State<SWApp> {
       clipBehavior: Clip.antiAlias,
       constraints: BoxConstraints.loose(const Size.fromWidth(600)),
     );
+    var framKey = GlobalKey<FrameState>();
+    SW.of(context).observatory = Observatory(SW.of(context), framKey);
     return MaterialApp(
       builder: (c, child) =>
         Navigator(
           onGenerateRoute: (rs) {
             return MaterialPageRoute(
-              builder: (c) => Frame(child: child),
+              builder: (c) =>
+                Frame(key: framKey, child: child),
             );
           },
         ),
       navigatorKey: SW.of(context).navy,
       title: 'SWAssistant',
       navigatorObservers: [
-        SW.of(context).observatory
+        SW.of(context).observatory!
       ],
       onGenerateRoute: (settings) {
         bool initSwitch = true;
@@ -220,30 +224,36 @@ class Observatory extends NavigatorObserver{
 
   List<Route> routeHistory = [];
   SW app;
+  GlobalKey<FrameState> frame;
 
-  Observatory(this.app);
+  Observatory(this.app, this.frame);
 
   String currentRoute(){
     if(routeHistory.isNotEmpty) return routeHistory.last.settings.name ?? "";
     return "";
   }
 
+  void report(){
+    if(routeHistory.isNotEmpty){
+      frame.currentState?.selected = routeHistory.last.settings.name ?? "";
+    }
+    if(!kIsWeb && app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
+      FirebaseCrashlytics.instance.setCustomKey("page", routeHistory.last.settings.name ?? "unknown");
+    }
+  }
+
   @override
   void didPush(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
-      FirebaseCrashlytics.instance.setCustomKey("page", route.settings.name ?? "unknown");
-    }
     routeHistory.add(route);
     super.didPush(route, previousRoute);
+    report();
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    if(app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
-      FirebaseCrashlytics.instance.setCustomKey("page", previousRoute?.settings.name ?? "unknown");
-    }
     routeHistory.removeLast();
     super.didPop(route, previousRoute);
+    report();
   }
 
   @override
@@ -259,6 +269,7 @@ class Observatory extends NavigatorObserver{
       routeHistory.removeRange(beginIndex,endIndex);
     }
     super.didRemove(route, previousRoute);
+    report();
   }
 
   @override
@@ -267,6 +278,7 @@ class Observatory extends NavigatorObserver{
       routeHistory[routeHistory.indexOf(oldRoute)] = newRoute;
     }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    report();
   }
 
   //Returns the route if it is in history, otherwise it return null.

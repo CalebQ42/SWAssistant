@@ -33,7 +33,6 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
     }
   }
   set selected(String s) {
-    print("selected: " + s);
     if(s != _selected) {
       _selected = s;
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -105,7 +104,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           )
         ]
       ),
-      if((thin ? (height*.5) + 50 : height) >= 430) const Spacer(),
+      if((thin ? (height*.5) + 50 : height) >= 440) const Spacer(),
       NavItem(
         icon: const Icon(Icons.contacts),
         title: Text(AppLocalizations.of(context)!.gmMode),
@@ -134,7 +133,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         expanded: expanded,
         selected: _selected == "/vehicles"
       ),
-      if((thin ? (height*.5) + 50 : height) >= 430) const Spacer(),
+      if((thin ? (height*.5) + 50 : height) >= 440) const Spacer(),
       NavItem(
         icon: const Icon(Icons.settings),
         title: Text(AppLocalizations.of(context)!.settings),
@@ -156,74 +155,71 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         expanded: expanded,
       )
     ];
-    return WillPopScope(
-      onWillPop: () async {
-        if(expanded){
-          expand();
-          return false;
-        }
-        return true;
-      },
-      child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: Stack(
-          children: [
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              left: MediaQuery.of(context).padding.left,
-              top: MediaQuery.of(context).padding.top,
-              height: thin ? height*.5 : height,
-              width: thin ? width : 250,
-              child: ((thin ? (height*.5) + 50 : height) < 430) ? ListView(
+    var scrolPhys = (hidden || (thin && !expanded)) ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics();
+    return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Stack(
+        children: [
+          Positioned(
+            left: MediaQuery.of(context).padding.left,
+            top: MediaQuery.of(context).padding.top,
+            height: thin ? height*.5 : height,
+            width: thin ? width : 250,
+            child: SizedOverflowBox(
+              size: Size(
+                thin ? width : 250,
+                thin ? height*.5 : height
+              ),
+              child: ((thin ? (height*.5) + 50 : height) < 440) ? ListView(
                 controller: scrol,
                 children: chillin,
-                physics: !expanded || hidden ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
+                physics: scrolPhys,
               ) : Column(
                 children: chillin
               )
-            ),
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              left: hidden ? MediaQuery.of(context).padding.left : (thin ? 0 : 50) + MediaQuery.of(context).padding.left,
-              top: hidden ? MediaQuery.of(context).padding.top : (thin ? 50 : 0) + MediaQuery.of(context).padding.top,
-              height: hidden ? height : overlayH,
-              width: hidden ? width : overlayW,
-              child: SlideTransition(
-                key: UniqueKey(),
-                position: tween.animate(animCont),
-                child: Stack(
-                  children: [
-                    Card(
-                      elevation: 10,
-                      shape: shape,
-                      child: MediaQuery(
-                        data: MediaQueryData(
-                          size: Size(overlayW, overlayH)
-                        ),
-                        child: widget.child ?? Container(),
-                      ),
-                      margin: EdgeInsets.zero,
-                      clipBehavior: Clip.hardEdge,
-                    ),
-                    AnimatedSwitcher(
-                      child: expanded ? GestureDetector(
-                        child: Container(
-                          decoration: ShapeDecoration(
-                            color: Colors.black.withOpacity(0.25),
-                            shape: shape
-                          )
-                        ),
-                        onTap: expanded ? expand : null,
-                        behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
-                      ) : null,
-                      duration: const Duration(milliseconds: 300),
-                    )
-                  ]
-                ),
-              )
             )
-          ]
-        )
+          ),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            left: hidden ? MediaQuery.of(context).padding.left : (thin ? 0 : 50) + MediaQuery.of(context).padding.left,
+            top: hidden ? MediaQuery.of(context).padding.top : (thin ? 50 : 0) + MediaQuery.of(context).padding.top,
+            height: hidden ? height : overlayH,
+            width: hidden ? width : overlayW,
+            child: SlideTransition(
+              key: UniqueKey(),
+              position: tween.animate(animCont),
+              child: Stack(
+                children: [
+                  Card(
+                    elevation: 10,
+                    shape: shape,
+                    child: MediaQuery(
+                      data: MediaQueryData(
+                        size: Size(overlayW, overlayH)
+                      ),
+                      child: widget.child ?? Container(),
+                    ),
+                    margin: EdgeInsets.zero,
+                    clipBehavior: Clip.hardEdge,
+                  ),
+                  AnimatedSwitcher(
+                    child: expanded ? GestureDetector(
+                      child: Container(
+                        decoration: ShapeDecoration(
+                          color: Colors.black.withOpacity(0.25),
+                          shape: shape
+                        )
+                      ),
+                      onTap: expanded ? expand : null,
+                      behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
+                    ) : null,
+                    duration: const Duration(milliseconds: 300),
+                  )
+                ]
+              ),
+            )
+          )
+        ]
       )
     );
   }
@@ -256,16 +252,19 @@ class NavItem extends StatelessWidget{
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  icon,
-                  if(selected) const SizedBox(height: 5),
-                  if(selected) Container(width: 10, height: 2, color: Colors.white),
-                ],
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    icon,
+                    if(selected) const SizedBox(height: 5),
+                    if(selected) Container(width: 10, height: 2, color: Colors.white),
+                  ],
+                )
               )
             ),
             AnimatedSwitcher(

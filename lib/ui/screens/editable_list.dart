@@ -8,6 +8,7 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/frame.dart';
+import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
@@ -302,7 +303,8 @@ class EditableListState extends State<EditableList>{
           ),
       )
     );
-    return Column(
+    return FrameContent(
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
@@ -317,56 +319,55 @@ class EditableListState extends State<EditableList>{
             ],
           )
         ),
-        Expanded(child:
-          Scaffold(
-            body: ClipRect(
-              child: mainList
-            ),
-            floatingActionButton: FloatingActionButton(
-              child: const Icon(Icons.add),
-              onPressed: (){
-                if(SW.of(context).getPreference(preferences.googleDrive, false)) {
-                  if(SW.of(context).syncing){
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
-                      )
-                    );
-                    return;
-                  }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
-                      )
-                    );
-                    return;
-                  }
-                }
-                Editable newEd;
-                switch(type){
-                  case 0:
-                    newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
-                    break;
-                  case 1:
-                    newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
-                    break;
-                  default:
-                    newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
-                }
-                app.add(newEd);
-                Navigator.pushNamed(
-                  context,
-                  "/edit/" + newEd.uid,
-                  arguments: newEd
-                );
-              },
-            ),
-          )
-        )
+        Expanded(
+          child: ClipRect(
+            child: mainList
+          ),
+        ),
       ]
-    );
+    ),
+    fab: widget.onTap == null ? FloatingActionButton(
+      child: const Icon(Icons.add),
+      onPressed: (){
+        if(SW.of(context).getPreference(preferences.googleDrive, false)) {
+          if(SW.of(context).syncing){
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+              )
+            );
+            return;
+          }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
+            ScaffoldMessenger.of(context).clearSnackBars();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+              )
+            );
+            return;
+          }
+        }
+        Editable newEd;
+        switch(type){
+          case 0:
+            newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
+            break;
+          case 1:
+            newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
+            break;
+          default:
+            newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
+        }
+        app.add(newEd);
+        Navigator.pushNamed(
+          context,
+          "/edit/" + newEd.uid,
+          arguments: newEd
+        );
+      },
+    ) : null,
+  );
     // return (widget.onTap == null) ?
     //   Scaffold(
     //     // appBar: AppBar(

@@ -33,7 +33,7 @@ class SWDrawer extends StatelessWidget{
             leading: const Icon(Icons.contacts),
             onTap: (){
               Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/gm");
+              var out = SW.of(context).observatory?.containsRoute(name: "/gm");
               if(out != null){
                 Navigator.of(context).removeRoute(out);
                 Navigator.of(context).pushNamed("/gm");
@@ -48,7 +48,7 @@ class SWDrawer extends StatelessWidget{
             leading: const Icon(Icons.face),
             onTap: (){
               Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/characters");
+              var out = SW.of(context).observatory?.containsRoute(name: "/characters");
               if(out != null){
                 Navigator.of(context).removeRoute(out);
                 Navigator.of(context).pushNamed("/characters");
@@ -62,7 +62,7 @@ class SWDrawer extends StatelessWidget{
             leading: const Icon(Icons.supervisor_account),
             onTap: (){
               Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/minions");
+              var out = SW.of(context).observatory?.containsRoute(name: "/minions");
               if(out != null){
                 Navigator.of(context).removeRoute(out);
                 Navigator.of(context).pushNamed("/minions");
@@ -76,7 +76,7 @@ class SWDrawer extends StatelessWidget{
             leading: const Icon(Icons.motorcycle),
             onTap: (){
               Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/vehicles");
+              var out = SW.of(context).observatory?.containsRoute(name: "/vehicles");
               if(out != null){
                 Navigator.of(context).removeRoute(out);
                 Navigator.of(context).pushNamed("/vehicles");
@@ -90,7 +90,7 @@ class SWDrawer extends StatelessWidget{
             leading: const Icon(Icons.delete),
             onTap: (){
               Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/trash");
+              var out = SW.of(context).observatory?.containsRoute(name: "/trash");
               if(out != null){
                 Navigator.of(context).removeRoute(out);
                 Navigator.of(context).pushNamed("/trash");
@@ -119,7 +119,7 @@ class SWDrawer extends StatelessWidget{
             leading: const Icon(Icons.casino),
             onTap: (){
               Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/dice");
+              var out = SW.of(context).observatory?.containsRoute(name: "/dice");
               if(out != null){
                 Navigator.of(context).removeRoute(out);
                 Navigator.of(context).pushNamed("/dice");
@@ -148,7 +148,7 @@ class SWDrawer extends StatelessWidget{
             leading: const Icon(Icons.settings),
             onTap: (){
               Navigator.of(context).pop();
-              var out = SW.of(context).observatory.containsRoute(name: "/settings");
+              var out = SW.of(context).observatory?.containsRoute(name: "/settings");
               if(out != null){
                 Navigator.of(context).removeRoute(out);
                 Navigator.of(context).pushNamed("/settings");

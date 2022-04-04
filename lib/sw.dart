@@ -40,8 +40,8 @@ class SW{
   bool syncing = false;
 
   late Function() topLevelUpdate;
-  late Observatory observatory;
   late PackageInfo package;
+  Observatory? observatory;
 
   bool initialized = false;
 
@@ -126,7 +126,7 @@ class SW{
   }
 
   void remove(Editable editable, [BuildContext? context]){
-    if(context != null && editable.route != null && observatory.containsRoute(route: editable.route) != null){
+    if(context != null && editable.route != null && observatory?.containsRoute(route: editable.route) != null){
       Navigator.removeRoute(context, editable.route!);
     }
     if(editable is Character){
@@ -491,7 +491,6 @@ class SW{
       }
       app.loadAll();
     }
-    app.observatory = Observatory(app);
     app.package = await PackageInfo.fromPlatform();
     prefs.setInt(preferences.startCount, app.getPreference(preferences.startCount, 0) + 1);
     return app;
