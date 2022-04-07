@@ -1,31 +1,34 @@
-String thankYou = "donateThankYou";
-String dev = "devMode";
+const String thankYou = "donateThankYou";
+const String dev = "devMode";
 
 //Usage prefs
-String googleDrive = "cloudEnabled";
-String dice = "getDiceOnLaunch";
-String colorDice = "colorDice";
-String subtractMode = "subtract";
+const String googleDrive = "cloudEnabled";
+const String dice = "getDiceOnLaunch";
+const String colorDice = "colorDice";
+const String subtractMode = "subtract";
 
 //Firebase prefs
-String crashlytics = "crashlytics";
-String firebase = "firebase";
-String ads = "adsOn";
+const String crashlytics = "crashlytics";
+const String firebase = "firebase";
+const String ads = "adsOn";
 
 //Starting prefs
-String firstStart = "first";
-String startCount = "startCount";
-String startingScreen = "startScreen";
-String driveFirstLoad = "driveFirstLoad";
-String newDrive = "newDrive";
+const String firstStart = "first";
+const String startCount = "startCount";
+const String startingScreen = "startScreen";
+const String driveFirstLoad = "driveFirstLoad";
+const String newDrive = "newDrive";
 
 //Theme prefs
-String forceLight = "forceLight";
-String forceDark = "forceDark";
-String amoled = "amoledTheme";
+const String forceLight = "forceLight";
+const String forceDark = "forceDark";
+const String amoled = "amoledTheme";
 
-String initialTrash = "initaialTrash";
+const String initialTrash = "initaialTrash";
 
 //destiny
-String destinyLight = "destinyLight";
-String destinyDark = "destinyDark";
+const String destinyLight = "destinyLight";
+const String destinyDark = "destinyDark";
+
+//New prefs check
+const String subtractNew = "subtractNew";

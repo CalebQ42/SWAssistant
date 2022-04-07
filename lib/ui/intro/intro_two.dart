@@ -6,6 +6,7 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/intro.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/screens/loading.dart';
 
 class IntroTwo extends StatefulWidget{
 
@@ -24,66 +25,112 @@ class _IntroTwoState extends State{
         var app = SW.of(context);
         app.prefs.setBool(preferences.driveFirstLoad, false);
         app.prefs.setBool(preferences.firstStart, false);
+        for(var ask in Loading.asks){
+          app.prefs.setBool(ask, false);
+        }
         Navigator.pushNamedAndRemoveUntil(
           context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
       },
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.settings,
-              style: Theme.of(context).textTheme.headline4
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.settings,
+            style: Theme.of(context).textTheme.headline4
+          ),
+          const SizedBox(height: 10),
+          if(!kIsWeb) SwitchListTile(
+            title: Text(
+              AppLocalizations.of(context)!.cloudSave
             ),
-            const SizedBox(height: 10),
-            if(!kIsWeb) SwitchListTile(
-              title: Text(
-                AppLocalizations.of(context)!.cloudSave
-              ),
-              value: SW.of(context).getPreference(preferences.googleDrive, false),
-              onChanged: (b){
-                SW.of(context).prefs.setBool(preferences.googleDrive, b);
-                setState((){});
-              }
+            value: SW.of(context).getPreference(preferences.googleDrive, false),
+            onChanged: (b){
+              SW.of(context).prefs.setBool(preferences.googleDrive, b);
+              setState((){});
+            }
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              AppLocalizations.of(context)!.healthMode,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            SwitchListTile(
-              title: Text(
-                AppLocalizations.of(context)!.forceDark,
-              ),
-              value: SW.of(context).getPreference(preferences.forceDark, false),
-              onChanged: (b){
-                SW.of(context).prefs.setBool(preferences.forceDark, b);
-                if (b) SW.of(context).prefs.setBool(preferences.forceLight, false);
-                setState((){});
-                SW.of(context).topLevelUpdate();
-              }
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.additive,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Text(AppLocalizations.of(context)!.additiveExplaination)
+                    ]
+                  )
+                ),
+                Switch(
+                  value: SW.of(context).getPreference(preferences.subtractMode, true),
+                  onChanged: (b) => setState(() {
+                    SW.of(context).prefs.setBool(preferences.subtractMode, b);
+                  }),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.subtractive,
+                        style: Theme.of(context).textTheme.titleLarge
+                      ),
+                      Text(AppLocalizations.of(context)!.subtractiveExplaination)
+                    ]
+                  )
+                ),
+              ],
+            )
+          ),
+          SwitchListTile(
+            title: Text(
+              AppLocalizations.of(context)!.forceDark,
             ),
-            SwitchListTile(
-              title: Text(
-                AppLocalizations.of(context)!.amoledTheme,
-              ),
-              value: SW.of(context).getPreference(preferences.amoled, false),
-              onChanged: (b){
-                SW.of(context).prefs.setBool(preferences.amoled, b);
-                setState((){});
-                SW.of(context).topLevelUpdate();
-              }
+            value: SW.of(context).getPreference(preferences.forceDark, false),
+            onChanged: (b){
+              SW.of(context).prefs.setBool(preferences.forceDark, b);
+              if (b) SW.of(context).prefs.setBool(preferences.forceLight, false);
+              setState((){});
+              SW.of(context).topLevelUpdate();
+            }
+          ),
+          SwitchListTile(
+            title: Text(
+              AppLocalizations.of(context)!.amoledTheme,
             ),
-            SwitchListTile(
-              title: Text(
-                AppLocalizations.of(context)!.forceLight,
-              ),
-              value: SW.of(context).getPreference(preferences.forceLight, false),
-              onChanged: (b){
-                SW.of(context).prefs.setBool(preferences.forceLight, b);
-                if (b) SW.of(context).prefs.setBool(preferences.forceDark, false);
-                setState((){});
-                SW.of(context).topLevelUpdate();
-              }
+            value: SW.of(context).getPreference(preferences.amoled, false),
+            onChanged: (b){
+              SW.of(context).prefs.setBool(preferences.amoled, b);
+              setState((){});
+              SW.of(context).topLevelUpdate();
+            }
+          ),
+          SwitchListTile(
+            title: Text(
+              AppLocalizations.of(context)!.forceLight,
             ),
-          ],
-        )
+            value: SW.of(context).getPreference(preferences.forceLight, false),
+            onChanged: (b){
+              SW.of(context).prefs.setBool(preferences.forceLight, b);
+              if (b) SW.of(context).prefs.setBool(preferences.forceDark, false);
+              setState((){});
+              SW.of(context).topLevelUpdate();
+            }
+          ),
+        ],
       )
     );
 }

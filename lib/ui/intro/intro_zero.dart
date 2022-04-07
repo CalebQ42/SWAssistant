@@ -33,85 +33,82 @@ class IntroZero extends StatelessWidget{
       } : null,
       defPrevScreen: false,
       prevScreenIcon: const Icon(Icons.exit_to_app),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.introWelcome,
-              style: Theme.of(context).textTheme.headline4
-            ),
-            const SizedBox(height: 5),
-            Text(
-              AppLocalizations.of(context)!.introPage0Line1,
-              textAlign: TextAlign.justify,
-            ),
-            const SizedBox(height:10),
-            Text(
-              (!kIsWeb) ? AppLocalizations.of(context)!.introPage0Line2 : AppLocalizations.of(context)!.introPage0WebNotice,
-              textAlign: TextAlign.justify,
-            ),
-            if(!kIsWeb && Platform.isAndroid) const SizedBox(height:5),
-            if(!kIsWeb && Platform.isAndroid) ElevatedButton(
-              child: Text(AppLocalizations.of(context)!.introPage0ImportButton),
-              onPressed: () async {
-                //Android 10+ prevents full access to the filesystem. If older, we can access old profiles directly.
-                //Otherwise, we need to have the user manually select the profiles.
-                if (Platform.isAndroid && ((await DeviceInfoPlugin().androidInfo).version.sdkInt ?? 29) >= 29){
-                  Bottom(
-                    buttons: (context) => [
-                      TextButton(
-                        child: Text(MaterialLocalizations.of(context).continueButtonLabel),
-                        onPressed: (){
-                          Navigator.pop(context);
-                          SW.of(context).manualImport(context);
-                        },
-                      ),
-                      TextButton(
-                        child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                        onPressed: () =>
-                          Navigator.pop(context),
-                      )
-                    ],
-                    child: (context) =>
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.introPage0ManualImport,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                          Container(height: 10),
-                          Text(
-                            AppLocalizations.of(context)!.introPage0ManualImportLine0,
-                            textAlign: TextAlign.justify,
-                          ),
-                          Container(height: 10),
-                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine1),
-                          Container(height: 5),
-                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine1a),
-                          Container(height: 5),
-                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine2),
-                          Container(height: 5),
-                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine3),
-                          Container(height: 5),
-                          Text(AppLocalizations.of(context)!.introPage0ManualImportLine4),
-                        ],
-                      )
-                  ).show(context);
-                }else{
-                  var num = oldImport(context);
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(AppLocalizations.of(context)!.importSuccess(num)),
-                  ));
-                }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.introWelcome,
+            style: Theme.of(context).textTheme.headline4
+          ),
+          const SizedBox(height: 5),
+          Text(
+            AppLocalizations.of(context)!.introPage0Line1,
+            textAlign: TextAlign.justify,
+          ),
+          const SizedBox(height:10),
+          Text(
+            (!kIsWeb) ? AppLocalizations.of(context)!.introPage0Line2 : AppLocalizations.of(context)!.introPage0WebNotice,
+            textAlign: TextAlign.justify,
+          ),
+          if(!kIsWeb && Platform.isAndroid) const SizedBox(height:5),
+          if(!kIsWeb && Platform.isAndroid) ElevatedButton(
+            child: Text(AppLocalizations.of(context)!.introPage0ImportButton),
+            onPressed: () async {
+              //Android 10+ prevents full access to the filesystem. If older, we can access old profiles directly.
+              //Otherwise, we need to have the user manually select the profiles.
+              if (Platform.isAndroid && ((await DeviceInfoPlugin().androidInfo).version.sdkInt ?? 29) >= 29){
+                Bottom(
+                  buttons: (context) => [
+                    TextButton(
+                      child: Text(MaterialLocalizations.of(context).continueButtonLabel),
+                      onPressed: (){
+                        Navigator.pop(context);
+                        SW.of(context).manualImport(context);
+                      },
+                    ),
+                    TextButton(
+                      child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+                      onPressed: () =>
+                        Navigator.pop(context),
+                    )
+                  ],
+                  child: (context) =>
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.introPage0ManualImport,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                        Container(height: 10),
+                        Text(
+                          AppLocalizations.of(context)!.introPage0ManualImportLine0,
+                          textAlign: TextAlign.justify,
+                        ),
+                        Container(height: 10),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine1),
+                        Container(height: 5),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine1a),
+                        Container(height: 5),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine2),
+                        Container(height: 5),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine3),
+                        Container(height: 5),
+                        Text(AppLocalizations.of(context)!.introPage0ManualImportLine4),
+                      ],
+                    )
+                ).show(context);
+              }else{
+                var num = oldImport(context);
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(AppLocalizations.of(context)!.importSuccess(num)),
+                ));
               }
-            )
-          ]
-        )
+            }
+          )
+        ]
       )
     );
 

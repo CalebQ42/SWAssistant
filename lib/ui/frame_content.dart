@@ -38,7 +38,10 @@ class FrameContent extends StatelessWidget{
                   if(fab != null) Positioned(
                     right: 16,
                     bottom: 16,
-                    child: fab!
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      child: fab,
+                    ),
                   )
                 ]
               )

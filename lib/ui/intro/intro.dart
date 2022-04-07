@@ -37,7 +37,12 @@ class IntroScreen extends StatelessWidget{
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Align(
-              child: child,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: SingleChildScrollView(
+                  child: child
+                ),
+              ),
               alignment: Alignment.center,
             )
           ),
