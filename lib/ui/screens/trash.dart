@@ -3,6 +3,7 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 
@@ -31,8 +32,8 @@ class _TrashListState extends State<TrashList> {
         app.prefs.setBool(preferences.initialTrash, false);
       });
     }
-    return Scaffold(
-      body: AnimatedList(
+    return FrameContent(
+      child: AnimatedList(
         key: listKey,
         initialItemCount: app.trashCan.length,
         itemBuilder: (context, i, anim) =>

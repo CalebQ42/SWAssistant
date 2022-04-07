@@ -9,6 +9,7 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/dialogs/destiny.dart';
+import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
@@ -47,13 +48,8 @@ class GMMode extends StatelessWidget{
         }
         return Future.value(false);
       },
-      child: Scaffold(
-        appBar: PreferredSize(
-          child: _GMModeBar(message),
-          preferredSize: Size.fromHeight(Theme.of(context).appBarTheme.toolbarHeight ?? 55),
-        ),
-        // drawer: SWDrawer(),
-        body: Row(
+      child: FrameContent(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
           children: [

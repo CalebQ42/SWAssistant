@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/item.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:swassistant/preferences.dart' as preferences;
 
 class WoundStrain extends StatefulWidget{
 
@@ -36,6 +39,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
         break;
       }
     }
+    var subtractMode = SW.of(context).getPreference(preferences.subtractMode, true);
     return Column(
       children: <Widget>[
         Row(
@@ -100,7 +104,8 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                           character.save(context: context);
                         },
                         getValue: () => character.woundCur,
-                        getMin: () => -1*character.woundThresh
+                        getMin: () => subtractMode ? -1*character.woundThresh : 0,
+                        getMax: () => subtractMode ? character.woundThresh : 2*character.woundThresh,
                       ),
                       Center(child: Text(AppLocalizations.of(context)!.max(character.woundThresh)))
                     ]
@@ -156,7 +161,9 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                           character.strainCur--;
                           character.save(context: context);
                         },
-                        getValue: ()=>character.strainCur,
+                        getValue: () => character.strainCur,
+                        getMin: () => 0,
+                        getMax: () => character.strainThresh,
                       ),
                       Center(child: Text(AppLocalizations.of(context)!.max(character.strainThresh)))
                     ]
@@ -321,19 +328,34 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
           children: [
             ElevatedButton(
               onPressed: (){
-                if(healingItem != null && healingItem!.count > 0 && character.healsToday < 5 && character.woundCur < character.woundThresh){
-                  setState(() {
+                if(healingItem != null && healingItem!.count > 0 && character.healsToday < 5){
+                  if(subtractMode && character.woundCur < character.woundThresh){
+                    setState(() {
+                      if(character.useRepair){
+                        character.woundCur += 3;
+                      }else{
+                        character.woundCur += 5-character.healsToday;
+                      }
+                      if(character.woundCur > character.woundThresh){
+                        character.woundCur = character.woundThresh;
+                      }
+                      character.healsToday++;
+                      healingItem!.count--;
+                      character.invKey.currentState?.setState(() {});
+                    });
+                  }else if(!subtractMode && character.woundCur > 0){
                     if(character.useRepair){
-                      character.woundCur += 3;
+                      character.woundCur -= 3;
                     }else{
-                      character.woundCur += 5-character.healsToday;
+                      character.woundCur -= 5-character.healsToday;
                     }
-                    if(character.woundCur > character.woundThresh){
-                      character.woundCur = character.woundThresh;
+                    if(character.woundCur < 0){
+                      character.woundCur = 0;
                     }
                     character.healsToday++;
                     healingItem!.count--;
-                  });
+                    character.invKey.currentState?.setState(() {});
+                  }
                 }
               },
               child: Text(AppLocalizations.of(context)!.heal)

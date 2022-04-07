@@ -5,6 +5,7 @@ String dev = "devMode";
 String googleDrive = "cloudEnabled";
 String dice = "getDiceOnLaunch";
 String colorDice = "colorDice";
+String subtractMode = "subtract";
 
 //Firebase prefs
 String crashlytics = "crashlytics";

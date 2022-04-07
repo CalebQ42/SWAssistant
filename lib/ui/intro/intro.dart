@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/ui/frame_content.dart';
 
 class IntroScreen extends StatelessWidget{
 
@@ -15,8 +16,8 @@ class IntroScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) =>
-    Scaffold(
-      floatingActionButton: (nextScreen != null || nextScreenAction != null) ? FloatingActionButton(
+    FrameContent(
+      fab: (nextScreen != null || nextScreenAction != null) ? FloatingActionButton(
         heroTag: null,
         child: nextScreenIcon ?? const Icon(Icons.arrow_forward),
         onPressed: nextScreen != null ? () =>
@@ -31,7 +32,7 @@ class IntroScreen extends StatelessWidget{
             )
           ) : nextScreenAction
       ) : null,
-      body: Stack(
+      child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),

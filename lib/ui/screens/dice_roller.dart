@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/dice/sides.dart';
+import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
@@ -19,15 +20,15 @@ class DiceRoller extends StatelessWidget{
     double width = min(MediaQuery.of(context).size.height, 250);
     int rows = (MediaQuery.of(context).size.width / width).floor();
     width = MediaQuery.of(context).size.width / rows;
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
+    return FrameContent(
+      fab: FloatingActionButton(
         onPressed: (){
           holder.getDice(context).roll().showCombinedResults(context, noSuccess: holder.ability == 0 && holder.proficiency == 0
               && holder.difficulty == 0 && holder.challenge == 0 && holder.boost == 0 && holder.challenge == 0);
         },
         child: const Icon(Icons.casino),
       ),
-      body: SingleChildScrollView(
+      child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.only(bottom: 20),
         child: Column(

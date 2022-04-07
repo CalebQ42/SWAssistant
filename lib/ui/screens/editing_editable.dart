@@ -5,6 +5,7 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editable_cards.dart';
@@ -72,9 +73,9 @@ class _EditingEditableState extends State<EditingEditable>{
     );
     Widget body;
     if(!widget.contained) {
-      body = Scaffold(
-        bottomNavigationBar: bottomNav,
-        body: main
+      body = FrameContent(
+        bottom: bottomNav,
+        child: main
       );
     } else {
       body = Column(

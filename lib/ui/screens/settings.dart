@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/sw_drawer.dart';
+import 'package:swassistant/ui/frame_content.dart';
 
 class Settings extends StatefulWidget{
 
@@ -22,8 +22,8 @@ class SettingsState extends State{
   @override
   Widget build(BuildContext context){
     var app = SW.of(context);
-    return Scaffold(
-      body: ListView(
+    return FrameContent(
+      child: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
           SwitchListTile(
@@ -66,6 +66,53 @@ class SettingsState extends State{
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.colorDice),
+          ),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              AppLocalizations.of(context)!.healthMode,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.additive,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Text(AppLocalizations.of(context)!.additiveExplaination)
+                    ]
+                  )
+                ),
+                Switch(
+                  value: app.getPreference(preferences.subtractMode, true),
+                  onChanged: (b) => setState(() {
+                    app.prefs.setBool(preferences.subtractMode, b);
+                  }),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.subtractive,
+                        style: Theme.of(context).textTheme.titleLarge
+                      ),
+                      Text(AppLocalizations.of(context)!.subtractiveExplaination)
+                    ]
+                  )
+                ),
+              ],
+            )
           ),
           if(!kIsWeb) const Divider(),
           if(!kIsWeb) SwitchListTile(
