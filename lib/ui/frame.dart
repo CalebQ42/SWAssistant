@@ -27,7 +27,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
   set hidden(bool b) {
     if(b != _hidden) {
       _hidden = b;
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
     }
@@ -35,7 +35,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
   set selected(String s) {
     if(s != _selected) {
       _selected = s;
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
     }
@@ -87,17 +87,45 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         thin ? ((height*.5)-50) / overlayH : 0
       )
     );
+    var title = "SWAssistant";
+    if(!expanded && thin){
+      switch(_selected){
+        case "/characters":
+          title = AppLocalizations.of(context)!.characters;
+          break;
+        case "/vehicles":
+          title = AppLocalizations.of(context)!.vehicles;
+          break;
+        case "/minions":
+          title = AppLocalizations.of(context)!.minions;
+          break;
+        case "/settings":
+          title = AppLocalizations.of(context)!.settings;
+          break;
+        case "/trash":
+          title = AppLocalizations.of(context)!.trash;
+          break;
+      }
+    }
     var chillin = [
       Row(
         children: [
-          Expanded(child: NavItem(
-            title: const Text("SWAssistant"),
-            icon: const Icon(Icons.menu),
-            expanded: expanded,
-            autoClose: false,
-            onTap: hidden ? null : expand,
-            // animate: false
-          )),
+          Expanded(
+            child: NavItem(
+              title: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: Text(
+                  title,
+                  key: Key(title),
+                ),
+              ),
+              icon: const Icon(Icons.menu),
+              expanded: expanded,
+              autoClose: false,
+              onTap: hidden ? null : expand,
+              // animate: false
+            )
+          ),
           if(thin) IconButton(
             onPressed: hidden ? null : () => SWDiceHolder().showDialog(context, showInstant: true),
             icon: const Icon(Icons.casino_outlined)
@@ -114,21 +142,30 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       ),
       NavItem(
         icon: const Icon(Icons.face),
-        title: Text(AppLocalizations.of(context)!.characters),
+        title: Text(
+          AppLocalizations.of(context)!.characters,
+          style: Theme.of(context).primaryTextTheme.subtitle1
+        ),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/characters"),
         expanded: expanded,
         selected: _selected == "/characters"
       ),
       NavItem(
         icon: const Icon(Icons.supervisor_account),
-        title: Text(AppLocalizations.of(context)!.minions),
+        title: Text(
+          AppLocalizations.of(context)!.minions,
+          style: Theme.of(context).primaryTextTheme.subtitle1
+        ),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/minions"),
         expanded: expanded,
         selected: _selected == "/minions"
       ),
       NavItem(
         icon: const Icon(Icons.motorcycle),
-        title: Text(AppLocalizations.of(context)!.vehicles),
+        title: Text(
+          AppLocalizations.of(context)!.vehicles,
+          style: Theme.of(context).primaryTextTheme.subtitle1
+        ),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/vehicles"),
         expanded: expanded,
         selected: _selected == "/vehicles"
@@ -136,28 +173,40 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       if((thin ? (height*.5) + 50 : height) >= 440) const Spacer(),
       NavItem(
         icon: const Icon(Icons.settings),
-        title: Text(AppLocalizations.of(context)!.settings),
+        title: Text(
+          AppLocalizations.of(context)!.settings,
+          style: Theme.of(context).primaryTextTheme.subtitle1
+        ),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/settings"),
         expanded: expanded,
         selected: _selected == "/settings"
       ),
       NavItem(
         icon: const Icon(Icons.delete),
-        title: Text(AppLocalizations.of(context)!.trash),
+        title: Text(
+          AppLocalizations.of(context)!.trash,
+          style: Theme.of(context).primaryTextTheme.subtitle1
+        ),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/trash"),
         expanded: expanded,
         selected: _selected == "/trash"
       ),
       if(!thin) NavItem(
-        icon: const Icon(Icons.casino_outlined),
-        title: Text(AppLocalizations.of(context)!.dice),
+        icon: Icon(
+          Icons.casino_outlined,
+          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.dice,
+          style: Theme.of(context).primaryTextTheme.subtitle1
+        ),
         onTap: hidden ? null : () => SWDiceHolder().showDialog(context, showInstant: true),
         expanded: expanded,
       )
     ];
     var scrolPhys = (hidden || (thin && !expanded)) ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics();
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Stack(
         children: [
           Positioned(
@@ -252,21 +301,55 @@ class NavItem extends StatelessWidget{
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    icon,
-                    if(selected) const SizedBox(height: 5),
-                    if(selected) Container(width: 10, height: 2, color: Colors.white),
-                  ],
-                )
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  icon,
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    child: AnimatedSwitcher(
+                      transitionBuilder: (wid, anim) =>
+                        ClipRect(
+                          child: SlideTransition(
+                            position: Tween(begin: const Offset(0.0,1.0), end: Offset.zero).animate(anim),
+                            child: Center(child: wid)
+                          )
+                        ),
+                      layoutBuilder: (child, oldStack){
+                        List<Widget> newStack = [];
+                        for(var chil in oldStack){
+                          newStack.add(
+                            SizedOverflowBox(
+                              size: Size.zero,
+                              child: chil
+                            )
+                          );
+                        }
+                        return Stack(
+                          alignment: AlignmentDirectional.center,
+                          children:[
+                            ...newStack,
+                            child!,
+                          ]
+                        );
+                      },
+                      duration: const Duration(milliseconds: 300),
+                      child: selected ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 5),
+                          Container(width: 10, height: 2, color: Theme.of(context).primaryTextTheme.bodyText1?.color),
+                        ],
+                      ) : Container(),
+                    )
+                  )
+                ],
               )
-            ),
+              ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               child: Frame.of(context).thin || expanded ? Align(

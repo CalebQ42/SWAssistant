@@ -503,7 +503,7 @@ class SW{
           options: DefaultFirebaseOptions.currentPlatform,
         );
         firebaseAvailable = true;
-        if(!kIsWeb && getPreference(preferences.crashlytics, true) && kDebugMode == false){
+        if(!kIsWeb && getPreference(preferences.crashlytics, true) && !kDebugMode){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         }else{

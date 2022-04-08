@@ -4,7 +4,7 @@ import 'package:swassistant/ui/frame.dart';
 class FrameContent extends StatelessWidget{
 
   final Widget? child;
-  final FloatingActionButton? fab;
+  final Widget? fab;
   final Widget? bottom;
   final bool allowPop;
 
@@ -35,12 +35,18 @@ class FrameContent extends StatelessWidget{
               child: Stack(
                 children: [
                   if(child != null) child!,
-                  if(fab != null) Positioned(
+                  Positioned(
                     right: 16,
                     bottom: 16,
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: fab,
+                      duration: const Duration(milliseconds: 500),
+                      child: fab ?? Container(),
+                      switchInCurve: Curves.elasticOut,
+                      transitionBuilder: (child, animation) =>
+                        SlideTransition(
+                          position: Tween<Offset>(begin: const Offset(0, 1.25), end: Offset.zero).animate(animation),
+                          child: child,
+                        )
                     ),
                   )
                 ]

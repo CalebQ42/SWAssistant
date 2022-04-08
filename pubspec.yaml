@@ -6,17 +6,17 @@ publish_to: 'none'
 version: 3.2.7+160
 
 environment:
-  sdk: ">=2.16.0-134.1.beta <3.0.0"
+  sdk: ">=2.17.0-182.2.beta <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations: # Add this line
+  flutter_localizations:
     sdk: flutter
 
   intl: ^0.17.0
-  firebase_core: ^1.13.1
-  firebase_crashlytics: ^2.5.3
+  firebase_core: ^1.14.0
+  firebase_crashlytics: ^2.6.1
   shared_preferences: ^2.0.13
   path_provider: ^2.0.9
   cupertino_icons: ^1.0.4
@@ -28,9 +28,10 @@ dependencies:
   google_sign_in: ^5.2.4
   extension_google_sign_in_as_googleapis_auth: ^2.0.4
   device_info_plus: ^3.2.2
-  package_info_plus: ^1.4.0
+  package_info_plus: ^1.4.2
   universal_internet_checker: ^0.1.2
   uuid: ^3.0.6
+  dynamic_color: ^1.1.2
 
 dev_dependencies:
   flutter_test:

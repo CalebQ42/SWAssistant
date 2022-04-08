@@ -39,25 +39,26 @@ class _LoadingState extends State<Loading> {
 
   @override
   Widget build(BuildContext context) {
-    var nav = Navigator.of(context);
-    SW.of(context).postInit().then((_){
-      index = 0;
-      if (neededAsks.isEmpty) {
-        leave();
-      }else{
-        switch(neededAsks[index]){
-          case preferences.subtractNew:
-            setState(() => child = subtractPref());
+    if(index == -1){
+      SW.of(context).postInit().then((_){
+        index = 0;
+        if (neededAsks.isEmpty) {
+          leave();
+        }else{
+          switch(neededAsks[index]){
+            case preferences.subtractNew:
+              setState(() => child = subtractPref());
+          }
         }
-      }
-    });
+      });
+    }
     return FrameContent(
       allowPop: false,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: Align(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500),
+      child: Align(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
             child: child ?? Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,7 +95,9 @@ class _LoadingState extends State<Loading> {
     );
   }
 
-  Widget subtractPref() => Column(
+  Widget subtractPref() =>
+    Column(
+      key: const Key("subby"),
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -119,7 +122,10 @@ class _LoadingState extends State<Loading> {
                       AppLocalizations.of(context)!.additive,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    Text(AppLocalizations.of(context)!.additiveExplaination)
+                    Text(
+                      AppLocalizations.of(context)!.additiveExplaination,
+                      textAlign: TextAlign.center,
+                    )
                   ]
                 )
               ),
@@ -137,7 +143,10 @@ class _LoadingState extends State<Loading> {
                       AppLocalizations.of(context)!.subtractive,
                       style: Theme.of(context).textTheme.titleLarge
                     ),
-                    Text(AppLocalizations.of(context)!.subtractiveExplaination)
+                    Text(
+                      AppLocalizations.of(context)!.subtractiveExplaination,
+                      textAlign: TextAlign.center,
+                    )
                   ]
                 )
               ),
@@ -145,6 +154,5 @@ class _LoadingState extends State<Loading> {
           )
         ),
       ],
-    
-  );
+    );
 }
