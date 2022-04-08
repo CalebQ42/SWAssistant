@@ -34,7 +34,7 @@ class _InfoCardState extends State<InfoCard>{
         child: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 300),
           child: Text(widget.title,),
-          style: shown ? Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).primaryColor) : Theme.of(context).textTheme.subtitle1!,
+          style: shown ? Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).colorScheme.primary) : Theme.of(context).textTheme.subtitle1!,
         )
       ),
       children: [widget.contents],

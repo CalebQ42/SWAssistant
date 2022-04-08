@@ -195,7 +195,10 @@ abstract class Editable extends JsonSavable{
         padding: const EdgeInsets.all(4),
         child: EditContent(
           contentKey: nameKey,
-          content: NameCard(key: nameKey),
+          content: Padding(
+            padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
+            child: NameCard(key: nameKey),
+          ),
           extraButtons: (c, _) => [
             if(this is Character) IconButton(
               iconSize: 20.0,

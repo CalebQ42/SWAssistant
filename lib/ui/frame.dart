@@ -24,18 +24,15 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
   String _selected = "";
 
   bool get hidden => _hidden;
-  set hidden(bool b) {
-    if(b != _hidden) {
-      _hidden = b;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
-    }
-  }
   set selected(String s) {
     if(s != _selected) {
       _selected = s;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(s == "/intro" || s == "/loading") {
+        _hidden = true;
+      }else{
+        _hidden = false;
+      }
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
         setState(() {});
       });
     }
@@ -141,7 +138,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         selected: _selected == "/gm"
       ),
       NavItem(
-        icon: const Icon(Icons.face),
+        icon: Icon(
+          Icons.face,
+          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+        ),
         title: Text(
           AppLocalizations.of(context)!.characters,
           style: Theme.of(context).primaryTextTheme.subtitle1
@@ -151,7 +151,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         selected: _selected == "/characters"
       ),
       NavItem(
-        icon: const Icon(Icons.supervisor_account),
+        icon: Icon(
+          Icons.supervisor_account,
+          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+        ),
         title: Text(
           AppLocalizations.of(context)!.minions,
           style: Theme.of(context).primaryTextTheme.subtitle1
@@ -161,7 +164,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         selected: _selected == "/minions"
       ),
       NavItem(
-        icon: const Icon(Icons.motorcycle),
+        icon: Icon(
+          Icons.motorcycle,
+          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+        ),
         title: Text(
           AppLocalizations.of(context)!.vehicles,
           style: Theme.of(context).primaryTextTheme.subtitle1
@@ -172,7 +178,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       ),
       if((thin ? (height*.5) + 50 : height) >= 440) const Spacer(),
       NavItem(
-        icon: const Icon(Icons.settings),
+        icon: Icon(
+          Icons.settings,
+          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+        ),
         title: Text(
           AppLocalizations.of(context)!.settings,
           style: Theme.of(context).primaryTextTheme.subtitle1
@@ -182,7 +191,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
         selected: _selected == "/settings"
       ),
       NavItem(
-        icon: const Icon(Icons.delete),
+        icon: Icon(
+          Icons.delete,
+          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+        ),
         title: Text(
           AppLocalizations.of(context)!.trash,
           style: Theme.of(context).primaryTextTheme.subtitle1
@@ -206,7 +218,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
     ];
     var scrolPhys = (hidden || (thin && !expanded)) ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics();
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
         children: [
           Positioned(

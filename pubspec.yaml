@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 3.2.7+160
 
 environment:
-  sdk: ">=2.17.0-182.2.beta <3.0.0"
+  sdk: ">=2.16.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -31,7 +31,6 @@ dependencies:
   package_info_plus: ^1.4.2
   universal_internet_checker: ^0.1.2
   uuid: ^3.0.6
-  dynamic_color: ^1.1.2
 
 dev_dependencies:
   flutter_test:
