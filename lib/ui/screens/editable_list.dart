@@ -308,15 +308,18 @@ class EditableListState extends State<EditableList>{
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          color: Colors.red.shade700,
-          child: Row(
-            children: [
-              Expanded(child: catSelector),
-              IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: () => refreshKey.currentState?.show()
-              )
-            ],
+          color: Theme.of(context).primaryColorDark,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: [
+                Expanded(child: catSelector),
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () => refreshKey.currentState?.show()
+                )
+              ],
+            )
           )
         ),
         Expanded(

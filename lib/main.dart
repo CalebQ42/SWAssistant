@@ -172,6 +172,7 @@ class SWAppState extends State<SWApp> {
         ThemeMode.dark : ThemeMode.system,
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.lightBlue,
+        primaryColorDark: Colors.lightBlue.shade600,
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.lightBlue,
           accentColor: Colors.redAccent
@@ -194,11 +195,12 @@ class SWAppState extends State<SWApp> {
               color: Colors.white
             ),
           ),
-          primaryColor: Colors.red.shade600,
+          primaryColor: Colors.red,
+          primaryColorDark: Colors.red.shade900,
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.red,
             primaryColorDark: Colors.red.shade700,
-            accentColor: Colors.lightBlueAccent,
+            accentColor: Colors.lightBlueAccent.shade100,
             brightness: Brightness.dark
           ),
           bottomSheetTheme: bottomSheetTheme.copyWith(
@@ -208,9 +210,10 @@ class SWAppState extends State<SWApp> {
           inputDecorationTheme: inputTheme
         ) : ThemeData( //Dark Theme
           primaryColor: Colors.red,
+          primaryColorDark: Colors.red.shade900,
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.red,
-            accentColor: Colors.lightBlueAccent,
+            accentColor: Colors.lightBlueAccent.shade100,
             brightness: Brightness.dark
           ),
           bottomSheetTheme: bottomSheetTheme,

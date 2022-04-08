@@ -4,6 +4,7 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/ui/misc/new_loading_pref.dart';
+import 'package:swassistant/ui/misc/updating_switch_tile.dart';
 
 
 class Loading extends StatefulWidget{
@@ -79,6 +80,7 @@ class _LoadingState extends State<Loading> {
         child: const Icon(Icons.forward),
         onPressed: (){
           if(index < neededAsks.length - 1){
+            //TODO: update preference.
             setState(() {
               index++;
               switch(neededAsks[index]){
@@ -105,7 +107,7 @@ class _LoadingState extends State<Loading> {
           padding: const EdgeInsets.all(15),
           child: Text(
             AppLocalizations.of(context)!.healthMode,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.headline5,
           ),
         ),
         Padding(
@@ -129,11 +131,10 @@ class _LoadingState extends State<Loading> {
                   ]
                 )
               ),
-              Switch(
+              UpdatingSwitch(
                 value: SW.of(context).getPreference(preferences.subtractMode, true),
-                onChanged: (b) => setState(() {
-                  SW.of(context).prefs.setBool(preferences.subtractMode, b);
-                }),
+                onChanged: (b) => 
+                  SW.of(context).prefs.setBool(preferences.subtractMode, b),
               ),
               Expanded(
                 child: Column(

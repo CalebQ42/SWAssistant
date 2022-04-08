@@ -8,6 +8,7 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/frame_content.dart';
+import 'package:swassistant/ui/misc/updating_switch_tile.dart';
 
 class Settings extends StatefulWidget{
 
@@ -26,6 +27,8 @@ class SettingsState extends State{
       child: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
+          const SizedBox(height: 10),
+          //TODO: Add donate and translation buttons.
           SwitchListTile(
             value: app.getPreference(preferences.forceLight, false),
             onChanged: (b){
@@ -72,7 +75,7 @@ class SettingsState extends State{
             padding: const EdgeInsets.all(15),
             child: Text(
               AppLocalizations.of(context)!.healthMode,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
           Padding(
@@ -87,17 +90,16 @@ class SettingsState extends State{
                     children: [
                       Text(
                         AppLocalizations.of(context)!.additive,
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                       Text(AppLocalizations.of(context)!.additiveExplaination)
                     ]
                   )
                 ),
-                Switch(
+                UpdatingSwitch(
                   value: app.getPreference(preferences.subtractMode, true),
-                  onChanged: (b) => setState(() {
-                    app.prefs.setBool(preferences.subtractMode, b);
-                  }),
+                  onChanged: (b) =>
+                    app.prefs.setBool(preferences.subtractMode, b),
                 ),
                 Expanded(
                   child: Column(
@@ -105,7 +107,7 @@ class SettingsState extends State{
                     children: [
                       Text(
                         AppLocalizations.of(context)!.subtractive,
-                        style: Theme.of(context).textTheme.titleLarge
+                        style: Theme.of(context).textTheme.subtitle2
                       ),
                       Text(AppLocalizations.of(context)!.subtractiveExplaination)
                     ]

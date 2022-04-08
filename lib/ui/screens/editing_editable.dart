@@ -38,6 +38,7 @@ class _EditingEditableState extends State<EditingEditable>{
 
   @override
   Widget build(BuildContext context) {
+    //TODO: lose focus when stop editing when typing.
     var bottomNav = BottomNavigationBar(
       backgroundColor: Theme.of(context).cardColor,
       items: [

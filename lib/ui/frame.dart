@@ -3,6 +3,8 @@ import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:swassistant/preferences.dart' as preferences;
+
 class Frame extends StatefulWidget {
 
   final Widget? child;
@@ -113,10 +115,14 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                 duration: const Duration(milliseconds: 300),
                 child: Text(
                   title,
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
                   key: Key(title),
                 ),
               ),
-              icon: const Icon(Icons.menu),
+              icon: Icon(
+                Icons.menu,
+                color: Theme.of(context).primaryTextTheme.subtitle1?.color
+              ),
               expanded: expanded,
               autoClose: false,
               onTap: hidden ? null : expand,
@@ -125,14 +131,23 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           ),
           if(thin) IconButton(
             onPressed: hidden ? null : () => SWDiceHolder().showDialog(context, showInstant: true),
-            icon: const Icon(Icons.casino_outlined)
+            icon: Icon(
+              Icons.casino_outlined,
+              color: Theme.of(context).primaryTextTheme.subtitle1?.color
+            )
           )
         ]
       ),
       if((thin ? (height*.5) + 50 : height) >= 440) const Spacer(),
       NavItem(
-        icon: const Icon(Icons.contacts),
-        title: Text(AppLocalizations.of(context)!.gmMode),
+        icon: Icon(
+          Icons.contacts,
+          color: Theme.of(context).primaryTextTheme.subtitle1?.color,
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.gmMode,
+          style: Theme.of(context).primaryTextTheme.subtitle1
+        ),
         onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/gm"),
         expanded: expanded,
         selected: _selected == "/gm"
@@ -263,18 +278,16 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                     margin: EdgeInsets.zero,
                     clipBehavior: Clip.hardEdge,
                   ),
-                  AnimatedSwitcher(
-                    child: expanded ? GestureDetector(
-                      child: Container(
-                        decoration: ShapeDecoration(
-                          color: Colors.black.withOpacity(0.25),
-                          shape: shape
-                        )
-                      ),
-                      onTap: expanded ? expand : null,
-                      behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
-                    ) : null,
-                    duration: const Duration(milliseconds: 300),
+                  if(expanded) GestureDetector(
+                    child: Container(
+                      decoration: ShapeDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark && SW.of(context).getPreference(preferences.amoled, false) ?
+                            Colors.black.withOpacity(.75) : Colors.black.withOpacity(0.25),
+                        shape: shape
+                      )
+                    ),
+                    onTap: expanded ? expand : null,
+                    behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
                   )
                 ]
               ),
