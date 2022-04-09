@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/preferences.dart' as preferences;
-import 'package:swassistant/ui/misc/new_loading_pref.dart';
 import 'package:swassistant/ui/misc/updating_switch_tile.dart';
 
 
@@ -24,6 +23,7 @@ class Loading extends StatefulWidget{
 class _LoadingState extends State<Loading> {
 
   int index = -1;
+  bool started = false;
 
   Widget? child;
 
@@ -40,7 +40,8 @@ class _LoadingState extends State<Loading> {
 
   @override
   Widget build(BuildContext context) {
-    if(index == -1){
+    if(index == -1 && !started){
+      started = true;
       SW.of(context).postInit().then((_){
         index = 0;
         if (neededAsks.isEmpty) {
@@ -79,8 +80,8 @@ class _LoadingState extends State<Loading> {
       fab: child != null ? FloatingActionButton(
         child: const Icon(Icons.forward),
         onPressed: (){
+          if(index != -1) SW.of(context).prefs.setBool(neededAsks[index], false);
           if(index < neededAsks.length - 1){
-            //TODO: update preference.
             setState(() {
               index++;
               switch(neededAsks[index]){

@@ -7,9 +7,7 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/frame.dart';
 import 'package:swassistant/ui/frame_content.dart';
-import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
 class EditableList extends StatefulWidget{

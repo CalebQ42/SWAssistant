@@ -16,6 +16,8 @@ class TrashList extends StatefulWidget{
 }
 
 class _TrashListState extends State<TrashList> {
+  //TODO: add margin to top & add delete button for web.
+
   final GlobalKey<AnimatedListState> listKey = GlobalKey();
 
   @override

@@ -248,11 +248,12 @@ class SW{
       await driver!.changeScope(scope);
       var okay = await driver!.setWD(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
       if(!okay) return null;
-    }else{
-      driver ??= Driver(scope);
-      var okay = await driver!.ready(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
-      if(!okay) return null;
     }
+    driver ??= Driver(scope);
+    var okay = await driver!.ready();
+    if(!okay) return null;
+    okay = await driver!.setWD(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
+    if(!okay) return null;
     var all = <Editable>[
       ..._characters,
       ..._minions,

@@ -16,12 +16,12 @@ class FrameContent extends StatelessWidget{
       onWillPop: () async {
         if(!allowPop) return false;
         var rootNav = Navigator.of(context, rootNavigator: true);
-        if(Frame.of(context).expanded){
-          Frame.of(context).expand();
-          return false;
-        }
         if(rootNav.canPop()){
           rootNav.pop();
+          return false;
+        }
+        if(Frame.of(context).expanded){
+          Frame.of(context).expand();
           return false;
         }
         return true;
