@@ -22,22 +22,24 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
   @override
   bool get defaultEdit => false;
 
+  TextEditingController? catController;
+
   @override
   Widget build(BuildContext context){
     var minion = Minion.of(context);
     if (minion == null) throw "MinInfo card used on non Minion";
+    if(catController == null){
+      catController = TextEditingController();
+      catController!.addListener(() => 
+        minion.category = catController!.text
+      );
+    }
     return Column(
       children: [
         EditingText(
           editing: edit,
           initialText: minion.category,
-          controller: (){
-            var cont = TextEditingController(text: minion.category);
-            cont.addListener(() {
-              minion.category = cont.text;
-            });
-            return cont;
-          }(),
+          controller: catController,
           textCapitalization: TextCapitalization.words,
           defaultSave: true,
           textAlign: TextAlign.center,

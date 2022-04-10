@@ -32,6 +32,8 @@ class GMMode extends StatelessWidget{
 
   GMMode({Key? key}) : super(key: key);
 
+  //TODO: find place for destiny points
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;

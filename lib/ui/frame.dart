@@ -22,7 +22,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
   bool expanded = false;
   late AnimationController animCont;
   ScrollController scrol = ScrollController();
-  bool _hidden = false;
+  bool _hidden = true;
   String _selected = "";
 
   bool get hidden => _hidden;
@@ -92,8 +92,8 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
     var width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.left - MediaQuery.of(context).padding.right;
-    var overlayH = thin ? height - 50 : height;
-    var overlayW = thin ? width : width - 50;
+    var overlayH = thin && !_hidden ? height - 50 : height;
+    var overlayW = thin || _hidden ? width : width - 50;
     var tween = Tween<Offset>(
       begin: Offset.zero,
       end: Offset(
@@ -163,7 +163,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.gmMode,
           style: Theme.of(context).primaryTextTheme.subtitle1
         ),
-        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/gm"),
+        onTap: hidden || _selected == "/gm" ? null : () => SW.of(context).nav()?.pushNamed("/gm"),
         expanded: expanded,
         selected: _selected == "/gm"
       ),
@@ -176,7 +176,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.characters,
           style: Theme.of(context).primaryTextTheme.subtitle1
         ),
-        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/characters"),
+        onTap: hidden || _selected == "/characters" ? null : () => SW.of(context).nav()?.pushNamed("/characters"),
         expanded: expanded,
         selected: _selected == "/characters"
       ),
@@ -189,7 +189,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.minions,
           style: Theme.of(context).primaryTextTheme.subtitle1
         ),
-        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/minions"),
+        onTap: hidden || _selected == "/minions" ? null : () => SW.of(context).nav()?.pushNamed("/minions"),
         expanded: expanded,
         selected: _selected == "/minions"
       ),
@@ -202,7 +202,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.vehicles,
           style: Theme.of(context).primaryTextTheme.subtitle1
         ),
-        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/vehicles"),
+        onTap: hidden || _selected == "/vehicles" ? null : () => SW.of(context).nav()?.pushNamed("/vehicles"),
         expanded: expanded,
         selected: _selected == "/vehicles"
       ),
@@ -216,7 +216,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.settings,
           style: Theme.of(context).primaryTextTheme.subtitle1
         ),
-        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/settings"),
+        onTap: hidden || _selected == "settings" ? null : () => SW.of(context).nav()?.pushNamed("/settings"),
         expanded: expanded,
         selected: _selected == "/settings"
       ),
@@ -229,7 +229,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.trash,
           style: Theme.of(context).primaryTextTheme.subtitle1
         ),
-        onTap: hidden ? null : () => SW.of(context).nav()?.pushNamed("/trash"),
+        onTap: hidden || _selected == "trash" ? null : () => SW.of(context).nav()?.pushNamed("/trash"),
         expanded: expanded,
         selected: _selected == "/trash"
       ),
@@ -288,7 +288,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                       data: MediaQueryData(
                         size: Size(overlayW, overlayH)
                       ),
-                      child: widget.child ?? Container(),
+                      child: Padding(
+                        padding: MediaQuery.of(context).viewInsets,
+                        child: widget.child ?? Container(),
+                      )
                     ),
                     margin: EdgeInsets.zero,
                     clipBehavior: Clip.hardEdge,

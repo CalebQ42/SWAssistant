@@ -22,13 +22,13 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
   bool get defaultEdit => false;
 
   TextEditingController? indWoundController;
+  TextEditingController? soakController;
 
   @override
   Widget build(BuildContext context) {
     var minion = Minion.of(context);
     if (minion == null) throw "MinionWound card used on non Minion";
-    indWoundController ??= TextEditingController(text: minion.woundThreshInd.toString())
-        ..addListener(() {
+    indWoundController ??= TextEditingController(text: minion.woundThreshInd.toString())..addListener(() {
       var tmp = int.tryParse(indWoundController!.text);
       var orig = minion.woundCur;
       if(tmp == null){
@@ -41,6 +41,8 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
       if(minion.woundCur > minion.woundThresh) minion.woundCur = minion.woundThresh;
       if(minion.woundCur != orig) setState((){});
     });
+    soakController ??= TextEditingController(text: minion.soak.toString())
+        ..addListener(() => minion.soak = int.tryParse(soakController!.text) ?? 0);
     return Column(
       children: [
         Row(
@@ -53,13 +55,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
               child: EditingText(
                 editing: edit,
                 initialText: minion.soak.toString(),
-                controller: (){
-                  var controller = TextEditingController(text: minion.soak.toString());
-                  controller.addListener(() =>
-                    minion.soak = int.tryParse(controller.text) ?? 0
-                  );
-                  return controller;
-                }(),
+                controller: soakController,
                 textAlign: TextAlign.center,
                 fieldAlign: TextAlign.center,
                 textType: TextInputType.number,

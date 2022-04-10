@@ -65,7 +65,7 @@ class EditContentState extends State<EditContent> with StatefulCard {
                   widget.contentKey.currentState?.setState(() {
                     widget.contentKey.currentState?.editing = !edit;
                   });
-                  setState(() => edit = !edit);
+                  editing = !edit;
                 }
               )
             )
@@ -80,11 +80,16 @@ mixin StatefulCard<T extends StatefulWidget> on State<T> {
   set editing(bool b);
   bool get defaultEdit;
 
+  bool firstBuild = true;
+
   void refresh() => setState(() {});
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    editing = defaultEdit;
+    if(firstBuild) {
+      editing = defaultEdit;
+      firstBuild = false;
+    }
   }
 }

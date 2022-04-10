@@ -188,6 +188,8 @@ abstract class Editable extends JsonSavable{
     "trashed": false,
   };
 
+  List<Widget>? allCards;
+
   List<Widget> cards(BuildContext context){
     var cards = <Widget>[];
     var contents = cardContents(context);

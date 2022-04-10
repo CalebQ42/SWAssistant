@@ -21,11 +21,27 @@ class XPState extends State<XP> with StatefulCard {
   @override
   bool get defaultEdit => false;
 
+  TextEditingController? xpCurController;
+  TextEditingController? xpTotalController;
+  TextEditingController? xpAddController;
+
   @override
   Widget build(BuildContext context){
     var character = Character.of(context);
     if (character == null) throw "XP card used on non Character";
-    var xpAddController = TextEditingController();
+    if(xpCurController == null){
+      xpCurController = TextEditingController();
+      xpCurController!.addListener(() => 
+        character.xpCur = int.tryParse(xpCurController!.text) ?? 0
+      );
+    }
+    if(xpTotalController == null){
+      xpTotalController = TextEditingController();
+      xpTotalController!.addListener(() => 
+        character.xpTot = int.tryParse(xpTotalController!.text) ?? 0
+      );
+    }
+    xpAddController ??= TextEditingController();
     return Column(
       children: [
         Row(
@@ -34,13 +50,7 @@ class XPState extends State<XP> with StatefulCard {
               child: EditingText(
                 editing: edit,
                 initialText: character.xpCur.toString(),
-                controller: (){
-                  var cont = TextEditingController(text: character.xpCur.toString());
-                  cont.addListener(() =>
-                    character.xpCur = int.tryParse(cont.text) ?? 0
-                  );
-                  return cont;
-                }(),
+                controller: xpCurController,
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,
@@ -51,13 +61,7 @@ class XPState extends State<XP> with StatefulCard {
               child: EditingText(
                 editing: edit,
                 initialText: character.xpTot.toString(),
-                controller: (){
-                  var cont = TextEditingController(text: character.xpTot.toString());
-                  cont.addListener(() =>
-                    character.xpTot = int.tryParse(cont.text) ?? 0
-                  );
-                  return cont;
-                }(),
+                controller: xpTotalController,
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,
@@ -84,7 +88,7 @@ class XPState extends State<XP> with StatefulCard {
                       character.xpTot += adding;
                       character.xpCur += adding;
                     }
-                    xpAddController.text = "";
+                    xpAddController!.text = "";
                     setState(() {});
                   }
                 },
@@ -93,13 +97,13 @@ class XPState extends State<XP> with StatefulCard {
             Container(width: 10,),
             TextButton.icon(
               onPressed: (){
-                if(xpAddController.text != ""){
-                  var adding = int.tryParse(xpAddController.text);
+                if(xpAddController!.text != ""){
+                  var adding = int.tryParse(xpAddController!.text);
                   if (adding != null){
                     character.xpTot += adding;
                     character.xpCur += adding;
                   }
-                  xpAddController.text = "";
+                  xpAddController!.text = "";
                   setState(() {});
                 }
               },

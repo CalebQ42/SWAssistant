@@ -18,9 +18,16 @@ class EditableCardsState extends State<EditableCards>{
 
   void update() => setState(() {});
 
+  late List<Widget> cards;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    cards = Editable.of(context).cards(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    var cards = Editable.of(context).cards(context);
     double width = min(GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.height, 350);
     int rows = ((GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.width) / width).floor();
     if(rows == 0) rows = 1;

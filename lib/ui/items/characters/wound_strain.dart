@@ -28,6 +28,11 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
   bool get defaultEdit => Character.of(context)!.soak == 0 && Character.of(context)!.woundThresh == 0 && Character.of(context)!.strainThresh == 0;
   Item? healingItem;
 
+  TextEditingController? soakController;
+  TextEditingController? woundThreshController;
+  TextEditingController? strainThreshController;
+  TextEditingController? healsTodayController;
+
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
@@ -40,6 +45,22 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
       }
     }
     var subtractMode = SW.of(context).getPreference(preferences.subtractMode, true);
+    if(soakController == null){
+      soakController = TextEditingController(text: character.soak.toString());
+      soakController!.addListener(() => character.soak = int.tryParse(soakController!.text) ?? 0);
+    }
+    if(woundThreshController == null){
+      woundThreshController = TextEditingController(text: character.woundThresh.toString());
+      woundThreshController!.addListener(() => character.woundThresh = int.tryParse(woundThreshController!.text) ?? 0);
+    }
+    if(strainThreshController == null){
+      strainThreshController = TextEditingController(text: character.strainThresh.toString());
+      strainThreshController!.addListener(() => character.strainThresh = int.tryParse(strainThreshController!.text) ?? 0);
+    }
+    if(healsTodayController == null){
+      healsTodayController = TextEditingController(text: character.healsToday.toString());
+      healsTodayController!.addListener(() => character.healsToday = int.tryParse(healsTodayController!.text) ?? 0);
+    }
     return Column(
       children: <Widget>[
         Row(
@@ -55,13 +76,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                 collapsed: true,
                 fieldAlign: TextAlign.center,
                 fieldInsets: const EdgeInsets.all(3),
-                controller: (){
-                  var controller = TextEditingController(text: character.soak.toString());
-                  controller.addListener(() =>
-                    character.soak = int.tryParse(controller.text) ?? 0
-                  );
-                  return controller;
-                }(),
+                controller: soakController,
                 textType: TextInputType.number,
                 defaultSave: true,
               )
@@ -109,23 +124,16 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       ),
                       Center(child: Text(AppLocalizations.of(context)!.max(character.woundThresh)))
                     ]
-                  ) : (){
-                    var controll = TextEditingController(text: character.woundThresh.toString());
-                    controll.addListener(() {
-                      character.woundThresh = int.tryParse(controll.text) ?? 0;
-                      character.save(context: context);
-                    });
-                    return Padding(
-                      child: TextField(
-                        controller: controll,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxWound),
-                        textAlign: TextAlign.center,
-                      ),
-                      padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
-                    ); 
-                  }()
+                  ) : Padding(
+                    child: TextField(
+                      controller: woundThreshController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxWound),
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
+                  )
                 )
               )
             ),
@@ -167,23 +175,16 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       ),
                       Center(child: Text(AppLocalizations.of(context)!.max(character.strainThresh)))
                     ]
-                  ) : (){
-                    var controll = TextEditingController(text: character.strainThresh.toString());
-                    controll.addListener(() {
-                      character.strainThresh = int.tryParse(controll.text) ?? 0;
-                      character.save(context: context);
-                    });
-                    return Padding(
-                      child: TextField(
-                        controller: controll,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStrain),
-                        textAlign: TextAlign.center,
-                      ),
-                      padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
-                    ); 
-                  }()
+                  ) : Padding(
+                    child: TextField(
+                      controller: strainThreshController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStrain),
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
+                  )
                 )
               )
             )
@@ -309,13 +310,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                 collapsed: true,
                 fieldAlign: TextAlign.center,
                 fieldInsets: const EdgeInsets.all(3),
-                controller: (){
-                  var controller = TextEditingController(text: character.healsToday.toString());
-                  controller.addListener(() =>
-                    character.healsToday = int.tryParse(controller.text) ?? 0
-                  );
-                  return controller;
-                }(),
+                controller: healsTodayController,
                 textType: TextInputType.number,
                 defaultSave: true,
               )

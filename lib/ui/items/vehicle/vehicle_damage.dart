@@ -22,29 +22,33 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
   @override
   bool get defaultEdit => false;
 
+  TextEditingController? armorController;
+  TextEditingController? hullTraumaThreshController;
+  TextEditingController? sysStressThreshController;
+
   @override
   Widget build(BuildContext context) {
     var vehicle = Vehicle.of(context);
     if (vehicle == null) throw "VehicleDamage card called on non Vehicle";
+    armorController ??= TextEditingController(text: vehicle.armor.toString())
+      ..addListener(() => vehicle.armor = int.tryParse(armorController!.text) ?? 0);
+    hullTraumaThreshController ??= TextEditingController(text: vehicle.hullTraumaThresh.toString())
+      ..addListener(() => vehicle.hullTraumaThresh = int.tryParse(hullTraumaThreshController!.text) ?? 0);
+    sysStressThreshController ??= TextEditingController(text: vehicle.sysStressThresh.toString())
+      ..addListener(() => vehicle.sysStressThresh = int.tryParse(sysStressThreshController!.text) ?? 0);
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(AppLocalizations.of(context)!.soak),
+            Text(AppLocalizations.of(context)!.armor + ":"),
             SizedBox(
               width: 50,
               height: 25,
               child: EditingText(
                 editing: edit,
                 initialText: vehicle.armor.toString(),
-                controller: (){
-                  var controller = TextEditingController(text: vehicle.armor.toString());
-                  controller.addListener(() =>
-                    vehicle.armor = int.tryParse(controller.text) ?? 0
-                  );
-                  return controller;
-                }(),
+                controller: armorController,
                 textType: TextInputType.number,
                 defaultSave: true,
                 collapsed: true,
@@ -54,6 +58,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
             )
           ],
         ),
+        Container(height: 10),
         Row(
           children: [
             Expanded(
@@ -78,13 +83,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                       Center(child: Text(AppLocalizations.of(context)!.max(vehicle.hullTraumaThresh)))
                     ],
                   ) : TextField(
-                    controller: (){
-                      var controller = TextEditingController(text: vehicle.hullTraumaThresh.toString());
-                      controller.addListener(() =>
-                        vehicle.hullTraumaThresh = int.tryParse(controller.text) ?? 0
-                      );
-                      return controller;
-                    }(),
+                    controller: hullTraumaThreshController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxTrauma),
@@ -130,13 +129,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                       Center(child: Text(AppLocalizations.of(context)!.max(vehicle.sysStressThresh)))
                     ],
                   ) : TextField(
-                    controller: (){
-                      var controller = TextEditingController(text: vehicle.sysStressThresh.toString());
-                      controller.addListener(() =>
-                        vehicle.sysStressThresh = int.tryParse(controller.text) ?? 0
-                      );
-                      return controller;
-                    }(),
+                    controller: sysStressThreshController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStress),

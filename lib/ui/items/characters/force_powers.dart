@@ -24,10 +24,18 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
   @override
   bool get defaultEdit => Character.of(context)?.forcePowers.isEmpty ?? false;
 
+  TextEditingController? forceController;
+
   @override
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "Force Powers card used on non Character";
+    if(forceController == null){
+      forceController = TextEditingController();
+      forceController!.addListener(() => 
+        character.force = int.tryParse(forceController!.text) ?? 0
+      );
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -44,13 +52,7 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
                   collapsed: true,
                   fieldAlign: TextAlign.center,
                   fieldInsets: const EdgeInsets.all(3),
-                  controller: (){
-                    var controller = TextEditingController(text: character.force.toString());
-                    controller.addListener(() =>
-                      character.force = int.tryParse(controller.text) ?? 0
-                    );
-                    return controller;
-                  }(),
+                  controller: forceController,
                   textType: TextInputType.number,
                   defaultSave: true,
                 )

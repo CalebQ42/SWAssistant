@@ -4,11 +4,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/updating_switch_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget{
 
@@ -28,7 +31,71 @@ class SettingsState extends State{
         physics: const BouncingScrollPhysics(),
         children: [
           const SizedBox(height: 10),
-          //TODO: Add donate and translation buttons.
+          TextButton(
+            onPressed: () => launch("https://github.com/CalebQ42/SWAssistant/discussions"),
+            style: const ButtonStyle(
+              alignment: Alignment.centerLeft
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                AppLocalizations.of(context)!.discuss,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            )
+          ),
+          const Divider(),
+          TextButton(
+            onPressed: () => launch("https://crwd.in/swrpg"),
+            style: const ButtonStyle(
+              alignment: Alignment.centerLeft
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                AppLocalizations.of(context)!.translate,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            )
+          ),
+          const Divider(),
+          TextButton(
+            onPressed: () async {
+              if(kIsWeb){
+                launch("https://github.com/sponsors/CalebQ42");
+              }else if(Platform.isAndroid || Platform.isIOS){
+                if (!await InAppPurchase.instance.isAvailable()){
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(AppLocalizations.of(context)!.gPlayUnavailable),
+                  ));
+                }else{
+                  InAppPurchase.instance.queryProductDetails({
+                    "donate1",
+                    "donate5",
+                    "donate10",
+                    "donate20",
+                  }).then((value) {
+                    Navigator.of(context).pop();
+                    GPlayDonateDialog(value.productDetails).show(context);
+                  });
+                }
+              }else{
+                launch("https://github.com/sponsors/CalebQ42");
+              }
+            },
+            style: const ButtonStyle(
+              alignment: Alignment.centerLeft
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                AppLocalizations.of(context)!.donate,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            )
+          ),
+          const Divider(),
           SwitchListTile(
             value: app.getPreference(preferences.forceLight, false),
             onChanged: (b){

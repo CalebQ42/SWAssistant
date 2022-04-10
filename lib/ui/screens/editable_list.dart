@@ -8,6 +8,7 @@ import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/frame_content.dart';
+import 'package:swassistant/ui/misc/mini_icon_button.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
 class EditableList extends StatefulWidget{
@@ -308,7 +309,7 @@ class EditableListState extends State<EditableList>{
         Container(
           color: Theme.of(context).primaryColorDark,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.only(left: 15),
             child: Row(
               children: [
                 Expanded(child: catSelector),
@@ -466,6 +467,14 @@ class EditableCard extends StatelessWidget{
                     :
                       AppLocalizations.of(context)!.vehicles,
                     style: Theme.of(context).textTheme.caption
+                  )
+                ),
+                if(kIsWeb) Container(height: 10),
+                if(kIsWeb) Align(
+                  alignment: Alignment.centerRight,
+                  child: MiniIconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: onDismiss
                   )
                 )
               ],

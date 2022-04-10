@@ -143,9 +143,7 @@ class _NoteCardState extends State<NoteCardContents> with StatefulCard{
   @override
   Widget build(BuildContext context) {
     control ??= TextEditingController(text: Editable.of(context).notes[widget.index].note)
-      ..addListener(() {
-        Editable.of(context).notes[widget.index].note = control!.text;
-      });
+      ..addListener(() => Editable.of(context).notes[widget.index].note = control!.text);
     TextAlign align;
     switch(Editable.of(context).notes[widget.index].align){
       case 0:

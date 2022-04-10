@@ -20,21 +20,23 @@ class DescriptionState extends State<Description> with StatefulCard {
   @override
   set editing(bool b) => setState(() => edit = b);
 
+  TextEditingController? descController;
+
   @override
   Widget build(BuildContext context) {
+    if(descController == null){
+      descController = TextEditingController();
+      descController!.addListener(() => 
+        Editable.of(context).desc = descController!.text
+      );
+    }
     return EditingText(
       editing: edit,
       initialText: Editable.of(context).desc,
       textCapitalization: TextCapitalization.sentences,
       textAlign: TextAlign.start,
       multiline: true,
-      controller: (){
-        var controller = TextEditingController(text: Editable.of(context).desc);
-        controller.addListener(() => 
-          Editable.of(context).desc = controller.text
-        );
-        return controller;
-      }(),
+      controller: descController,
       defaultSave: true,
     );
   }
