@@ -358,7 +358,7 @@
     "subtractive": "Sottrazione",
     "subtractiveExplaination": "La salute inizia al massimo e il danno la riduce",
     "additive": "Aggiunta",
-    "additiveExplaination": "Health starts at 0 and damage increases it",
+    "additiveExplaination": "La salute inizia a 0 e il danno l'aumenta",
     "colorDice": "Colore Lancia Dadi",
     "firebaseOnNotice": "Attivare Firebase richiede un riavvio dell'app. Continuare?",
     "firebaseOffNotice": "Disattivando Firebase si rimuoverà la possibilità di scaricare i profili. Inoltre, l'app deve essere riavviata perché abbia effetto. Continuare?",
