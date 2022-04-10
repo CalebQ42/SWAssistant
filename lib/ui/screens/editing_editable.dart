@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swassistant/sw.dart';
-import 'package:swassistant/dice/swdice_holder.dart';
-import 'package:swassistant/profiles/character.dart';
-import 'package:swassistant/profiles/minion.dart';
-import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/frame_content.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/ui/misc/sw_drawer.dart';
 import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

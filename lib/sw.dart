@@ -300,7 +300,7 @@ class SW{
             await matchEd.cloudLoad(this, fil.id!);
             await matchEd.save(app: this, localOnly: true);
           } else {
-            await matchEd.cloudSave(this);
+            matchEd.cloudSave(this);
           }
           all.remove(matchEd);
           if(matchEd.trashed != preTrashed){
@@ -355,8 +355,7 @@ class SW{
             loadWaiting--;
           }, onError: (e) => loadWaiting--);
         } else {
-          loadWaiting++;
-          matchEd.cloudSave(this).then((value) => loadWaiting--);
+          matchEd.cloudSave(this);
         }
         if(matchEd.trashed != preTrashed){
           if(matchEd.trashed){
@@ -405,13 +404,8 @@ class SW{
       syncing = false;
       return false;
     }
-    var uploadWaiting = 0;
     for (var ed in toUpload) {
-      uploadWaiting++;
-      ed.cloudSave(this).then((value) => uploadWaiting--);
-    }
-    while(uploadWaiting > 0) {
-      await Future.delayed(const Duration(milliseconds: 100));
+      ed.cloudSave(this);
     }
     if(context != null) Navigator.of(context, rootNavigator: true).pop();
     syncing = false;
@@ -431,6 +425,7 @@ class SW{
         ed.deletePermanently(this);
       }else{
         ed.trash(this);
+        ed.cloudSave(this);
       }
     }
     syncing = false;

@@ -5,6 +5,7 @@ import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
+import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 class EditableNotes extends StatefulWidget{
 
@@ -70,31 +71,19 @@ class _NCState extends State<NoteCard> {
           padding: const EdgeInsets.all(10.0),
           child: EditContent(
             extraEditButtons: (context) => [
-              IconButton(
-                iconSize: 20.0,
-                splashRadius: 20,
-                padding: const EdgeInsets.all(5.0),
-                constraints: BoxConstraints.tight(const Size.square(30.0)),
+              MiniIconButton(
                 icon: const Icon(Icons.format_align_left),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
                   contentKey.currentState?.update(() => Editable.of(context).notes[widget.index].align = 0)
               ),
-              IconButton(
-                iconSize: 20.0,
-                splashRadius: 20,
-                padding: const EdgeInsets.all(5.0),
-                constraints: BoxConstraints.tight(const Size.square(30.0)),
+              MiniIconButton(
                 icon: const Icon(Icons.format_align_center),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>
                   contentKey.currentState?.update(() => Editable.of(context).notes[widget.index].align = 1)
               ),
-              IconButton(
-                iconSize: 20.0,
-                splashRadius: 20,
-                padding: const EdgeInsets.all(5.0),
-                constraints: BoxConstraints.tight(const Size.square(30.0)),
+              MiniIconButton(
                 icon: const Icon(Icons.format_align_right),
                 color: Theme.of(context).buttonTheme.colorScheme?.onSurface,
                 onPressed: () =>

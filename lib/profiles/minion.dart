@@ -17,6 +17,7 @@ import 'package:swassistant/ui/items/creatures/skills.dart';
 import 'package:swassistant/ui/items/minion/minion_info.dart';
 import 'package:swassistant/ui/items/minion/minion_wound.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 import 'utils/creature.dart';
 
@@ -144,11 +145,7 @@ class Minion extends Editable with Creature{
       extraButtons: (context, b) => [
         Tooltip(
           message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeaponsFirst : AppLocalizations.of(context)!.restoreWeapons,
-          child: IconButton(
-            iconSize: 20.0,
-            splashRadius: 20,
-            padding: const EdgeInsets.all(5.0),
-            constraints: BoxConstraints.tight(const Size.square(30.0)),
+          child: MiniIconButton(
             icon: const Icon(Icons.restore),
             onPressed: savedWeapons.isEmpty ? null : (){
               var tmp = List.of(weapons);
@@ -169,11 +166,7 @@ class Minion extends Editable with Creature{
         ),
         Tooltip(
           message: savedWeapons.isEmpty ? AppLocalizations.of(context)!.saveWeapons : AppLocalizations.of(context)!.overwriteWeapons,
-          child: IconButton(
-            iconSize: 20.0,
-            splashRadius: 20,
-            padding: const EdgeInsets.all(5.0),
-            constraints: BoxConstraints.tight(const Size.square(30.0)),
+          child: MiniIconButton(
             icon: Icon(savedWeapons.isEmpty ? Icons.save_outlined : Icons.save),
             onPressed: (){
               var reload = (savedWeapons.isEmpty && weapons.isNotEmpty) || (savedWeapons.isNotEmpty && weapons.isEmpty);
@@ -201,11 +194,7 @@ class Minion extends Editable with Creature{
       extraButtons: (context, b) => [
         Tooltip(
           message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventoryFirst : AppLocalizations.of(context)!.restoreInventory,
-          child: IconButton(
-            iconSize: 20.0,
-            splashRadius: 20,
-            padding: const EdgeInsets.all(5.0),
-            constraints: BoxConstraints.tight(const Size.square(30.0)),
+          child: MiniIconButton(
             icon: Icon(savedInv.isEmpty ? Icons.restore_outlined : Icons.restore),
             onPressed: savedInv.isEmpty ? null : (){
               var tmp = List.of(inventory);
@@ -226,11 +215,7 @@ class Minion extends Editable with Creature{
         ),
         Tooltip(
           message: savedInv.isEmpty ? AppLocalizations.of(context)!.saveInventory : AppLocalizations.of(context)!.overwriteInventory,
-          child: IconButton(
-            iconSize: 20.0,
-            splashRadius: 20,
-            padding: const EdgeInsets.all(5.0),
-            constraints: BoxConstraints.tight(const Size.square(30.0)),
+          child: MiniIconButton(
             icon: Icon(savedInv.isEmpty ? Icons.save_outlined : Icons.save),
             onPressed: (){
               var refresh = (savedInv.isEmpty && inventory.isNotEmpty) || (savedInv.isNotEmpty && inventory.isEmpty);

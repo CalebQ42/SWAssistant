@@ -7,7 +7,6 @@ import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/sw_drawer.dart';
 
 class DiceRoller extends StatelessWidget{
 

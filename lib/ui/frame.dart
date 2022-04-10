@@ -46,11 +46,26 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       return const BeveledRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25))
       );
-    }else{
+    }
+    return const BeveledRectangleBorder(
+      borderRadius: BorderRadius.horizontal(left: Radius.circular(25))
+    );
+  }
+  BeveledRectangleBorder get topItemShape {
+    if(thin){
       return const BeveledRectangleBorder(
-        borderRadius: BorderRadius.horizontal(left: Radius.circular(25))
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25))
       );
     }
+    return const BeveledRectangleBorder(
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(25))
+    );
+  }
+  EdgeInsets get topItemPadding {
+    if (thin) {
+      return const EdgeInsets.symmetric(horizontal: 15);
+    }
+    return const EdgeInsets.only(left: 15);
   }
 
   @override

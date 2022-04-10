@@ -17,6 +17,7 @@ import 'package:swassistant/ui/items/editable/critical_injuries.dart';
 import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/editable/weapons.dart';
 import 'package:swassistant/ui/items/name_card.dart';
+import 'package:swassistant/ui/misc/mini_icon_button.dart';
 import 'package:swassistant/ui/misc/updating_switch_tile.dart';
 import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
@@ -200,11 +201,7 @@ abstract class Editable extends JsonSavable{
             child: NameCard(key: nameKey),
           ),
           extraButtons: (c, _) => [
-            if(this is Character) IconButton(
-              iconSize: 20.0,
-              splashRadius: 20,
-              padding: const EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(const Size.square(30.0)),
+            if(this is Character) MiniIconButton(
               icon: const Icon(Icons.settings),
               onPressed: () =>
                 Bottom(
@@ -247,11 +244,7 @@ abstract class Editable extends JsonSavable{
                     )
                 )..show(context),
             ),
-            IconButton(
-              iconSize: 20.0,
-              splashRadius: 20,
-              padding: const EdgeInsets.all(5.0),
-              constraints: BoxConstraints.tight(const Size.square(30.0)),
+            MiniIconButton(
               icon: const Icon(Icons.copy),
               onPressed: () => 
                 Bottom(

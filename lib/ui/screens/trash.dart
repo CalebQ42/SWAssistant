@@ -1,11 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/frame.dart';
 import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/preferences.dart' as preferences;
+import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 class TrashList extends StatefulWidget{
 
@@ -16,7 +19,6 @@ class TrashList extends StatefulWidget{
 }
 
 class _TrashListState extends State<TrashList> {
-  //TODO: add margin to top & add delete button for web.
 
   final GlobalKey<AnimatedListState> listKey = GlobalKey();
 
@@ -65,17 +67,20 @@ class _TrashListState extends State<TrashList> {
               },
               key: ValueKey(SW.of(context).trashCan[i].uid),
               child: Card(
+                shape: i == 0 ? Frame.of(context).topItemShape : null,
+                clipBehavior: i == 0 ? Clip.hardEdge : null,
                 margin: const EdgeInsets.all(5),
                 child: InkResponse(
                   containedInkWell: true,
                   highlightShape: BoxShape.rectangle,
-                  onTap: (){
+                  onTap: kIsWeb ? null : (){
                     var messager = ScaffoldMessenger.of(context);
                     var tmp = app.trashCan[i];
                     app.trashCan.remove(tmp);
                     tmp.trashed = false;
                     tmp.trashTime = null;
                     app.add(tmp);
+                    tmp.save(context: context);
                     listKey.currentState?.removeItem(i, (context, animation) => Container());
                     messager.clearSnackBars();
                     messager.showSnackBar(
@@ -85,7 +90,7 @@ class _TrashListState extends State<TrashList> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(5),
+                    padding: i == 0 ? Frame.of(context).topItemPadding.add(const EdgeInsets.all(5)) : const EdgeInsets.all(5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -105,6 +110,55 @@ class _TrashListState extends State<TrashList> {
                               AppLocalizations.of(context)!.vehicles,
                             style: Theme.of(context).textTheme.caption
                           )
+                        ),
+                        if(kIsWeb) Container(height: 5),
+                        if(kIsWeb) ButtonBar(
+                          alignment: MainAxisAlignment.end,
+                          children: [
+                            MiniIconButton(
+                              icon: const Icon(Icons.restore),
+                              onPressed: (){
+                                var messager = ScaffoldMessenger.of(context);
+                                var tmp = app.trashCan[i];
+                                app.trashCan.remove(tmp);
+                                tmp.trashed = false;
+                                tmp.trashTime = null;
+                                app.add(tmp);
+                                tmp.save(context: context);
+                                listKey.currentState?.removeItem(i, (context, animation) => Container());
+                                messager.clearSnackBars();
+                                messager.showSnackBar(
+                                  SnackBar(
+                                    content: Text(AppLocalizations.of(context)!.restored(tmp.name)),
+                                  )
+                                );
+                              }
+                            ),
+                            MiniIconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: (){
+                                var messager = ScaffoldMessenger.of(context);
+                                var tmpEd = app.trashCan[i];
+                                app.trashCan.removeAt(i);
+                                tmpEd.deletePermanently(app);
+                                listKey.currentState?.removeItem(i, (context, animation) => Container());
+                                messager.clearSnackBars();
+                                messager.showSnackBar(
+                                  SnackBar(
+                                    content: Text(AppLocalizations.of(context)!.deletedPermanently(tmpEd.name)),
+                                    action: SnackBarAction(
+                                      label: AppLocalizations.of(context)!.undo,
+                                      onPressed: (){
+                                        tmpEd.save(app: app);
+                                        app.trashCan.insert(i, tmpEd);
+                                        listKey.currentState?.insertItem(i);
+                                      },
+                                    ),
+                                  )
+                                );
+                              }
+                            ),
+                          ],
                         )
                       ],
                     )
