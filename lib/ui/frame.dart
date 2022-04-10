@@ -4,6 +4,7 @@ import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:swassistant/preferences.dart' as preferences;
+import 'package:swassistant/ui/dialogs/destiny.dart';
 
 class Frame extends StatefulWidget {
 
@@ -150,7 +151,14 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
               Icons.casino_outlined,
               color: Theme.of(context).primaryTextTheme.subtitle1?.color
             )
-          )
+          ),
+          if(thin && _selected == "/gm") IconButton(
+            onPressed: hidden ? null : () => DestinyDialog().show(context),
+            icon: Icon(
+              Icons.tonality,
+              color: Theme.of(context).primaryTextTheme.subtitle1?.color
+            )
+          ),
         ]
       ),
       if((thin ? (height*.5) + 50 : height) >= 440) const Spacer(),

@@ -74,6 +74,10 @@ class GMMode extends StatelessWidget{
                 }
               )
             ),
+            Container(
+              width: 1,
+              color: Theme.of(context).dividerColor
+            ),
             Expanded(
               child: GMModeSize(
                 key: ValueKey(remain),
@@ -94,140 +98,6 @@ class GMModeMessager{
   final GlobalKey<EditableListState> listKey = GlobalKey();
 
   final List<Editable> backStack = [];
-}
-
-class _GMModeBar extends StatefulWidget{
-  final GMModeMessager message;
-
-  const _GMModeBar(this.message);
-
-  @override
-  State<StatefulWidget> createState() => _BarState();
-}
-
-class _BarState extends State<_GMModeBar>{
-  
-  Editable? editable;
-
-  @override
-  void initState(){
-    super.initState();
-    widget.message.onChange.add(
-      (ed) => setState(() => editable = ed)
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.tonality),
-          onPressed: () =>
-            DestinyDialog().show(context)
-        ),
-        IconButton(
-          icon: const Icon(Icons.casino_outlined),
-          onPressed: () =>
-            SWDiceHolder().showDialog(context, showInstant: true),
-        ),
-        PopupMenuButton(
-          itemBuilder: (c) => [
-            if (editable is Character)
-              CheckedPopupMenuItem(
-                checked: (editable as Character).disableForce,
-                child: Text(AppLocalizations.of(context)!.disableForce),
-                value: "disableForce"
-              ),
-            if (editable is Character)
-              CheckedPopupMenuItem(
-                checked: (editable as Character).disableMorality,
-                child: Text(AppLocalizations.of(context)!.disableMorality),
-                value: "disableMorality"
-              ),
-            if (editable is Character)
-              CheckedPopupMenuItem(
-                checked: (editable as Character).disableDuty,
-                child: Text(AppLocalizations.of(context)!.disableDuty),
-                value: "disableDuty"
-              ),
-            if (editable is Character)
-              CheckedPopupMenuItem(
-                checked: (editable as Character).disableObligation,
-                child: Text(AppLocalizations.of(context)!.disableObligation),
-                value: "disableObligation"
-              ),
-            if (editable != null)
-              PopupMenuItem(child: Text(AppLocalizations.of(context)!.clone), value: "clone"),
-          ],
-          onSelected: (value) {
-            switch(value){
-              case "disableForce":
-                setState(() => (editable as Character).disableForce = !(editable as Character).disableForce);
-                widget.message.editingState();
-                break;
-              case "disableDuty":
-                setState(() => (editable as Character).disableDuty = !(editable as Character).disableDuty);
-                widget.message.editingState();
-                break;
-              case "disableObligation":
-                setState(() => (editable as Character).disableObligation = !(editable as Character).disableObligation);
-                widget.message.editingState();
-                break;
-              case "disableMorality":
-                setState(() => (editable as Character).disableMorality = !(editable as Character).disableMorality);
-                widget.message.editingState();
-                break;
-              case "clone":
-                Bottom(
-                  child: (context) {
-                    var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(editable!.name));
-                    return Wrap(
-                      children: [
-                        Container(height: 10),
-                        TextField(
-                          controller: nameController,
-                          decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
-                        ),
-                        ButtonBar(
-                          children: [
-                            TextButton(
-                              child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                              onPressed: () {
-                                Editable out;
-                                if (editable is Character) {
-                                  out = Character.from(editable as Character);
-                                } else if (editable is Minion) {
-                                  out = Minion.from(editable as Minion);
-                                } else if (editable is Vehicle) {
-                                  out = Vehicle.from(editable as Vehicle);
-                                } else {
-                                  throw "Unsupported Editable Type";
-                                }
-                                out.name = nameController.text;
-                                SW.of(context).add(out);
-                                out.save(context: context);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                              onPressed: () =>
-                                Navigator.of(context).pop()
-                            )
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                ).show(context);
-            }
-          },
-        )
-      ],
-    );
-  }
 }
 
 class _GMModeEditor extends StatefulWidget{

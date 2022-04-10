@@ -7,6 +7,8 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/ui/dialogs/destiny.dart';
+import 'package:swassistant/ui/frame.dart';
 import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
@@ -316,7 +318,12 @@ class EditableListState extends State<EditableList>{
                 IconButton(
                   icon: const Icon(Icons.refresh),
                   onPressed: () => refreshKey.currentState?.show()
-                )
+                ),
+                if(widget.onTap != null && !Frame.of(context).thin)
+                IconButton(
+                  icon: const Icon(Icons.tonality),
+                  onPressed: () => DestinyDialog().show(context)
+                ),
               ],
             )
           )

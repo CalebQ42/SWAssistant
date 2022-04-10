@@ -75,10 +75,8 @@ class SettingsState extends State{
                     "donate5",
                     "donate10",
                     "donate20",
-                  }).then((value) {
-                    Navigator.of(context).pop();
-                    GPlayDonateDialog(value.productDetails).show(context);
-                  });
+                  }).then((value) =>
+                    GPlayDonateDialog(value.productDetails).show(context));
                 }
               }else{
                 launch("https://github.com/sponsors/CalebQ42");
