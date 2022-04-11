@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/sw.dart';
@@ -64,9 +65,17 @@ class SWAppState extends State<SWApp> {
       clipBehavior: Clip.antiAlias,
       constraints: BoxConstraints.loose(const Size.fromWidth(600)),
     );
-    var framKey = GlobalKey<FrameState>();
+    var framKey = GlobalKey<FrammyState>();
     SW.of(context).observatory = Observatory(SW.of(context), framKey);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: SW.of(context).getPreference(preferences.forceLight, false) ?
+        Colors.lightBlue : SW.of(context).getPreference(preferences.forceDark, false) ?
+        Colors.red : ThemeMode.system == ThemeMode.dark ? Colors.red : Colors.lightBlue,
+      )
+    );
     return MaterialApp(
+      color: Colors.green,
       builder: (c, child) =>
         Navigator(
           onGenerateRoute: (rs) {
