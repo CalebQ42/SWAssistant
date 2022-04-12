@@ -259,69 +259,69 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Stack(
-        children: [
-          Positioned(
-            left: 0,
-            top: 0,
-            height: thin ? height*.5 : height,
-            width: thin ? width : 250,
-            child: SizedOverflowBox(
-              size: Size(
-                thin ? width : 250,
-                thin ? height*.5 : height
-              ),
-              child: ((thin ? (height*.5) + 50 : height) < 440) ? ListView(
-                controller: scrol,
-                children: chillin,
-                physics: scrolPhys,
-              ) : Column(
-                children: chillin
+          children: [
+            Positioned(
+              left: 0,
+              top: 0,
+              height: thin ? height*.5 : height,
+              width: thin ? width : 250,
+              child: SizedOverflowBox(
+                size: Size(
+                  thin ? width : 250,
+                  thin ? height*.5 : height
+                ),
+                child: ((thin ? (height*.5) + 50 : height) < 440) ? ListView(
+                  controller: scrol,
+                  children: chillin,
+                  physics: scrolPhys,
+                ) : Column(
+                  children: chillin
+                )
+              )
+            ),
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              left: thin || hidden ? 0 : 50,
+              top: thin && !hidden ? 50 : 0,
+              height: hidden ? height : overlayH,
+              width: hidden ? width : overlayW,
+              child: SlideTransition(
+                key: UniqueKey(),
+                position: tween.animate(animCont),
+                child: Stack(
+                  children: [
+                    Card(
+                      elevation: 10,
+                      shape: shape,
+                      child: MediaQuery(
+                        data: MediaQueryData(
+                          size: Size(overlayW, overlayH)
+                        ),
+                        child: Padding(
+                          padding: MediaQuery.of(context).viewInsets,
+                          child: widget.child ?? Container(),
+                        )
+                      ),
+                      margin: EdgeInsets.zero,
+                      clipBehavior: Clip.hardEdge,
+                    ),
+                    if(expanded) GestureDetector(
+                      child: Container(
+                        decoration: ShapeDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark && SW.of(context).getPreference(preferences.amoled, false) ?
+                              Colors.black.withOpacity(.75) : Colors.black.withOpacity(0.25),
+                          shape: shape
+                        )
+                      ),
+                      onTap: expanded ? expand : null,
+                      behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
+                    )
+                  ]
+                ),
               )
             )
-          ),
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 300),
-            left: thin || hidden ? 0 : 50,
-            top: thin && !hidden ? 50 : 0,
-            height: hidden ? height : overlayH,
-            width: hidden ? width : overlayW,
-            child: SlideTransition(
-              key: UniqueKey(),
-              position: tween.animate(animCont),
-              child: Stack(
-                children: [
-                  Card(
-                    elevation: 10,
-                    shape: shape,
-                    child: MediaQuery(
-                      data: MediaQueryData(
-                        size: Size(overlayW, overlayH)
-                      ),
-                      child: Padding(
-                        padding: MediaQuery.of(context).viewInsets,
-                        child: widget.child ?? Container(),
-                      )
-                    ),
-                    margin: EdgeInsets.zero,
-                    clipBehavior: Clip.hardEdge,
-                  ),
-                  if(expanded) GestureDetector(
-                    child: Container(
-                      decoration: ShapeDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark && SW.of(context).getPreference(preferences.amoled, false) ?
-                            Colors.black.withOpacity(.75) : Colors.black.withOpacity(0.25),
-                        shape: shape
-                      )
-                    ),
-                    onTap: expanded ? expand : null,
-                    behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
-                  )
-                ]
-              ),
-            )
-          )
-        ]
-      )
+          ]
+        )
       )
     );
   }
