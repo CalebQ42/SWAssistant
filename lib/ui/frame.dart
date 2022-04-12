@@ -6,36 +6,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/ui/dialogs/destiny.dart';
 
-class Frame extends StatelessWidget {
+class Frame extends StatefulWidget {
 
   final Widget? child;
 
   const Frame({Key? key, this.child}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: SafeArea(
-        child: Frammy()
-      )
-    );
-  }
+  State<StatefulWidget> createState() => FrameState();
 
-  static FrammyState of(BuildContext context) => context.findAncestorStateOfType<FrammyState>()!;
+  static FrameState of(BuildContext context) => context.findAncestorStateOfType<FrameState>()!;
 }
 
-class Frammy extends StatefulWidget{
-
-  final Widget? child;
-
-  Frammy({this.child});
-
-  @override
-  State<StatefulWidget> createState() => FrammyState();
-}
-
-class FrammyState extends State<Frammy> with SingleTickerProviderStateMixin {
+class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
 
   bool expanded = false;
   late AnimationController animCont;
@@ -105,10 +88,11 @@ class FrammyState extends State<Frammy> with SingleTickerProviderStateMixin {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height - MediaQuery.of(context).viewPadding.top - MediaQuery.of(context).viewPadding.bottom;
-    var width = MediaQuery.of(context).size.width - MediaQuery.of(context).viewPadding.left - MediaQuery.of(context).viewPadding.right;
+    var height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
+    var width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.left - MediaQuery.of(context).padding.right;
     var overlayH = thin && !_hidden ? height - 50 : height;
     var overlayW = thin || _hidden ? width : width - 50;
     var tween = Tween<Offset>(
@@ -137,7 +121,7 @@ class FrammyState extends State<Frammy> with SingleTickerProviderStateMixin {
           title = AppLocalizations.of(context)!.trash;
           break;
       }
-    } 
+    }
     var chillin = [
       Row(
         children: [
@@ -271,9 +255,13 @@ class FrammyState extends State<Frammy> with SingleTickerProviderStateMixin {
       )
     ];
     var scrolPhys = (hidden || (thin && !expanded)) ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics();
-    return Stack(
+    return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Stack(
         children: [
           Positioned(
+            left: MediaQuery.of(context).padding.left,
+            top: MediaQuery.of(context).padding.top,
             height: thin ? height*.5 : height,
             width: thin ? width : 250,
             child: SizedOverflowBox(
@@ -332,7 +320,8 @@ class FrammyState extends State<Frammy> with SingleTickerProviderStateMixin {
             )
           )
         ]
-      );
+      )
+    );
   }
 }
 
