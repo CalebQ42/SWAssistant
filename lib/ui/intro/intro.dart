@@ -24,6 +24,7 @@ class IntroScreen extends StatelessWidget{
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) => nextScreen!,
+              settings: const RouteSettings(name: "/intro"),
               transitionsBuilder: (context, anim, secondary, child) =>
                 SlideTransition(
                   position: Tween<Offset>(begin: const Offset(1.0, 0.0), end: Offset.zero).animate(anim),
