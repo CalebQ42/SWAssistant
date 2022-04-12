@@ -46,8 +46,8 @@ class IntroZero extends StatelessWidget{
             textAlign: TextAlign.justify,
           ),
           const SizedBox(height:10),
-          Text(
-            (!kIsWeb) ? AppLocalizations.of(context)!.introPage0Line2 : AppLocalizations.of(context)!.introPage0WebNotice,
+          if(kIsWeb) Text(
+            AppLocalizations.of(context)!.introPage0WebNotice,
             textAlign: TextAlign.justify,
           ),
         ]
