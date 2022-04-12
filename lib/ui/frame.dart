@@ -91,8 +91,8 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom;
-    var width = MediaQuery.of(context).size.width - MediaQuery.of(context).padding.left - MediaQuery.of(context).padding.right;
+    var height = MediaQuery.of(context).size.height - MediaQuery.of(context).viewPadding.top - MediaQuery.of(context).viewPadding.bottom;
+    var width = MediaQuery.of(context).size.width - MediaQuery.of(context).viewPadding.left - MediaQuery.of(context).viewPadding.right;
     var overlayH = thin && !_hidden ? height - 50 : height;
     var overlayW = thin || _hidden ? width : width - 50;
     var tween = Tween<Offset>(
@@ -257,11 +257,12 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
     var scrolPhys = (hidden || (thin && !expanded)) ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics();
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Stack(
+      body: SafeArea(
+        child: Stack(
         children: [
           Positioned(
-            left: MediaQuery.of(context).padding.left,
-            top: MediaQuery.of(context).padding.top,
+            left: 0,
+            top: 0,
             height: thin ? height*.5 : height,
             width: thin ? width : 250,
             child: SizedOverflowBox(
@@ -280,8 +281,8 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           ),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
-            left: hidden ? MediaQuery.of(context).padding.left : (thin ? 0 : 50) + MediaQuery.of(context).padding.left,
-            top: hidden ? MediaQuery.of(context).padding.top : (thin ? 50 : 0) + MediaQuery.of(context).padding.top,
+            left: thin || hidden ? 0 : 50,
+            top: thin && !hidden ? 50 : 0,
             height: hidden ? height : overlayH,
             width: hidden ? width : overlayW,
             child: SlideTransition(
@@ -320,6 +321,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
             )
           )
         ]
+      )
       )
     );
   }
