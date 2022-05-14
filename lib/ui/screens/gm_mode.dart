@@ -1,16 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:swassistant/sw.dart';
-import 'package:swassistant/dice/swdice_holder.dart';
-import 'package:swassistant/profiles/character.dart';
-import 'package:swassistant/profiles/minion.dart';
-import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/dialogs/destiny.dart';
 import 'package:swassistant/ui/frame_content.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
@@ -32,8 +25,6 @@ class GMMode extends StatelessWidget{
 
   GMMode({Key? key}) : super(key: key);
 
-  //TODO: find place for destiny points
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -45,9 +36,7 @@ class GMMode extends StatelessWidget{
           return Future.value(true);
         }
         message.backStack.removeLast();
-        for(var o in message.onChange) {
-          o(message.backStack.last);
-        }
+        if (message.onChange != null) message.onChange!(message.backStack.last);
         return Future.value(false);
       },
       child: FrameContent(
@@ -65,9 +54,7 @@ class GMMode extends StatelessWidget{
                 onTap: (ed) {
                   var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);
                   message.backStack.add(ed);
-                  for(var o in message.onChange) {
-                    o(message.backStack.last);
-                  }
+                  if (message.onChange != null) message.onChange!(message.backStack.last);
                   if (ind != -1) {
                     message.backStack.removeAt(ind);
                   }
@@ -93,7 +80,7 @@ class GMMode extends StatelessWidget{
 }
 
 class GMModeMessager{
-  final List<void Function(Editable)> onChange = [];
+  Function(Editable)? onChange;
   late void Function() editingState;
   final GlobalKey<EditableListState> listKey = GlobalKey();
 
@@ -118,9 +105,7 @@ class _GMModeState extends State<_GMModeEditor>{
   @override
   void initState(){
     super.initState();
-    widget.message.onChange.add(
-      (ed) => setState(() => curEdit = ed)
-    );
+    widget.message.onChange = (ed) => setState(() => curEdit = ed);
     widget.message.editingState = () => setState((){});
     if(widget.message.backStack.isNotEmpty) {
       curEdit = widget.message.backStack[widget.message.backStack.length-1];
