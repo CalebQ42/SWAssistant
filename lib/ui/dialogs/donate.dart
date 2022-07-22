@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DonateDialog extends StatelessWidget{
 
@@ -55,6 +55,6 @@ class DonateDialog extends StatelessWidget{
   }
 
   static void _launchURL(String url) async {
-    if (!await launch(url)) throw 'Could not launch $url';
+    if (!await launchUrlString(url)) throw 'Could not launch $url';
   }
 }

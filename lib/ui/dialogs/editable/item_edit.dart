@@ -35,11 +35,11 @@ class ItemEditDialog{
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: item.name != "" ? (){
             onClose(item);
             Navigator.of(context).pop();
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),

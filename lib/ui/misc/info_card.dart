@@ -33,11 +33,10 @@ class _InfoCardState extends State<InfoCard>{
         alignment: shown ? Alignment.center : Alignment.centerLeft,
         child: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 300),
-          child: Text(widget.title,),
           style: shown ? Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).colorScheme.primary) : Theme.of(context).textTheme.subtitle1!,
+          child: Text(widget.title,),
         )
       ),
-      children: [widget.contents],
       expandedAlignment: Alignment.topCenter,
       onExpansionChanged: (b){
         setState((){
@@ -46,5 +45,6 @@ class _InfoCardState extends State<InfoCard>{
         if(widget.onShowChanged != null) widget.onShowChanged!(b);
       },
       initiallyExpanded: shown,
+      children: [widget.contents],
     );
 }

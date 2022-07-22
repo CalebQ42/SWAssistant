@@ -26,13 +26,16 @@ class _TrashListState extends State<TrashList> {
   Widget build(BuildContext context) {
     var app = SW.of(context);
     if(app.getPreference(preferences.initialTrash, true)){
+      show(){
+        Bottom(
+          child: (c) => Text(AppLocalizations.of(context)!.trashNotice),
+        ).show(context);
+      }
       Future(() async{
         while(!mounted){
           await Future.delayed(const Duration(milliseconds: 100));
         }
-        Bottom(
-          child: (c) => Text(AppLocalizations.of(context)!.trashNotice),
-        ).show(context);
+        show();
         app.prefs.setBool(preferences.initialTrash, false);
       });
     }

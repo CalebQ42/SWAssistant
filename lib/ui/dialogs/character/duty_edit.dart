@@ -61,11 +61,11 @@ class DutyEditDialog {
         ),
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: duty.name != "" && duty.value != null ? (){
             onClose(duty);
             Navigator.pop(context);
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),

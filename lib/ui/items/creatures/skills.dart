@@ -35,15 +35,35 @@ class SkillsState extends State<Skills> with StatefulCard {
         child: Row(
           children: [
             Expanded(
+              flex: 7,
               child: Text((creature.skills[index].career ? "* " : "") + creature.skills[index].name!,
                 style: TextStyle(fontWeight: creature.skills[index].career ? FontWeight.bold : FontWeight.normal)
-              ),
-              flex: 7
+              )
             ),
             AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              transitionBuilder: (child, anim){
+                var offset = const Offset(1,0);
+                if(child is Padding){
+                  offset = const Offset(-1,0);
+                }
+                return ClipRect(
+                  child: SizeTransition(
+                    sizeFactor: anim,
+                    axis: Axis.horizontal,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: offset,
+                        end: Offset.zero
+                      ).animate(anim),
+                      child: child,
+                    )
+                  )
+                );
+              },
               child: !edit && creature is Character ? Padding(
-                child:Text(creature.skills[index].value.toString()),
-                padding: const EdgeInsets.all(12)
+                padding: const EdgeInsets.all(12),
+                child:Text(creature.skills[index].value.toString())
               )
               : !edit ? Container(height: 40,) : ButtonBar(
                 buttonPadding: EdgeInsets.zero,
@@ -87,26 +107,6 @@ class SkillsState extends State<Skills> with StatefulCard {
                   )
                 ]
               ),
-              duration: const Duration(milliseconds: 250),
-              transitionBuilder: (child, anim){
-                var offset = const Offset(1,0);
-                if(child is Padding){
-                  offset = const Offset(-1,0);
-                }
-                return ClipRect(
-                  child: SizeTransition(
-                    sizeFactor: anim,
-                    axis: Axis.horizontal,
-                    child: SlideTransition(
-                      position: Tween<Offset>(
-                        begin: offset,
-                        end: Offset.zero
-                      ).animate(anim),
-                      child: child,
-                    )
-                  )
-                );
-              },
             ),
           ]
         )
@@ -137,8 +137,8 @@ class SkillsState extends State<Skills> with StatefulCard {
             transitionBuilder: (wid,anim){
               return SizeTransition(
                 sizeFactor: anim,
-                child: wid,
                 axisAlignment: -1.0,
+                child: wid,
               );
             },
           )

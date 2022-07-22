@@ -23,8 +23,8 @@ Future<void> main() async {
     SW.baseInit().then(
       (app) =>
         runApp(SWWidget(
-          child: const SWApp(),
-          app: app
+          app: app,
+          child: const SWApp()
         ))
     ), (error, stack) {
       if(kDebugMode) {
@@ -113,12 +113,12 @@ class SWAppState extends State<SWApp> {
             ed.route = PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) {
                 if(initSwitch){
-                  Frame.of(context).selected = "/edit/" + ed!.uid.toString();
+                  Frame.of(context).selected = "/edit/${ed!.uid}";
                   initSwitch = false;
                 }
                 return EditingEditable(ed!);
               },
-              settings: RouteSettings(name: "/edit/" + ed.uid),
+              settings: RouteSettings(name: "/edit/${ed.uid}"),
               maintainState: false,
               transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
             );

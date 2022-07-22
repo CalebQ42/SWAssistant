@@ -81,6 +81,10 @@ class EditableListState extends State<EditableList>{
       });
     }
     if(widget.uidToLoad != null){
+      var rootNav = Navigator.of(context, rootNavigator: true);
+      var nav = Navigator.of(context);
+      var scafMessage = ScaffoldMessenger.of(context);
+      var localization = AppLocalizations.of(context)!;
       Future(() async {
         while(!mounted) {
           await Future.delayed(const Duration(milliseconds: 50));
@@ -111,14 +115,14 @@ class EditableListState extends State<EditableList>{
         }
         if(syncSuccess){
           app.prefs.setBool(preferences.driveFirstLoad, false);
-          Navigator.of(context, rootNavigator: true).pop();
+          rootNav.pop();
           var ed = app.findEditable(widget.uidToLoad!);
-          if(ed != null) Navigator.pushNamed(context, "/edit/" + widget.uidToLoad!, arguments: ed);
+          if(ed != null) nav.pushNamed("/edit/${widget.uidToLoad!}", arguments: ed);
         }else{
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
+          nav.pop();
+          scafMessage.showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.syncFail)
+              content: Text(localization.syncFail)
             )
           );
         }
@@ -143,20 +147,20 @@ class EditableListState extends State<EditableList>{
         }
         categories = [
           DropdownMenuItem<String>(
-            child: Text(AppLocalizations.of(context)!.all),
             value: null,
+            child: Text(AppLocalizations.of(context)!.all),
           ),
           DropdownMenuItem<String>(
-            child: Text(AppLocalizations.of(context)!.characters),
             value: "char",
+            child: Text(AppLocalizations.of(context)!.characters),
           ),
           DropdownMenuItem<String>(
-            child: Text(AppLocalizations.of(context)!.minions),
             value: "min",
+            child: Text(AppLocalizations.of(context)!.minions),
           ),
           DropdownMenuItem<String>(
-            child: Text(AppLocalizations.of(context)!.vehicles),
             value: "veh",
+            child: Text(AppLocalizations.of(context)!.vehicles),
           )
         ];
         break;
@@ -167,18 +171,18 @@ class EditableListState extends State<EditableList>{
           (index) =>
             (index == 0) ?
               DropdownMenuItem<String>(
-                child: Text(AppLocalizations.of(context)!.all),
                 value: null,
+                child: Text(AppLocalizations.of(context)!.all),
               )
             : (index == 1) ?
               DropdownMenuItem<String>(
-                child: Text(AppLocalizations.of(context)!.uncategorized),
-                value: ""
+                value: "",
+                child: Text(AppLocalizations.of(context)!.uncategorized)
               )
             :
               DropdownMenuItem<String>(
-                child: Text(app.charCats[index-2]),
-                value: app.charCats[index-2]
+                value: app.charCats[index-2],
+                child: Text(app.charCats[index-2])
               )
         );
         break;
@@ -189,18 +193,18 @@ class EditableListState extends State<EditableList>{
           (index) =>
             (index == 0) ?
               DropdownMenuItem<String>(
-                child: Text(AppLocalizations.of(context)!.all),
                 value: null,
+                child: Text(AppLocalizations.of(context)!.all),
               )
             : (index == 1) ?
               DropdownMenuItem<String>(
-                child: Text(AppLocalizations.of(context)!.uncategorized),
-                value: ""
+                value: "",
+                child: Text(AppLocalizations.of(context)!.uncategorized)
               )
             :
               DropdownMenuItem<String>(
-                child: Text(app.minCats[index-2]),
-                value: app.minCats[index-2]
+                value: app.minCats[index-2],
+                child: Text(app.minCats[index-2])
               )
         );
         break;
@@ -211,18 +215,18 @@ class EditableListState extends State<EditableList>{
           (index) =>
             (index == 0) ?
               DropdownMenuItem<String>(
-                child: Text(AppLocalizations.of(context)!.all),
                 value: null,
+                child: Text(AppLocalizations.of(context)!.all),
               )
             : (index == 1) ?
               DropdownMenuItem<String>(
-                child: Text(AppLocalizations.of(context)!.uncategorized),
-                value: ""
+                value: "",
+                child: Text(AppLocalizations.of(context)!.uncategorized)
               )
             :
               DropdownMenuItem<String>(
-                child: Text(app.vehCats[index-2]),
-                value: app.vehCats[index-2]
+                value: app.vehCats[index-2],
+                child: Text(app.vehCats[index-2])
               )
         );
     }
@@ -243,6 +247,7 @@ class EditableListState extends State<EditableList>{
         )
       )
     );
+    var localization = AppLocalizations.of(context)!;
     var mainList = RefreshIndicator(
       key: refreshKey,
       onRefresh: () => Future(() async {
@@ -253,7 +258,7 @@ class EditableListState extends State<EditableList>{
         if (!b) {
           messager.showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.syncFail)
+              content: Text(localization.syncFail)
             )
           );
         }
@@ -268,6 +273,7 @@ class EditableListState extends State<EditableList>{
           SlideTransition(
             position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
             child: InheritedEditable(
+              editable: list[i],
               child: EditableCard(
                 onTap: widget.onTap,
                 onDismiss: () {
@@ -298,44 +304,13 @@ class EditableListState extends State<EditableList>{
                     )
                   );
                 },
-              ),
-              editable: list[i]
+              )
             )
           ),
       )
     );
     return FrameContent(
-      child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          color: Theme.of(context).primaryColorDark,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Row(
-              children: [
-                Expanded(child: catSelector),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () => refreshKey.currentState?.show()
-                ),
-                if(widget.onTap != null && !Frame.of(context).thin)
-                IconButton(
-                  icon: const Icon(Icons.tonality),
-                  onPressed: () => DestinyDialog().show(context)
-                ),
-              ],
-            )
-          )
-        ),
-        Expanded(
-          child: ClipRect(
-            child: mainList
-          ),
-        ),
-      ]
-    ),
-    fab: widget.onTap == null ? FloatingActionButton(
+      fab: widget.onTap == null ? FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: (){
         if(SW.of(context).getPreference(preferences.googleDrive, false)) {
@@ -371,11 +346,41 @@ class EditableListState extends State<EditableList>{
         app.add(newEd);
         Navigator.pushNamed(
           context,
-          "/edit/" + newEd.uid,
+          "/edit/${newEd.uid}",
           arguments: newEd
         );
       },
     ) : null,
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          color: Theme.of(context).primaryColorDark,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Row(
+              children: [
+                Expanded(child: catSelector),
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () => refreshKey.currentState?.show()
+                ),
+                if(widget.onTap != null && !Frame.of(context).thin)
+                IconButton(
+                  icon: const Icon(Icons.tonality),
+                  onPressed: () => DestinyDialog().show(context)
+                ),
+              ],
+            )
+          )
+        ),
+        Expanded(
+          child: ClipRect(
+            child: mainList
+          ),
+        ),
+      ]
+    ),
   );
     // return (widget.onTap == null) ?
     //   Scaffold(
@@ -445,7 +450,7 @@ class EditableCard extends StatelessWidget{
               onTap!(ed);
             }else{
               Navigator.of(context).pushNamed(
-                "/edit/" + ed.uid,
+                "/edit/${ed.uid}",
                 arguments: ed
               );
             }

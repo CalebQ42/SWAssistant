@@ -27,5 +27,5 @@ class ComplexSidePart{
 
   ComplexSidePart clone() => ComplexSidePart(name: name, value:value);
   @override
-  String toString() => value != 1 ? value.toString() + " " + name : name;
+  String toString() => value != 1 ? "$value $name" : name;
 }

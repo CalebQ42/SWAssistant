@@ -11,7 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/updating_switch_tile.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class Settings extends StatefulWidget{
 
@@ -32,7 +32,7 @@ class SettingsState extends State{
         children: [
           const SizedBox(height: 10),
           TextButton(
-            onPressed: () => launch("https://github.com/CalebQ42/SWAssistant/discussions"),
+            onPressed: () => launchUrlString("https://github.com/CalebQ42/SWAssistant/discussions"),
             style: const ButtonStyle(
               alignment: Alignment.centerLeft
             ),
@@ -46,7 +46,7 @@ class SettingsState extends State{
           ),
           const Divider(),
           TextButton(
-            onPressed: () => launch("https://crwd.in/swrpg"),
+            onPressed: () => launchUrlString("https://crwd.in/swrpg"),
             style: const ButtonStyle(
               alignment: Alignment.centerLeft
             ),
@@ -62,7 +62,7 @@ class SettingsState extends State{
           TextButton(
             onPressed: () async {
               if(kIsWeb){
-                launch("https://github.com/sponsors/CalebQ42");
+                launchUrlString("https://github.com/sponsors/CalebQ42");
               }else if(Platform.isAndroid || Platform.isIOS){
                 if (!await InAppPurchase.instance.isAvailable()){
                   ScaffoldMessenger.of(context).clearSnackBars();
@@ -79,7 +79,7 @@ class SettingsState extends State{
                     GPlayDonateDialog(value.productDetails).show(context));
                 }
               }else{
-                launch("https://github.com/sponsors/CalebQ42");
+                launchUrlString("https://github.com/sponsors/CalebQ42");
               }
             },
             style: const ButtonStyle(
@@ -188,7 +188,7 @@ class SettingsState extends State{
             onChanged: (b) {
               var message = ScaffoldMessenger.of(context);
               if (b) {
-                app.initialSync(context: context).then((value) {
+                app.initialSync(context: context, nav: Navigator.of(context, rootNavigator: true)).then((value) {
                   if(value){
                     app.prefs.setBool(preferences.newDrive, true);
                     app.prefs.setBool(preferences.driveFirstLoad, false);

@@ -59,7 +59,7 @@ class Skill implements JsonSavable{
 
   @override
   String toString(){
-    return name! + " " + value.toString() + " based on: " + base.toString() + " is career: " + career.toString();
+    return "${name!} $value based on: $base is career: $career";
   }
 
   @override

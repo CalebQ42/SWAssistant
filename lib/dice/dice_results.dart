@@ -71,7 +71,7 @@ class DiceResults{
           children: [
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.success + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.success}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -85,7 +85,7 @@ class DiceResults{
             ),
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.failure + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.failure}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -99,7 +99,7 @@ class DiceResults{
             ),
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.advantage + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.advantage}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -113,7 +113,7 @@ class DiceResults{
             ),
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.threat + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.threat}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -127,7 +127,7 @@ class DiceResults{
             ),
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.triumph + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.triumph}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -141,7 +141,7 @@ class DiceResults{
             ),
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.despair + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.despair}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -155,7 +155,7 @@ class DiceResults{
             ),
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.lightSide + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.lightSide}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -169,7 +169,7 @@ class DiceResults{
             ),
             Row(
               children: [
-                Expanded(child: Text(AppLocalizations.of(context)!.darkSide + ":")),
+                Expanded(child: Text("${AppLocalizations.of(context)!.darkSide}:")),
                 Expanded(
                   child: UpDownStat(
                     onUpPressed: () =>
@@ -225,15 +225,15 @@ class _CombinedDialogState extends State<_CombinedDialog>{
     return Column(
       children: [
         if(!widget.noSuccess && widget.weaponPack == null) Center(
-          child: Text(success.toString() + (isSuccess ? " " + AppLocalizations.of(context)!.success : " " + AppLocalizations.of(context)!.failure),
+          child: Text(success.toString() + (isSuccess ? " ${AppLocalizations.of(context)!.success}" : " ${AppLocalizations.of(context)!.failure}"),
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
         if(widget.weaponPack != null) Center(
           child: Text(
-            isSuccess ? (widget.weaponPack!.weapon.addBrawn ? widget.weaponPack!.weapon.damage! + success + widget.weaponPack!.brawn :
-              widget.weaponPack!.weapon.damage! + success).toString() + " " + AppLocalizations.of(context)!.damage :
-                success.toString() + " " + AppLocalizations.of(context)!.failure,
+            isSuccess ? "${widget.weaponPack!.weapon.addBrawn ? widget.weaponPack!.weapon.damage! + success + widget.weaponPack!.brawn :
+              widget.weaponPack!.weapon.damage! + success} ${AppLocalizations.of(context)!.damage}" :
+                "$success ${AppLocalizations.of(context)!.failure}",
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -244,27 +244,27 @@ class _CombinedDialogState extends State<_CombinedDialog>{
           )
         ),
         if(advantage != 0) Center(
-          child: Text(advantage.toString() + (isAdvantaged ? " " + AppLocalizations.of(context)!.advantage : " " + AppLocalizations.of(context)!.threat),
+          child: Text(advantage.toString() + (isAdvantaged ? " ${AppLocalizations.of(context)!.advantage}" : " ${AppLocalizations.of(context)!.threat}"),
             style: Theme.of(context).textTheme.headline6,
           )
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.triumph) > 0) Center(
-          child: Text(widget.res.results[AppLocalizations.of(context)!.triumph].toString() + " " + AppLocalizations.of(context)!.triumph,
+          child: Text("${widget.res.results[AppLocalizations.of(context)!.triumph]} ${AppLocalizations.of(context)!.triumph}",
             style: Theme.of(context).textTheme.headline6,
           )
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.despair) > 0) Center(
-          child: Text(widget.res.results[AppLocalizations.of(context)!.despair].toString() + " " + AppLocalizations.of(context)!.despair,
+          child: Text("${widget.res.results[AppLocalizations.of(context)!.despair]} ${AppLocalizations.of(context)!.despair}",
             style: Theme.of(context).textTheme.headline6,
           )
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.lightSide) > 0) Center(
-          child: Text(widget.res.results[AppLocalizations.of(context)!.lightSide].toString() + " " + AppLocalizations.of(context)!.lightSide,
+          child: Text("${widget.res.results[AppLocalizations.of(context)!.lightSide]} ${AppLocalizations.of(context)!.lightSide}",
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.darkSide) > 0) Center(
-          child: Text(widget.res.results[AppLocalizations.of(context)!.darkSide].toString() + " " + AppLocalizations.of(context)!.darkSide,
+          child: Text("${widget.res.results[AppLocalizations.of(context)!.darkSide]} ${AppLocalizations.of(context)!.darkSide}",
             style: Theme.of(context).textTheme.headline6,
           )
         ),
@@ -273,8 +273,8 @@ class _CombinedDialogState extends State<_CombinedDialog>{
           Row(
             children: [
               Expanded(
-                child: Text(AppLocalizations.of(context)!.characteristic),
-                flex: 4
+                flex: 4,
+                child: Text(AppLocalizations.of(context)!.characteristic)
               ),
               Expanded(
                 child: Center(child: Text(AppLocalizations.of(context)!.advantageShort)),
@@ -285,8 +285,8 @@ class _CombinedDialogState extends State<_CombinedDialog>{
           if((widget.weaponPack!.weapon.critical ?? 0) > 0) Row(
             children: [
               Expanded(
-                child: Text(AppLocalizations.of(context)!.critical),
-                flex: 4
+                flex: 4,
+                child: Text(AppLocalizations.of(context)!.critical)
               ),
               Expanded(
                 child: Center(child: Text(widget.weaponPack!.weapon.critical.toString())),
@@ -300,13 +300,13 @@ class _CombinedDialogState extends State<_CombinedDialog>{
               (index){
                 var charText = advChars![index].name;
                 if(advChars[index].value != null && advChars[index].value != 0){
-                  charText += " " + advChars[index].value.toString();
+                  charText += " ${advChars[index].value}";
                 }
                 return Row(
                   children: [
                     Expanded(
-                      child: Text(charText),
                       flex: 4,
+                      child: Text(charText),
                     ),
                     Expanded(
                       child: Center(child: Text(advChars[index].advantage.toString())),

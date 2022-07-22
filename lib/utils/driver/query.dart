@@ -27,39 +27,39 @@ class DriveQueryBuilder{
 
   String getQuery(){
     String out = "";
-    if(name != null) out = _append(out, "name = '" + _escape(name!) + "'");
-    if(mime != null) out = _append(out, "mimeType = '" + _escape(mime!) + "'");
-    if(notMime != null) out = _append(out, "mimeType != '" + _escape(notMime!) + "'");
-    if(parent != null) out = _append(out, "'" + _escape(parent!) + "' in parents");
-    out = _append(out, "trashed = " + trashed.toString());
+    if(name != null) out = _append(out, "name = '${_escape(name!)}'");
+    if(mime != null) out = _append(out, "mimeType = '${_escape(mime!)}'");
+    if(notMime != null) out = _append(out, "mimeType != '${_escape(notMime!)}'");
+    if(parent != null) out = _append(out, "'${_escape(parent!)}' in parents");
+    out = _append(out, "trashed = $trashed");
     if(nameContains != null){
       for(var cont in nameContains!){
-        out = _append(out, "name contains '" + _escape(cont) + "'");
+        out = _append(out, "name contains '${_escape(cont)}'");
       }
     }
     if(nameNotContains != null){
       for(var cont in nameNotContains!){
-        out = _append(out, "not name contains '" + _escape(cont) + "'");
+        out = _append(out, "not name contains '${_escape(cont)}'");
       }
     }
     if(fullTextContains != null){
       for(var cont in fullTextContains!){
-        out = _append(out, "fullText contains '" + _escape(cont) + "'");
+        out = _append(out, "fullText contains '${_escape(cont)}'");
       }
     }
     if(fullTextNotContains != null){
       for(var cont in fullTextNotContains!){
-        out = _append(out, "not fullText contains '" + _escape(cont) + "'");
+        out = _append(out, "not fullText contains '${_escape(cont)}'");
       }
     }
     if(editedAfter != null){
-      out = _append(out, "modifiedTime > " + _dateToString(editedAfter!));
+      out = _append(out, "modifiedTime > ${_dateToString(editedAfter!)}");
     }
     if(appProperties != null){
       for(var key in appProperties!.keys){
-        out = _append(out, "appProperties has { key='" + _escape(key));
+        out = _append(out, "appProperties has { key='${_escape(key)}");
         if(appProperties![key] != null){
-          out += "' and value='" + _escape(appProperties![key]!);
+          out += "' and value='${_escape(appProperties![key]!)}";
         }
         out += "' }";
       }
@@ -69,8 +69,7 @@ class DriveQueryBuilder{
 
   String _dateToString(DateTime time){
     time = time.toUtc();
-    return time.year.toString() + "-" + time.month.toString() + "-" + time.day.toString() +
-      "T" + time.hour.toString() + ":" + time.minute.toString() + ":" + time.second.toString();
+    return "${time.year}-${time.month}-${time.day}T${time.hour}:${time.minute}:${time.second}";
   }
 
   String _escape(String toEscape) =>
@@ -78,7 +77,7 @@ class DriveQueryBuilder{
 
   String _append(String oldQuery, String newQuery){
     if(oldQuery != ""){
-      return oldQuery + " and " + newQuery;
+      return "$oldQuery and $newQuery";
     }
     return newQuery;
   }

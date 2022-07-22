@@ -19,7 +19,6 @@ class IntroScreen extends StatelessWidget{
     FrameContent(
       fab: (nextScreen != null || nextScreenAction != null) ? FloatingActionButton(
         heroTag: null,
-        child: nextScreenIcon ?? const Icon(Icons.arrow_forward),
         onPressed: nextScreen != null ? () =>
           Navigator.of(context).push(
             PageRouteBuilder(
@@ -31,23 +30,25 @@ class IntroScreen extends StatelessWidget{
                   child: child
                 )
             )
-          ) : nextScreenAction
+          ) : nextScreenAction,
+        child: nextScreenIcon ?? const Icon(Icons.arrow_forward)
       ) : null,
       child: Stack(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Align(
+              alignment: Alignment.center,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 500),
                 child: SingleChildScrollView(
                   child: child
                 ),
               ),
-              alignment: Alignment.center,
             )
           ),
           if(prevScreenAction != null || defPrevScreen) Align(
+            alignment: Alignment.bottomLeft,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: IconButton(
@@ -56,7 +57,6 @@ class IntroScreen extends StatelessWidget{
                   Navigator.of(context).pop()
               ),
             ),
-            alignment: Alignment.bottomLeft,
           )
         ],
       ),

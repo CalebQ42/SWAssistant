@@ -7,7 +7,7 @@ import 'package:swassistant/ui/misc/up_down.dart';
 
 class DestinyDialog extends StatelessWidget{
 
-  final _DestinyHolder dest = _DestinyHolder();
+  final DestinyHolder dest = DestinyHolder();
   final GlobalKey<UpDownStatState> light = GlobalKey();
   final GlobalKey<UpDownStatState> dark = GlobalKey();
 
@@ -93,7 +93,7 @@ class DestinyDialog extends StatelessWidget{
     ).show(context);
 }
 
-class _DestinyHolder {
+class DestinyHolder {
   int lightSide = 0;
   int darkSide = 0;
 }

@@ -321,7 +321,7 @@ abstract class Editable extends JsonSavable{
     return cards;
   }
 
-  String getFileLocation(SW sw) => loc ?? sw.saveDir + "/" + uid.toString() + fileExtension;
+  String getFileLocation(SW sw) => loc ?? "${sw.saveDir}/$uid$fileExtension";
   
   Future<void> save({String filename = "", BuildContext? context, SW? app, bool localOnly = false}) async{
     if(filename == "") {
@@ -340,7 +340,7 @@ abstract class Editable extends JsonSavable{
       var file = File(filename);
       File? backup;
       if(file.existsSync()){
-        backup = file.renameSync(filename +".backup");
+        backup = file.renameSync("$filename.backup");
       }
       file.createSync();
       file.writeAsStringSync(const JsonEncoder.withIndent("  ").convert(toJson()));

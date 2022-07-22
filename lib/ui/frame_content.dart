@@ -40,13 +40,13 @@ class FrameContent extends StatelessWidget{
                     bottom: 16,
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 500),
-                      child: fab ?? Container(),
                       switchInCurve: Curves.elasticOut,
                       transitionBuilder: (child, animation) =>
                         SlideTransition(
                           position: Tween<Offset>(begin: const Offset(0, 1.25), end: Offset.zero).animate(animation),
                           child: child,
-                        )
+                        ),
+                      child: fab ?? Container(),
                     ),
                   )
                 ]

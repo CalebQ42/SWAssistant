@@ -53,16 +53,16 @@ class _EditingEditableState extends State<EditingEditable>{
       key: Key(widget.profile.uid),
       restorationId: widget.profile.uid,
       physics: const BouncingScrollPhysics(),
-      children: [
-        cards!,
-        EditableNotes(key: widget.profile.notesKey)
-      ],
       controller: pager,
       onPageChanged: (i){
         if (!animating){
           setState(() => _index = i);
         }
       },
+      children: [
+        cards!,
+        EditableNotes(key: widget.profile.notesKey)
+      ],
     );
     Widget body;
     if(!widget.contained) {
@@ -82,8 +82,8 @@ class _EditingEditableState extends State<EditingEditable>{
       );
     }
     return InheritedEditable(
-      child: body,
-      editable: widget.profile
+      editable: widget.profile,
+      child: body
     );
   }
 }

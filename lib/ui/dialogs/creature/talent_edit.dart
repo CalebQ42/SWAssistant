@@ -30,11 +30,11 @@ class TalentEditDialog{
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: talent.name != "" && talent.value != null ? (){
             onClose(talent);
             Navigator.of(context).pop();
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),

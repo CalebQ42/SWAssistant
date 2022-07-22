@@ -91,7 +91,7 @@ class _InstantState extends State<_InstantDiceCard>{
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                "d" + widget.sides.toString(),
+                "d${widget.sides}",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline6
               ),

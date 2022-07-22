@@ -51,12 +51,12 @@ class WeaponEditDialog{
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: weapon.name != "" && weapon.damage != null && weapon.critical != null
               && weapon.skill != null && weapon.skillBase != null ? (){
             onClose(weapon);
             Navigator.of(context).pop();
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
@@ -247,7 +247,7 @@ class _CharacteristicsState extends State<_WeaponCharacteristics>{
                   children: [
                     Expanded(
                       child: Text(widget.weapon.characteristics[i].name +
-                        (widget.weapon.characteristics[i].value != null ? " " + widget.weapon.characteristics[i].value.toString() : "")),
+                        (widget.weapon.characteristics[i].value != null ? " ${widget.weapon.characteristics[i].value}" : "")),
                     ),
                     if(widget.weapon.characteristics[i].advantage != null) Text(widget.weapon.characteristics[i].advantage.toString())
                   ],
@@ -304,24 +304,24 @@ class _WeaponState extends State<_WeaponDropdowns>{
               onTap: () => FocusScope.of(context).unfocus(),
               items: [
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.rangeLevel1),
                   value: 0,
+                  child: Text(AppLocalizations.of(context)!.rangeLevel1),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.rangeLevel2),
                   value: 1,
+                  child: Text(AppLocalizations.of(context)!.rangeLevel2),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.rangeLevel3),
                   value: 2,
+                  child: Text(AppLocalizations.of(context)!.rangeLevel3),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.rangeLevel4),
                   value: 3,
+                  child: Text(AppLocalizations.of(context)!.rangeLevel4),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.rangeLevel5),
                   value: 4,
+                  child: Text(AppLocalizations.of(context)!.rangeLevel5),
                 )
               ],
               value: widget.weapon.range,
@@ -340,24 +340,24 @@ class _WeaponState extends State<_WeaponDropdowns>{
               onTap: () => FocusScope.of(context).unfocus(),
               items: [
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.damageLevel1),
                   value: 0,
+                  child: Text(AppLocalizations.of(context)!.damageLevel1),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.damageLevel2),
                   value: 1,
+                  child: Text(AppLocalizations.of(context)!.damageLevel2),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.damageLevel3),
                   value: 2,
+                  child: Text(AppLocalizations.of(context)!.damageLevel3),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.damageLevel4),
                   value: 3,
+                  child: Text(AppLocalizations.of(context)!.damageLevel4),
                 ),
                 DropdownMenuItem(
-                  child: Text(AppLocalizations.of(context)!.damageLevel5),
                   value: 4,
+                  child: Text(AppLocalizations.of(context)!.damageLevel5),
                 ),
               ],
               value: widget.weapon.itemState,
@@ -377,8 +377,8 @@ class _WeaponState extends State<_WeaponDropdowns>{
               items: List.generate(
                 weaponSkills.length,
                 (i) => DropdownMenuItem(
-                  child: Text(weaponSkills[i]),
-                  value: i
+                  value: i,
+                  child: Text(weaponSkills[i])
                 )
               ),
               value: widget.weapon.skill,
@@ -402,8 +402,8 @@ class _WeaponState extends State<_WeaponDropdowns>{
               items: List.generate(
                 6,
                 (i) => DropdownMenuItem(
-                  child: Text(Creature.characteristics(context)[i]),
-                  value: i
+                  value: i,
+                  child: Text(Creature.characteristics(context)[i])
                 )
               ),
               value: widget.weapon.skillBase,

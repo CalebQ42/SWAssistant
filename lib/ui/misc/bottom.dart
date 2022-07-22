@@ -7,7 +7,7 @@ class Bottom extends StatelessWidget{
   final Widget Function(BuildContext)? child;
   final bool padding;
 
-  final GlobalKey<_ButtonState> butKey = GlobalKey();
+  final GlobalKey<_ButtonState> _butKey = GlobalKey();
 
   Bottom({this.buttons, this.background, required this.child, this.padding = true, Key? key}) : super(key: key);
 
@@ -34,6 +34,7 @@ class Bottom extends StatelessWidget{
             )
           ),
           if(buttons != null) _BottomButtons(
+            key: _butKey,
             builder: buttons!,
           )
         ],
@@ -41,7 +42,7 @@ class Bottom extends StatelessWidget{
     );
   }
 
-  void updateButtons() => butKey.currentState?.refresh();
+  void updateButtons() => _butKey.currentState?.refresh();
 
   void show(BuildContext context) =>
     showModalBottomSheet(

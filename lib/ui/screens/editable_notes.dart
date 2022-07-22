@@ -22,6 +22,13 @@ class EditableNotesState extends State{
   @override
   Widget build(BuildContext context) =>
     FrameContent(
+      fab: FloatingActionButton(
+        child: const Icon(Icons.note_add),
+        onPressed: (){
+          Editable.of(context).notes.add(Note());
+          listy.currentState?.insertItem(Editable.of(context).notes.length-1);
+        },
+      ),
       child: AnimatedList(
         physics: const BouncingScrollPhysics(),
         key: listy,
@@ -37,13 +44,6 @@ class EditableNotesState extends State{
           );
         },
         padding: const EdgeInsets.only(bottom: 75)
-      ),
-      fab: FloatingActionButton(
-        child: const Icon(Icons.note_add),
-        onPressed: (){
-          Editable.of(context).notes.add(Note());
-          listy.currentState?.insertItem(Editable.of(context).notes.length-1);
-        },
       ),
     );
 }

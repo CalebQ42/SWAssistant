@@ -83,10 +83,10 @@ class EditingText extends StatelessWidget {
       if(onTap != null){
         text = InkResponse(
           key: const ValueKey("text"),
-          child: text,
           onTap: onTap,
           containedInkWell: true,
           highlightShape: BoxShape.rectangle,
+          child: text,
         );
       }
     }

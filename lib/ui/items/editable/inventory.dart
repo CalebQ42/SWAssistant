@@ -121,7 +121,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
           if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(AppLocalizations.of(context)!.encum + ":"),
+              Text("${AppLocalizations.of(context)!.encum}:"),
               Container(width: 10),
               SizedBox(
                 width: 50,
@@ -147,7 +147,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
           if(editable is Vehicle) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(AppLocalizations.of(context)!.encum + ":"),
+              Text("${AppLocalizations.of(context)!.encum}:"),
               Container(width: 10),
               SizedBox(
                 width: 50,
@@ -179,7 +179,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
             (index) => Row(
               children: [
                 Expanded(
-                  child: Text((editable.inventory[index].count != 1 ? editable.inventory[index].count.toString() + " " : "" )
+                  child: Text((editable.inventory[index].count != 1 ? "${editable.inventory[index].count} " : "" )
                     + editable.inventory[index].name),
                 ),
                 ButtonBar(
@@ -206,14 +206,14 @@ class InventoryState extends State<Inventory> with StatefulCard{
                                 Container(height: 5,),
                                 Center(
                                   child: Text(
-                                    AppLocalizations.of(context)!.count + ": " + editable.inventory[index].count.toString(),
+                                    "${AppLocalizations.of(context)!.count}: ${editable.inventory[index].count}",
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
                                 ),
                                 Container(height: 5),
                                 Center(
                                   child: Text(
-                                    AppLocalizations.of(context)!.encum + ": " + editable.inventory[index].encum.toString(),
+                                    "${AppLocalizations.of(context)!.encum}: ${editable.inventory[index].encum}",
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
                                 ),
@@ -226,6 +226,26 @@ class InventoryState extends State<Inventory> with StatefulCard{
                   ]
                 ),
                 AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, anim){
+                    var offset = const Offset(1,0);
+                    if(child is Container){
+                      offset = const Offset(-1,0);
+                    }
+                    return ClipRect(
+                      child: SizeTransition(
+                        sizeFactor: anim,
+                        axis: Axis.horizontal,
+                        child: SlideTransition(
+                          position: Tween<Offset>(
+                            begin: offset,
+                            end: Offset.zero
+                          ).animate(anim),
+                          child: child,
+                        )
+                      )
+                    );
+                  },
                   child: edit ? ButtonBar(
                     buttonPadding: EdgeInsets.zero,
                     children: [
@@ -283,26 +303,6 @@ class InventoryState extends State<Inventory> with StatefulCard{
                       )
                     ],
                   ) : Container(),
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (child, anim){
-                    var offset = const Offset(1,0);
-                    if(child is Container){
-                      offset = const Offset(-1,0);
-                    }
-                    return ClipRect(
-                      child: SizeTransition(
-                        sizeFactor: anim,
-                        axis: Axis.horizontal,
-                        child: SlideTransition(
-                          position: Tween<Offset>(
-                            begin: offset,
-                            end: Offset.zero
-                          ).animate(anim),
-                          child: child,
-                        )
-                      )
-                    );
-                  },
                 )
               ],
             )
@@ -325,8 +325,8 @@ class InventoryState extends State<Inventory> with StatefulCard{
             transitionBuilder: (wid,anim) =>
               SizeTransition(
                 sizeFactor: anim,
-                child: wid,
                 axisAlignment: -1.0,
+                child: wid,
               ),
           )
         ],

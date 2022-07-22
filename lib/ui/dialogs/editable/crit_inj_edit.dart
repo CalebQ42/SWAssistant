@@ -23,11 +23,11 @@ class CriticalInjuryEditDialog {
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: criticalInjury.name != "" ? (){
             Navigator.of(context).pop();
             onClose(criticalInjury);
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
@@ -92,20 +92,20 @@ class _SeverityState extends State<_SeverityDropdown>{
       isExpanded: true,
       items: [
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.severityLevel1),
-          value: 0
+          value: 0,
+          child: Text(AppLocalizations.of(context)!.severityLevel1)
         ),
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.severityLevel2),
           value: 1,
+          child: Text(AppLocalizations.of(context)!.severityLevel2),
         ),
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.severityLevel3),
           value: 2,
+          child: Text(AppLocalizations.of(context)!.severityLevel3),
         ),
         DropdownMenuItem(
-          child: Text(AppLocalizations.of(context)!.severityLevel4),
           value: 3,
+          child: Text(AppLocalizations.of(context)!.severityLevel4),
         ),
       ],
       onChanged: (value) {

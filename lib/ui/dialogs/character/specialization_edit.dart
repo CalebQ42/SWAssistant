@@ -31,11 +31,11 @@ class SpecializationEditDialog{
         ),
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: specialization != "" ? (){
             onClose(specialization);
             Navigator.of(context).pop();
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),

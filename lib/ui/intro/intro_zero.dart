@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
@@ -12,7 +11,6 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/intro/intro_one.dart';
 import 'package:swassistant/ui/intro/intro.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:uuid/uuid.dart';
 
 class IntroZero extends StatelessWidget{
@@ -57,7 +55,7 @@ class IntroZero extends StatelessWidget{
   int oldImport(BuildContext context){
     var extStorage = Directory("/sdcard");
     if (extStorage.existsSync()){
-      var charsFold = Directory(extStorage.path + "/SWChars");
+      var charsFold = Directory("${extStorage.path}/SWChars");
       if (charsFold.existsSync()){
         var fils = charsFold.listSync();
         if (fils.isNotEmpty){

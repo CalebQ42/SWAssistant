@@ -194,7 +194,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                             Container(height: 5),
                             Center(
                               child: Text(
-                                skill + " (" + characteristic + ")",
+                                "$skill ($characteristic)",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
@@ -208,50 +208,49 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                             if(weapDamage != "") Container(height: 5),
                             if(weapDamage != "") Center(
                               child: Text(
-                                weapDamage + " " + AppLocalizations.of(context)!.itemDamage,
+                                "$weapDamage ${AppLocalizations.of(context)!.itemDamage}",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             Container(height: 5,),
                             Center(
                               child: Text(
-                                AppLocalizations.of(context)!.damage + ": " + editable.weapons[i].damage.toString() +
-                                  (editable.weapons[i].addBrawn ? " + " + AppLocalizations.of(context)!.brawn : ""),
+                                "${AppLocalizations.of(context)!.damage}: ${editable.weapons[i].damage}${editable.weapons[i].addBrawn ? " + ${AppLocalizations.of(context)!.brawn}" : ""}",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                AppLocalizations.of(context)!.critical + ": " + editable.weapons[i].critical.toString(),
+                                "${AppLocalizations.of(context)!.critical}: ${editable.weapons[i].critical}",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                AppLocalizations.of(context)!.hardPoints + ": " + editable.weapons[i].hp.toString(),
+                                "${AppLocalizations.of(context)!.hardPoints}: ${editable.weapons[i].hp}",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                AppLocalizations.of(context)!.encum + ": " + editable.weapons[i].encumbrance.toString(),
+                                "${AppLocalizations.of(context)!.encum}: ${editable.weapons[i].encumbrance}",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                AppLocalizations.of(context)!.range + ": " + range,
+                                "${AppLocalizations.of(context)!.range}: $range",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             if(editable.weapons[i].limitedAmmo) Container(height: 5),
                             if(editable.weapons[i].limitedAmmo) Center(
                               child: Text(
-                                AppLocalizations.of(context)!.ammo + ": " + editable.weapons[i].ammo.toString(),
+                                "${AppLocalizations.of(context)!.ammo}: ${editable.weapons[i].ammo}",
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
@@ -268,8 +267,8 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                                 if(ch%2 == 0) return Container(height:5);
                                 var char = editable.weapons[i].characteristics[(ch/2).floor()];
                                 String out = char.name;
-                                if(char.value != 1 && char.value != null) out += " " + char.value.toString();
-                                if(char.advantage != null) out += " " + AppLocalizations.of(context)!.advNeeded + ": " + char.advantage.toString();
+                                if(char.value != 1 && char.value != null) out += " ${char.value}";
+                                if(char.advantage != null) out += " ${AppLocalizations.of(context)!.advNeeded}: ${char.advantage}";
                                 return Center(
                                   child: Text(
                                     out,
@@ -370,8 +369,8 @@ class WeaponsState extends State<Weapons> with StatefulCard{
             transitionBuilder: (wid,anim){
               return SizeTransition(
                 sizeFactor: anim,
-                child: wid,
                 axisAlignment: -1.0,
+                child: wid,
               );
             },
             child: edit ? Center(

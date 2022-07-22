@@ -62,11 +62,11 @@ class ObligationEditDialog{
         ),
       buttons: (context) =>[
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: obligation.name != "" && obligation.value != null ? (){
             onClose(obligation);
             Navigator.pop(context);
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),

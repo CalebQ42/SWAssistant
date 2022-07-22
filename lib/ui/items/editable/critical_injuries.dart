@@ -73,7 +73,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
                           Container(height: 5,),
                           Center(
                             child: Text(
-                              AppLocalizations.of(context)!.severity + ": " + severity,
+                              "${AppLocalizations.of(context)!.severity}: $severity",
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
@@ -162,8 +162,8 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
             transitionBuilder: (wid,anim){
               return SizeTransition(
                 sizeFactor: anim,
-                child: wid,
                 axisAlignment: -1.0,
+                child: wid,
               );
             },
             child: edit ? Center(

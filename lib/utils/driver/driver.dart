@@ -107,7 +107,7 @@ class Driver{
       if(foldID == null) return null;
       return (await api!.files.list(
         spaces: (scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive",
-        q: "'" + foldID + "' in parents"
+        q: "'$foldID' in parents"
       )).files;
     }catch(e){
       if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
@@ -129,7 +129,7 @@ class Driver{
       if(foldID == null) return null;
       return (await api!.files.list(
         spaces: (scope == DriveApi.driveAppdataScope) ? "appDataFolder" : "drive",
-        q: "'" + foldID + "' in parents"
+        q: "'$foldID' in parents"
       )).files;
     }catch(e){
       if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){

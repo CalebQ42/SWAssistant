@@ -22,11 +22,11 @@ class ForcePowerEditDialog{
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: fp.name != "" ? () {
             onClose(fp);
             Navigator.of(context).pop();
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),

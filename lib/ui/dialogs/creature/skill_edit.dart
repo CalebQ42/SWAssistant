@@ -25,11 +25,11 @@ class SkillEditDialog{
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
           onPressed: skill.name != "" && skill.name != null && skill.base != null && (creature is Character ? skill.value != null : true) ? (){
             onClose(skill);
             Navigator.of(context).pop();
           } : null,
+          child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
@@ -111,17 +111,16 @@ class _SkillSelectorState extends State<_SkillSelector>{
             isExpanded: true,
             onTap: () => FocusScope.of(context).unfocus(),
             onChanged: (value) {
-              setState((){
-                if(value != AppLocalizations.of(context)!.skills35){
-                  manual = false;
-                  widget.skill.name = value!;
-                  widget.skill.base = skillsList[value]!;
-                }else{
-                  manual = true;
-                  widget.skill.name = "";
-                }
-              });
+              if(value != AppLocalizations.of(context)!.skills35){
+                manual = false;
+                widget.skill.name = value!;
+                widget.skill.base = skillsList[value]!;
+              }else{
+                manual = true;
+                widget.skill.name = "";
+              }
               widget.bot.updateButtons();
+              setState((){});
             },
             value: skillsList.containsKey(widget.skill.name) ? widget.skill.name : widget.skill.name == null ? null : skillsList.keys.last,
             items: List.generate(
@@ -136,18 +135,18 @@ class _SkillSelectorState extends State<_SkillSelector>{
         ),
         if(manual) Container(height: 10),
         AnimatedSwitcher(
+          duration: const Duration(milliseconds: 150),
+          transitionBuilder: (child, anim) =>
+            SizeTransition(
+              sizeFactor: anim,
+              child: child,
+            ),
           child: !manual ? Container() :
             TextField(
               textCapitalization: TextCapitalization.words,
               onChanged: (value) => widget.skill.name = value,
               autofillHints: skillsList.keys,
               controller: skillController,
-            ),
-          duration: const Duration(milliseconds: 150),
-          transitionBuilder: (child, anim) =>
-            SizeTransition(
-              sizeFactor: anim,
-              child: child,
             ) 
         ),
         Container(height: 10),
@@ -162,8 +161,8 @@ class _SkillSelectorState extends State<_SkillSelector>{
             items: List.generate(
               6,
               (i) => DropdownMenuItem(
-                child: Text(Creature.characteristics(context)[i]),
-                value: i
+                value: i,
+                child: Text(Creature.characteristics(context)[i])
               )
             ),
             value: widget.skill.base,

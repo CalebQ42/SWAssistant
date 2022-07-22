@@ -100,6 +100,26 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
                     ]
                   ),
                   AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, anim){
+                      var offset = const Offset(1,0);
+                      if(child is Container){
+                        offset = const Offset(-1,0);
+                      }
+                      return ClipRect(
+                        child: SizeTransition(
+                          sizeFactor: anim,
+                          axis: Axis.horizontal,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: offset,
+                              end: Offset.zero
+                            ).animate(anim),
+                            child: child,
+                          )
+                        )
+                      );
+                    },
                     child: edit ? ButtonBar(
                       buttonPadding: EdgeInsets.zero,
                       children: [
@@ -141,26 +161,6 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
                         )
                       ],
                     ) : Container(height: 40),
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (child, anim){
-                      var offset = const Offset(1,0);
-                      if(child is Container){
-                        offset = const Offset(-1,0);
-                      }
-                      return ClipRect(
-                        child: SizeTransition(
-                          sizeFactor: anim,
-                          axis: Axis.horizontal,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: offset,
-                              end: Offset.zero
-                            ).animate(anim),
-                            child: child,
-                          )
-                        )
-                      );
-                    },
                   )
                 ],
               )
@@ -182,8 +182,8 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
             transitionBuilder: (wid,anim){
               return SizeTransition(
                 sizeFactor: anim,
-                child: wid,
                 axisAlignment: -1.0,
+                child: wid,
               );
             },
           )

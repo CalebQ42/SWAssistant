@@ -36,6 +36,26 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
                 child: Text(character.specializations[index])
               ),
               AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                transitionBuilder: (child, anim){
+                  var offset = const Offset(1,0);
+                  if((!edit && child is ButtonBar) || (edit && child is Container)){
+                    offset = const Offset(-1,0);
+                  }
+                  return ClipRect(
+                    child: SizeTransition(
+                      sizeFactor: anim,
+                      axis: Axis.horizontal,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: offset,
+                          end: Offset.zero
+                        ).animate(anim),
+                        child: child,
+                      )
+                    )
+                  );
+                },
                 child: edit ? ButtonBar(
                   buttonPadding: EdgeInsets.zero,
                   children: [
@@ -77,26 +97,6 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
                     )
                   ],
                 ) : Container(height: 40),
-                duration: const Duration(milliseconds: 250),
-                transitionBuilder: (child, anim){
-                  var offset = const Offset(1,0);
-                  if((!edit && child is ButtonBar) || (edit && child is Container)){
-                    offset = const Offset(-1,0);
-                  }
-                  return ClipRect(
-                    child: SizeTransition(
-                      sizeFactor: anim,
-                      axis: Axis.horizontal,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: offset,
-                          end: Offset.zero
-                        ).animate(anim),
-                        child: child,
-                      )
-                    )
-                  );
-                },
               )
             ],
           )
@@ -119,8 +119,8 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
             transitionBuilder: (wid,anim){
               return SizeTransition(
                 sizeFactor: anim,
-                child: wid,
                 axisAlignment: -1.0,
+                child: wid,
               );
             },
           )

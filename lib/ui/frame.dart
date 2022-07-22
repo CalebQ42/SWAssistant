@@ -35,7 +35,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       }else{
         _hidden = false;
       }
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
     }
@@ -272,8 +272,8 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                 ),
                 child: ((thin ? (height*.5) + 50 : height) < 440) ? ListView(
                   controller: scrol,
-                  children: chillin,
                   physics: scrolPhys,
+                  children: chillin,
                 ) : Column(
                   children: chillin
                 )
@@ -293,6 +293,8 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                     Card(
                       elevation: 10,
                       shape: shape,
+                      margin: EdgeInsets.zero,
+                      clipBehavior: Clip.hardEdge,
                       child: MediaQuery(
                         data: MediaQueryData(
                           size: Size(overlayW, overlayH)
@@ -302,10 +304,10 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                           child: widget.child ?? Container(),
                         )
                       ),
-                      margin: EdgeInsets.zero,
-                      clipBehavior: Clip.hardEdge,
                     ),
                     if(expanded) GestureDetector(
+                      onTap: expanded ? expand : null,
+                      behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
                       child: Container(
                         decoration: ShapeDecoration(
                           color: Theme.of(context).brightness == Brightness.dark && SW.of(context).getPreference(preferences.amoled, false) ?
@@ -313,8 +315,6 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                           shape: shape
                         )
                       ),
-                      onTap: expanded ? expand : null,
-                      behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
                     )
                   ]
                 ),
@@ -406,8 +406,8 @@ class NavItem extends StatelessWidget{
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               child: Frame.of(context).thin || expanded ? Align(
-                child: title,
                 alignment: Alignment.centerLeft,
+                child: title,
               ) : Container()
             )
           ]

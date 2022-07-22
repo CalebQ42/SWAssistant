@@ -60,7 +60,7 @@ class SW{
     _characters.clear();
     _vehicles.clear();
     for(var element in Directory(saveDir).listSync()) {
-      var backup = File(element.path+".backup");
+      var backup = File("${element.path}.backup");
       if(backup.existsSync()){
         File(element.path).deleteSync();
         backup.rename(element.path);
@@ -374,7 +374,7 @@ class SW{
     return all;
   }
 
-  Future<bool> initialSync({BuildContext? context, String scope = drive.DriveApi.driveFileScope}) async{
+  Future<bool> initialSync({BuildContext? context, NavigatorState? nav,  String scope = drive.DriveApi.driveFileScope}) async{
     syncing = true;
     if(context != null){
       showDialog(
@@ -398,8 +398,8 @@ class SW{
     }
     var toUpload = await downloadAndMatch(scope);
     if(toUpload == null){
-      if(context != null) {
-        Navigator.of(context, rootNavigator: true).pop();
+      if(nav != null) {
+        nav.pop();
       }
       syncing = false;
       return false;
@@ -407,7 +407,7 @@ class SW{
     for (var ed in toUpload) {
       ed.cloudSave(this);
     }
-    if(context != null) Navigator.of(context, rootNavigator: true).pop();
+    if(nav != null) nav.pop();
     syncing = false;
     return true;
   }
@@ -481,7 +481,7 @@ class SW{
     }
     if(!kIsWeb){
       var dir = await getApplicationDocumentsDirectory();
-      app.saveDir = dir.path + "/SWChars";
+      app.saveDir = "${dir.path}/SWChars";
       if(!Directory(app.saveDir).existsSync()){
         Directory(app.saveDir).createSync();
       }

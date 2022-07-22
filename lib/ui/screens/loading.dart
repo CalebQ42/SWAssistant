@@ -56,6 +56,24 @@ class _LoadingState extends State<Loading> {
     }
     return FrameContent(
       allowPop: false,
+      fab: child != null ? FloatingActionButton(
+        child: const Icon(Icons.forward),
+        onPressed: (){
+          if(index != -1) SW.of(context).prefs.setBool(neededAsks[index], false);
+          if(index < neededAsks.length - 1){
+            setState(() {
+              index++;
+              switch(neededAsks[index]){
+                case preferences.subtractNew:
+                  child = subtractPref();
+                  break;
+              }
+            });
+          }else{
+            leave();
+          }
+        },
+      ) : null,
       child: Align(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 500),
@@ -76,25 +94,7 @@ class _LoadingState extends State<Loading> {
             )
           )
         )
-      ),
-      fab: child != null ? FloatingActionButton(
-        child: const Icon(Icons.forward),
-        onPressed: (){
-          if(index != -1) SW.of(context).prefs.setBool(neededAsks[index], false);
-          if(index < neededAsks.length - 1){
-            setState(() {
-              index++;
-              switch(neededAsks[index]){
-                case preferences.subtractNew:
-                  child = subtractPref();
-                  break;
-              }
-            });
-          }else{
-            leave();
-          }
-        },
-      ) : null
+      )
     );
   }
 

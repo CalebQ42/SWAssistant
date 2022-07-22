@@ -41,7 +41,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(AppLocalizations.of(context)!.armor + ":"),
+            Text("${AppLocalizations.of(context)!.armor}:"),
             SizedBox(
               width: 50,
               height: 25,

@@ -8,7 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/test.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SWDrawer extends StatelessWidget{
 
@@ -23,10 +23,10 @@ class SWDrawer extends StatelessWidget{
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: const Text("SWAssistant"),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
-            )
+            ),
+            child: const Text("SWAssistant")
           ),
           ListTile(
             title: Text(AppLocalizations.of(context)!.gmMode),
@@ -161,13 +161,13 @@ class SWDrawer extends StatelessWidget{
             title: Text(AppLocalizations.of(context)!.discuss),
             leading: const Icon(Icons.announcement),
             onTap: () async =>
-              await launch("https://github.com/CalebQ42/SWAssistant/discussions")
+              await launchUrlString("https://github.com/CalebQ42/SWAssistant/discussions")
           ),
           ListTile(
             title: Text(AppLocalizations.of(context)!.translate),
             leading: const Icon(Icons.translate),
             onTap: () async =>
-              await launch("https://crwd.in/swrpg")
+              await launchUrlString("https://crwd.in/swrpg")
           ),
           const Divider(),
           ListTile(
@@ -176,7 +176,7 @@ class SWDrawer extends StatelessWidget{
             onTap: () async{
               Navigator.of(context).pop();
               if(kIsWeb){
-                await launch("https://github.com/sponsors/CalebQ42");
+                await launchUrlString("https://github.com/sponsors/CalebQ42");
               }else if(Platform.isAndroid || Platform.isIOS){
                 if (!await InAppPurchase.instance.isAvailable()){
                   ScaffoldMessenger.of(context).clearSnackBars();
@@ -195,7 +195,7 @@ class SWDrawer extends StatelessWidget{
                   });
                 }
               }else{
-                await launch("https://github.com/sponsors/CalebQ42");
+                await launchUrlString("https://github.com/sponsors/CalebQ42");
               }
             }
           ),

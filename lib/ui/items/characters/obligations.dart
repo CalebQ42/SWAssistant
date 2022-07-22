@@ -58,7 +58,7 @@ class ObligationsState extends State<Obligations> with StatefulCard {
                               ),
                               Container(height: 5),
                               Text(
-                                character.obligations[index].value.toString() + " " + AppLocalizations.of(context)!.obligation,
+                                "${character.obligations[index].value} ${AppLocalizations.of(context)!.obligation}",
                                 style: Theme.of(context).textTheme.bodyText1,
                                 textAlign: TextAlign.center,
                               ),
@@ -71,6 +71,26 @@ class ObligationsState extends State<Obligations> with StatefulCard {
                 ]
               ),
               AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                transitionBuilder: (child, anim){
+                  var offset = const Offset(1,0);
+                  if(child is Padding){
+                    offset = const Offset(-1,0);
+                  }
+                  return ClipRect(
+                    child: SizeTransition(
+                      sizeFactor: anim,
+                      axis: Axis.horizontal,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: offset,
+                          end: Offset.zero
+                        ).animate(anim),
+                        child: child,
+                      )
+                    )
+                  );
+                },
                 child: edit ? ButtonBar(
                   buttonPadding: EdgeInsets.zero,
                   children: [
@@ -110,29 +130,9 @@ class ObligationsState extends State<Obligations> with StatefulCard {
                     )
                   ],
                 ) : Padding(
-                  child:Text(character.obligations[index].value.toString()),
-                  padding: const EdgeInsets.all(12)
+                  padding: const EdgeInsets.all(12),
+                  child: Text(character.obligations[index].value.toString())
                 ),
-                duration: const Duration(milliseconds: 250),
-                transitionBuilder: (child, anim){
-                  var offset = const Offset(1,0);
-                  if(child is Padding){
-                    offset = const Offset(-1,0);
-                  }
-                  return ClipRect(
-                    child: SizeTransition(
-                      sizeFactor: anim,
-                      axis: Axis.horizontal,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: offset,
-                          end: Offset.zero
-                        ).animate(anim),
-                        child: child,
-                      )
-                    )
-                  );
-                },
               )
             ]
           )
@@ -142,8 +142,8 @@ class ObligationsState extends State<Obligations> with StatefulCard {
             transitionBuilder: (child, anim) =>
               SizeTransition(
                 sizeFactor: anim,
-                child: child,
-                axisAlignment: -1.0
+                axisAlignment: -1.0,
+                child: child
               ),
             child: edit ? Center(
               child: IconButton(

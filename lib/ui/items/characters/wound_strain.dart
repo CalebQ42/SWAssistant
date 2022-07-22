@@ -125,14 +125,14 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       Center(child: Text(AppLocalizations.of(context)!.max(character.woundThresh)))
                     ]
                   ) : Padding(
+                    padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0),
                     child: TextField(
                       controller: woundThreshController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxWound),
                       textAlign: TextAlign.center,
-                    ),
-                    padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
+                    )
                   )
                 )
               )
@@ -176,14 +176,14 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       Center(child: Text(AppLocalizations.of(context)!.max(character.strainThresh)))
                     ]
                   ) : Padding(
+                    padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0),
                     child: TextField(
                       controller: strainThreshController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStrain),
                       textAlign: TextAlign.center,
-                    ),
-                    padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0)
+                    )
                   )
                 )
               )

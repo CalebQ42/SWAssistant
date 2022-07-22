@@ -34,7 +34,7 @@ class TalentsState extends State<Talents> with StatefulCard {
           (index) => Row(
             children: [
               Expanded(
-                child: Text(creature.talents[index].name + (creature.talents[index].value! > 1 ? " " + creature.talents[index].value.toString() : "")),
+                child: Text(creature.talents[index].name + (creature.talents[index].value! > 1 ? " ${creature.talents[index].value}" : "")),
               ),
               ButtonBar(
                 buttonPadding: EdgeInsets.zero,
@@ -60,7 +60,7 @@ class TalentsState extends State<Talents> with StatefulCard {
                               Container(height: 5),
                               Center(
                                 child: Text(
-                                  AppLocalizations.of(context)!.rank + ": " + creature.talents[index].value.toString(),
+                                  "${AppLocalizations.of(context)!.rank}: ${creature.talents[index].value}",
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
@@ -73,6 +73,26 @@ class TalentsState extends State<Talents> with StatefulCard {
                 ]
               ),
               AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, anim){
+                  var offset = const Offset(1,0);
+                  if(child is Container){
+                    offset = const Offset(-1,0);
+                  }
+                  return ClipRect(
+                    child: SizeTransition(
+                      sizeFactor: anim,
+                      axis: Axis.horizontal,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: offset,
+                          end: Offset.zero
+                        ).animate(anim),
+                        child: child,
+                      )
+                    )
+                  );
+                },
                 child: edit ? ButtonBar(
                   buttonPadding: EdgeInsets.zero,
                   children: [
@@ -114,26 +134,6 @@ class TalentsState extends State<Talents> with StatefulCard {
                     )
                   ],
                 ) : Container(),
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (child, anim){
-                  var offset = const Offset(1,0);
-                  if(child is Container){
-                    offset = const Offset(-1,0);
-                  }
-                  return ClipRect(
-                    child: SizeTransition(
-                      sizeFactor: anim,
-                      axis: Axis.horizontal,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: offset,
-                          end: Offset.zero
-                        ).animate(anim),
-                        child: child,
-                      )
-                    )
-                  );
-                },
               )
             ],
           )
@@ -155,8 +155,8 @@ class TalentsState extends State<Talents> with StatefulCard {
             transitionBuilder: (wid,anim){
               return SizeTransition(
                 sizeFactor: anim,
-                child: wid,
                 axisAlignment: -1.0,
+                child: wid,
               );
             },
           )
