@@ -61,9 +61,9 @@ class SettingsState extends State{
           const Divider(),
           TextButton(
             onPressed: () async {
-              if(kIsWeb){
+              if(!app.isMobile()){
                 launchUrlString("https://github.com/sponsors/CalebQ42");
-              }else if(Platform.isAndroid || Platform.isIOS){
+              }else{
                 if (!await InAppPurchase.instance.isAvailable()){
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -78,8 +78,6 @@ class SettingsState extends State{
                   }).then((value) =>
                     GPlayDonateDialog(value.productDetails).show(context));
                 }
-              }else{
-                launchUrlString("https://github.com/sponsors/CalebQ42");
               }
             },
             style: const ButtonStyle(
@@ -181,8 +179,8 @@ class SettingsState extends State{
               ],
             )
           ),
-          if(!kIsWeb) const Divider(),
-          if(!kIsWeb) SwitchListTile(
+          if(app.isMobile()) const Divider(),
+          if(app.isMobile()) SwitchListTile(
             title: Text(AppLocalizations.of(context)!.cloudSave),
             value: app.getPreference(preferences.googleDrive, false),
             onChanged: (b) {
@@ -242,8 +240,8 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.firebase),
             subtitle: Text(AppLocalizations.of(context)!.firebaseSubtitle),
           ),
-          const Divider(),
-          SwitchListTile(
+          if(app.isMobile()) const Divider(),
+          if(app.isMobile()) SwitchListTile(
             value: app.getPreference(preferences.crashlytics, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b){
               FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b);

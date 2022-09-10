@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/items/talent.dart';
+import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -17,8 +18,7 @@ mixin Creature on Editable{
   List<int> charVals = List.filled(6, 0, growable: false);
   List<Skill> skills = [];
   List<Talent> talents = [];
-  int woundThresh = 0;
-  int woundCur = 0;
+  int woundDmg = 0;
   int defMelee = 0, defRanged = 0;
   int soak = 0;
 
@@ -26,14 +26,13 @@ mixin Creature on Editable{
     charVals = List.from(creature.charVals);
     skills = List.from(creature.skills);
     talents = List.from(creature.talents);
-    woundThresh = creature.woundThresh;
-    woundCur = creature.woundCur;
+    woundDmg = creature.woundDmg;
     defMelee = creature.defMelee;
     defRanged = creature.defRanged;
     soak = creature.soak;
   }
 
-  void creatureLoadJson(Map<String,dynamic> json){
+  void creatureLoadJson(Map<String,dynamic> json, bool subtractMode){
     if(json["characteristics"] != null){
       charVals = [];
       for(dynamic dy in json["characteristics"]){
@@ -52,8 +51,21 @@ mixin Creature on Editable{
         talents.add(Talent.fromJson(dy));
       }
     }
-    woundThresh = json["wound threshold"] ?? 0;
-    woundCur = json["wound current"] ?? 0;
+    if(json["wound damage"] == null) {
+      if(json["wound current"] == null){
+        woundDmg = 0;
+      }else{
+        if(subtractMode) {
+          if(this is Minion){
+            woundDmg = (json["minion number"] ?? 0 * json["wound threshold per minion"] ?? 0) - json["wound current"] ?? 0;
+          }else{
+            woundDmg = json["wound threshold"] ?? 0 - json["wound current"] ?? 0;
+          }
+        }else{
+          woundDmg = json["wound current"];
+        }
+      }
+    }
     defMelee = json["defense melee"] ?? 0;
     defRanged = json["defense ranged"] ?? 0;
     soak = json["soak"] ?? 0;
@@ -63,8 +75,7 @@ mixin Creature on Editable{
     "characteristics": charVals,
     "Skills": List.generate(skills.length, (index) => skills[index].toJson()),
     "Talents": List.generate(talents.length, (index) => talents[index].toJson()),
-    "wound threshold": woundThresh,
-    "wound current": woundCur,
+    "wound damage": woundDmg,
     "melee defense": defMelee,
     "ranged defense": defRanged,
     "soak": soak
@@ -75,8 +86,7 @@ mixin Creature on Editable{
   });
 
   Map<String,dynamic> get creatureZeroValue => {
-    "wound threshold": 0,
-    "wound current": 0,
+    "wound damage": 0,
     "melee defense": 0,
     "ranged defense": 0,
     "soak": 0,

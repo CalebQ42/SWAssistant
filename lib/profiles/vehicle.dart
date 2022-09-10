@@ -22,6 +22,7 @@ class Vehicle extends Editable{
   //0-Fore,1-Port,2-Starboard,3-Aft;
   List<int> defense = List.filled(4, 0, growable: false);
   int totalDefense = 0;
+  //TODO: move to hullDmg & stressDmg
   int hullTraumaThresh = 0;
   int hullTraumaCur = 0;
   int sysStressThresh = 0;
@@ -69,8 +70,8 @@ class Vehicle extends Editable{
       super.from(vehicle);
 
   @override
-  void loadJson(Map<String,dynamic> json){
-    super.loadJson(json);
+  void loadJson(Map<String,dynamic> json, bool subtractMode){
+    super.loadJson(json, subtractMode);
     silhouette = json["silhouette"] ?? 0;
     speed = json["speed"] ?? 0;
     handling = json["handling"] ?? 0;

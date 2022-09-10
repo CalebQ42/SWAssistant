@@ -28,7 +28,7 @@ class Minion extends Editable with Creature{
   List<Item> savedInv = [];
   List<Weapon> savedWeapons = [];
 
-  int woundCurTemp = 0;
+  // int woundCurTemp = 0;
 
   @override
   String get fileExtension => ".swminion";
@@ -63,9 +63,9 @@ class Minion extends Editable with Creature{
   }
 
   @override
-  void loadJson(Map<String,dynamic> json){
-    super.loadJson(json);
-    creatureLoadJson(json);
+  void loadJson(Map<String,dynamic> json, bool subtractMode){
+    super.loadJson(json, subtractMode);
+    creatureLoadJson(json, subtractMode);
     woundThreshInd = json["wound threshold per minion"] ?? 0;
     minionNum = json["minion number"] ?? 0;
     if(json["Saved"] != null){

@@ -38,6 +38,8 @@ class Character extends Editable with Creature{
   String emotionalWeak = "";
   List<Duty> duties = [];
   List<Obligation> obligations = [];
+  int woundThresh = 0;
+  //TODO: Move to strainDmg
   int strainThresh = 0, strainCur = 0;
   int xpTot = 0, xpCur = 0;
   int force = 0;
@@ -102,6 +104,7 @@ class Character extends Editable with Creature{
       emotionalWeak = character.emotionalWeak,
       duties = List.from(character.duties),
       obligations = List.from(character.obligations),
+      woundThresh = character.woundThresh,
       strainThresh = character.strainThresh,
       strainCur = character.strainCur,
       xpTot = character.xpTot,
@@ -122,13 +125,13 @@ class Character extends Editable with Creature{
   }
 
   @override
-  void loadJson(Map<String,dynamic> json){
+  void loadJson(Map<String,dynamic> json, bool subtractMode){
     disableDuty = json["disable duty"] ?? false;
     disableForce = json["disable force"] ?? false;
     disableObligation = json["disable obligation"] ?? false;
     disableMorality = json["disable morality"] ?? false;
-    super.loadJson(json);
-    creatureLoadJson(json);
+    super.loadJson(json, subtractMode);
+    creatureLoadJson(json, subtractMode);
     species = json["species"] ?? "";
     career = json["career"] ?? "";
     if(json["Specializations"] != null){
@@ -158,6 +161,7 @@ class Character extends Editable with Creature{
         obligations.add(Obligation.fromJson(dy));
       }
     }
+    woundThresh = json["wound threshold"] ?? 0;
     strainThresh = json["strain threshold"] ?? 0;
     strainCur = json["strain current"] ?? 0;
     xpTot = json["xp total"] ?? 0;
@@ -185,6 +189,7 @@ class Character extends Editable with Creature{
     "emotional weakness": emotionalWeak,
     "Dutys": List.generate(duties.length, (index) => duties[index].toJson()),
     "Obligations": List.generate(obligations.length, (index) => obligations[index].toJson()),
+    "wound threshold": woundThresh,
     "strain threshold": strainThresh,
     "strain current": strainCur,
     "xp total": xpTot,
@@ -220,6 +225,7 @@ class Character extends Editable with Creature{
     "motivation": "",
     "emotional strength": "",
     "emotional weakness": "",
+    "wound threshold": 0,
     "strain threshold": 0,
     "strain current": 0,
     "xp total": 0,

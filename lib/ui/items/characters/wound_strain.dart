@@ -111,14 +111,22 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       UpDownStat(
                         key: const ValueKey("UpDownWound"),
                         onUpPressed: () {
-                          character.woundCur++;
+                          if(subtractMode){
+                            character.woundDmg--;
+                          }else{
+                            character.woundDmg++;
+                          }
                           character.save(context: context);
                         },
                         onDownPressed: (){
-                          character.woundCur--;
+                          if(subtractMode){
+                            character.woundDmg++;
+                          }else{
+                            character.woundDmg--;
+                          }
                           character.save(context: context);
                         },
-                        getValue: () => character.woundCur,
+                        getValue: () => subtractMode ? character.woundThresh - character.woundDmg : character.woundDmg,
                         getMin: () => subtractMode ? -1*character.woundThresh : 0,
                         getMax: () => subtractMode ? character.woundThresh : 2*character.woundThresh,
                       ),
@@ -324,32 +332,20 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
             ElevatedButton(
               onPressed: (){
                 if(healingItem != null && healingItem!.count > 0 && character.healsToday < 5){
-                  if(subtractMode && character.woundCur < character.woundThresh){
+                  if(character.woundDmg > 0){
                     setState(() {
                       if(character.useRepair){
-                        character.woundCur += 3;
+                        character.woundDmg -= 3;
                       }else{
-                        character.woundCur += 5-character.healsToday;
+                        character.woundDmg -= 5-character.healsToday;
                       }
-                      if(character.woundCur > character.woundThresh){
-                        character.woundCur = character.woundThresh;
+                      if(character.woundDmg < 0){
+                        character.woundDmg = 0;
                       }
                       character.healsToday++;
                       healingItem!.count--;
                       character.invKey.currentState?.setState(() {});
                     });
-                  }else if(!subtractMode && character.woundCur > 0){
-                    if(character.useRepair){
-                      character.woundCur -= 3;
-                    }else{
-                      character.woundCur -= 5-character.healsToday;
-                    }
-                    if(character.woundCur < 0){
-                      character.woundCur = 0;
-                    }
-                    character.healsToday++;
-                    healingItem!.count--;
-                    character.invKey.currentState?.setState(() {});
                   }
                 }
               },

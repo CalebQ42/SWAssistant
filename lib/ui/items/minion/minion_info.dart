@@ -49,24 +49,23 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
         Container(height: 10,),
         Text(AppLocalizations.of(context)!.minNum),
         UpDownStat(
+          //TODO: adjust wound so it doesn't go negative.
           onDownPressed: (){
             minion.minionNum--;
-            minion.woundCur -= minion.woundThreshInd;
-            if(minion.woundCur < 0) minion.woundCur = 0;
-            minion.woundCurTemp = minion.woundCur;
-            minion.woundThresh = minion.minionNum * minion.woundThresh;
+            var wound = (minion.woundThreshInd * minion.minionNum) - minion.woundDmg;
+            if (wound < 0) {
+              minion.woundDmg += wound;
+            }
             minion.save(context: context);
             minion.woundKey.currentState?.setState(() {});
           },
           onUpPressed: (){
             minion.minionNum++;
-            minion.woundCur += minion.woundThreshInd;
-            minion.woundCurTemp = minion.woundCur;
-            minion.woundThresh = minion.minionNum * minion.woundThresh;
             minion.save(context: context);
             minion.woundKey.currentState?.setState(() {});
           },
           getValue: () => minion.minionNum,
+          min: 0,
         )
       ]
     );

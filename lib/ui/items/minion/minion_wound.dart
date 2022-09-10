@@ -1,9 +1,11 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/preferences.dart' as preferences;
 
 class MinionWound extends StatefulWidget{
 
@@ -30,19 +32,16 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
     if (minion == null) throw "MinionWound card used on non Minion";
     indWoundController ??= TextEditingController(text: minion.woundThreshInd.toString())..addListener(() {
       var tmp = int.tryParse(indWoundController!.text);
-      var orig = minion.woundCur;
       if(tmp == null){
         minion.woundThreshInd = 0;
       }else{
         minion.woundThreshInd = tmp;
       }
-      minion.woundThresh = minion.woundThreshInd * minion.minionNum;
-      if(minion.woundCur < minion.woundCurTemp) minion.woundCur = minion.woundCurTemp;
-      if(minion.woundCur > minion.woundThresh) minion.woundCur = minion.woundThresh;
-      if(minion.woundCur != orig) setState((){});
+      setState((){});
     });
     soakController ??= TextEditingController(text: minion.soak.toString())
         ..addListener(() => minion.soak = int.tryParse(soakController!.text) ?? 0);
+    var subtractMode = SW.of(context).getPreference(preferences.subtractMode, true);
     return Column(
       children: [
         Row(
@@ -87,27 +86,34 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
         ),
         UpDownStat(
           onUpPressed: (){
-            minion.woundCur++;
-            minion.woundCurTemp = minion.woundCur;
+            if(subtractMode){
+              minion.woundDmg--;
+            }else{
+              minion.woundDmg++;
+            }
             minion.save(context: context);
           },
           onDownPressed: (){
-            minion.woundCur--;
-            minion.woundCurTemp = minion.woundCur;
-            int minNum = minion.woundCur ~/ minion.woundThreshInd;
-            if(minion.woundCur % minion.woundThreshInd > 0){
-              minNum ++;
-            }
-            if(minion.minionNum != minNum){
-              minion.minionNum = minNum;
-              if(minion.showCard[AppLocalizations.of(context)!.basicInfo] == true){
-                minion.infoKey.currentState?.setState(() {});
-              }
+            if(subtractMode){
+              minion.woundDmg++;
+            }else{
+              minion.woundDmg--;
             }
             minion.save(context: context);
           },
-          getValue: () => minion.woundCur,
+          getValue: () => subtractMode ? (minion.woundThreshInd * minion.minionNum) - minion.woundDmg : minion.woundDmg,
           getMax: () => minion.woundThreshInd * minion.minionNum,
+          min: 0
+        ),
+        Container(height:5),
+        ElevatedButton(
+          onPressed: (){
+            setState(() {
+              minion.woundDmg = 0;
+              minion.save(context: context);
+            });
+          },
+          child: Text(AppLocalizations.of(context)!.reset),
         )
       ],
     );

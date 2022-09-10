@@ -89,7 +89,7 @@ abstract class Editable extends JsonSavable{
     }
     app ??= SW.of(context!);
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
-    loadJson(jsonMap);
+    loadJson(jsonMap, app.getPreference(preferences.subtractMode, true));
     if(getFileLocation(app) != file.path){
       loc = file.path;
     }
@@ -111,7 +111,7 @@ abstract class Editable extends JsonSavable{
   }
 
   @mustCallSuper
-  void loadJson(Map<String,dynamic> json){
+  void loadJson(Map<String,dynamic> json, bool subtractMode){
     if (!(this is Character || this is Vehicle || this is Minion)){
       throw("Must be overridden by child");
     }
@@ -338,7 +338,15 @@ abstract class Editable extends JsonSavable{
       filename = getFileLocation(app);
     }
     lastMod = DateTime.now();
-    if(kIsWeb) return;
+    if(kIsWeb) {
+      if(app == null && context != null){
+        app = SW.of(context);
+      }
+      if(app != null){
+        cloudSave(app);
+      }
+      return;
+    }
     if(!_saving && !_defered && !_syncing){
       _saving = true;
       if(!localOnly && app != null && app.getPreference(preferences.googleDrive, false)) {
@@ -511,9 +519,9 @@ abstract class Editable extends JsonSavable{
   // @mustCallSuper
   // Future<void> newVersion(Map<String, dynamic> json, List<Function()> updateKeys);
 
-  void load(String filename){
+  void load(String filename, bool subtractMode){
     var file = File(filename);
-    loadJson(jsonDecode(file.readAsStringSync()));
+    loadJson(jsonDecode(file.readAsStringSync()), subtractMode);
   }
 
   Future<void> cloudLoad(SW app, String id, {bool overwriteId = true}) async {
@@ -527,7 +535,7 @@ abstract class Editable extends JsonSavable{
     await for(var tmp in media.stream){
       out.addAll(tmp);
     }
-    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>));
+    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>), app.getPreference(preferences.subtractMode, true));
     if(overwriteId) driveId = id;
   }
 

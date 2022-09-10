@@ -323,6 +323,7 @@ class SW{
             add(matchEd);
           }
         }
+        loadWaiting--;
       }, onError: (e) => loadWaiting--);
     }
     while(loadWaiting > 0) {
@@ -417,11 +418,18 @@ class SW{
     return true;
   }
 
+  bool isMobile(){
+    if(kIsWeb){
+      return false;
+    }
+    return Platform.isAndroid || Platform.isIOS;
+  }
+
   static Future<SW> baseInit() async{
     WidgetsFlutterBinding.ensureInitialized();
     var prefs = await SharedPreferences.getInstance();
     var app = SW(prefs: prefs);
-    if(!kIsWeb){
+    if(app.isMobile()){
       InAppPurchase.instance.purchaseStream.listen((event) {
         for(var e in event){
           if (e.pendingCompletePurchase){
@@ -456,7 +464,7 @@ class SW{
           options: DefaultFirebaseOptions.currentPlatform,
         );
         firebaseAvailable = true;
-        if(!kIsWeb && getPreference(preferences.crashlytics, true) && !kDebugMode){
+        if(isMobile() && getPreference(preferences.crashlytics, true) && !kDebugMode){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
         }else{
@@ -466,8 +474,8 @@ class SW{
         firebaseAvailable = false;
       }
     }
+    if (kIsWeb) prefs.setBool(preferences.googleDrive, true);
     await sync();
-    if (kIsWeb) prefs.setBool(preferences.googleDrive,true);
     
     for(var ed in trashCan){
       if(ed.trashTime!.isBefore(DateTime.now().subtract(const Duration(days: 30)))){

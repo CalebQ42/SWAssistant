@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -57,7 +58,7 @@ class Driver{
         }
         if(gsi!.currentUser == null) return false;
       } catch(e) {
-        if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+        if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
           FirebaseCrashlytics.instance.recordError(e, null,
             reason: "ready"
           );
@@ -88,7 +89,7 @@ class Driver{
       wd = foldId;
       return true;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "setWD"
         );
@@ -110,7 +111,7 @@ class Driver{
         q: "'$foldID' in parents"
       )).files;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "listFilesFromRoot"
         );
@@ -132,7 +133,7 @@ class Driver{
         q: "'$foldID' in parents"
       )).files;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "listFiles"
         );
@@ -190,7 +191,7 @@ class Driver{
       }
       return out![0].id!;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getIDFromRoot"
         );
@@ -242,7 +243,7 @@ class Driver{
       }
       return out![0].id;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getID"
         );
@@ -280,7 +281,7 @@ class Driver{
       fil = await api!.files.create(fil);
       return fil.id;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "createFileFromRoot"
         );
@@ -306,7 +307,7 @@ class Driver{
       fil = await api!.files.create(fil);
       return fil.id;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "createFileWithParent"
         );
@@ -342,7 +343,7 @@ class Driver{
       );
       return fil.id;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "createFile"
         );
@@ -359,7 +360,7 @@ class Driver{
     try{
       return (await api!.files.get(id)) as File;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getFile"
         );
@@ -376,7 +377,7 @@ class Driver{
     try{
       return (await api!.files.get(id, downloadOptions: DownloadOptions.fullMedia)) as Media;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getContents"
         );
@@ -401,7 +402,7 @@ class Driver{
       );
       return fil.id != null;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "updateContents"
         );
@@ -418,7 +419,7 @@ class Driver{
     try{
       return await api!.files.delete(id);
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "delete"
         );
@@ -435,7 +436,7 @@ class Driver{
     try{
       return (await api!.files.update(File(trashed: true), id)).trashed ?? false;
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "trash"
         );
@@ -452,7 +453,7 @@ class Driver{
     try{
       return !((await api!.files.update(File(trashed: false), id)).trashed ?? false);
     }catch(e){
-      if(!kIsWeb && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
         FirebaseCrashlytics.instance.recordError(e, null,
           reason: "unTrash"
         );

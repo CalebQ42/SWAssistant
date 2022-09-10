@@ -241,7 +241,7 @@ class Observatory extends NavigatorObserver{
     if(routeHistory.isNotEmpty){
       frame.currentState?.selected = routeHistory.last.settings.name ?? "";
     }
-    if(!kIsWeb && app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
+    if(app.isMobile() && app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
       FirebaseCrashlytics.instance.setCustomKey("page", routeHistory.last.settings.name ?? "unknown");
     }
   }
