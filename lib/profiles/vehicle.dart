@@ -22,11 +22,10 @@ class Vehicle extends Editable{
   //0-Fore,1-Port,2-Starboard,3-Aft;
   List<int> defense = List.filled(4, 0, growable: false);
   int totalDefense = 0;
-  //TODO: move to hullDmg & stressDmg
   int hullTraumaThresh = 0;
-  int hullTraumaCur = 0;
+  int hullTraumaDmg = 0;
   int sysStressThresh = 0;
-  int sysStressCur = 0;
+  int sysStressDmg = 0;
   int encumCap = 0;
   int passengerCapacity = 0;
   int hp = 0;
@@ -60,9 +59,9 @@ class Vehicle extends Editable{
       defense = List.from(vehicle.defense),
       totalDefense = vehicle.totalDefense,
       hullTraumaThresh = vehicle.hullTraumaThresh,
-      hullTraumaCur = vehicle.hullTraumaCur,
+      hullTraumaDmg = vehicle.hullTraumaDmg,
       sysStressThresh = vehicle.sysStressThresh,
-      sysStressCur = vehicle.sysStressCur,
+      sysStressDmg = vehicle.sysStressDmg,
       encumCap = vehicle.encumCap,
       passengerCapacity = vehicle.passengerCapacity,
       hp = vehicle.hp,
@@ -84,9 +83,25 @@ class Vehicle extends Editable{
     }
     totalDefense = json["total defense"] ?? 0;
     hullTraumaThresh  = json["hull trauma threshold"] ?? 0;
-    hullTraumaCur = json["hull trauma current"] ?? 0;
+    if(json["hull trauma current"] != null){
+      if(subtractMode){
+        hullTraumaDmg = hullTraumaThresh - (json["hull trauma current"] ?? 0) as int;
+      }else{
+        hullTraumaDmg = json["hull trauma current"] ?? 0;
+      }
+    }else{
+      hullTraumaDmg = json["hull trauma damage"] ?? 0;
+    }
     sysStressThresh = json["system stress threshold"] ?? 0;
-    sysStressCur = json["system stress current"] ?? 0;
+    if(json["system stress current"] != null){
+      if(subtractMode){
+        sysStressDmg = sysStressThresh - (json["system stress current"] ?? 0) as int;
+      }else{
+        sysStressDmg = json["system stress damage"] ?? 0;
+      }
+    }else{
+      sysStressDmg = json["system stress damage"];
+    }
     encumCap = json["encumbrance capacity"] ?? 0;
     passengerCapacity = json["passenger capacity"] ?? 0;
     hp = json["hard points"] ?? 0;
@@ -103,9 +118,9 @@ class Vehicle extends Editable{
     "defense": defense,
     "total defense": totalDefense,
     "hull trauma threshold": hullTraumaThresh,
-    "hull trauma current": hullTraumaCur,
+    "hull trauma damage": hullTraumaDmg,
     "system stress threshold": sysStressThresh,
-    "system stress current": sysStressCur,
+    "system stress damage": sysStressDmg,
     "encumbrance capacity": encumCap,
     "passenger capacity": passengerCapacity,
     "hard points": hp,
@@ -124,9 +139,9 @@ class Vehicle extends Editable{
     "armor": 0,
     "total defense": 0,
     "hull trauma threshold": 0,
-    "hull trauma current": 0,
+    "hull trauma damage": 0,
     "system stress threshold": 0,
-    "system stress current": 0,
+    "system stress damage": 0,
     "encumbrance capacity": 0,
     "passenger capacity": 0,
     "hard points": 0,
