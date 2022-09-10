@@ -388,11 +388,15 @@ class Driver{
     }
   }
 
-  Future<bool> updateContents(String id, Stream<List<int>> data, {int? dataLength}) async{
+  Future<bool> updateContents(String id, Stream<List<int>> data, {Map<String, String?>? appProperties, int? dataLength}) async{
     if(!await ready()) return false;
     try{
       var fil = await api!.files.update(
-        File(modifiedTime: DateTime.now(),), id,
+        File(
+          modifiedTime: DateTime.now(),
+          appProperties: appProperties,
+        ),
+        id,
         uploadMedia: Media(data, dataLength)
       );
       return fil.id != null;

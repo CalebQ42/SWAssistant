@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:swassistant/utils/json_savable.dart';
 
 class Talent implements JsonSavable{
@@ -36,5 +34,5 @@ class Talent implements JsonSavable{
   operator ==(other) => other is Talent && other.name == name && other.desc == desc && other.value == value;
 
   @override
-  int get hashCode => hashValues(name, desc, value);
+  int get hashCode => Object.hash(name, desc, value);
 }

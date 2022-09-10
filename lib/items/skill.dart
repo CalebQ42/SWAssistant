@@ -66,7 +66,7 @@ class Skill implements JsonSavable{
   operator ==(other) => other is Skill && other.name == name && other.value == value && other.base == base && other.career == career;
 
   @override
-  int get hashCode => hashValues(name, value, base, career);
+  int get hashCode => Object.hash(name, value, base, career);
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   static Map<String, int> skillsList(BuildContext context) => {

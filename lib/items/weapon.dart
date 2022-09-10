@@ -112,7 +112,7 @@ class Weapon implements JsonSavable{
 
 
   @override
-  int get hashCode => hashValues(name, damage, critical, hp, range, skill, skillBase, addBrawn, loaded, limitedAmmo, itemState, ammo, firingArc, encumbrance, hashList(characteristics));
+  int get hashCode => Object.hash(name, damage, critical, hp, range, skill, skillBase, addBrawn, loaded, limitedAmmo, itemState, ammo, firingArc, encumbrance, Object.hashAll(characteristics));
 
   static List<String> weaponSkills(BuildContext context) => [
     AppLocalizations.of(context)!.skills3,

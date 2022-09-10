@@ -263,98 +263,55 @@ class SW{
     var loadWaiting = 0;
     for(var fil in await driver!.listFiles("") ?? <drive.File>[]){
       if(fil.id == null || fil.name == null) continue;
-      var uid = fil.appProperties?["uid"];
-      if (uid == null) {
-        Editable ed;
-        if(fil.name!.endsWith(".swcharacter")){
-          ed = Character(app: this);
-        } else if(fil.name!.endsWith(".swvehicle")){
-          ed = Vehicle(app: this);
-        } else if(fil.name!.endsWith(".swminion")){
-          ed = Minion(app: this);
-        } else {
-          continue;
-        }
-        loadWaiting++;
-        ed.cloudLoad(this, fil.id!).then((value) async {
-          Editable? matchEd;
-          try {
-            matchEd = all.firstWhere((element) => element.uid == ed.uid);
-          }catch(e){
-            matchEd = null;
-          }
-          if(matchEd == null){
-            await ed.save(app: this, localOnly: true);
-            if(ed.trashed){
-              trashCan.add(ed);
-            } else {
-              add(ed);
-            }
-            loadWaiting--;
-            return;
-          }
-          var preTrashed = matchEd.trashed;
-          matchEd.driveId = fil.id!;
-          var local = File(matchEd.getFileLocation(this));
-          if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
-            await matchEd.cloudLoad(this, fil.id!);
-            await matchEd.save(app: this, localOnly: true);
-          } else {
-            matchEd.cloudSave(this);
-          }
-          all.remove(matchEd);
-          if(matchEd.trashed != preTrashed){
-            if(matchEd.trashed){
-              remove(matchEd);
-              trashCan.add(matchEd);
-            }else{
-              trashCan.remove(matchEd);
-              add(matchEd);
-            }
-          }
-          loadWaiting--;
-        }, onError: (e) => loadWaiting--);
+      Editable ed;
+      if(fil.name!.endsWith(".swcharacter")){
+        ed = Character(app: this);
+      } else if(fil.name!.endsWith(".swvehicle")){
+        ed = Vehicle(app: this);
+      } else if(fil.name!.endsWith(".swminion")){
+        ed = Minion(app: this);
       } else {
+        continue;
+      }
+      loadWaiting++;
+      ed.cloudLoad(this, fil.id!).then((value) async {
         Editable? matchEd;
         try {
-          matchEd = all.firstWhere((element) => element.uid == uid);
+          matchEd = all.firstWhere((element) => element.uid == ed.uid);
         }catch(e){
           matchEd = null;
         }
         if(matchEd == null){
-          Editable ed;
-          if(fil.name!.endsWith(".swcharacter")){
-            ed = Character(app: this);
-          } else if(fil.name!.endsWith(".swvehicle")){
-            ed = Vehicle(app: this);
-          } else if(fil.name!.endsWith(".swminion")){
-            ed = Minion(app: this);
-          } else {
-            continue;
-          }
           loadWaiting++;
-          ed.cloudLoad(this, fil.id!).then((value) async {
-            await ed.save(app: this, localOnly: true);
-            if(ed.trashed){
-              trashCan.add(ed);
-            }else{
-              add(ed);
-            }
-            loadWaiting--;
-          }, onError: (e) => loadWaiting--);
-          continue;
+          await ed.save(app: this, localOnly: true);
+          if(ed.trashed){
+            trashCan.add(ed);
+          }else{
+            add(ed);
+          }
+          loadWaiting--;
+          return;
         }
         all.remove(matchEd);
         var preTrashed = matchEd.trashed;
         matchEd.driveId = fil.id!;
-        var local = File(matchEd.getFileLocation(this));
-        if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
-          loadWaiting++;
-          matchEd.cloudLoad(this, fil.id!).then((value) async {
-            await matchEd!.save(app: this, localOnly: true);
-            loadWaiting--;
-          }, onError: (e) => loadWaiting--);
-        } else {
+        if(ed.lastMod == null || matchEd.lastMod == null){
+          var local = File(matchEd.getFileLocation(this));
+          if(fil.modifiedTime == null || local.lastModifiedSync().isBefore(fil.modifiedTime!)){
+            loadWaiting++;
+            matchEd.cloudLoad(this, fil.id!).then((value) async {
+              await matchEd!.save(app: this, localOnly: true);
+              loadWaiting--;
+            }, onError: (e) => loadWaiting--);
+          } else {
+            matchEd.cloudSave(this);
+          }
+        }else if(matchEd.lastMod!.isBefore(ed.lastMod!)){
+            matchEd.cloudLoad(this, fil.id!).then((value) async {
+              await matchEd!.save(app: this, localOnly: true);
+              loadWaiting--;
+            }, onError: (e) => loadWaiting--);
+        }else{
           matchEd.cloudSave(this);
         }
         if(matchEd.trashed != preTrashed){
@@ -366,7 +323,7 @@ class SW{
             add(matchEd);
           }
         }
-      }
+      }, onError: (e) => loadWaiting--);
     }
     while(loadWaiting > 0) {
       await Future.delayed(const Duration(milliseconds: 50));

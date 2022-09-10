@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:swassistant/utils/json_savable.dart';
 
 class CriticalInjury implements JsonSavable{
@@ -37,5 +35,5 @@ class CriticalInjury implements JsonSavable{
   operator ==(other) => other is CriticalInjury && other.name == name && other.desc == desc && other.severity == severity;
 
   @override
-  int get hashCode => hashValues(name.hashCode, desc.hashCode, severity.hashCode);
+  int get hashCode => Object.hash(name.hashCode, desc.hashCode, severity.hashCode);
 }

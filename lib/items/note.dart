@@ -1,6 +1,3 @@
-
-import 'dart:ui';
-
 import 'package:swassistant/utils/json_savable.dart';
 
 class Note implements JsonSavable{
@@ -33,5 +30,5 @@ class Note implements JsonSavable{
   operator ==(other) => other is Note && other.title == title && other.note == note && other.align == align;
 
   @override
-  int get hashCode => hashValues(title.hashCode, note.hashCode, align.hashCode);
+  int get hashCode => Object.hash(title.hashCode, note.hashCode, align.hashCode);
 }

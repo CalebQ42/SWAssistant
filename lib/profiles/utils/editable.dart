@@ -36,6 +36,7 @@ abstract class Editable extends JsonSavable{
 
   //Common components
   late String uid;
+  DateTime? lastMod;
   String name;
   List<Note> notes = [];
   List<Weapon> weapons = [];
@@ -115,6 +116,9 @@ abstract class Editable extends JsonSavable{
       throw("Must be overridden by child");
     }
     uid = json["uid"] ?? const Uuid().v4();
+    if(json["lastMod"] != null){
+      lastMod = DateTime.fromMillisecondsSinceEpoch(json["lastMod"]);
+    }
     name = json["name"] ?? "";
     if (json["Notes"] != null){
       notes = [];
@@ -161,6 +165,7 @@ abstract class Editable extends JsonSavable{
     }
     return {
       "uid": uid,
+      "lastMod": lastMod?.millisecondsSinceEpoch,
       "Notes": List.generate(notes.length, (index) => notes[index].toJson()),
       "Weapons": List.generate(weapons.length, (index) => weapons[index].toJson()),
       "Critical Injuries" : List.generate(criticalInjuries.length, (index) => criticalInjuries[index].toJson()),
@@ -182,6 +187,7 @@ abstract class Editable extends JsonSavable{
   @mustCallSuper
   Map<String,dynamic> get zeroValue => {
     "uid": "",
+    "lastMod": null,
     "name": "",
     "category": "",
     "description": "",
@@ -331,12 +337,13 @@ abstract class Editable extends JsonSavable{
       app ??= SW.of(context!);
       filename = getFileLocation(app);
     }
-    if(!localOnly && app != null && app.getPreference(preferences.googleDrive, false)) {
-      cloudSave(app);
-    }
+    lastMod = DateTime.now();
     if(kIsWeb) return;
     if(!_saving && !_defered && !_syncing){
       _saving = true;
+      if(!localOnly && app != null && app.getPreference(preferences.googleDrive, false)) {
+        cloudSave(app);
+      }
       var file = File(filename);
       File? backup;
       if(file.existsSync()){
@@ -364,7 +371,6 @@ abstract class Editable extends JsonSavable{
       var newId = await app.driver!.getID(uid+fileExtension);
       newId ??= await app.driver!.createFile(
         uid + fileExtension,
-        appProperties: {"uid" : uid},
         mimeType: "application/json"
       );
       if (newId == null) return null;
@@ -387,7 +393,11 @@ abstract class Editable extends JsonSavable{
           return;
         }
         var data = const JsonEncoder.withIndent("  ").convert(toJson()).codeUnits;
-        await app.driver!.updateContents(id, Stream.value(data), dataLength: data.length);
+        await app.driver!.updateContents(
+          id,
+          Stream.value(data),
+          dataLength: data.length,
+        );
         var curFil = await app.driver!.getFile(id);
         if(curFil != null) {
           _cloudVersion = int.tryParse(curFil.version ?? "") ?? 0;
