@@ -39,8 +39,7 @@ class Character extends Editable with Creature{
   List<Duty> duties = [];
   List<Obligation> obligations = [];
   int woundThresh = 0;
-  //TODO: Move to strainDmg
-  int strainThresh = 0, strainCur = 0;
+  int strainThresh = 0, strainDmg = 0;
   int xpTot = 0, xpCur = 0;
   int force = 0;
   int credits = 0;
@@ -106,7 +105,7 @@ class Character extends Editable with Creature{
       obligations = List.from(character.obligations),
       woundThresh = character.woundThresh,
       strainThresh = character.strainThresh,
-      strainCur = character.strainCur,
+      strainDmg = character.strainDmg,
       xpTot = character.xpTot,
       xpCur = character.xpCur,
       force = character.force,
@@ -163,7 +162,15 @@ class Character extends Editable with Creature{
     }
     woundThresh = json["wound threshold"] ?? 0;
     strainThresh = json["strain threshold"] ?? 0;
-    strainCur = json["strain current"] ?? 0;
+    if(json["strain current"] != null){
+      if(subtractMode){
+        strainDmg = strainThresh - (json["strain current"] ?? 0) as int;
+      }else{
+        strainDmg = json["strain current"] ?? 0;
+      }
+    }else{
+      strainDmg = json["strain damage"] ?? 0;
+    }
     xpTot = json["xp total"] ?? 0;
     xpCur = json["xp current"] ?? 0;
     force = json["force rating"] ?? 0;
@@ -191,7 +198,7 @@ class Character extends Editable with Creature{
     "Obligations": List.generate(obligations.length, (index) => obligations[index].toJson()),
     "wound threshold": woundThresh,
     "strain threshold": strainThresh,
-    "strain current": strainCur,
+    "strain damage": strainDmg,
     "xp total": xpTot,
     "xp current": xpCur,
     "force rating": force,
@@ -227,7 +234,7 @@ class Character extends Editable with Creature{
     "emotional weakness": "",
     "wound threshold": 0,
     "strain threshold": 0,
-    "strain current": 0,
+    "strain damage": 0,
     "xp total": 0,
     "xp current": 0,
     "force rating": 0,

@@ -51,20 +51,18 @@ mixin Creature on Editable{
         talents.add(Talent.fromJson(dy));
       }
     }
-    if(json["wound damage"] == null) {
-      if(json["wound current"] == null){
-        woundDmg = 0;
-      }else{
-        if(subtractMode) {
-          if(this is Minion){
-            woundDmg = (json["minion number"] ?? 0 * json["wound threshold per minion"] ?? 0) - json["wound current"] ?? 0;
-          }else{
-            woundDmg = json["wound threshold"] ?? 0 - json["wound current"] ?? 0;
-          }
+    if(json["wound current"] != null) {
+      if(subtractMode) {
+        if(this is Minion){
+          woundDmg = (json["minion number"] ?? 0 * json["wound threshold per minion"] ?? 0) - json["wound current"] ?? 0;
         }else{
-          woundDmg = json["wound current"];
+          woundDmg = json["wound threshold"] ?? 0 - json["wound current"] ?? 0;
         }
+      }else{
+        woundDmg = json["wound current"];
       }
+    }else{
+      woundDmg = json["wound damage"] ?? 0;
     }
     defMelee = json["defense melee"] ?? 0;
     defRanged = json["defense ranged"] ?? 0;

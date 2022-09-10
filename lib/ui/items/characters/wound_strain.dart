@@ -170,14 +170,22 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       UpDownStat(
                         key: const ValueKey("UpDownStrain"),
                         onUpPressed: (){
-                          character.strainCur++;
+                          if(subtractMode){
+                            character.strainDmg--;
+                          }else{
+                            character.strainDmg++;
+                          }
                           character.save(context: context);
                         },
                         onDownPressed: (){
-                          character.strainCur--;
+                          if(subtractMode){
+                            character.strainDmg++;
+                          }else{
+                            character.strainDmg--;
+                          }
                           character.save(context: context);
                         },
-                        getValue: () => character.strainCur,
+                        getValue: () => subtractMode ? character.strainThresh - character.strainDmg : character.strainDmg,
                         getMin: () => 0,
                         getMax: () => character.strainThresh,
                       ),
