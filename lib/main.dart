@@ -64,6 +64,11 @@ class SWAppState extends State<SWApp> {
       clipBehavior: Clip.antiAlias,
       constraints: BoxConstraints.loose(const Size.fromWidth(600)),
     );
+    var fabTheme = const FloatingActionButtonThemeData(
+      shape: BeveledRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(25))
+      )
+    );
     var framKey = GlobalKey<FrameState>();
     SW.of(context).observatory = Observatory(SW.of(context), framKey);
     return MaterialApp(
@@ -179,7 +184,8 @@ class SWAppState extends State<SWApp> {
         ),
         snackBarTheme: snackTheme,
         inputDecorationTheme: inputTheme,
-        bottomSheetTheme: bottomSheetTheme
+        bottomSheetTheme: bottomSheetTheme,
+        floatingActionButtonTheme: fabTheme
       ),
       darkTheme: SW.of(context).getPreference(preferences.amoled, false) ? 
         ThemeData( //Amoled Theme
@@ -206,6 +212,7 @@ class SWAppState extends State<SWApp> {
           bottomSheetTheme: bottomSheetTheme.copyWith(
             backgroundColor: Colors.black,
           ),
+          floatingActionButtonTheme: fabTheme,
           dividerColor: Colors.grey.shade800,
           inputDecorationTheme: inputTheme
         ) : ThemeData( //Dark Theme
@@ -216,6 +223,7 @@ class SWAppState extends State<SWApp> {
             accentColor: Colors.lightBlueAccent.shade100,
             brightness: Brightness.dark
           ),
+          floatingActionButtonTheme: fabTheme,
           bottomSheetTheme: bottomSheetTheme,
           inputDecorationTheme: inputTheme,
           snackBarTheme: snackTheme

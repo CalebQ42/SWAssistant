@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/vehicle.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/preferences.dart' as preferences;
 
 class VehicleDamage extends StatefulWidget{
 
@@ -36,6 +38,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
       ..addListener(() => vehicle.hullTraumaThresh = int.tryParse(hullTraumaThreshController!.text) ?? 0);
     sysStressThreshController ??= TextEditingController(text: vehicle.sysStressThresh.toString())
       ..addListener(() => vehicle.sysStressThresh = int.tryParse(sysStressThreshController!.text) ?? 0);
+    var subtractMode = SW.of(context).getPreference(preferences.subtractMode, true);
     return Column(
       children: [
         Row(
@@ -71,14 +74,24 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                       Text(AppLocalizations.of(context)!.hullTrauma, textAlign: TextAlign.center),
                       UpDownStat(
                         onUpPressed: (){
-                          vehicle.hullTraumaCur++;
+                          if(subtractMode){
+                            vehicle.hullTraumaDmg--;
+                          }else{
+                            vehicle.hullTraumaDmg++;
+                          }
                           vehicle.save(context: context);
                         },
                         onDownPressed: (){
-                          vehicle.hullTraumaCur--;
+                          if(subtractMode){
+                            vehicle.hullTraumaDmg++;
+                          }else{
+                            vehicle.hullTraumaDmg--;
+                          }
                           vehicle.save(context: context);
                         },
-                        getValue: () => vehicle.hullTraumaCur,
+                        getValue: () => subtractMode ? vehicle.hullTraumaThresh - vehicle.hullTraumaDmg : vehicle.hullTraumaDmg,
+                        getMax: () => subtractMode ? vehicle.hullTraumaThresh : vehicle.hullTraumaThresh * 2,
+                        getMin: () => subtractMode ? -1*vehicle.hullTraumaThresh : 0
                       ),
                       Center(child: Text(AppLocalizations.of(context)!.max(vehicle.hullTraumaThresh)))
                     ],
@@ -117,14 +130,24 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                       Text(AppLocalizations.of(context)!.sysStress, textAlign: TextAlign.center),
                       UpDownStat(
                         onUpPressed: (){
-                          vehicle.sysStressCur++;
+                          if(subtractMode){
+                            vehicle.sysStressDmg--;
+                          }else{
+                            vehicle.sysStressDmg++;
+                          }
                           vehicle.save(context: context);
                         },
                         onDownPressed: (){
-                          vehicle.sysStressCur--;
+                          if(subtractMode){
+                            vehicle.sysStressDmg++;
+                          }else{
+                            vehicle.sysStressDmg--;
+                          }
                           vehicle.save(context: context);
                         },
-                        getValue: () => vehicle.sysStressCur,
+                        getValue: () => subtractMode ? vehicle.sysStressThresh - vehicle.sysStressDmg : vehicle.sysStressDmg,
+                        getMax: () => vehicle.sysStressThresh,
+                        getMin: () => 0
                       ),
                       Center(child: Text(AppLocalizations.of(context)!.max(vehicle.sysStressThresh)))
                     ],
