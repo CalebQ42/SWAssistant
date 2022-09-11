@@ -90,8 +90,8 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                           vehicle.save(context: context);
                         },
                         getValue: () => subtractMode ? vehicle.hullTraumaThresh - vehicle.hullTraumaDmg : vehicle.hullTraumaDmg,
-                        getMax: () => subtractMode ? vehicle.hullTraumaThresh : vehicle.hullTraumaThresh * 2,
-                        getMin: () => subtractMode ? -1*vehicle.hullTraumaThresh : 0
+                        getMax: () => vehicle.hullTraumaThresh,
+                        min: 0
                       ),
                       Center(child: Text(AppLocalizations.of(context)!.max(vehicle.hullTraumaThresh)))
                     ],
