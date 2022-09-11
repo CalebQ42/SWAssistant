@@ -31,6 +31,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
   TextEditingController? soakController;
   TextEditingController? woundThreshController;
   TextEditingController? strainThreshController;
+  bool healsEditDetector = false;
   TextEditingController? healsTodayController;
 
   @override
@@ -57,9 +58,10 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
       strainThreshController = TextEditingController(text: character.strainThresh.toString());
       strainThreshController!.addListener(() => character.strainThresh = int.tryParse(strainThreshController!.text) ?? 0);
     }
-    if(healsTodayController == null){
+    if(healsTodayController == null || healsEditDetector != edit){
       healsTodayController = TextEditingController(text: character.healsToday.toString());
       healsTodayController!.addListener(() => character.healsToday = int.tryParse(healsTodayController!.text) ?? 0);
+      healsEditDetector = edit;
     }
     return Column(
       children: <Widget>[

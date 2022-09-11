@@ -100,7 +100,7 @@ class Vehicle extends Editable{
         sysStressDmg = json["system stress damage"] ?? 0;
       }
     }else{
-      sysStressDmg = json["system stress damage"];
+      sysStressDmg = json["system stress damage"] ?? 0;
     }
     encumCap = json["encumbrance capacity"] ?? 0;
     passengerCapacity = json["passenger capacity"] ?? 0;

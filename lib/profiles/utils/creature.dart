@@ -59,7 +59,7 @@ mixin Creature on Editable{
           woundDmg = json["wound threshold"] ?? 0 - json["wound current"] ?? 0;
         }
       }else{
-        woundDmg = json["wound current"];
+        woundDmg = json["wound current"] ?? 0;
       }
     }else{
       woundDmg = json["wound damage"] ?? 0;
