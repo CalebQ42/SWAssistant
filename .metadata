@@ -15,7 +15,7 @@ migration:
     - platform: root
       create_revision: 4f9d92fbbdf072a70a70d2179a9f87392b94104c
       base_revision: 4f9d92fbbdf072a70a70d2179a9f87392b94104c
-    - platform: linux
+    - platform: windows
       create_revision: 4f9d92fbbdf072a70a70d2179a9f87392b94104c
       base_revision: 4f9d92fbbdf072a70a70d2179a9f87392b94104c
 
