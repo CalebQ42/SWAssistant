@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -29,7 +30,7 @@ Future<void> main() async {
     ), (error, stack) {
       if(kDebugMode) {
         print("$error\n$stack");
-      }else{
+      }else if(!kIsWeb && (Platform.isIOS || Platform.isAndroid)){
         FirebaseCrashlytics.instance.recordError(error, stack);
       }
     }

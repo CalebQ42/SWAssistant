@@ -578,8 +578,10 @@ abstract class Editable extends JsonSavable{
         }
         _saving = true;
         _cloudSaving = true;
-        var fil = File(getFileLocation(app));
-        fil.deleteSync();
+        if(!kIsWeb){
+          var fil = File(getFileLocation(app));
+          fil.deleteSync();
+        }
         if(driveId != null) await app.driver?.delete(driveId!);
         driveId = null;
         _saving = false;

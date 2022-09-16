@@ -282,7 +282,6 @@ class SW{
           matchEd = null;
         }
         if(matchEd == null){
-          loadWaiting++;
           await ed.save(app: this, localOnly: true);
           if(ed.trashed){
             trashCan.add(ed);
@@ -467,7 +466,7 @@ class SW{
         if(isMobile() && getPreference(preferences.crashlytics, true) && !kDebugMode){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-        }else{
+        }else if(isMobile()){
           FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
         }
       }catch (e){
@@ -476,7 +475,6 @@ class SW{
     }
     if (kIsWeb) prefs.setBool(preferences.googleDrive, true);
     await sync();
-    
     for(var ed in trashCan){
       if(ed.trashTime!.isBefore(DateTime.now().subtract(const Duration(days: 30)))){
         trashCan.remove(ed);
