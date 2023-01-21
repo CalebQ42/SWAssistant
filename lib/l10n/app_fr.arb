@@ -251,7 +251,6 @@
     "maxWound": "Blessure max",
     "strain": "Stress",
     "maxStrain": "Stress max",
-    "max": "Nombre max",
     "@max": {
         "description": "Used to display the max wound, strain, threashhold, and stress",
         "placeholders": {

@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_core/firebase_core.dart' deferred as firebaseCore;
+import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
@@ -10,7 +10,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:swassistant/firebase_options.dart';
+import 'package:swassistant/firebase_options.dart' deferred as firebaseOptions;
 import 'package:swassistant/main.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -458,16 +458,17 @@ class SW{
 
   Future<void> postInit() async{
     if(getPreference(preferences.firebase, true)){
+      await firebaseOptions.loadLibrary();
+      await firebaseCore.loadLibrary();
       try{
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
+        await firebaseCore.Firebase.initializeApp(
+          options: firebaseOptions.DefaultFirebaseOptions.currentPlatform,
         );
         firebaseAvailable = true;
         if(isMobile() && getPreference(preferences.crashlytics, true) && !kDebugMode){
-          FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-          FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-        }else if(isMobile()){
-          FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+          await crash.loadLibrary();
+          crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+          FlutterError.onError = crash.FirebaseCrashlytics.instance.recordFlutterError;
         }
       }catch (e){
         firebaseAvailable = false;

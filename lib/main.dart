@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
@@ -19,19 +19,26 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/screens/trash.dart';
 
+bool firebaseCrashlytics = false;
+
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async =>
     SW.baseInit().then(
-      (app) =>
+      (app) {
+        if (app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
+          firebaseCrashlytics = true;
+        }
         runApp(SWWidget(
           app: app,
           child: const SWApp()
-        ))
-    ), (error, stack) {
+        ));
+      }
+    ), (error, stack) async{
       if(kDebugMode) {
         print("$error\n$stack");
-      }else if(!kIsWeb && (Platform.isIOS || Platform.isAndroid)){
-        FirebaseCrashlytics.instance.recordError(error, stack);
+      }else if(!kIsWeb && (Platform.isIOS || Platform.isAndroid) && firebaseCrashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(error, stack);
       }
     }
   );
@@ -94,7 +101,7 @@ class SWAppState extends State<SWApp> {
           widy = DiceRoller();
         }else if(settings.name == "/intro" || SW.of(context).getPreference(preferences.firstStart, true)) {
           widy = const IntroZero();
-          settings = settings.copyWith(name: "/intro");
+          settings = RouteSettings(name: "/intro",arguments: settings.arguments);
         }else if(!SW.of(context).initialized){
           return PageRouteBuilder(
             pageBuilder: (context, anim, secondaryAnim) {
@@ -144,7 +151,7 @@ class SWAppState extends State<SWApp> {
           widy = const TrashList();
         }
         if (widy == null){
-          settings = settings.copyWith(name: "/characters");
+          settings = RouteSettings(name: "/characters", arguments: settings.arguments);
           widy ??= const EditableList(EditableList.character);
         }
         return PageRouteBuilder(
@@ -190,7 +197,6 @@ class SWAppState extends State<SWApp> {
       ),
       darkTheme: SW.of(context).getPreference(preferences.amoled, false) ? 
         ThemeData( //Amoled Theme
-          backgroundColor: Colors.black,
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
           scaffoldBackgroundColor: Colors.black,
@@ -205,6 +211,7 @@ class SWAppState extends State<SWApp> {
           primaryColor: Colors.red,
           primaryColorDark: Colors.red.shade900,
           colorScheme: ColorScheme.fromSwatch(
+            backgroundColor: Colors.black,
             primarySwatch: Colors.red,
             primaryColorDark: Colors.red.shade700,
             accentColor: Colors.lightBlueAccent.shade100,
@@ -251,7 +258,7 @@ class Observatory extends NavigatorObserver{
       frame.currentState?.selected = routeHistory.last.settings.name ?? "";
     }
     if(app.isMobile() && app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
-      FirebaseCrashlytics.instance.setCustomKey("page", routeHistory.last.settings.name ?? "unknown");
+      crash.loadLibrary().then((value) => crash.FirebaseCrashlytics.instance.setCustomKey("page", routeHistory.last.settings.name ?? "unknown"));
     }
   }
 
