@@ -67,6 +67,8 @@ abstract class Editable extends JsonSavable{
   bool _syncing = false;
   bool _endSync = false;
 
+  
+
   //Universal Keys
   var nameKey = GlobalKey<NameCardState>(); 
   var invKey = GlobalKey<InventoryState>();

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -244,7 +244,7 @@ class SettingsState extends State{
           if(app.isMobile()) SwitchListTile(
             value: app.getPreference(preferences.crashlytics, true),
             onChanged: app.getPreference(preferences.firebase, true) ? (b){
-              FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b);
+              crash.loadLibrary().then((_) => crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b));
               app.prefs.setBool(preferences.crashlytics, b);
               setState((){});
             } : null,
