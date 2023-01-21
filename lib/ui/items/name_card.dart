@@ -44,7 +44,7 @@ class NameCardState extends State<NameCard> with StatefulCard {
       heroTag: Editable.of(context).uid,
       editableBackup: Editable.of(context),
       controller: nameController,
-      style: Theme.of(context).textTheme.headline5,
+      style: Theme.of(context).textTheme.headlineSmall,
       textAlign: TextAlign.center,
       initialText: Editable.of(context).name,
       defaultSave: true,

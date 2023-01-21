@@ -137,7 +137,7 @@ class _DiceDialogState extends State<_DiceDialog>{
               Text(
                 "d10",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               Row(
                 children: [
@@ -162,7 +162,7 @@ class _DiceDialogState extends State<_DiceDialog>{
               Text(
                 "d100",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               Row(
                 children: [

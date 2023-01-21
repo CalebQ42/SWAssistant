@@ -40,7 +40,7 @@ class SettingsState extends State{
               padding: const EdgeInsets.all(10),
               child: Text(
                 AppLocalizations.of(context)!.discuss,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               )
             )
           ),
@@ -54,7 +54,7 @@ class SettingsState extends State{
               padding: const EdgeInsets.all(10),
               child: Text(
                 AppLocalizations.of(context)!.translate,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               )
             )
           ),
@@ -87,7 +87,7 @@ class SettingsState extends State{
               padding: const EdgeInsets.all(10),
               child: Text(
                 AppLocalizations.of(context)!.donate,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               )
             )
           ),
@@ -138,7 +138,7 @@ class SettingsState extends State{
             padding: const EdgeInsets.all(15),
             child: Text(
               AppLocalizations.of(context)!.healthMode,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Padding(
@@ -153,7 +153,7 @@ class SettingsState extends State{
                     children: [
                       Text(
                         AppLocalizations.of(context)!.additive,
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                       Text(AppLocalizations.of(context)!.additiveExplaination)
                     ]
@@ -170,7 +170,7 @@ class SettingsState extends State{
                     children: [
                       Text(
                         AppLocalizations.of(context)!.subtractive,
-                        style: Theme.of(context).textTheme.subtitle2
+                        style: Theme.of(context).textTheme.titleSmall
                       ),
                       Text(AppLocalizations.of(context)!.subtractiveExplaination)
                     ]
@@ -271,7 +271,7 @@ class SettingsState extends State{
               padding: const EdgeInsets.all(10),
               child: Text(
                 AppLocalizations.of(context)!.introPage0ImportButton,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               )
             )
           ),
@@ -285,7 +285,7 @@ class SettingsState extends State{
               padding: const EdgeInsets.all(10),
               child: Text(
                 AppLocalizations.of(context)!.showIntro,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               )
             )
           ),

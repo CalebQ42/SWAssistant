@@ -111,7 +111,7 @@ class _TrashListState extends State<TrashList> {
                               AppLocalizations.of(context)!.minions
                             :
                               AppLocalizations.of(context)!.vehicles,
-                            style: Theme.of(context).textTheme.caption
+                            style: Theme.of(context).textTheme.bodySmall
                           )
                         ),
                         if(kIsWeb) Container(height: 5),

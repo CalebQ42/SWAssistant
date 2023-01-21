@@ -114,7 +114,7 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
         if (angleTotal != vehicle.totalDefense) Text(
           AppLocalizations.of(context)!.anglingWarning,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(color: Colors.red),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.red),
         )
       ],
     );

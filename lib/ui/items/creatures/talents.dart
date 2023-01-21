@@ -53,7 +53,7 @@ class TalentsState extends State<Talents> with StatefulCard {
                               Center(
                                 child: Text(
                                   creature.talents[index].name,
-                                  style: Theme.of(context).textTheme.headline5,
+                                  style: Theme.of(context).textTheme.headlineSmall,
                                   textAlign: TextAlign.justify,
                                 )
                               ),
@@ -61,7 +61,7 @@ class TalentsState extends State<Talents> with StatefulCard {
                               Center(
                                 child: Text(
                                   "${AppLocalizations.of(context)!.rank}: ${creature.talents[index].value}",
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                               Container(height: 10),

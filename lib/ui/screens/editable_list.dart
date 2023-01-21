@@ -478,7 +478,7 @@ class EditableCard extends StatelessWidget{
                       AppLocalizations.of(context)!.minions
                     :
                       AppLocalizations.of(context)!.vehicles,
-                    style: Theme.of(context).textTheme.caption
+                    style: Theme.of(context).textTheme.bodySmall
                   )
                 ),
                 if(kIsWeb) Container(height: 10),

@@ -39,22 +39,22 @@ class CharacteristicsState extends State<Characteristics> with StatefulCard {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            charBuilder(0, Theme.of(context).textTheme.headline6!, context),
-            charBuilder(1, Theme.of(context).textTheme.headline6!, context)
+            charBuilder(0, Theme.of(context).textTheme.titleLarge!, context),
+            charBuilder(1, Theme.of(context).textTheme.titleLarge!, context)
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            charBuilder(2, Theme.of(context).textTheme.headline6!, context),
-            charBuilder(3, Theme.of(context).textTheme.headline6!, context)
+            charBuilder(2, Theme.of(context).textTheme.titleLarge!, context),
+            charBuilder(3, Theme.of(context).textTheme.titleLarge!, context)
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            charBuilder(4, Theme.of(context).textTheme.headline6!, context),
-            charBuilder(5, Theme.of(context).textTheme.headline6!, context)
+            charBuilder(4, Theme.of(context).textTheme.titleLarge!, context),
+            charBuilder(5, Theme.of(context).textTheme.titleLarge!, context)
           ],
         ),
       ],

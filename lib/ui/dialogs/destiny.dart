@@ -35,7 +35,7 @@ class DestinyDialog extends StatelessWidget{
             Text(
               AppLocalizations.of(context)!.lightSide,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6
+              style: Theme.of(context).textTheme.titleLarge
             ),
             Container(height: 10),
             UpDownStat(
@@ -59,7 +59,7 @@ class DestinyDialog extends StatelessWidget{
             Text(
               AppLocalizations.of(context)!.darkSide,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6
+              style: Theme.of(context).textTheme.titleLarge
             ),
             Container(height: 10),
             UpDownStat(

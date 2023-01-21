@@ -108,7 +108,7 @@ class _LoadingState extends State<Loading> {
           padding: const EdgeInsets.all(15),
           child: Text(
             AppLocalizations.of(context)!.healthMode,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ),
         Padding(

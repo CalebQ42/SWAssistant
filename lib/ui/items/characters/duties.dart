@@ -53,13 +53,13 @@ class DutiesState extends State<Duties> with StatefulCard {
                               Container(height: 15),
                               Text(
                                 character.duties[index].name,
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                                 textAlign: TextAlign.center
                               ),
                               Container(height: 5),
                               Text(
                                 "${character.duties[index].value} ${AppLocalizations.of(context)!.duty}",
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
                               Container(height: 10),

@@ -172,7 +172,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
           ),
           if(overEncumbered) Text(
             AppLocalizations.of(context)!.overEncumNotice,
-            style: TextStyle(color: Theme.of(context).errorColor),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
             textAlign: TextAlign.center,
           ), ...List.generate(
             editable.inventory.length,
@@ -199,7 +199,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
                                 Center(
                                   child: Text(
                                     editable.inventory[index].name,
-                                    style: Theme.of(context).textTheme.headline5,
+                                    style: Theme.of(context).textTheme.headlineSmall,
                                     textAlign: TextAlign.center,
                                   )
                                 ),
@@ -207,14 +207,14 @@ class InventoryState extends State<Inventory> with StatefulCard{
                                 Center(
                                   child: Text(
                                     "${AppLocalizations.of(context)!.count}: ${editable.inventory[index].count}",
-                                    style: Theme.of(context).textTheme.bodyText1,
+                                    style: Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 ),
                                 Container(height: 5),
                                 Center(
                                   child: Text(
                                     "${AppLocalizations.of(context)!.encum}: ${editable.inventory[index].encum}",
-                                    style: Theme.of(context).textTheme.bodyText1,
+                                    style: Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 ),
                                 Container(height: 10),

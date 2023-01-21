@@ -66,7 +66,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
                           Center(
                             child: Text(
                               editable.criticalInjuries[i].name,
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               textAlign: TextAlign.justify,
                             )
                           ),
@@ -74,7 +74,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
                           Center(
                             child: Text(
                               "${AppLocalizations.of(context)!.severity}: $severity",
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                           Container(height: 10),

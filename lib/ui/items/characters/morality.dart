@@ -71,7 +71,7 @@ class MoralityState extends State with StatefulCard {
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 fieldAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
                 title: AppLocalizations.of(context)!.morality,
               )
             ),

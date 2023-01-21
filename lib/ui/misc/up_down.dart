@@ -48,7 +48,7 @@ class UpDownStatState extends State<UpDownStat>{
             child: Text(
               widget.getValue().toString(),
               key: ValueKey(widget.getValue()),
-              style: widget.style ?? Theme.of(context).textTheme.headline5?.copyWith(color: widget.textColor),
+              style: widget.style ?? Theme.of(context).textTheme.headlineSmall?.copyWith(color: widget.textColor),
             ),
             transitionBuilder: (wid, anim){
               Tween<Offset> offset;

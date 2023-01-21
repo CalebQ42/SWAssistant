@@ -226,7 +226,7 @@ class _CombinedDialogState extends State<_CombinedDialog>{
       children: [
         if(!widget.noSuccess && widget.weaponPack == null) Center(
           child: Text(success.toString() + (isSuccess ? " ${AppLocalizations.of(context)!.success}" : " ${AppLocalizations.of(context)!.failure}"),
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         if(widget.weaponPack != null) Center(
@@ -234,38 +234,38 @@ class _CombinedDialogState extends State<_CombinedDialog>{
             isSuccess ? "${widget.weaponPack!.weapon.addBrawn ? widget.weaponPack!.weapon.damage! + success + widget.weaponPack!.brawn :
               widget.weaponPack!.weapon.damage! + success} ${AppLocalizations.of(context)!.damage}" :
                 "$success ${AppLocalizations.of(context)!.failure}",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         if(widget.weaponPack != null && isSuccess && pierceInd != null && pierceInd != -1) Center(
           child: Text(
             AppLocalizations.of(context)!.ignoreSoak(widget.weaponPack!.weapon.characteristics[pierceInd].value ?? 1),
-            style: Theme.of(context).textTheme.headline6?.apply(fontSizeFactor: .75),
+            style: Theme.of(context).textTheme.titleLarge?.apply(fontSizeFactor: .75),
           )
         ),
         if(advantage != 0) Center(
           child: Text(advantage.toString() + (isAdvantaged ? " ${AppLocalizations.of(context)!.advantage}" : " ${AppLocalizations.of(context)!.threat}"),
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           )
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.triumph) > 0) Center(
           child: Text("${widget.res.results[AppLocalizations.of(context)!.triumph]} ${AppLocalizations.of(context)!.triumph}",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           )
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.despair) > 0) Center(
           child: Text("${widget.res.results[AppLocalizations.of(context)!.despair]} ${AppLocalizations.of(context)!.despair}",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           )
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.lightSide) > 0) Center(
           child: Text("${widget.res.results[AppLocalizations.of(context)!.lightSide]} ${AppLocalizations.of(context)!.lightSide}",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         if(widget.res.getResult(AppLocalizations.of(context)!.darkSide) > 0) Center(
           child: Text("${widget.res.results[AppLocalizations.of(context)!.darkSide]} ${AppLocalizations.of(context)!.darkSide}",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           )
         ),
         if(widget.weaponPack != null && ((widget.weaponPack!.weapon.critical ?? 0) > 0 || (advChars != null && advChars.isNotEmpty))) ...[

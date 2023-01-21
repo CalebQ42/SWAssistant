@@ -56,7 +56,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         EditingText(
           editing: edit, 
           initialText: vehicle.silhouette.toString(),
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
@@ -72,7 +72,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         EditingText(
           editing: edit, 
           initialText: vehicle.speed.toString(),
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
@@ -88,7 +88,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         EditingText(
           editing: edit, 
           initialText: vehicle.armor.toString(),
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
@@ -104,7 +104,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         EditingText(
           editing: edit, 
           initialText: vehicle.handling.toString(),
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
@@ -121,7 +121,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         EditingText(
           editing: edit, 
           initialText: vehicle.hp.toString(),
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
@@ -137,7 +137,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         EditingText(
           editing: edit, 
           initialText: vehicle.passengerCapacity.toString(),
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
@@ -153,7 +153,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
         EditingText(
           editing: edit, 
           initialText: vehicle.category,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           defaultSave: true,
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,

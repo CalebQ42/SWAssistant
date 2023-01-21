@@ -13,10 +13,10 @@ class DonateDialog extends StatelessWidget{
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(AppLocalizations.of(context)!.donoOptions, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
-        if(!kIsWeb) Text(AppLocalizations.of(context)!.gPlay, style: Theme.of(context).textTheme.headline6),
+        Text(AppLocalizations.of(context)!.donoOptions, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center,),
+        if(!kIsWeb) Text(AppLocalizations.of(context)!.gPlay, style: Theme.of(context).textTheme.titleLarge),
         if(!kIsWeb) Text(AppLocalizations.of(context)!.gPlayDesc, textAlign: TextAlign.center,),
-        Text(AppLocalizations.of(context)!.sponsors, style: Theme.of(context).textTheme.headline6),
+        Text(AppLocalizations.of(context)!.sponsors, style: Theme.of(context).textTheme.titleLarge),
         Text(AppLocalizations.of(context)!.sponsorsDesc, textAlign: TextAlign.center,),
         ButtonBar(
           children: [

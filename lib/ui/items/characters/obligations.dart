@@ -53,13 +53,13 @@ class ObligationsState extends State<Obligations> with StatefulCard {
                               Container(height: 15),
                               Text(
                                 character.obligations[index].name,
-                                style: Theme.of(context).textTheme.headline5,
+                                style: Theme.of(context).textTheme.headlineSmall,
                                 textAlign: TextAlign.center
                               ),
                               Container(height: 5),
                               Text(
                                 "${character.obligations[index].value} ${AppLocalizations.of(context)!.obligation}",
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
                               Container(height: 10),

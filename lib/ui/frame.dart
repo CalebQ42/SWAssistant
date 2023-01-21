@@ -131,13 +131,13 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                 duration: const Duration(milliseconds: 300),
                 child: Text(
                   title,
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  style: Theme.of(context).primaryTextTheme.titleMedium,
                   key: Key(title),
                 ),
               ),
               icon: Icon(
                 Icons.menu,
-                color: Theme.of(context).primaryTextTheme.subtitle1?.color
+                color: Theme.of(context).primaryTextTheme.titleMedium?.color
               ),
               expanded: expanded,
               autoClose: false,
@@ -149,14 +149,14 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
             onPressed: hidden ? null : () => SWDiceHolder().showDialog(context, showInstant: true),
             icon: Icon(
               Icons.casino_outlined,
-              color: Theme.of(context).primaryTextTheme.subtitle1?.color
+              color: Theme.of(context).primaryTextTheme.titleMedium?.color
             )
           ),
           if(thin && _selected == "/gm") IconButton(
             onPressed: hidden ? null : () => DestinyDialog().show(context),
             icon: Icon(
               Icons.tonality,
-              color: Theme.of(context).primaryTextTheme.subtitle1?.color
+              color: Theme.of(context).primaryTextTheme.titleMedium?.color
             )
           ),
         ]
@@ -165,11 +165,11 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       NavItem(
         icon: Icon(
           Icons.contacts,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color,
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color,
         ),
         title: Text(
           AppLocalizations.of(context)!.gmMode,
-          style: Theme.of(context).primaryTextTheme.subtitle1
+          style: Theme.of(context).primaryTextTheme.titleMedium
         ),
         onTap: hidden || _selected == "/gm" ? null : () => SW.of(context).nav()?.pushNamed("/gm"),
         expanded: expanded,
@@ -178,11 +178,11 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       NavItem(
         icon: Icon(
           Icons.face,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color
         ),
         title: Text(
           AppLocalizations.of(context)!.characters,
-          style: Theme.of(context).primaryTextTheme.subtitle1
+          style: Theme.of(context).primaryTextTheme.titleMedium
         ),
         onTap: hidden || _selected == "/characters" ? null : () => SW.of(context).nav()?.pushNamed("/characters"),
         expanded: expanded,
@@ -191,11 +191,11 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       NavItem(
         icon: Icon(
           Icons.supervisor_account,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color
         ),
         title: Text(
           AppLocalizations.of(context)!.minions,
-          style: Theme.of(context).primaryTextTheme.subtitle1
+          style: Theme.of(context).primaryTextTheme.titleMedium
         ),
         onTap: hidden || _selected == "/minions" ? null : () => SW.of(context).nav()?.pushNamed("/minions"),
         expanded: expanded,
@@ -204,11 +204,11 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       NavItem(
         icon: Icon(
           Icons.motorcycle,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color
         ),
         title: Text(
           AppLocalizations.of(context)!.vehicles,
-          style: Theme.of(context).primaryTextTheme.subtitle1
+          style: Theme.of(context).primaryTextTheme.titleMedium
         ),
         onTap: hidden || _selected == "/vehicles" ? null : () => SW.of(context).nav()?.pushNamed("/vehicles"),
         expanded: expanded,
@@ -218,11 +218,11 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       NavItem(
         icon: Icon(
           Icons.settings,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color
         ),
         title: Text(
           AppLocalizations.of(context)!.settings,
-          style: Theme.of(context).primaryTextTheme.subtitle1
+          style: Theme.of(context).primaryTextTheme.titleMedium
         ),
         onTap: hidden || _selected == "settings" ? null : () => SW.of(context).nav()?.pushNamed("/settings"),
         expanded: expanded,
@@ -231,11 +231,11 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       NavItem(
         icon: Icon(
           Icons.delete,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color
         ),
         title: Text(
           AppLocalizations.of(context)!.trash,
-          style: Theme.of(context).primaryTextTheme.subtitle1
+          style: Theme.of(context).primaryTextTheme.titleMedium
         ),
         onTap: hidden || _selected == "trash" ? null : () => SW.of(context).nav()?.pushNamed("/trash"),
         expanded: expanded,
@@ -244,11 +244,11 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
       if(!thin) NavItem(
         icon: Icon(
           Icons.casino_outlined,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color
         ),
         title: Text(
           AppLocalizations.of(context)!.dice,
-          style: Theme.of(context).primaryTextTheme.subtitle1
+          style: Theme.of(context).primaryTextTheme.titleMedium
         ),
         onTap: hidden ? null : () => SWDiceHolder().showDialog(context, showInstant: true),
         expanded: expanded,
@@ -395,7 +395,7 @@ class NavItem extends StatelessWidget{
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const SizedBox(height: 5),
-                          Container(width: 10, height: 2, color: Theme.of(context).primaryTextTheme.bodyText1?.color),
+                          Container(width: 10, height: 2, color: Theme.of(context).primaryTextTheme.bodyLarge?.color),
                         ],
                       ) : Container(),
                     )

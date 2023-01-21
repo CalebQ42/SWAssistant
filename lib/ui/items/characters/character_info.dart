@@ -52,7 +52,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
     var species = EditingText(
       editing: edit, 
       initialText: character.species,
-      style: Theme.of(context).textTheme.subtitle1,
+      style: Theme.of(context).textTheme.titleMedium,
       defaultSave: true,
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,
@@ -62,7 +62,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
     var age = EditingText(
       editing: edit,
       initialText: character.age.toString(),
-      style: Theme.of(context).textTheme.subtitle1,
+      style: Theme.of(context).textTheme.titleMedium,
       defaultSave: true,
       fieldAlign: TextAlign.center,
       controller: ageController,
@@ -72,7 +72,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
     var motivation = EditingText(
       editing: edit, 
       initialText: character.motivation,
-      style: Theme.of(context).textTheme.subtitle1,
+      style: Theme.of(context).textTheme.titleMedium,
       defaultSave: true,
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,
@@ -82,7 +82,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
     var career = EditingText(
       editing: edit, 
       initialText: character.career,
-      style: Theme.of(context).textTheme.subtitle1,
+      style: Theme.of(context).textTheme.titleMedium,
       defaultSave: true,
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,
@@ -92,7 +92,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
     var category = EditingText(
       editing: edit, 
       initialText: character.category,
-      style: Theme.of(context).textTheme.subtitle1,
+      style: Theme.of(context).textTheme.titleMedium,
       defaultSave: true,
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,

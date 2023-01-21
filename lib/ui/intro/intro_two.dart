@@ -36,7 +36,7 @@ class _IntroTwoState extends State{
         children: [
           Text(
             AppLocalizations.of(context)!.settings,
-            style: Theme.of(context).textTheme.headline4
+            style: Theme.of(context).textTheme.headlineMedium
           ),
           const SizedBox(height: 10),
           if(!kIsWeb) SwitchListTile(

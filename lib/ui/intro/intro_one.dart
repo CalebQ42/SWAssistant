@@ -28,7 +28,7 @@ class _IntroOneState extends State{
         children: [
           Text(
             AppLocalizations.of(context)!.firebase,
-            style: Theme.of(context).textTheme.headline4
+            style: Theme.of(context).textTheme.headlineMedium
           ),
           const SizedBox(height: 5),
           Text(

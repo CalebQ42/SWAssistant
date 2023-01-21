@@ -51,7 +51,7 @@ class DiceSelector extends StatelessWidget{
     var title = Text(
       getText(context),
       textAlign: TextAlign.center,
-      style: small ? Theme.of(context).textTheme.bodyText1?.copyWith(color: text) : Theme.of(context).textTheme.headline6?.copyWith(color: text),
+      style: small ? Theme.of(context).textTheme.bodyLarge?.copyWith(color: text) : Theme.of(context).textTheme.titleLarge?.copyWith(color: text),
     );
     var upDown = UpDownStat(
       getValue: () => getValue(),

@@ -93,7 +93,7 @@ class _InstantState extends State<_InstantDiceCard>{
               Text(
                 "d${widget.sides}",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6
+                style: Theme.of(context).textTheme.titleLarge
               ),
               Row(
                 children: [

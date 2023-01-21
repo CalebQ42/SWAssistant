@@ -87,7 +87,7 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
                                   Center(
                                     child: Text(
                                       character.forcePowers[index].name,
-                                      style: Theme.of(context).textTheme.headline5,
+                                      style: Theme.of(context).textTheme.headlineSmall,
                                       textAlign: TextAlign.justify,
                                     )
                                   ),

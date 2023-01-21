@@ -130,7 +130,7 @@ class WeaponEditDialog{
             _WeaponDropdowns(weapon, bot),
             //Characteristics
             Container(height: 15),
-            Center(child: Text(AppLocalizations.of(context)!.characteristic, style: Theme.of(context).textTheme.headline6),),
+            Center(child: Text(AppLocalizations.of(context)!.characteristic, style: Theme.of(context).textTheme.titleLarge),),
             _WeaponCharacteristics(weapon),
             //Add Brawn
             if(editable is Character || editable is Minion) UpdatingSwitchTile(
