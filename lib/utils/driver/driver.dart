@@ -20,6 +20,8 @@ class Driver{
   StreamSubscription? sub;
   bool internetAvailable = true;
 
+  bool crashlytics = false;
+
   Driver(this.scope) : wd = scope == DriveApi.driveAppdataScope ? "appDataFolder" : "root";
 
   Future<bool> changeScope(String scope) async {
@@ -58,8 +60,9 @@ class Driver{
         }
         if(gsi!.currentUser == null) return false;
       } catch(e) {
-        if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-          FirebaseCrashlytics.instance.recordError(e, null,
+        if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+          await crash.loadLibrary();
+          crash.FirebaseCrashlytics.instance.recordError(e, null,
             reason: "ready"
           );
         }else if(kDebugMode){
@@ -89,8 +92,9 @@ class Driver{
       wd = foldId;
       return true;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "setWD"
         );
       }else if(kDebugMode){
@@ -111,8 +115,9 @@ class Driver{
         q: "'$foldID' in parents"
       )).files;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "listFilesFromRoot"
         );
       }else if(kDebugMode){
@@ -133,8 +138,9 @@ class Driver{
         q: "'$foldID' in parents"
       )).files;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "listFiles"
         );
       }else if(kDebugMode){
@@ -191,8 +197,9 @@ class Driver{
       }
       return out![0].id!;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getIDFromRoot"
         );
       }else if(kDebugMode){
@@ -243,8 +250,9 @@ class Driver{
       }
       return out![0].id;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getID"
         );
       }else if(kDebugMode){
@@ -281,8 +289,9 @@ class Driver{
       fil = await api!.files.create(fil);
       return fil.id;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "createFileFromRoot"
         );
       }else if(kDebugMode){
@@ -307,8 +316,9 @@ class Driver{
       fil = await api!.files.create(fil);
       return fil.id;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "createFileWithParent"
         );
       }else if(kDebugMode){
@@ -343,8 +353,9 @@ class Driver{
       );
       return fil.id;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "createFile"
         );
       }else if(kDebugMode){
@@ -360,8 +371,9 @@ class Driver{
     try{
       return (await api!.files.get(id)) as File;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getFile"
         );
       }else if(kDebugMode){
@@ -377,8 +389,9 @@ class Driver{
     try{
       return (await api!.files.get(id, downloadOptions: DownloadOptions.fullMedia)) as Media;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "getContents"
         );
       }else if(kDebugMode){
@@ -402,8 +415,9 @@ class Driver{
       );
       return fil.id != null;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "updateContents"
         );
       }else if(kDebugMode){
@@ -419,8 +433,9 @@ class Driver{
     try{
       return await api!.files.delete(id);
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "delete"
         );
       }else if(kDebugMode){
@@ -436,8 +451,9 @@ class Driver{
     try{
       return (await api!.files.update(File(trashed: true), id)).trashed ?? false;
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "trash"
         );
       }else if(kDebugMode){
@@ -453,8 +469,9 @@ class Driver{
     try{
       return !((await api!.files.update(File(trashed: false), id)).trashed ?? false);
     }catch(e){
-      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled){
-        FirebaseCrashlytics.instance.recordError(e, null,
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
           reason: "unTrash"
         );
       }else if(kDebugMode){
