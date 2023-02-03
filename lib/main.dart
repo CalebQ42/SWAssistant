@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/frame.dart';
 import 'package:swassistant/ui/intro/intro_zero.dart';
@@ -136,22 +138,22 @@ class SWAppState extends State<SWApp> {
             );
             return ed.route;
           } else {
-            widy = EditableList(EditableList.character, uidToLoad: settings.name?.substring(6));
+            widy = EditableList(Character, uidToLoad: settings.name?.substring(6));
           }
         }else if(settings.name == "/gm") {
           widy = GMMode();
         } else if(settings.name == "/settings") {
           widy = const Settings();
         }else if(settings.name == "/vehicles"){
-          widy = const EditableList(EditableList.vehicle);
+          widy = const EditableList(Vehicle);
         }else if(settings.name == "/minions"){
-          widy = const EditableList(EditableList.minion);
+          widy = const EditableList(Minion);
         }else if(settings.name == "/trash"){
           widy = const TrashList();
         }
         if (widy == null){
           settings = RouteSettings(name: "/characters", arguments: settings.arguments);
-          widy ??= const EditableList(EditableList.character);
+          widy ??= const EditableList(Character);
         }
         return PageRouteBuilder(
           pageBuilder: (context, anim, secondaryAnim) {
