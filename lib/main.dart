@@ -168,19 +168,16 @@ class SWAppState extends State<SWApp> {
           transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
         );
       },
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      supportedLocales: const [
-        Locale("en", ""),
-        Locale("de",""),
-        Locale("es",""),
-        Locale("fr",""),
-        Locale("it","")
-      ],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: (){
+        if(app.getPref(preferences.locale) == "") return null;
+        try{
+          return AppLocalizations.supportedLocales.firstWhere((element) => element.toLanguageTag() == app.getPref(preferences.locale));
+        }catch(e){
+          return null;
+        }
+      }(),
       themeMode: app.getPref(preferences.forceLight) ?
         ThemeMode.light : app.getPref(preferences.forceDark) ?
         ThemeMode.dark : ThemeMode.system,

@@ -135,6 +135,47 @@ class SettingsState extends State{
           ),
           const Divider(),
           Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 10
+            ),
+            child: DropdownButtonFormField<String>(
+              items: [
+                DropdownMenuItem<String>(
+                  value: "",
+                  child: Text(AppLocalizations.of(context)!.systemLanguage),
+                ),
+                const DropdownMenuItem<String>(
+                  value: "en",
+                  child: Text("English")
+                ),
+                const DropdownMenuItem<String>(
+                  value: "es",
+                  child: Text("Spanish")
+                ),
+                const DropdownMenuItem<String>(
+                  value: "fr",
+                  child: Text("French")
+                ),
+                const DropdownMenuItem<String>(
+                  value: "it",
+                  child: Text("Italian")
+                ),
+                const DropdownMenuItem<String>(
+                  value: "de",
+                  child: Text("German")
+                )
+              ],
+              onChanged: (String? value) {
+                value ??= "";
+                app.prefs.setString(preferences.locale, value);
+                app.topLevelUpdate();
+              },
+              value: app.getPref(preferences.locale),
+            )
+          ),
+          const Divider(),
+          Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
               AppLocalizations.of(context)!.healthMode,

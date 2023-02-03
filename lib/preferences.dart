@@ -2,6 +2,7 @@
 const String googleDrive = "cloudEnabled";
 const String colorDice = "colorDice";
 const String subtractMode = "subtract";
+const String locale = "locale";
 
 //Firebase prefs
 const String crashlytics = "crashlytics";
@@ -37,6 +38,7 @@ Map<String, dynamic> defaultPreference = {
   googleDrive: false,
   colorDice: true,
   subtractMode: true,
+  locale: "",
   crashlytics: true,
   firebase: true,
   ads: true,
