@@ -76,7 +76,8 @@ class SW {
     if(kDebugMode) app.devMode = true;
     if(!kIsWeb){
       await pathprov.loadLibrary();
-      app.saveDir = "${await pathprov.getApplicationDocumentsDirectory()}/SWChars";
+      var docDir = await pathprov.getApplicationDocumentsDirectory();
+      app.saveDir = "${docDir.path}/SWChars";
       if(!Directory(app.saveDir).existsSync()){
         Directory(app.saveDir).createSync();
       }
@@ -192,6 +193,7 @@ class SW {
       var okay = await driver!.setWD(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
       if(!okay){
         if(context != null) nav?.pop();
+        syncing = false;
         return false;
       }
     }
@@ -199,11 +201,13 @@ class SW {
     var okay = await driver!.ready();
     if(!okay){
       if(context != null) nav?.pop();
+      syncing = false;
       return false;
     }
     okay = await driver!.setWD(scope == drive.DriveApi.driveAppdataScope ? "SWChars" : "SWAssistant");
     if(!okay){
       if(context != null) nav?.pop();
+      syncing = false;
       return false;
     }
     var all = <Editable>[

@@ -52,56 +52,23 @@ class EditableListState extends State<EditableList>{
     }
     var oldLen = list.length;
     List<DropdownMenuItem<String>> categories;
-    if(widget.edType == null){
-      if(cat == null){
-        list = app.getList();
-      }else if(cat == "char"){
-        list = app.getList(type: Character);
-      }else if(cat == "min"){
-        list = app.getList(type: Minion);
-      }else if(cat == "veh"){
-        list = app.getList(type: Vehicle);
-      }else{
-        list = app.getList(category: cat);
-      }
-      categories = [
-        DropdownMenuItem<String>(
-          value: null,
-          child: Text(AppLocalizations.of(context)!.all),
-        ),
-        DropdownMenuItem<String>(
-          value: "char",
-          child: Text(AppLocalizations.of(context)!.characters),
-        ),
-        DropdownMenuItem<String>(
-          value: "min",
-          child: Text(AppLocalizations.of(context)!.minions),
-        ),
-        DropdownMenuItem<String>(
-          value: "veh",
-          child: Text(AppLocalizations.of(context)!.vehicles),
-        )
-      ];
-    }else{
-      list = app.getList(type: widget.edType, category: cat);
-      categories = [
-        DropdownMenuItem<String>(
-          value: null,
-          child: Text(AppLocalizations.of(context)!.all),
-        ),
-        DropdownMenuItem<String>(
-          value: "",
-          child: Text(AppLocalizations.of(context)!.uncategorized)
-        )
-      ];
-    }
-    categories.addAll(List.generate(app.cats.length, (index) =>
+    list = app.getList(type: widget.edType, category: cat);
+    categories = [
+      DropdownMenuItem<String>(
+        value: null,
+        child: Text(AppLocalizations.of(context)!.all),
+      ),
+      DropdownMenuItem<String>(
+        value: "",
+        child: Text(AppLocalizations.of(context)!.uncategorized)
+      ),
+      ...List.generate(app.cats.length, (index) =>
         DropdownMenuItem<String>(
           value: app.cats[index],
           child: Text(app.cats[index])
         )
       )
-    );
+    ];
     if(list.length != oldLen){
       listKey = GlobalKey();
     }

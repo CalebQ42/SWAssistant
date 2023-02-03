@@ -84,7 +84,7 @@ class LoadingState extends State<Loading> {
                 Container(height: 10),
                 Text(
                   _loadText ?? AppLocalizations.of(context)!.loadingDialog,
-                  style: Theme.of(context).textTheme.displaySmall,
+                  style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 )
               ],
@@ -165,14 +165,15 @@ class LoadingState extends State<Loading> {
           padding: const EdgeInsets.all(15),
           child: Text(
             AppLocalizations.of(context)!.driveError,
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(7),
           child: Text(
-            kIsWeb ? AppLocalizations.of(context)!.driveErrorWebSub : AppLocalizations.of(context)!.driveErrorWebSub,
-            style: Theme.of(context).textTheme.displaySmall,
+            kIsWeb ? AppLocalizations.of(context)!.driveErrorWebSub : AppLocalizations.of(context)!.driveErrorOfflineSub,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         if(!kIsWeb) TextButton(
