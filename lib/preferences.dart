@@ -29,6 +29,10 @@ const String destinyDark = "destinyDark";
 //New prefs check
 const String subtractNew = "subtractNew";
 
+const List<String> newPrefs = [
+  subtractNew
+];
+
 Map<String, dynamic> defaultPreference = {
   googleDrive: false,
   colorDice: true,

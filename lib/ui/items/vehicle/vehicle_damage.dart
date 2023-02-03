@@ -38,7 +38,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
       ..addListener(() => vehicle.hullTraumaThresh = int.tryParse(hullTraumaThreshController!.text) ?? 0);
     sysStressThreshController ??= TextEditingController(text: vehicle.sysStressThresh.toString())
       ..addListener(() => vehicle.sysStressThresh = int.tryParse(sysStressThreshController!.text) ?? 0);
-    var subtractMode = SW.of(context).getPreference(preferences.subtractMode, true);
+    var subtractMode = SW.of(context).getPref(preferences.subtractMode);
     return Column(
       children: [
         Row(

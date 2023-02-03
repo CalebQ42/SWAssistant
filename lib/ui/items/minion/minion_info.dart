@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,9 +30,9 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
     var minion = Minion.of(context);
     if (minion == null) throw "MinInfo card used on non Minion";
     if(catController == null){
-      catController = TextEditingController();
+      catController = TextEditingController(text: minion.category);
       catController!.addListener(() => 
-        minion.category = catController!.text
+        SW.of(context).updateCategory(minion, catController!.text)
       );
     }
     return Column(

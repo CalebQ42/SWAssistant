@@ -25,11 +25,12 @@ class _IntroTwoState extends State{
         var app = SW.of(context);
         app.prefs.setBool(preferences.driveFirstLoad, false);
         app.prefs.setBool(preferences.firstStart, false);
-        for(var ask in Loading.asks){
+        app.prefs.setBool(preferences.newDrive, true);
+        for(var ask in preferences.newPrefs){
           app.prefs.setBool(ask, false);
         }
         Navigator.pushNamedAndRemoveUntil(
-          context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
+          context, SW.of(context).getPref(preferences.startingScreen), (route) => false);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -43,7 +44,7 @@ class _IntroTwoState extends State{
             title: Text(
               AppLocalizations.of(context)!.cloudSave
             ),
-            value: SW.of(context).getPreference(preferences.googleDrive, false),
+            value: SW.of(context).getPref(preferences.googleDrive),
             onChanged: (b){
               SW.of(context).prefs.setBool(preferences.googleDrive, b);
               setState((){});
@@ -75,7 +76,7 @@ class _IntroTwoState extends State{
                   )
                 ),
                 Switch(
-                  value: SW.of(context).getPreference(preferences.subtractMode, true),
+                  value: SW.of(context).getPref(preferences.subtractMode),
                   onChanged: (b) => setState(() {
                     SW.of(context).prefs.setBool(preferences.subtractMode, b);
                   }),
@@ -99,7 +100,7 @@ class _IntroTwoState extends State{
             title: Text(
               AppLocalizations.of(context)!.forceDark,
             ),
-            value: SW.of(context).getPreference(preferences.forceDark, false),
+            value: SW.of(context).getPref(preferences.forceDark),
             onChanged: (b){
               SW.of(context).prefs.setBool(preferences.forceDark, b);
               if (b) SW.of(context).prefs.setBool(preferences.forceLight, false);
@@ -111,7 +112,7 @@ class _IntroTwoState extends State{
             title: Text(
               AppLocalizations.of(context)!.amoledTheme,
             ),
-            value: SW.of(context).getPreference(preferences.amoled, false),
+            value: SW.of(context).getPref(preferences.amoled),
             onChanged: (b){
               SW.of(context).prefs.setBool(preferences.amoled, b);
               setState((){});
@@ -122,7 +123,7 @@ class _IntroTwoState extends State{
             title: Text(
               AppLocalizations.of(context)!.forceLight,
             ),
-            value: SW.of(context).getPreference(preferences.forceLight, false),
+            value: SW.of(context).getPref(preferences.forceLight),
             onChanged: (b){
               SW.of(context).prefs.setBool(preferences.forceLight, b);
               if (b) SW.of(context).prefs.setBool(preferences.forceDark, false);

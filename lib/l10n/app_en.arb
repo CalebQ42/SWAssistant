@@ -30,6 +30,12 @@
 
     "loadingDialog": "Loading...",
 
+    "driveError": "Can't sync with Google Drive",
+    "driveErrorWebSub": "Google Drive syncing is required for the web version of SWAssistant. The sign in pop-up might have been blocked by your browser.",
+    "driveErrorOfflineSub": "If you continue offline, you can refresh on the character list to re-connect.",
+    "driveContinue": "Continue offline",
+    "retry": "Retry",
+
     "driveSyncing": "Syncing Google Drive",
     "syncFail": "Syncing failed",
     "syncComplete": "Syncing Complete",

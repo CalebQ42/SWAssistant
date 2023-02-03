@@ -20,9 +20,9 @@ class Driver{
   StreamSubscription? sub;
   bool internetAvailable = true;
 
-  bool crashlytics = false;
+  bool crashlytics;
 
-  Driver(this.scope) : wd = scope == DriveApi.driveAppdataScope ? "appDataFolder" : "root";
+  Driver(this.scope, this.crashlytics) : wd = scope == DriveApi.driveAppdataScope ? "appDataFolder" : "root";
 
   Future<bool> changeScope(String scope) async {
     this.scope = scope;

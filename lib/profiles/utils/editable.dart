@@ -91,7 +91,7 @@ abstract class Editable extends JsonSavable{
     }
     app ??= SW.of(context!);
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
-    loadJson(jsonMap, app.getPreference(preferences.subtractMode, true));
+    loadJson(jsonMap, app.getPref(preferences.subtractMode));
     if(getFileLocation(app) != file.path){
       loc = file.path;
     }
@@ -351,7 +351,7 @@ abstract class Editable extends JsonSavable{
     }
     if(!_saving && !_defered && !_syncing){
       _saving = true;
-      if(!localOnly && app != null && app.getPreference(preferences.googleDrive, false)) {
+      if(!localOnly && app != null && app.getPref(preferences.googleDrive)) {
         cloudSave(app);
       }
       var file = File(filename);
@@ -537,13 +537,13 @@ abstract class Editable extends JsonSavable{
     await for(var tmp in media.stream){
       out.addAll(tmp);
     }
-    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>), app.getPreference(preferences.subtractMode, true));
+    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>), app.getPref(preferences.subtractMode));
     if(overwriteId) driveId = id;
   }
 
   void trash(SW app){
     app.remove(this);
-    app.trashCan.add(this);
+    app.trash.add(this);
     if(!_saving && !_defered && !_cloudDefered && !_cloudSaving){
       trashed = true;
       trashTime = DateTime.now();

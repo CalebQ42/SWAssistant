@@ -27,7 +27,7 @@ class IntroZero extends StatelessWidget{
         app.prefs.setBool(preferences.firstStart, false);
         if(kIsWeb) app.prefs.setBool(preferences.googleDrive, true);
         Navigator.pushNamedAndRemoveUntil(
-          context, SW.of(context).getPreference(preferences.startingScreen, "/characters"), (route) => false);
+          context, SW.of(context).getPref(preferences.startingScreen), (route) => false);
       } : null,
       defPrevScreen: false,
       prevScreenIcon: const Icon(Icons.exit_to_app),

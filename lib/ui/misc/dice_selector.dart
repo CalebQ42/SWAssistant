@@ -16,7 +16,7 @@ class DiceSelector extends StatelessWidget{
   Widget build(BuildContext context){
     Color? background;
     Color? text;
-    if (SW.of(context).getPreference(preferences.colorDice, true)) {
+    if (SW.of(context).getPref(preferences.colorDice)) {
       switch(type){
         case 0:
           background = Colors.green;

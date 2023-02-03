@@ -45,7 +45,7 @@ class _IntroOneState extends State{
             title: Text(
               AppLocalizations.of(context)!.firebase,
             ),
-            value: SW.of(context).getPreference(preferences.firebase, true),
+            value: SW.of(context).getPref(preferences.firebase),
             onChanged: (b){
               SW.of(context).prefs.setBool(preferences.firebase, b);
               setState((){});
@@ -55,8 +55,8 @@ class _IntroOneState extends State{
             title: Text(
               AppLocalizations.of(context)!.crashReporting,
             ),
-            value: SW.of(context).getPreference(preferences.crashlytics, true),
-            onChanged: SW.of(context).getPreference(preferences.firebase, true) ? (b) {
+            value: SW.of(context).getPref(preferences.crashlytics),
+            onChanged: SW.of(context).getPref(preferences.firebase) ? (b) {
               SW.of(context).prefs.setBool(preferences.crashlytics, b);
               setState((){});
             } : null

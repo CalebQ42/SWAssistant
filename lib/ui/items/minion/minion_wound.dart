@@ -41,7 +41,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
     });
     soakController ??= TextEditingController(text: minion.soak.toString())
         ..addListener(() => minion.soak = int.tryParse(soakController!.text) ?? 0);
-    var subtractMode = SW.of(context).getPreference(preferences.subtractMode, true);
+    var subtractMode = SW.of(context).getPref(preferences.subtractMode);
     return Column(
       children: [
         Row(

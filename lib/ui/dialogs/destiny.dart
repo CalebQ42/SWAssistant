@@ -24,8 +24,8 @@ class DestinyDialog extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    dest.lightSide = SW.of(context).getPreference(preferences.destinyLight, 0);
-    dest.darkSide = SW.of(context).getPreference(preferences.destinyDark, 0);
+    dest.lightSide = SW.of(context).getPref(preferences.destinyLight);
+    dest.darkSide = SW.of(context).getPref(preferences.destinyDark);
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [

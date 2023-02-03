@@ -171,7 +171,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.gmMode,
           style: Theme.of(context).primaryTextTheme.titleMedium
         ),
-        onTap: hidden || _selected == "/gm" ? null : () => SW.of(context).nav()?.pushNamed("/gm"),
+        onTap: hidden || _selected == "/gm" ? null : () => SW.of(context).nav?.pushNamed("/gm"),
         expanded: expanded,
         selected: _selected == "/gm"
       ),
@@ -184,7 +184,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.characters,
           style: Theme.of(context).primaryTextTheme.titleMedium
         ),
-        onTap: hidden || _selected == "/characters" ? null : () => SW.of(context).nav()?.pushNamed("/characters"),
+        onTap: hidden || _selected == "/characters" ? null : () => SW.of(context).nav?.pushNamed("/characters"),
         expanded: expanded,
         selected: _selected == "/characters"
       ),
@@ -197,7 +197,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.minions,
           style: Theme.of(context).primaryTextTheme.titleMedium
         ),
-        onTap: hidden || _selected == "/minions" ? null : () => SW.of(context).nav()?.pushNamed("/minions"),
+        onTap: hidden || _selected == "/minions" ? null : () => SW.of(context).nav?.pushNamed("/minions"),
         expanded: expanded,
         selected: _selected == "/minions"
       ),
@@ -210,7 +210,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.vehicles,
           style: Theme.of(context).primaryTextTheme.titleMedium
         ),
-        onTap: hidden || _selected == "/vehicles" ? null : () => SW.of(context).nav()?.pushNamed("/vehicles"),
+        onTap: hidden || _selected == "/vehicles" ? null : () => SW.of(context).nav?.pushNamed("/vehicles"),
         expanded: expanded,
         selected: _selected == "/vehicles"
       ),
@@ -224,7 +224,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.settings,
           style: Theme.of(context).primaryTextTheme.titleMedium
         ),
-        onTap: hidden || _selected == "settings" ? null : () => SW.of(context).nav()?.pushNamed("/settings"),
+        onTap: hidden || _selected == "settings" ? null : () => SW.of(context).nav?.pushNamed("/settings"),
         expanded: expanded,
         selected: _selected == "/settings"
       ),
@@ -237,7 +237,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
           AppLocalizations.of(context)!.trash,
           style: Theme.of(context).primaryTextTheme.titleMedium
         ),
-        onTap: hidden || _selected == "trash" ? null : () => SW.of(context).nav()?.pushNamed("/trash"),
+        onTap: hidden || _selected == "trash" ? null : () => SW.of(context).nav?.pushNamed("/trash"),
         expanded: expanded,
         selected: _selected == "/trash"
       ),
@@ -310,7 +310,7 @@ class FrameState extends State<Frame> with SingleTickerProviderStateMixin {
                       behavior: expanded ? HitTestBehavior.opaque : HitTestBehavior.translucent,
                       child: Container(
                         decoration: ShapeDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark && SW.of(context).getPreference(preferences.amoled, false) ?
+                          color: Theme.of(context).brightness == Brightness.dark && SW.of(context).getPref(preferences.amoled) ?
                               Colors.black.withOpacity(.75) : Colors.black.withOpacity(0.25),
                           shape: shape
                         )

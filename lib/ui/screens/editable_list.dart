@@ -15,16 +15,12 @@ import 'package:swassistant/ui/screens/editing_editable.dart';
 
 class EditableList extends StatefulWidget{
 
-  static const int character = 0;
-  static const int minion = 1;
-  static const int vehicle = 2;
-
-  final int type;
+  final Type? edType;
   final void Function(Editable)? onTap;
 
   final String? uidToLoad;
 
-  const EditableList(this.type, {Key? key, this.onTap, this.uidToLoad}) : super(key: key);
+  const EditableList(this.edType, {Key? key, this.onTap, this.uidToLoad}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => EditableListState();
@@ -32,10 +28,9 @@ class EditableList extends StatefulWidget{
 
 class EditableListState extends State<EditableList>{
 
-  late int type;
   List<Editable> list = [];
   String? cat;
-  String search = "";
+  //TODO: search
 
   bool first = true;
 
@@ -43,193 +38,70 @@ class EditableListState extends State<EditableList>{
   late GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey();
 
   @override
-  void initState() {
-    super.initState();
-    type = widget.type;
-  }
-
-  @override
   Widget build(BuildContext context) {
     var app = SW.of(context);
-    if(!kIsWeb && !app.getPreference(preferences.googleDrive, false) && app.getPreference(preferences.driveFirstLoad, true)){
-      Future(() async {
-        while(!mounted){
-          await Future.delayed(const Duration(milliseconds: 100));
-        }
-        app.prefs.setBool(preferences.driveFirstLoad, false);
-        showDialog(
-          context: context,
-          builder: (c) => AlertDialog(
-            content: Text(
-              AppLocalizations.of(context)!.driveFirstLaunch
-            ),
-            actions: [
-              TextButton(
-                child: Text(MaterialLocalizations.of(context).continueButtonLabel),
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  Navigator.of(context).pushNamed("/settings");
-                }
-              ),
-              TextButton(
-                child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                onPressed: () => Navigator.of(context, rootNavigator: true).pop()
-              )
-            ],
-          )
-        );
-      });
-    }
     if(widget.uidToLoad != null){
-      var rootNav = Navigator.of(context, rootNavigator: true);
       var nav = Navigator.of(context);
-      var scafMessage = ScaffoldMessenger.of(context);
-      var localization = AppLocalizations.of(context)!;
       Future(() async {
         while(!mounted) {
           await Future.delayed(const Duration(milliseconds: 50));
         }
-        showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) =>
-            AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const CircularProgressIndicator(),
-                  Container(height: 10),
-                  Text(
-                    AppLocalizations.of(context)!.loadingDialog,
-                    textAlign: TextAlign.center,
-                  )
-                ]
-              )
-            )
-        );
-        var syncSuccess = false;
-        if(app.getPreference(preferences.driveFirstLoad, true)){
-          syncSuccess = await app.initialSync();
-        }else{
-          syncSuccess = await app.syncCloud();
-        }
-        if(syncSuccess){
-          app.prefs.setBool(preferences.driveFirstLoad, false);
-          rootNav.pop();
-          var ed = app.findEditable(widget.uidToLoad!);
-          if(ed != null) nav.pushNamed("/edit/${widget.uidToLoad!}", arguments: ed);
-        }else{
-          nav.pop();
-          scafMessage.showSnackBar(
-            SnackBar(
-              content: Text(localization.syncFail)
-            )
-          );
-        }
+        var ed = app.getEditable(widget.uidToLoad!);
+        if(ed != null) nav.pushNamed("/edit/${widget.uidToLoad!}", arguments: ed);
       });
     }
     var oldLen = list.length;
     List<DropdownMenuItem<String>> categories;
-    switch(type){
-      case -1:
-        if(cat == null){
-          list = [
-            ...app.characters(),
-            ...app.minions(),
-            ...app.vehicles()
-          ];
-        }else if(cat == "char"){
-          list = app.characters();
-        }else if(cat == "min"){
-          list = app.minions();
-        }else{
-          list = app.vehicles();
-        }
-        categories = [
-          DropdownMenuItem<String>(
-            value: null,
-            child: Text(AppLocalizations.of(context)!.all),
-          ),
-          DropdownMenuItem<String>(
-            value: "char",
-            child: Text(AppLocalizations.of(context)!.characters),
-          ),
-          DropdownMenuItem<String>(
-            value: "min",
-            child: Text(AppLocalizations.of(context)!.minions),
-          ),
-          DropdownMenuItem<String>(
-            value: "veh",
-            child: Text(AppLocalizations.of(context)!.vehicles),
-          )
-        ];
-        break;
-      case 0:
-        list = app.characters(search: search, category: cat);
-        categories = List.generate(
-          app.charCats.length + 2,
-          (index) =>
-            (index == 0) ?
-              DropdownMenuItem<String>(
-                value: null,
-                child: Text(AppLocalizations.of(context)!.all),
-              )
-            : (index == 1) ?
-              DropdownMenuItem<String>(
-                value: "",
-                child: Text(AppLocalizations.of(context)!.uncategorized)
-              )
-            :
-              DropdownMenuItem<String>(
-                value: app.charCats[index-2],
-                child: Text(app.charCats[index-2])
-              )
-        );
-        break;
-      case 1:
-        list = app.minions(search: search, category: cat);
-        categories = List.generate(
-          app.minCats.length + 2,
-          (index) =>
-            (index == 0) ?
-              DropdownMenuItem<String>(
-                value: null,
-                child: Text(AppLocalizations.of(context)!.all),
-              )
-            : (index == 1) ?
-              DropdownMenuItem<String>(
-                value: "",
-                child: Text(AppLocalizations.of(context)!.uncategorized)
-              )
-            :
-              DropdownMenuItem<String>(
-                value: app.minCats[index-2],
-                child: Text(app.minCats[index-2])
-              )
-        );
-        break;
-      default:
-        list = app.vehicles(search: search, category: cat);
-        categories = List.generate(
-          app.vehCats.length + 2,
-          (index) =>
-            (index == 0) ?
-              DropdownMenuItem<String>(
-                value: null,
-                child: Text(AppLocalizations.of(context)!.all),
-              )
-            : (index == 1) ?
-              DropdownMenuItem<String>(
-                value: "",
-                child: Text(AppLocalizations.of(context)!.uncategorized)
-              )
-            :
-              DropdownMenuItem<String>(
-                value: app.vehCats[index-2],
-                child: Text(app.vehCats[index-2])
-              )
-        );
+    if(widget.edType == null){
+      if(cat == null){
+        list = app.getList();
+      }else if(cat == "char"){
+        list = app.getList(type: Character);
+      }else if(cat == "min"){
+        list = app.getList(type: Minion);
+      }else if(cat == "veh"){
+        list = app.getList(type: Vehicle);
+      }else{
+        list = app.getList(category: cat);
+      }
+      categories = [
+        DropdownMenuItem<String>(
+          value: null,
+          child: Text(AppLocalizations.of(context)!.all),
+        ),
+        DropdownMenuItem<String>(
+          value: "char",
+          child: Text(AppLocalizations.of(context)!.characters),
+        ),
+        DropdownMenuItem<String>(
+          value: "min",
+          child: Text(AppLocalizations.of(context)!.minions),
+        ),
+        DropdownMenuItem<String>(
+          value: "veh",
+          child: Text(AppLocalizations.of(context)!.vehicles),
+        )
+      ];
+    }else{
+      list = app.getList(type: widget.edType, category: cat);
+      categories = [
+        DropdownMenuItem<String>(
+          value: null,
+          child: Text(AppLocalizations.of(context)!.all),
+        ),
+        DropdownMenuItem<String>(
+          value: "",
+          child: Text(AppLocalizations.of(context)!.uncategorized)
+        )
+      ];
     }
+    categories.addAll(List.generate(app.cats.length, (index) =>
+        DropdownMenuItem<String>(
+          value: app.cats[index],
+          child: Text(app.cats[index])
+        )
+      )
+    );
     if(list.length != oldLen){
       listKey = GlobalKey();
     }
@@ -253,7 +125,7 @@ class EditableListState extends State<EditableList>{
       onRefresh: () => Future(() async {
         if(app.syncing) return;
         var messager = ScaffoldMessenger.of(context);
-        var b = await app.sync();
+        var b = await app.syncRemote();
         messager.clearSnackBars();
         if (!b) {
           messager.showSnackBar(
@@ -311,77 +183,77 @@ class EditableListState extends State<EditableList>{
     );
     return FrameContent(
       fab: widget.onTap == null ? FloatingActionButton(
-      child: const Icon(Icons.add),
-      onPressed: (){
-        if(SW.of(context).getPreference(preferences.googleDrive, false)) {
-          if(SW.of(context).syncing){
-            ScaffoldMessenger.of(context).clearSnackBars();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
-              )
-            );
-            return;
-          }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
-            ScaffoldMessenger.of(context).clearSnackBars();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
-              )
-            );
-            return;
+        child: const Icon(Icons.add),
+        onPressed: (){
+          if(SW.of(context).getPref(preferences.googleDrive)) {
+            if(SW.of(context).syncing){
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+                )
+              );
+              return;
+            }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+                )
+              );
+              return;
+            }
           }
-        }
-        Editable newEd;
-        switch(type){
-          case 0:
-            newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
-            break;
-          case 1:
-            newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
-            break;
-          default:
-            newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
-        }
-        app.add(newEd);
-        Navigator.pushNamed(
-          context,
-          "/edit/${newEd.uid}",
-          arguments: newEd
-        );
-      },
-    ) : null,
+          Editable newEd;
+          switch(widget.edType){
+            case Character:
+              newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
+              break;
+            case Minion:
+              newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
+              break;
+            default:
+              newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
+          }
+          app.add(newEd);
+          Navigator.pushNamed(
+            context,
+            "/edit/${newEd.uid}",
+            arguments: newEd
+          );
+        },
+      ) : null,
       child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          color: Theme.of(context).primaryColorDark,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Row(
-              children: [
-                Expanded(child: catSelector),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () => refreshKey.currentState?.show()
-                ),
-                if(widget.onTap != null && !Frame.of(context).thin)
-                IconButton(
-                  icon: const Icon(Icons.tonality),
-                  onPressed: () => DestinyDialog().show(context)
-                ),
-              ],
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: Theme.of(context).primaryColorDark,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Row(
+                children: [
+                  Expanded(child: catSelector),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () => refreshKey.currentState?.show()
+                  ),
+                  if(widget.onTap != null && !Frame.of(context).thin)
+                  IconButton(
+                    icon: const Icon(Icons.tonality),
+                    onPressed: () => DestinyDialog().show(context)
+                  ),
+                ],
+              )
             )
-          )
-        ),
-        Expanded(
-          child: ClipRect(
-            child: mainList
           ),
-        ),
-      ]
-    ),
-  );
+          Expanded(
+            child: ClipRect(
+              child: mainList
+            ),
+          ),
+        ]
+      ),
+    );
     // return (widget.onTap == null) ?
     //   Scaffold(
     //     // appBar: AppBar(
@@ -416,7 +288,7 @@ class EditableCard extends StatelessWidget{
     Dismissible(
       key: Key(Editable.of(context).uid),
       confirmDismiss: (_) async {
-        if(!SW.of(context).getPreference(preferences.googleDrive, false)) return true;
+        if(!SW.of(context).getPref(preferences.googleDrive)) return true;
         if(SW.of(context).syncing){
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(

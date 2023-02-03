@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
@@ -13,66 +14,64 @@ class Loading extends StatefulWidget{
   const Loading({Key? key, required this.afterLoad}) : super(key: key);
 
   @override
-  State<Loading> createState() => _LoadingState();
-
-  static final List<String> asks = [
-    preferences.subtractNew
-  ];
+  State<Loading> createState() => LoadingState();
 }
 
-class _LoadingState extends State<Loading> {
+class LoadingState extends State<Loading> {
 
   int index = -1;
   bool started = false;
+  bool driveErr = false;
 
   Widget? child;
+  String? _loadText;
+  set loadText(String s) => setState(() => _loadText = s);
 
   List<String> get neededAsks {
     var result = <String>[];
-    for (var ask in Loading.asks) {
-      if (SW.of(context).getPreference(ask, true)) {
+    for (var ask in preferences.newPrefs) {
+      if (SW.of(context).getPref(ask)) {
         result.add(ask);
       }
     }
     return result;
   }
-  void leave() => Navigator.of(context).pushNamedAndRemoveUntil(widget.afterLoad.name ?? "", (route) => false, arguments: widget.afterLoad.arguments);
+  void leave() {
+    SW.of(context).initialized = true;
+    Navigator.of(context).pushNamedAndRemoveUntil(widget.afterLoad.name ?? "", (route) => false, arguments: widget.afterLoad.arguments);
+  }
+
+  void advance() {
+    if(!driveErr){
+      index++;
+      if (neededAsks.isEmpty) {
+        leave();
+      }else{
+        switch(neededAsks[index]){
+          case preferences.subtractNew:
+            setState(() => child = subtractPref());
+        }
+      }
+    }else{
+      setState(() => child = driveError());
+    }
+  }
 
   @override
-  Widget build(BuildContext context) {
-    if(index == -1 && !started){
-      started = true;
-      SW.of(context).postInit().then((_){
-        index = 0;
-        if (neededAsks.isEmpty) {
-          leave();
-        }else{
-          switch(neededAsks[index]){
-            case preferences.subtractNew:
-              setState(() => child = subtractPref());
-          }
-        }
-      });
-    }
-    return FrameContent(
+  void initState() {
+    SW.of(context).postInit(this).then((_){
+      advance();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+    FrameContent(
       allowPop: false,
       fab: child != null ? FloatingActionButton(
+        onPressed: advance,
         child: const Icon(Icons.forward),
-        onPressed: (){
-          if(index != -1) SW.of(context).prefs.setBool(neededAsks[index], false);
-          if(index < neededAsks.length - 1){
-            setState(() {
-              index++;
-              switch(neededAsks[index]){
-                case preferences.subtractNew:
-                  child = subtractPref();
-                  break;
-              }
-            });
-          }else{
-            leave();
-          }
-        },
       ) : null,
       child: Align(
         child: ConstrainedBox(
@@ -86,7 +85,7 @@ class _LoadingState extends State<Loading> {
                 const CircularProgressIndicator(),
                 Container(height: 10),
                 Text(
-                  AppLocalizations.of(context)!.loadingDialog,
+                  _loadText ?? AppLocalizations.of(context)!.loadingDialog,
                   style: Theme.of(context).textTheme.displaySmall,
                   textAlign: TextAlign.center,
                 )
@@ -96,7 +95,6 @@ class _LoadingState extends State<Loading> {
         )
       )
     );
-  }
 
   Widget subtractPref() =>
     Column(
@@ -133,7 +131,7 @@ class _LoadingState extends State<Loading> {
                 )
               ),
               UpdatingSwitch(
-                value: SW.of(context).getPreference(preferences.subtractMode, true),
+                value: SW.of(context).getPref(preferences.subtractMode),
                 onChanged: (b) => 
                   SW.of(context).prefs.setBool(preferences.subtractMode, b),
               ),
@@ -155,6 +153,33 @@ class _LoadingState extends State<Loading> {
             ],
           )
         ),
+      ],
+    );
+
+  Widget driveError() =>
+    Column(
+      key: const Key("drivErr"),
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text(
+            AppLocalizations.of(context)!.driveError,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(7),
+          child: Text(
+            kIsWeb ? AppLocalizations.of(context)!.driveErrorWebSub : AppLocalizations.of(context)!.driveErrorWebSub,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        TextButton(
+          onPressed: onPressed,
+          child: child
+        )
       ],
     );
 }
