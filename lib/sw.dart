@@ -155,6 +155,8 @@ class SW {
       if(await _googleDriveSync(false, scope: drive.DriveApi.driveAppdataScope, context: context, nav: nav)){
         driveSuccess = await _googleDriveSync(true, context: context, nav: nav);
       }
+    }else{
+      driveSuccess = await _googleDriveSync(false, context: context, nav: nav);
     }
     if(driveSuccess){
       prefs.setBool(preferences.driveFirstLoad, false);
@@ -274,6 +276,9 @@ class SW {
         }
         loadWaiting--;
       }, onError: (e) => loadWaiting--);
+    }
+    while(loadWaiting > 0){
+      await Future.delayed(const Duration(milliseconds: 100));
     }
     if(initial){
       for(var ed in all){

@@ -58,18 +58,16 @@ class LoadingState extends State<Loading> {
   }
 
   @override
-  void initState() {
-    SW.of(context).postInit(this).then((_){
-      advance();
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-    FrameContent(
+  Widget build(BuildContext context) {
+    if(!started){
+      started = true;
+      SW.of(context).postInit(this).then((_){
+        advance();
+      });
+    }
+    return FrameContent(
       allowPop: false,
-      fab: child != null ? FloatingActionButton(
+      fab: (driveErr || child != null) ? FloatingActionButton(
         onPressed: advance,
         child: const Icon(Icons.forward),
       ) : null,
@@ -95,6 +93,7 @@ class LoadingState extends State<Loading> {
         )
       )
     );
+  }
 
   Widget subtractPref() =>
     Column(
@@ -173,7 +172,7 @@ class LoadingState extends State<Loading> {
           padding: const EdgeInsets.all(7),
           child: Text(
             kIsWeb ? AppLocalizations.of(context)!.driveErrorWebSub : AppLocalizations.of(context)!.driveErrorWebSub,
-            style: Theme.of(context).textTheme.titleSmall,
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ),
         if(!kIsWeb) TextButton(
