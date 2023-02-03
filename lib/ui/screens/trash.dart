@@ -25,10 +25,13 @@ class _TrashListState extends State<TrashList> {
   @override
   Widget build(BuildContext context) {
     var app = SW.of(context);
-    if(app.getPreference(preferences.initialTrash, true)){
+    if(app.getPref(preferences.initialTrash)){
       show(){
         Bottom(
-          child: (c) => Text(AppLocalizations.of(context)!.trashNotice),
+          child: (c) => Text(
+            AppLocalizations.of(context)!.trashNotice,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
         ).show(context);
       }
       Future(() async{
@@ -42,15 +45,15 @@ class _TrashListState extends State<TrashList> {
     return FrameContent(
       child: AnimatedList(
         key: listKey,
-        initialItemCount: app.trashCan.length,
+        initialItemCount: app.trash.length,
         itemBuilder: (context, i, anim) =>
           SlideTransition(
             position: Tween<Offset>(begin: const Offset(1.0, 0.0), end: Offset.zero).animate(anim),
             child: Dismissible(
               onDismissed: (_) {
                 var messager = ScaffoldMessenger.of(context);
-                var tmpEd = app.trashCan[i];
-                app.trashCan.removeAt(i);
+                var tmpEd = app.trash[i];
+                app.trash.removeAt(i);
                 tmpEd.deletePermanently(app);
                 listKey.currentState?.removeItem(i, (context, animation) => Container());
                 messager.clearSnackBars();
@@ -61,14 +64,14 @@ class _TrashListState extends State<TrashList> {
                       label: AppLocalizations.of(context)!.undo,
                       onPressed: (){
                         tmpEd.save(app: app);
-                        app.trashCan.insert(i, tmpEd);
+                        app.trash.insert(i, tmpEd);
                         listKey.currentState?.insertItem(i);
                       },
                     ),
                   )
                 );
               },
-              key: ValueKey(SW.of(context).trashCan[i].uid),
+              key: ValueKey(SW.of(context).trash[i].uid),
               child: Card(
                 shape: i == 0 ? Frame.of(context).topItemShape : null,
                 clipBehavior: i == 0 ? Clip.hardEdge : null,
@@ -78,8 +81,8 @@ class _TrashListState extends State<TrashList> {
                   highlightShape: BoxShape.rectangle,
                   onTap: kIsWeb ? null : (){
                     var messager = ScaffoldMessenger.of(context);
-                    var tmp = app.trashCan[i];
-                    app.trashCan.remove(tmp);
+                    var tmp = app.trash[i];
+                    app.trash.remove(tmp);
                     tmp.trashed = false;
                     tmp.trashTime = null;
                     app.add(tmp);
@@ -98,16 +101,16 @@ class _TrashListState extends State<TrashList> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          app.trashCan[i].name,
+                          app.trash[i].name,
                           style: Theme.of(context).textTheme.headlineSmall
                         ),
                         Container(height: 10),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Text(
-                            (app.trashCan[i] is Character) ?
+                            (app.trash[i] is Character) ?
                               AppLocalizations.of(context)!.characters
-                            : (app.trashCan[i] is Minion) ?
+                            : (app.trash[i] is Minion) ?
                               AppLocalizations.of(context)!.minions
                             :
                               AppLocalizations.of(context)!.vehicles,
@@ -122,8 +125,8 @@ class _TrashListState extends State<TrashList> {
                               icon: const Icon(Icons.restore),
                               onPressed: (){
                                 var messager = ScaffoldMessenger.of(context);
-                                var tmp = app.trashCan[i];
-                                app.trashCan.remove(tmp);
+                                var tmp = app.trash[i];
+                                app.trash.remove(tmp);
                                 tmp.trashed = false;
                                 tmp.trashTime = null;
                                 app.add(tmp);
@@ -141,8 +144,8 @@ class _TrashListState extends State<TrashList> {
                               icon: const Icon(Icons.delete),
                               onPressed: (){
                                 var messager = ScaffoldMessenger.of(context);
-                                var tmpEd = app.trashCan[i];
-                                app.trashCan.removeAt(i);
+                                var tmpEd = app.trash[i];
+                                app.trash.removeAt(i);
                                 tmpEd.deletePermanently(app);
                                 listKey.currentState?.removeItem(i, (context, animation) => Container());
                                 messager.clearSnackBars();
@@ -153,7 +156,7 @@ class _TrashListState extends State<TrashList> {
                                       label: AppLocalizations.of(context)!.undo,
                                       onPressed: (){
                                         tmpEd.save(app: app);
-                                        app.trashCan.insert(i, tmpEd);
+                                        app.trash.insert(i, tmpEd);
                                         listKey.currentState?.insertItem(i);
                                       },
                                     ),

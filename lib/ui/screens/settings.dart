@@ -93,7 +93,7 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPreference(preferences.forceLight, false),
+            value: app.getPref(preferences.forceLight),
             onChanged: (b){
               app.prefs.setBool(preferences.forceLight, b);
               if (b) {
@@ -105,7 +105,7 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPreference(preferences.forceDark, false),
+            value: app.getPref(preferences.forceDark),
             onChanged: (b){
               app.prefs.setBool(preferences.forceDark, b);
               if (b) {
@@ -117,7 +117,7 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPreference(preferences.amoled, false),
+            value: app.getPref(preferences.amoled),
             onChanged: (b){
               app.prefs.setBool(preferences.amoled, b);
               SW.of(context).topLevelUpdate();
@@ -126,7 +126,7 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPreference(preferences.colorDice, true),
+            value: app.getPref(preferences.colorDice),
             onChanged: (b){
               app.prefs.setBool(preferences.colorDice, b);
               SW.of(context).topLevelUpdate();
@@ -160,7 +160,7 @@ class SettingsState extends State{
                   )
                 ),
                 UpdatingSwitch(
-                  value: app.getPreference(preferences.subtractMode, true),
+                  value: app.getPref(preferences.subtractMode),
                   onChanged: (b) =>
                     app.prefs.setBool(preferences.subtractMode, b),
                 ),
@@ -182,14 +182,12 @@ class SettingsState extends State{
           if(app.isMobile()) const Divider(),
           if(app.isMobile()) SwitchListTile(
             title: Text(AppLocalizations.of(context)!.cloudSave),
-            value: app.getPreference(preferences.googleDrive, false),
+            value: app.getPref(preferences.googleDrive),
             onChanged: (b) {
               var message = ScaffoldMessenger.of(context);
               if (b) {
-                app.initialSync(context: context, nav: Navigator.of(context, rootNavigator: true)).then((value) {
+                app.syncRemote(context: context, nav: Navigator.of(context, rootNavigator: true)).then((value) {
                   if(value){
-                    app.prefs.setBool(preferences.newDrive, true);
-                    app.prefs.setBool(preferences.driveFirstLoad, false);
                     app.prefs.setBool(preferences.googleDrive, b);
                     setState(() {});
                   }else{
@@ -209,7 +207,7 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPreference(preferences.firebase, true),
+            value: app.getPref(preferences.firebase),
             onChanged: (b){
               showDialog(
                 context: context,
@@ -242,8 +240,8 @@ class SettingsState extends State{
           ),
           if(app.isMobile()) const Divider(),
           if(app.isMobile()) SwitchListTile(
-            value: app.getPreference(preferences.crashlytics, true),
-            onChanged: app.getPreference(preferences.firebase, true) ? (b){
+            value: app.getPref(preferences.crashlytics),
+            onChanged: app.getPref(preferences.firebase) ? (b){
               crash.loadLibrary().then((_) => crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b));
               app.prefs.setBool(preferences.crashlytics, b);
               setState((){});
@@ -254,8 +252,8 @@ class SettingsState extends State{
           const Divider(),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.ads),
-            value: app.getPreference(preferences.ads, true),
-            onChanged: app.getPreference(preferences.firebase, true) ? (b) {
+            value: app.getPref(preferences.ads),
+            onChanged: app.getPref(preferences.firebase) ? (b) {
               //TODO
               app.prefs.setBool(preferences.ads, b);
               setState((){});

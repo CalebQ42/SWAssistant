@@ -106,10 +106,7 @@ class SW {
     if(kIsWeb) prefs.setBool(preferences.googleDrive, true);
     if(getPref(preferences.googleDrive)){
       loadingState.loadText = AppLocalizations.of(loadingState.context)!.driveSyncing;
-      if(await syncRemote()){
-        prefs.setBool(preferences.driveFirstLoad, false);
-        prefs.setBool(preferences.newDrive, true);
-      }else{
+      if(!await syncRemote()){
         driver = null;
         loadingState.driveErr = true;
       }
@@ -158,6 +155,10 @@ class SW {
       if(await _googleDriveSync(false, scope: drive.DriveApi.driveAppdataScope, context: context, nav: nav)){
         driveSuccess = await _googleDriveSync(true, context: context, nav: nav);
       }
+    }
+    if(driveSuccess){
+      prefs.setBool(preferences.driveFirstLoad, false);
+      prefs.setBool(preferences.newDrive, true);
     }
     return driveSuccess;
   }

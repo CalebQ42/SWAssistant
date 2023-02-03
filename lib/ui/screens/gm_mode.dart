@@ -49,7 +49,7 @@ class GMMode extends StatelessWidget{
                 maxWidth: width,
               ),
               child: EditableList(
-                -1,
+                null,
                 key: message.listKey,
                 onTap: (ed) {
                   var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);

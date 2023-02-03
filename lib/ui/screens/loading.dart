@@ -176,9 +176,21 @@ class LoadingState extends State<Loading> {
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
+        if(!kIsWeb) TextButton(
+          onPressed: () {
+            driveErr = false;
+            advance();
+          },
+          child: Text(AppLocalizations.of(context)!.driveContinue),
+        ),
         TextButton(
-          onPressed: onPressed,
-          child: child
+          onPressed: (){
+            SW.of(context).syncRemote().then((success) {
+              driveErr = !success;
+              advance();
+            });
+          },
+          child: Text(AppLocalizations.of(context)!.retry)
         )
       ],
     );
