@@ -1,9 +1,5 @@
-const String thankYou = "donateThankYou";
-const String dev = "devMode";
-
 //Usage prefs
 const String googleDrive = "cloudEnabled";
-const String dice = "getDiceOnLaunch";
 const String colorDice = "colorDice";
 const String subtractMode = "subtract";
 
@@ -24,7 +20,7 @@ const String forceLight = "forceLight";
 const String forceDark = "forceDark";
 const String amoled = "amoledTheme";
 
-const String initialTrash = "initaialTrash";
+const String initialTrash = "initialTrash";
 
 //destiny
 const String destinyLight = "destinyLight";
@@ -32,3 +28,24 @@ const String destinyDark = "destinyDark";
 
 //New prefs check
 const String subtractNew = "subtractNew";
+
+Map<String, dynamic> defaultPreference = {
+  googleDrive: false,
+  colorDice: true,
+  subtractMode: true,
+  crashlytics: true,
+  firebase: true,
+  ads: true,
+  firstStart: true,
+  startCount: 0,
+  startingScreen: "/characters",
+  driveFirstLoad: true,
+  newDrive: false,
+  forceLight: false,
+  forceDark: false,
+  amoled: false,
+  initialTrash: true,
+  destinyLight: 0,
+  destinyDark: 0,
+  subtractNew: true,
+};

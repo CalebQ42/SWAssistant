@@ -19,15 +19,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/screens/trash.dart';
 
-bool firebaseCrashlytics = false;
+late SW app;
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async =>
     SW.baseInit().then(
-      (app) {
-        if (app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
-          firebaseCrashlytics = true;
-        }
+      (a) {
+        app = a;
         runApp(SWWidget(
           app: app,
           child: const SWApp()
@@ -36,7 +34,7 @@ Future<void> main() async {
     ), (error, stack) async{
       if(kDebugMode) {
         print("$error\n$stack");
-      }else if(!kIsWeb && (Platform.isIOS || Platform.isAndroid) && firebaseCrashlytics){
+      }else if(app.crashReporting){
         await crash.loadLibrary();
         crash.FirebaseCrashlytics.instance.recordError(error, stack);
       }
@@ -58,7 +56,7 @@ class SWAppState extends State<SWApp> {
 
   @override
   Widget build(BuildContext context) {
-    SW.of(context).topLevelUpdate = () => setState(() {});
+    app.topLevelUpdate = () => setState(() {});
     const snackTheme = SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
     );
@@ -78,7 +76,7 @@ class SWAppState extends State<SWApp> {
       )
     );
     var framKey = GlobalKey<FrameState>();
-    SW.of(context).observatory = Observatory(SW.of(context), framKey);
+    app.observatory = Observatory(app, framKey);
     return MaterialApp(
       builder: (c, child) =>
         Navigator(
@@ -89,20 +87,20 @@ class SWAppState extends State<SWApp> {
             );
           },
         ),
-      navigatorKey: SW.of(context).navy,
+      navigatorKey: app.navKey,
       title: 'SWAssistant',
       navigatorObservers: [
-        SW.of(context).observatory!
+        app.observatory!
       ],
       onGenerateRoute: (settings) {
         bool initSwitch = true;
         Widget? widy;
         if(settings.name == "/dice") {
           widy = DiceRoller();
-        }else if(settings.name == "/intro" || SW.of(context).getPreference(preferences.firstStart, true)) {
+        }else if(settings.name == "/intro" || app.getPref(preferences.firstStart)) {
           widy = const IntroZero();
           settings = RouteSettings(name: "/intro",arguments: settings.arguments);
-        }else if(!SW.of(context).initialized){
+        }else if(!app.initialized){
           return PageRouteBuilder(
             pageBuilder: (context, anim, secondaryAnim) {
               if(initSwitch){
@@ -120,7 +118,7 @@ class SWAppState extends State<SWApp> {
           if(settings.arguments != null) {
             ed = settings.arguments as Editable;
           } else {
-            ed = SW.of(context).findEditable(settings.name?.substring(6) ?? "");
+            ed = app.getEditable(settings.name?.substring(6) ?? "");
           }
           if (ed != null) {
             ed.route = PageRouteBuilder(
@@ -180,8 +178,8 @@ class SWAppState extends State<SWApp> {
         Locale("fr",""),
         Locale("it","")
       ],
-      themeMode: SW.of(context).getPreference(preferences.forceLight, false) ?
-        ThemeMode.light : SW.of(context).getPreference(preferences.forceDark, false) ?
+      themeMode: app.getPref(preferences.forceLight) ?
+        ThemeMode.light : app.getPref(preferences.forceDark) ?
         ThemeMode.dark : ThemeMode.system,
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.lightBlue,
@@ -195,7 +193,7 @@ class SWAppState extends State<SWApp> {
         bottomSheetTheme: bottomSheetTheme,
         floatingActionButtonTheme: fabTheme
       ),
-      darkTheme: SW.of(context).getPreference(preferences.amoled, false) ? 
+      darkTheme: app.getPref(preferences.amoled) ? 
         ThemeData( //Amoled Theme
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
@@ -257,7 +255,7 @@ class Observatory extends NavigatorObserver{
     if(routeHistory.isNotEmpty){
       frame.currentState?.selected = routeHistory.last.settings.name ?? "";
     }
-    if(app.isMobile() && app.firebaseAvailable && app.getPreference(preferences.crashlytics, true)){
+    if(app.crashReporting){
       crash.loadLibrary().then((value) => crash.FirebaseCrashlytics.instance.setCustomKey("page", routeHistory.last.settings.name ?? "unknown"));
     }
   }
