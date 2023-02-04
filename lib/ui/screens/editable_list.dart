@@ -117,8 +117,7 @@ class EditableListState extends State<EditableList>{
                 onTap: widget.onTap,
                 onDismiss: () {
                   var tmp = list[i];
-                  list[i].trash(app);
-                  list.removeAt(i);
+                  tmp.trash(app);
                   listKey.currentState?.removeItem(i, (context, animation) => Container());
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(

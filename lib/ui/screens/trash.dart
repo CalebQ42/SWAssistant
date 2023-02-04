@@ -30,7 +30,7 @@ class _TrashListState extends State<TrashList> {
         Bottom(
           child: (c) => Text(
             AppLocalizations.of(context)!.trashNotice,
-            style: Theme.of(context).textTheme.displayMedium,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ).show(context);
       }
