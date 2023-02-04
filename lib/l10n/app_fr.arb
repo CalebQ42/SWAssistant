@@ -359,6 +359,7 @@
     "forceDark": "Forcer le côté obscur",
     "forceLight": "Forcer le côté lumineux",
     "amoledTheme": "Thème sombre Amoled (noir)",
+    "systemLanguage": "System Language",
     "healthMode": "Health Mode",
     "subtractive": "Subtractive",
     "subtractiveExplaination": "Health starts at max and damage reduces it",
