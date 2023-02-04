@@ -359,6 +359,7 @@
     "forceDark": "Force Dark Side",
     "forceLight": "Force Light Side",
     "amoledTheme": "Amoled (Pitch Black) Dark Theme",
+    "systemLanguage": "System Language",
     "healthMode": "Health Mode",
     "subtractive": "Subtractive",
     "subtractiveExplaination": "Health starts at max and damage reduces it",
