@@ -315,9 +315,7 @@ class SW {
       default:
         _veh.add(ed as Vehicle);
     }
-    if(ed.category != "" && !cats
-.contains(ed.category)) cats
-.add(ed.category);
+    if(ed.category != "" && !cats.contains(ed.category)) cats.add(ed.category);
   }
 
   void remove(Editable ed, [BuildContext? context]){
@@ -341,9 +339,7 @@ class SW {
   }
 
   void updateCategory(Editable ed, String newCat){
-    if(!cats
-.contains(newCat)) cats
-.add(newCat);
+    if(!cats.contains(newCat)) cats.add(newCat);
     if(getList(category: ed.category).length == 1){
       cats
   .remove(ed.category);

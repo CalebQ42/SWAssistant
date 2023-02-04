@@ -6,7 +6,6 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro/intro.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/screens/loading.dart';
 
 class IntroTwo extends StatefulWidget{
 

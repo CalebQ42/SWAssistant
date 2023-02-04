@@ -26,6 +26,8 @@ class SettingsState extends State{
   @override
   Widget build(BuildContext context){
     var app = SW.of(context);
+    var scaf = ScaffoldMessenger.of(context);
+    var loc = AppLocalizations.of(context);
     return FrameContent(
       child: ListView(
         physics: const BouncingScrollPhysics(),
@@ -65,9 +67,9 @@ class SettingsState extends State{
                 launchUrlString("https://github.com/sponsors/CalebQ42");
               }else{
                 if (!await InAppPurchase.instance.isAvailable()){
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(AppLocalizations.of(context)!.gPlayUnavailable),
+                  scaf.clearSnackBars();
+                  scaf.showSnackBar(SnackBar(
+                    content: Text(loc!.gPlayUnavailable),
                   ));
                 }else{
                   InAppPurchase.instance.queryProductDetails({

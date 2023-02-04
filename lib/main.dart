@@ -17,7 +17,6 @@ import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/ui/screens/gm_mode.dart';
 import 'package:swassistant/ui/screens/loading.dart';
 import 'package:swassistant/ui/screens/settings.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/screens/trash.dart';
 import 'package:swassistant/utils/observatory.dart';

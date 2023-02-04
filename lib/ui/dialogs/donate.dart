@@ -11,6 +11,8 @@ class DonateDialog extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    var scafMes = ScaffoldMessenger.of(context);
+    var loc = AppLocalizations.of(context);
     return Column(
       children: [
         Text(AppLocalizations.of(context)!.donoOptions, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center,),
@@ -30,9 +32,9 @@ class DonateDialog extends StatelessWidget{
             if(!kIsWeb) TextButton(
               onPressed: () async{
                 if (!await InAppPurchase.instance.isAvailable()){
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(AppLocalizations.of(context)!.gPlayUnavailable),
+                  scafMes.clearSnackBars();
+                  scafMes.showSnackBar(SnackBar(
+                    content: Text(loc!.gPlayUnavailable),
                   ));
                 }else{
                   InAppPurchase.instance.queryProductDetails({

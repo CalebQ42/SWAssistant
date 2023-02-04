@@ -15,8 +15,10 @@ class SWDrawer extends StatelessWidget{
   const SWDrawer({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-    Drawer(
+  Widget build(BuildContext context) {
+    var scafMes = ScaffoldMessenger.of(context);
+    var loc = AppLocalizations.of(context);
+    return Drawer(
       key: const Key("SWDrawerKey"),
       child: ListView(
         controller: ScrollController(),
@@ -179,9 +181,9 @@ class SWDrawer extends StatelessWidget{
                 await launchUrlString("https://github.com/sponsors/CalebQ42");
               }else if(Platform.isAndroid || Platform.isIOS){
                 if (!await InAppPurchase.instance.isAvailable()){
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(AppLocalizations.of(context)!.gPlayUnavailable),
+                  scafMes.clearSnackBars();
+                  scafMes.showSnackBar(SnackBar(
+                    content: Text(loc!.gPlayUnavailable),
                   ));
                 }else{
                   InAppPurchase.instance.queryProductDetails({
@@ -212,4 +214,5 @@ class SWDrawer extends StatelessWidget{
         ],
       )
     );
+  }
 }
