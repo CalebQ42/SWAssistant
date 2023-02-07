@@ -46,7 +46,6 @@ class Bottom extends StatelessWidget{
 
   void show(BuildContext context) =>
     showModalBottomSheet(
-      useRootNavigator: true,
       context: context,
       builder: (c) => this,
       backgroundColor: background,
