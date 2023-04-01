@@ -21,9 +21,10 @@ const String forceLight = "forceLight";
 const String forceDark = "forceDark";
 const String amoled = "amoledTheme";
 
+//Misc prefs
 const String initialTrash = "initialTrash";
 
-//destiny
+//Destiny
 const String destinyLight = "destinyLight";
 const String destinyDark = "destinyDark";
 
