@@ -51,11 +51,16 @@ class Driver{
       }
       if(!authd){
         await gsi!.signInSilently();
-        if(!await gsi!.canAccessScopes([scope])){
+        if(!kIsWeb && gsi!.currentUser == null){
+          await gsi!.signIn();
+        }
+        if(kIsWeb && !await gsi!.canAccessScopes([scope])){
           await gsi!.requestScopes([scope]);
         }
       }
     }catch(e){
+      print("yo");
+      print(e);
       return false;
     }
     api = DriveApi((await gsi!.authenticatedClient())!);

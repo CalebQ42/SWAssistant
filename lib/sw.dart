@@ -289,7 +289,6 @@ class SW {
       for(var ed in all){
         ed.cloudSave(this);
       }
-      if(context != null) nav?.pop();
     }else{
       for(var ed in all){
         if(ed.trashed){
@@ -302,6 +301,7 @@ class SW {
       }
     }
     syncing = false;
+    if(context != null) nav?.pop();
     return true;
   }
 
@@ -334,8 +334,7 @@ class SW {
         _veh.remove(ed);
     }
     if(ed.category != "" && getList(category: ed.category).isEmpty){
-      cats
-  .remove(ed.category);
+      cats.remove(ed.category);
     }
   }
 
