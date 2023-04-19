@@ -32,6 +32,7 @@
     "driveContinue": "Continue offline",
     "retry": "Retry",
     "driveSyncing": "Syncing Google Drive",
+    "driveSyncingWeb": "You may need to allow and open a pop-up to coninue",
     "syncFail": "Syncing failed",
     "syncComplete": "Syncing Complete",
     "driveSyncingNotice": "Google Drive is syncing",
