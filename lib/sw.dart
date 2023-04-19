@@ -107,6 +107,7 @@ class SW {
     if(kIsWeb) prefs.setBool(preferences.googleDrive, true);
     if(getPref(preferences.googleDrive)){
       loadingState.loadText = AppLocalizations.of(loadingState.context)!.driveSyncing;
+      if(kIsWeb) loadingState.driveLoading = true;
       if(!await syncRemote()){
         driver = null;
         loadingState.driveErr = true;

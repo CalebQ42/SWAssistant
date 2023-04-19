@@ -22,10 +22,13 @@ class LoadingState extends State<Loading> {
   int index = -1;
   bool started = false;
   bool driveErr = false;
+  bool _driveLoading = false;
+  set driveLoading(bool b) => setState(() => _driveLoading = b);
 
   Widget? child;
   String? _loadText;
   set loadText(String s) => setState(() => _loadText = s);
+
 
   List<String> get neededAsks {
     var result = <String>[];
@@ -86,7 +89,13 @@ class LoadingState extends State<Loading> {
                   _loadText ?? AppLocalizations.of(context)!.loadingDialog,
                   style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
-                )
+                ),
+                if(_driveLoading) Container(height: 10,),
+                if(_driveLoading) Text(
+                  AppLocalizations.of(context)!.driveSyncingWeb,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
               ],
             )
           )

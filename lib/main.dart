@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
@@ -24,6 +25,7 @@ import 'package:swassistant/utils/observatory.dart';
 late SW app;
 
 Future<void> main() async {
+  usePathUrlStrategy();
   runZonedGuarded<Future<void>>(() async =>
     SW.baseInit().then(
       (a) {
