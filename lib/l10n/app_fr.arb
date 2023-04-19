@@ -32,6 +32,7 @@
     "driveContinue": "Continue offline",
     "retry": "Retry",
     "driveSyncing": "Synchroniser avec Google Drive",
+    "driveSyncingWeb": "You may need to allow and open a pop-up to coninue",
     "syncFail": "Échec de la synchronisation",
     "syncComplete": "Synchronisation Terminée",
     "driveSyncingNotice": "Synchronisation en cours de Google Drive",
@@ -256,6 +257,7 @@
     "maxWound": "Blessure max",
     "strain": "Stress",
     "maxStrain": "Stress max",
+    "max": "Nombre max",
     "@max": {
         "description": "Used to display the max wound, strain, threashhold, and stress",
         "placeholders": {
