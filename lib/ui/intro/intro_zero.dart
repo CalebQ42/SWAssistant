@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
@@ -11,6 +12,7 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/intro/intro_one.dart';
 import 'package:swassistant/ui/intro/intro.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:uuid/uuid.dart';
 
 class IntroZero extends StatelessWidget{
@@ -44,10 +46,21 @@ class IntroZero extends StatelessWidget{
             textAlign: TextAlign.justify,
           ),
           const SizedBox(height:10),
-          if(kIsWeb) Text(
-            AppLocalizations.of(context)!.introPage0WebNotice,
-            textAlign: TextAlign.justify,
-          ),
+          if(kIsWeb) Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(text: AppLocalizations.of(context)!.introPage0WebNoticev2),
+                TextSpan(
+                  text: AppLocalizations.of(context)!.introPage0WebNoticeEnd,
+                  style: const TextStyle(
+                    decoration: TextDecoration.underline
+                  ),
+                  recognizer: TapGestureRecognizer()..onTap = () =>
+                    launchUrlString("https://darkstorm.tech/COOKIE-POLICY.html")
+                )
+              ]
+            ),
+          )
         ]
       )
     );
