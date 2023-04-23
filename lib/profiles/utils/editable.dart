@@ -63,7 +63,6 @@ abstract class Editable extends JsonSavable{
   bool _cloudSaving = false;
   String? driveId;
   bool _cloudDefered = false;
-  int _cloudVersion = -1;
   bool _syncing = false;
   bool _endSync = false;
 
@@ -408,10 +407,6 @@ abstract class Editable extends JsonSavable{
           Stream.value(data),
           dataLength: data.length,
         );
-        var curFil = await app.driver!.getFile(id);
-        if(curFil != null) {
-          _cloudVersion = int.tryParse(curFil.version ?? "") ?? 0;
-        }
       }catch(e){
         await Future.delayed(const Duration(milliseconds: 250));
         cloudSave(app);
@@ -530,7 +525,6 @@ abstract class Editable extends JsonSavable{
     if(app.driver == null || !await app.driver!.ready()) return;
     var fil = await app.driver!.getFile(id);
     if(fil == null) return;
-    _cloudVersion = int.tryParse(fil.version ?? "") ?? 0;
     var media = await app.driver!.getContents(id);
     if (media == null) return;
     List<int> out = [];
