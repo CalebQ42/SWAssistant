@@ -1,7 +1,14 @@
 {
     "introWelcome": "Bienvenue !",
     "introPage0Line1": "Merci d'avoir essayé SWAssistant. Avant de commencer, vous devez d'abord configurer certaines préférences.",
-    "introPage0WebNotice": "Comme il s'agit de la vesion, il utilise Google Drive pour enregistrer et charger. Après la configuration, il vous sera demandé de vous connecter à Google.",
+    "introPage0WebNoticev2": "As this is the web vesion, it makes use of Google Drive to save and load. After setup you will be asked to sign into Google. Additionally it requires cookies to function and by using it you agree to it's ",
+    "@introPage0WebNoticev2": {
+        "description": "Should end with a space as introPage0WebNoticeEnd is added to the end"
+    },
+    "introPage0WebNoticeEnd": "cookie policy.",
+    "@introPage0WebNoticeEnd": {
+        "description": "Added to the end of introPage0CookieNotice. Will be a hyperlink."
+    },
     "introPage0Line2": "De plus, si vous avez utilisé une version précédente de cette application, nous devrons d'abord importer vos anciens profils.",
     "introPage0ImportButton": "Importer des profils",
     "introPage0ManualImport": "Import manuel",
