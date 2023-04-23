@@ -50,20 +50,28 @@ class Driver{
         authd = await gsi!.canAccessScopes([scope]);
       }
       if(!authd){
-        await gsi!.signInSilently();
+        await gsi!.signInSilently().timeout(const Duration(seconds: 20));
         if(!kIsWeb && gsi!.currentUser == null){
-          await gsi!.signIn();
+          await gsi!.signIn().timeout(const Duration(seconds: 20));
         }
         if(kIsWeb && !await gsi!.canAccessScopes([scope])){
-          await gsi!.requestScopes([scope]);
+          await gsi!.requestScopes([scope]).timeout(const Duration(seconds: 20));
         }
       }
+      api = DriveApi((await gsi!.authenticatedClient())!);
     }catch(e){
-      print("yo");
-      print(e);
+      if(e is TimeoutException) return false;
+      if(!kIsWeb && (Platform.isAndroid || Platform.isIOS) && crashlytics){
+        await crash.loadLibrary();
+        crash.FirebaseCrashlytics.instance.recordError(e, null,
+          reason: "setWD"
+        );
+      }else if(kDebugMode){
+        print("setWD:");
+        print(e);
+      }
       return false;
     }
-    api = DriveApi((await gsi!.authenticatedClient())!);
     return true;
   }
 
