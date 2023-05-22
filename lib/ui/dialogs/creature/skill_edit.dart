@@ -4,8 +4,8 @@ import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/ui/misc/updating_switch_tile.dart';
+import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/updating_switch_tile.dart';
 
 class SkillEditDialog{
   final void Function(Skill) onClose;

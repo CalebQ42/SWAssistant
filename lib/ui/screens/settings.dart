@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:darkstorm_common/frame_content.dart';
+import 'package:darkstorm_common/updating_switch_tile.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,6 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
-import 'package:swassistant/ui/frame_content.dart';
-import 'package:swassistant/ui/misc/updating_switch_tile.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Settings extends StatefulWidget{
@@ -63,7 +63,7 @@ class SettingsState extends State{
           const Divider(),
           TextButton(
             onPressed: () async {
-              if(!app.isMobile()){
+              if(!app.isMobile){
                 launchUrlString("https://github.com/sponsors/CalebQ42");
               }else{
                 if (!await InAppPurchase.instance.isAvailable()){
@@ -222,8 +222,8 @@ class SettingsState extends State{
               ],
             )
           ),
-          if(app.isMobile()) const Divider(),
-          if(app.isMobile()) SwitchListTile(
+          if(app.isMobile) const Divider(),
+          if(app.isMobile) SwitchListTile(
             title: Text(AppLocalizations.of(context)!.cloudSave),
             value: app.getPref(preferences.googleDrive),
             onChanged: (b) {
@@ -281,8 +281,8 @@ class SettingsState extends State{
             title: Text(AppLocalizations.of(context)!.firebase),
             subtitle: Text(AppLocalizations.of(context)!.firebaseSubtitle),
           ),
-          if(app.isMobile()) const Divider(),
-          if(app.isMobile()) SwitchListTile(
+          if(app.isMobile) const Divider(),
+          if(app.isMobile) SwitchListTile(
             value: app.getPref(preferences.crashlytics),
             onChanged: app.getPref(preferences.firebase) ? (b){
               crash.loadLibrary().then((_) => crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b));

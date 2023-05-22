@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  darkstorm_common:
+    dependency: "direct main"
+    description:
+      name: darkstorm_common
+      sha256: "442aed43d6fe7b6918ea83cff62d69806c54530a896075b4d3edffdc2e8c1314"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0-pre.12"
   device_info_plus:
     dependency: "direct main"
     description:

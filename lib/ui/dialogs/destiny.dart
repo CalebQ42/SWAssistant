@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:darkstorm_common/bottom.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 
 class DestinyDialog extends StatelessWidget{

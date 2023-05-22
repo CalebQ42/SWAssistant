@@ -1,9 +1,9 @@
 import 'dart:math';
 
+import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 

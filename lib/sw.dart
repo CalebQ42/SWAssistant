@@ -2,15 +2,12 @@
 
 import 'dart:io';
 
-
 import 'package:firebase_core/firebase_core.dart' deferred as firebasecore;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:swassistant/firebase_options.dart' deferred as firebaseoptions;
 import 'package:in_app_purchase/in_app_purchase.dart' deferred as inapp;
 import 'package:path_provider/path_provider.dart' deferred as pathprov;
 import 'package:googleapis/drive/v3.dart' as drive;
-
-import 'package:swassistant/preferences.dart' as preferences;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -22,13 +19,14 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/ui/screens/loading.dart';
-import 'package:swassistant/utils/driver/driver.dart';
-import 'package:swassistant/utils/observatory.dart';
+import 'package:swassistant/utils/prefs.dart';
 import 'package:uuid/uuid.dart';
+import 'package:darkstorm_common/top_inherit.dart';
+import 'package:darkstorm_common/driver.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SW {
+class SW with TopResources{
   final List<Minion> _min = [];
   final List<Character> _char = [];
   final List<Vehicle> _veh = [];
@@ -37,30 +35,26 @@ class SW {
 
   final List<Editable> trash = [];
 
-
-  Observatory? observatory;
   bool devMode = false;
   String saveDir = "";
-  SharedPreferences prefs;
+  Prefs prefs;
   late PackageInfo package;
   bool firebaseAvailable = false;
   late Function() topLevelUpdate;
-  GlobalKey<NavigatorState> navKey = GlobalKey();
 
   Driver? driver;
   bool syncing = false;
 
   bool initialized = false;
 
-  NavigatorState? get nav => navKey.currentState;
-  bool get crashReporting => isMobile() && firebaseAvailable && getPref(preferences.crashlytics);
+  bool get crashReporting => isMobile && firebaseAvailable && prefs.crashlytics;
 
   SW(this.prefs);
 
   static Future<SW> baseInit() async {
     WidgetsFlutterBinding.ensureInitialized();
-    var app = SW(await SharedPreferences.getInstance());
-    if(app.isMobile()){
+    var app = SW(Prefs(await SharedPreferences.getInstance()));
+    if(app.isMobile){
       await inapp.loadLibrary();
       inapp.InAppPurchase.instance.purchaseStream.listen((event) {
         for(var e in event){
@@ -70,8 +64,8 @@ class SW {
         }
       });
     }
-    if(!app.getPref(preferences.googleDrive) || app.getPref(preferences.driveFirstLoad)){
-      app.prefs.setBool(preferences.newDrive, true);
+    if(!app.prefs.googleDrive || app.prefs.driveFirstLoad){
+      app.prefs.newDrive = true;
     }
     if(kDebugMode) app.devMode = true;
     if(!kIsWeb){
@@ -84,12 +78,11 @@ class SW {
       app.loadLocal();
     }
     app.package = await PackageInfo.fromPlatform();
-    app.prefs.setInt(preferences.startCount, app.getPref(preferences.startCount)+1);
     return app;
   }
 
   Future<void> postInit(LoadingState loadingState) async{
-    if(getPref(preferences.firebase)){
+    if(prefs.firebase){
       await firebaseoptions.loadLibrary();
       await firebasecore.loadLibrary();
       try{
@@ -97,15 +90,15 @@ class SW {
           options:firebaseoptions.DefaultFirebaseOptions.currentPlatform
         );
         firebaseAvailable = true;
-        if(!kDebugMode && !kProfileMode && isMobile() && getPref(preferences.crashlytics)){
+        if(!kDebugMode && !kProfileMode && isMobile && prefs.crashlytics){
           await crash.loadLibrary();
           crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
           FlutterError.onError = crash.FirebaseCrashlytics.instance.recordFlutterError;
         }
       }finally{}
     }
-    if(kIsWeb) prefs.setBool(preferences.googleDrive, true);
-    if(getPref(preferences.googleDrive)){
+    if(kIsWeb) prefs.googleDrive = true;
+    if(prefs.googleDrive){
       loadingState.loadText = AppLocalizations.of(loadingState.context)!.driveSyncing;
       if(kIsWeb) loadingState.driveLoading = true;
       if(!await syncRemote()){
@@ -151,9 +144,9 @@ class SW {
 
   Future<bool> syncRemote({BuildContext? context, NavigatorState? nav}) async{
     var driveSuccess = false;
-    if(getPref(preferences.driveFirstLoad)){
+    if(prefs.driveFirstLoad){
       driveSuccess = await _googleDriveSync(true, context: context, nav: nav);
-    }else if(!getPref(preferences.newDrive)){
+    }else if(!prefs.newDrive){
       if(await _googleDriveSync(false, scope: drive.DriveApi.driveAppdataScope, context: context, nav: nav)){
         driveSuccess = await _googleDriveSync(true, context: context, nav: nav);
       }
@@ -161,8 +154,8 @@ class SW {
       driveSuccess = await _googleDriveSync(false, context: context, nav: nav);
     }
     if(driveSuccess){
-      prefs.setBool(preferences.driveFirstLoad, false);
-      prefs.setBool(preferences.newDrive, true);
+      prefs.driveFirstLoad = false;
+      prefs.newDrive = true;
     }
     return driveSuccess;
   }
@@ -198,7 +191,11 @@ class SW {
         return false;
       }
     }
-    driver ??= Driver(scope, crashReporting);
+    driver ??= Driver(scope, (e, s) async{
+      if(!crashReporting) return;
+      await crash.loadLibrary();
+      crash.FirebaseCrashlytics.instance.recordError(e, s);
+    });
     var okay = await driver!.ready();
     if(!okay){
       if(context != null) nav?.pop();
@@ -320,7 +317,7 @@ class SW {
   }
 
   void remove(Editable ed, [BuildContext? context]){
-    if(context != null && ed.route != null && observatory?.containsRoute(route:ed.route) != null){
+    if(context != null && ed.route != null && observatory.containsRoute(route:ed.route) != null){
       Navigator.removeRoute(context, ed.route!);
     }
     switch(ed.runtimeType){
@@ -389,17 +386,6 @@ class SW {
     }catch(e){
       return null;
     }
-  }
-
-  dynamic getPref(String key) {
-    return prefs.get(key) ?? preferences.defaultPreference[key];
-  }
-
-  bool isMobile(){
-    if(kIsWeb){
-      return false;
-    }
-    return Platform.isAndroid || Platform.isIOS;
   }
 
   void manualImport(BuildContext context){
@@ -473,20 +459,6 @@ class SW {
     });
   }
 
-  static SW of(BuildContext context){
-    var app = context.dependOnInheritedWidgetOfExactType<SWWidget>()?.app;
-    if (app == null){
-      throw "Widget is not a child of SWWidget";
-    }
-    return app;
-  }
-}
-
-class SWWidget extends InheritedWidget{
-  final SW app;
-  
-  const SWWidget({Key? key, required Widget child, required this.app}) : super(key: key, child: child);
-
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
+  static SW of(BuildContext context) =>
+    context.getInheritedWidgetOfExactType<TopInherit<SW>>()!.resources;
 }

@@ -9,8 +9,8 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/dialogs/editable/weapon_char_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
-import 'package:swassistant/ui/misc/updating_switch_tile.dart';
+import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/updating_switch_tile.dart';
 
 class WeaponEditDialog{
   final Function(Weapon) onClose;

@@ -1,6 +1,6 @@
+import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -67,8 +67,12 @@ class _EditingEditableState extends State<EditingEditable>{
     Widget body;
     if(!widget.contained) {
       body = FrameContent(
-        bottom: bottomNav,
-        child: main
+        child: Column(
+          children: [
+            Expanded(child: main),
+            bottomNav
+          ]
+        )
       );
     } else {
       body = Column(

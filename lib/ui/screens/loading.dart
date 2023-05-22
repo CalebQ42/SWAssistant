@@ -1,10 +1,10 @@
+import 'package:darkstorm_common/frame_content.dart';
+import 'package:darkstorm_common/updating_switch_tile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/preferences.dart' as preferences;
-import 'package:swassistant/ui/misc/updating_switch_tile.dart';
 
 
 class Loading extends StatefulWidget{

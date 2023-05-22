@@ -1,12 +1,11 @@
+import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/frame.dart';
-import 'package:swassistant/ui/frame_content.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
 import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
@@ -73,7 +72,7 @@ class _TrashListState extends State<TrashList> {
               },
               key: ValueKey(SW.of(context).trash[i].uid),
               child: Card(
-                shape: i == 0 ? Frame.of(context).topItemShape : null,
+                shape: i == 0 ? app.frame.topItemShape : null,
                 clipBehavior: i == 0 ? Clip.hardEdge : null,
                 margin: const EdgeInsets.all(5),
                 child: InkResponse(
@@ -96,7 +95,7 @@ class _TrashListState extends State<TrashList> {
                     );
                   },
                   child: Padding(
-                    padding: i == 0 ? Frame.of(context).topItemPadding.add(const EdgeInsets.all(5)) : const EdgeInsets.all(5),
+                    padding: i == 0 ? app.frame.topItemMargin.add(const EdgeInsets.all(5)) : const EdgeInsets.all(5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [

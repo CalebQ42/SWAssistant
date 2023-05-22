@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:darkstorm_common/bottom.dart';
 
 class GPlayDonateDialog extends StatefulWidget{
 

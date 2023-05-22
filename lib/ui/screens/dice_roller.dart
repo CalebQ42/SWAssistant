@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/dice/sides.dart';
-import 'package:swassistant/ui/frame_content.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

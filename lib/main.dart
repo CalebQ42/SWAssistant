@@ -1,17 +1,19 @@
 import 'dart:async';
 
+import 'package:darkstorm_common/frame.dart';
+import 'package:darkstorm_common/intro.dart';
+import 'package:darkstorm_common/top_inherit.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:swassistant/preferences.dart' as preferences;
+import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/ui/frame.dart';
-import 'package:swassistant/ui/intro/intro_zero.dart';
+import 'package:swassistant/ui/intro_pages.dart';
 import 'package:swassistant/ui/screens/dice_roller.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
@@ -20,7 +22,6 @@ import 'package:swassistant/ui/screens/loading.dart';
 import 'package:swassistant/ui/screens/settings.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/screens/trash.dart';
-import 'package:swassistant/utils/observatory.dart';
 
 late SW app;
 
@@ -30,8 +31,8 @@ Future<void> main() async {
     SW.baseInit().then(
       (a) {
         app = a;
-        runApp(SWWidget(
-          app: app,
+        runApp(TopInherit<SW>(
+          resources: a,
           child: const SWApp()
         ));
       }
@@ -79,38 +80,76 @@ class SWAppState extends State<SWApp> {
         borderRadius: BorderRadius.all(Radius.circular(25))
       )
     );
-    var framKey = GlobalKey<FrameState>();
-    app.observatory = Observatory(app, framKey);
     return MaterialApp(
       builder: (c, child) =>
-        Navigator(
-          onGenerateRoute: (rs) {
-            return MaterialPageRoute(
-              builder: (c) =>
-                Frame(key: framKey, child: child),
-            );
-          },
+        Frame(
+          key: app.frameKey,
+          beveled: true,
+          appName: "SWAssistant",
+          navItems: [
+            Nav(
+              icon: const Icon(Icons.contacts),
+              name: AppLocalizations.of(context)!.gmMode,
+              routeName: "/gm"
+            ),
+            Nav(
+              icon: const Icon(Icons.face),
+              name: AppLocalizations.of(context)!.characters,
+              routeName: "/characters",
+            ),
+            Nav(
+              icon: const Icon(Icons.supervisor_account),
+              name: AppLocalizations.of(context)!.minions,
+              routeName: "/minions",
+            ),
+            Nav(
+              icon: const Icon(Icons.motorcycle),
+              name: AppLocalizations.of(context)!.vehicles,
+              routeName: "/vehicles",
+            )
+          ],
+          bottomNavItems: [
+            Nav(
+              icon: const Icon(Icons.settings),
+              name: AppLocalizations.of(context)!.settings,
+              routeName: "/settings"
+            ),
+            Nav(
+              icon: const Icon(Icons.delete),
+              name: AppLocalizations.of(context)!.trash,
+              routeName: "/trash"
+            )
+          ],
+          hideBar: (r) => r.startsWith("/intro") || r.startsWith("/loading"),
+          floatingItem: FloatingNav(
+            title: AppLocalizations.of(context)!.dice,
+            icon: const Icon(Icons.casino_outlined),
+            onTap: () =>
+              SWDiceHolder().showDialog(context, showInstant: true)
+          ),
+          child: child ?? const Text("Something went wrong")
         ),
       navigatorKey: app.navKey,
       title: 'SWAssistant',
       navigatorObservers: [
-        app.observatory!
+        app.observatory
       ],
       onGenerateRoute: (settings) {
-        bool initSwitch = true;
         Widget? widy;
         if(settings.name == "/dice") {
           widy = DiceRoller();
-        }else if(settings.name == "/intro" || app.getPref(preferences.firstStart)) {
-          widy = const IntroZero();
-          settings = RouteSettings(name: "/intro",arguments: settings.arguments);
+        }else if(settings.name == "/intro" || app.prefs.showIntro) {
+          widy = IntroScreen(
+            pages: Intro(app).pages,
+            onDone: (){
+              app.prefs.showIntro = false;
+              app.nav.pushNamedAndRemoveUntil(settings.name ?? "/", (route) => false);
+            }
+          );
+          settings = RouteSettings(name: "/intro", arguments: settings.arguments);
         }else if(!app.initialized){
           return PageRouteBuilder(
             pageBuilder: (context, anim, secondaryAnim) {
-              if(initSwitch){
-                Frame.of(context).selected = "/loading";
-                initSwitch = false;
-              }
               return Loading(afterLoad: settings);
             },
             settings: const RouteSettings(name: "/loading"),
@@ -127,10 +166,6 @@ class SWAppState extends State<SWApp> {
           if (ed != null) {
             ed.route = PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) {
-                if(initSwitch){
-                  Frame.of(context).selected = "/edit/${ed!.uid}";
-                  initSwitch = false;
-                }
                 return EditingEditable(ed!);
               },
               settings: RouteSettings(name: "/edit/${ed.uid}"),
@@ -158,10 +193,6 @@ class SWAppState extends State<SWApp> {
         }
         return PageRouteBuilder(
           pageBuilder: (context, anim, secondaryAnim) {
-            if(initSwitch){
-              Frame.of(context).selected = settings.name ?? "";
-              initSwitch = false;
-            }
             return widy!;
           },
           settings: settings,
@@ -172,15 +203,15 @@ class SWAppState extends State<SWApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: (){
-        if(app.getPref(preferences.locale) == "") return null;
+        if(app.prefs.locale == "") return null;
         try{
-          return AppLocalizations.supportedLocales.firstWhere((element) => element.toLanguageTag() == app.getPref(preferences.locale));
+          return AppLocalizations.supportedLocales.firstWhere((element) => element.toLanguageTag() == app.prefs.locale);
         }catch(e){
           return null;
         }
       }(),
-      themeMode: app.getPref(preferences.forceLight) ?
-        ThemeMode.light : app.getPref(preferences.forceDark) ?
+      themeMode: app.prefs.lightTheme ?
+        ThemeMode.light : app.prefs.darkTheme ?
         ThemeMode.dark : ThemeMode.system,
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.lightBlue,
@@ -194,7 +225,7 @@ class SWAppState extends State<SWApp> {
         bottomSheetTheme: bottomSheetTheme,
         floatingActionButtonTheme: fabTheme
       ),
-      darkTheme: app.getPref(preferences.amoled) ? 
+      darkTheme: app.prefs.amoledTheme ? 
         ThemeData( //Amoled Theme
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
