@@ -83,8 +83,74 @@ class SWDiceHolder extends JsonSavable{
   }
 
   void showDialog(BuildContext context, {bool showInstant = false}){
+    int? d10Result = 0;
+    int? d100Result = 0;
+    var botKey = GlobalKey<BottomState>();
     var bot = Bottom(
-      child: (context) => _DiceDialog(holder: this, showInstant: showInstant),
+      key: botKey,
+      padding: false,
+      children: (context) =>
+        List.generate(
+          7, (index) =>
+            DiceSelector(holder: this, type: index)
+          )..addAll([
+            if(showInstant) Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children:[
+                  Text(
+                    "d10",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: TextButton(
+                        child: Text(AppLocalizations.of(context)!.roll),
+                        onPressed: () {
+                          d10Result = Random().nextInt(10) + 1;
+                          botKey.currentState?.update();
+                        }
+                      )),
+                      Expanded(child: Text(
+                        d10Result?.toString() ?? "",
+                        textAlign: TextAlign.center,
+                      ))
+                    ]
+                  )
+                ]
+              )
+            ),
+            if(showInstant) Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children:[
+                  Text(
+                    "d100",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: TextButton(
+                        child: Text(AppLocalizations.of(context)!.roll),
+                        onPressed: () {
+                          d100Result = Random().nextInt(100) + 1;
+                          botKey.currentState?.update();
+                        }
+                      )),
+                      Expanded(child: Text(
+                        d100Result?.toString() ?? "",
+                        textAlign: TextAlign.center,
+                      ))
+                    ]
+                  )
+                ]
+              )
+            )
+          ]),
       buttons: (context) => [
         TextButton(
           child: Text((weaponPack == null) ? AppLocalizations.of(context)!.roll : AppLocalizations.of(context)!.fire),
@@ -104,81 +170,4 @@ class SWDiceHolder extends JsonSavable{
     );
     return bot.show(context);
   }
-}
-
-class _DiceDialog extends StatefulWidget{
-
-  final bool showInstant;
-  final SWDiceHolder holder;
-
-  const _DiceDialog({Key? key, required this.holder, this.showInstant = false}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _DiceDialogState();
-}
-
-class _DiceDialogState extends State<_DiceDialog>{
-
-  int? d10Result;
-  int? d100Result;
-
-  @override
-  Widget build(BuildContext context) =>
-    Column(
-      children: List.generate(
-        7, (index) =>
-          DiceSelector(holder: widget.holder, type: index)
-      )..addAll([
-        if(widget.showInstant) Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children:[
-              Text(
-                "d10",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Row(
-                children: [
-                  Expanded(child: TextButton(
-                    child: Text(AppLocalizations.of(context)!.roll),
-                    onPressed: () => setState(() => d10Result = Random().nextInt(10) + 1),
-                  )),
-                  Expanded(child: Text(
-                    d10Result?.toString() ?? "",
-                    textAlign: TextAlign.center,
-                  ))
-                ]
-              )
-            ]
-          )
-        ),
-        if(widget.showInstant) Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children:[
-              Text(
-                "d100",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Row(
-                children: [
-                  Expanded(child: TextButton(
-                    child: Text(AppLocalizations.of(context)!.roll),
-                    onPressed: () => setState(() => d100Result = Random().nextInt(100) + 1),
-                  )),
-                  Expanded(child: Text(
-                    d100Result?.toString() ?? "",
-                    textAlign: TextAlign.center,
-                  ))
-                ]
-              )
-            ]
-          )
-        )
-      ])
-    );
 }

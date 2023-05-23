@@ -40,7 +40,6 @@ class Intro{
               ]
             ),
           ),
-          Text(AppLocalizations.of(context)!.introPage0Line1),
         ],
       ),
     );

@@ -14,7 +14,6 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/intro_pages.dart';
-import 'package:swassistant/ui/screens/dice_roller.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/ui/screens/gm_mode.dart';
@@ -31,7 +30,7 @@ Future<void> main() async {
     SW.baseInit().then(
       (a) {
         app = a;
-        runApp(TopInherit<SW>(
+        runApp(TopInherit(
           resources: a,
           child: const SWApp()
         ));
@@ -89,43 +88,43 @@ class SWAppState extends State<SWApp> {
           navItems: [
             Nav(
               icon: const Icon(Icons.contacts),
-              name: AppLocalizations.of(context)!.gmMode,
+              name: AppLocalizations.of(c)!.gmMode,
               routeName: "/gm"
             ),
             Nav(
               icon: const Icon(Icons.face),
-              name: AppLocalizations.of(context)!.characters,
+              name: AppLocalizations.of(c)!.characters,
               routeName: "/characters",
             ),
             Nav(
               icon: const Icon(Icons.supervisor_account),
-              name: AppLocalizations.of(context)!.minions,
+              name: AppLocalizations.of(c)!.minions,
               routeName: "/minions",
             ),
             Nav(
               icon: const Icon(Icons.motorcycle),
-              name: AppLocalizations.of(context)!.vehicles,
+              name: AppLocalizations.of(c)!.vehicles,
               routeName: "/vehicles",
             )
           ],
           bottomNavItems: [
             Nav(
               icon: const Icon(Icons.settings),
-              name: AppLocalizations.of(context)!.settings,
+              name: AppLocalizations.of(c)!.settings,
               routeName: "/settings"
             ),
             Nav(
               icon: const Icon(Icons.delete),
-              name: AppLocalizations.of(context)!.trash,
+              name: AppLocalizations.of(c)!.trash,
               routeName: "/trash"
             )
           ],
           hideBar: (r) => r.startsWith("/intro") || r.startsWith("/loading"),
           floatingItem: FloatingNav(
-            title: AppLocalizations.of(context)!.dice,
+            title: AppLocalizations.of(c)!.dice,
             icon: const Icon(Icons.casino_outlined),
             onTap: () =>
-              SWDiceHolder().showDialog(context, showInstant: true)
+              SWDiceHolder().showDialog(c, showInstant: true)
           ),
           child: child ?? const Text("Something went wrong")
         ),
@@ -136,9 +135,8 @@ class SWAppState extends State<SWApp> {
       ],
       onGenerateRoute: (settings) {
         Widget? widy;
-        if(settings.name == "/dice") {
-          widy = DiceRoller();
-        }else if(settings.name == "/intro" || app.prefs.showIntro) {
+        RouteSettings? newSettings;
+        if(settings.name == "/intro" || app.prefs.showIntro) {
           widy = IntroScreen(
             pages: Intro(app).pages,
             onDone: (){
@@ -146,19 +144,13 @@ class SWAppState extends State<SWApp> {
               app.nav.pushNamedAndRemoveUntil(settings.name ?? "/", (route) => false);
             }
           );
-          settings = RouteSettings(name: "/intro", arguments: settings.arguments);
+          newSettings = const RouteSettings(name: "/intro");
         }else if(!app.initialized){
-          return PageRouteBuilder(
-            pageBuilder: (context, anim, secondaryAnim) {
-              return LoadingScreen(
-                startingRoute: settings,
-                app: app,
-              );
-            },
-            settings: const RouteSettings(name: "/loading"),
-            maintainState: false,
-            transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child),
+          widy = LoadingScreen(
+            startingRoute: settings,
+            app: app,
           );
+          newSettings =  const RouteSettings(name: "/loading");
         }else if(settings.name?.startsWith("/edit/") == true){
           Editable? ed;
           if(settings.arguments != null) {
@@ -191,14 +183,14 @@ class SWAppState extends State<SWApp> {
           widy = const TrashList();
         }
         if (widy == null){
-          settings = RouteSettings(name: "/characters", arguments: settings.arguments);
+          newSettings = RouteSettings(name: "/characters", arguments: settings.arguments);
           widy ??= const EditableList(Character);
         }
         return PageRouteBuilder(
           pageBuilder: (context, anim, secondaryAnim) {
             return widy!;
           },
-          settings: settings,
+          settings: newSettings ?? settings,
           maintainState: false,
           transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
         );

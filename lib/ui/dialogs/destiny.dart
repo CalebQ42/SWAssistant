@@ -22,6 +22,7 @@ class DestinyDialog extends StatelessWidget{
     var app = SW.of(context);
     return Row(
       mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

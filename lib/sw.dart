@@ -111,6 +111,7 @@ class SW with TopResources{
         ed.deletePermanently(this);
       }
     }
+    initialized = true;
   }
 
   void loadLocal(){
@@ -459,5 +460,5 @@ class SW with TopResources{
   }
 
   static SW of(BuildContext context) =>
-    context.getInheritedWidgetOfExactType<TopInherit<SW>>()!.resources;
+    context.getInheritedWidgetOfExactType<TopInherit>()!.resources as SW;
 }

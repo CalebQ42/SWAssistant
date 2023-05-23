@@ -84,11 +84,10 @@ packages:
   darkstorm_common:
     dependency: "direct main"
     description:
-      name: darkstorm_common
-      sha256: "442aed43d6fe7b6918ea83cff62d69806c54530a896075b4d3edffdc2e8c1314"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0-pre.12"
+      path: "../darkstorm-common"
+      relative: true
+    source: path
+    version: "1.0.0-pre.13"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -233,10 +232,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_sign_in
-      sha256: "776a4c988dc179c3b8e9201de0ad61bf350a4e75d378ff9d94c76880378c7bca"
+      sha256: c912e5dbdbf75c18427a6c77f866192fe2c0ae29e1a5ef12e9a1d9d93f69a9a3
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.1.1"
   google_sign_in_android:
     dependency: transitive
     description:
