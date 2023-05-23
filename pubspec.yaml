@@ -30,7 +30,8 @@ dependencies:
   package_info_plus: ^4.0.1
   universal_internet_checker: ^0.1.2
   uuid: ^3.0.7
-  darkstorm_common: ^1.0.0-pre.17
+  darkstorm_common:
+    path: ../darkstorm-common
   # flutter_speed_dial: ^5.0.0+1
   # dynamic_color: ^1.2.0
 

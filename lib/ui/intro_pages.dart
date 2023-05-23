@@ -60,7 +60,7 @@ class Intro{
           ),
         ],
       ),
-      items: [
+      items: (c) => [
         if(kIsWeb || app.isMobile) UpdatingSwitchTile(
           title: Text(
             AppLocalizations.of(context)!.firebase,
@@ -88,8 +88,9 @@ class Intro{
   IntroPage intro2(BuildContext context){
     var pagKey = GlobalKey<IntroPageState>();
     return IntroPage(
+      key: pagKey,
       title: Text(AppLocalizations.of(context)!.settings),
-      items: [
+      items: (c) => [
         if(app.isMobile) UpdatingSwitchTile(
           title: Text(
             AppLocalizations.of(context)!.cloudSave
@@ -167,6 +168,9 @@ class Intro{
           onChanged: (b){
             app.prefs.amoledTheme = b;
             pagKey.currentState?.update();
+            print("yo");
+            print("yodle: ${pagKey.currentState}");
+            print(app.prefs.amoledTheme);
             app.topLevelUpdate();
           }
         ),

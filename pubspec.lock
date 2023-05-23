@@ -84,10 +84,9 @@ packages:
   darkstorm_common:
     dependency: "direct main"
     description:
-      name: darkstorm_common
-      sha256: "41447e51f13667a2a0b62f7e9a90c156cde2e6f3e07e32a785d0051513c7fdd8"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../darkstorm-common"
+      relative: true
+    source: path
     version: "1.0.0-pre.17"
   device_info_plus:
     dependency: "direct main"
