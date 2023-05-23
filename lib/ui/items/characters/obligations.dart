@@ -4,7 +4,7 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/character/obli_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:darkstorm_common/bottom.dart';
 
 class Obligations extends StatefulWidget{
 

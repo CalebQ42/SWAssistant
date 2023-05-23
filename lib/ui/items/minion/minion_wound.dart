@@ -5,7 +5,6 @@ import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/preferences.dart' as preferences;
 
 class MinionWound extends StatefulWidget{
 
@@ -41,7 +40,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
     });
     soakController ??= TextEditingController(text: minion.soak.toString())
         ..addListener(() => minion.soak = int.tryParse(soakController!.text) ?? 0);
-    var subtractMode = SW.of(context).getPref(preferences.subtractMode);
+    var subtractMode = SW.of(context).prefs.subtractMode;
     return Column(
       children: [
         Row(

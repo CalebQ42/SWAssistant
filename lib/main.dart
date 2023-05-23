@@ -150,7 +150,10 @@ class SWAppState extends State<SWApp> {
         }else if(!app.initialized){
           return PageRouteBuilder(
             pageBuilder: (context, anim, secondaryAnim) {
-              return Loading(afterLoad: settings);
+              return LoadingScreen(
+                startingRoute: settings,
+                app: app,
+              );
             },
             settings: const RouteSettings(name: "/loading"),
             maintainState: false,

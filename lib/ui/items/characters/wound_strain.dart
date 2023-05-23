@@ -9,8 +9,6 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:swassistant/preferences.dart' as preferences;
-
 class WoundStrain extends StatefulWidget{
 
   const WoundStrain({Key? key}) : super(key: key);
@@ -45,7 +43,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
         break;
       }
     }
-    var subtractMode = SW.of(context).getPref(preferences.subtractMode);
+    var subtractMode = SW.of(context).prefs.subtractMode;
     if(soakController == null){
       soakController = TextEditingController(text: character.soak.toString());
       soakController!.addListener(() => character.soak = int.tryParse(soakController!.text) ?? 0);

@@ -2,7 +2,6 @@ import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
@@ -150,7 +149,7 @@ class EditableListState extends State<EditableList>{
       fab: widget.onTap == null ? FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: (){
-          if(SW.of(context).getPref(preferences.googleDrive)) {
+          if(SW.of(context).prefs.googleDrive) {
             if(SW.of(context).syncing){
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -252,7 +251,7 @@ class EditableCard extends StatelessWidget{
     Dismissible(
       key: Key(Editable.of(context).uid),
       confirmDismiss: (_) async {
-        if(!SW.of(context).getPref(preferences.googleDrive)) return true;
+        if(!SW.of(context).prefs.googleDrive) return true;
         if(SW.of(context).syncing){
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(

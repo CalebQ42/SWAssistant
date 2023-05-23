@@ -8,7 +8,7 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/editable/item_edit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/ui/misc/bottom.dart';
+import 'package:darkstorm_common/bottom.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Inventory extends StatefulWidget {

@@ -6,7 +6,6 @@ import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/preferences.dart' as preferences;
 
 class VehicleDamage extends StatefulWidget{
 
@@ -38,7 +37,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
       ..addListener(() => vehicle.hullTraumaThresh = int.tryParse(hullTraumaThreshController!.text) ?? 0);
     sysStressThreshController ??= TextEditingController(text: vehicle.sysStressThresh.toString())
       ..addListener(() => vehicle.sysStressThresh = int.tryParse(sysStressThreshController!.text) ?? 0);
-    var subtractMode = SW.of(context).getPref(preferences.subtractMode);
+    var subtractMode = SW.of(context).prefs.subtractMode;
     return Column(
       children: [
         Row(

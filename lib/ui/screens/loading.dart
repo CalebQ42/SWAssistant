@@ -1,206 +1,107 @@
 import 'package:darkstorm_common/frame_content.dart';
-import 'package:darkstorm_common/updating_switch_tile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/preferences.dart' as preferences;
 
+class LoadingScreen extends StatefulWidget{
 
-class Loading extends StatefulWidget{
+  final RouteSettings startingRoute;
+  final SW app;
 
-  final RouteSettings afterLoad;
-
-  const Loading({Key? key, required this.afterLoad}) : super(key: key);
+  const LoadingScreen({super.key, required this.startingRoute, required this.app});
 
   @override
-  State<Loading> createState() => LoadingState();
+  State<LoadingScreen> createState() => LoadingScreenState();
 }
 
-class LoadingState extends State<Loading> {
-
-  int index = -1;
+class LoadingScreenState extends State<LoadingScreen> {
   bool started = false;
-  bool driveErr = false;
-  bool _driveLoading = false;
-  set driveLoading(bool b) => setState(() => _driveLoading = b);
+  bool _driveFail = false;
+  set driveFail(bool b) => setState(() => _driveFail = b);
+  String? _loadingText;
+  set loadingText(String s) => setState(() => _loadingText = s);
 
-  Widget? child;
-  String? _loadText;
-  set loadText(String s) => setState(() => _loadText = s);
-
-
-  List<String> get neededAsks {
-    var result = <String>[];
-    for (var ask in preferences.newPrefs) {
-      if (SW.of(context).getPref(ask)) {
-        result.add(ask);
-      }
-    }
-    return result;
-  }
-  void leave() {
-    SW.of(context).initialized = true;
-    Navigator.of(context).pushNamedAndRemoveUntil(widget.afterLoad.name ?? "", (route) => false, arguments: widget.afterLoad.arguments);
-  }
-
-  void advance() {
-    if(!driveErr){
-      index++;
-      if (neededAsks.isEmpty) {
-        leave();
-      }else{
-        switch(neededAsks[index]){
-          case preferences.subtractNew:
-            setState(() => child = subtractPref());
-        }
-      }
-    }else{
-      setState(() => child = driveError());
-    }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadingText = AppLocalizations.of(context)!.loadingDialog;
   }
 
   @override
   Widget build(BuildContext context) {
     if(!started){
       started = true;
-      SW.of(context).postInit(this).then((_){
-        advance();
-      });
+      widget.app.postInit(this).then(
+        (_) {
+          if(!_driveFail){
+            widget.app.nav.pushNamedAndRemoveUntil(widget.startingRoute.name ?? "/", (_) => false, arguments: widget.startingRoute.arguments);
+          }
+        }
+      );
     }
     return FrameContent(
-      allowPop: false,
-      fab: (driveErr || child != null) ? FloatingActionButton(
-        onPressed: advance,
-        child: const Icon(Icons.forward),
-      ) : null,
-      child: Align(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            child: child ?? Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            duration: widget.app.globalDuration,
+            child: !_driveFail ? Column(
+              key: const Key("loading"),
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const CircularProgressIndicator(),
                 Container(height: 10),
                 Text(
-                  _loadText ?? AppLocalizations.of(context)!.loadingDialog,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
-                ),
-                if(_driveLoading) Container(height: 10,),
-                if(_driveLoading) Text(
-                  AppLocalizations.of(context)!.driveSyncingWeb,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
+                  _loadingText ?? AppLocalizations.of(context)!.loadingDialog,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                )
               ],
-            )
+            ) :
+            Column(
+              key: const Key("driveFail"),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.driveError,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+                Container(height: 20),
+                Text(
+                  kIsWeb ? AppLocalizations.of(context)!.driveErrorWebSub : AppLocalizations.of(context)!.driveErrorOfflineSub,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      child: Text(AppLocalizations.of(context)!.retry),
+                      onPressed: () {
+                        driveFail = false;
+                        widget.app.syncRemote().then(
+                          (value) {
+                            if(!value){
+                              driveFail = true;
+                            }else{
+                              widget.app.nav.pushNamedAndRemoveUntil(widget.startingRoute.name ?? "/", (_) => false, arguments: widget.startingRoute.arguments);
+                            }
+                          }
+                        );
+                      },
+                    ),
+                    TextButton(
+                      child: Text(AppLocalizations.of(context)!.driveContinue),
+                      onPressed: () =>
+                        widget.app.nav.pushNamedAndRemoveUntil(widget.startingRoute.name ?? "/", (_) => false, arguments: widget.startingRoute.arguments)
+                    )
+                  ],
+                )
+              ],
+            ),
           )
         )
       )
     );
   }
-
-  Widget subtractPref() =>
-    Column(
-      key: const Key("subby"),
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text(
-            AppLocalizations.of(context)!.healthMode,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.additive,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.additiveExplaination,
-                      textAlign: TextAlign.center,
-                    )
-                  ]
-                )
-              ),
-              UpdatingSwitch(
-                value: SW.of(context).getPref(preferences.subtractMode),
-                onChanged: (b) => 
-                  SW.of(context).prefs.setBool(preferences.subtractMode, b),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.subtractive,
-                      style: Theme.of(context).textTheme.titleLarge
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.subtractiveExplaination,
-                      textAlign: TextAlign.center,
-                    )
-                  ]
-                )
-              ),
-            ],
-          )
-        ),
-      ],
-    );
-
-  Widget driveError() =>
-    Column(
-      key: const Key("drivErr"),
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text(
-            AppLocalizations.of(context)!.driveError,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(7),
-          child: Text(
-            kIsWeb ? AppLocalizations.of(context)!.driveErrorWebSub : AppLocalizations.of(context)!.driveErrorOfflineSub,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        if(!kIsWeb) TextButton(
-          onPressed: () {
-            driveErr = false;
-            advance();
-          },
-          child: Text(AppLocalizations.of(context)!.driveContinue),
-        ),
-        TextButton(
-          onPressed: (){
-            SW.of(context).syncRemote().then((success) {
-              driveErr = !success;
-              advance();
-            });
-          },
-          child: Text(AppLocalizations.of(context)!.retry)
-        )
-      ],
-    );
 }

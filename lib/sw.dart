@@ -81,7 +81,7 @@ class SW with TopResources{
     return app;
   }
 
-  Future<void> postInit(LoadingState loadingState) async{
+  Future<void> postInit(LoadingScreenState loadingState) async{
     if(prefs.firebase){
       await firebaseoptions.loadLibrary();
       await firebasecore.loadLibrary();
@@ -99,11 +99,10 @@ class SW with TopResources{
     }
     if(kIsWeb) prefs.googleDrive = true;
     if(prefs.googleDrive){
-      loadingState.loadText = AppLocalizations.of(loadingState.context)!.driveSyncing;
-      if(kIsWeb) loadingState.driveLoading = true;
+      loadingState.loadingText = AppLocalizations.of(loadingState.context)!.driveSyncing;
       if(!await syncRemote()){
         driver = null;
-        loadingState.driveErr = true;
+        loadingState.driveFail = true;
       }
     }
     for(var ed in trash){

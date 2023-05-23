@@ -6,7 +6,6 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 class TrashList extends StatefulWidget{
@@ -24,7 +23,7 @@ class _TrashListState extends State<TrashList> {
   @override
   Widget build(BuildContext context) {
     var app = SW.of(context);
-    if(app.getPref(preferences.initialTrash)){
+    if(app.prefs.initialTrash){
       show(){
         Bottom(
           child: (c) => Text(
@@ -38,7 +37,7 @@ class _TrashListState extends State<TrashList> {
           await Future.delayed(const Duration(milliseconds: 100));
         }
         show();
-        app.prefs.setBool(preferences.initialTrash, false);
+        app.prefs.initialTrash = false;
       });
     }
     return FrameContent(

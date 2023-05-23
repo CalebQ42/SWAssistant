@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/preferences.dart' as preferences;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -95,42 +94,36 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPref(preferences.forceLight),
+            value: app.prefs.lightTheme,
             onChanged: (b){
-              app.prefs.setBool(preferences.forceLight, b);
-              if (b) {
-                app.prefs.setBool(preferences.forceDark, false);
-              }
+              app.prefs.lightTheme = b;
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.forceLight),
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPref(preferences.forceDark),
+            value: app.prefs.darkTheme,
             onChanged: (b){
-              app.prefs.setBool(preferences.forceDark, b);
-              if (b) {
-                app.prefs.setBool(preferences.forceLight, false);
-              }
+              app.prefs.darkTheme = b;
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.forceDark),
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPref(preferences.amoled),
+            value: app.prefs.amoledTheme,
             onChanged: (b){
-              app.prefs.setBool(preferences.amoled, b);
+              app.prefs.amoledTheme = b;
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.amoledTheme),
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPref(preferences.colorDice),
+            value: app.prefs.colorDice,
             onChanged: (b){
-              app.prefs.setBool(preferences.colorDice, b);
+              app.prefs.colorDice = b;
               SW.of(context).topLevelUpdate();
             },
             title: Text(AppLocalizations.of(context)!.colorDice),
@@ -169,11 +162,10 @@ class SettingsState extends State{
                 )
               ],
               onChanged: (String? value) {
-                value ??= "";
-                app.prefs.setString(preferences.locale, value);
+                app.prefs.locale = value ?? "";
                 app.topLevelUpdate();
               },
-              value: app.getPref(preferences.locale),
+              value: app.prefs.locale,
             )
           ),
           const Divider(),
@@ -203,9 +195,9 @@ class SettingsState extends State{
                   )
                 ),
                 UpdatingSwitch(
-                  value: app.getPref(preferences.subtractMode),
+                  value: app.prefs.subtractMode,
                   onChanged: (b) =>
-                    app.prefs.setBool(preferences.subtractMode, b),
+                    app.prefs.subtractMode = b,
                 ),
                 Expanded(
                   child: Column(
@@ -225,13 +217,13 @@ class SettingsState extends State{
           if(app.isMobile) const Divider(),
           if(app.isMobile) SwitchListTile(
             title: Text(AppLocalizations.of(context)!.cloudSave),
-            value: app.getPref(preferences.googleDrive),
+            value: app.prefs.googleDrive,
             onChanged: (b) {
               var message = ScaffoldMessenger.of(context);
               if (b) {
                 app.syncRemote(context: context, nav: Navigator.of(context, rootNavigator: true)).then((value) {
                   if(value){
-                    app.prefs.setBool(preferences.googleDrive, b);
+                    app.prefs.googleDrive = b;
                     setState(() {});
                   }else{
                     message.showSnackBar(
@@ -242,15 +234,15 @@ class SettingsState extends State{
               } else {
                 if(app.driver != null) app.driver!.gsi?.disconnect();
                 app.driver = null;
-                app.prefs.setBool(preferences.googleDrive, b);
-                app.prefs.setBool(preferences.driveFirstLoad, true);
+                app.prefs.googleDrive = b;
+                app.prefs.driveFirstLoad = true;
               }
               setState(() {});
             }
           ),
           const Divider(),
           SwitchListTile(
-            value: app.getPref(preferences.firebase),
+            value: app.prefs.firebase,
             onChanged: (b){
               showDialog(
                 context: context,
@@ -260,7 +252,7 @@ class SettingsState extends State{
                     actions: [
                       TextButton(
                         onPressed: (){
-                          app.prefs.setBool(preferences.firebase, b);
+                          app.prefs.firebase = b;
                           if(!kIsWeb && Platform.isIOS) {
                             exit(0);
                           } else {
@@ -283,24 +275,14 @@ class SettingsState extends State{
           ),
           if(app.isMobile) const Divider(),
           if(app.isMobile) SwitchListTile(
-            value: app.getPref(preferences.crashlytics),
-            onChanged: app.getPref(preferences.firebase) ? (b){
+            value: app.prefs.crashlytics,
+            onChanged: app.prefs.firebase ? (b){
               crash.loadLibrary().then((_) => crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b));
-              app.prefs.setBool(preferences.crashlytics, b);
+              app.prefs.crashlytics = b;
               setState((){});
             } : null,
             title: Text(AppLocalizations.of(context)!.crashReporting),
             subtitle: Text(AppLocalizations.of(context)!.crashReportingSubtitle)
-          ),
-          const Divider(),
-          SwitchListTile(
-            title: Text(AppLocalizations.of(context)!.ads),
-            value: app.getPref(preferences.ads),
-            onChanged: app.getPref(preferences.firebase) ? (b) {
-              //TODO
-              app.prefs.setBool(preferences.ads, b);
-              setState((){});
-            } : null,
           ),
           const Divider(),
           TextButton(

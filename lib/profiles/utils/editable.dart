@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:swassistant/preferences.dart' as preferences;
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/items/item.dart';
@@ -90,7 +89,7 @@ abstract class Editable extends JsonSavable{
     }
     app ??= SW.of(context!);
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
-    loadJson(jsonMap, app.getPref(preferences.subtractMode));
+    loadJson(jsonMap, app.prefs.subtractMode);
     if(getFileLocation(app) != file.path){
       loc = file.path;
     }
@@ -350,7 +349,7 @@ abstract class Editable extends JsonSavable{
     }
     if(!_saving && !_defered && !_syncing){
       _saving = true;
-      if(!localOnly && app != null && app.getPref(preferences.googleDrive)) {
+      if(!localOnly && app != null && app.prefs.googleDrive) {
         cloudSave(app);
       }
       var file = File(filename);
@@ -531,7 +530,7 @@ abstract class Editable extends JsonSavable{
     await for(var tmp in media.stream){
       out.addAll(tmp);
     }
-    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>), app.getPref(preferences.subtractMode));
+    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>), app.prefs.subtractMode);
     if(overwriteId) driveId = id;
   }
 
