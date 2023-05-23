@@ -203,7 +203,6 @@ class DiceResults{
     }
     var pierceInd = weaponPack?.weapon.characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicPierce);
     int? d100Result;
-    print(success);
     return [
       if(weaponPack == null && (!noSuccess || success != 0)) Center(
         child: Text(success.toString() + (isSuccess ? " ${AppLocalizations.of(context)!.success}" : " ${AppLocalizations.of(context)!.failure}"),
