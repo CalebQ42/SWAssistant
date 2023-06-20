@@ -143,6 +143,7 @@ class SWAppState extends State<SWApp> {
             pages: Intro(app).pages,
             onDone: (){
               app.prefs.showIntro = false;
+              app.prefs.stupidIntro = false;
               app.nav.pushNamedAndRemoveUntil(settings.name ?? "/", (route) => false);
             }
           );

@@ -201,7 +201,7 @@ class EditableListState extends State<EditableList>{
                     icon: const Icon(Icons.refresh),
                     onPressed: () => refreshKey.currentState?.show()
                   ),
-                  IconButton(
+                  if(widget.onTap != null)IconButton(
                     icon: const Icon(Icons.tonality),
                     onPressed: () => DestinyDialog().show(context)
                   ),
