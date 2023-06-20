@@ -14,9 +14,9 @@ class Intro{
   Intro(this.app);
 
   List<IntroPage Function(BuildContext)> get pages => [
-    intro0,
-    if(kIsWeb || app.isMobile) intro1,
-    intro2,
+    if(app.prefs.showIntro) intro0,
+    if(app.prefs.showIntro || app.prefs.stupidIntro) intro1,
+    if(app.prefs.showIntro) intro2,
   ];
 
   IntroPage intro0(BuildContext context) =>
@@ -48,36 +48,42 @@ class Intro{
     var pagKey = GlobalKey<IntroPageState>();
     return IntroPage(
       key: pagKey,
-      title: Text(AppLocalizations.of(context)!.firebase),
+      title: Text(AppLocalizations.of(context)!.introPage1Title),
       subtext: Column(
         children: [
           Text(
-            AppLocalizations.of(context)!.introPage1FirebaseExplaination,
-          ),
-          if(!kIsWeb) const SizedBox(height: 20),
-          if(!kIsWeb) Text(
-            AppLocalizations.of(context)!.introPage1CrashReportingExplaination,
+            app.prefs.showIntro ? AppLocalizations.of(context)!.introPage1StupidExplaination : AppLocalizations.of(context)!.introStupidExistingUsers,
           ),
         ],
       ),
       items: (c) => [
-        if(kIsWeb || app.isMobile) UpdatingSwitchTile(
+        UpdatingSwitchTile(
           title: Text(
-            AppLocalizations.of(context)!.firebase,
+            AppLocalizations.of(context)!.stupid,
           ),
-          value: app.prefs.firebase,
+          value: app.prefs.stupid,
           onChanged: (b){
-            app.prefs.firebase = b;
+            app.prefs.stupid = b;
             pagKey.currentState?.update();
           }
         ),
-        if(app.isMobile) SwitchListTile(
+        SwitchListTile(
           title: Text(
-            AppLocalizations.of(context)!.crashReporting,
+            AppLocalizations.of(context)!.stupidLog,
           ),
-          value: app.prefs.crashlytics,
-          onChanged: app.prefs.firebase ? (b) {
-            app.prefs.crashlytics = b;
+          value: app.prefs.stupidLog,
+          onChanged: app.prefs.stupid ? (b) {
+            app.prefs.stupidLog = b;
+            pagKey.currentState?.update();
+          } : null
+        ),
+        SwitchListTile(
+          title: Text(
+            AppLocalizations.of(context)!.stupidCrash,
+          ),
+          value: app.prefs.stupidCrash,
+          onChanged: app.prefs.stupid ? (b) {
+            app.prefs.stupidCrash = b;
             pagKey.currentState?.update();
           } : null
         ),

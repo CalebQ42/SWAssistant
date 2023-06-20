@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:darkstorm_common/frame_content.dart';
 import 'package:darkstorm_common/updating_switch_tile.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:stupid/stupid.dart';
 import 'package:swassistant/sw.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
@@ -242,47 +238,37 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.prefs.firebase,
-            onChanged: (b){
-              showDialog(
-                context: context,
-                builder: (context) => 
-                  AlertDialog(
-                    content: Text(!b ? AppLocalizations.of(context)!.firebaseOffNotice : AppLocalizations.of(context)!.firebaseOnNotice),
-                    actions: [
-                      TextButton(
-                        onPressed: (){
-                          app.prefs.firebase = b;
-                          if(!kIsWeb && Platform.isIOS) {
-                            exit(0);
-                          } else {
-                            SystemNavigator.pop();
-                          }
-                        },
-                        child: Text(MaterialLocalizations.of(context).continueButtonLabel)
-                      ),
-                      TextButton(
-                        child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                        onPressed: () =>
-                          Navigator.of(context, rootNavigator: true).pop()
-                      )
-                    ],
-                  )
-              );
-            },
-            title: Text(AppLocalizations.of(context)!.firebase),
-            subtitle: Text(AppLocalizations.of(context)!.firebaseSubtitle),
+            value: app.prefs.stupid,
+            onChanged: (b) =>
+              setState(() => app.prefs.stupid = b),
+            title: Text(AppLocalizations.of(context)!.stupid),
           ),
-          if(app.isMobile) const Divider(),
-          if(app.isMobile) SwitchListTile(
-            value: app.prefs.crashlytics,
-            onChanged: app.prefs.firebase ? (b){
-              crash.loadLibrary().then((_) => crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(b));
-              app.prefs.crashlytics = b;
-              setState((){});
+          const Divider(),
+          UpdatingSwitchTile(
+            value: app.prefs.stupidLog,
+            onChanged: app.prefs.stupid ? (b){
+              app.prefs.stupidLog = b;
             } : null,
-            title: Text(AppLocalizations.of(context)!.crashReporting),
-            subtitle: Text(AppLocalizations.of(context)!.crashReportingSubtitle)
+            title: Text(AppLocalizations.of(context)!.stupidCrash),
+          ),
+          const Divider(),
+          UpdatingSwitchTile(
+            value: app.prefs.stupidCrash,
+            onChanged: app.prefs.stupid ? (b){
+              app.prefs.stupidCrash = b;
+              if(b){
+                FlutterError.onError = (err) {
+                  app.stupid!.crash(Crash(
+                    error: err.exceptionAsString(),
+                    stack: err.stack?.toString() ?? "Not given"
+                  ), appVersion: app.package.version);
+                  FlutterError.presentError(err);
+                };
+              }else{
+                FlutterError.onError = FlutterError.presentError;
+              }
+            } : null,
+            title: Text(AppLocalizations.of(context)!.stupidCrash),
           ),
           const Divider(),
           TextButton(

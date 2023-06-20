@@ -2,18 +2,19 @@
 
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart' deferred as firebasecore;
-import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
-import 'package:swassistant/firebase_options.dart' deferred as firebaseoptions;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:in_app_purchase/in_app_purchase.dart' deferred as inapp;
 import 'package:path_provider/path_provider.dart' deferred as pathprov;
 import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:stupid/stupid.dart' deferred as stupidlib;
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stupid/stupid.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
@@ -39,21 +40,22 @@ class SW with TopResources{
   String saveDir = "";
   Prefs prefs;
   late PackageInfo package;
-  bool firebaseAvailable = false;
+  bool stupidAvailable = false;
   late Function() topLevelUpdate;
+  Stupid? stupid;
 
   Driver? driver;
   bool syncing = false;
 
   bool initialized = false;
 
-  bool get crashReporting => isMobile && firebaseAvailable && prefs.crashlytics;
+  bool get crashReporting => isMobile && stupidAvailable && prefs.stupidCrash;
 
   SW(this.prefs);
 
   static Future<SW> baseInit() async {
     WidgetsFlutterBinding.ensureInitialized();
-    var app = SW(Prefs(await SharedPreferences.getInstance()));
+    var app = SW(Prefs(await SharedPreferences.getInstance(), const FlutterSecureStorage()));
     if(app.isMobile){
       await inapp.loadLibrary();
       inapp.InAppPurchase.instance.purchaseStream.listen((event) {
@@ -82,18 +84,31 @@ class SW with TopResources{
   }
 
   Future<void> postInit(LoadingScreenState loadingState) async{
-    if(prefs.firebase){
-      await firebaseoptions.loadLibrary();
-      await firebasecore.loadLibrary();
+    if(prefs.stupid){
       try{
-        await firebasecore.Firebase.initializeApp(
-          options:firebaseoptions.DefaultFirebaseOptions.currentPlatform
-        );
-        firebaseAvailable = true;
-        if(!kDebugMode && !kProfileMode && isMobile && prefs.crashlytics){
-          await crash.loadLibrary();
-          crash.FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-          FlutterError.onError = crash.FirebaseCrashlytics.instance.recordFlutterError;
+        await stupidlib.loadLibrary();
+        String? apiKey;
+        var dot = DotEnv();
+        await dot.load(fileName: ".stupid");
+        apiKey = dot.maybeGet("STUPID_KEY");
+        if(apiKey != null){
+          stupid = stupidlib.Stupid(
+            baseUrl: Uri.parse("https://api.darkstorm.tech"),
+            deviceId: await prefs.stupidUuid(),
+            apiKey: apiKey,
+          );
+          if(prefs.stupidLog){
+            await stupid!.log();
+          }
+          if(prefs.stupidCrash){
+            FlutterError.onError = (err) {
+              stupid!.crash(Crash(
+                error: err.exceptionAsString(),
+                stack: err.stack?.toString() ?? "Not given"
+              ), appVersion: package.version);
+              FlutterError.presentError(err);
+            };
+          }
         }
       }finally{}
     }
@@ -193,8 +208,8 @@ class SW with TopResources{
     }
     driver ??= Driver(scope, (e, s) async{
       if(!crashReporting) return;
-      await crash.loadLibrary();
-      crash.FirebaseCrashlytics.instance.recordError(e, s);
+      await stupidlib.loadLibrary();
+      stupid?.crash(stupidlib.Crash(error: e.toString(), stack: s.toString()), appVersion: package.version);
     });
     var okay = await driver!.ready();
     if(!okay){

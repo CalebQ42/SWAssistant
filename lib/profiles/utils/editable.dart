@@ -62,10 +62,6 @@ abstract class Editable extends JsonSavable{
   bool _cloudSaving = false;
   String? driveId;
   bool _cloudDefered = false;
-  bool _syncing = false;
-  bool _endSync = false;
-
-  
 
   //Universal Keys
   var nameKey = GlobalKey<NameCardState>(); 
@@ -347,7 +343,7 @@ abstract class Editable extends JsonSavable{
       }
       return;
     }
-    if(!_saving && !_defered && !_syncing){
+    if(!_saving && !_defered){
       _saving = true;
       if(!localOnly && app != null && app.prefs.googleDrive) {
         cloudSave(app);
@@ -363,7 +359,7 @@ abstract class Editable extends JsonSavable{
         backup.deleteSync();
       }
       _saving = false;
-    }else if(!_defered && !_syncing){
+    }else if(!_defered){
       _defered = true;
       while(_saving){
         await Future.delayed(const Duration(milliseconds: 250));
@@ -392,7 +388,7 @@ abstract class Editable extends JsonSavable{
       await Future.delayed(const Duration(milliseconds: 250));
       return;
     }
-    if(!_cloudSaving && !_cloudDefered && !_syncing) {
+    if(!_cloudSaving && !_cloudDefered) {
       _cloudSaving = true;
       try{
         var id = await getDriveId(app);
@@ -411,7 +407,7 @@ abstract class Editable extends JsonSavable{
         cloudSave(app);
       }
       _cloudSaving = false;
-    }else if (!_cloudDefered && !_syncing) {
+    }else if (!_cloudDefered) {
       _cloudDefered = true;
       while(_cloudSaving) {
         await Future.delayed(const Duration(milliseconds: 500));

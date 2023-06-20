@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:stupid/stupid.dart' deferred as stupidlib;
+
 import 'package:darkstorm_common/frame.dart';
 import 'package:darkstorm_common/intro.dart';
 import 'package:darkstorm_common/nav.dart';
 import 'package:darkstorm_common/top_inherit.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart' deferred as crash;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -40,8 +41,8 @@ Future<void> main() async {
       if(kDebugMode) {
         print("$error\n$stack");
       }else if(app.crashReporting){
-        await crash.loadLibrary();
-        crash.FirebaseCrashlytics.instance.recordError(error, stack);
+        await stupidlib.loadLibrary();
+        app.stupid?.crash(stupidlib.Crash(error: error.toString(), stack: stack.toString()), appVersion: app.package.version);
       }
     }
   );
@@ -137,7 +138,7 @@ class SWAppState extends State<SWApp> {
       onGenerateRoute: (settings) {
         Widget? widy;
         RouteSettings? newSettings;
-        if(settings.name == "/intro" || app.prefs.showIntro) {
+        if(settings.name == "/intro" || app.prefs.showIntroPages) {
           widy = IntroScreen(
             pages: Intro(app).pages,
             onDone: (){
@@ -239,7 +240,6 @@ class SWAppState extends State<SWApp> {
           colorScheme: ColorScheme.fromSwatch(
             backgroundColor: Colors.black,
             primarySwatch: Colors.red,
-            primaryColorDark: Colors.red.shade700,
             accentColor: Colors.lightBlueAccent.shade100,
             brightness: Brightness.dark
           ),

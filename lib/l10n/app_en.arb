@@ -19,8 +19,9 @@
     "introPage0ManualImportLine3": "3) Long press on one of the files until it goes into multi-select mode, then select all the other files in the folder",
     "introPage0ManualImportLine4": "4) Click the Select Files button.",
     
-    "introPage1FirebaseExplaination": "SWAssistant makes use of the Firebase by Google. Firebase is used in the project to provide crash reporting, ads, and to download pre-made profiles. If you want to, you can disable Firebase completely, or disable just crash reporting and/or ads. You can change this later in settings.",
-    "introPage1CrashReportingExplaination": "If you disable crash reporting, any issues you encounter WILL NOT be fixed as I will have no ability to know what's causing the issues.",
+    "introPage1Title": "Stupid Backend",
+    "introPage1StupidExplaination": "This app (optionally) uses a backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. Functionality will expand in the future, but right now it's used for crash reporting and logging the app's startup (for user count). No sensitive information is collected or stored.",
+    "introStupidExistingUsers": "Firebase has been replaced with my custom backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. Functionality will expand in the future, but right now it's used for crash reporting and logging the app's startup (for user count). No sensitive information is collected or stored.",
 
     "importSuccess": "Successfully imported {number} profiles.",
     "@importSuccess": {
@@ -429,12 +430,9 @@
     "additiveExplaination": "Health starts at 0 and damage increases it",
 
     "colorDice": "Color Dice Roller",
-    "firebaseOnNotice": "Turning on Firebase requires an app restart. Continue?",
-    "firebaseOffNotice": "Turning off firebase will remove the ability to download profiles. Additionally the app needs to be restarted for this to take effect. Continue?",
-    "firebase": "Firebase",
-    "firebaseSubtitle": "Needed for crash reporting and downloads",
-    "crashReporting": "Crashlytics (Crash Reporting)",
-    "crashReportingSubtitle": "Anonymous crash reporting provided by Firebase Crashlytics",
+    "stupid": "Stupid backend",
+    "stupidCrash": "Crash reporting",
+    "stupidLog": "Stupid startup log",
     "aboutText": "See https://github.com/CalebQ42/SWAssistant for license and other info",
     "ads": "Ads",
     "cloudSave": "Cloud Save (via Google Drive)",
