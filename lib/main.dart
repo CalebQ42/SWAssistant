@@ -42,7 +42,11 @@ Future<void> main() async {
         print("$error\n$stack");
       }else if(app.crashReporting){
         await stupidlib.loadLibrary();
-        app.stupid?.crash(stupidlib.Crash(error: error.toString(), stack: stack.toString()), appVersion: app.package.version);
+        app.stupid?.crash(stupidlib.Crash(
+          error: error.toString(),
+          stack: stack.toString(),
+          version: app.package.version
+        ));
       }
     }
   );

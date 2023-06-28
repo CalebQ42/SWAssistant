@@ -260,8 +260,9 @@ class SettingsState extends State{
                 FlutterError.onError = (err) {
                   app.stupid!.crash(Crash(
                     error: err.exceptionAsString(),
-                    stack: err.stack?.toString() ?? "Not given"
-                  ), appVersion: app.package.version);
+                    stack: err.stack?.toString() ?? "Not given",
+                    version: app.package.version
+                  ));
                   FlutterError.presentError(err);
                 };
               }else{

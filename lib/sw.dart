@@ -104,8 +104,9 @@ class SW with TopResources{
             FlutterError.onError = (err) {
               stupid!.crash(Crash(
                 error: err.exceptionAsString(),
-                stack: err.stack?.toString() ?? "Not given"
-              ), appVersion: package.version);
+                stack: err.stack?.toString() ?? "Not given",
+                version: package.version
+              ));
               FlutterError.presentError(err);
             };
           }
@@ -209,7 +210,11 @@ class SW with TopResources{
     driver ??= Driver(scope, (e, s) async{
       if(!crashReporting) return;
       await stupidlib.loadLibrary();
-      stupid?.crash(stupidlib.Crash(error: e.toString(), stack: s.toString()), appVersion: package.version);
+      stupid?.crash(stupidlib.Crash(
+        error: e.toString(),
+        stack: s.toString(),
+        version: package.version
+      ));
     });
     var okay = await driver!.ready();
     if(!okay){

@@ -605,10 +605,11 @@ packages:
   stupid:
     dependency: "direct main"
     description:
-      path: "../stupid-dart"
-      relative: true
-    source: path
-    version: "0.0.9"
+      name: stupid
+      sha256: "40d924e2e8c6cd6734e6bd18290d9ea8b4dcf5c8892b8f87de9512347af54213"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   term_glyph:
     dependency: transitive
     description:
