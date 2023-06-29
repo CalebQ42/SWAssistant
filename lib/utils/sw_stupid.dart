@@ -6,6 +6,7 @@ import 'package:stupid/stupid.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/sw.dart';
 
 class SWStupid extends Stupid{
@@ -66,6 +67,42 @@ class SWStupid extends Stupid{
     }
     return UploadResponse(statusCode: 404);
   }
+
+  Future<Editable?> downloadProfile(String id) async{
+    try{
+      var resp = await get(
+        baseUrl.resolveUri(
+          Uri(
+            path: "/profile/$id",
+            queryParameters: <String, String>{
+              "key": apiKey,
+            }
+          )
+        )
+      );
+      if(resp.statusCode != 200 || resp.body.isEmpty) return null;
+      Map<String, dynamic> values = const JsonDecoder().convert(resp.body);
+      switch(values["type"]){
+        case "character":
+          return Character(app: app)..loadJson(values, app.prefs.subtractMode);
+        case "minion":
+          return Minion(app: app)..loadJson(values, app.prefs.subtractMode);
+        default:
+          return Vehicle(app: app)..loadJson(values, app.prefs.subtractMode);
+      }
+    }catch(e, stack){
+      if(kDebugMode){
+        print("$e\n$stack");
+      }else{
+        app.stupid?.crash(Crash(
+          error: e.toString(),
+          stack: stack.toString(),
+          version: app.package.version
+        ));
+      }
+    }
+    return null;
+  }
 }
 
 class UploadResponse{
@@ -78,8 +115,11 @@ class UploadResponse{
     required this.statusCode
   });
 
+  UploadResponse.timeout() : statusCode = 408;
+
   bool isTooLarge() => statusCode == 413;
   bool isSuccess() => statusCode == 201;
   bool isServerError() => statusCode == 500;
   bool isNotFound() => statusCode == 404;
+  bool isTimeout() => statusCode == 408;
 }

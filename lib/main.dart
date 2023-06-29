@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:darkstorm_common/top_resources.dart';
 import 'package:stupid/stupid.dart' deferred as stupidlib;
 
 import 'package:darkstorm_common/frame.dart';
 import 'package:darkstorm_common/intro.dart';
 import 'package:darkstorm_common/nav.dart';
-import 'package:darkstorm_common/top_inherit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -40,7 +40,7 @@ Future<void> main() async {
     ), (error, stack) async{
       if(kDebugMode) {
         print("$error\n$stack");
-      }else if(app.crashReporting){
+      }else if(app.prefs.stupid && app.stupidAvailable && app.crashReporting){
         await stupidlib.loadLibrary();
         app.stupid?.crash(stupidlib.Crash(
           error: error.toString(),

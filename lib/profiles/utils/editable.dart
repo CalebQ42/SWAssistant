@@ -22,6 +22,7 @@ import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
+import 'package:swassistant/utils/sw_stupid.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -294,6 +295,55 @@ abstract class Editable extends JsonSavable{
                   }
                 ).show(context)
             ),
+            if(SW.of(context).prefs.stupid && SW.of(context).stupidAvailable) MiniIconButton(
+              icon: const Icon(Icons.share),
+              onPressed: (){
+                Bottom(
+                  children: (c) =>[
+                    const Center(child: CircularProgressIndicator()),
+                    const SizedBox(height: 5),
+                    Text(AppLocalizations.of(context)!.uploading),
+                  ]
+                ).show(context);
+                SW.of(context).stupid?.uploadProfile(this)
+                    .timeout(const Duration(seconds: 10), onTimeout: () => UploadResponse.timeout())
+                    .then(
+                  (value){
+                    if(value.isSuccess()){
+                      Navigator.of(context).pop();
+                      Bottom(
+                        children: (c) => [
+                          Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.shareCode
+                            )
+                          ),
+                          Container(height: 5,),
+                          TextField(
+                            readOnly: true,
+                            controller: TextEditingController(text: value.id),
+                          )
+                        ],
+                      ).show(context);
+                    }else{
+                      Navigator.of(context).pop();
+                      Bottom(
+                        children: (c) => [
+                          Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.uploadFailed
+                            )
+                          ),
+                          if(value.isNotFound() || value.isServerError()) Center(child: Text(AppLocalizations.of(context)!.failServer)),
+                          if(value.isTimeout()) Center(child: Text(AppLocalizations.of(context)!.failTimeout)),
+                          if(value.isTooLarge()) Center(child: Text(AppLocalizations.of(context)!.failSize)),
+                        ]
+                      ).show(context);
+                    }
+                  }
+                );
+              },
+            )
           ],
           defaultEdit: () {
             if(this is Character){

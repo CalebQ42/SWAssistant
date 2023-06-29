@@ -2,11 +2,11 @@
 
 import 'dart:io';
 
+import 'package:darkstorm_common/top_resources.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:in_app_purchase/in_app_purchase.dart' deferred as inapp;
 import 'package:path_provider/path_provider.dart' deferred as pathprov;
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:stupid/stupid.dart' deferred as stupidlib;
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +21,8 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/ui/screens/loading.dart';
 import 'package:swassistant/utils/prefs.dart';
+import 'package:swassistant/utils/sw_stupid.dart';
 import 'package:uuid/uuid.dart';
-import 'package:darkstorm_common/top_inherit.dart';
 import 'package:darkstorm_common/driver.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,7 +42,7 @@ class SW with TopResources{
   late PackageInfo package;
   bool stupidAvailable = false;
   late Function() topLevelUpdate;
-  Stupid? stupid;
+  SWStupid? stupid;
 
   Driver? driver;
   bool syncing = false;
@@ -86,17 +86,12 @@ class SW with TopResources{
   Future<void> postInit(LoadingScreenState loadingState) async{
     if(prefs.stupid){
       try{
-        await stupidlib.loadLibrary();
         String? apiKey;
         var dot = DotEnv();
         await dot.load(fileName: ".stupid");
         apiKey = dot.maybeGet("STUPID_KEY");
         if(apiKey != null){
-          stupid = stupidlib.Stupid(
-            baseUrl: Uri.parse("https://api.darkstorm.tech"),
-            deviceId: await prefs.stupidUuid(),
-            apiKey: apiKey,
-          );
+          stupid = SWStupid(this, apiKey, await prefs.stupidUuid());
           if(prefs.stupidLog){
             await stupid!.log();
           }
@@ -111,7 +106,12 @@ class SW with TopResources{
             };
           }
         }
-      }finally{}
+        stupidAvailable = true;
+      }catch(e, stack){
+        if(kDebugMode){
+          print("$e\n$stack");
+        }
+      }
     }
     if(kIsWeb) prefs.googleDrive = true;
     if(prefs.googleDrive){
@@ -209,8 +209,8 @@ class SW with TopResources{
     }
     driver ??= Driver(scope, (e, s) async{
       if(!crashReporting) return;
-      await stupidlib.loadLibrary();
-      stupid?.crash(stupidlib.Crash(
+      if(!prefs.stupid || !stupidAvailable) return;
+      stupid?.crash(Crash(
         error: e.toString(),
         stack: s.toString(),
         version: package.version
