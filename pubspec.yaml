@@ -30,6 +30,7 @@ dependencies:
   darkstorm_common: ^1.0.0
   stupid: ^0.1.0
   flutter_secure_storage: ^8.0.0
+  http: ^0.13.6
   # flutter_speed_dial: ^5.0.0+1
   # dynamic_color: ^1.2.0
 
