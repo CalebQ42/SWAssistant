@@ -27,7 +27,7 @@ dependencies:
   googleapis: ^11.2.0
   uuid: ^3.0.7
   flutter_dotenv: ^5.1.0
-  darkstorm_common: ^1.0.0
+  darkstorm_common: ^1.0.1
   stupid: ^0.1.0
   flutter_secure_storage: ^8.0.0
   http: ^0.13.6
@@ -37,7 +37,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.2
 
 flutter:
   generate: true
