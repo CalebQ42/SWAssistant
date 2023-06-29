@@ -381,5 +381,11 @@
     "aboutText": "Voir https://github.com/CalebQ42/SWAssistant pour la licence et d'autres informations",
     "ads": "Annonces",
     "cloudSave": "Sauvegarde dans le Cloud (via Google Drive)",
-    "showIntro": "Ignorer l'introduction"
+    "showIntro": "Ignorer l'introduction",
+    "uploading": "Uploading profile",
+    "uploadFailed": "Uploading profile failed:",
+    "failSize": "Profile too large",
+    "failServer": "Server error",
+    "failTimeout": "Timed out",
+    "shareCode": "Share Code"
 }
