@@ -25,22 +25,6 @@ class SWStupid extends Stupid{
       if(outBod.codeUnits.length > 5242880){
         return UploadResponse(statusCode: 413);
       }
-      print(baseUrl.resolveUri(
-          Uri(
-            path: "/profile/upload",
-            queryParameters: {
-              "key": apiKey,
-              "type": (){
-                if(ed is Character){
-                  return "character";
-                }else if(ed is Minion){
-                  return "minion";
-                }
-                return "vehicle";
-              }()
-            }
-          )
-        ).toString());
       var resp = await post(
         baseUrl.resolveUri(
           Uri(
@@ -59,7 +43,7 @@ class SWStupid extends Stupid{
           )
         ),
         headers: <String, String>{
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: outBod
       );
