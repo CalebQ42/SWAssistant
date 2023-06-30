@@ -105,8 +105,8 @@ class SW with TopResources{
               FlutterError.presentError(err);
             };
           }
+          stupidAvailable = true;
         }
-        stupidAvailable = true;
       }catch(e, stack){
         if(kDebugMode){
           print("$e\n$stack");

@@ -1,3 +1,4 @@
+import 'package:darkstorm_common/bottom.dart';
 import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -203,9 +204,7 @@ class EditableListState extends State<EditableList>{
                   ),
                   if(app.prefs.stupid && app.stupidAvailable) IconButton(
                     icon: const Icon(Icons.download),
-                    onPressed: () {
-                      //TODO: download
-                    }
+                    onPressed: () => download(listKey)
                   ),
                   if(widget.onTap != null) IconButton(
                     icon: const Icon(Icons.tonality),
@@ -242,6 +241,57 @@ class EditableListState extends State<EditableList>{
     //     body: mainList
     //   )
     // :
+  }
+
+  void download(GlobalKey<AnimatedListState> listKey){
+    Bottom? bot;
+    var app = SW.of(context);
+    var scaf = ScaffoldMessenger.of(context);
+    var locale = AppLocalizations.of(context)!;
+    var cont = TextEditingController()
+        ..addListener(() => bot?.updateButtons());
+    bot = Bottom(
+      children: (c) => [
+        Center(
+          child: Text(
+            AppLocalizations.of(context)!.shareCode,
+            style: Theme.of(context).textTheme.titleLarge
+          )
+        ),
+        Container(height: 5,),
+        TextField(
+          controller: cont,
+        )
+      ],
+      buttons: (c) => [
+        TextButton(
+          onPressed: cont.text.trim().isNotEmpty ? () async {
+            var ed = await SW.of(context).stupid?.downloadProfile(cont.text);
+            if(ed == null){
+              app.nav.pop();
+              scaf.showSnackBar(
+                SnackBar(
+                  content: Text(locale.downloadFailed)
+                )
+              );
+            }else{
+              app.add(ed);
+              app.nav.pop();
+              await ed.save(app: app);
+              if(widget.edType == null || widget.edType == ed.runtimeType){
+                listKey.currentState?.insertItem(app.getList(type: widget.edType).length-1);
+              }
+            }
+          } : null,
+          child: Text(AppLocalizations.of(context)!.download),
+        ),
+        TextButton(
+          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          onPressed: () =>
+            SW.of(context).nav.pop()
+        )
+      ],
+    )..show(context);
   }
 }
 

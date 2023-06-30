@@ -8,6 +8,7 @@ import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/sw.dart';
+import 'package:uuid/uuid.dart';
 
 class SWStupid extends Stupid{
   SW app;
@@ -24,6 +25,22 @@ class SWStupid extends Stupid{
       if(outBod.codeUnits.length > 5242880){
         return UploadResponse(statusCode: 413);
       }
+      print(baseUrl.resolveUri(
+          Uri(
+            path: "/profile/upload",
+            queryParameters: {
+              "key": apiKey,
+              "type": (){
+                if(ed is Character){
+                  return "character";
+                }else if(ed is Minion){
+                  return "minion";
+                }
+                return "vehicle";
+              }()
+            }
+          )
+        ).toString());
       var resp = await post(
         baseUrl.resolveUri(
           Uri(
@@ -82,6 +99,7 @@ class SWStupid extends Stupid{
       );
       if(resp.statusCode != 200 || resp.body.isEmpty) return null;
       Map<String, dynamic> values = const JsonDecoder().convert(resp.body);
+      if(values["uid"] == null) values["uid"] = const Uuid().v4();
       switch(values["type"]){
         case "character":
           return Character(app: app)..loadJson(values, app.prefs.subtractMode);

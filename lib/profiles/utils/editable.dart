@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/items/item.dart';
@@ -315,13 +316,32 @@ abstract class Editable extends JsonSavable{
                         children: (c) => [
                           Center(
                             child: Text(
-                              AppLocalizations.of(context)!.shareCode
+                              AppLocalizations.of(context)!.shareCode,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              textAlign: TextAlign.center,
+                            )
+                          ),
+                          Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.uploadDisclaimer,
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             )
                           ),
                           Container(height: 5,),
-                          TextField(
-                            readOnly: true,
-                            controller: TextEditingController(text: value.id),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children:[
+                              Expanded(child: TextField(
+                                readOnly: true,
+                                controller: TextEditingController(text: value.id),
+                              )),
+                              TextButton(
+                                child: Text(MaterialLocalizations.of(context).copyButtonLabel),
+                                onPressed: () =>
+                                  Clipboard.setData(ClipboardData(text: value.id!))
+                              )
+                            ]
                           )
                         ],
                       ).show(context);
@@ -331,7 +351,8 @@ abstract class Editable extends JsonSavable{
                         children: (c) => [
                           Center(
                             child: Text(
-                              AppLocalizations.of(context)!.uploadFailed
+                              AppLocalizations.of(context)!.uploadFailed,
+                              style: Theme.of(context).textTheme.titleLarge
                             )
                           ),
                           if(value.isNotFound() || value.isServerError()) Center(child: Text(AppLocalizations.of(context)!.failServer)),

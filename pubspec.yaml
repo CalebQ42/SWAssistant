@@ -23,14 +23,15 @@ dependencies:
   in_app_purchase: ^3.1.7
   device_info_plus: ^9.0.2
   package_info_plus: ^4.0.2
-  universal_internet_checker: ^0.1.2
   googleapis: ^11.2.0
   uuid: ^3.0.7
   flutter_dotenv: ^5.1.0
-  darkstorm_common: ^1.0.1
-  stupid: ^0.1.0
+  darkstorm_common:
+    path: ../darkstorm-common
+  stupid:
+    path: ../stupid-dart
   flutter_secure_storage: ^8.0.0
-  http: ^0.13.6
+  http: ^1.1.0
   # flutter_speed_dial: ^5.0.0+1
   # dynamic_color: ^1.2.0
 
