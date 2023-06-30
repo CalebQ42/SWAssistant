@@ -26,10 +26,8 @@ dependencies:
   googleapis: ^11.2.0
   uuid: ^3.0.7
   flutter_dotenv: ^5.1.0
-  darkstorm_common:
-    path: ../darkstorm-common
-  stupid:
-    path: ../stupid-dart
+  darkstorm_common: ^1.0.2
+  stupid: ^0.1.1
   flutter_secure_storage: ^8.0.0
   http: ^1.1.0
   # flutter_speed_dial: ^5.0.0+1
