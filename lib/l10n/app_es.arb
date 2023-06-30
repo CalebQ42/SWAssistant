@@ -382,10 +382,12 @@
     "ads": "Ads",
     "cloudSave": "Cloud Save (via Google Drive)",
     "showIntro": "Show Intro",
+    "shareCode": "Share Code",
+    "uploadDisclaimer": "The share code will be valid for 12 hours",
     "uploading": "Uploading profile",
     "uploadFailed": "Uploading profile failed:",
     "failSize": "Profile too large",
     "failServer": "Server error",
     "failTimeout": "Timed out",
-    "shareCode": "Share Code"
+    "downloadFailed": "Download Failed"
 }
