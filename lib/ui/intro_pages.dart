@@ -52,7 +52,7 @@ class Intro{
       subtext: Column(
         children: [
           Text(
-            app.prefs.showIntro ? AppLocalizations.of(context)!.introPage1StupidExplaination : AppLocalizations.of(context)!.introStupidExistingUsers,
+            app.prefs.showIntro ? AppLocalizations.of(context)!.introPage1StupidExplainationv2 : AppLocalizations.of(context)!.introStupidExistingUsersv2,
           ),
         ],
       ),

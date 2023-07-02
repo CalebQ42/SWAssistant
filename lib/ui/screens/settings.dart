@@ -242,6 +242,7 @@ class SettingsState extends State{
             onChanged: (b) =>
               setState(() => app.prefs.stupid = b),
             title: Text(AppLocalizations.of(context)!.stupid),
+            subtitle: Text(AppLocalizations.of(context)!.stupidSub),
           ),
           const Divider(),
           UpdatingSwitchTile(
