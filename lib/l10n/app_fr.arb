@@ -19,8 +19,8 @@
     "introPage0ManualImportLine3": "3) Appuyez longuement sur l'un des fichiers jusqu'à ce qu'il passe en mode multi-sélection, puis sélectionnez tous les autres fichiers du dossier",
     "introPage0ManualImportLine4": "4) Cliquez sur le bouton Sélectionner les fichiers.",
     "introPage1Title": "Stupid Backend",
-    "introPage1StupidExplaination": "This app (optionally) uses a backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. Functionality will expand in the future, but right now it's used for crash reporting and logging the app's startup (for user count). No sensitive information is collected or stored.",
-    "introStupidExistingUsers": "Firebase has been replaced with my custom backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. Functionality will expand in the future, but right now it's used for crash reporting and logging the app's startup (for user count). No sensitive information is collected or stored.",
+    "introPage1StupidExplainationv2": "This app (optionally) uses a backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, logging the app's startup (for user count), and sharing profiles. No sensitive information is collected or stored.",
+    "introStupidExistingUsersv2": "Firebase has been replaced with my custom backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, logging the app's startup (for user count), and sharing profiles. No sensitive information is collected or stored.",
     "importSuccess": "{number} profils importés avec succès.",
     "@importSuccess": {
         "description": "Shown after imported old profiles. number is how many profiles imported.",
@@ -376,6 +376,7 @@
     "additiveExplaination": "Health starts at 0 and damage increases it",
     "colorDice": "Lanceur de dés rapide",
     "stupid": "Stupid backend",
+    "stupidSub": "Needed for profiles sharing",
     "stupidCrash": "Crash reporting",
     "stupidLog": "Stupid startup log",
     "aboutText": "Voir https://github.com/CalebQ42/SWAssistant pour la licence et d'autres informations",
