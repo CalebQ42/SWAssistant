@@ -86,6 +86,7 @@ class SW with TopResources{
   Future<void> postInit(LoadingScreenState loadingState) async{
     if(prefs.stupid){
       try{
+        //TODO: check internet for stupidAvailable;
         String? apiKey;
         var dot = DotEnv();
         await dot.load(fileName: ".stupid");
