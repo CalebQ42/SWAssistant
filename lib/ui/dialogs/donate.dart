@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class DonateDialog extends StatelessWidget{
@@ -12,14 +12,14 @@ class DonateDialog extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var scafMes = ScaffoldMessenger.of(context);
-    var loc = AppLocalizations.of(context);
+    var app = SW.of(context);
     return Column(
       children: [
-        Text(AppLocalizations.of(context)!.donoOptions, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center,),
-        if(!kIsWeb) Text(AppLocalizations.of(context)!.gPlay, style: Theme.of(context).textTheme.titleLarge),
-        if(!kIsWeb) Text(AppLocalizations.of(context)!.gPlayDesc, textAlign: TextAlign.center,),
-        Text(AppLocalizations.of(context)!.sponsors, style: Theme.of(context).textTheme.titleLarge),
-        Text(AppLocalizations.of(context)!.sponsorsDesc, textAlign: TextAlign.center,),
+        Text(app.locale.donoOptions, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center,),
+        if(!kIsWeb) Text(app.locale.gPlay, style: Theme.of(context).textTheme.titleLarge),
+        if(!kIsWeb) Text(app.locale.gPlayDesc, textAlign: TextAlign.center,),
+        Text(app.locale.sponsors, style: Theme.of(context).textTheme.titleLarge),
+        Text(app.locale.sponsorsDesc, textAlign: TextAlign.center,),
         ButtonBar(
           children: [
             TextButton(
@@ -27,14 +27,14 @@ class DonateDialog extends StatelessWidget{
                 Navigator.pop(context);
                 _launchURL("https://github.com/sponsors/CalebQ42");
               },
-              child: Text(AppLocalizations.of(context)!.sponsors)
+              child: Text(app.locale.sponsors)
             ),
             if(!kIsWeb) TextButton(
               onPressed: () async{
                 if (!await InAppPurchase.instance.isAvailable()){
                   scafMes.clearSnackBars();
                   scafMes.showSnackBar(SnackBar(
-                    content: Text(loc!.gPlayUnavailable),
+                    content: Text(app.locale.gPlayUnavailable),
                   ));
                 }else{
                   InAppPurchase.instance.queryProductDetails({
@@ -48,7 +48,7 @@ class DonateDialog extends StatelessWidget{
                   });
                 }
               },
-              child: Text(AppLocalizations.of(context)!.gPlay),
+              child: Text(app.locale.gPlay),
             )
           ],
         )

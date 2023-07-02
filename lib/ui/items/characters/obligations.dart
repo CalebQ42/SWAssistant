@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/obligation.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/character/obli_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
 
 class Obligations extends StatefulWidget{
@@ -27,6 +27,7 @@ class ObligationsState extends State<Obligations> with StatefulCard {
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "Obligations card used on non Character";
+    var app = SW.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -58,7 +59,7 @@ class ObligationsState extends State<Obligations> with StatefulCard {
                               ),
                               Container(height: 5),
                               Text(
-                                "${character.obligations[index].value} ${AppLocalizations.of(context)!.obligation}",
+                                "${character.obligations[index].value} ${app.locale.obligation}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
@@ -104,9 +105,9 @@ class ObligationsState extends State<Obligations> with StatefulCard {
                         character.save(context: context);
                         ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(AppLocalizations.of(context)!.deletedObli),
+                          content: Text(app.locale.deletedObli),
                           action: SnackBarAction(
-                            label: AppLocalizations.of(context)!.undo,
+                            label: app.locale.undo,
                             onPressed: (){
                               setState(() => character.obligations.insert(index, tmp));
                               character.save(context: context);

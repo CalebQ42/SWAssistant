@@ -2,8 +2,8 @@ import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/note.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
@@ -63,8 +63,9 @@ class _NCState extends State<NoteCard> {
   final GlobalKey<_NoteCardState> contentKey = GlobalKey();
 
   @override
-  Widget build(BuildContext context) =>
-    Dismissible(
+  Widget build(BuildContext context) {
+    var app = SW.of(context);
+    return Dismissible(
       key: ValueKey(widget.index.toString() + Editable.of(context).notes[widget.index].note),
       child: Card(
         child: Padding(
@@ -104,9 +105,9 @@ class _NCState extends State<NoteCard> {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.deletedNote),
+            content: Text(app.locale.deletedNote),
             action: SnackBarAction(
-              label: AppLocalizations.of(context)!.undo,
+              label: app.locale.undo,
               onPressed: (){
                 editable.notes.insert(widget.index, temp);
                 widget.list.currentState?.insertItem(widget.index);
@@ -116,6 +117,7 @@ class _NCState extends State<NoteCard> {
         );
       },
     );
+  }
 }
 
 class NoteCardContents extends StatefulWidget{

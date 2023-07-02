@@ -5,8 +5,8 @@ import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/dice_results.dart';
 import 'package:swassistant/dice/swdice.dart' as swdice;
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/utils/json_savable.dart';
 
 class SWDiceHolder extends JsonSavable{
@@ -86,6 +86,7 @@ class SWDiceHolder extends JsonSavable{
     int? d10Result = 0;
     int? d100Result = 0;
     var botKey = GlobalKey<BottomState>();
+    var app = SW.of(context);
     var bot = Bottom(
       key: botKey,
       padding: false,
@@ -107,7 +108,7 @@ class SWDiceHolder extends JsonSavable{
                   Row(
                     children: [
                       Expanded(child: TextButton(
-                        child: Text(AppLocalizations.of(context)!.roll),
+                        child: Text(app.locale.roll),
                         onPressed: () {
                           d10Result = Random().nextInt(10) + 1;
                           botKey.currentState?.update();
@@ -135,7 +136,7 @@ class SWDiceHolder extends JsonSavable{
                   Row(
                     children: [
                       Expanded(child: TextButton(
-                        child: Text(AppLocalizations.of(context)!.roll),
+                        child: Text(app.locale.roll),
                         onPressed: () {
                           d100Result = Random().nextInt(100) + 1;
                           botKey.currentState?.update();
@@ -153,7 +154,7 @@ class SWDiceHolder extends JsonSavable{
           ]),
       buttons: (context) => [
         TextButton(
-          child: Text((weaponPack == null) ? AppLocalizations.of(context)!.roll : AppLocalizations.of(context)!.fire),
+          child: Text((weaponPack == null) ? app.locale.roll : app.locale.fire),
           onPressed: (){
             Navigator.of(context).pop();
             var res = getDice(context).roll();

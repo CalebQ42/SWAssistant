@@ -5,9 +5,9 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/editable/item_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
@@ -94,6 +94,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
         }
       }
     }
+    var app = SW.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -101,7 +102,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
           if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Center(child: Text(AppLocalizations.of(context)!.credits)),
+              Center(child: Text(app.locale.credits)),
               SizedBox(
                 width: 75,
                 height: 25,
@@ -121,7 +122,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
           if(editable is Character) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("${AppLocalizations.of(context)!.encum}:"),
+              Text("${app.locale.encum}:"),
               Container(width: 10),
               SizedBox(
                 width: 50,
@@ -147,7 +148,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
           if(editable is Vehicle) Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("${AppLocalizations.of(context)!.encum}:"),
+              Text("${app.locale.encum}:"),
               Container(width: 10),
               SizedBox(
                 width: 50,
@@ -171,7 +172,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
             ],
           ),
           if(overEncumbered) Text(
-            AppLocalizations.of(context)!.overEncumNotice,
+            app.locale.overEncumNotice,
             style: TextStyle(color: Theme.of(context).colorScheme.error),
             textAlign: TextAlign.center,
           ), ...List.generate(
@@ -206,14 +207,14 @@ class InventoryState extends State<Inventory> with StatefulCard{
                                 Container(height: 5,),
                                 Center(
                                   child: Text(
-                                    "${AppLocalizations.of(context)!.count}: ${editable.inventory[index].count}",
+                                    "${app.locale.count}: ${editable.inventory[index].count}",
                                     style: Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 ),
                                 Container(height: 5),
                                 Center(
                                   child: Text(
-                                    "${AppLocalizations.of(context)!.encum}: ${editable.inventory[index].encum}",
+                                    "${app.locale.encum}: ${editable.inventory[index].encum}",
                                     style: Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 ),
@@ -254,7 +255,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
                         constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                         onPressed: (){
                           var temp = Item.from(editable.inventory[index]);
-                          if(editable is Character && temp.name == (editable.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks)){
+                          if(editable is Character && temp.name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks)){
                             editable.woundStrainKey.currentState?.setState((){});
                           }
                           editable.inventory.removeAt(index);
@@ -263,12 +264,12 @@ class InventoryState extends State<Inventory> with StatefulCard{
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(AppLocalizations.of(context)!.deletedItem),
+                              content: Text(app.locale.deletedItem),
                               action: SnackBarAction(
-                                label: AppLocalizations.of(context)!.undo,
+                                label: app.locale.undo,
                                 onPressed: (){
                                   editable.inventory.insert(index, temp);
-                                  if(editable is Character && temp.name == (editable.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks)){
+                                  if(editable is Character && temp.name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks)){
                                     editable.woundStrainKey.currentState?.setState((){});
                                   }
                                   setState((){});
@@ -288,8 +289,8 @@ class InventoryState extends State<Inventory> with StatefulCard{
                             editable: editable,
                             onClose: (item){
                               bool updateWoundStrain = false;
-                              if(editable is Character && (item.name == (editable.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks)
-                                || editable.inventory[index].name == (editable.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks))){
+                              if(editable is Character && (item.name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks)
+                                || editable.inventory[index].name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks))){
                                 updateWoundStrain = true;
                               }
                               editable.inventory[index] = item;

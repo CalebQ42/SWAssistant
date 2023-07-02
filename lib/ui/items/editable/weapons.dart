@@ -7,8 +7,8 @@ import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/editable/weapon_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 
@@ -33,6 +33,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
+    var app = SW.of(context);
     var weaponsList = List.generate(editable.weapons.length, (i) =>
       InkResponse(
         containedInkWell: true,
@@ -42,14 +43,14 @@ class WeaponsState extends State<Weapons> with StatefulCard{
             ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(AppLocalizations.of(context)!.brokenWeapon),
+                content: Text(app.locale.brokenWeapon),
               )
             );
           }else if ((editable.weapons[i].limitedAmmo && editable.weapons[i].ammo <= 0) || !editable.weapons[i].loaded){
             ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(AppLocalizations.of(context)!.weaponOutOfAmmo),
+                content: Text(app.locale.weaponOutOfAmmo),
               )
             );
           }else{
@@ -65,8 +66,8 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                   proficiency: min((skill.value ?? 0), (editable.weapons[i].skillBase != null ? editable.charVals[editable.weapons[i].skillBase!] : 0)),
                   weaponPack: pack,
                 );
-                var accInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicAccurate);
-                var inaccInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicInaccurate);
+                var accInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == app.locale.characteristicAccurate);
+                var inaccInd = editable.weapons[i].characteristics.indexWhere((element) => element.name == app.locale.characteristicInaccurate);
                 //TODO: all passive characteristics
                 if(accInd != -1){
                   hold.boost = editable.weapons[i].characteristics[accInd].value ?? 1;
@@ -108,76 +109,76 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                         String range;
                         switch(editable.weapons[i].range){
                           case 0:
-                            range = AppLocalizations.of(context)!.rangeLevel1;
+                            range = app.locale.rangeLevel1;
                             break;
                           case 1:
-                            range = AppLocalizations.of(context)!.rangeLevel2;
+                            range = app.locale.rangeLevel2;
                             break;
                           case 2:
-                            range = AppLocalizations.of(context)!.rangeLevel3;
+                            range = app.locale.rangeLevel3;
                             break;
                           case 3:
-                            range = AppLocalizations.of(context)!.rangeLevel4;
+                            range = app.locale.rangeLevel4;
                             break;
                           default:
-                            range = AppLocalizations.of(context)!.rangeLevel5;
+                            range = app.locale.rangeLevel5;
                             break;
                         }
                         String weapDamage = "";
                         switch(editable.weapons[i].itemState){
                           case 1:
-                            weapDamage = AppLocalizations.of(context)!.damageLevel2;
+                            weapDamage = app.locale.damageLevel2;
                             break;
                           case 2:
-                            weapDamage = AppLocalizations.of(context)!.damageLevel3;
+                            weapDamage = app.locale.damageLevel3;
                             break;
                           case 3:
-                            weapDamage = AppLocalizations.of(context)!.damageLevel4;
+                            weapDamage = app.locale.damageLevel4;
                             break;
                           case 4:
-                            weapDamage = AppLocalizations.of(context)!.damageLevel5;
+                            weapDamage = app.locale.damageLevel5;
                             break;
                         }
                         String skill;
                         switch(editable.weapons[i].skill){
                           case 0:
-                            skill = AppLocalizations.of(context)!.skills3;
+                            skill = app.locale.skills3;
                             break;
                           case 1:
-                            skill = AppLocalizations.of(context)!.skills11;
+                            skill = app.locale.skills11;
                             break;
                           case 2:
-                            skill = AppLocalizations.of(context)!.skills13;
+                            skill = app.locale.skills13;
                             break;
                           case 3:
-                            skill = AppLocalizations.of(context)!.skills16;
+                            skill = app.locale.skills16;
                             break;
                           case 4:
-                            skill = AppLocalizations.of(context)!.skills21;
+                            skill = app.locale.skills21;
                             break;
                           default:
-                            skill = AppLocalizations.of(context)!.skills22;
+                            skill = app.locale.skills22;
                             break;
                         }
                         String characteristic;
                         switch(editable.weapons[i].skillBase){
                           case 0:
-                            characteristic = AppLocalizations.of(context)!.brawn;
+                            characteristic = app.locale.brawn;
                             break;
                           case 1:
-                            characteristic = AppLocalizations.of(context)!.agility;
+                            characteristic = app.locale.agility;
                             break;
                           case 2:
-                            characteristic = AppLocalizations.of(context)!.intellect;
+                            characteristic = app.locale.intellect;
                             break;
                           case 3:
-                            characteristic = AppLocalizations.of(context)!.cunning;
+                            characteristic = app.locale.cunning;
                             break;
                           case 4:
-                            characteristic = AppLocalizations.of(context)!.willpower;
+                            characteristic = app.locale.willpower;
                             break;
                           default:
-                            characteristic = AppLocalizations.of(context)!.presence;
+                            characteristic = app.locale.presence;
                             break;
                         }
                         return Wrap(
@@ -201,63 +202,63 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                             if(!editable.weapons[i].loaded) Container(height: 5),
                             if(!editable.weapons[i].loaded) Center(
                               child: Text(
-                                AppLocalizations.of(context)!.weaponOutOfAmmo,
+                                app.locale.weaponOutOfAmmo,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             if(weapDamage != "") Container(height: 5),
                             if(weapDamage != "") Center(
                               child: Text(
-                                "$weapDamage ${AppLocalizations.of(context)!.itemDamage}",
+                                "$weapDamage ${app.locale.itemDamage}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             Container(height: 5,),
                             Center(
                               child: Text(
-                                "${AppLocalizations.of(context)!.damage}: ${editable.weapons[i].damage}${editable.weapons[i].addBrawn ? " + ${AppLocalizations.of(context)!.brawn}" : ""}",
+                                "${app.locale.damage}: ${editable.weapons[i].damage}${editable.weapons[i].addBrawn ? " + ${app.locale.brawn}" : ""}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                "${AppLocalizations.of(context)!.critical}: ${editable.weapons[i].critical}",
+                                "${app.locale.critical}: ${editable.weapons[i].critical}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                "${AppLocalizations.of(context)!.hardPoints}: ${editable.weapons[i].hp}",
+                                "${app.locale.hardPoints}: ${editable.weapons[i].hp}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                "${AppLocalizations.of(context)!.encum}: ${editable.weapons[i].encumbrance}",
+                                "${app.locale.encum}: ${editable.weapons[i].encumbrance}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             Container(height: 5),
                             Center(
                               child: Text(
-                                "${AppLocalizations.of(context)!.range}: $range",
+                                "${app.locale.range}: $range",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             if(editable.weapons[i].limitedAmmo) Container(height: 5),
                             if(editable.weapons[i].limitedAmmo) Center(
                               child: Text(
-                                "${AppLocalizations.of(context)!.ammo}: ${editable.weapons[i].ammo}",
+                                "${app.locale.ammo}: ${editable.weapons[i].ammo}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             if(editable.weapons[i].characteristics.isNotEmpty) Container(height: 10),
                             if(editable.weapons[i].characteristics.isNotEmpty) Center(
                               child: Text(
-                                AppLocalizations.of(context)!.characteristicPlural,
+                                app.locale.characteristicPlural,
                                 style: Theme.of(context).textTheme.titleLarge
                               )
                             ),
@@ -268,7 +269,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                                 var char = editable.weapons[i].characteristics[(ch/2).floor()];
                                 String out = char.name;
                                 if(char.value != 1 && char.value != null) out += " ${char.value}";
-                                if(char.advantage != null) out += " ${AppLocalizations.of(context)!.advNeeded}: ${char.advantage}";
+                                if(char.advantage != null) out += " ${app.locale.advNeeded}: ${char.advantage}";
                                 return Center(
                                   child: Text(
                                     out,
@@ -302,9 +303,9 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(AppLocalizations.of(context)!.deletedWeapon),
+                          content: Text(app.locale.deletedWeapon),
                           action: SnackBarAction(
-                            label: AppLocalizations.of(context)!.undo,
+                            label: app.locale.undo,
                             onPressed: (){
                               setState(() => editable.weapons.insert(i, temp));
                                 editable.invKey.currentState?.update(() {});

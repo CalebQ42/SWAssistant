@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/dice/sides.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DiceRoller extends StatelessWidget{
 
@@ -109,7 +109,7 @@ class _InstantState extends State<_InstantDiceCard>{
                       ).roll();
                       setState(() => result = int.tryParse(res.toString()));
                     },
-                    child: Text(AppLocalizations.of(context)!.roll)
+                    child: Text(SW.of(context).locale.roll)
                   ))
                 ],
               )

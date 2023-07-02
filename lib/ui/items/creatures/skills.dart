@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/creature/skill_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 
 class Skills extends StatefulWidget{
@@ -26,6 +26,7 @@ class SkillsState extends State<Skills> with StatefulCard {
   Widget build(BuildContext context){
     var creature = Creature.of(context);
     if (creature == null) throw "Characteristics card used on non Creature";
+    var app = SW.of(context);
     var children = List.generate(creature.skills.length, (index){
       return InkResponse(
         containedInkWell: true,
@@ -79,9 +80,9 @@ class SkillsState extends State<Skills> with StatefulCard {
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(AppLocalizations.of(context)!.deletedSkill),
+                          content: Text(app.locale.deletedSkill),
                           action: SnackBarAction(
-                            label: AppLocalizations.of(context)!.undo,
+                            label: app.locale.undo,
                             onPressed: (){
                               setState(() => creature.skills.insert(index, temp));
                               creature.save(context: context);

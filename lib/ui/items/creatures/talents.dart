@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/talent.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/creature/talent_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:darkstorm_common/bottom.dart';
 
@@ -26,6 +26,7 @@ class TalentsState extends State<Talents> with StatefulCard {
   Widget build(BuildContext context) {
     var creature = Creature.of(context);
     if (creature == null) throw "Talents card used on non Creature";
+    var app = SW.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -60,7 +61,7 @@ class TalentsState extends State<Talents> with StatefulCard {
                               Container(height: 5),
                               Center(
                                 child: Text(
-                                  "${AppLocalizations.of(context)!.rank}: ${creature.talents[index].value}",
+                                  "${app.locale.rank}: ${creature.talents[index].value}",
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
@@ -107,9 +108,9 @@ class TalentsState extends State<Talents> with StatefulCard {
                         ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(AppLocalizations.of(context)!.deletedTalent),
+                            content: Text(app.locale.deletedTalent),
                             action: SnackBarAction(
-                              label: AppLocalizations.of(context)!.undo,
+                              label: app.locale.undo,
                               onPressed: (){
                                 setState(() => creature.talents.insert(index, temp));
                                 creature.save(context: context);

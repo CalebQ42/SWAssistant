@@ -7,7 +7,6 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/dialogs/destiny.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
@@ -33,8 +32,8 @@ class EditableListState extends State<EditableList>{
 
   bool first = true;
 
-  late GlobalKey<AnimatedListState> listKey =  GlobalKey();
-  late GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey();
+  final GlobalKey<AnimatedListState> listKey =  GlobalKey();
+  final GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +54,11 @@ class EditableListState extends State<EditableList>{
     categories = [
       DropdownMenuItem<String>(
         value: null,
-        child: Text(AppLocalizations.of(context)!.all),
+        child: Text(app.locale.all),
       ),
       DropdownMenuItem<String>(
         value: "",
-        child: Text(AppLocalizations.of(context)!.uncategorized)
+        child: Text(app.locale.uncategorized)
       ),
       ...List.generate(app.cats.length, (index) =>
         DropdownMenuItem<String>(
@@ -69,7 +68,7 @@ class EditableListState extends State<EditableList>{
       )
     ];
     if(list.length != oldLen){
-      listKey = GlobalKey();
+      listKey.currentState?.setState(() {});
     }
     var catSelector = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -85,7 +84,7 @@ class EditableListState extends State<EditableList>{
         )
       )
     );
-    var localization = AppLocalizations.of(context)!;
+    var localization = app.locale;
     var mainList = RefreshIndicator(
       key: refreshKey,
       onRefresh: () => Future(() async {
@@ -123,14 +122,14 @@ class EditableListState extends State<EditableList>{
                     SnackBar(
                       content: Text(
                         (tmp is Character) ?
-                          AppLocalizations.of(context)!.characterTrashed
+                          app.locale.characterTrashed
                         : (tmp is Minion) ?
-                          AppLocalizations.of(context)!.minionTrashed
+                          app.locale.minionTrashed
                         :
-                          AppLocalizations.of(context)!.vehicleTrashed
+                          app.locale.vehicleTrashed
                       ),
                       action: SnackBarAction(
-                        label: AppLocalizations.of(context)!.undo,
+                        label: app.locale.undo,
                         onPressed: (){
                           app.add(tmp);
                           tmp.save(app: app);
@@ -155,7 +154,7 @@ class EditableListState extends State<EditableList>{
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+                  content: Text(app.locale.driveSyncingNotice)
                 )
               );
               return;
@@ -163,7 +162,7 @@ class EditableListState extends State<EditableList>{
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+                  content: Text(app.locale.driveDisconnectNotice)
                 )
               );
               return;
@@ -172,13 +171,13 @@ class EditableListState extends State<EditableList>{
           Editable newEd;
           switch(widget.edType){
             case Character:
-              newEd = Character(name: AppLocalizations.of(context)!.newCharacter, saveOnCreation: true, app: app);
+              newEd = Character(name: app.locale.newCharacter, saveOnCreation: true, app: app);
               break;
             case Minion:
-              newEd = Minion(name: AppLocalizations.of(context)!.newMinion, saveOnCreation: true, app: app);
+              newEd = Minion(name: app.locale.newMinion, saveOnCreation: true, app: app);
               break;
             default:
-              newEd = Vehicle(name: AppLocalizations.of(context)!.newVehicle, saveOnCreation: true, app: app);
+              newEd = Vehicle(name: app.locale.newVehicle, saveOnCreation: true, app: app);
           }
           app.add(newEd);
           Navigator.pushNamed(
@@ -202,9 +201,19 @@ class EditableListState extends State<EditableList>{
                     icon: const Icon(Icons.refresh),
                     onPressed: () => refreshKey.currentState?.show()
                   ),
-                  if(app.prefs.stupid && app.stupidAvailable) IconButton(
+                  if(app.prefs.stupid) IconButton(
                     icon: const Icon(Icons.download),
-                    onPressed: () => download(listKey)
+                    onPressed: () async {
+                      if(app.stupid?.isAvailable ?? false){
+                        download(listKey);
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(app.locale.noConnectionStupid)
+                          )
+                        );
+                      }
+                    }
                   ),
                   if(widget.onTap != null) IconButton(
                     icon: const Icon(Icons.tonality),
@@ -247,14 +256,13 @@ class EditableListState extends State<EditableList>{
     Bottom? bot;
     var app = SW.of(context);
     var scaf = ScaffoldMessenger.of(context);
-    var locale = AppLocalizations.of(context)!;
     var cont = TextEditingController()
         ..addListener(() => bot?.updateButtons());
     bot = Bottom(
       children: (c) => [
         Center(
           child: Text(
-            AppLocalizations.of(context)!.shareCode,
+            app.locale.shareCode,
             style: Theme.of(context).textTheme.titleLarge
           )
         ),
@@ -271,7 +279,7 @@ class EditableListState extends State<EditableList>{
               app.nav.pop();
               scaf.showSnackBar(
                 SnackBar(
-                  content: Text(locale.downloadFailed)
+                  content: Text(app.locale.downloadFailed)
                 )
               );
             }else{
@@ -283,7 +291,7 @@ class EditableListState extends State<EditableList>{
               }
             }
           } : null,
-          child: Text(AppLocalizations.of(context)!.download),
+          child: Text(app.locale.download),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
@@ -303,8 +311,9 @@ class EditableCard extends StatelessWidget{
   const EditableCard({this.onTap, required this.onDismiss, Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-    Dismissible(
+  Widget build(BuildContext context){
+    var app = SW.of(context);
+    return Dismissible(
       key: Key(Editable.of(context).uid),
       confirmDismiss: (_) async {
         if(!SW.of(context).prefs.googleDrive) return true;
@@ -312,7 +321,7 @@ class EditableCard extends StatelessWidget{
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.driveSyncingNotice)
+              content: Text(app.locale.driveSyncingNotice)
             )
           );
           return false;
@@ -320,7 +329,7 @@ class EditableCard extends StatelessWidget{
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context)!.driveDisconnectNotice)
+              content: Text(app.locale.driveDisconnectNotice)
             )
           );
           return false;
@@ -364,11 +373,11 @@ class EditableCard extends StatelessWidget{
                   alignment: Alignment.bottomRight,
                   child: Text(
                     (Editable.of(context) is Character) ?
-                      AppLocalizations.of(context)!.characters
+                      app.locale.characters
                     : (Editable.of(context) is Minion) ?
-                      AppLocalizations.of(context)!.minions
+                      app.locale.minions
                     :
-                      AppLocalizations.of(context)!.vehicles,
+                      app.locale.vehicles,
                     style: Theme.of(context).textTheme.bodySmall
                   )
                 ),
@@ -386,4 +395,5 @@ class EditableCard extends StatelessWidget{
         )
       )
     );
+  }
 }

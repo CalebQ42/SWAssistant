@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:stupid/stupid.dart';
 import 'package:swassistant/sw.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -22,7 +21,7 @@ class SettingsState extends State{
   Widget build(BuildContext context){
     var app = SW.of(context);
     var scaf = ScaffoldMessenger.of(context);
-    var loc = AppLocalizations.of(context);
+    var loc = app.locale;
     return FrameContent(
       child: ListView(
         physics: const BouncingScrollPhysics(),
@@ -36,7 +35,7 @@ class SettingsState extends State{
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                AppLocalizations.of(context)!.discuss,
+                app.locale.discuss,
                 style: Theme.of(context).textTheme.titleMedium,
               )
             )
@@ -50,7 +49,7 @@ class SettingsState extends State{
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                AppLocalizations.of(context)!.translate,
+                app.locale.translate,
                 style: Theme.of(context).textTheme.titleMedium,
               )
             )
@@ -64,7 +63,7 @@ class SettingsState extends State{
                 if (!await InAppPurchase.instance.isAvailable()){
                   scaf.clearSnackBars();
                   scaf.showSnackBar(SnackBar(
-                    content: Text(loc!.gPlayUnavailable),
+                    content: Text(loc.gPlayUnavailable),
                   ));
                 }else{
                   InAppPurchase.instance.queryProductDetails({
@@ -83,7 +82,7 @@ class SettingsState extends State{
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                AppLocalizations.of(context)!.donate,
+                app.locale.donate,
                 style: Theme.of(context).textTheme.titleMedium,
               )
             )
@@ -95,7 +94,7 @@ class SettingsState extends State{
               app.prefs.lightTheme = b;
               SW.of(context).topLevelUpdate();
             },
-            title: Text(AppLocalizations.of(context)!.forceLight),
+            title: Text(app.locale.forceLight),
           ),
           const Divider(),
           SwitchListTile(
@@ -104,7 +103,7 @@ class SettingsState extends State{
               app.prefs.darkTheme = b;
               SW.of(context).topLevelUpdate();
             },
-            title: Text(AppLocalizations.of(context)!.forceDark),
+            title: Text(app.locale.forceDark),
           ),
           const Divider(),
           SwitchListTile(
@@ -113,7 +112,7 @@ class SettingsState extends State{
               app.prefs.amoledTheme = b;
               SW.of(context).topLevelUpdate();
             },
-            title: Text(AppLocalizations.of(context)!.amoledTheme),
+            title: Text(app.locale.amoledTheme),
           ),
           const Divider(),
           SwitchListTile(
@@ -122,7 +121,7 @@ class SettingsState extends State{
               app.prefs.colorDice = b;
               SW.of(context).topLevelUpdate();
             },
-            title: Text(AppLocalizations.of(context)!.colorDice),
+            title: Text(app.locale.colorDice),
           ),
           const Divider(),
           Padding(
@@ -134,7 +133,7 @@ class SettingsState extends State{
               items: [
                 DropdownMenuItem<String>(
                   value: "",
-                  child: Text(AppLocalizations.of(context)!.systemLanguage),
+                  child: Text(app.locale.systemLanguage),
                 ),
                 const DropdownMenuItem<String>(
                   value: "en",
@@ -168,7 +167,7 @@ class SettingsState extends State{
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              AppLocalizations.of(context)!.healthMode,
+              app.locale.healthMode,
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
@@ -183,10 +182,10 @@ class SettingsState extends State{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.additive,
+                        app.locale.additive,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
-                      Text(AppLocalizations.of(context)!.additiveExplaination)
+                      Text(app.locale.additiveExplaination)
                     ]
                   )
                 ),
@@ -200,10 +199,10 @@ class SettingsState extends State{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.subtractive,
+                        app.locale.subtractive,
                         style: Theme.of(context).textTheme.titleSmall
                       ),
-                      Text(AppLocalizations.of(context)!.subtractiveExplaination)
+                      Text(app.locale.subtractiveExplaination)
                     ]
                   )
                 ),
@@ -212,7 +211,7 @@ class SettingsState extends State{
           ),
           if(app.isMobile) const Divider(),
           if(app.isMobile) SwitchListTile(
-            title: Text(AppLocalizations.of(context)!.cloudSave),
+            title: Text(app.locale.cloudSave),
             value: app.prefs.googleDrive,
             onChanged: (b) {
               var message = ScaffoldMessenger.of(context);
@@ -223,7 +222,7 @@ class SettingsState extends State{
                     setState(() {});
                   }else{
                     message.showSnackBar(
-                      SnackBar(content: Text(AppLocalizations.of(context)!.driveEnableFail))
+                      SnackBar(content: Text(app.locale.driveEnableFail))
                     );
                   }
                 });
@@ -241,8 +240,8 @@ class SettingsState extends State{
             value: app.prefs.stupid,
             onChanged: (b) =>
               setState(() => app.prefs.stupid = b),
-            title: Text(AppLocalizations.of(context)!.stupid),
-            subtitle: Text(AppLocalizations.of(context)!.stupidSub),
+            title: Text(app.locale.stupid),
+            subtitle: Text(app.locale.stupidSub)
           ),
           const Divider(),
           UpdatingSwitchTile(
@@ -250,7 +249,7 @@ class SettingsState extends State{
             onChanged: app.prefs.stupid ? (b){
               app.prefs.stupidLog = b;
             } : null,
-            title: Text(AppLocalizations.of(context)!.stupidCrash),
+            title: Text(app.locale.stupidCrash),
           ),
           const Divider(),
           UpdatingSwitchTile(
@@ -270,7 +269,7 @@ class SettingsState extends State{
                 FlutterError.onError = FlutterError.presentError;
               }
             } : null,
-            title: Text(AppLocalizations.of(context)!.stupidCrash),
+            title: Text(app.locale.stupidCrash),
           ),
           const Divider(),
           TextButton(
@@ -281,7 +280,7 @@ class SettingsState extends State{
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                AppLocalizations.of(context)!.introPage0ImportButton,
+                app.locale.introPage0ImportButton,
                 style: Theme.of(context).textTheme.titleMedium,
               )
             )
@@ -295,7 +294,7 @@ class SettingsState extends State{
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Text(
-                AppLocalizations.of(context)!.showIntro,
+                app.locale.showIntro,
                 style: Theme.of(context).textTheme.titleMedium,
               )
             )
@@ -304,7 +303,7 @@ class SettingsState extends State{
           AboutListTile(
             applicationName: "SWAssistant",
             applicationIcon: const Image(image: AssetImage("assets/SWAssistant.png"), height: 64,),
-            applicationLegalese: AppLocalizations.of(context)!.aboutText,
+            applicationLegalese: app.locale.aboutText,
             applicationVersion: app.package.version,
           )
         ],

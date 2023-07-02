@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
@@ -37,6 +37,7 @@ class DefenseState extends State<Defense> with StatefulCard {
         creature.defRanged = int.tryParse(ranged!.text) ?? 0;
       });
     }
+    var app = SW.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -44,7 +45,7 @@ class DefenseState extends State<Defense> with StatefulCard {
           child: Column(
             children: [
               EditingText(
-                title: AppLocalizations.of(context)!.melee,
+                title: app.locale.melee,
                 editing: edit,
                 initialText: creature.defMelee.toString(),
                 defaultSave: true,
@@ -58,7 +59,7 @@ class DefenseState extends State<Defense> with StatefulCard {
           child: Column(
             children: [
               EditingText(
-                title: AppLocalizations.of(context)!.ranged,
+                title: app.locale.ranged,
                 editing: edit,
                 initialText: creature.defRanged.toString(),
                 defaultSave: true,

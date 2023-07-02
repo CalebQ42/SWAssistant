@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/items/weapon_characteristic.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeaponPack{
   Weapon weapon;
@@ -16,7 +16,6 @@ class WeaponPack{
 }
 
 class DiceResults{
-
   final List<dynamic> _resultsMasterList = [];
   final Map<String,int> results = {};
 
@@ -41,7 +40,7 @@ class DiceResults{
       key: botKey,
       buttons: (context) => [
         TextButton(
-          child: Text(AppLocalizations.of(context)!.edit),
+          child: Text(SW.of(context).locale.edit),
           onPressed: (){
             Navigator.pop(context);
             showResultsEdit(context, weaponPack: weaponPack, noSuccess: noSuccess);
@@ -53,11 +52,12 @@ class DiceResults{
     ).show(context);
   }
 
-  void showResultsEdit(BuildContext context,{bool noSuccess = false, WeaponPack? weaponPack, void Function(BuildContext, DiceResults)? alternateReturn}) =>
+  void showResultsEdit(BuildContext context,{bool noSuccess = false, WeaponPack? weaponPack, void Function(BuildContext, DiceResults)? alternateReturn}) {
+    var app = SW.of(context);
     Bottom(
       buttons: (context) => [
         TextButton(
-          child: Text(AppLocalizations.of(context)!.ret),
+          child: Text(app.locale.ret),
           onPressed: (){
             Navigator.of(context).pop();
             if (alternateReturn == null){
@@ -70,129 +70,131 @@ class DiceResults{
       children: (context) => [
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.success}:")),
+            Expanded(child: Text("${app.locale.success}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.success] = getResult(AppLocalizations.of(context)!.success) + 1,
+                  results[app.locale.success] = getResult(app.locale.success) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.success] = getResult(AppLocalizations.of(context)!.success) - 1,
-                getValue: () => getResult(AppLocalizations.of(context)!.success),
+                  results[app.locale.success] = getResult(app.locale.success) - 1,
+                getValue: () => getResult(app.locale.success),
               )
             )
           ]
         ),
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.failure}:")),
+            Expanded(child: Text("${app.locale.failure}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.failure] = getResult(AppLocalizations.of(context)!.failure) + 1,
+                  results[app.locale.failure] = getResult(app.locale.failure) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.failure] = getResult(AppLocalizations.of(context)!.failure) - 1,
-                getValue: () => getResult(AppLocalizations.of(context)!.failure),
+                  results[app.locale.failure] = getResult(app.locale.failure) - 1,
+                getValue: () => getResult(app.locale.failure),
               )
             )
           ]
         ),
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.advantage}:")),
+            Expanded(child: Text("${app.locale.advantage}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.advantage] = (results[AppLocalizations.of(context)!.advantage] ?? 0) + 1,
+                  results[app.locale.advantage] = (results[app.locale.advantage] ?? 0) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.advantage] = (results[AppLocalizations.of(context)!.advantage] ?? 0) - 1,
-                getValue: () => results[AppLocalizations.of(context)!.advantage] ?? 0,
+                  results[app.locale.advantage] = (results[app.locale.advantage] ?? 0) - 1,
+                getValue: () => results[app.locale.advantage] ?? 0,
               )
             )
           ]
         ),
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.threat}:")),
+            Expanded(child: Text("${app.locale.threat}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.threat] = getResult(AppLocalizations.of(context)!.threat) + 1,
+                  results[app.locale.threat] = getResult(app.locale.threat) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.threat] = getResult(AppLocalizations.of(context)!.threat) - 1,
-                getValue: () => getResult(AppLocalizations.of(context)!.threat),
+                  results[app.locale.threat] = getResult(app.locale.threat) - 1,
+                getValue: () => getResult(app.locale.threat),
               )
             )
           ]
         ),
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.triumph}:")),
+            Expanded(child: Text("${app.locale.triumph}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.triumph] = getResult(AppLocalizations.of(context)!.triumph) + 1,
+                  results[app.locale.triumph] = getResult(app.locale.triumph) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.triumph] = getResult(AppLocalizations.of(context)!.triumph) - 1,
-                getValue: () => getResult(AppLocalizations.of(context)!.triumph),
+                  results[app.locale.triumph] = getResult(app.locale.triumph) - 1,
+                getValue: () => getResult(app.locale.triumph),
               )
             )
           ]
         ),
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.despair}:")),
+            Expanded(child: Text("${app.locale.despair}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.despair] = getResult(AppLocalizations.of(context)!.despair) + 1,
+                  results[app.locale.despair] = getResult(app.locale.despair) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.despair] = getResult(AppLocalizations.of(context)!.despair) - 1,
-                getValue: () => getResult(AppLocalizations.of(context)!.despair),
+                  results[app.locale.despair] = getResult(app.locale.despair) - 1,
+                getValue: () => getResult(app.locale.despair),
               )
             )
           ]
         ),
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.lightSide}:")),
+            Expanded(child: Text("${app.locale.lightSide}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.lightSide] = getResult(AppLocalizations.of(context)!.lightSide) + 1,
+                  results[app.locale.lightSide] = getResult(app.locale.lightSide) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.lightSide] = getResult(AppLocalizations.of(context)!.lightSide) - 1,
-                getValue: () => getResult(AppLocalizations.of(context)!.lightSide),
+                  results[app.locale.lightSide] = getResult(app.locale.lightSide) - 1,
+                getValue: () => getResult(app.locale.lightSide),
               )
             )
           ]
         ),
         Row(
           children: [
-            Expanded(child: Text("${AppLocalizations.of(context)!.darkSide}:")),
+            Expanded(child: Text("${app.locale.darkSide}:")),
             Expanded(
               child: UpDownStat(
                 onUpPressed: () =>
-                  results[AppLocalizations.of(context)!.darkSide] = getResult(AppLocalizations.of(context)!.darkSide) + 1,
+                  results[app.locale.darkSide] = getResult(app.locale.darkSide) + 1,
                 onDownPressed: () =>
-                  results[AppLocalizations.of(context)!.darkSide] = getResult(AppLocalizations.of(context)!.darkSide) - 1,
-                getValue: () => results[AppLocalizations.of(context)!.darkSide] ?? 0,
+                  results[app.locale.darkSide] = getResult(app.locale.darkSide) - 1,
+                getValue: () => results[app.locale.darkSide] ?? 0,
               )
             )
           ]
         )
       ],
     ).show(context);
+  }
 
   List<Widget> combinedDialog(BuildContext context, GlobalKey<BottomState> botKey, {bool noSuccess = false, WeaponPack? weaponPack}) {
     bool isSuccess = true;
-    var success = (getResult(AppLocalizations.of(context)!.success) + getResult(AppLocalizations.of(context)!.triumph)) -
-        (getResult(AppLocalizations.of(context)!.failure) + getResult(AppLocalizations.of(context)!.despair));
+    var app = SW.of(context);
+    var success = (getResult(app.locale.success) + getResult(app.locale.triumph)) -
+        (getResult(app.locale.failure) + getResult(app.locale.despair));
     if(success <= 0){
       isSuccess = false;
       success = success.abs();
     }
     bool isAdvantaged = true;
-    var advantage = getResult(AppLocalizations.of(context)!.advantage) - getResult(AppLocalizations.of(context)!.threat);
+    var advantage = getResult(app.locale.advantage) - getResult(app.locale.threat);
     if(advantage < 0){
       isAdvantaged = false;
       advantage = advantage.abs();
@@ -201,50 +203,50 @@ class DiceResults{
     if(weaponPack != null){
       advChars = weaponPack.weapon.characteristics.where((element) => element.advantage != null).toList();
     }
-    var pierceInd = weaponPack?.weapon.characteristics.indexWhere((element) => element.name == AppLocalizations.of(context)!.characteristicPierce);
+    var pierceInd = weaponPack?.weapon.characteristics.indexWhere((element) => element.name == app.locale.characteristicPierce);
     int? d100Result;
     return [
       if(weaponPack == null && (!noSuccess || success != 0)) Center(
-        child: Text(success.toString() + (isSuccess ? " ${AppLocalizations.of(context)!.success}" : " ${AppLocalizations.of(context)!.failure}"),
+        child: Text(success.toString() + (isSuccess ? " ${app.locale.success}" : " ${app.locale.failure}"),
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
       if(weaponPack != null) Center(
         child: Text(
           isSuccess ? "${weaponPack.weapon.addBrawn ? weaponPack.weapon.damage! + success + weaponPack.brawn :
-            weaponPack.weapon.damage! + success} ${AppLocalizations.of(context)!.damage}" :
-              "$success ${AppLocalizations.of(context)!.failure}",
+            weaponPack.weapon.damage! + success} ${app.locale.damage}" :
+              "$success ${app.locale.failure}",
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
       if(weaponPack != null && isSuccess && pierceInd != null && pierceInd != -1) Center(
         child: Text(
-          AppLocalizations.of(context)!.ignoreSoak(weaponPack.weapon.characteristics[pierceInd].value ?? 1),
+          app.locale.ignoreSoak(weaponPack.weapon.characteristics[pierceInd].value ?? 1),
           style: Theme.of(context).textTheme.titleLarge?.apply(fontSizeFactor: .75),
         )
       ),
       if(advantage != 0) Center(
-        child: Text(advantage.toString() + (isAdvantaged ? " ${AppLocalizations.of(context)!.advantage}" : " ${AppLocalizations.of(context)!.threat}"),
+        child: Text(advantage.toString() + (isAdvantaged ? " ${app.locale.advantage}" : " ${app.locale.threat}"),
           style: Theme.of(context).textTheme.titleLarge,
         )
       ),
-      if(getResult(AppLocalizations.of(context)!.triumph) > 0) Center(
-        child: Text("${results[AppLocalizations.of(context)!.triumph]} ${AppLocalizations.of(context)!.triumph}",
+      if(getResult(app.locale.triumph) > 0) Center(
+        child: Text("${results[app.locale.triumph]} ${app.locale.triumph}",
           style: Theme.of(context).textTheme.titleLarge,
         )
       ),
-      if(getResult(AppLocalizations.of(context)!.despair) > 0) Center(
-        child: Text("${results[AppLocalizations.of(context)!.despair]} ${AppLocalizations.of(context)!.despair}",
+      if(getResult(app.locale.despair) > 0) Center(
+        child: Text("${results[app.locale.despair]} ${app.locale.despair}",
           style: Theme.of(context).textTheme.titleLarge,
         )
       ),
-      if(getResult(AppLocalizations.of(context)!.lightSide) > 0) Center(
-        child: Text("${results[AppLocalizations.of(context)!.lightSide]} ${AppLocalizations.of(context)!.lightSide}",
+      if(getResult(app.locale.lightSide) > 0) Center(
+        child: Text("${results[app.locale.lightSide]} ${app.locale.lightSide}",
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      if(getResult(AppLocalizations.of(context)!.darkSide) > 0) Center(
-        child: Text("${results[AppLocalizations.of(context)!.darkSide]} ${AppLocalizations.of(context)!.darkSide}",
+      if(getResult(app.locale.darkSide) > 0) Center(
+        child: Text("${results[app.locale.darkSide]} ${app.locale.darkSide}",
           style: Theme.of(context).textTheme.titleLarge,
         )
       ),
@@ -254,10 +256,10 @@ class DiceResults{
           children: [
             Expanded(
               flex: 4,
-              child: Text(AppLocalizations.of(context)!.characteristic)
+              child: Text(app.locale.characteristic)
             ),
             Expanded(
-              child: Center(child: Text(AppLocalizations.of(context)!.advantageShort)),
+              child: Center(child: Text(app.locale.advantageShort)),
             )
           ]
         ),
@@ -266,7 +268,7 @@ class DiceResults{
           children: [
             Expanded(
               flex: 4,
-              child: Text(AppLocalizations.of(context)!.critical)
+              child: Text(app.locale.critical)
             ),
             Expanded(
               child: Center(child: Text(weaponPack.weapon.critical.toString())),
@@ -297,13 +299,13 @@ class DiceResults{
           );
         }()
       ],
-      if(weaponPack != null && isSuccess && (weaponPack.weapon.critical ?? 0) > 0 && (getResult(AppLocalizations.of(context)!.triumph) > 0 ||
-          getResult(AppLocalizations.of(context)!.advantage) >= (weaponPack.weapon.critical ?? 0))) Padding(
+      if(weaponPack != null && isSuccess && (weaponPack.weapon.critical ?? 0) > 0 && (getResult(app.locale.triumph) > 0 ||
+          getResult(app.locale.advantage) >= (weaponPack.weapon.critical ?? 0))) Padding(
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
             Expanded(child: TextButton(
-              child: Text(AppLocalizations.of(context)!.rollCrit),
+              child: Text(app.locale.rollCrit),
               onPressed: () {
                 d100Result = Random().nextInt(100) + 1;
                 botKey.currentState?.update();

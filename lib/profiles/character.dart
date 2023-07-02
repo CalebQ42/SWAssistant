@@ -23,7 +23,6 @@ import 'package:swassistant/ui/items/characters/wound_strain.dart';
 import 'package:swassistant/ui/items/creatures/defense.dart';
 import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/creatures/skills.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'utils/creature.dart';
 
@@ -70,22 +69,22 @@ class Character extends Editable with Creature{
   
   @override
   List<String> cardNames(BuildContext context) => [
-    AppLocalizations.of(context)!.basicInfo,
-    AppLocalizations.of(context)!.woundStrain,
-    AppLocalizations.of(context)!.characteristicPlural,
-    AppLocalizations.of(context)!.skillPlural,
-    AppLocalizations.of(context)!.defense,
-    AppLocalizations.of(context)!.weaponPlural,
-    AppLocalizations.of(context)!.criticalInj,
-    AppLocalizations.of(context)!.specializationPlural,
-    AppLocalizations.of(context)!.talentPlural,
-    if(!disableForce) AppLocalizations.of(context)!.forcePowerPlural,
-    AppLocalizations.of(context)!.xp,
-    AppLocalizations.of(context)!.inventory,
-    if(!disableMorality) AppLocalizations.of(context)!.morality,
-    if(!disableDuty) AppLocalizations.of(context)!.duty,
-    if(!disableObligation) AppLocalizations.of(context)!.obligation,
-    AppLocalizations.of(context)!.desc
+    SW.of(context).locale.basicInfo,
+    SW.of(context).locale.woundStrain,
+    SW.of(context).locale.characteristicPlural,
+    SW.of(context).locale.skillPlural,
+    SW.of(context).locale.defense,
+    SW.of(context).locale.weaponPlural,
+    SW.of(context).locale.criticalInj,
+    SW.of(context).locale.specializationPlural,
+    SW.of(context).locale.talentPlural,
+    if(!disableForce) SW.of(context).locale.forcePowerPlural,
+    SW.of(context).locale.xp,
+    SW.of(context).locale.inventory,
+    if(!disableMorality) SW.of(context).locale.morality,
+    if(!disableDuty) SW.of(context).locale.duty,
+    if(!disableObligation) SW.of(context).locale.obligation,
+    SW.of(context).locale.desc
   ];
 
   Character({String name = "New Character", bool saveOnCreation = false, required SW app}) :

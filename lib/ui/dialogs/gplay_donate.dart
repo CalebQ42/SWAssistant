@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class GPlayDonateDialog extends StatefulWidget{
 
@@ -57,7 +58,7 @@ class _GPlayDonateState extends State<GPlayDonateDialog>{
               widget.indHolder.index = i;
               widget.indHolder.bot?.updateButtons();
             }),
-            title: Text(AppLocalizations.of(context)!.gPlayDonate(widget.prods[index].price)),
+            title: Text(SW.of(context).locale.gPlayDonate(widget.prods[index].price)),
           )
       ),
     );

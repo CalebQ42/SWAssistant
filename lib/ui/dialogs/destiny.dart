@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
 import 'package:darkstorm_common/bottom.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
@@ -28,7 +27,7 @@ class DestinyDialog extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              AppLocalizations.of(context)!.lightSide,
+              app.locale.lightSide,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge
             ),
@@ -48,7 +47,7 @@ class DestinyDialog extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              AppLocalizations.of(context)!.darkSide,
+              app.locale.darkSide,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge
             ),
@@ -73,7 +72,7 @@ class DestinyDialog extends StatelessWidget{
       child: (c) => this,
       buttons: (c) => [
         TextButton(
-          child: Text(AppLocalizations.of(context)!.reset),
+          child: Text(SW.of(context).locale.reset),
           onPressed: () => reset(c),
         )
       ]

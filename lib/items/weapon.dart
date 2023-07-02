@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/utils/json_savable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'weapon_characteristic.dart';
 
@@ -115,11 +115,11 @@ class Weapon implements JsonSavable{
   int get hashCode => Object.hash(name, damage, critical, hp, range, skill, skillBase, addBrawn, loaded, limitedAmmo, itemState, ammo, firingArc, encumbrance, Object.hashAll(characteristics));
 
   static List<String> weaponSkills(BuildContext context) => [
-    AppLocalizations.of(context)!.skills3,
-    AppLocalizations.of(context)!.skills11,
-    AppLocalizations.of(context)!.skills13,
-    AppLocalizations.of(context)!.skills16,
-    AppLocalizations.of(context)!.skills21,
-    AppLocalizations.of(context)!.skills22,
+    SW.of(context).locale.skills3,
+    SW.of(context).locale.skills11,
+    SW.of(context).locale.skills13,
+    SW.of(context).locale.skills16,
+    SW.of(context).locale.skills21,
+    SW.of(context).locale.skills22,
   ];
 }

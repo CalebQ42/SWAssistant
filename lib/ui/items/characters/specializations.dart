@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/character/specialization_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 
 class Specializations extends StatefulWidget{
@@ -25,6 +25,7 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "Specializations card used on non Character";
+    var app = SW.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -70,9 +71,9 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
                         ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(AppLocalizations.of(context)!.deletedSpecialization),
+                            content: Text(app.locale.deletedSpecialization),
                             action: SnackBarAction(
-                              label: AppLocalizations.of(context)!.undo,
+                              label: app.locale.undo,
                               onPressed: (){
                                 setState(() => character.specializations.insert(index,temp));
                                 character.save(context: context);

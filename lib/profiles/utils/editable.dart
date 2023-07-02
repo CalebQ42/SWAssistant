@@ -25,7 +25,6 @@ import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
 import 'package:swassistant/utils/sw_stupid.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../character.dart';
 import '../minion.dart';
@@ -197,6 +196,7 @@ abstract class Editable extends JsonSavable{
   List<Widget> cards(BuildContext context){
     var cards = <Widget>[];
     var contents = cardContents(context);
+    var app = SW.of(context);
     cards.add(
       Padding(
         padding: const EdgeInsets.all(4),
@@ -220,7 +220,7 @@ abstract class Editable extends JsonSavable{
                             (this as Character).disableForce = b;
                             EditableCards.of(c).update();
                           },
-                          title: Text(AppLocalizations.of(context)!.disableForce)
+                          title: Text(app.locale.disableForce)
                         ),
                         UpdatingSwitchTile(
                           value: (this as Character).disableMorality,
@@ -228,7 +228,7 @@ abstract class Editable extends JsonSavable{
                             (this as Character).disableMorality = b;
                             EditableCards.of(c).update();
                           },
-                          title: Text(AppLocalizations.of(context)!.disableMorality)
+                          title: Text(app.locale.disableMorality)
                         ),
                         UpdatingSwitchTile(
                           value: (this as Character).disableDuty,
@@ -236,7 +236,7 @@ abstract class Editable extends JsonSavable{
                             (this as Character).disableDuty = b;
                             EditableCards.of(c).update();
                           },
-                          title: Text(AppLocalizations.of(context)!.disableDuty)
+                          title: Text(app.locale.disableDuty)
                         ),
                         UpdatingSwitchTile(
                           value: (this as Character).disableObligation,
@@ -244,7 +244,7 @@ abstract class Editable extends JsonSavable{
                             (this as Character).disableObligation = b;
                             EditableCards.of(c).update();
                           },
-                          title: Text(AppLocalizations.of(context)!.disableObligation)
+                          title: Text(app.locale.disableObligation)
                         )
                       ],
                     )
@@ -255,13 +255,13 @@ abstract class Editable extends JsonSavable{
               onPressed: () => 
                 Bottom(
                   child: (context) {
-                    var nameController = TextEditingController(text: AppLocalizations.of(context)!.copyOf(name));
+                    var nameController = TextEditingController(text: app.locale.copyOf(name));
                     return Wrap(
                       children: [
                         Container(height: 10),
                         TextField(
                           controller: nameController,
-                          decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
+                          decoration: InputDecoration(labelText: app.locale.name),
                         ),
                         ButtonBar(
                           children: [
@@ -296,14 +296,14 @@ abstract class Editable extends JsonSavable{
                   }
                 ).show(context)
             ),
-            if(SW.of(context).prefs.stupid && SW.of(context).stupidAvailable) MiniIconButton(
+            if(SW.of(context).prefs.stupid && (app.stupid?.isAvailable ?? false)) MiniIconButton(
               icon: const Icon(Icons.share),
               onPressed: (){
                 Bottom(
                   children: (c) =>[
                     const Center(child: CircularProgressIndicator()),
                     const SizedBox(height: 5),
-                    Text(AppLocalizations.of(context)!.uploading),
+                    Text(app.locale.uploading),
                   ]
                 ).show(context);
                 SW.of(context).stupid?.uploadProfile(this)
@@ -316,14 +316,14 @@ abstract class Editable extends JsonSavable{
                         children: (c) => [
                           Center(
                             child: Text(
-                              AppLocalizations.of(context)!.shareCode,
+                              app.locale.shareCode,
                               style: Theme.of(context).textTheme.titleLarge,
                               textAlign: TextAlign.center,
                             )
                           ),
                           Center(
                             child: Text(
-                              AppLocalizations.of(context)!.uploadDisclaimer,
+                              app.locale.uploadDisclaimer,
                               style: Theme.of(context).textTheme.titleSmall,
                               textAlign: TextAlign.center,
                             )
@@ -351,13 +351,13 @@ abstract class Editable extends JsonSavable{
                         children: (c) => [
                           Center(
                             child: Text(
-                              AppLocalizations.of(context)!.uploadFailed,
+                              app.locale.uploadFailed,
                               style: Theme.of(context).textTheme.titleLarge
                             )
                           ),
-                          if(value.isNotFound() || value.isServerError()) Center(child: Text(AppLocalizations.of(context)!.failServer)),
-                          if(value.isTimeout()) Center(child: Text(AppLocalizations.of(context)!.failTimeout)),
-                          if(value.isTooLarge()) Center(child: Text(AppLocalizations.of(context)!.failSize)),
+                          if(value.isNotFound() || value.isServerError()) Center(child: Text(app.locale.failServer)),
+                          if(value.isTimeout()) Center(child: Text(app.locale.failTimeout)),
+                          if(value.isTooLarge()) Center(child: Text(app.locale.failSize)),
                         ]
                       ).show(context);
                     }
@@ -368,11 +368,11 @@ abstract class Editable extends JsonSavable{
           ],
           defaultEdit: () {
             if(this is Character){
-              return name == AppLocalizations.of(context)!.newCharacter;
+              return name == app.locale.newCharacter;
             }else if(this is Minion){
-              return name == AppLocalizations.of(context)!.newMinion;
+              return name == app.locale.newMinion;
             }
-            return name == AppLocalizations.of(context)!.newVehicle;
+            return name == app.locale.newVehicle;
           }
         )
       )

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 class EditContent extends StatefulWidget{
@@ -57,7 +57,7 @@ class EditContentState extends State<EditContent> with StatefulCard {
             ),
             if(widget.extraButtons != null) ...widget.extraButtons!(context, edit),
             Tooltip(
-              message: AppLocalizations.of(context)!.edit,
+              message: SW.of(context).locale.edit,
               child: MiniIconButton(
                 icon: const Icon(Icons.edit),
                 color: edit ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),

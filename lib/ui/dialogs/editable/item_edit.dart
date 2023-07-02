@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/item.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class ItemEditDialog{
 
@@ -54,7 +54,7 @@ class ItemEditDialog{
               textCapitalization: TextCapitalization.words,
               controller: nameController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.item
+                labelText: SW.of(context).locale.item
               ),
             ),
             Container(height: 10),
@@ -63,7 +63,7 @@ class ItemEditDialog{
               keyboardType: TextInputType.number,
               controller: countController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.count
+                labelText: SW.of(context).locale.count
               ),
             ),
             Container(height: 10),
@@ -72,7 +72,7 @@ class ItemEditDialog{
               keyboardType: TextInputType.number,
               controller: encumController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.encumTotal
+                labelText: SW.of(context).locale.encumTotal
               ),
             ),
             Container(height: 10),
@@ -80,7 +80,7 @@ class ItemEditDialog{
               textCapitalization: TextCapitalization.sentences,
               controller: descController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.desc
+                labelText: SW.of(context).locale.desc
               ),
               maxLines: 3,
               minLines: 1,

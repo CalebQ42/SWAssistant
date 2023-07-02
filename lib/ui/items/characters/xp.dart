@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
 class XP extends StatefulWidget{
@@ -41,6 +41,7 @@ class XPState extends State<XP> with StatefulCard {
         character.xpTot = int.tryParse(xpTotalController!.text) ?? 0
       );
     }
+    var app = SW.of(context);
     xpAddController ??= TextEditingController();
     return Column(
       children: [
@@ -54,7 +55,7 @@ class XPState extends State<XP> with StatefulCard {
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,
-                title: AppLocalizations.of(context)!.current,
+                title: app.locale.current,
               ),
             ),
             Expanded(
@@ -65,7 +66,7 @@ class XPState extends State<XP> with StatefulCard {
                 defaultSave: true,
                 textAlign: TextAlign.center,
                 textType: TextInputType.number,
-                title: AppLocalizations.of(context)!.total,
+                title: app.locale.total,
               ),
             ),
           ],
@@ -108,7 +109,7 @@ class XPState extends State<XP> with StatefulCard {
                 }
               },
               icon: const Icon(Icons.add),
-              label: Text(AppLocalizations.of(context)!.addXP)
+              label: Text(app.locale.addXP)
             )
           ]
         )

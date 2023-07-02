@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/critical_injury.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class CriticalInjuryEditDialog {
   final CriticalInjury criticalInjury;
@@ -44,7 +44,7 @@ class CriticalInjuryEditDialog {
                 textCapitalization: TextCapitalization.words,
                 controller: nameController,
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.name,
+                  labelText: SW.of(context).locale.name,
                 ),
               ),
               Container(height: 10),
@@ -54,13 +54,13 @@ class CriticalInjuryEditDialog {
                 maxLines: 3,
                 minLines: 1,
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.desc
+                  labelText: SW.of(context).locale.desc
                 ),
               ),
               Container(height: 10),
               InputDecorator(
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.severity
+                  labelText: SW.of(context).locale.severity
                 ),
                 child: _SeverityDropdown(criticalInjury, bot)
               )
@@ -93,19 +93,19 @@ class _SeverityState extends State<_SeverityDropdown>{
       items: [
         DropdownMenuItem(
           value: 0,
-          child: Text(AppLocalizations.of(context)!.severityLevel1)
+          child: Text(SW.of(context).locale.severityLevel1)
         ),
         DropdownMenuItem(
           value: 1,
-          child: Text(AppLocalizations.of(context)!.severityLevel2),
+          child: Text(SW.of(context).locale.severityLevel2),
         ),
         DropdownMenuItem(
           value: 2,
-          child: Text(AppLocalizations.of(context)!.severityLevel3),
+          child: Text(SW.of(context).locale.severityLevel3),
         ),
         DropdownMenuItem(
           value: 3,
-          child: Text(AppLocalizations.of(context)!.severityLevel4),
+          child: Text(SW.of(context).locale.severityLevel4),
         ),
       ],
       onChanged: (value) {

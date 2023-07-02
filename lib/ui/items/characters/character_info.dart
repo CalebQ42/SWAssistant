@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/character.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
@@ -35,6 +34,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
   
   @override
   Widget build(BuildContext context) {
+    var app = SW.of(context);
     var character = Character.of(context);
     if (character == null) throw "CharacterInfo card on non Character";
     if(speciesController == null){
@@ -57,7 +57,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,
       controller: speciesController,
-      title: AppLocalizations.of(context)!.species,
+      title: app.locale.species,
     );
     var age = EditingText(
       editing: edit,
@@ -67,7 +67,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
       fieldAlign: TextAlign.center,
       controller: ageController,
       textType: TextInputType.number,
-      title: AppLocalizations.of(context)!.age
+      title: app.locale.age
     );
     var motivation = EditingText(
       editing: edit, 
@@ -77,7 +77,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,
       controller: motivationController,
-      title: AppLocalizations.of(context)!.motivation
+      title: app.locale.motivation
     );
     var career = EditingText(
       editing: edit, 
@@ -87,7 +87,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,
       controller: careerController,
-      title: AppLocalizations.of(context)!.career
+      title: app.locale.career
     );
     var category = EditingText(
       editing: edit, 
@@ -97,7 +97,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
       fieldAlign: TextAlign.center,
       textCapitalization: TextCapitalization.words,
       controller: categoryController,
-      title: AppLocalizations.of(context)!.category
+      title: app.locale.category
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

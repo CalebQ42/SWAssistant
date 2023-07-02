@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/editable/crit_inj_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:darkstorm_common/bottom.dart';
 
@@ -25,6 +25,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
   @override
   Widget build(BuildContext context) {
     var editable = Editable.of(context);
+    var app = SW.of(context);
     var criticalinjuriesList = List.generate(editable.criticalInjuries.length, (i) =>
       Row(
         children: [
@@ -45,16 +46,16 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
                   String severity;
                   switch (editable.criticalInjuries[i].severity) {
                     case 0:
-                      severity = AppLocalizations.of(context)!.severityLevel1;
+                      severity = app.locale.severityLevel1;
                       break;
                     case 1:
-                      severity = AppLocalizations.of(context)!.severityLevel2;
+                      severity = app.locale.severityLevel2;
                       break;
                     case 2:
-                      severity = AppLocalizations.of(context)!.severityLevel3;
+                      severity = app.locale.severityLevel3;
                       break;
                     default:
-                      severity = AppLocalizations.of(context)!.severityLevel4;
+                      severity = app.locale.severityLevel4;
                       break;
                   }
                   Bottom(
@@ -73,7 +74,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
                           Container(height: 5,),
                           Center(
                             child: Text(
-                              "${AppLocalizations.of(context)!.severity}: $severity",
+                              "${app.locale.severity}: $severity",
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
@@ -102,9 +103,9 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(AppLocalizations.of(context)!.deletedInjury),
+                        content: Text(app.locale.deletedInjury),
                         action: SnackBarAction(
-                          label: AppLocalizations.of(context)!.undo,
+                          label: app.locale.undo,
                           onPressed: (){
                             setState(() => editable.criticalInjuries.insert(i, temp));
                             editable.save(context: context);

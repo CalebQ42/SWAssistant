@@ -40,16 +40,16 @@ class SW with TopResources{
   String saveDir = "";
   Prefs prefs;
   late PackageInfo package;
-  bool stupidAvailable = false;
   late Function() topLevelUpdate;
   SWStupid? stupid;
+  late AppLocalizations locale;
 
   Driver? driver;
   bool syncing = false;
 
   bool initialized = false;
 
-  bool get crashReporting => isMobile && stupidAvailable && prefs.stupidCrash;
+  bool get crashReporting => isMobile && prefs.stupidCrash;
 
   SW(this.prefs);
 
@@ -84,6 +84,7 @@ class SW with TopResources{
   }
 
   Future<void> postInit(LoadingScreenState loadingState) async{
+    locale = AppLocalizations.of(loadingState.context)!;
     if(prefs.stupid){
       try{
         //TODO: check internet for stupidAvailable;
@@ -93,9 +94,6 @@ class SW with TopResources{
         apiKey = dot.maybeGet("STUPID_KEY");
         if(apiKey != null){
           stupid = SWStupid(this, apiKey, await prefs.stupidUuid());
-          if(prefs.stupidLog){
-            await stupid!.log();
-          }
           if(prefs.stupidCrash){
             FlutterError.onError = (err) {
               stupid!.crash(Crash(
@@ -106,7 +104,9 @@ class SW with TopResources{
               FlutterError.presentError(err);
             };
           }
-          stupidAvailable = true;
+          if(prefs.stupidLog){
+            stupid!.log();
+          }
         }
       }catch(e, stack){
         if(kDebugMode){
@@ -191,7 +191,7 @@ class SW with TopResources{
                 const CircularProgressIndicator(),
                 Container(height: 10),
                 Text(
-                  AppLocalizations.of(context)!.driveSyncing,
+                  locale.driveSyncing,
                   textAlign: TextAlign.center,
                 )
               ]
@@ -210,7 +210,7 @@ class SW with TopResources{
     }
     driver ??= Driver(scope, (e, s) async{
       if(!crashReporting) return;
-      if(!prefs.stupid || !stupidAvailable) return;
+      if(!prefs.stupid) return;
       stupid?.crash(Crash(
         error: e.toString(),
         stack: s.toString(),
@@ -411,7 +411,6 @@ class SW with TopResources{
 
   void manualImport(BuildContext context){
     var message = ScaffoldMessenger.of(context);
-    var locs = AppLocalizations.of(context)!;
     var nav = Navigator.of(context, rootNavigator: true);
     showDialog(
       barrierDismissible: false,
@@ -424,7 +423,7 @@ class SW with TopResources{
               const CircularProgressIndicator(),
               Container(height: 10),
               Text(
-                AppLocalizations.of(context)!.importDialog,
+                locale.importDialog,
                 textAlign: TextAlign.center,
               )
             ]
@@ -467,13 +466,13 @@ class SW with TopResources{
       if (value == null || value.files.isEmpty){
         message.clearSnackBars();
         message.showSnackBar(
-          SnackBar(content: Text(locs.importNone))
+          SnackBar(content: Text(locale.importNone))
         );
       }else{
         message.clearSnackBars();
         message.showSnackBar(
           SnackBar(
-            content: Text(locs.importSuccess(value.files.length))
+            content: Text(locale.importSuccess(value.files.length))
           )
         );
       }

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
@@ -118,7 +118,7 @@ class _GMModeState extends State<_GMModeEditor>{
       duration: const Duration(milliseconds: 300),
       child: curEdit == null ? Center(
         child: Text(
-          AppLocalizations.of(context)!.gmModeTap,
+          SW.of(context).locale.gmModeTap,
           textAlign: TextAlign.justify,
         )
       ) : EditingEditable(

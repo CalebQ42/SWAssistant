@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/talent.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class TalentEditDialog{
 
@@ -50,7 +50,7 @@ class TalentEditDialog{
               controller: nameController,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.talent,
+                labelText: SW.of(context).locale.talent,
               ),
             ),
             Container(height: 10),
@@ -59,7 +59,7 @@ class TalentEditDialog{
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.rank
+                labelText: SW.of(context).locale.rank
               ),
             ),
             Container(height: 10),
@@ -69,7 +69,7 @@ class TalentEditDialog{
               maxLines: 3,
               minLines: 1,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.desc
+                labelText: SW.of(context).locale.desc
               ),
             ),
           ]

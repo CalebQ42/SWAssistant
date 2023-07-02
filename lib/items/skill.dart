@@ -5,8 +5,8 @@ import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/utils/json_savable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Skill implements JsonSavable{
   String? name;
@@ -70,40 +70,40 @@ class Skill implements JsonSavable{
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
   static Map<String, int> skillsList(BuildContext context) => {
-      AppLocalizations.of(context)!.skills1 : 2,
-      AppLocalizations.of(context)!.skills2 : 0,
-      AppLocalizations.of(context)!.skills3 : 0,
-      AppLocalizations.of(context)!.skills4 : 5,
-      AppLocalizations.of(context)!.skills5 : 4,
-      AppLocalizations.of(context)!.skills6 : 2,
-      AppLocalizations.of(context)!.skills7 : 5,
-      AppLocalizations.of(context)!.skills8 : 1,
-      AppLocalizations.of(context)!.skills9 : 3,
-      AppLocalizations.of(context)!.skills10 : 4,
-      AppLocalizations.of(context)!.skills11 : 1,
-      AppLocalizations.of(context)!.skills12 : 5,
-      AppLocalizations.of(context)!.skills13 : 0,
-      AppLocalizations.of(context)!.skills14 : 2,
-      AppLocalizations.of(context)!.skills15 : 2,
-      AppLocalizations.of(context)!.skills16 : 0,
-      AppLocalizations.of(context)!.skills17 : 5,
-      AppLocalizations.of(context)!.skills18 : 3,
-      AppLocalizations.of(context)!.skills19 : 1,
-      AppLocalizations.of(context)!.skills20 : 1,
-      AppLocalizations.of(context)!.skills21 : 1,
-      AppLocalizations.of(context)!.skills22 : 1,
-      AppLocalizations.of(context)!.skills23 : 0,
-      AppLocalizations.of(context)!.skills24 : 3,
-      AppLocalizations.of(context)!.skills25 : 1,
-      AppLocalizations.of(context)!.skills26 : 3,
-      AppLocalizations.of(context)!.skills27 : 3,
-      AppLocalizations.of(context)!.skills28 : 4,
-      AppLocalizations.of(context)!.skills29 : 2,
-      AppLocalizations.of(context)!.skills30 : 2,
-      AppLocalizations.of(context)!.skills31 : 2,
-      AppLocalizations.of(context)!.skills32 : 2,
-      AppLocalizations.of(context)!.skills33 : 2,
-      AppLocalizations.of(context)!.skills34 : 2,
-      AppLocalizations.of(context)!.skills35 : 0
+      SW.of(context).locale.skills1 : 2,
+      SW.of(context).locale.skills2 : 0,
+      SW.of(context).locale.skills3 : 0,
+      SW.of(context).locale.skills4 : 5,
+      SW.of(context).locale.skills5 : 4,
+      SW.of(context).locale.skills6 : 2,
+      SW.of(context).locale.skills7 : 5,
+      SW.of(context).locale.skills8 : 1,
+      SW.of(context).locale.skills9 : 3,
+      SW.of(context).locale.skills10 : 4,
+      SW.of(context).locale.skills11 : 1,
+      SW.of(context).locale.skills12 : 5,
+      SW.of(context).locale.skills13 : 0,
+      SW.of(context).locale.skills14 : 2,
+      SW.of(context).locale.skills15 : 2,
+      SW.of(context).locale.skills16 : 0,
+      SW.of(context).locale.skills17 : 5,
+      SW.of(context).locale.skills18 : 3,
+      SW.of(context).locale.skills19 : 1,
+      SW.of(context).locale.skills20 : 1,
+      SW.of(context).locale.skills21 : 1,
+      SW.of(context).locale.skills22 : 1,
+      SW.of(context).locale.skills23 : 0,
+      SW.of(context).locale.skills24 : 3,
+      SW.of(context).locale.skills25 : 1,
+      SW.of(context).locale.skills26 : 3,
+      SW.of(context).locale.skills27 : 3,
+      SW.of(context).locale.skills28 : 4,
+      SW.of(context).locale.skills29 : 2,
+      SW.of(context).locale.skills30 : 2,
+      SW.of(context).locale.skills31 : 2,
+      SW.of(context).locale.skills32 : 2,
+      SW.of(context).locale.skills33 : 2,
+      SW.of(context).locale.skills34 : 2,
+      SW.of(context).locale.skills35 : 0
     };
 }

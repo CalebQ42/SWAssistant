@@ -7,7 +7,6 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WoundStrain extends StatefulWidget{
 
@@ -36,9 +35,10 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "Wound Strain card used on non Character";
+    var app = SW.of(context);
     healingItem = null;
     for(var i in character.inventory){
-      if(i.name.toLowerCase() == (character.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks).toLowerCase()){
+      if(i.name.toLowerCase() == (character.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks).toLowerCase()){
         healingItem = i;
         break;
       }
@@ -66,7 +66,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(AppLocalizations.of(context)!.soak),
+            Text(app.locale.soak),
             SizedBox(
               width: 50,
               height: 25,
@@ -107,7 +107,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                   },
                   child: !edit ? Column(
                     children: [
-                      Center(child: Text(AppLocalizations.of(context)!.wound)),
+                      Center(child: Text(app.locale.wound)),
                       UpDownStat(
                         key: const ValueKey("UpDownWound"),
                         onUpPressed: () {
@@ -130,7 +130,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                         getMin: () => subtractMode ? -1*character.woundThresh : 0,
                         getMax: () => subtractMode ? character.woundThresh : 2*character.woundThresh,
                       ),
-                      Center(child: Text(AppLocalizations.of(context)!.max(character.woundThresh)))
+                      Center(child: Text(app.locale.max(character.woundThresh)))
                     ]
                   ) : Padding(
                     padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0),
@@ -138,7 +138,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       controller: woundThreshController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxWound),
+                      decoration: InputDecoration(labelText: app.locale.maxWound),
                       textAlign: TextAlign.center,
                     )
                   )
@@ -166,7 +166,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                   },
                   child: !edit ? Column(
                     children: [
-                      Center(child: Text(AppLocalizations.of(context)!.strain),),
+                      Center(child: Text(app.locale.strain),),
                       UpDownStat(
                         key: const ValueKey("UpDownStrain"),
                         onUpPressed: (){
@@ -189,7 +189,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                         getMin: () => 0,
                         getMax: () => character.strainThresh,
                       ),
-                      Center(child: Text(AppLocalizations.of(context)!.max(character.strainThresh)))
+                      Center(child: Text(app.locale.max(character.strainThresh)))
                     ]
                   ) : Padding(
                     padding: const EdgeInsets.only(right: 3.0, left: 3.0, top: 3.0),
@@ -197,7 +197,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       controller: strainThreshController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStrain),
+                      decoration: InputDecoration(labelText: app.locale.maxStrain),
                       textAlign: TextAlign.center,
                     )
                   )
@@ -250,7 +250,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                 children: [
                   Expanded(
                     child: Text(
-                      AppLocalizations.of(context)!.stimpacks,
+                      app.locale.stimpacks,
                       textAlign: TextAlign.center,
                     )
                   ),
@@ -264,14 +264,14 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                   ),
                   Expanded(
                     child: Text(
-                      AppLocalizations.of(context)!.emergencyRepairPatches,
+                      app.locale.emergencyRepairPatches,
                       textAlign: TextAlign.center,
                     )
                   )
                 ],
               ) :
               Text(
-                (character.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks),
+                (character.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall,
               )
@@ -282,14 +282,14 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
           onUpPressed: (){
             if(healingItem == null){
               for(var i in character.inventory){
-                if(i.name == (character.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks)){
+                if(i.name == (character.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks)){
                   healingItem = i;
                   break;
                 }
               }
               if(healingItem == null) {
                 healingItem = Item(
-                  name: (character.useRepair ? AppLocalizations.of(context)!.emergencyRepairPatches : AppLocalizations.of(context)!.stimpacks),
+                  name: (character.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks),
                   count: 1
                 );
                 character.inventory.add(healingItem!);
@@ -316,7 +316,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(AppLocalizations.of(context)!.healsUsedToday),
+            Text(app.locale.healsUsedToday),
             SizedBox(
               width: 50,
               height: 25,
@@ -357,11 +357,11 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                   }
                 }
               },
-              child: Text(AppLocalizations.of(context)!.heal)
+              child: Text(app.locale.heal)
             ),
             ElevatedButton(
               onPressed: () => setState(() => character.healsToday = 0),
-              child: Text(AppLocalizations.of(context)!.reset)
+              child: Text(app.locale.reset)
             )
           ]
         )

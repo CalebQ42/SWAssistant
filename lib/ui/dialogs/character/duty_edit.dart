@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/duty.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class DutyEditDialog {
 
@@ -35,7 +35,7 @@ class DutyEditDialog {
               controller: nameController,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.name
+                labelText: SW.of(context).locale.name
               ),
             ),
             Container(height: 10),
@@ -44,7 +44,7 @@ class DutyEditDialog {
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.duty
+                labelText: SW.of(context).locale.duty
               ),
             ),
             Container(height: 10),
@@ -54,7 +54,7 @@ class DutyEditDialog {
               maxLines: 3,
               minLines: 1,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.desc
+                labelText: SW.of(context).locale.desc
               ),
             )
           ],

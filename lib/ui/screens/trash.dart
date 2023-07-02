@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/sw.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 class TrashList extends StatefulWidget{
@@ -27,7 +26,7 @@ class _TrashListState extends State<TrashList> {
       show(){
         Bottom(
           child: (c) => Text(
-            AppLocalizations.of(context)!.trashNotice,
+            app.locale.trashNotice,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         ).show(context);
@@ -57,9 +56,9 @@ class _TrashListState extends State<TrashList> {
                 messager.clearSnackBars();
                 messager.showSnackBar(
                   SnackBar(
-                    content: Text(AppLocalizations.of(context)!.deletedPermanently(tmpEd.name)),
+                    content: Text(app.locale.deletedPermanently(tmpEd.name)),
                     action: SnackBarAction(
-                      label: AppLocalizations.of(context)!.undo,
+                      label: app.locale.undo,
                       onPressed: (){
                         tmpEd.save(app: app);
                         app.trash.insert(i, tmpEd);
@@ -89,7 +88,7 @@ class _TrashListState extends State<TrashList> {
                     messager.clearSnackBars();
                     messager.showSnackBar(
                       SnackBar(
-                        content: Text(AppLocalizations.of(context)!.restored(tmp.name)),
+                        content: Text(app.locale.restored(tmp.name)),
                       )
                     );
                   },
@@ -107,11 +106,11 @@ class _TrashListState extends State<TrashList> {
                           alignment: Alignment.bottomRight,
                           child: Text(
                             (app.trash[i] is Character) ?
-                              AppLocalizations.of(context)!.characters
+                              app.locale.characters
                             : (app.trash[i] is Minion) ?
-                              AppLocalizations.of(context)!.minions
+                              app.locale.minions
                             :
-                              AppLocalizations.of(context)!.vehicles,
+                              app.locale.vehicles,
                             style: Theme.of(context).textTheme.bodySmall
                           )
                         ),
@@ -133,7 +132,7 @@ class _TrashListState extends State<TrashList> {
                                 messager.clearSnackBars();
                                 messager.showSnackBar(
                                   SnackBar(
-                                    content: Text(AppLocalizations.of(context)!.restored(tmp.name)),
+                                    content: Text(app.locale.restored(tmp.name)),
                                   )
                                 );
                               }
@@ -149,9 +148,9 @@ class _TrashListState extends State<TrashList> {
                                 messager.clearSnackBars();
                                 messager.showSnackBar(
                                   SnackBar(
-                                    content: Text(AppLocalizations.of(context)!.deletedPermanently(tmpEd.name)),
+                                    content: Text(app.locale.deletedPermanently(tmpEd.name)),
                                     action: SnackBarAction(
-                                      label: AppLocalizations.of(context)!.undo,
+                                      label: app.locale.undo,
                                       onPressed: (){
                                         tmpEd.save(app: app);
                                         app.trash.insert(i, tmpEd);

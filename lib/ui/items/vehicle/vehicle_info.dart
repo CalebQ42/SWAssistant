@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/vehicle.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
@@ -50,6 +49,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
       categoryController = TextEditingController(text: vehicle.category);
       categoryController!.addListener(() => SW.of(context).updateCategory(vehicle, categoryController!.text));
     }
+    var app = SW.of(context);
     var silhouette = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -62,7 +62,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
           textCapitalization: TextCapitalization.words,
           controller: silhouetteController,
           textType: TextInputType.number,
-          title: AppLocalizations.of(context)!.silhouette,
+          title: app.locale.silhouette,
         )
       ],
     );
@@ -78,7 +78,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
           textCapitalization: TextCapitalization.words,
           controller: speedController,
           textType: TextInputType.number,
-          title: AppLocalizations.of(context)!.speed,
+          title: app.locale.speed,
         )
       ],
     );
@@ -94,7 +94,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
           textCapitalization: TextCapitalization.words,
           controller: armorController,
           textType: TextInputType.number,
-          title: AppLocalizations.of(context)!.armor,
+          title: app.locale.armor,
         )
       ],
     );
@@ -110,7 +110,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
           textCapitalization: TextCapitalization.words,
           controller: handlingController,
           textType: const TextInputType.numberWithOptions(signed: true),
-          title: AppLocalizations.of(context)!.handling,
+          title: app.locale.handling,
         )
       ],
     );
@@ -127,7 +127,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
           textCapitalization: TextCapitalization.words,
           controller: hpController,
           textType: TextInputType.number,
-          title: AppLocalizations.of(context)!.hardPoints,
+          title: app.locale.hardPoints,
         )
       ],
     );
@@ -143,7 +143,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
           textCapitalization: TextCapitalization.words,
           controller: passengerCapacityController,
           textType: TextInputType.number,
-          title: AppLocalizations.of(context)!.passengers,
+          title: app.locale.passengers,
         )
       ],
     );
@@ -158,7 +158,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
           fieldAlign: TextAlign.center,
           textCapitalization: TextCapitalization.words,
           controller: categoryController,
-          title: AppLocalizations.of(context)!.category
+          title: app.locale.category
         )
       ],
     );

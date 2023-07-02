@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/utils/json_savable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeaponCharacteristic implements JsonSavable{
 
@@ -39,12 +39,12 @@ class WeaponCharacteristic implements JsonSavable{
   int get hashCode => Object.hash(name, value, advantage);
 
   static List<String> passive(BuildContext context) => [
-    AppLocalizations.of(context)!.characteristicAccurate,
-    AppLocalizations.of(context)!.characteristicBreach,
-    AppLocalizations.of(context)!.characteristicCumbersome,
-    AppLocalizations.of(context)!.characteristicInaccurate,
-    AppLocalizations.of(context)!.characteristicInferior,
-    AppLocalizations.of(context)!.characteristicPierce,
-    AppLocalizations.of(context)!.characteristicVicious,
+    SW.of(context).locale.characteristicAccurate,
+    SW.of(context).locale.characteristicBreach,
+    SW.of(context).locale.characteristicCumbersome,
+    SW.of(context).locale.characteristicInaccurate,
+    SW.of(context).locale.characteristicInferior,
+    SW.of(context).locale.characteristicPierce,
+    SW.of(context).locale.characteristicVicious,
   ];
 }

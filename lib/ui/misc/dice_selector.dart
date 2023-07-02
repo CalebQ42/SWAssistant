@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class DiceSelector extends StatelessWidget{
 
   final SWDiceHolder holder;
@@ -119,19 +118,19 @@ class DiceSelector extends StatelessWidget{
   String getText(BuildContext context){
     switch(type){
       case 0:
-        return AppLocalizations.of(context)!.ability;
+        return SW.of(context).locale.ability;
       case 1:
-        return AppLocalizations.of(context)!.proficiency;
+        return SW.of(context).locale.proficiency;
       case 2:
-        return AppLocalizations.of(context)!.difficulty;
+        return SW.of(context).locale.difficulty;
       case 3:
-        return AppLocalizations.of(context)!.challenge;
+        return SW.of(context).locale.challenge;
       case 4:
-        return AppLocalizations.of(context)!.boost;
+        return SW.of(context).locale.boost;
       case 5:
-        return AppLocalizations.of(context)!.setback;
+        return SW.of(context).locale.setback;
       case 6:
-        return AppLocalizations.of(context)!.force;
+        return SW.of(context).locale.force;
     }
     return "";
   }

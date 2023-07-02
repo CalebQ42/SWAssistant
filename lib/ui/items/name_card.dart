@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NameCard extends StatefulWidget {
 
@@ -21,11 +21,11 @@ class NameCardState extends State<NameCard> with StatefulCard {
   @override
   get defaultEdit {
     if(Editable.of(context) is Character){
-      return Editable.of(context).name == AppLocalizations.of(context)!.newCharacter;
+      return Editable.of(context).name == SW.of(context).locale.newCharacter;
     }else if(Editable.of(context) is Minion){
-      return Editable.of(context).name == AppLocalizations.of(context)!.newMinion;
+      return Editable.of(context).name == SW.of(context).locale.newMinion;
     }
-    return Editable.of(context).name == AppLocalizations.of(context)!.newVehicle;
+    return Editable.of(context).name == SW.of(context).locale.newVehicle;
   }
 
   @override

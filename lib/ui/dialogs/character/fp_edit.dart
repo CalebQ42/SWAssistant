@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/force_power.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class ForcePowerEditDialog{
 
@@ -40,7 +40,7 @@ class ForcePowerEditDialog{
             TextField(
               controller: nameController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.forcePower
+                labelText: SW.of(context).locale.forcePower
               ),
               textCapitalization: TextCapitalization.words,
             ),
@@ -48,7 +48,7 @@ class ForcePowerEditDialog{
             TextField(
               controller: descController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.desc
+                labelText: SW.of(context).locale.desc
               ),
               maxLines: 3,
               minLines: 1,

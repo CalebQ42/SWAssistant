@@ -4,7 +4,6 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MinionWound extends StatefulWidget{
 
@@ -40,13 +39,14 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
     });
     soakController ??= TextEditingController(text: minion.soak.toString())
         ..addListener(() => minion.soak = int.tryParse(soakController!.text) ?? 0);
-    var subtractMode = SW.of(context).prefs.subtractMode;
+    var app = SW.of(context);
+    var subtractMode = app.prefs.subtractMode;
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(AppLocalizations.of(context)!.soak),
+            Text(app.locale.soak),
             SizedBox(
               width: 50,
               height: 25,
@@ -66,7 +66,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(AppLocalizations.of(context)!.minWound),
+            Text(app.locale.minWound),
             SizedBox(
               width: 50,
               height: 25,
@@ -112,7 +112,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
               minion.save(context: context);
             });
           },
-          child: Text(AppLocalizations.of(context)!.reset),
+          child: Text(app.locale.reset),
         )
       ],
     );

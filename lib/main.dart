@@ -40,7 +40,7 @@ Future<void> main() async {
     ), (error, stack) async{
       if(kDebugMode) {
         print("$error\n$stack");
-      }else if(app.prefs.stupid && app.stupidAvailable && app.crashReporting){
+      }else if(app.prefs.stupid && app.crashReporting){
         await stupidlib.loadLibrary();
         app.stupid?.crash(stupidlib.Crash(
           error: error.toString(),

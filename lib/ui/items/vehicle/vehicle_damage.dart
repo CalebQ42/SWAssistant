@@ -5,7 +5,6 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehicleDamage extends StatefulWidget{
 
@@ -37,13 +36,14 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
       ..addListener(() => vehicle.hullTraumaThresh = int.tryParse(hullTraumaThreshController!.text) ?? 0);
     sysStressThreshController ??= TextEditingController(text: vehicle.sysStressThresh.toString())
       ..addListener(() => vehicle.sysStressThresh = int.tryParse(sysStressThreshController!.text) ?? 0);
-    var subtractMode = SW.of(context).prefs.subtractMode;
+    var app = SW.of(context);
+    var subtractMode = app.prefs.subtractMode;
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("${AppLocalizations.of(context)!.armor}:"),
+            Text("${app.locale.armor}:"),
             SizedBox(
               width: 50,
               height: 25,
@@ -70,7 +70,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                   duration: const Duration(milliseconds: 300),
                   child: !edit ? Column(
                     children: [
-                      Text(AppLocalizations.of(context)!.hullTrauma, textAlign: TextAlign.center),
+                      Text(app.locale.hullTrauma, textAlign: TextAlign.center),
                       UpDownStat(
                         onUpPressed: (){
                           if(subtractMode){
@@ -92,13 +92,13 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                         getMax: () => vehicle.hullTraumaThresh,
                         min: 0
                       ),
-                      Center(child: Text(AppLocalizations.of(context)!.max(vehicle.hullTraumaThresh)))
+                      Center(child: Text(app.locale.max(vehicle.hullTraumaThresh)))
                     ],
                   ) : TextField(
                     controller: hullTraumaThreshController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxTrauma),
+                    decoration: InputDecoration(labelText: app.locale.maxTrauma),
                     textAlign: TextAlign.center,
                   ),
                   transitionBuilder: (child, anim){
@@ -126,7 +126,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                   duration: const Duration(milliseconds: 300),
                   child: !edit ? Column(
                     children: [
-                      Text(AppLocalizations.of(context)!.sysStress, textAlign: TextAlign.center),
+                      Text(app.locale.sysStress, textAlign: TextAlign.center),
                       UpDownStat(
                         onUpPressed: (){
                           if(subtractMode){
@@ -148,13 +148,13 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard{
                         getMax: () => vehicle.sysStressThresh,
                         getMin: () => 0
                       ),
-                      Center(child: Text(AppLocalizations.of(context)!.max(vehicle.sysStressThresh)))
+                      Center(child: Text(app.locale.max(vehicle.sysStressThresh)))
                     ],
                   ) : TextField(
                     controller: sysStressThreshController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.maxStress),
+                    decoration: InputDecoration(labelText: app.locale.maxStress),
                     textAlign: TextAlign.center,
                   ),
                   transitionBuilder: (child, anim){

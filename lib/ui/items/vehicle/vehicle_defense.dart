@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/vehicle.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
 class VehicleDefense extends StatefulWidget{
@@ -38,13 +38,14 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
       ..addListener(() =>
         setState(() => vehicle.totalDefense = int.tryParse(totalDefenseCont!.text) ?? 0)
       );
+    var app = SW.of(context);
     var total = EditingText(
       editing: edit,
       initialText: vehicle.totalDefense.toString(),
       controller: totalDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: AppLocalizations.of(context)!.totalDefense
+      title: app.locale.totalDefense
     );
     foreDefenseCont ??= TextEditingController(text: vehicle.defense[0].toString())
       ..addListener(() =>
@@ -56,7 +57,7 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
       controller: foreDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: AppLocalizations.of(context)!.fore
+      title: app.locale.fore
     );
     portDefenseCont ??= TextEditingController(text: vehicle.defense[1].toString())
       ..addListener(() =>
@@ -68,7 +69,7 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
       controller: portDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: AppLocalizations.of(context)!.port
+      title: app.locale.port
     );
     starboardDefenseCont ??= TextEditingController(text: vehicle.defense[2].toString())
       ..addListener(() =>
@@ -80,7 +81,7 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
       controller: starboardDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: AppLocalizations.of(context)!.starboard
+      title: app.locale.starboard
     );
     aftDefenseCont ??= TextEditingController(text: vehicle.defense[3].toString())
       ..addListener(() =>
@@ -92,7 +93,7 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
       controller: aftDefenseCont,
       textType: TextInputType.number,
       defaultSave: true,
-      title: AppLocalizations.of(context)!.aft
+      title: app.locale.aft
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -112,7 +113,7 @@ class VehicleDefenseState extends State<VehicleDefense> with StatefulCard{
         aft,
         if (angleTotal != vehicle.totalDefense) Container(height: 5,),
         if (angleTotal != vehicle.totalDefense) Text(
-          AppLocalizations.of(context)!.anglingWarning,
+          app.locale.anglingWarning,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.red),
         )

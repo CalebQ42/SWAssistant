@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/duty.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/character/duty_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:darkstorm_common/bottom.dart';
 
@@ -27,6 +27,7 @@ class DutiesState extends State<Duties> with StatefulCard {
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "Duties card used on non Character";
+    var app = SW.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -58,7 +59,7 @@ class DutiesState extends State<Duties> with StatefulCard {
                               ),
                               Container(height: 5),
                               Text(
-                                "${character.duties[index].value} ${AppLocalizations.of(context)!.duty}",
+                                "${character.duties[index].value} ${app.locale.duty}",
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.center,
                               ),
@@ -104,9 +105,9 @@ class DutiesState extends State<Duties> with StatefulCard {
                         character.save(context: context);
                         ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(AppLocalizations.of(context)!.deletedDuty),
+                          content: Text(app.locale.deletedDuty),
                           action: SnackBarAction(
-                            label: AppLocalizations.of(context)!.undo,
+                            label: app.locale.undo,
                             onPressed: (){
                               setState(() => character.duties.insert(index, tmp));
                               character.save(context: context);

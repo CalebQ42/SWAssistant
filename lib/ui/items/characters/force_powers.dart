@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/swdice_holder.dart';
 import 'package:swassistant/items/force_power.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/character/fp_edit.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
@@ -36,6 +36,7 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
         character.force = int.tryParse(forceController!.text) ?? 0
       );
     }
+    var app = SW.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -43,7 +44,7 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(AppLocalizations.of(context)!.forceRating),
+              Text(app.locale.forceRating),
               SizedBox(
                 width: 50,
                 child: EditingText(
@@ -134,9 +135,9 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
                             ScaffoldMessenger.of(context).clearSnackBars();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(AppLocalizations.of(context)!.deletedFP),
+                                content: Text(app.locale.deletedFP),
                                 action: SnackBarAction(
-                                  label: AppLocalizations.of(context)!.undo,
+                                  label: app.locale.undo,
                                   onPressed: (){
                                     setState(() => character.forcePowers.insert(index, temp));
                                     character.save(context: context);

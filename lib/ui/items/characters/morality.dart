@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Morality extends StatefulWidget{
@@ -57,6 +57,7 @@ class MoralityState extends State with StatefulCard {
         character.emotionalWeak = weaknessController!.text;
       });
     }
+    var app = SW.of(context);
     return Column(
       children: [
         Row(
@@ -72,7 +73,7 @@ class MoralityState extends State with StatefulCard {
                 textAlign: TextAlign.center,
                 fieldAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge,
-                title: AppLocalizations.of(context)!.morality,
+                title: app.locale.morality,
               )
             ),
             Expanded(
@@ -83,7 +84,7 @@ class MoralityState extends State with StatefulCard {
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.conflict,
+                    labelText: app.locale.conflict,
                   ),
                   // decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
                   textAlign: TextAlign.center,
@@ -97,7 +98,7 @@ class MoralityState extends State with StatefulCard {
           children: [
             Expanded(
               child: SwitchListTile(
-                title: Text(AppLocalizations.of(context)!.darkSide),
+                title: Text(app.locale.darkSide),
                 value: character.darkSide,
                 onChanged: (b) => setState((){
                   character.darkSide = b;
@@ -107,7 +108,7 @@ class MoralityState extends State with StatefulCard {
             ),
             Expanded(
               child: ElevatedButton(
-                child: Text(AppLocalizations.of(context)!.resolveConflict),
+                child: Text(app.locale.resolveConflict),
                 onPressed: (){
                   var conflict = int.tryParse(conflictController!.text);
                   conflict ??= 0;
@@ -116,7 +117,7 @@ class MoralityState extends State with StatefulCard {
                   var resolution = Random().nextInt(9) + 1;
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(AppLocalizations.of(context)!.conflictResult(resolution)),
+                    content: Text(app.locale.conflictResult(resolution)),
                   ));
                   resolution = resolution - conflict;
                   setState((){
@@ -144,7 +145,7 @@ class MoralityState extends State with StatefulCard {
                 controller: strengthController,
                 defaultSave: true,
                 textCapitalization: TextCapitalization.words,
-                title: AppLocalizations.of(context)!.emoStr
+                title: app.locale.emoStr
               )
             ),
             Expanded(
@@ -154,7 +155,7 @@ class MoralityState extends State with StatefulCard {
                 controller: weaknessController,
                 defaultSave: true,
                 textCapitalization: TextCapitalization.words,
-                title: AppLocalizations.of(context)!.emoWeak
+                title: app.locale.emoWeak
               )
             )
           ]

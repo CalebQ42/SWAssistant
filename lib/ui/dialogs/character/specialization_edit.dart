@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class SpecializationEditDialog{
 
@@ -24,7 +24,7 @@ class SpecializationEditDialog{
               controller: specCont,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.specialization
+                labelText: SW.of(context).locale.specialization
               ),
             ),
           ],

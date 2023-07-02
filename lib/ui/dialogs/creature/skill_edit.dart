@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
 import 'package:darkstorm_common/updating_switch_tile.dart';
+import 'package:swassistant/sw.dart';
 
 class SkillEditDialog{
   final void Function(Skill) onClose;
@@ -49,12 +49,12 @@ class SkillEditDialog{
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 controller: valueController,
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.value,
+                  labelText: SW.of(context).locale.value,
                 ),
               ),
               UpdatingSwitchTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text(AppLocalizations.of(context)!.career),
+                title: Text(SW.of(context).locale.career),
                 value: skill.career,
                 onChanged: (b) => skill.career = b,
               ),
@@ -104,14 +104,14 @@ class _SkillSelectorState extends State<_SkillSelector>{
       children: [
         InputDecorator(
           decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.skill,
+            labelText: SW.of(context).locale.skill,
           ),
           child: DropdownButton<String>(
             isDense: true,
             isExpanded: true,
             onTap: () => FocusScope.of(context).unfocus(),
             onChanged: (value) {
-              if(value != AppLocalizations.of(context)!.skills35){
+              if(value != SW.of(context).locale.skills35){
                 manual = false;
                 widget.skill.name = value!;
                 widget.skill.base = skillsList[value]!;
@@ -152,7 +152,7 @@ class _SkillSelectorState extends State<_SkillSelector>{
         Container(height: 10),
         InputDecorator(
           decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.characteristic,
+            labelText: SW.of(context).locale.characteristic,
           ),
           child: DropdownButton<int>(
             isDense: true,

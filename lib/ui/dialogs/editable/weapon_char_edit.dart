@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/weapon_characteristic.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darkstorm_common/bottom.dart';
+import 'package:swassistant/sw.dart';
 
 class WeaponCharacteristicDialog{
 
@@ -52,14 +52,14 @@ class WeaponCharacteristicDialog{
               controller: nameController,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.characteristic
+                labelText: SW.of(context).locale.characteristic
               ),
             ),
             Container(height: 10),
             TextField(
               controller: valueController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.rank
+                labelText: SW.of(context).locale.rank
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -68,7 +68,7 @@ class WeaponCharacteristicDialog{
             TextField(
               controller: advantageController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.advNeeded
+                labelText: SW.of(context).locale.advNeeded
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],

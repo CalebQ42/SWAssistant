@@ -3,16 +3,16 @@ import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/items/talent.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/sw.dart';
 
 mixin Creature on Editable{
   static List<String> characteristics(BuildContext context) => [
-      AppLocalizations.of(context)!.brawn,
-      AppLocalizations.of(context)!.agility,
-      AppLocalizations.of(context)!.intellect,
-      AppLocalizations.of(context)!.cunning,
-      AppLocalizations.of(context)!.willpower,
-      AppLocalizations.of(context)!.presence
+      SW.of(context).locale.brawn,
+      SW.of(context).locale.agility,
+      SW.of(context).locale.intellect,
+      SW.of(context).locale.cunning,
+      SW.of(context).locale.willpower,
+      SW.of(context).locale.presence
     ];
 
   List<int> charVals = List.filled(6, 0, growable: false);

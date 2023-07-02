@@ -1,9 +1,9 @@
 import 'package:darkstorm_common/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditingEditable extends StatefulWidget {
 
@@ -34,8 +34,8 @@ class _EditingEditableState extends State<EditingEditable>{
     var bottomNav = BottomNavigationBar(
       backgroundColor: Theme.of(context).cardColor,
       items: [
-        BottomNavigationBarItem(icon: const Icon(Icons.info), label: AppLocalizations.of(context)!.stats),
-        BottomNavigationBarItem(icon: const Icon(Icons.note), label: AppLocalizations.of(context)!.notes)
+        BottomNavigationBarItem(icon: const Icon(Icons.info), label: SW.of(context).locale.stats),
+        BottomNavigationBarItem(icon: const Icon(Icons.note), label: SW.of(context).locale.notes)
       ],
       onTap: (value) {
         animating = true;
