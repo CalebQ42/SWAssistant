@@ -19,8 +19,8 @@
     "introPage0ManualImportLine3": "3) Premere a lungo su uno dei file fino a quando non entra in modalità multi-selezione, quindi selezionare tutti gli altri file nella cartella",
     "introPage0ManualImportLine4": "4) Fare clic su Seleziona File.",
     "introPage1Title": "Stupid Backend",
-    "introPage1StupidExplaination": "This app (optionally) uses a backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. Functionality will expand in the future, but right now it's used for crash reporting and logging the app's startup (for user count). No sensitive information is collected or stored.",
-    "introStupidExistingUsers": "Firebase has been replaced with my custom backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. Functionality will expand in the future, but right now it's used for crash reporting and logging the app's startup (for user count). No sensitive information is collected or stored.",
+    "introPage1StupidExplainationv2": "This app (optionally) uses a backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, logging the app's startup (for user count), and sharing profiles. No sensitive information is collected or stored.",
+    "introStupidExistingUsersv2": "Firebase has been replaced with my custom backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, logging the app's startup (for user count), and sharing profiles. No sensitive information is collected or stored.",
     "importSuccess": "Importati con successo {number} profili.",
     "@importSuccess": {
         "description": "Shown after imported old profiles. number is how many profiles imported.",
@@ -376,10 +376,20 @@
     "additiveExplaination": "La salute inizia a 0 e il danno l'aumenta",
     "colorDice": "Colore Lancia Dadi",
     "stupid": "Stupid backend",
+    "stupidSub": "Needed for profiles sharing",
     "stupidCrash": "Crash reporting",
     "stupidLog": "Stupid startup log",
     "aboutText": "Visita https://github.com/CalebQ42/SWAssistant per la licenza e altre informazioni",
     "ads": "Ads",
     "cloudSave": "Salvataggio Cloud (tramite Google Drive)",
-    "showIntro": "Mostra Introduzione"
+    "showIntro": "Mostra Introduzione",
+    "shareCode": "Share Code",
+    "uploadDisclaimer": "The share code will be valid for 12 hours",
+    "uploading": "Uploading profile",
+    "uploadFailed": "Uploading profile failed:",
+    "failSize": "Profile too large",
+    "failServer": "Server error",
+    "failTimeout": "Timed out",
+    "downloadFailed": "Download Failed",
+    "noConnectionStupid": "Can't connect to Stupid"
 }
