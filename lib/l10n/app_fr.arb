@@ -390,5 +390,6 @@
     "failSize": "Profile too large",
     "failServer": "Server error",
     "failTimeout": "Timed out",
-    "downloadFailed": "Download Failed"
+    "downloadFailed": "Download Failed",
+    "noConnectionStupid": "Can't connect to Stupid"
 }
