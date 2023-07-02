@@ -17,6 +17,7 @@ class SWStupid extends Stupid{
     baseUrl: Uri.parse("https://api.darkstorm.tech"),
     deviceId: uuid,
     apiKey: apiKey,
+    internetCheckAddress: Uri.parse("https://darkstorm.tech")
   );
 
   Future<UploadResponse> uploadProfile(Editable ed) async{

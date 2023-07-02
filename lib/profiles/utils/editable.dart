@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swassistant/profiles/character.dart';
+import 'package:swassistant/profiles/minion.dart';
+import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/items/critical_injury.dart';
 import 'package:swassistant/items/item.dart';
@@ -25,10 +28,6 @@ import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
 import 'package:swassistant/utils/sw_stupid.dart';
 import 'package:uuid/uuid.dart';
-
-import '../character.dart';
-import '../minion.dart';
-import '../vehicle.dart';
 
 //Editable holds all common components of Vehicles, Minions, and Characters and
 //provides a framework on how to display, load, and save them.
@@ -296,9 +295,17 @@ abstract class Editable extends JsonSavable{
                   }
                 ).show(context)
             ),
-            if(SW.of(context).prefs.stupid && (app.stupid?.isAvailable ?? false)) MiniIconButton(
+            if(SW.of(context).prefs.stupid) MiniIconButton(
               icon: const Icon(Icons.share),
               onPressed: (){
+                if(!(app.stupid?.isAvailable ?? false)){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(app.locale.noConnectionStupid),
+                    )
+                  );
+                  return;
+                }
                 Bottom(
                   children: (c) =>[
                     const Center(child: CircularProgressIndicator()),

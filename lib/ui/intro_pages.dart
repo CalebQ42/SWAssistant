@@ -174,9 +174,6 @@ class Intro{
           onChanged: (b){
             app.prefs.amoledTheme = b;
             pagKey.currentState?.update();
-            print("yo");
-            print("yodle: ${pagKey.currentState}");
-            print(app.prefs.amoledTheme);
             app.topLevelUpdate();
           }
         ),

@@ -654,10 +654,10 @@ packages:
     dependency: "direct main"
     description:
       name: stupid
-      sha256: "507586b40181a3880ef176a342972bf88a1e4d057549527a393d29fa4a22bf2f"
+      sha256: "360caf04275b796266f7c54e31b378cc6b634bd5470f15ba9b771badbb6c7deb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2"
+    version: "0.2.4"
   term_glyph:
     dependency: transitive
     description:

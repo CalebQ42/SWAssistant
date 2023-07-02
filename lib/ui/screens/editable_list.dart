@@ -85,66 +85,69 @@ class EditableListState extends State<EditableList>{
       )
     );
     var localization = app.locale;
-    var mainList = RefreshIndicator(
-      key: refreshKey,
-      onRefresh: () => Future(() async {
-        if(app.syncing) return;
-        var messager = ScaffoldMessenger.of(context);
-        var b = await app.syncRemote();
-        messager.clearSnackBars();
-        if (!b) {
-          messager.showSnackBar(
-            SnackBar(
-              content: Text(localization.syncFail)
-            )
-          );
-        }
-        setState(() {});
-      }),
-      child: AnimatedList(
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        key: listKey,
-        initialItemCount: list.length,
-        padding: const EdgeInsets.only(bottom: 80),
-        itemBuilder: (context, i, anim) =>
-          SlideTransition(
-            position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
-            child: InheritedEditable(
-              editable: list[i],
-              child: EditableCard(
-                onTap: widget.onTap,
-                onDismiss: () {
-                  var tmp = list[i];
-                  tmp.trash(app);
-                  listKey.currentState?.removeItem(i, (context, animation) => Container());
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        (tmp is Character) ?
-                          app.locale.characterTrashed
-                        : (tmp is Minion) ?
-                          app.locale.minionTrashed
-                        :
-                          app.locale.vehicleTrashed
-                      ),
-                      action: SnackBarAction(
-                        label: app.locale.undo,
-                        onPressed: (){
-                          app.add(tmp);
-                          tmp.save(app: app);
-                          list.insert(i, tmp);
-                          listKey.currentState?.insertItem(i);
-                        },
-                      )
+    Widget mainList = AnimatedList(
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      key: listKey,
+      initialItemCount: list.length,
+      padding: const EdgeInsets.only(bottom: 80),
+      itemBuilder: (context, i, anim) =>
+        SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
+          child: InheritedEditable(
+            editable: list[i],
+            child: EditableCard(
+              onTap: widget.onTap,
+              onDismiss: () {
+                var tmp = list[i];
+                tmp.trash(app);
+                listKey.currentState?.removeItem(i, (context, animation) => Container());
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      (tmp is Character) ?
+                        app.locale.characterTrashed
+                      : (tmp is Minion) ?
+                        app.locale.minionTrashed
+                      :
+                        app.locale.vehicleTrashed
+                    ),
+                    action: SnackBarAction(
+                      label: app.locale.undo,
+                      onPressed: (){
+                        app.add(tmp);
+                        tmp.save(app: app);
+                        list.insert(i, tmp);
+                        listKey.currentState?.insertItem(i);
+                      },
                     )
-                  );
-                },
-              )
+                  )
+                );
+              },
             )
-          ),
-      )
+          )
+        ),
     );
+    if((app.isMobile || kIsWeb) && app.prefs.googleDrive){
+      mainList = RefreshIndicator(
+        key: refreshKey,
+        onRefresh: () => Future(() async {
+          if(app.syncing) return;
+          var messager = ScaffoldMessenger.of(context);
+          var b = await app.syncRemote();
+          messager.clearSnackBars();
+          if (!b) {
+            messager.showSnackBar(
+              SnackBar(
+                content: Text(localization.syncFail)
+              )
+            );
+          }
+          setState(() {});
+        }),
+        child: mainList
+      );
+    }
     return FrameContent(
       fab: widget.onTap == null ? FloatingActionButton(
         child: const Icon(Icons.add),
@@ -197,7 +200,7 @@ class EditableListState extends State<EditableList>{
               child: Row(
                 children: [
                   Expanded(child: catSelector),
-                  IconButton(
+                  if((app.isMobile || kIsWeb) && app.prefs.googleDrive) IconButton(
                     icon: const Icon(Icons.refresh),
                     onPressed: () => refreshKey.currentState?.show()
                   ),
