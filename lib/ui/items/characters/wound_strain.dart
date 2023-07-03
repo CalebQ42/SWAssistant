@@ -43,7 +43,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
         break;
       }
     }
-    var subtractMode = SW.of(context).prefs.subtractMode;
+    var subtractMode = app.prefs.subtractMode;
     if(soakController == null){
       soakController = TextEditingController(text: character.soak.toString());
       soakController!.addListener(() => character.soak = int.tryParse(soakController!.text) ?? 0);

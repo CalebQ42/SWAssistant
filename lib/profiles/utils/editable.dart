@@ -278,7 +278,7 @@ abstract class Editable extends JsonSavable{
                                   throw "Unsupported Editable Type";
                                 }
                                 out.name = nameController.text;
-                                SW.of(context).add(out);
+                                app.add(out);
                                 out.save(context: context);
                                 Navigator.of(context).pop();
                               },
@@ -295,7 +295,7 @@ abstract class Editable extends JsonSavable{
                   }
                 ).show(context)
             ),
-            if(SW.of(context).prefs.stupid) MiniIconButton(
+            if(app.prefs.stupid) MiniIconButton(
               icon: const Icon(Icons.share),
               onPressed: (){
                 if(!(app.stupid?.isAvailable ?? false)){
@@ -313,7 +313,7 @@ abstract class Editable extends JsonSavable{
                     Text(app.locale.uploading),
                   ]
                 ).show(context);
-                SW.of(context).stupid?.uploadProfile(this)
+                app.stupid?.uploadProfile(this)
                     .timeout(const Duration(seconds: 10), onTimeout: () => UploadResponse.timeout())
                     .then(
                   (value){

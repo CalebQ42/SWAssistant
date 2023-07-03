@@ -64,8 +64,9 @@ class WeaponEditDialog{
             Navigator.of(context).pop();
           },
         )],
-      child: (context) =>
-        Wrap(
+      child: (context) {
+        var app = SW.of(context);
+        return Wrap(
           children: [
             //Name
             Container(height: 15),
@@ -73,7 +74,7 @@ class WeaponEditDialog{
               controller: nameController,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                labelText: SW.of(context).locale.weapon
+                labelText: app.locale.weapon
               ),
             ),
             Container(height: 10),
@@ -81,7 +82,7 @@ class WeaponEditDialog{
             TextField(
               controller: damageController,
               decoration: InputDecoration(
-                labelText: SW.of(context).locale.damage
+                labelText: app.locale.damage
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -91,7 +92,7 @@ class WeaponEditDialog{
             TextField(
               controller: criticalController,
               decoration: InputDecoration(
-                labelText: SW.of(context).locale.critical
+                labelText: app.locale.critical
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -101,7 +102,7 @@ class WeaponEditDialog{
             TextField(
               controller: hpController,
               decoration: InputDecoration(
-                labelText: SW.of(context).locale.hardPoints
+                labelText: app.locale.hardPoints
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -111,7 +112,7 @@ class WeaponEditDialog{
             if(editable is Character) TextField(
               controller: encumbranceController,
               decoration: InputDecoration(
-                labelText: SW.of(context).locale.encum
+                labelText: app.locale.encum
               ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -122,7 +123,7 @@ class WeaponEditDialog{
               controller: arcController,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
-                labelText: SW.of(context).locale.firingArc
+                labelText: app.locale.firingArc
               ),
             ),
             //Range
@@ -130,23 +131,24 @@ class WeaponEditDialog{
             _WeaponDropdowns(weapon, bot),
             //Characteristics
             Container(height: 15),
-            Center(child: Text(SW.of(context).locale.characteristic, style: Theme.of(context).textTheme.titleLarge),),
+            Center(child: Text(app.locale.characteristic, style: Theme.of(context).textTheme.titleLarge),),
             _WeaponCharacteristics(weapon),
             //Add Brawn
             if(editable is Character || editable is Minion) UpdatingSwitchTile(
               value: weapon.addBrawn,
               onChanged: (value) => weapon.addBrawn = value,
-              title: Text(SW.of(context).locale.addBrawn),
+              title: Text(app.locale.addBrawn),
             ),
             //Loaded
             UpdatingSwitchTile(
               value: weapon.loaded,
               onChanged: (value) => weapon.loaded = value,
-              title: Text(SW.of(context).locale.loaded)
+              title: Text(app.locale.loaded)
             ),
             _WeaponAmmo(weapon)
           ],
-        )
+        );
+      }
     );
   }
 
@@ -290,38 +292,39 @@ class _WeaponState extends State<_WeaponDropdowns>{
   @override
   Widget build(BuildContext context) {
     var weaponSkills = Weapon.weaponSkills(context);
+    var app = SW.of(context);
     return DropdownButtonHideUnderline(
       child: Column(
         children: [
           InputDecorator(
             decoration: InputDecoration(
-              labelText: SW.of(context).locale.range
+              labelText: app.locale.range
             ),
             child: DropdownButton<int>(
               isDense: true,
               isExpanded: true,
-              hint: Text(SW.of(context).locale.weapRange),
+              hint: Text(app.locale.weapRange),
               onTap: () => FocusScope.of(context).unfocus(),
               items: [
                 DropdownMenuItem(
                   value: 0,
-                  child: Text(SW.of(context).locale.rangeLevel1),
+                  child: Text(app.locale.rangeLevel1),
                 ),
                 DropdownMenuItem(
                   value: 1,
-                  child: Text(SW.of(context).locale.rangeLevel2),
+                  child: Text(app.locale.rangeLevel2),
                 ),
                 DropdownMenuItem(
                   value: 2,
-                  child: Text(SW.of(context).locale.rangeLevel3),
+                  child: Text(app.locale.rangeLevel3),
                 ),
                 DropdownMenuItem(
                   value: 3,
-                  child: Text(SW.of(context).locale.rangeLevel4),
+                  child: Text(app.locale.rangeLevel4),
                 ),
                 DropdownMenuItem(
                   value: 4,
-                  child: Text(SW.of(context).locale.rangeLevel5),
+                  child: Text(app.locale.rangeLevel5),
                 )
               ],
               value: widget.weapon.range,
@@ -332,7 +335,7 @@ class _WeaponState extends State<_WeaponDropdowns>{
           Container(height: 10),
           InputDecorator(
             decoration: InputDecoration(
-              labelText: SW.of(context).locale.itemDamage,
+              labelText: app.locale.itemDamage,
             ),
             child: DropdownButton<int>(
               isDense: true,
@@ -341,23 +344,23 @@ class _WeaponState extends State<_WeaponDropdowns>{
               items: [
                 DropdownMenuItem(
                   value: 0,
-                  child: Text(SW.of(context).locale.damageLevel1),
+                  child: Text(app.locale.damageLevel1),
                 ),
                 DropdownMenuItem(
                   value: 1,
-                  child: Text(SW.of(context).locale.damageLevel2),
+                  child: Text(app.locale.damageLevel2),
                 ),
                 DropdownMenuItem(
                   value: 2,
-                  child: Text(SW.of(context).locale.damageLevel3),
+                  child: Text(app.locale.damageLevel3),
                 ),
                 DropdownMenuItem(
                   value: 3,
-                  child: Text(SW.of(context).locale.damageLevel4),
+                  child: Text(app.locale.damageLevel4),
                 ),
                 DropdownMenuItem(
                   value: 4,
-                  child: Text(SW.of(context).locale.damageLevel5),
+                  child: Text(app.locale.damageLevel5),
                 ),
               ],
               value: widget.weapon.itemState,
@@ -368,7 +371,7 @@ class _WeaponState extends State<_WeaponDropdowns>{
           Container(height: 10),
           InputDecorator(
             decoration: InputDecoration(
-              labelText: SW.of(context).locale.skill,
+              labelText: app.locale.skill,
             ),
             child: DropdownButton<int>(
               isDense: true,
@@ -387,13 +390,13 @@ class _WeaponState extends State<_WeaponDropdowns>{
                 widget.weapon.skillBase = Skill.skillsList(context)[weaponSkills[widget.weapon.skill!]]!;
                 widget.bot.updateButtons();
               }),
-              hint: Text(SW.of(context).locale.skill),
+              hint: Text(app.locale.skill),
             )
           ),
           Container(height: 10),
           InputDecorator(
             decoration: InputDecoration(
-              labelText: SW.of(context).locale.characteristic,
+              labelText: app.locale.characteristic,
             ),
             child: DropdownButton<int>(
               isDense: true,
@@ -411,7 +414,7 @@ class _WeaponState extends State<_WeaponDropdowns>{
                 widget.weapon.skillBase = value;
                 widget.bot.updateButtons();
               }),
-              hint: Text(SW.of(context).locale.characteristic),
+              hint: Text(app.locale.characteristic),
             )
           ),
         ]

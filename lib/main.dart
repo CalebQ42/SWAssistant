@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:darkstorm_common/top_resources.dart';
-import 'package:stupid/stupid.dart' deferred as stupidlib;
 
 import 'package:darkstorm_common/frame.dart';
 import 'package:darkstorm_common/intro.dart';
@@ -38,15 +37,10 @@ Future<void> main() async {
         ));
       }
     ), (error, stack) async{
-      if(kDebugMode) {
-        print("$error\n$stack");
-      }else if(app.prefs.stupid && app.crashReporting){
-        await stupidlib.loadLibrary();
-        app.stupid?.crash(stupidlib.Crash(
-          error: error.toString(),
-          stack: stack.toString(),
-          version: app.package.version
-        ));
+      if(FlutterError.onError != null){
+        FlutterError.onError!(FlutterErrorDetails(exception: error, stack: stack));
+      }else{
+        if(kDebugMode) print("$error\n$stack");
       }
     }
   );

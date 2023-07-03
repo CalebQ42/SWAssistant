@@ -92,7 +92,7 @@ class SettingsState extends State{
             value: app.prefs.lightTheme,
             onChanged: (b){
               app.prefs.lightTheme = b;
-              SW.of(context).topLevelUpdate();
+              app.topLevelUpdate();
             },
             title: Text(app.locale.forceLight),
           ),
@@ -101,7 +101,7 @@ class SettingsState extends State{
             value: app.prefs.darkTheme,
             onChanged: (b){
               app.prefs.darkTheme = b;
-              SW.of(context).topLevelUpdate();
+              app.topLevelUpdate();
             },
             title: Text(app.locale.forceDark),
           ),
@@ -110,7 +110,7 @@ class SettingsState extends State{
             value: app.prefs.amoledTheme,
             onChanged: (b){
               app.prefs.amoledTheme = b;
-              SW.of(context).topLevelUpdate();
+              app.topLevelUpdate();
             },
             title: Text(app.locale.amoledTheme),
           ),
@@ -119,7 +119,7 @@ class SettingsState extends State{
             value: app.prefs.colorDice,
             onChanged: (b){
               app.prefs.colorDice = b;
-              SW.of(context).topLevelUpdate();
+              app.topLevelUpdate();
             },
             title: Text(app.locale.colorDice),
           ),
@@ -238,8 +238,14 @@ class SettingsState extends State{
           const Divider(),
           SwitchListTile(
             value: app.prefs.stupid,
-            onChanged: (b) =>
-              setState(() => app.prefs.stupid = b),
+            onChanged: (b) {
+              setState(() => app.prefs.stupid = b);
+              if(b){
+                app.initStupid();
+              }else{
+                app.stupid = null;
+              }
+            },
             title: Text(app.locale.stupid),
             subtitle: Text(app.locale.stupidSub)
           ),
@@ -249,7 +255,7 @@ class SettingsState extends State{
             onChanged: app.prefs.stupid ? (b){
               app.prefs.stupidLog = b;
             } : null,
-            title: Text(app.locale.stupidCrash),
+            title: Text(app.locale.stupidLog),
           ),
           const Divider(),
           UpdatingSwitchTile(

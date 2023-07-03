@@ -152,8 +152,8 @@ class EditableListState extends State<EditableList>{
       fab: widget.onTap == null ? FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: (){
-          if(SW.of(context).prefs.googleDrive) {
-            if(SW.of(context).syncing){
+          if(app.prefs.googleDrive) {
+            if(app.syncing){
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -161,7 +161,7 @@ class EditableListState extends State<EditableList>{
                 )
               );
               return;
-            }else if (SW.of(context).driver == null || !SW.of(context).driver!.readySync()) {
+            }else if (app.driver == null || !app.driver!.readySync()) {
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -277,7 +277,7 @@ class EditableListState extends State<EditableList>{
       buttons: (c) => [
         TextButton(
           onPressed: cont.text.trim().isNotEmpty ? () async {
-            var ed = await SW.of(context).stupid?.downloadProfile(cont.text);
+            var ed = await app.stupid?.downloadProfile(cont.text);
             if(ed == null){
               app.nav.pop();
               scaf.showSnackBar(
@@ -299,7 +299,7 @@ class EditableListState extends State<EditableList>{
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
           onPressed: () =>
-            SW.of(context).nav.pop()
+            app.nav.pop()
         )
       ],
     )..show(context);
@@ -319,8 +319,8 @@ class EditableCard extends StatelessWidget{
     return Dismissible(
       key: Key(Editable.of(context).uid),
       confirmDismiss: (_) async {
-        if(!SW.of(context).prefs.googleDrive) return true;
-        if(SW.of(context).syncing){
+        if(!app.prefs.googleDrive) return true;
+        if(app.syncing){
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -328,7 +328,7 @@ class EditableCard extends StatelessWidget{
             )
           );
           return false;
-        }else if (!SW.of(context).driver!.readySync()) {
+        }else if (!app.driver!.readySync()) {
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

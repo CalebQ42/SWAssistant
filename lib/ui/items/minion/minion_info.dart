@@ -27,13 +27,13 @@ class MinInfoState extends State<MinInfo> with StatefulCard{
   Widget build(BuildContext context){
     var minion = Minion.of(context);
     if (minion == null) throw "MinInfo card used on non Minion";
+    var app = SW.of(context);
     if(catController == null){
       catController = TextEditingController(text: minion.category);
       catController!.addListener(() => 
-        SW.of(context).updateCategory(minion, catController!.text)
+        app.updateCategory(minion, catController!.text)
       );
     }
-    var app = SW.of(context);
     return Column(
       children: [
         EditingText(

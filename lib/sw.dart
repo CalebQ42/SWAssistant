@@ -86,32 +86,7 @@ class SW with TopResources{
   Future<void> postInit(LoadingScreenState loadingState) async{
     locale = AppLocalizations.of(loadingState.context)!;
     if(prefs.stupid){
-      try{
-        String? apiKey;
-        var dot = DotEnv();
-        await dot.load(fileName: ".stupid");
-        apiKey = dot.maybeGet("STUPID_KEY");
-        if(apiKey != null){
-          stupid = SWStupid(this, apiKey, await prefs.stupidUuid());
-          if(prefs.stupidCrash){
-            FlutterError.onError = (err) {
-              stupid!.crash(Crash(
-                error: err.exceptionAsString(),
-                stack: err.stack?.toString() ?? "Not given",
-                version: package.version
-              ));
-              FlutterError.presentError(err);
-            };
-          }
-          if(prefs.stupidLog){
-            stupid!.log();
-          }
-        }
-      }catch(e, stack){
-        if(kDebugMode){
-          print("$e\n$stack");
-        }
-      }
+      await initStupid();
     }
     if(kIsWeb) prefs.googleDrive = true;
     if(prefs.googleDrive){
@@ -128,6 +103,41 @@ class SW with TopResources{
       }
     }
     initialized = true;
+  }
+
+  Future<void> initStupid() async{
+    try{
+      String? apiKey;
+      var dot = DotEnv();
+      await dot.load(fileName: ".stupid");
+      apiKey = dot.maybeGet("STUPID_KEY");
+      if(apiKey != null){
+        stupid = SWStupid(this, apiKey, await prefs.stupidUuid());
+        if(prefs.stupidCrash){
+          FlutterError.onError = (err) {
+            if(kDebugMode){
+              print("${err.exceptionAsString()}\n${err.stack?.toString() ?? "Not given"}");
+            }else{
+              stupid!.crash(Crash(
+                error: err.exceptionAsString(),
+                stack: err.stack?.toString() ?? "Not given",
+                version: package.version
+              ));
+            }
+            FlutterError.presentError(err);
+          };
+        }
+        if(prefs.stupidLog){
+          stupid!.log();
+        }
+      }
+    }catch(error, stack){
+      if(FlutterError.onError != null){
+        FlutterError.onError!(FlutterErrorDetails(exception: error, stack: stack));
+      }else{
+        if(kDebugMode) print("$error\n$stack");
+      }
+    }
   }
 
   void loadLocal(){

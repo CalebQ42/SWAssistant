@@ -47,7 +47,7 @@ class CharacterInfoState extends State<CharacterInfo> with StatefulCard {
       careerController = TextEditingController(text: character.career);
       careerController!.addListener(() => character.career = careerController!.text);
       categoryController = TextEditingController(text: character.category);
-      categoryController!.addListener(() => SW.of(context).updateCategory(character, categoryController!.text));
+      categoryController!.addListener(() => app.updateCategory(character, categoryController!.text));
     }
     var species = EditingText(
       editing: edit, 

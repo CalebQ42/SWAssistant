@@ -33,6 +33,7 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
   Widget build(BuildContext context) {
     var vehicle = Vehicle.of(context);
     if (vehicle == null) throw "VehicleInfo card called on non Vehicle";
+    var app = SW.of(context);
     if (silhouetteController == null) {
       silhouetteController = TextEditingController(text: vehicle.silhouette.toString());
       silhouetteController!.addListener(() => vehicle.silhouette = int.tryParse(silhouetteController!.text) ?? 0);
@@ -47,9 +48,8 @@ class VehicleInfoState extends State<VehicleInfo> with StatefulCard{
       passengerCapacityController = TextEditingController(text: vehicle.passengerCapacity.toString());
       passengerCapacityController!.addListener(() => vehicle.passengerCapacity = int.tryParse(passengerCapacityController!.text) ?? 0);
       categoryController = TextEditingController(text: vehicle.category);
-      categoryController!.addListener(() => SW.of(context).updateCategory(vehicle, categoryController!.text));
+      categoryController!.addListener(() => app.updateCategory(vehicle, categoryController!.text));
     }
-    var app = SW.of(context);
     var silhouette = Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[

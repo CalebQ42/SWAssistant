@@ -31,11 +31,12 @@ class _EditingEditableState extends State<EditingEditable>{
 
   @override
   Widget build(BuildContext context) {
+    var app = SW.of(context);
     var bottomNav = BottomNavigationBar(
       backgroundColor: Theme.of(context).cardColor,
       items: [
-        BottomNavigationBarItem(icon: const Icon(Icons.info), label: SW.of(context).locale.stats),
-        BottomNavigationBarItem(icon: const Icon(Icons.note), label: SW.of(context).locale.notes)
+        BottomNavigationBarItem(icon: const Icon(Icons.info), label: app.locale.stats),
+        BottomNavigationBarItem(icon: const Icon(Icons.note), label: app.locale.notes)
       ],
       onTap: (value) {
         animating = true;

@@ -68,7 +68,7 @@ class _TrashListState extends State<TrashList> {
                   )
                 );
               },
-              key: ValueKey(SW.of(context).trash[i].uid),
+              key: ValueKey(app.trash[i].uid),
               child: Card(
                 shape: i == 0 ? app.frame.topItemShape : null,
                 clipBehavior: i == 0 ? Clip.hardEdge : null,
