@@ -137,22 +137,27 @@ class SWAppState extends State<SWApp> {
         Widget? widy;
         RouteSettings? newSettings;
         if(settings.name == "/intro" || app.prefs.showIntroPages) {
-          widy = IntroScreen(
-            pages: Intro(app).pages,
-            onDone: (){
-              app.prefs.showIntro = false;
-              app.prefs.stupidIntro = false;
-              app.nav.pushNamedAndRemoveUntil(settings.name ?? "/", (route) => false);
-            }
-          );
+          var intro = Intro(app);
+          if(intro.pages.isNotEmpty){
+            widy = IntroScreen(
+              pages: Intro(app).pages,
+              onDone: (){
+                app.prefs.showIntro = false;
+                app.prefs.stupidIntro = false;
+                app.nav.pushNamedAndRemoveUntil(settings.name ?? "/", (route) => false);
+              }
+            );
+          }
           newSettings = const RouteSettings(name: "/intro");
-        }else if(!app.initialized){
+        }
+        if(widy == null && !app.initialized){
           widy = LoadingScreen(
             startingRoute: settings,
             app: app,
           );
           newSettings =  const RouteSettings(name: "/loading");
-        }else if(settings.name?.startsWith("/edit/") == true){
+        }
+        if(widy == null && settings.name?.startsWith("/edit/") == true){
           Editable? ed;
           if(settings.arguments != null) {
             ed = settings.arguments as Editable;
@@ -161,9 +166,8 @@ class SWAppState extends State<SWApp> {
           }
           if (ed != null) {
             ed.route = PageRouteBuilder(
-              pageBuilder: (context, anim, secondaryAnim) {
-                return EditingEditable(ed!);
-              },
+              pageBuilder: (context, anim, secondaryAnim) =>
+                EditingEditable(ed!),
               settings: RouteSettings(name: "/edit/${ed.uid}"),
               maintainState: false,
               transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
@@ -172,20 +176,28 @@ class SWAppState extends State<SWApp> {
           } else {
             widy = EditableList(Character, uidToLoad: settings.name?.substring(6));
           }
-        }else if(settings.name == "/gm") {
-          widy = GMMode();
-        } else if(settings.name == "/settings") {
-          widy = const Settings();
-        }else if(settings.name == "/vehicles"){
-          widy = const EditableList(Vehicle);
-        }else if(settings.name == "/minions"){
-          widy = const EditableList(Minion);
-        }else if(settings.name == "/trash"){
-          widy = const TrashList();
         }
-        if (widy == null){
-          newSettings = RouteSettings(name: "/characters", arguments: settings.arguments);
-          widy ??= const EditableList(Character);
+        if(widy == null){
+          switch(settings.name){
+            case "/gm":
+              widy = GMMode();
+              break;
+            case "/settings":
+              widy = const Settings();
+              break;
+            case "/vehicles":
+              widy = const EditableList(Vehicle);
+              break;
+            case "/minions":
+              widy = const EditableList(Minion);
+              break;
+            case "/trash":
+              widy = const TrashList();
+              break;
+            default:
+              newSettings = RouteSettings(name: "/characters", arguments: settings.arguments);
+              widy ??= const EditableList(Character);
+          }
         }
         return PageRouteBuilder(
           pageBuilder: (context, anim, secondaryAnim) {
