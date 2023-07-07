@@ -96,10 +96,12 @@ class SW with TopResources{
         loadingState.driveFail = true;
       }
     }
-    for(var ed in trash){
-      if(ed.trashTime!.isBefore(DateTime.now().subtract(const Duration(days: 30)))){
-        trash.remove(ed);
+    for(var i = 0; i < trash.length; i++){
+      if(trash[i].trashTime!.isBefore(DateTime.now().subtract(const Duration(days: 30)))){
+        var ed = trash[i];
+        trash.removeAt(i);
         ed.deletePermanently(this);
+        i--;
       }
     }
     initialized = true;
