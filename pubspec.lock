@@ -93,10 +93,10 @@ packages:
     dependency: "direct main"
     description:
       name: darkstorm_common
-      sha256: "8a288577fb119ef29a0d157d3aebd6d7fff61d5b88e7aba280641a141786af5a"
+      sha256: "19c7babf74c0574cb94ea6da839b3133c1bac1f595e2241b89c441a1c851b90e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   dbus:
     dependency: transitive
     description:
