@@ -136,8 +136,8 @@ class SW with TopResources{
     }catch(error, stack){
       if(FlutterError.onError != null){
         FlutterError.onError!(FlutterErrorDetails(exception: error, stack: stack));
-      }else{
-        if(kDebugMode) print("$error\n$stack");
+      }else if(kDebugMode){
+        print("$error\n$stack");
       }
     }
   }
