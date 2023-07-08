@@ -18,7 +18,7 @@ dependencies:
   shared_preferences: ^2.2.0
   path_provider: ^2.0.15
   cupertino_icons: ^1.0.5
-  url_launcher: ^6.1.11
+  url_launcher: ^6.1.12
   file_picker: ^5.3.2
   in_app_purchase: ^3.1.7
   device_info_plus: ^9.0.2
