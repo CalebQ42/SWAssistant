@@ -120,11 +120,13 @@ class SW with TopResources{
             if(kDebugMode){
               print("${err.exceptionAsString()}\n${err.stack?.toString() ?? "Not given"}");
             }else{
-              stupid!.crash(Crash(
-                error: err.exceptionAsString(),
-                stack: err.stack?.toString() ?? "Not given",
-                version: package.version
-              ));
+              if(!err.silent){
+                stupid!.crash(Crash(
+                  error: err.exceptionAsString(),
+                  stack: err.stack?.toString() ?? "Not given",
+                  version: package.version
+                ));
+              }
             }
             FlutterError.presentError(err);
           };

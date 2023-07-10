@@ -90,8 +90,9 @@ class EditableListState extends State<EditableList>{
       key: listKey,
       initialItemCount: list.length,
       padding: const EdgeInsets.only(bottom: 80),
-      itemBuilder: (context, i, anim) =>
-        SlideTransition(
+      itemBuilder: (context, i, anim) {
+        if(list.length < i) return Container();
+        return SlideTransition(
           position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
           child: InheritedEditable(
             editable: list[i],
@@ -126,7 +127,8 @@ class EditableListState extends State<EditableList>{
               },
             )
           )
-        ),
+        );
+      }
     );
     if((app.isMobile || kIsWeb) && app.prefs.googleDrive){
       mainList = RefreshIndicator(
