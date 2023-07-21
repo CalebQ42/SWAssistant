@@ -424,7 +424,6 @@ class SW with TopResources{
 
   void manualImport(BuildContext context){
     var message = ScaffoldMessenger.of(context);
-    var nav = Navigator.of(context, rootNavigator: true);
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -444,13 +443,7 @@ class SW with TopResources{
         )
     );
     FilePicker.platform.pickFiles(
-      type: FileType.custom,
       allowMultiple: true,
-      allowedExtensions: [
-        "swcharacter",
-        "swvehicle",
-        "swminion"
-      ]
     ).then((value) {
       if(value != null && value.files.isNotEmpty){
         var uuid = const Uuid();
