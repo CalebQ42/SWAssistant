@@ -91,7 +91,7 @@ class EditableListState extends State<EditableList>{
       initialItemCount: list.length,
       padding: const EdgeInsets.only(bottom: 80),
       itemBuilder: (context, i, anim) {
-        if(list.length < i) return Container();
+        if(list.length <= i) return Container();
         return SlideTransition(
           position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
           child: InheritedEditable(

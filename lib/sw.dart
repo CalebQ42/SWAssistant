@@ -444,6 +444,7 @@ class SW with TopResources{
         )
     );
     FilePicker.platform.pickFiles(
+      type: FileType.custom,
       allowMultiple: true,
       allowedExtensions: [
         "swcharacter",
