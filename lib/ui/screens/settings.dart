@@ -278,20 +278,20 @@ class SettingsState extends State{
             title: Text(app.locale.stupidCrash),
           ),
           const Divider(),
-          TextButton(
-            onPressed: () => app.manualImport(context),
-            style: const ButtonStyle(
-              alignment: Alignment.centerLeft
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                app.locale.introPage0ImportButton,
-                style: Theme.of(context).textTheme.titleMedium,
-              )
-            )
-          ),
-          const Divider(),
+          // TextButton(
+          //   onPressed: () => app.manualImport(context),
+          //   style: const ButtonStyle(
+          //     alignment: Alignment.centerLeft
+          //   ),
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(10),
+          //     child: Text(
+          //       app.locale.introPage0ImportButton,
+          //       style: Theme.of(context).textTheme.titleMedium,
+          //     )
+          //   )
+          // ),
+          // const Divider(),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, "/intro"),
             style: const ButtonStyle(

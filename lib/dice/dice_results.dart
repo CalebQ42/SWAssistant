@@ -38,17 +38,17 @@ class DiceResults{
     var botKey = GlobalKey<BottomState>();
     Bottom(
       key: botKey,
-      buttons: (context) => [
+      buttons: (c) => [
         TextButton(
-          child: Text(SW.of(context).locale.edit),
+          child: Text(SW.of(c).locale.edit),
           onPressed: (){
-            Navigator.pop(context);
-            showResultsEdit(context, weaponPack: weaponPack, noSuccess: noSuccess);
+            Navigator.pop(c);
+            showResultsEdit(c, weaponPack: weaponPack, noSuccess: noSuccess);
           },
         )
       ],
-      children: (context) =>
-        combinedDialog(context, botKey, noSuccess: noSuccess, weaponPack: weaponPack),
+      children: (c) =>
+        combinedDialog(c, botKey, noSuccess: noSuccess, weaponPack: weaponPack),
     ).show(context);
   }
 
@@ -183,6 +183,8 @@ class DiceResults{
       ],
     ).show(context);
   }
+  
+  var critRollKey = GlobalKey();
 
   List<Widget> combinedDialog(BuildContext context, GlobalKey<BottomState> botKey, {bool noSuccess = false, WeaponPack? weaponPack}) {
     bool isSuccess = true;
@@ -204,7 +206,6 @@ class DiceResults{
       advChars = weaponPack.weapon.characteristics.where((element) => element.advantage != null).toList();
     }
     var pierceInd = weaponPack?.weapon.characteristics.indexWhere((element) => element.name == app.locale.characteristicPierce);
-    int? d100Result;
     return [
       if(weaponPack == null && (!noSuccess || success != 0)) Center(
         child: Text(success.toString() + (isSuccess ? " ${app.locale.success}" : " ${app.locale.failure}"),
@@ -300,24 +301,38 @@ class DiceResults{
         }()
       ],
       if(weaponPack != null && isSuccess && (weaponPack.weapon.critical ?? 0) > 0 && (getResult(app.locale.triumph) > 0 ||
-          getResult(app.locale.advantage) >= (weaponPack.weapon.critical ?? 0))) Padding(
-        padding: const EdgeInsets.all(15),
-        child: Row(
-          children: [
-            Expanded(child: TextButton(
-              child: Text(app.locale.rollCrit),
-              onPressed: () {
-                d100Result = Random().nextInt(100) + 1;
-                botKey.currentState?.update();
-              }
-            )),
-            Expanded(child: Text(
-              d100Result?.toString() ?? "",
-              textAlign: TextAlign.center,
-            ))
-          ]
-        )
-      )
+          getResult(app.locale.advantage) >= (weaponPack.weapon.critical ?? 0))) _CritRoll(key: critRollKey),
     ];
+  }
+}
+
+class _CritRoll extends StatefulWidget{
+  const _CritRoll({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _CritRollState();
+}
+
+class _CritRollState extends State<_CritRoll>{
+  int? d100Res;
+
+  Widget build(BuildContext context) {
+    var app = SW.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Row(
+        children: [
+          Expanded(child: TextButton(
+            child: Text(app.locale.rollCrit),
+            onPressed: () =>
+              setState(() => d100Res = Random().nextInt(100) + 1)
+          )),
+          Expanded(child: Text(
+            d100Res?.toString() ?? "",
+            textAlign: TextAlign.center,
+          ))
+        ]
+      )
+    );
   }
 }
