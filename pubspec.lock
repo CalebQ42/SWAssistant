@@ -93,10 +93,10 @@ packages:
     dependency: "direct main"
     description:
       name: darkstorm_common
-      sha256: f5100ff505d07ca917e1f9cc45ab713d08e610357c4e7670c4052e25c4938e79
+      sha256: e930e9aac0e6979c1d5179b7aeac9a19c2191484bbef8da346702ad782bd79c6
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.6"
   dbus:
     dependency: transitive
     description:
@@ -157,10 +157,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: b1729fc96627dd44012d0a901558177418818d6bd428df59dcfeb594e5f66432
+      sha256: "21145c9c268d54b1f771d8380c195d2d6f655e0567dc1ca2f9c134c02c819e0a"
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.2"
+    version: "5.3.3"
   flutter:
     dependency: "direct main"
     description: flutter

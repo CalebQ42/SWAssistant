@@ -136,7 +136,19 @@ class EditableListState extends State<EditableList>{
         onRefresh: () => Future(() async {
           if(app.syncing) return;
           var messager = ScaffoldMessenger.of(context);
-          var b = await app.syncRemote();
+          var b = await app.syncRemote(
+            onFull: (){
+              if(app.showFullError){
+                messager.showSnackBar(
+                  SnackBar(
+                    content: Text(app.locale.driveFull),
+                  )
+                );
+                app.showFullError = false;
+                Future.delayed(const Duration(minutes: 5), () => app.showFullError = true);
+              }
+            }
+          );
           messager.clearSnackBars();
           if (!b) {
             messager.showSnackBar(

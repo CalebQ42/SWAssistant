@@ -30,9 +30,10 @@ class LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var messager = ScaffoldMessenger.of(context);
     if(!started){
       started = true;
-      widget.app.postInit(this).then(
+      widget.app.postInit(this, messager).then(
         (_) {
           if(!_driveFail){
             widget.app.nav.pushNamedAndRemoveUntil(widget.startingRoute.name ?? "/", (_) => false, arguments: widget.startingRoute.arguments);
@@ -79,7 +80,19 @@ class LoadingScreenState extends State<LoadingScreen> {
                       child: Text(AppLocalizations.of(context)!.retry),
                       onPressed: () {
                         driveFail = false;
-                        widget.app.syncRemote().then(
+                        widget.app.syncRemote(
+                          onFull: (){
+                            if(widget.app.showFullError){
+                              messager.showSnackBar(
+                                SnackBar(
+                                  content: Text(AppLocalizations.of(context)!.driveFull),
+                                )
+                              );
+                              widget.app.showFullError = false;
+                              Future.delayed(const Duration(minutes: 5), () => widget.app.showFullError = true);
+                            }
+                          }
+                        ).then(
                           (value) {
                             if(!value){
                               driveFail = true;

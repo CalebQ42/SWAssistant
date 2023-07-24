@@ -19,14 +19,14 @@ dependencies:
   path_provider: ^2.0.15
   cupertino_icons: ^1.0.5
   url_launcher: ^6.1.12
-  file_picker: ^5.3.2
+  file_picker: ^5.3.3
   in_app_purchase: ^3.1.7
   device_info_plus: ^9.0.2
   package_info_plus: ^4.0.2
   googleapis: ^11.3.0
   uuid: ^3.0.7
   flutter_dotenv: ^5.1.0
-  darkstorm_common: ^1.0.5
+  darkstorm_common: ^1.0.6
   stupid: ^0.2.4
   flutter_secure_storage: ^8.0.0
   http: ^1.1.0

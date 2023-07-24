@@ -46,6 +46,7 @@ class SW with TopResources{
 
   Driver? driver;
   bool syncing = false;
+  bool showFullError = true;
 
   bool initialized = false;
 
@@ -83,7 +84,7 @@ class SW with TopResources{
     return app;
   }
 
-  Future<void> postInit(LoadingScreenState loadingState) async{
+  Future<void> postInit(LoadingScreenState loadingState, ScaffoldMessengerState messager) async{
     locale = AppLocalizations.of(loadingState.context)!;
     if(prefs.stupid){
       await initStupid();
@@ -91,7 +92,20 @@ class SW with TopResources{
     if(kIsWeb) prefs.googleDrive = true;
     if(prefs.googleDrive){
       loadingState.loadingText = AppLocalizations.of(loadingState.context)!.driveSyncing;
-      if(!await syncRemote()){
+      var syncd = await syncRemote(
+        onFull: (){
+          if(showFullError){
+            messager.showSnackBar(
+              SnackBar(
+                content: Text(AppLocalizations.of(loadingState.context)!.driveFull),
+              )
+            );
+            showFullError = false;
+            Future.delayed(const Duration(minutes: 5), () => showFullError = true);
+          }
+        }
+      );
+      if(!syncd){
         driver = null;
         loadingState.driveFail = true;
       }
@@ -172,16 +186,16 @@ class SW with TopResources{
     }
   }
 
-  Future<bool> syncRemote({BuildContext? context, NavigatorState? nav}) async{
+  Future<bool> syncRemote({BuildContext? context, NavigatorState? nav, VoidCallback? onFull}) async{
     var driveSuccess = false;
     if(prefs.driveFirstLoad){
-      driveSuccess = await _googleDriveSync(true, context: context, nav: nav);
+      driveSuccess = await _googleDriveSync(true, onFull: onFull, context: context, nav: nav);
     }else if(!prefs.newDrive){
       if(await _googleDriveSync(false, scope: drive.DriveApi.driveAppdataScope, context: context, nav: nav)){
-        driveSuccess = await _googleDriveSync(true, context: context, nav: nav);
+        driveSuccess = await _googleDriveSync(true, onFull: onFull, context: context, nav: nav);
       }
     }else{
-      driveSuccess = await _googleDriveSync(false, context: context, nav: nav);
+      driveSuccess = await _googleDriveSync(false, onFull: onFull, context: context, nav: nav);
     }
     if(driveSuccess){
       prefs.driveFirstLoad = false;
@@ -190,7 +204,7 @@ class SW with TopResources{
     return driveSuccess;
   }
 
-  Future<bool> _googleDriveSync(bool initial, {String scope = drive.DriveApi.driveFileScope, BuildContext? context, NavigatorState? nav}) async{
+  Future<bool> _googleDriveSync(bool initial, {VoidCallback? onFull, String scope = drive.DriveApi.driveFileScope, BuildContext? context, NavigatorState? nav}) async{
     syncing = true;
     if(context != null && nav != null){
       showDialog(
@@ -221,15 +235,19 @@ class SW with TopResources{
         return false;
       }
     }
-    driver ??= Driver(scope, (e, s) async{
-      if(!crashReporting) return;
-      if(!prefs.stupid) return;
-      stupid?.crash(Crash(
-        error: e.toString(),
-        stack: s.toString(),
-        version: package.version
-      ));
-    });
+    if(driver == null && onFull == null) throw("When Driver is created, must provide onFull");
+    driver ??= Driver(scope,
+      onError: (e, s) async{
+        if(!crashReporting) return;
+        if(!prefs.stupid) return;
+        stupid?.crash(Crash(
+          error: e.toString(),
+          stack: s.toString(),
+          version: package.version
+        ));
+      },
+      onFull: onFull
+    );
     var okay = await driver!.ready();
     if(!okay){
       if(context != null) nav?.pop();

@@ -216,7 +216,21 @@ class SettingsState extends State{
             onChanged: (b) {
               var message = ScaffoldMessenger.of(context);
               if (b) {
-                app.syncRemote(context: context, nav: Navigator.of(context, rootNavigator: true)).then((value) {
+                app.syncRemote(
+                  context: context,
+                  nav: Navigator.of(context, rootNavigator: true),
+                  onFull: (){
+                    if(app.showFullError){
+                      message.showSnackBar(
+                        SnackBar(
+                          content: Text(app.locale.driveFull),
+                        )
+                      );
+                      app.showFullError = false;
+                      Future.delayed(const Duration(minutes: 5), () => app.showFullError = true);
+                    }
+                  }
+                ).then((value) {
                   if(value){
                     app.prefs.googleDrive = b;
                     setState(() {});
