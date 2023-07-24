@@ -50,6 +50,7 @@
     "driveDisconnectNotice": "Google Drive è disconnesso",
     "driveFirstLaunch": "La Sincronizzazione dei tuoi profili su Google Drive è ora disponibile. Vai su Impostazioni per abilitarlo?",
     "driveEnableFail": "Google Drive non è riuscito ad inizializzare",
+    "driveFull": "Google Drive storage full",
     "gmModeTap": "Seleziona un profilo a sinistra da editare.",
     "gmModeType": "Genere...",
     "@gmModeType": {
