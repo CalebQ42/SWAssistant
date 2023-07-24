@@ -50,6 +50,7 @@
     "driveDisconnectNotice": "Google Drive est désactivé",
     "driveFirstLaunch": "La synchronisation de vos profils avec Google Drive est maintenant disponible. Allez dans Paramètres pour l'activer ?",
     "driveEnableFail": "L'initialisation de Google Drive a échoué",
+    "driveFull": "Google Drive storage full",
     "gmModeTap": "Sélectionnez un type de journal sur la gauche pour le modifier",
     "gmModeType": "Type...",
     "@gmModeType": {
