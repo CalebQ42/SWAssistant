@@ -29,7 +29,7 @@ dependencies:
   darkstorm_common: ^1.0.9
   stupid: ^0.2.6
   flutter_secure_storage: ^9.0.0
-  http: 1.1.0
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
