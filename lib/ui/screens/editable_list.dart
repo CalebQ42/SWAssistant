@@ -208,7 +208,7 @@ class EditableListState extends State<EditableList>{
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            color: Theme.of(context).primaryColorDark,
+            color: Theme.of(context).primaryColor,
             child: Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Row(

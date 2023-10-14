@@ -91,7 +91,7 @@ class SettingsState extends State{
           SwitchListTile(
             value: app.prefs.lightTheme,
             onChanged: (b){
-              app.prefs.lightTheme = b;
+              setState(() => app.prefs.lightTheme = b);
               app.topLevelUpdate();
             },
             title: Text(app.locale.forceLight),
@@ -100,7 +100,7 @@ class SettingsState extends State{
           SwitchListTile(
             value: app.prefs.darkTheme,
             onChanged: (b){
-              app.prefs.darkTheme = b;
+              setState(() => app.prefs.darkTheme = b);
               app.topLevelUpdate();
             },
             title: Text(app.locale.forceDark),

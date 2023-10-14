@@ -222,19 +222,18 @@ class SWAppState extends State<SWApp> {
         ThemeMode.light : app.prefs.darkTheme ?
         ThemeMode.dark : ThemeMode.system,
       theme: ThemeData.light().copyWith(
-        primaryColor: Colors.lightBlue,
-        primaryColorDark: Colors.lightBlue.shade600,
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.lightBlue,
-          accentColor: Colors.redAccent
+        colorScheme: const ColorScheme.light(
+          primary: Colors.lightBlue,
+          secondary: Colors.redAccent
         ),
+        primaryColor: Colors.lightBlue,
         snackBarTheme: snackTheme,
         inputDecorationTheme: inputTheme,
         bottomSheetTheme: bottomSheetTheme,
         floatingActionButtonTheme: fabTheme
       ),
       darkTheme: app.prefs.amoledTheme ? 
-        ThemeData( //Amoled Theme
+        ThemeData.dark().copyWith( //Amoled Theme
           canvasColor: Colors.black,
           shadowColor: Colors.grey.shade800,
           scaffoldBackgroundColor: Colors.black,
@@ -247,26 +246,24 @@ class SWAppState extends State<SWApp> {
             ),
           ),
           primaryColor: Colors.red,
-          primaryColorDark: Colors.red.shade900,
-          colorScheme: ColorScheme.fromSwatch(
-            backgroundColor: Colors.black,
-            primarySwatch: Colors.red,
-            accentColor: Colors.lightBlueAccent.shade100,
-            brightness: Brightness.dark
+          colorScheme: ColorScheme.dark(
+            shadow: Colors.white,
+            background: Colors.black,
+            primary: Colors.red,
+            secondary: Colors.lightBlueAccent.shade100,
+            surface: const Color.fromARGB(255, 5, 5, 5),
           ),
           bottomSheetTheme: bottomSheetTheme.copyWith(
             backgroundColor: Colors.black,
           ),
           floatingActionButtonTheme: fabTheme,
-          dividerColor: Colors.grey.shade800,
           inputDecorationTheme: inputTheme
-        ) : ThemeData( //Dark Theme
+        ) : ThemeData.dark().copyWith( //Dark Theme
           primaryColor: Colors.red,
-          primaryColorDark: Colors.red.shade900,
-          colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.red,
-            accentColor: Colors.lightBlueAccent.shade100,
-            brightness: Brightness.dark
+          colorScheme: ColorScheme.dark(
+            shadow: Colors.white,
+            primary: Colors.red,
+            secondary: Colors.lightBlueAccent.shade100,
           ),
           floatingActionButtonTheme: fabTheme,
           bottomSheetTheme: bottomSheetTheme,
