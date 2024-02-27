@@ -16,17 +16,17 @@ dependencies:
 
   intl: any
   shared_preferences: ^2.2.2
-  path_provider: ^2.1.1
+  path_provider: ^2.1.2
   cupertino_icons: ^1.0.6
-  url_launcher: ^6.1.14
-  file_picker: ^6.0.0
-  in_app_purchase: ^3.1.11
-  device_info_plus: ^9.0.3
-  package_info_plus: ^4.1.0
-  googleapis: ^11.4.0
-  uuid: ^4.1.0
+  url_launcher: ^6.2.5
+  file_picker: ^6.1.1
+  in_app_purchase: ^3.1.13
+  device_info_plus: ^9.1.2
+  package_info_plus: ^5.0.1
+  googleapis: ^12.0.0
+  uuid: ^4.3.3
   flutter_dotenv: ^5.1.0
-  darkstorm_common: ^1.0.9
+  darkstorm_common: ^1.0.11
   stupid: ^0.2.6
   flutter_secure_storage: ^9.0.0
   http: ^1.1.0
@@ -34,7 +34,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.3
+  flutter_lints: ^3.0.1
 
 flutter:
   generate: true
