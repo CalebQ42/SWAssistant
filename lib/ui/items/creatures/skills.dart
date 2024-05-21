@@ -8,7 +8,7 @@ import 'package:swassistant/ui/misc/edit_content.dart';
 
 class Skills extends StatefulWidget{
 
-  const Skills({Key? key}) : super(key: key);
+  const Skills({super.key});
 
   @override
   State createState() => SkillsState();

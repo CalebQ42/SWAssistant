@@ -13,7 +13,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Inventory extends StatefulWidget {
 
-  const Inventory({Key? key}) : super(key: key);
+  const Inventory({super.key});
 
   @override
   State<StatefulWidget> createState() => InventoryState();

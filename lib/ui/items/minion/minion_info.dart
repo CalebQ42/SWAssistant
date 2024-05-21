@@ -7,7 +7,7 @@ import 'package:swassistant/ui/misc/up_down.dart';
 
 class MinInfo extends StatefulWidget{
 
-  const MinInfo({Key? key}) : super(key: key);
+  const MinInfo({super.key});
 
   @override
   State<StatefulWidget> createState() => MinInfoState();

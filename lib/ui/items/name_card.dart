@@ -8,7 +8,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 
 class NameCard extends StatefulWidget {
 
-  const NameCard({Key? key}) : super(key: key);
+  const NameCard({super.key});
   
   @override
   State createState() => NameCardState();

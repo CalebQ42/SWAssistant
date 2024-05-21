@@ -11,12 +11,12 @@ class EditContent extends StatefulWidget{
   final List<Widget> Function(BuildContext, bool)? extraButtons;
   final List<Widget> Function(BuildContext)? extraEditButtons;
 
-  const EditContent({Key? key,
+  const EditContent({super.key,
     required this.contentKey,
     required this.content,
     this.defaultEdit,
     this.extraButtons, 
-    this.extraEditButtons}) : super(key: key);
+    this.extraEditButtons});
 
   @override
   State<StatefulWidget> createState() => EditContentState();

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/items/item.dart';
@@ -47,10 +45,9 @@ class Minion extends Editable with Creature{
     SW.of(context).locale.desc
   ];
 
-  Minion({String name = "New Minion", bool saveOnCreation = false, required SW app}) :
-      super(name: name, saveOnCreation: saveOnCreation, app: app);
+  Minion({super.name = "New Minion", super.saveOnCreation, required super.app});
 
-  Minion.load(FileSystemEntity file, SW app) : super.load(file, app: app);
+  Minion.load(super.file, super.app) : super.load();
 
   Minion.from(Minion minion) :
       woundThreshInd = minion.woundThreshInd,

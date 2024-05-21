@@ -6,7 +6,7 @@ import 'package:swassistant/ui/misc/edit_content.dart';
 
 class Specializations extends StatefulWidget{
 
-  const Specializations({Key? key}) : super(key: key);
+  const Specializations({super.key});
 
   @override
   State<StatefulWidget> createState() => SpecializationsState();

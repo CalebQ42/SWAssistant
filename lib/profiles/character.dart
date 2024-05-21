@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/items/duty.dart';
@@ -87,10 +85,9 @@ class Character extends Editable with Creature{
     SW.of(context).locale.desc
   ];
 
-  Character({String name = "New Character", bool saveOnCreation = false, required SW app}) :
-      super(name: name, saveOnCreation: saveOnCreation, app: app);
+  Character({super.name = "New Character", super.saveOnCreation, required super.app});
 
-  Character.load(FileSystemEntity file, SW app) : super.load(file, app: app);
+  Character.load(super.file, super.app) : super.load();
 
   Character.from(Character character) :
       species = character.species,

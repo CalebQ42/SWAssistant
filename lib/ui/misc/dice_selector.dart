@@ -8,7 +8,7 @@ class DiceSelector extends StatelessWidget{
   final int type;
   final bool small;
 
-  const DiceSelector({required this.holder, required this.type, this.small = true, Key? key}) : super(key: key);
+  const DiceSelector({required this.holder, required this.type, this.small = true, super.key});
 
   @override
   Widget build(BuildContext context){

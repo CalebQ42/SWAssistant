@@ -18,7 +18,7 @@ class EditableList extends StatefulWidget{
 
   final String? uidToLoad;
 
-  const EditableList(this.edType, {Key? key, this.onTap, this.uidToLoad}) : super(key: key);
+  const EditableList(this.edType, {super.key, this.onTap, this.uidToLoad});
 
   @override
   State<StatefulWidget> createState() => EditableListState();
@@ -187,10 +187,10 @@ class EditableListState extends State<EditableList>{
           }
           Editable newEd;
           switch(widget.edType){
-            case Character:
+            case Character _:
               newEd = Character(name: app.locale.newCharacter, saveOnCreation: true, app: app);
               break;
-            case Minion:
+            case Minion _:
               newEd = Minion(name: app.locale.newMinion, saveOnCreation: true, app: app);
               break;
             default:
@@ -325,7 +325,7 @@ class EditableCard extends StatelessWidget{
   final void Function(Editable)? onTap;
   final void Function() onDismiss;
 
-  const EditableCard({this.onTap, required this.onDismiss, Key? key}) : super(key: key);
+  const EditableCard({this.onTap, required this.onDismiss, super.key});
 
   @override
   Widget build(BuildContext context){

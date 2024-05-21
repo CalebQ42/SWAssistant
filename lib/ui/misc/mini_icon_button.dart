@@ -6,7 +6,7 @@ class MiniIconButton extends StatelessWidget{
   final Widget icon;
   final void Function()? onPressed;
 
-  const MiniIconButton({Key? key, this.color, required this.icon, this.onPressed}) : super(key: key);
+  const MiniIconButton({super.key, this.color, required this.icon, this.onPressed});
 
   @override
   Widget build(BuildContext context) =>

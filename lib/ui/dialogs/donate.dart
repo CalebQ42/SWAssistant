@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class DonateDialog extends StatelessWidget{
 
-  const DonateDialog({Key? key}) : super(key: key);
+  const DonateDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

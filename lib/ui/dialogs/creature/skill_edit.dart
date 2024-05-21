@@ -71,7 +71,7 @@ class _SkillSelector extends StatefulWidget{
   final Skill skill;
   final Bottom bot;
 
-  const _SkillSelector(this.skill, this.bot, {Key? key}) : super(key: key);
+  const _SkillSelector(this.skill, this.bot);
 
   @override
   State<StatefulWidget> createState() => _SkillSelectorState();

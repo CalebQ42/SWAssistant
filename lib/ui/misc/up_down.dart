@@ -12,8 +12,8 @@ class UpDownStat extends StatefulWidget{
   final Color? textColor;
   final TextStyle? style;
 
-  const UpDownStat({Key? key, required this.onUpPressed, required this.onDownPressed, required this.getValue, this.max, this.getMax, this.min,
-    this.getMin, this.textColor, this.style}) : super(key: key);
+  const UpDownStat({super.key, required this.onUpPressed, required this.onDownPressed, required this.getValue, this.max, this.getMax, this.min,
+    this.getMin, this.textColor, this.style});
 
   @override
   State<StatefulWidget> createState() => UpDownStatState();

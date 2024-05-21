@@ -7,7 +7,7 @@ import 'package:swassistant/ui/misc/up_down.dart';
 
 class MinionWound extends StatefulWidget{
 
-  const MinionWound({Key? key}) : super(key: key);
+  const MinionWound({super.key});
 
   @override
   State<StatefulWidget> createState() => MinionWoundState();

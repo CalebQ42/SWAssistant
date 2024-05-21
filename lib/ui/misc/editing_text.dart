@@ -28,9 +28,9 @@ class EditingText extends StatelessWidget {
 
   final void Function()? onTap;
 
-  EditingText({Key? key, required this.editing, this.style, this.initialText = "", this.controller, this.textType, this.fieldInsets,
+  EditingText({super.key, required this.editing, this.style, this.initialText = "", this.controller, this.textType, this.fieldInsets,
       this.textInsets, this.defaultSave = false, this.multiline = false, this.textCapitalization = TextCapitalization.none, this.textAlign = TextAlign.center,
-      this.fieldAlign, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle, this.onTap, this.heroTag}) : super(key: key) {
+      this.fieldAlign, this.collapsed = false, this.editableBackup, this.title = "", this.titleStyle, this.onTap, this.heroTag}) {
     if(editing && controller == null) throw "text controller MUST be specified when in editing mode";
   }
 

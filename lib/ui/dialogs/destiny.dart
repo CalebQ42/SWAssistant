@@ -7,7 +7,7 @@ class DestinyDialog extends StatelessWidget{
   final GlobalKey<UpDownStatState> light = GlobalKey();
   final GlobalKey<UpDownStatState> dark = GlobalKey();
 
-  DestinyDialog({Key? key}) : super(key: key);
+  DestinyDialog({super.key});
 
   void reset(BuildContext context){
     SW.of(context).prefs.destinyLight = 0;

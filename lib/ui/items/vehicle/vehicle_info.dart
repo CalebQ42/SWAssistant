@@ -6,7 +6,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 
 class VehicleInfo extends StatefulWidget{
 
-  const VehicleInfo({Key? key}) : super(key: key);
+  const VehicleInfo({super.key});
 
   @override
   State<VehicleInfo> createState() => VehicleInfoState();

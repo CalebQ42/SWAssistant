@@ -10,7 +10,7 @@ import 'package:swassistant/ui/misc/up_down.dart';
 
 class WoundStrain extends StatefulWidget{
 
-  const WoundStrain({Key? key}) : super(key: key);
+  const WoundStrain({super.key});
 
   @override
   State<StatefulWidget> createState() => WoundStrainState();
@@ -260,7 +260,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                       character.useRepair = b;
                       setState((){});
                     },
-                    activeColor: Theme.of(context).switchTheme.trackColor?.resolve({MaterialState.disabled}),
+                    activeColor: Theme.of(context).switchTheme.trackColor?.resolve({WidgetState.disabled}),
                   ),
                   Expanded(
                     child: Text(

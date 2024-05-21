@@ -8,7 +8,7 @@ import 'package:darkstorm_common/bottom.dart';
 
 class Talents extends StatefulWidget{
 
-  const Talents({Key? key}) : super(key: key);
+  const Talents({super.key});
 
   @override
   State createState() => TalentsState();

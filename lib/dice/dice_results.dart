@@ -307,7 +307,7 @@ class DiceResults{
 }
 
 class _CritRoll extends StatefulWidget{
-  const _CritRoll({Key? key}) : super(key: key);
+  const _CritRoll({super.key});
 
   @override
   State<StatefulWidget> createState() => _CritRollState();
@@ -316,6 +316,7 @@ class _CritRoll extends StatefulWidget{
 class _CritRollState extends State<_CritRoll>{
   int? d100Res;
 
+  @override
   Widget build(BuildContext context) {
     var app = SW.of(context);
     return Padding(

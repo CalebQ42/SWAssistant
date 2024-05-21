@@ -8,7 +8,7 @@ import 'package:darkstorm_common/bottom.dart';
 
 class Obligations extends StatefulWidget{
 
-  const Obligations({Key? key}) : super(key: key);
+  const Obligations({super.key});
 
   @override
   State<StatefulWidget> createState() => ObligationsState();

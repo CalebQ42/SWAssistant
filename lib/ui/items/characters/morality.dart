@@ -9,7 +9,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Morality extends StatefulWidget{
 
-  const Morality({Key? key}) : super(key: key);
+  const Morality({super.key});
 
   @override
   State<StatefulWidget> createState() => MoralityState();

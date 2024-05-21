@@ -9,7 +9,7 @@ class GPlayDonateDialog extends StatefulWidget{
   final List<ProductDetails> prods;
   final indHolder = _IndHolder();
 
-  GPlayDonateDialog(this.prods, {Key? key}) : super(key: key){
+  GPlayDonateDialog(this.prods, {super.key}){
     prods.sort((one,two) =>
       (100*(one.rawPrice - two.rawPrice)).floor()
     );

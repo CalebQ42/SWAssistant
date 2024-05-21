@@ -77,7 +77,7 @@ class _SeverityDropdown extends StatefulWidget{
   final CriticalInjury criticalInjury;
   final Bottom bot;
 
-  const _SeverityDropdown(this.criticalInjury, this.bot, {Key? key}) : super(key: key);
+  const _SeverityDropdown(this.criticalInjury, this.bot);
 
   @override
   State<StatefulWidget> createState() => _SeverityState();

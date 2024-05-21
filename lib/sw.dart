@@ -356,11 +356,11 @@ class SW with TopResources{
 
   void add(Editable ed){
     switch(ed.runtimeType){
-      case Character:
-        _char.add(ed as Character);
+      case Character c:
+        _char.add(c);
         break;
-      case Minion:
-        _min.add(ed as Minion);
+      case Minion m:
+        _min.add(m);
         break;
       default:
         _veh.add(ed as Vehicle);
@@ -373,10 +373,10 @@ class SW with TopResources{
       Navigator.removeRoute(context, ed.route!);
     }
     switch(ed.runtimeType){
-      case Character:
+      case Character _:
         _char.remove(ed);
         break;
-      case Minion:
+      case Minion _:
         _min.remove(ed);
         break;
       default:
@@ -406,13 +406,13 @@ class SW with TopResources{
       ];
     }else{
       switch(type){
-        case Character:
+        case Character _:
           searchList = _char;
           break;
-        case Minion:
+        case Minion _:
           searchList = _min;
           break;
-        case Vehicle:
+        case Vehicle _:
           searchList = _veh;
           break;
         default:

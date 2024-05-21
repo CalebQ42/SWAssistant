@@ -8,7 +8,7 @@ import 'package:swassistant/ui/misc/up_down.dart';
 
 class VehicleDamage extends StatefulWidget{
 
-  const VehicleDamage({Key? key}) : super(key: key);
+  const VehicleDamage({super.key});
 
   @override
   State<VehicleDamage> createState() => VehicleDamageState();

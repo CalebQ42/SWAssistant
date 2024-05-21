@@ -79,11 +79,7 @@ abstract class Editable extends JsonSavable{
     }
   }
 
-  Editable.load(FileSystemEntity file, {SW? app, BuildContext? context, this.name = ""}){
-    if (app == null && context == null){
-      throw Exception("Must specify app or context");
-    }
-    app ??= SW.of(context!);
+  Editable.load(FileSystemEntity file, SW app, {this.name = ""}){
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap, app.prefs.subtractMode);
     if(getFileLocation(app) != file.path){

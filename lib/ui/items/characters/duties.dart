@@ -8,7 +8,7 @@ import 'package:darkstorm_common/bottom.dart';
 
 class Duties extends StatefulWidget{
 
-  const Duties({Key? key}) : super(key: key);
+  const Duties({super.key});
 
   @override
   State<StatefulWidget> createState() => DutiesState();

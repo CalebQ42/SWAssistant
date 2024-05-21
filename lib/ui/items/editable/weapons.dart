@@ -14,7 +14,7 @@ import 'package:swassistant/ui/misc/edit_content.dart';
 
 class Weapons extends StatefulWidget{
 
-  const Weapons({Key? key}) : super(key: key);
+  const Weapons({super.key});
 
   @override
   State<StatefulWidget> createState() => WeaponsState();

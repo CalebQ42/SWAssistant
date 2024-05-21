@@ -11,7 +11,7 @@ class EditingEditable extends StatefulWidget {
   final bool contained;
   final double? w;
 
-  const EditingEditable(this.profile, {Key? key, this.contained = false, this.w}) : super(key: key);
+  const EditingEditable(this.profile, {super.key, this.contained = false, this.w});
 
   @override
   State<StatefulWidget> createState() => _EditingEditableState();
@@ -96,7 +96,7 @@ class _EditingEditableState extends State<EditingEditable>{
 class InheritedEditable extends InheritedWidget {
   final Editable editable;
 
-  const InheritedEditable({required Widget child, required this.editable, Key? key}) : super(key: key, child: child);
+  const InheritedEditable({required super.child, required this.editable, super.key});
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;

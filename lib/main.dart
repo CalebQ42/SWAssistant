@@ -50,7 +50,7 @@ class SWApp extends StatefulWidget{
 
   final String? init;
 
-  const SWApp({Key? key, this.init}) : super(key: key);
+  const SWApp({super.key, this.init});
 
   @override
   State<StatefulWidget> createState() => SWAppState();
@@ -248,7 +248,6 @@ class SWAppState extends State<SWApp> {
           primaryColor: Colors.red,
           colorScheme: ColorScheme.dark(
             shadow: Colors.white,
-            background: Colors.black,
             primary: Colors.red,
             secondary: Colors.lightBlueAccent.shade100,
             surface: const Color.fromARGB(255, 5, 5, 5),

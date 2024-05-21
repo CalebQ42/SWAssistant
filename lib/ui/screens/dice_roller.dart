@@ -12,7 +12,7 @@ class DiceRoller extends StatelessWidget{
 
   final SWDiceHolder holder = SWDiceHolder();
 
-  DiceRoller({Key? key}) : super(key: key);
+  DiceRoller({super.key});
 
   @override
   Widget build(BuildContext context) {

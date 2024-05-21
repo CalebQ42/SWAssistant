@@ -6,7 +6,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 class Description extends StatefulWidget{
 
 
-  const Description({Key? key}) : super(key: key);
+  const Description({super.key});
 
   @override
   State<Description> createState() => DescriptionState();

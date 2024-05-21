@@ -10,7 +10,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 
 class ForcePowers extends StatefulWidget{
 
-  const ForcePowers({Key? key}) : super(key: key);
+  const ForcePowers({super.key});
   
   @override
   State<StatefulWidget> createState() => ForcePowerState();

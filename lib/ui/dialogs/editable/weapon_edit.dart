@@ -159,7 +159,7 @@ class _WeaponAmmo extends StatefulWidget{
 
   final Weapon weapon;
 
-  const _WeaponAmmo(this.weapon, {Key? key}) : super(key: key);
+  const _WeaponAmmo(this.weapon);
 
   @override
   State<StatefulWidget> createState() => _AmmoState();
@@ -218,7 +218,7 @@ class _WeaponCharacteristics extends StatefulWidget{
 
   final Weapon weapon;
 
-  const _WeaponCharacteristics(this.weapon, {Key? key}) : super(key: key);
+  const _WeaponCharacteristics(this.weapon);
 
   @override
   State<StatefulWidget> createState() => _CharacteristicsState();
@@ -281,7 +281,7 @@ class _WeaponDropdowns extends StatefulWidget{
   final Weapon weapon;
   final Bottom bot;
 
-  const _WeaponDropdowns(this.weapon, this.bot, {Key? key}) : super(key: key);
+  const _WeaponDropdowns(this.weapon, this.bot);
 
   @override
   State<StatefulWidget> createState() => _WeaponState();

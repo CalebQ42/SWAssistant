@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
@@ -45,12 +43,11 @@ class Vehicle extends Editable{
     SW.of(context).locale.desc
   ];
 
-  Vehicle({String name = "New Vehicle", bool saveOnCreation = false, required SW app}) :
-      super(name: name, saveOnCreation: saveOnCreation, app: app);
+  Vehicle({super.name = "New Vehicle", super.saveOnCreation, required super.app});
 
-  Vehicle.load(FileSystemEntity file, SW app) : super.load(file, app: app);
+  Vehicle.load(super.file, super.app) : super.load();
 
-  Vehicle.from(Vehicle vehicle) :
+  Vehicle.from(Vehicle super.vehicle) :
       silhouette = vehicle.silhouette,
       speed = vehicle.speed,
       handling = vehicle.handling,
@@ -65,7 +62,7 @@ class Vehicle extends Editable{
       passengerCapacity = vehicle.passengerCapacity,
       hp = vehicle.hp,
       model = vehicle.model,
-      super.from(vehicle);
+      super.from();
 
   @override
   void loadJson(Map<String,dynamic> json, bool subtractMode){

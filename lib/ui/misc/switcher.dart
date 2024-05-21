@@ -6,7 +6,7 @@ class AnimatedWidgetSwitcher extends StatefulWidget{
   final List<Widget Function(BuildContext)> widgetBuilders;
   final Widget Function(Widget, Animation<double>)? transitionBuilder;
 
-  const AnimatedWidgetSwitcher({Key? key, required this.widgetNum, required this.widgetBuilders, this.transitionBuilder}) : super(key: key);
+  const AnimatedWidgetSwitcher({super.key, required this.widgetNum, required this.widgetBuilders, this.transitionBuilder});
 
   @override
   State<StatefulWidget> createState() => AnimatedWidgetSwitcherState();

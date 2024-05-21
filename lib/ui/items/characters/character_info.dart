@@ -6,7 +6,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 
 class CharacterInfo extends StatefulWidget{
 
-  const CharacterInfo({Key? key}) : super(key: key);
+  const CharacterInfo({super.key});
 
   @override
   State<CharacterInfo> createState() => CharacterInfoState();

@@ -9,7 +9,7 @@ import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 class TrashList extends StatefulWidget{
 
-  const TrashList({Key? key}) : super(key: key);
+  const TrashList({super.key});
 
   @override
   State<TrashList> createState() => _TrashListState();

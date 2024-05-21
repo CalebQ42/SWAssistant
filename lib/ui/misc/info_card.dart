@@ -7,7 +7,7 @@ class InfoCard extends StatefulWidget{
   final Widget contents;
   final void Function(bool)? onShowChanged;
 
-  const InfoCard({Key? key, this.shown = true, required this.contents, this.title = "", this.onShowChanged}) : super(key: key);
+  const InfoCard({super.key, this.shown = true, required this.contents, this.title = "", this.onShowChanged});
 
   @override
   State<StatefulWidget> createState() => _InfoCardState();

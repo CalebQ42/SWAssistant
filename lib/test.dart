@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class TestScreen extends StatelessWidget{
 
-  const TestScreen({Key? key}) : super(key: key);
+  const TestScreen({super.key});
+  
   @override
   Widget build(BuildContext context) =>
     Padding(

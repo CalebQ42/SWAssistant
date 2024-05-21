@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class Settings extends StatefulWidget{
 
-  const Settings({Key? key}) : super(key: key);
+  const Settings({super.key});
 
   @override
   State<StatefulWidget> createState() => SettingsState();

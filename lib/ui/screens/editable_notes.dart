@@ -9,7 +9,7 @@ import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
 class EditableNotes extends StatefulWidget{
 
-  const EditableNotes({Key? key}) : super(key: key);
+  const EditableNotes({super.key});
 
   @override
   State<StatefulWidget> createState() => EditableNotesState();
@@ -53,7 +53,7 @@ class NoteCard extends StatefulWidget{
   final int index;
   final GlobalKey<AnimatedListState> list;
 
-  const NoteCard({Key? key, required this.index, required this.list}) : super(key: key);
+  const NoteCard({super.key, required this.index, required this.list});
 
   @override
   State<NoteCard> createState() => _NCState();
@@ -124,7 +124,7 @@ class NoteCardContents extends StatefulWidget{
 
   final int index;
 
-  const NoteCardContents({Key? key, required this.index}) : super(key: key);
+  const NoteCardContents({super.key, required this.index});
 
   @override
   State<StatefulWidget> createState() => _NoteCardState();

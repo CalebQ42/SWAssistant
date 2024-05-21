@@ -7,7 +7,7 @@ import 'package:swassistant/ui/misc/editing_text.dart';
 
 class XP extends StatefulWidget{
 
-  const XP({Key? key}) : super(key: key);
+  const XP({super.key});
 
   @override
   State<StatefulWidget> createState() => XPState();

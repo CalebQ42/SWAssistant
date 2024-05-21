@@ -10,7 +10,7 @@ import 'package:swassistant/ui/screens/editing_editable.dart';
 class GMModeSize extends InheritedWidget{
 
   final double width; 
-  const GMModeSize({Key? key, required Widget child, required this.width}) : super(key: key, child: child);
+  const GMModeSize({super.key, required super.child, required this.width});
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
@@ -23,21 +23,21 @@ class GMMode extends StatelessWidget{
 
   final GMModeMessager message = GMModeMessager();
 
-  GMMode({Key? key}) : super(key: key);
+  GMMode({super.key});
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     width = min(450, width / 3);
     var remain = MediaQuery.of(context).size.width - width;
-    return WillPopScope(
-      onWillPop: (){
+    return PopScope(
+      canPop: (message.backStack.length == 1 || message.backStack.isEmpty),
+      onPopInvoked: (didPop) {
         if (message.backStack.length == 1 || message.backStack.isEmpty) {
-          return Future.value(true);
+          return;
         }
         message.backStack.removeLast();
         if (message.onChange != null) message.onChange!(message.backStack.last);
-        return Future.value(false);
       },
       child: FrameContent(
         child: Row(
@@ -76,6 +76,52 @@ class GMMode extends StatelessWidget{
         ),
       )
     );
+    // return WillPopScope(
+    //   onWillPop: (){
+    //     if (message.backStack.length == 1 || message.backStack.isEmpty) {
+    //       return Future.value(true);
+    //     }
+    //     message.backStack.removeLast();
+    //     if (message.onChange != null) message.onChange!(message.backStack.last);
+    //     return Future.value(false);
+    //   },
+    //   child: FrameContent(
+    //     child: Row(
+    //       crossAxisAlignment: CrossAxisAlignment.stretch,
+    //       mainAxisSize: MainAxisSize.max,
+    //       children: [
+    //         ConstrainedBox(
+    //           constraints: BoxConstraints(
+    //             maxWidth: width,
+    //           ),
+    //           child: EditableList(
+    //             null,
+    //             key: message.listKey,
+    //             onTap: (ed) {
+    //               var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);
+    //               message.backStack.add(ed);
+    //               if (message.onChange != null) message.onChange!(message.backStack.last);
+    //               if (ind != -1) {
+    //                 message.backStack.removeAt(ind);
+    //               }
+    //             }
+    //           )
+    //         ),
+    //         Container(
+    //           width: 1,
+    //           color: Theme.of(context).dividerColor
+    //         ),
+    //         Expanded(
+    //           child: GMModeSize(
+    //             key: ValueKey(remain),
+    //             width: remain,
+    //             child: _GMModeEditor(message)
+    //           )
+    //         )
+    //       ],
+    //     ),
+    //   )
+    // );
   }
 }
 

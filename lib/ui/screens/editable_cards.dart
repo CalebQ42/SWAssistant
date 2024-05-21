@@ -6,7 +6,7 @@ import 'package:swassistant/ui/screens/gm_mode.dart';
 
 class EditableCards extends StatefulWidget{
 
-  const EditableCards({Key? key}) : super(key: key);
+  const EditableCards({super.key});
 
   @override
   State<StatefulWidget> createState() => EditableCardsState();

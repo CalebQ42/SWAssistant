@@ -8,7 +8,7 @@ import 'package:darkstorm_common/bottom.dart';
 
 class CriticalInjuries extends StatefulWidget{
 
-  const CriticalInjuries({Key? key}) : super(key: key);
+  const CriticalInjuries({super.key});
 
   @override
   State<StatefulWidget> createState() => CritState();
