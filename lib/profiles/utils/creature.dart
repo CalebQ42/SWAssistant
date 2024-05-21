@@ -64,8 +64,8 @@ mixin Creature on Editable{
     }else{
       woundDmg = json["wound damage"] ?? 0;
     }
-    defMelee = json["defense melee"] ?? 0;
-    defRanged = json["defense ranged"] ?? 0;
+    defMelee = json["melee defense"] ?? 0;
+    defRanged = json["ranged defense"] ?? 0;
     soak = json["soak"] ?? 0;
   }
 
