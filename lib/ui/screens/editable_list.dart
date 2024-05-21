@@ -157,7 +157,7 @@ class EditableListState extends State<EditableList>{
               )
             );
           }
-          setState(() {});
+          if(mounted) setState(() {});
         }),
         child: mainList
       );
@@ -182,19 +182,19 @@ class EditableListState extends State<EditableList>{
                   content: Text(app.locale.driveDisconnectNotice)
                 )
               );
-              return;
             }
           }
           Editable newEd;
           switch(widget.edType){
-            case Character _:
+            case const (Character):
               newEd = Character(name: app.locale.newCharacter, saveOnCreation: true, app: app);
               break;
-            case Minion _:
+            case const (Minion):
               newEd = Minion(name: app.locale.newMinion, saveOnCreation: true, app: app);
               break;
             default:
               newEd = Vehicle(name: app.locale.newVehicle, saveOnCreation: true, app: app);
+              break;
           }
           app.add(newEd);
           Navigator.pushNamed(

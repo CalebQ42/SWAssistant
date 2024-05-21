@@ -355,15 +355,15 @@ class SW with TopResources{
   }
 
   void add(Editable ed){
-    switch(ed.runtimeType){
+    switch(ed){
       case Character c:
         _char.add(c);
         break;
       case Minion m:
         _min.add(m);
         break;
-      default:
-        _veh.add(ed as Vehicle);
+      case Vehicle v:
+        _veh.add(v);
     }
     if(ed.category != "" && !cats.contains(ed.category)) cats.add(ed.category);
   }
@@ -372,7 +372,7 @@ class SW with TopResources{
     if(context != null && ed.route != null && observatory.containsRoute(route:ed.route) != null){
       Navigator.removeRoute(context, ed.route!);
     }
-    switch(ed.runtimeType){
+    switch(ed){
       case Character _:
         _char.remove(ed);
         break;
@@ -406,13 +406,13 @@ class SW with TopResources{
       ];
     }else{
       switch(type){
-        case Character _:
+        case const (Character):
           searchList = _char;
           break;
-        case Minion _:
+        case const (Minion):
           searchList = _min;
           break;
-        case Vehicle _:
+        case const (Vehicle):
           searchList = _veh;
           break;
         default:

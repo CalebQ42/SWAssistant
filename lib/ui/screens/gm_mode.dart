@@ -19,11 +19,16 @@ class GMModeSize extends InheritedWidget{
     context.dependOnInheritedWidgetOfExactType<GMModeSize>();
 }
 
-class GMMode extends StatelessWidget{
+class GMMode extends StatefulWidget{
 
+  const GMMode({super.key});
+
+  @override
+  State<GMMode> createState() => _GMModeState();
+}
+
+class _GMModeState extends State<GMMode> {
   final GMModeMessager message = GMModeMessager();
-
-  GMMode({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +36,18 @@ class GMMode extends StatelessWidget{
     width = min(450, width / 3);
     var remain = MediaQuery.of(context).size.width - width;
     return PopScope(
-      canPop: (message.backStack.length == 1 || message.backStack.isEmpty),
+      canPop: message.backStack.length <= 1,
       onPopInvoked: (didPop) {
-        if (message.backStack.length == 1 || message.backStack.isEmpty) {
+        if (message.backStack.length <= 1) {
           return;
         }
-        message.backStack.removeLast();
-        if (message.onChange != null) message.onChange!(message.backStack.last);
+        setState((){
+          message.backStack.removeLast();
+          if (message.onChange != null) message.onChange!(message.backStack.last);
+        });
       },
       child: FrameContent(
+        allowPop: message.backStack.length <= 1,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
@@ -58,6 +66,7 @@ class GMMode extends StatelessWidget{
                   if (ind != -1) {
                     message.backStack.removeAt(ind);
                   }
+                  setState(() {});
                 }
               )
             ),
@@ -140,10 +149,10 @@ class _GMModeEditor extends StatefulWidget{
   const _GMModeEditor(this.message);
 
   @override
-  State<StatefulWidget> createState() => _GMModeState();
+  State<StatefulWidget> createState() => _GMModeEditorState();
 }
 
-class _GMModeState extends State<_GMModeEditor>{
+class _GMModeEditorState extends State<_GMModeEditor>{
 
   Editable? curEdit;
   GlobalKey stuff = GlobalKey();

@@ -180,7 +180,7 @@ class SWAppState extends State<SWApp> {
         if(widy == null){
           switch(settings.name){
             case "/gm":
-              widy = GMMode();
+              widy = const GMMode();
               break;
             case "/settings":
               widy = const Settings();
