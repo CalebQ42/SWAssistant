@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:swassistant/items/skill.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/utils/creature.dart';
-import 'package:darkstorm_common/bottom.dart';
-import 'package:darkstorm_common/updating_switch_tile.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
+import 'package:darkstorm_common/ui/updating_switch_tile.dart';
 import 'package:swassistant/sw.dart';
 
 class SkillEditDialog{

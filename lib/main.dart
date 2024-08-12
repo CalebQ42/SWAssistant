@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:darkstorm_common/top_resources.dart';
+import 'package:darkstorm_common/util/top_resources.dart';
 
-import 'package:darkstorm_common/frame.dart';
-import 'package:darkstorm_common/intro.dart';
-import 'package:darkstorm_common/nav.dart';
+import 'package:darkstorm_common/ui/frame.dart';
+import 'package:darkstorm_common/ui/intro.dart';
+import 'package:darkstorm_common/ui/nav.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';

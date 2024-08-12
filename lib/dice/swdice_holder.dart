@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/dice_results.dart';
 import 'package:swassistant/dice/swdice.dart' as swdice;
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 import 'package:swassistant/utils/json_savable.dart';

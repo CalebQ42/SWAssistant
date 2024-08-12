@@ -4,7 +4,7 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/editable/crit_inj_edit.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 
 class CriticalInjuries extends StatefulWidget{
 
@@ -35,8 +35,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
               child: Text(editable.criticalInjuries[i].name)
             )
           ),
-          ButtonBar(
-            buttonPadding: EdgeInsets.zero,
+          OverflowBar(
             children: [
               IconButton(
                 constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
@@ -89,8 +88,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard{
           ),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: !edit ? Container() : ButtonBar(
-              buttonPadding: EdgeInsets.zero,
+            child: !edit ? Container() : OverflowBar(
               children: [
                 IconButton(
                   splashRadius: 20,

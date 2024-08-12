@@ -8,7 +8,7 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/editable/item_edit.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Inventory extends StatefulWidget {
@@ -183,8 +183,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
                   child: Text((editable.inventory[index].count != 1 ? "${editable.inventory[index].count} " : "" )
                     + editable.inventory[index].name),
                 ),
-                ButtonBar(
-                  buttonPadding: EdgeInsets.zero,
+                OverflowBar(
                   children: [
                     IconButton(
                       constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
@@ -247,8 +246,7 @@ class InventoryState extends State<Inventory> with StatefulCard{
                       )
                     );
                   },
-                  child: edit ? ButtonBar(
-                    buttonPadding: EdgeInsets.zero,
+                  child: edit ? OverflowBar(
                     children: [
                       IconButton(
                         icon: const Icon(Icons.delete_forever),

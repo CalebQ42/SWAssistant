@@ -334,7 +334,7 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
           ],
         ),
         Container(height: 10),
-        ButtonBar(
+        OverflowBar(
           alignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(

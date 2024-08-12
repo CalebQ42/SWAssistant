@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/obligation.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/sw.dart';
 
 class ObligationEditDialog{

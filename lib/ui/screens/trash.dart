@@ -1,5 +1,5 @@
-import 'package:darkstorm_common/bottom.dart';
-import 'package:darkstorm_common/frame_content.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
+import 'package:darkstorm_common/ui/frame_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/profiles/character.dart';
@@ -115,7 +115,7 @@ class _TrashListState extends State<TrashList> {
                           )
                         ),
                         if(kIsWeb) Container(height: 5),
-                        if(kIsWeb) ButtonBar(
+                        if(kIsWeb) OverflowBar(
                           alignment: MainAxisAlignment.end,
                           children: [
                             MiniIconButton(

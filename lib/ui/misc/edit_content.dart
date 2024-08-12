@@ -38,9 +38,8 @@ class EditContentState extends State<EditContent> with StatefulCard {
         ClipRect(
           child: widget.content,
         ),
-        ButtonBar(
+        OverflowBar(
           alignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
           children: [
             if(widget.extraEditButtons != null) AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
@@ -51,7 +50,7 @@ class EditContentState extends State<EditContent> with StatefulCard {
                     child: child,
                   )
                 ),
-              child: (edit) ? ButtonBar(
+              child: (edit) ? OverflowBar(
                 children: widget.extraEditButtons!(context)
               ) : Container(),
             ),

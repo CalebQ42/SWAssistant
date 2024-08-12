@@ -2,8 +2,8 @@
 
 import 'dart:io';
 
-import 'package:darkstorm_common/top_resources.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:darkstorm_common/backend/backend.dart';
+import 'package:darkstorm_common/util/top_resources.dart';
 import 'package:in_app_purchase/in_app_purchase.dart' deferred as inapp;
 import 'package:path_provider/path_provider.dart' deferred as pathprov;
 import 'package:googleapis/drive/v3.dart' as drive;
@@ -14,16 +14,15 @@ import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stupid/stupid.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/profiles/minion.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/profiles/vehicle.dart';
 import 'package:swassistant/ui/screens/loading.dart';
 import 'package:swassistant/utils/prefs.dart';
-import 'package:swassistant/utils/sw_stupid.dart';
+import 'package:swassistant/utils/sw_backend.dart';
 import 'package:uuid/uuid.dart';
-import 'package:darkstorm_common/driver.dart';
+import 'package:darkstorm_common/drive/driver.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,7 +40,7 @@ class SW with TopResources{
   Prefs prefs;
   late PackageInfo package;
   late Function() topLevelUpdate;
-  SWStupid? stupid;
+  SWBackend? backend;
   late AppLocalizations locale;
 
   Driver? driver;
@@ -50,13 +49,13 @@ class SW with TopResources{
 
   bool initialized = false;
 
-  bool get crashReporting => isMobile && prefs.stupidCrash;
+  bool get crashReporting => isMobile && prefs.darkstormCrash;
 
   SW(this.prefs);
 
   static Future<SW> baseInit() async {
     WidgetsFlutterBinding.ensureInitialized();
-    var app = SW(Prefs(await SharedPreferences.getInstance(), const FlutterSecureStorage()));
+    var app = SW(Prefs(await SharedPreferences.getInstance()));
     if(app.isMobile){
       await inapp.loadLibrary();
       inapp.InAppPurchase.instance.purchaseStream.listen((event) {
@@ -86,7 +85,7 @@ class SW with TopResources{
 
   Future<void> postInit(LoadingScreenState loadingState, ScaffoldMessengerState messager) async{
     locale = AppLocalizations.of(loadingState.context)!;
-    if(prefs.stupid){
+    if(prefs.darkstormBackend){
       await initStupid();
     }
     if(kIsWeb) prefs.googleDrive = true;
@@ -128,14 +127,14 @@ class SW with TopResources{
       await dot.load(fileName: ".stupid");
       apiKey = dot.maybeGet("STUPID_KEY");
       if(apiKey != null){
-        stupid = SWStupid(this, apiKey, await prefs.stupidUuid());
-        if(prefs.stupidCrash){
+        backend = SWBackend(this, apiKey);
+        if(prefs.darkstormCrash){
           FlutterError.onError = (err) {
             if(kDebugMode){
               print("${err.exceptionAsString()}\n${err.stack?.toString() ?? "Not given"}");
             }else{
               if(!err.silent){
-                stupid!.crash(Crash(
+                backend!.crash(Crash(
                   error: err.exceptionAsString(),
                   stack: err.stack?.toString() ?? "Not given",
                   version: package.version
@@ -145,8 +144,8 @@ class SW with TopResources{
             FlutterError.presentError(err);
           };
         }
-        if(prefs.stupidLog){
-          stupid!.log();
+        if(prefs.darkstormCount){
+          backend!.count();
         }
       }
     }catch(error, stack){
@@ -239,8 +238,8 @@ class SW with TopResources{
     driver ??= Driver(scope,
       onError: (e, s) async{
         if(!crashReporting) return;
-        if(!prefs.stupid) return;
-        stupid?.crash(Crash(
+        if(!prefs.darkstormBackend) return;
+        backend?.crash(Crash(
           error: e.toString(),
           stack: s.toString(),
           version: package.version

@@ -1,13 +1,10 @@
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 class Prefs{
   final SharedPreferences prefs;
-  final FlutterSecureStorage securePrefs;
 
-  Prefs(this.prefs, this.securePrefs);
+  Prefs(this.prefs);
 
   //Locale
   String get locale => prefs.getString("locale") ?? "";
@@ -24,23 +21,14 @@ class Prefs{
   set newDrive(bool value) => prefs.setBool("newDrive", value);
 
   //Stupid Backend
-  bool get stupid => prefs.getBool("stupid") ?? true;
-  set stupid(bool value) => prefs.setBool("stupid", value);
+  bool get darkstormBackend => prefs.getBool("stupid") ?? true;
+  set darkstormBackend(bool value) => prefs.setBool("stupid", value);
 
-  bool get stupidLog => prefs.getBool("stupidLog") ?? true;
-  set stupidLog(bool value) => prefs.setBool("stupidLog", value);
+  bool get darkstormCount => prefs.getBool("stupidLog") ?? true;
+  set darkstormCount(bool value) => prefs.setBool("stupidLog", value);
 
-  bool get stupidCrash => prefs.getBool("stupidCrash") ?? true;
-  set stupidCrash(bool value) => prefs.setBool("stupidCrash", value);
-
-  Future<String> stupidUuid() async {
-    var id = await securePrefs.read(key: "uuid");
-    if(id == null){
-      id = const Uuid().v4();
-      await securePrefs.write(key: "uuid", value: id);
-    }
-    return id;
-  }
+  bool get darkstormCrash => prefs.getBool("stupidCrash") ?? true;
+  set darkstormCrash(bool value) => prefs.setBool("stupidCrash", value);
 
   //Firebase (depreciated)
   // bool get firebase => prefs.getBool("firebase") ?? kIsWeb || Platform.isAndroid || Platform.isIOS;
@@ -68,7 +56,7 @@ class Prefs{
   //Destiny
   int get destinyLight => prefs.getInt("destinyLight") ?? 0;
   set destinyLight(int value) => prefs.setInt("destinyLight", value);
-  
+
   int get destinyDark => prefs.getInt("destinyDark") ?? 0;
   set destinyDark(int value) => prefs.setInt("destinyDark", value);
 

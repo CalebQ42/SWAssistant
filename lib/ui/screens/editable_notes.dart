@@ -1,4 +1,4 @@
-import 'package:darkstorm_common/frame_content.dart';
+import 'package:darkstorm_common/ui/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/note.dart';
 import 'package:swassistant/profiles/utils/editable.dart';

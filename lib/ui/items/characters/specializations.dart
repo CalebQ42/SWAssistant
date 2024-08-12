@@ -40,7 +40,7 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
                 duration: const Duration(milliseconds: 250),
                 transitionBuilder: (child, anim){
                   var offset = const Offset(1,0);
-                  if((!edit && child is ButtonBar) || (edit && child is Container)){
+                  if((!edit && child is OverflowBar) || (edit && child is Container)){
                     offset = const Offset(-1,0);
                   }
                   return ClipRect(
@@ -57,8 +57,7 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
                     )
                   );
                 },
-                child: edit ? ButtonBar(
-                  buttonPadding: EdgeInsets.zero,
+                child: edit ? OverflowBar(
                   children: [
                     IconButton(
                       icon: const Icon(Icons.delete_forever),

@@ -101,10 +101,10 @@ packages:
     dependency: "direct main"
     description:
       name: darkstorm_common
-      sha256: "1ff355a3100c3b837748917ab69ad36a1dd589b7ac6fadd333414dd23e3f56b1"
+      sha256: "8661f4fe4dbdd454ffa7a29729d516993de7279728057aeb981e1d9004bfb825"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.13"
+    version: "2.0.0"
   dbus:
     dependency: transitive
     description:
@@ -682,14 +682,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  stupid:
-    dependency: "direct main"
-    description:
-      name: stupid
-      sha256: "982fccc1233cd8b9b244476ab781123ced7fd7e0a83be5ed76c3bd7eb552daf7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.6"
   term_glyph:
     dependency: transitive
     description:

@@ -9,7 +9,7 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/editable/weapon_edit.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 
 class Weapons extends StatefulWidget{
@@ -96,8 +96,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
                 child: Text(editable.weapons[i].name)
               )
             ),
-            ButtonBar(
-              buttonPadding: EdgeInsets.zero,
+            OverflowBar(
               children: [
                 IconButton(
                   constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
@@ -289,8 +288,7 @@ class WeaponsState extends State<Weapons> with StatefulCard{
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: !edit ? Container(height: 24,)
-              : ButtonBar(
-                buttonPadding: EdgeInsets.zero,
+              : OverflowBar(
                 children: [
                   IconButton(
                     constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),

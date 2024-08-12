@@ -1,5 +1,5 @@
-import 'package:darkstorm_common/intro.dart';
-import 'package:darkstorm_common/updating_switch_tile.dart';
+import 'package:darkstorm_common/ui/intro.dart';
+import 'package:darkstorm_common/ui/updating_switch_tile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -61,9 +61,9 @@ class Intro{
           title: Text(
             AppLocalizations.of(context)!.stupid,
           ),
-          value: app.prefs.stupid,
+          value: app.prefs.darkstormBackend,
           onChanged: (b){
-            app.prefs.stupid = b;
+            app.prefs.darkstormBackend = b;
             pagKey.currentState?.update();
           }
         ),
@@ -71,9 +71,9 @@ class Intro{
           title: Text(
             AppLocalizations.of(context)!.stupidLog,
           ),
-          value: app.prefs.stupidLog,
-          onChanged: app.prefs.stupid ? (b) {
-            app.prefs.stupidLog = b;
+          value: app.prefs.darkstormCount,
+          onChanged: app.prefs.darkstormBackend ? (b) {
+            app.prefs.darkstormCount = b;
             pagKey.currentState?.update();
           } : null
         ),
@@ -81,9 +81,9 @@ class Intro{
           title: Text(
             AppLocalizations.of(context)!.stupidCrash,
           ),
-          value: app.prefs.stupidCrash,
-          onChanged: app.prefs.stupid ? (b) {
-            app.prefs.stupidCrash = b;
+          value: app.prefs.darkstormCrash,
+          onChanged: app.prefs.darkstormBackend ? (b) {
+            app.prefs.darkstormCrash = b;
             pagKey.currentState?.update();
           } : null
         ),

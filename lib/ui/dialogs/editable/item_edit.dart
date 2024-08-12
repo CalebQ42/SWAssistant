@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/items/item.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/sw.dart';
 
 class ItemEditDialog{

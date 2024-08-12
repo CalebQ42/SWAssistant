@@ -4,7 +4,7 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/creature/talent_edit.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 
 class Talents extends StatefulWidget{
 
@@ -37,8 +37,7 @@ class TalentsState extends State<Talents> with StatefulCard {
               Expanded(
                 child: Text(creature.talents[index].name + (creature.talents[index].value! > 1 ? " ${creature.talents[index].value}" : "")),
               ),
-              ButtonBar(
-                buttonPadding: EdgeInsets.zero,
+              OverflowBar(
                 children: [
                   IconButton(
                     constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
@@ -94,8 +93,7 @@ class TalentsState extends State<Talents> with StatefulCard {
                     )
                   );
                 },
-                child: edit ? ButtonBar(
-                  buttonPadding: EdgeInsets.zero,
+                child: edit ? OverflowBar(
                   children: [
                     IconButton(
                       icon: const Icon(Icons.delete_forever),

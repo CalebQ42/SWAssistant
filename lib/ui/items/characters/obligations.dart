@@ -4,7 +4,7 @@ import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/dialogs/character/obli_edit.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 
 class Obligations extends StatefulWidget{
 
@@ -38,8 +38,7 @@ class ObligationsState extends State<Obligations> with StatefulCard {
               Expanded(
                 child: Text(character.obligations[index].name)
               ),
-              ButtonBar(
-                buttonPadding: EdgeInsets.zero,
+              OverflowBar(
                 children: [
                   IconButton(
                     constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
@@ -92,8 +91,7 @@ class ObligationsState extends State<Obligations> with StatefulCard {
                     )
                   );
                 },
-                child: edit ? ButtonBar(
-                  buttonPadding: EdgeInsets.zero,
+                child: edit ? OverflowBar(
                   children: [
                     IconButton(
                       icon: const Icon(Icons.delete_forever),

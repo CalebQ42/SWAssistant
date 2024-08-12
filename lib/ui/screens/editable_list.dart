@@ -1,5 +1,5 @@
-import 'package:darkstorm_common/bottom.dart';
-import 'package:darkstorm_common/frame_content.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
+import 'package:darkstorm_common/ui/frame_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
@@ -218,10 +218,10 @@ class EditableListState extends State<EditableList>{
                     icon: const Icon(Icons.refresh),
                     onPressed: () => refreshKey.currentState?.show()
                   ),
-                  if(app.prefs.stupid) IconButton(
+                  if(app.prefs.darkstormBackend) IconButton(
                     icon: const Icon(Icons.download),
                     onPressed: () async {
-                      if(app.stupid?.isAvailable ?? false){
+                      if(app.backend?.isAvailable ?? false){
                         download(listKey);
                       }else{
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -291,7 +291,7 @@ class EditableListState extends State<EditableList>{
       buttons: (c) => [
         TextButton(
           onPressed: cont.text.trim().isNotEmpty ? () async {
-            var ed = await app.stupid?.downloadProfile(cont.text);
+            var ed = await app.backend?.downloadProfile(cont.text);
             if(ed == null){
               app.nav.pop();
               scaf.showSnackBar(

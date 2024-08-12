@@ -1,8 +1,8 @@
-import 'package:darkstorm_common/frame_content.dart';
-import 'package:darkstorm_common/updating_switch_tile.dart';
+import 'package:darkstorm_common/backend/backend.dart';
+import 'package:darkstorm_common/ui/frame_content.dart';
+import 'package:darkstorm_common/ui/updating_switch_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:stupid/stupid.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -251,13 +251,13 @@ class SettingsState extends State{
           ),
           const Divider(),
           SwitchListTile(
-            value: app.prefs.stupid,
+            value: app.prefs.darkstormBackend,
             onChanged: (b) {
-              setState(() => app.prefs.stupid = b);
+              setState(() => app.prefs.darkstormBackend = b);
               if(b){
                 app.initStupid();
               }else{
-                app.stupid = null;
+                app.backend = null;
               }
             },
             title: Text(app.locale.stupid),
@@ -265,20 +265,20 @@ class SettingsState extends State{
           ),
           const Divider(),
           UpdatingSwitchTile(
-            value: app.prefs.stupidLog,
-            onChanged: app.prefs.stupid ? (b){
-              app.prefs.stupidLog = b;
+            value: app.prefs.darkstormCount,
+            onChanged: app.prefs.darkstormBackend ? (b){
+              app.prefs.darkstormCount = b;
             } : null,
             title: Text(app.locale.stupidLog),
           ),
           const Divider(),
           UpdatingSwitchTile(
-            value: app.prefs.stupidCrash,
-            onChanged: app.prefs.stupid ? (b){
-              app.prefs.stupidCrash = b;
+            value: app.prefs.darkstormCrash,
+            onChanged: app.prefs.darkstormBackend ? (b){
+              app.prefs.darkstormCrash = b;
               if(b){
                 FlutterError.onError = (err) {
-                  app.stupid!.crash(Crash(
+                  app.backend!.crash(Crash(
                     error: err.exceptionAsString(),
                     stack: err.stack?.toString() ?? "Not given",
                     version: app.package.version

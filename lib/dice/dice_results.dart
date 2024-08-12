@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/items/weapon.dart';

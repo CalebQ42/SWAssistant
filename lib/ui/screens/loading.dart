@@ -1,4 +1,4 @@
-import 'package:darkstorm_common/frame_content.dart';
+import 'package:darkstorm_common/ui/frame_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -73,7 +73,7 @@ class LoadingScreenState extends State<LoadingScreen> {
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
-                ButtonBar(
+                OverflowBar(
                   alignment: MainAxisAlignment.center,
                   children: [
                     TextButton(

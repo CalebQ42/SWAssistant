@@ -1,10 +1,12 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:swassistant/items/duty.dart';
 import 'package:swassistant/profiles/character.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/dialogs/character/duty_edit.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 
 class Duties extends StatefulWidget{
 

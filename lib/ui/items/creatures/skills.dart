@@ -66,8 +66,7 @@ class SkillsState extends State<Skills> with StatefulCard {
                 padding: const EdgeInsets.all(12),
                 child:Text(creature.skills[index].value.toString())
               )
-              : !edit ? Container(height: 40,) : ButtonBar(
-                buttonPadding: EdgeInsets.zero,
+              : !edit ? Container(height: 40,) : OverflowBar(
                 children: [
                   IconButton(
                     splashRadius: 20,

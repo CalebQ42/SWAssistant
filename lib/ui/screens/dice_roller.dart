@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:darkstorm_common/frame_content.dart';
+import 'package:darkstorm_common/ui/frame_content.dart';
 import 'package:flutter/material.dart';
 import 'package:swassistant/dice/dice.dart';
 import 'package:swassistant/dice/swdice_holder.dart';

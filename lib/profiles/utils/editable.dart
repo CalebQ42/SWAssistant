@@ -13,7 +13,7 @@ import 'package:swassistant/items/item.dart';
 import 'package:swassistant/items/note.dart';
 import 'package:swassistant/items/weapon.dart';
 import 'package:swassistant/ui/items/editable/description.dart';
-import 'package:darkstorm_common/bottom.dart';
+import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/ui/misc/info_card.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/items/editable/critical_injuries.dart';
@@ -21,12 +21,12 @@ import 'package:swassistant/ui/items/editable/inventory.dart';
 import 'package:swassistant/ui/items/editable/weapons.dart';
 import 'package:swassistant/ui/items/name_card.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
-import 'package:darkstorm_common/updating_switch_tile.dart';
+import 'package:darkstorm_common/ui/updating_switch_tile.dart';
 import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 import 'package:swassistant/utils/json_savable.dart';
-import 'package:swassistant/utils/sw_stupid.dart';
+import 'package:swassistant/utils/sw_backend.dart';
 import 'package:uuid/uuid.dart';
 
 //Editable holds all common components of Vehicles, Minions, and Characters and
@@ -64,7 +64,7 @@ abstract class Editable extends JsonSavable{
   bool _cloudDefered = false;
 
   //Universal Keys
-  var nameKey = GlobalKey<NameCardState>(); 
+  var nameKey = GlobalKey<NameCardState>();
   var invKey = GlobalKey<InventoryState>();
   var injKey = GlobalKey<CritState>();
   var weaponKey = GlobalKey<WeaponsState>();
@@ -247,7 +247,7 @@ abstract class Editable extends JsonSavable{
             ),
             MiniIconButton(
               icon: const Icon(Icons.copy),
-              onPressed: () => 
+              onPressed: () =>
                 Bottom(
                   child: (context) {
                     var nameController = TextEditingController(text: app.locale.copyOf(name));
@@ -258,7 +258,7 @@ abstract class Editable extends JsonSavable{
                           controller: nameController,
                           decoration: InputDecoration(labelText: app.locale.name),
                         ),
-                        ButtonBar(
+                        OverflowBar(
                           children: [
                             TextButton(
                               child: Text(MaterialLocalizations.of(context).saveButtonLabel),
@@ -291,10 +291,10 @@ abstract class Editable extends JsonSavable{
                   }
                 ).show(context)
             ),
-            if(app.prefs.stupid) MiniIconButton(
+            if(app.prefs.darkstormBackend) MiniIconButton(
               icon: const Icon(Icons.share),
               onPressed: (){
-                if(!(app.stupid?.isAvailable ?? false)){
+                if(!(app.backend?.isAvailable ?? false)){
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(app.locale.noConnectionStupid),
@@ -309,7 +309,7 @@ abstract class Editable extends JsonSavable{
                     Text(app.locale.uploading),
                   ]
                 ).show(context);
-                app.stupid?.uploadProfile(this)
+                app.backend?.uploadProfile(this)
                     .timeout(const Duration(seconds: 10), onTimeout: () => UploadResponse.timeout())
                     .then(
                   (value){
@@ -398,7 +398,7 @@ abstract class Editable extends JsonSavable{
   }
 
   String getFileLocation(SW sw) => loc ?? "${sw.saveDir}/$uid$fileExtension";
-  
+
   Future<void> save({String filename = "", BuildContext? context, SW? app, bool localOnly = false}) async{
     if(filename == "") {
       if (app == null && context == null){
