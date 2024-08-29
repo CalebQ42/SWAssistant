@@ -41,8 +41,9 @@ class _GMModeState extends State<GMMode> {
         }
         setState(() {
           message.backStack.removeLast();
-          if (message.onChange != null)
+          if (message.onChange != null) {
             message.onChange!(message.backStack.last);
+          }
         });
       },
       child: FrameContent(
@@ -63,8 +64,9 @@ class _GMModeState extends State<GMMode> {
                       element.fileExtension == ed.fileExtension &&
                       element.uid == ed.uid);
                   message.backStack.add(ed);
-                  if (message.onChange != null)
+                  if (message.onChange != null) {
                     message.onChange!(message.backStack.last);
+                  }
                   if (ind != -1) {
                     message.backStack.removeAt(ind);
                   }

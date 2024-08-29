@@ -54,15 +54,21 @@ class DonateDialog extends StatelessWidget {
                       ),
                     );
                   } else {
-                    InAppPurchase.instance.queryProductDetails({
-                      "donate1",
-                      "donate5",
-                      "donate10",
-                      "donate20",
-                    }).then((value) {
-                      Navigator.of(context).pop();
-                      GPlayDonateDialog(value.productDetails).show(context);
-                    });
+                    InAppPurchase.instance.queryProductDetails(
+                      {
+                        "donate1",
+                        "donate5",
+                        "donate10",
+                        "donate20",
+                      },
+                    ).then(
+                      (value) {
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                          GPlayDonateDialog(value.productDetails).show(context);
+                        }
+                      },
+                    );
                   }
                 },
                 child: Text(app.locale.gPlay),

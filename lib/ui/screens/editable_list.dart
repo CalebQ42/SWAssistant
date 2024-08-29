@@ -143,10 +143,11 @@ class EditableListState extends State<EditableList> {
           key: refreshKey,
           onRefresh: () => Future(() async {
                 if (app.syncing) return;
-                var messager = ScaffoldMessenger.of(context);
+                var messager =
+                    context.mounted ? ScaffoldMessenger.of(context) : null;
                 var b = await app.syncRemote(onFull: () {
                   if (app.showFullError) {
-                    messager.showSnackBar(
+                    messager?.showSnackBar(
                       SnackBar(
                         content: Text(app.locale.driveFull),
                       ),
@@ -156,9 +157,9 @@ class EditableListState extends State<EditableList> {
                         () => app.showFullError = true);
                   }
                 });
-                messager.clearSnackBars();
+                messager?.clearSnackBars();
                 if (!b) {
-                  messager.showSnackBar(
+                  messager?.showSnackBar(
                     SnackBar(
                       content: Text(localization.syncFail),
                     ),

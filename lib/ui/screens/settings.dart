@@ -71,8 +71,11 @@ class SettingsState extends State {
                       "donate20",
                     },
                   ).then(
-                    (value) =>
-                        GPlayDonateDialog(value.productDetails).show(context),
+                    (value) {
+                      if (context.mounted) {
+                        GPlayDonateDialog(value.productDetails).show(context);
+                      }
+                    },
                   );
                 }
               }

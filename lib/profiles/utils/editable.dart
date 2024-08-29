@@ -332,7 +332,7 @@ abstract class Editable extends JsonSavable {
                       )
                       .then(
                     (value) {
-                      if (value.isSuccess()) {
+                      if (value.isSuccess() && context.mounted) {
                         Navigator.of(context).pop();
                         Bottom(
                           children: (c) => [
@@ -374,7 +374,7 @@ abstract class Editable extends JsonSavable {
                             )
                           ],
                         ).show(context);
-                      } else {
+                      } else if (context.mounted) {
                         Navigator.of(context).pop();
                         Bottom(
                           children: (c) => [
