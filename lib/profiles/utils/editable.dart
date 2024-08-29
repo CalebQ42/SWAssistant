@@ -31,8 +31,7 @@ import 'package:uuid/uuid.dart';
 
 //Editable holds all common components of Vehicles, Minions, and Characters and
 //provides a framework on how to display, load, and save them.
-abstract class Editable extends JsonSavable{
-
+abstract class Editable extends JsonSavable {
   //Common components
   late String uid;
   DateTime? lastMod;
@@ -44,7 +43,7 @@ abstract class Editable extends JsonSavable{
   String desc = "";
   List<Item> inventory = [];
 
-  Map<String,bool> showCard = {};
+  Map<String, bool> showCard = {};
   Route? route;
 
   bool trashed = false;
@@ -73,122 +72,134 @@ abstract class Editable extends JsonSavable{
 
   Function()? notesUpdate;
 
-  Editable({this.name = "", bool saveOnCreation = false, required SW app}) : uid = const Uuid().v4(){
-    if(saveOnCreation){
+  Editable({this.name = "", bool saveOnCreation = false, required SW app})
+      : uid = const Uuid().v4() {
+    if (saveOnCreation) {
       save(app: app);
     }
   }
 
-  Editable.load(FileSystemEntity file, SW app, {this.name = ""}){
+  Editable.load(FileSystemEntity file, SW app, {this.name = ""}) {
     var jsonMap = jsonDecode(File.fromUri(file.uri).readAsStringSync());
     loadJson(jsonMap, app.prefs.subtractMode);
-    if(getFileLocation(app) != file.path){
+    if (getFileLocation(app) != file.path) {
       loc = file.path;
     }
   }
 
-  Editable.from(Editable editable) :
-    uid = const Uuid().v4(),
-    name = editable.name,
-    notes = List.from(editable.notes),
-    weapons = List.from(editable.weapons),
-    category = editable.category,
-    criticalInjuries = List.from(editable.criticalInjuries),
-    desc = editable.desc,
-    inventory = editable.inventory {
+  Editable.from(Editable editable)
+      : uid = const Uuid().v4(),
+        name = editable.name,
+        notes = List.from(editable.notes),
+        weapons = List.from(editable.weapons),
+        category = editable.category,
+        criticalInjuries = List.from(editable.criticalInjuries),
+        desc = editable.desc,
+        inventory = editable.inventory {
     showCard = {};
-    if (!(this is Character || this is Vehicle || this is Minion)){
-      throw("Must be overridden by child");
+    if (!(this is Character || this is Vehicle || this is Minion)) {
+      throw ("Must be overridden by child");
     }
   }
 
   @mustCallSuper
-  void loadJson(Map<String,dynamic> json, bool subtractMode){
-    if (!(this is Character || this is Vehicle || this is Minion)){
-      throw("Must be overridden by child");
+  void loadJson(Map<String, dynamic> json, bool subtractMode) {
+    if (!(this is Character || this is Vehicle || this is Minion)) {
+      throw ("Must be overridden by child");
     }
     uid = json["uid"] ?? const Uuid().v4();
-    if(json["lastMod"] != null){
+    if (json["lastMod"] != null) {
       lastMod = DateTime.fromMillisecondsSinceEpoch(json["lastMod"]);
     }
     name = json["name"] ?? "";
-    if (json["Notes"] != null){
+    if (json["Notes"] != null) {
       notes = [];
-      for (Map<String, dynamic> arrMap in json["Notes"]){
+      for (Map<String, dynamic> arrMap in json["Notes"]) {
         notes.add(Note.fromJson(arrMap));
       }
     }
-    if (json["Weapons"] != null){
+    if (json["Weapons"] != null) {
       weapons = [];
-      for(Map<String,dynamic> arrMap in json["Weapons"]){
+      for (Map<String, dynamic> arrMap in json["Weapons"]) {
         weapons.add(Weapon.fromJson(arrMap));
       }
     }
     category = json["category"] ?? "";
-    if (json["Critical Injuries"] != null){
+    if (json["Critical Injuries"] != null) {
       criticalInjuries = [];
-      for(Map<String,dynamic> arrMap in json["Critical Injuries"]){
+      for (Map<String, dynamic> arrMap in json["Critical Injuries"]) {
         criticalInjuries.add(CriticalInjury.fromJson(arrMap));
       }
     }
     desc = json["description"] ?? "";
-    showCard = ((json["show cards v2"] ?? <String,dynamic>{}) as Map<String,dynamic>).cast();
-    if (json["Inventory"] != null){
+    showCard =
+        ((json["show cards v2"] ?? <String, dynamic>{}) as Map<String, dynamic>)
+            .cast();
+    if (json["Inventory"] != null) {
       inventory = [];
-      if(json["Inventory"] != null){
-        for(Map<String, dynamic> arrMap in json["Inventory"]){
+      if (json["Inventory"] != null) {
+        for (Map<String, dynamic> arrMap in json["Inventory"]) {
           inventory.add(Item.fromJson(arrMap));
         }
       }
     }
     trashed = json["trashed"] ?? false;
-    if(json["trashed time"] != null){
+    if (json["trashed time"] != null) {
       trashTime = DateTime.tryParse(json["trashed time"]) ?? DateTime.now();
-    }else if(trashed){
+    } else if (trashed) {
       trashTime = DateTime.now();
     }
   }
 
   @override
   @mustCallSuper
-  Map<String, dynamic> toJson(){
-    if (!(this is Character || this is Vehicle || this is Minion)){
-      throw("Must be overridden by child");
+  Map<String, dynamic> toJson() {
+    if (!(this is Character || this is Vehicle || this is Minion)) {
+      throw ("Must be overridden by child");
     }
     return {
       "uid": uid,
       "lastMod": lastMod?.millisecondsSinceEpoch,
       "Notes": List.generate(notes.length, (index) => notes[index].toJson()),
-      "Weapons": List.generate(weapons.length, (index) => weapons[index].toJson()),
-      "Critical Injuries" : List.generate(criticalInjuries.length, (index) => criticalInjuries[index].toJson()),
-      "name" : name,
-      "category" : category,
-      "description" : desc,
-      "show cards v2" : showCard,
-      "Inventory" : List.generate(inventory.length, (index) => inventory[index].toJson()),
-      "trashed time" : trashed ? trashTime?.toUtc().toIso8601String() ?? DateTime.now().toUtc().toIso8601String() : null,
+      "Weapons":
+          List.generate(weapons.length, (index) => weapons[index].toJson()),
+      "Critical Injuries": List.generate(
+          criticalInjuries.length, (index) => criticalInjuries[index].toJson()),
+      "name": name,
+      "category": category,
+      "description": desc,
+      "show cards v2": showCard,
+      "Inventory":
+          List.generate(inventory.length, (index) => inventory[index].toJson()),
+      "trashed time": trashed
+          ? trashTime?.toUtc().toIso8601String() ??
+              DateTime.now().toUtc().toIso8601String()
+          : null,
       "trashed": trashed,
-    }..removeWhere((key, value){
-      if (key == "show cards v2" && (value as Map<String, bool>).values.every((element) => !element)) return true;
-      if (value is List && value.isEmpty) return true;
-      return false;
-    });
+    }..removeWhere((key, value) {
+        if (key == "show cards v2" &&
+            (value as Map<String, bool>).values.every((element) => !element)) {
+          return true;
+        }
+        if (value is List && value.isEmpty) return true;
+        return false;
+      });
   }
 
   @override
   @mustCallSuper
-  Map<String,dynamic> get zeroValue => {
-    "uid": "",
-    "lastMod": null,
-    "name": "",
-    "category": "",
-    "description": "",
-    "trashed": false,
-  };
+  Map<String, dynamic> get zeroValue => {
+        "uid": "",
+        "lastMod": null,
+        "name": "",
+        "category": "",
+        "description": "",
+        "trashed": false,
+      };
 
   List<Widget>? allCards;
 
-  List<Widget> cards(BuildContext context){
+  List<Widget> cards(BuildContext context) {
     var cards = <Widget>[];
     var contents = cardContents(context);
     var app = SW.of(context);
@@ -202,186 +213,209 @@ abstract class Editable extends JsonSavable{
             child: NameCard(key: nameKey),
           ),
           extraButtons: (c, _) => [
-            if(this is Character) MiniIconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () =>
-                Bottom(
-                  child: (con) =>
-                    Column(
-                      children: [
-                        UpdatingSwitchTile(
-                          value: (this as Character).disableForce,
-                          onChanged: (b) {
-                            (this as Character).disableForce = b;
-                            EditableCards.of(c).update();
-                          },
-                          title: Text(app.locale.disableForce)
-                        ),
-                        UpdatingSwitchTile(
-                          value: (this as Character).disableMorality,
-                          onChanged: (b) {
-                            (this as Character).disableMorality = b;
-                            EditableCards.of(c).update();
-                          },
-                          title: Text(app.locale.disableMorality)
-                        ),
-                        UpdatingSwitchTile(
-                          value: (this as Character).disableDuty,
-                          onChanged: (b) {
-                            (this as Character).disableDuty = b;
-                            EditableCards.of(c).update();
-                          },
-                          title: Text(app.locale.disableDuty)
-                        ),
-                        UpdatingSwitchTile(
-                          value: (this as Character).disableObligation,
-                          onChanged: (b) {
-                            (this as Character).disableObligation = b;
-                            EditableCards.of(c).update();
-                          },
-                          title: Text(app.locale.disableObligation)
-                        )
-                      ],
-                    )
+            if (this is Character)
+              MiniIconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () => Bottom(
+                  child: (con) => Column(
+                    children: [
+                      UpdatingSwitchTile(
+                        value: (this as Character).disableForce,
+                        onChanged: (b) {
+                          (this as Character).disableForce = b;
+                          EditableCards.of(c).update();
+                        },
+                        title: Text(app.locale.disableForce),
+                      ),
+                      UpdatingSwitchTile(
+                        value: (this as Character).disableMorality,
+                        onChanged: (b) {
+                          (this as Character).disableMorality = b;
+                          EditableCards.of(c).update();
+                        },
+                        title: Text(app.locale.disableMorality),
+                      ),
+                      UpdatingSwitchTile(
+                        value: (this as Character).disableDuty,
+                        onChanged: (b) {
+                          (this as Character).disableDuty = b;
+                          EditableCards.of(c).update();
+                        },
+                        title: Text(app.locale.disableDuty),
+                      ),
+                      UpdatingSwitchTile(
+                        value: (this as Character).disableObligation,
+                        onChanged: (b) {
+                          (this as Character).disableObligation = b;
+                          EditableCards.of(c).update();
+                        },
+                        title: Text(app.locale.disableObligation),
+                      )
+                    ],
+                  ),
                 )..show(context),
-            ),
+              ),
             MiniIconButton(
               icon: const Icon(Icons.copy),
-              onPressed: () =>
-                Bottom(
-                  child: (context) {
-                    var nameController = TextEditingController(text: app.locale.copyOf(name));
-                    return Wrap(
-                      children: [
-                        Container(height: 10),
-                        TextField(
-                          controller: nameController,
-                          decoration: InputDecoration(labelText: app.locale.name),
-                        ),
-                        OverflowBar(
-                          children: [
-                            TextButton(
-                              child: Text(MaterialLocalizations.of(context).saveButtonLabel),
-                              onPressed: () {
-                                Editable out;
-                                if (this is Character) {
-                                  out = Character.from(this as Character);
-                                } else if (this is Minion) {
-                                  out = Minion.from(this as Minion);
-                                } else if (this is Vehicle) {
-                                  out = Vehicle.from(this as Vehicle);
-                                } else {
-                                  throw "Unsupported Editable Type";
-                                }
-                                out.name = nameController.text;
-                                app.add(out);
-                                out.save(context: context);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-                              onPressed: () =>
-                                Navigator.of(context).pop()
-                            )
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                ).show(context)
-            ),
-            if(app.prefs.darkstormBackend) MiniIconButton(
-              icon: const Icon(Icons.share),
-              onPressed: (){
-                if(!(app.backend?.isAvailable ?? false)){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(app.locale.noConnectionStupid),
-                    )
+              onPressed: () => Bottom(
+                child: (context) {
+                  var nameController = TextEditingController(
+                    text: app.locale.copyOf(name),
                   );
-                  return;
-                }
-                Bottom(
-                  children: (c) =>[
-                    const Center(child: CircularProgressIndicator()),
-                    const SizedBox(height: 5),
-                    Text(app.locale.uploading),
-                  ]
-                ).show(context);
-                app.backend?.uploadProfile(this)
-                    .timeout(const Duration(seconds: 10), onTimeout: () => UploadResponse.timeout())
-                    .then(
-                  (value){
-                    if(value.isSuccess()){
-                      Navigator.of(context).pop();
-                      Bottom(
-                        children: (c) => [
-                          Center(
-                            child: Text(
-                              app.locale.shareCode,
-                              style: Theme.of(context).textTheme.titleLarge,
-                              textAlign: TextAlign.center,
-                            )
+                  return Wrap(
+                    children: [
+                      Container(height: 10),
+                      TextField(
+                        controller: nameController,
+                        decoration: InputDecoration(labelText: app.locale.name),
+                      ),
+                      OverflowBar(
+                        children: [
+                          TextButton(
+                            child: Text(MaterialLocalizations.of(context)
+                                .saveButtonLabel),
+                            onPressed: () {
+                              Editable out;
+                              if (this is Character) {
+                                out = Character.from(this as Character);
+                              } else if (this is Minion) {
+                                out = Minion.from(this as Minion);
+                              } else if (this is Vehicle) {
+                                out = Vehicle.from(this as Vehicle);
+                              } else {
+                                throw "Unsupported Editable Type";
+                              }
+                              out.name = nameController.text;
+                              app.add(out);
+                              out.save(context: context);
+                              Navigator.of(context).pop();
+                            },
                           ),
-                          Center(
-                            child: Text(
-                              app.locale.uploadDisclaimer,
-                              style: Theme.of(context).textTheme.titleSmall,
-                              textAlign: TextAlign.center,
-                            )
-                          ),
-                          Container(height: 5,),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children:[
-                              Expanded(child: TextField(
-                                readOnly: true,
-                                controller: TextEditingController(text: value.id),
-                              )),
-                              TextButton(
-                                child: Text(MaterialLocalizations.of(context).copyButtonLabel),
-                                onPressed: () =>
-                                  Clipboard.setData(ClipboardData(text: value.id!))
-                              )
-                            ]
+                          TextButton(
+                            child: Text(MaterialLocalizations.of(context)
+                                .cancelButtonLabel),
+                            onPressed: () => Navigator.of(context).pop(),
                           )
                         ],
-                      ).show(context);
-                    }else{
-                      Navigator.of(context).pop();
-                      Bottom(
-                        children: (c) => [
-                          Center(
-                            child: Text(
-                              app.locale.uploadFailed,
-                              style: Theme.of(context).textTheme.titleLarge
-                            )
-                          ),
-                          if(value.isNotFound() || value.isServerError()) Center(child: Text(app.locale.failServer)),
-                          if(value.isTimeout()) Center(child: Text(app.locale.failTimeout)),
-                          if(value.isTooLarge()) Center(child: Text(app.locale.failSize)),
-                        ]
-                      ).show(context);
-                    }
+                      )
+                    ],
+                  );
+                },
+              ).show(context),
+            ),
+            if (app.prefs.darkstormBackend)
+              MiniIconButton(
+                icon: const Icon(Icons.share),
+                onPressed: () {
+                  if (!(app.backend?.isAvailable ?? false)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(app.locale.noConnectionStupid),
+                      ),
+                    );
+                    return;
                   }
-                );
-              },
-            )
+                  Bottom(
+                    children: (c) => [
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(app.locale.uploading),
+                    ],
+                  ).show(context);
+                  app.backend
+                      ?.uploadProfile(this)
+                      .timeout(
+                        const Duration(seconds: 10),
+                        onTimeout: () => UploadResponse.timeout(),
+                      )
+                      .then(
+                    (value) {
+                      if (value.isSuccess()) {
+                        Navigator.of(context).pop();
+                        Bottom(
+                          children: (c) => [
+                            Center(
+                              child: Text(
+                                app.locale.shareCode,
+                                style: Theme.of(context).textTheme.titleLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                app.locale.uploadDisclaimer,
+                                style: Theme.of(context).textTheme.titleSmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                    readOnly: true,
+                                    controller:
+                                        TextEditingController(text: value.id),
+                                  ),
+                                ),
+                                TextButton(
+                                  child: Text(MaterialLocalizations.of(context)
+                                      .copyButtonLabel),
+                                  onPressed: () => Clipboard.setData(
+                                    ClipboardData(text: value.id!),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ).show(context);
+                      } else {
+                        Navigator.of(context).pop();
+                        Bottom(
+                          children: (c) => [
+                            Center(
+                              child: Text(app.locale.uploadFailed,
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge),
+                            ),
+                            if (value.isNotFound() || value.isServerError())
+                              Center(
+                                child: Text(app.locale.failServer),
+                              ),
+                            if (value.isTimeout())
+                              Center(
+                                child: Text(app.locale.failTimeout),
+                              ),
+                            if (value.isTooLarge())
+                              Center(
+                                child: Text(app.locale.failSize),
+                              ),
+                          ],
+                        ).show(context);
+                      }
+                    },
+                  );
+                },
+              )
           ],
           defaultEdit: () {
-            if(this is Character){
+            if (this is Character) {
               return name == app.locale.newCharacter;
-            }else if(this is Minion){
+            } else if (this is Minion) {
               return name == app.locale.newMinion;
             }
             return name == app.locale.newVehicle;
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
     var names = cardNames(context);
-    for (int i = 0; i < contents.length; i++){
+    for (int i = 0; i < contents.length; i++) {
       cards.add(
         InfoCard(
           shown: showCard[names[i]] ?? false,
@@ -390,8 +424,8 @@ abstract class Editable extends JsonSavable{
           onShowChanged: (b) {
             showCard[names[i]] = b;
             save(context: context);
-          }
-        )
+          },
+        ),
       );
     }
     return cards;
@@ -399,43 +433,48 @@ abstract class Editable extends JsonSavable{
 
   String getFileLocation(SW sw) => loc ?? "${sw.saveDir}/$uid$fileExtension";
 
-  Future<void> save({String filename = "", BuildContext? context, SW? app, bool localOnly = false}) async{
-    if(filename == "") {
-      if (app == null && context == null){
-        throw("Either filename or context needs to be given");
+  Future<void> save(
+      {String filename = "",
+      BuildContext? context,
+      SW? app,
+      bool localOnly = false}) async {
+    if (filename == "") {
+      if (app == null && context == null) {
+        throw ("Either filename or context needs to be given");
       }
       app ??= SW.of(context!);
       filename = getFileLocation(app);
     }
     lastMod = DateTime.now();
-    if(kIsWeb) {
-      if(app == null && context != null){
+    if (kIsWeb) {
+      if (app == null && context != null) {
         app = SW.of(context);
       }
-      if(app != null){
+      if (app != null) {
         cloudSave(app);
       }
       return;
     }
-    if(!_saving && !_defered){
+    if (!_saving && !_defered) {
       _saving = true;
-      if(!localOnly && app != null && app.prefs.googleDrive) {
+      if (!localOnly && app != null && app.prefs.googleDrive) {
         cloudSave(app);
       }
       var file = File(filename);
       File? backup;
-      if(file.existsSync()){
+      if (file.existsSync()) {
         backup = file.renameSync("$filename.backup");
       }
       file.createSync();
-      file.writeAsStringSync(const JsonEncoder.withIndent("  ").convert(toJson()));
-      if(backup!=null){
+      file.writeAsStringSync(
+          const JsonEncoder.withIndent("  ").convert(toJson()));
+      if (backup != null) {
         backup.deleteSync();
       }
       _saving = false;
-    }else if(!_defered){
+    } else if (!_defered) {
       _defered = true;
-      while(_saving){
+      while (_saving) {
         await Future.delayed(const Duration(milliseconds: 250));
       }
       _defered = false;
@@ -444,13 +483,11 @@ abstract class Editable extends JsonSavable{
   }
 
   Future<String?> getDriveId(SW app) async {
-    if (driveId == null){
-      if(app.driver == null || !await app.driver!.ready()) return null;
-      var newId = await app.driver!.getID(uid+fileExtension);
-      newId ??= await app.driver!.createFile(
-        uid + fileExtension,
-        mimeType: "application/json"
-      );
+    if (driveId == null) {
+      if (app.driver == null || !await app.driver!.ready()) return null;
+      var newId = await app.driver!.getID(uid + fileExtension);
+      newId ??= await app.driver!
+          .createFile(uid + fileExtension, mimeType: "application/json");
       if (newId == null) return null;
       driveId = newId;
     }
@@ -458,32 +495,33 @@ abstract class Editable extends JsonSavable{
   }
 
   Future<void> cloudSave(SW app) async {
-    if(app.driver == null || !await app.driver!.ready()){
+    if (app.driver == null || !await app.driver!.ready()) {
       await Future.delayed(const Duration(milliseconds: 250));
       return;
     }
-    if(!_cloudSaving && !_cloudDefered) {
+    if (!_cloudSaving && !_cloudDefered) {
       _cloudSaving = true;
-      try{
+      try {
         var id = await getDriveId(app);
         if (id == null) {
           _cloudSaving = false;
           return;
         }
-        var data = const JsonEncoder.withIndent("  ").convert(toJson()).codeUnits;
+        var data =
+            const JsonEncoder.withIndent("  ").convert(toJson()).codeUnits;
         await app.driver!.updateContents(
           id,
           Stream.value(data),
           dataLength: data.length,
         );
-      }catch(e){
+      } catch (e) {
         await Future.delayed(const Duration(milliseconds: 250));
         cloudSave(app);
       }
       _cloudSaving = false;
-    }else if (!_cloudDefered) {
+    } else if (!_cloudDefered) {
       _cloudDefered = true;
-      while(_cloudSaving) {
+      while (_cloudSaving) {
         await Future.delayed(const Duration(milliseconds: 500));
       }
       _cloudDefered = false;
@@ -585,42 +623,43 @@ abstract class Editable extends JsonSavable{
   // @mustCallSuper
   // Future<void> newVersion(Map<String, dynamic> json, List<Function()> updateKeys);
 
-  void load(String filename, bool subtractMode){
+  void load(String filename, bool subtractMode) {
     var file = File(filename);
     loadJson(jsonDecode(file.readAsStringSync()), subtractMode);
   }
 
   Future<void> cloudLoad(SW app, String id, {bool overwriteId = true}) async {
-    if(app.driver == null || !await app.driver!.ready()) return;
+    if (app.driver == null || !await app.driver!.ready()) return;
     var fil = await app.driver!.getFile(id);
-    if(fil == null) return;
+    if (fil == null) return;
     var media = await app.driver!.getContents(id);
     if (media == null) return;
     List<int> out = [];
-    await for(var tmp in media.stream){
+    await for (var tmp in media.stream) {
       out.addAll(tmp);
     }
-    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String,dynamic>), app.prefs.subtractMode);
-    if(overwriteId) driveId = id;
+    loadJson((jsonDecode(String.fromCharCodes(out)) as Map<String, dynamic>),
+        app.prefs.subtractMode);
+    if (overwriteId) driveId = id;
   }
 
-  void trash(SW app){
+  void trash(SW app) {
     app.remove(this);
     app.trash.add(this);
-    if(!_saving && !_defered && !_cloudDefered && !_cloudSaving){
+    if (!_saving && !_defered && !_cloudDefered && !_cloudSaving) {
       trashed = true;
       trashTime = DateTime.now();
       save(app: app);
-    }else{
+    } else {
       Future(() async {
-        while(_saving || _defered || _cloudDefered || _cloudSaving){
+        while (_saving || _defered || _cloudDefered || _cloudSaving) {
           await Future.delayed(const Duration(milliseconds: 200));
         }
         _saving = true;
         _cloudSaving = true;
         var fil = File(getFileLocation(app));
         fil.deleteSync();
-        if(driveId != null) await app.driver?.delete(driveId!);
+        if (driveId != null) await app.driver?.delete(driveId!);
         _saving = false;
         _cloudSaving = false;
         save(app: app);
@@ -628,26 +667,26 @@ abstract class Editable extends JsonSavable{
     }
   }
 
-  void deletePermanently(SW app){
-    if(!_saving && !_defered && !_cloudDefered && !_cloudSaving){
-      if(!kIsWeb) {
+  void deletePermanently(SW app) {
+    if (!_saving && !_defered && !_cloudDefered && !_cloudSaving) {
+      if (!kIsWeb) {
         var fil = File(getFileLocation(app));
         fil.deleteSync();
       }
-      if(driveId != null) app.driver?.delete(driveId!);
+      if (driveId != null) app.driver?.delete(driveId!);
       driveId = null;
-    }else{
+    } else {
       Future(() async {
-        while(_saving || _defered || _cloudDefered || _cloudSaving){
+        while (_saving || _defered || _cloudDefered || _cloudSaving) {
           await Future.delayed(const Duration(milliseconds: 200));
         }
         _saving = true;
         _cloudSaving = true;
-        if(!kIsWeb){
+        if (!kIsWeb) {
           var fil = File(getFileLocation(app));
           fil.deleteSync();
         }
-        if(driveId != null) await app.driver?.delete(driveId!);
+        if (driveId != null) await app.driver?.delete(driveId!);
         driveId = null;
         _saving = false;
         _cloudSaving = false;
@@ -655,18 +694,23 @@ abstract class Editable extends JsonSavable{
     }
   }
 
-  void addShortcut(){}
-  bool hasShortcut(){ return false; }
-  void updateShortcut(){}
-  void deleteShortcut(){}
+  void addShortcut() {}
+  bool hasShortcut() {
+    return false;
+  }
+
+  void updateShortcut() {}
+  void deleteShortcut() {}
 
   List<EditContent> cardContents(BuildContext context);
 
   List<String> cardNames(BuildContext context);
 
-  static Editable of(BuildContext context){
-    var ed = context.dependOnInheritedWidgetOfExactType<InheritedEditable>()?.editable;
-    if (ed == null){
+  static Editable of(BuildContext context) {
+    var ed = context
+        .dependOnInheritedWidgetOfExactType<InheritedEditable>()
+        ?.editable;
+    if (ed == null) {
       throw "Editable.of called outside of InheritedEditable heirarchy";
     }
     return ed;

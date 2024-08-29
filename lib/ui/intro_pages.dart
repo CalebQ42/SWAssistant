@@ -8,43 +8,46 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class Intro{
+class Intro {
   final SW app;
 
   Intro(this.app);
 
   List<IntroPage Function(BuildContext)> get pages => [
-    if(app.prefs.showIntro) intro0,
-    if(app.prefs.showIntro || app.prefs.stupidIntro) intro1,
-    if(app.prefs.showIntro) intro2,
-  ];
+        if (app.prefs.showIntro) intro0,
+        if (app.prefs.showIntro || app.prefs.stupidIntro) intro1,
+        if (app.prefs.showIntro) intro2,
+      ];
 
-  IntroPage intro0(BuildContext context) =>
-    IntroPage(
-      title: Text(AppLocalizations.of(context)!.introWelcome),
-      subtext: Column(
-        children: [
-          Text(AppLocalizations.of(context)!.introPage0Line1),
-          if(kIsWeb) Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(text: AppLocalizations.of(context)!.introPage0WebNoticev2),
+  IntroPage intro0(BuildContext context) => IntroPage(
+        title: Text(AppLocalizations.of(context)!.introWelcome),
+        subtext: Column(
+          children: [
+            Text(AppLocalizations.of(context)!.introPage0Line1),
+            if (kIsWeb)
+              Text.rich(
                 TextSpan(
-                  text: AppLocalizations.of(context)!.introPage0WebNoticeEnd,
-                  style: const TextStyle(
-                    decoration: TextDecoration.underline
-                  ),
-                  recognizer: TapGestureRecognizer()..onTap = () =>
-                    launchUrlString("https://darkstorm.tech/COOKIE-POLICY.html")
-                )
-              ]
-            ),
-          ),
-        ],
-      ),
-    );
+                  children: [
+                    TextSpan(
+                        text: AppLocalizations.of(context)!
+                            .introPage0WebNoticev2),
+                    TextSpan(
+                      text:
+                          AppLocalizations.of(context)!.introPage0WebNoticeEnd,
+                      style:
+                          const TextStyle(decoration: TextDecoration.underline),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => launchUrlString(
+                            "https://darkstorm.tech/COOKIE-POLICY.html"),
+                    )
+                  ],
+                ),
+              ),
+          ],
+        ),
+      );
 
-  IntroPage intro1(BuildContext context){
+  IntroPage intro1(BuildContext context) {
     var pagKey = GlobalKey<IntroPageState>();
     return IntroPage(
       key: pagKey,
@@ -52,7 +55,9 @@ class Intro{
       subtext: Column(
         children: [
           Text(
-            app.prefs.showIntro ? AppLocalizations.of(context)!.introPage1StupidExplainationv2 : AppLocalizations.of(context)!.introStupidExistingUsersv2,
+            app.prefs.showIntro
+                ? AppLocalizations.of(context)!.introPage1StupidExplainationv2
+                : AppLocalizations.of(context)!.introStupidExistingUsersv2,
           ),
         ],
       ),
@@ -62,50 +67,49 @@ class Intro{
             AppLocalizations.of(context)!.stupid,
           ),
           value: app.prefs.darkstormBackend,
-          onChanged: (b){
+          onChanged: (b) {
             app.prefs.darkstormBackend = b;
             pagKey.currentState?.update();
-          }
+          },
         ),
         SwitchListTile(
-          title: Text(
-            AppLocalizations.of(context)!.stupidLog,
-          ),
-          value: app.prefs.darkstormCount,
-          onChanged: app.prefs.darkstormBackend ? (b) {
-            app.prefs.darkstormCount = b;
-            pagKey.currentState?.update();
-          } : null
-        ),
+            title: Text(
+              AppLocalizations.of(context)!.stupidLog,
+            ),
+            value: app.prefs.darkstormCount,
+            onChanged: app.prefs.darkstormBackend
+                ? (b) {
+                    app.prefs.darkstormCount = b;
+                    pagKey.currentState?.update();
+                  }
+                : null),
         SwitchListTile(
-          title: Text(
-            AppLocalizations.of(context)!.stupidCrash,
-          ),
-          value: app.prefs.darkstormCrash,
-          onChanged: app.prefs.darkstormBackend ? (b) {
-            app.prefs.darkstormCrash = b;
-            pagKey.currentState?.update();
-          } : null
-        ),
+            title: Text(
+              AppLocalizations.of(context)!.stupidCrash,
+            ),
+            value: app.prefs.darkstormCrash,
+            onChanged: app.prefs.darkstormBackend
+                ? (b) {
+                    app.prefs.darkstormCrash = b;
+                    pagKey.currentState?.update();
+                  }
+                : null),
       ],
     );
   }
 
-  IntroPage intro2(BuildContext context){
+  IntroPage intro2(BuildContext context) {
     var pagKey = GlobalKey<IntroPageState>();
     return IntroPage(
       key: pagKey,
       title: Text(AppLocalizations.of(context)!.settings),
       items: (c) => [
-        if(app.isMobile) UpdatingSwitchTile(
-          title: Text(
-            AppLocalizations.of(context)!.cloudSave
-          ),
-          value: app.prefs.googleDrive,
-          onChanged: (b) =>
-            app.prefs.googleDrive = b
-        ),
-        if(app.isMobile) const Divider(),
+        if (app.isMobile)
+          UpdatingSwitchTile(
+              title: Text(AppLocalizations.of(context)!.cloudSave),
+              value: app.prefs.googleDrive,
+              onChanged: (b) => app.prefs.googleDrive = b),
+        if (app.isMobile) const Divider(),
         Padding(
           padding: const EdgeInsets.all(15),
           child: Text(
@@ -128,30 +132,27 @@ class Intro{
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(AppLocalizations.of(context)!.additiveExplaination)
-                  ]
-                )
+                  ],
+                ),
               ),
               Switch(
-                value: app.prefs.subtractMode,
-                onChanged: (b) {
-                  app.prefs.subtractMode = b;
-                  pagKey.currentState?.update();
-                }
-              ),
+                  value: app.prefs.subtractMode,
+                  onChanged: (b) {
+                    app.prefs.subtractMode = b;
+                    pagKey.currentState?.update();
+                  }),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      AppLocalizations.of(context)!.subtractive,
-                      style: Theme.of(context).textTheme.titleLarge
-                    ),
+                    Text(AppLocalizations.of(context)!.subtractive,
+                        style: Theme.of(context).textTheme.titleLarge),
                     Text(AppLocalizations.of(context)!.subtractiveExplaination)
-                  ]
-                )
+                  ],
+                ),
               ),
             ],
-          )
+          ),
         ),
         const Divider(),
         SwitchListTile(
@@ -159,11 +160,11 @@ class Intro{
             AppLocalizations.of(context)!.forceDark,
           ),
           value: app.prefs.darkTheme,
-          onChanged: (b){
+          onChanged: (b) {
             app.prefs.darkTheme = b;
             pagKey.currentState?.update();
             app.topLevelUpdate();
-          }
+          },
         ),
         const Divider(),
         SwitchListTile(
@@ -171,11 +172,11 @@ class Intro{
             AppLocalizations.of(context)!.amoledTheme,
           ),
           value: app.prefs.amoledTheme,
-          onChanged: (b){
+          onChanged: (b) {
             app.prefs.amoledTheme = b;
             pagKey.currentState?.update();
             app.topLevelUpdate();
-          }
+          },
         ),
         const Divider(),
         SwitchListTile(
@@ -183,11 +184,11 @@ class Intro{
             AppLocalizations.of(context)!.forceLight,
           ),
           value: app.prefs.lightTheme,
-          onChanged: (b){
+          onChanged: (b) {
             app.prefs.lightTheme = b;
             pagKey.currentState?.update();
             app.topLevelUpdate();
-          }
+          },
         ),
       ],
     );

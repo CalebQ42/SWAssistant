@@ -3,9 +3,7 @@ import 'package:swassistant/profiles/utils/editable.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
-class Description extends StatefulWidget{
-
-
+class Description extends StatefulWidget {
   const Description({super.key});
 
   @override
@@ -13,7 +11,6 @@ class Description extends StatefulWidget{
 }
 
 class DescriptionState extends State<Description> with StatefulCard {
-
   var edit = false;
   @override
   bool get defaultEdit => Editable.of(context).desc == "";
@@ -24,11 +21,10 @@ class DescriptionState extends State<Description> with StatefulCard {
 
   @override
   Widget build(BuildContext context) {
-    if(descController == null){
+    if (descController == null) {
       descController = TextEditingController();
-      descController!.addListener(() => 
-        Editable.of(context).desc = descController!.text
-      );
+      descController!
+          .addListener(() => Editable.of(context).desc = descController!.text);
     }
     return EditingText(
       editing: edit,

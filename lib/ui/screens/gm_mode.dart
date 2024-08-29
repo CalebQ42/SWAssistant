@@ -7,20 +7,18 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/screens/editable_list.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
-class GMModeSize extends InheritedWidget{
-
-  final double width; 
+class GMModeSize extends InheritedWidget {
+  final double width;
   const GMModeSize({super.key, required super.child, required this.width});
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 
   static GMModeSize? of(BuildContext context) =>
-    context.dependOnInheritedWidgetOfExactType<GMModeSize>();
+      context.dependOnInheritedWidgetOfExactType<GMModeSize>();
 }
 
-class GMMode extends StatefulWidget{
-
+class GMMode extends StatefulWidget {
   const GMMode({super.key});
 
   @override
@@ -41,9 +39,10 @@ class _GMModeState extends State<GMMode> {
         if (message.backStack.length <= 1) {
           return;
         }
-        setState((){
+        setState(() {
           message.backStack.removeLast();
-          if (message.onChange != null) message.onChange!(message.backStack.last);
+          if (message.onChange != null)
+            message.onChange!(message.backStack.last);
         });
       },
       child: FrameContent(
@@ -60,30 +59,30 @@ class _GMModeState extends State<GMMode> {
                 null,
                 key: message.listKey,
                 onTap: (ed) {
-                  var ind = message.backStack.indexWhere((element) => element.fileExtension == ed.fileExtension && element.uid == ed.uid);
+                  var ind = message.backStack.indexWhere((element) =>
+                      element.fileExtension == ed.fileExtension &&
+                      element.uid == ed.uid);
                   message.backStack.add(ed);
-                  if (message.onChange != null) message.onChange!(message.backStack.last);
+                  if (message.onChange != null)
+                    message.onChange!(message.backStack.last);
                   if (ind != -1) {
                     message.backStack.removeAt(ind);
                   }
                   setState(() {});
-                }
-              )
+                },
+              ),
             ),
-            Container(
-              width: 1,
-              color: Theme.of(context).dividerColor
-            ),
+            Container(width: 1, color: Theme.of(context).dividerColor),
             Expanded(
               child: GMModeSize(
                 key: ValueKey(remain),
                 width: remain,
-                child: _GMModeEditor(message)
-              )
+                child: _GMModeEditor(message),
+              ),
             )
           ],
         ),
-      )
+      ),
     );
     // return WillPopScope(
     //   onWillPop: (){
@@ -134,7 +133,7 @@ class _GMModeState extends State<GMMode> {
   }
 }
 
-class GMModeMessager{
+class GMModeMessager {
   Function(Editable)? onChange;
   late void Function() editingState;
   final GlobalKey<EditableListState> listKey = GlobalKey();
@@ -142,8 +141,7 @@ class GMModeMessager{
   final List<Editable> backStack = [];
 }
 
-class _GMModeEditor extends StatefulWidget{
-
+class _GMModeEditor extends StatefulWidget {
   final GMModeMessager message;
 
   const _GMModeEditor(this.message);
@@ -152,34 +150,34 @@ class _GMModeEditor extends StatefulWidget{
   State<StatefulWidget> createState() => _GMModeEditorState();
 }
 
-class _GMModeEditorState extends State<_GMModeEditor>{
-
+class _GMModeEditorState extends State<_GMModeEditor> {
   Editable? curEdit;
   GlobalKey stuff = GlobalKey();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     widget.message.onChange = (ed) => setState(() => curEdit = ed);
-    widget.message.editingState = () => setState((){});
-    if(widget.message.backStack.isNotEmpty) {
-      curEdit = widget.message.backStack[widget.message.backStack.length-1];
+    widget.message.editingState = () => setState(() {});
+    if (widget.message.backStack.isNotEmpty) {
+      curEdit = widget.message.backStack[widget.message.backStack.length - 1];
     }
   }
 
   @override
-  Widget build(BuildContext context) =>
-    AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: curEdit == null ? Center(
-        child: Text(
-          SW.of(context).locale.gmModeTap,
-          textAlign: TextAlign.justify,
-        )
-      ) : EditingEditable(
-        curEdit!,
-        key: stuff,
-        contained: true,
-      )
-    );
+  Widget build(BuildContext context) => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: curEdit == null
+            ? Center(
+                child: Text(
+                  SW.of(context).locale.gmModeTap,
+                  textAlign: TextAlign.justify,
+                ),
+              )
+            : EditingEditable(
+                curEdit!,
+                key: stuff,
+                contained: true,
+              ),
+      );
 }

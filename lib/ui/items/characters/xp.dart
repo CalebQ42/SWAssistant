@@ -5,8 +5,7 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
-class XP extends StatefulWidget{
-
+class XP extends StatefulWidget {
   const XP({super.key});
 
   @override
@@ -14,7 +13,6 @@ class XP extends StatefulWidget{
 }
 
 class XPState extends State<XP> with StatefulCard {
-
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
@@ -26,20 +24,18 @@ class XPState extends State<XP> with StatefulCard {
   TextEditingController? xpAddController;
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "XP card used on non Character";
-    if(xpCurController == null){
+    if (xpCurController == null) {
       xpCurController = TextEditingController();
-      xpCurController!.addListener(() => 
-        character.xpCur = int.tryParse(xpCurController!.text) ?? 0
-      );
+      xpCurController!.addListener(
+          () => character.xpCur = int.tryParse(xpCurController!.text) ?? 0);
     }
-    if(xpTotalController == null){
+    if (xpTotalController == null) {
       xpTotalController = TextEditingController();
-      xpTotalController!.addListener(() => 
-        character.xpTot = int.tryParse(xpTotalController!.text) ?? 0
-      );
+      xpTotalController!.addListener(
+          () => character.xpTot = int.tryParse(xpTotalController!.text) ?? 0);
     }
     var app = SW.of(context);
     xpAddController ??= TextEditingController();
@@ -81,11 +77,13 @@ class XPState extends State<XP> with StatefulCard {
                 controller: xpAddController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 5)),
-                onSubmitted: (text){
-                  if(text != ""){
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                ),
+                onSubmitted: (text) {
+                  if (text != "") {
                     var adding = int.tryParse(text);
-                    if (adding != null){
+                    if (adding != null) {
                       character.xpTot += adding;
                       character.xpCur += adding;
                     }
@@ -95,12 +93,14 @@ class XPState extends State<XP> with StatefulCard {
                 },
               ),
             ),
-            Container(width: 10,),
+            Container(
+              width: 10,
+            ),
             TextButton.icon(
-              onPressed: (){
-                if(xpAddController!.text != ""){
+              onPressed: () {
+                if (xpAddController!.text != "") {
                   var adding = int.tryParse(xpAddController!.text);
-                  if (adding != null){
+                  if (adding != null) {
                     character.xpTot += adding;
                     character.xpCur += adding;
                   }
@@ -109,9 +109,9 @@ class XPState extends State<XP> with StatefulCard {
                 }
               },
               icon: const Icon(Icons.add),
-              label: Text(app.locale.addXP)
+              label: Text(app.locale.addXP),
             )
-          ]
+          ],
         )
       ],
     );

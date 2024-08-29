@@ -6,19 +6,18 @@ import 'package:swassistant/ui/screens/editable_cards.dart';
 import 'package:swassistant/ui/screens/editable_notes.dart';
 
 class EditingEditable extends StatefulWidget {
-
   final Editable profile;
   final bool contained;
   final double? w;
 
-  const EditingEditable(this.profile, {super.key, this.contained = false, this.w});
+  const EditingEditable(this.profile,
+      {super.key, this.contained = false, this.w});
 
   @override
   State<StatefulWidget> createState() => _EditingEditableState();
 }
 
-class _EditingEditableState extends State<EditingEditable>{
-
+class _EditingEditableState extends State<EditingEditable> {
   int _index = 0;
 
   bool animating = false;
@@ -35,12 +34,18 @@ class _EditingEditableState extends State<EditingEditable>{
     var bottomNav = BottomNavigationBar(
       backgroundColor: Theme.of(context).cardColor,
       items: [
-        BottomNavigationBarItem(icon: const Icon(Icons.info), label: app.locale.stats),
-        BottomNavigationBarItem(icon: const Icon(Icons.note), label: app.locale.notes)
+        BottomNavigationBarItem(
+            icon: const Icon(Icons.info), label: app.locale.stats),
+        BottomNavigationBarItem(
+            icon: const Icon(Icons.note), label: app.locale.notes)
       ],
       onTap: (value) {
         animating = true;
-        pager.animateToPage(value, duration: const Duration(milliseconds: 500), curve: Curves.easeOutBack).whenComplete(() {
+        pager
+            .animateToPage(value,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutBack)
+            .whenComplete(() {
           animating = false;
           setState(() => _index = value);
         });
@@ -55,48 +60,35 @@ class _EditingEditableState extends State<EditingEditable>{
       restorationId: widget.profile.uid,
       physics: const BouncingScrollPhysics(),
       controller: pager,
-      onPageChanged: (i){
-        if (!animating){
+      onPageChanged: (i) {
+        if (!animating) {
           setState(() => _index = i);
         }
       },
-      children: [
-        cards!,
-        EditableNotes(key: widget.profile.notesKey)
-      ],
+      children: [cards!, EditableNotes(key: widget.profile.notesKey)],
     );
     Widget body;
-    if(!widget.contained) {
+    if (!widget.contained) {
       body = FrameContent(
         child: Column(
-          children: [
-            Expanded(child: main),
-            bottomNav
-          ]
-        )
+          children: [Expanded(child: main), bottomNav],
+        ),
       );
     } else {
       body = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: main
-          ),
-          bottomNav
-        ],
+        children: [Expanded(child: main), bottomNav],
       );
     }
-    return InheritedEditable(
-      editable: widget.profile,
-      child: body
-    );
+    return InheritedEditable(editable: widget.profile, child: body);
   }
 }
 
 class InheritedEditable extends InheritedWidget {
   final Editable editable;
 
-  const InheritedEditable({required super.child, required this.editable, super.key});
+  const InheritedEditable(
+      {required super.child, required this.editable, super.key});
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;

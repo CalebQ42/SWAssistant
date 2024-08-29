@@ -7,16 +7,19 @@ import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:darkstorm_common/ui/updating_switch_tile.dart';
 import 'package:swassistant/sw.dart';
 
-class SkillEditDialog{
+class SkillEditDialog {
   final void Function(Skill) onClose;
   final Creature creature;
   final Skill skill;
 
   late Bottom bot;
 
-  SkillEditDialog({required this.onClose, Skill? sk, required this.creature}) :
-      skill = (sk == null) ? Skill() : 
-      creature is Character ? Skill.from(sk) : Skill.from(sk..value = 0){
+  SkillEditDialog({required this.onClose, Skill? sk, required this.creature})
+      : skill = (sk == null)
+            ? Skill()
+            : creature is Character
+                ? Skill.from(sk)
+                : Skill.from(sk..value = 0) {
     var valueController = TextEditingController(text: skill.value?.toString());
     valueController.addListener(() {
       skill.value = int.tryParse(valueController.text);
@@ -25,26 +28,32 @@ class SkillEditDialog{
     bot = Bottom(
       buttons: (context) => [
         TextButton(
-          onPressed: skill.name != "" && skill.name != null && skill.base != null && (creature is Character ? skill.value != null : true) ? (){
-            onClose(skill);
-            Navigator.of(context).pop();
-          } : null,
+          onPressed: skill.name != "" &&
+                  skill.name != null &&
+                  skill.base != null &&
+                  (creature is Character ? skill.value != null : true)
+              ? () {
+                  onClose(skill);
+                  Navigator.of(context).pop();
+                }
+              : null,
           child: Text(MaterialLocalizations.of(context).saveButtonLabel),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).pop();
           },
-        )],
-      child: (context) => 
-        DropdownButtonHideUnderline(
-          child: Wrap(
-            children: [
-              Container(height: 15),
-              _SkillSelector(skill, bot),
-              if(creature is Character) Container(height: 10),
-              if(creature is Character) TextField(
+        )
+      ],
+      child: (context) => DropdownButtonHideUnderline(
+        child: Wrap(
+          children: [
+            Container(height: 15),
+            _SkillSelector(skill, bot),
+            if (creature is Character) Container(height: 10),
+            if (creature is Character)
+              TextField(
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 controller: valueController,
@@ -52,22 +61,22 @@ class SkillEditDialog{
                   labelText: SW.of(context).locale.value,
                 ),
               ),
-              UpdatingSwitchTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(SW.of(context).locale.career),
-                value: skill.career,
-                onChanged: (b) => skill.career = b,
-              ),
-            ],
-          )
-        )
-    );    
+            UpdatingSwitchTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(SW.of(context).locale.career),
+              value: skill.career,
+              onChanged: (b) => skill.career = b,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void show(BuildContext context) => bot.show(context);
 }
 
-class _SkillSelector extends StatefulWidget{
+class _SkillSelector extends StatefulWidget {
   final Skill skill;
   final Bottom bot;
 
@@ -77,8 +86,7 @@ class _SkillSelector extends StatefulWidget{
   State<StatefulWidget> createState() => _SkillSelectorState();
 }
 
-class _SkillSelectorState extends State<_SkillSelector>{
-
+class _SkillSelectorState extends State<_SkillSelector> {
   bool manual = false;
   late Map<String, int> skillsList;
 
@@ -88,16 +96,17 @@ class _SkillSelectorState extends State<_SkillSelector>{
   void initState() {
     super.initState();
     skillController = TextEditingController(text: widget.skill.name)
-    ..addListener(() {
-      widget.skill.name = skillController.text;
-      widget.bot.updateButtons();
-    });
+      ..addListener(() {
+        widget.skill.name = skillController.text;
+        widget.bot.updateButtons();
+      });
   }
 
   @override
   Widget build(BuildContext context) {
     skillsList = Skill.skillsList(context);
-    if(widget.skill.name != null && !skillsList.containsKey(widget.skill.name)){
+    if (widget.skill.name != null &&
+        !skillsList.containsKey(widget.skill.name)) {
       manual = true;
     }
     return Column(
@@ -111,43 +120,46 @@ class _SkillSelectorState extends State<_SkillSelector>{
             isExpanded: true,
             onTap: () => FocusScope.of(context).unfocus(),
             onChanged: (value) {
-              if(value != SW.of(context).locale.skills35){
+              if (value != SW.of(context).locale.skills35) {
                 manual = false;
                 widget.skill.name = value!;
                 widget.skill.base = skillsList[value]!;
-              }else{
+              } else {
                 manual = true;
                 widget.skill.name = "";
               }
               widget.bot.updateButtons();
-              setState((){});
+              setState(() {});
             },
-            value: skillsList.containsKey(widget.skill.name) ? widget.skill.name : widget.skill.name == null ? null : skillsList.keys.last,
+            value: skillsList.containsKey(widget.skill.name)
+                ? widget.skill.name
+                : widget.skill.name == null
+                    ? null
+                    : skillsList.keys.last,
             items: List.generate(
               skillsList.length,
-              (i) =>
-                DropdownMenuItem<String>(
-                  value: skillsList.keys.elementAt(i),
-                  child: Text(skillsList.keys.elementAt(i))
-                )
+              (i) => DropdownMenuItem<String>(
+                value: skillsList.keys.elementAt(i),
+                child: Text(skillsList.keys.elementAt(i)),
+              ),
             ),
-          )
+          ),
         ),
-        if(manual) Container(height: 10),
+        if (manual) Container(height: 10),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 150),
-          transitionBuilder: (child, anim) =>
-            SizeTransition(
-              sizeFactor: anim,
-              child: child,
-            ),
-          child: !manual ? Container() :
-            TextField(
-              textCapitalization: TextCapitalization.words,
-              onChanged: (value) => widget.skill.name = value,
-              autofillHints: skillsList.keys,
-              controller: skillController,
-            ) 
+          transitionBuilder: (child, anim) => SizeTransition(
+            sizeFactor: anim,
+            child: child,
+          ),
+          child: !manual
+              ? Container()
+              : TextField(
+                  textCapitalization: TextCapitalization.words,
+                  onChanged: (value) => widget.skill.name = value,
+                  autofillHints: skillsList.keys,
+                  controller: skillController,
+                ),
         ),
         Container(height: 10),
         InputDecorator(
@@ -162,17 +174,17 @@ class _SkillSelectorState extends State<_SkillSelector>{
               6,
               (i) => DropdownMenuItem(
                 value: i,
-                child: Text(Creature.characteristics(context)[i])
-              )
+                child: Text(Creature.characteristics(context)[i]),
+              ),
             ),
             value: widget.skill.base,
             onChanged: (value) {
               setState(() => widget.skill.base = value);
               widget.bot.updateButtons();
-            }
-          )
+            },
+          ),
         ),
-      ]
+      ],
     );
   }
 }

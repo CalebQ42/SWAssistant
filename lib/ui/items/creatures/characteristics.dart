@@ -4,8 +4,7 @@ import 'package:swassistant/profiles/utils/creature.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
-class Characteristics extends StatefulWidget{
-
+class Characteristics extends StatefulWidget {
   const Characteristics({super.key});
 
   @override
@@ -13,24 +12,31 @@ class Characteristics extends StatefulWidget{
 }
 
 class CharacteristicsState extends State<Characteristics> with StatefulCard {
-
   bool edit = false;
 
   @override
   set editing(bool b) => setState(() => edit = b);
 
   @override
-  bool get defaultEdit => Creature.of(context)!.charVals.every((element) => element == 0);
-
+  bool get defaultEdit =>
+      Creature.of(context)!.charVals.every((element) => element == 0);
 
   List<TextEditingController>? charValControllers;
 
   @override
   Widget build(BuildContext context) {
-    if(charValControllers == null){
-      charValControllers = Creature.of(context)!.charVals.map((element) => TextEditingController(text: element.toString())).toList();
-      for(var i = 0; i < charValControllers!.length; i++){
-        charValControllers![i].addListener(() => Creature.of(context)!.charVals[i] = int.tryParse(charValControllers![i].text) ?? 0);
+    if (charValControllers == null) {
+      charValControllers = Creature.of(context)!
+          .charVals
+          .map(
+            (element) => TextEditingController(
+              text: element.toString(),
+            ),
+          )
+          .toList();
+      for (var i = 0; i < charValControllers!.length; i++) {
+        charValControllers![i].addListener(() => Creature.of(context)!
+            .charVals[i] = int.tryParse(charValControllers![i].text) ?? 0);
       }
     }
     return Column(
@@ -62,13 +68,13 @@ class CharacteristicsState extends State<Characteristics> with StatefulCard {
   }
 
   //0-Brawn,1-Agility,2-Intellect,3-Cunning,4-Willpower,5-Presence
-  Widget charBuilder(int charNum, TextStyle style, BuildContext context){
+  Widget charBuilder(int charNum, TextStyle style, BuildContext context) {
     var creature = Creature.of(context);
     if (creature == null) throw "Characteristics card used on non Creature";
     return Expanded(
       child: EditingText(
-        onTap:() =>
-          SWDiceHolder(ability: creature.charVals[charNum]).showDialog(context),
+        onTap: () => SWDiceHolder(ability: creature.charVals[charNum])
+            .showDialog(context),
         editing: edit,
         initialText: creature.charVals[charNum].toString(),
         controller: charValControllers![charNum],
@@ -76,8 +82,8 @@ class CharacteristicsState extends State<Characteristics> with StatefulCard {
         style: style,
         textType: TextInputType.number,
         defaultSave: true,
-        title: Creature.characteristics(context)[charNum]
-      )
+        title: Creature.characteristics(context)[charNum],
+      ),
     );
   }
 }

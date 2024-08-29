@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-class MiniIconButton extends StatelessWidget{
-
+class MiniIconButton extends StatelessWidget {
   final Color? color;
   final Widget icon;
   final void Function()? onPressed;
 
-  const MiniIconButton({super.key, this.color, required this.icon, this.onPressed});
+  const MiniIconButton(
+      {super.key, this.color, required this.icon, this.onPressed});
 
   @override
-  Widget build(BuildContext context) =>
-    IconButton(
+  Widget build(BuildContext context) => IconButton(
       iconSize: 20.0,
       splashRadius: 20,
       padding: const EdgeInsets.all(5.0),
-      constraints: BoxConstraints.tight(const Size.square(30.0)),
+      constraints: BoxConstraints.tight(
+        const Size.square(30.0),
+      ),
       icon: icon,
       color: color,
-      onPressed: onPressed
-    );
+      onPressed: onPressed);
 }

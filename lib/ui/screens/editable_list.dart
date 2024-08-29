@@ -11,8 +11,7 @@ import 'package:swassistant/ui/dialogs/destiny.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 import 'package:swassistant/ui/screens/editing_editable.dart';
 
-class EditableList extends StatefulWidget{
-
+class EditableList extends StatefulWidget {
   final Type? edType;
   final void Function(Editable)? onTap;
 
@@ -24,28 +23,31 @@ class EditableList extends StatefulWidget{
   State<StatefulWidget> createState() => EditableListState();
 }
 
-class EditableListState extends State<EditableList>{
-
+class EditableListState extends State<EditableList> {
   List<Editable> list = [];
   String? cat;
   //TODO: search
 
   bool first = true;
 
-  final GlobalKey<AnimatedListState> listKey =  GlobalKey();
+  final GlobalKey<AnimatedListState> listKey = GlobalKey();
   final GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     var app = SW.of(context);
-    if(widget.uidToLoad != null){
+    if (widget.uidToLoad != null) {
       var nav = Navigator.of(context);
       Future(() async {
-        while(!mounted) {
-          await Future.delayed(const Duration(milliseconds: 50));
+        while (!mounted) {
+          await Future.delayed(
+            const Duration(milliseconds: 50),
+          );
         }
         var ed = app.getEditable(widget.uidToLoad!);
-        if(ed != null) nav.pushNamed("/edit/${widget.uidToLoad!}", arguments: ed);
+        if (ed != null) {
+          nav.pushNamed("/edit/${widget.uidToLoad!}", arguments: ed);
+        }
       });
     }
     var oldLen = list.length;
@@ -58,16 +60,19 @@ class EditableListState extends State<EditableList>{
       ),
       DropdownMenuItem<String>(
         value: "",
-        child: Text(app.locale.uncategorized)
+        child: Text(app.locale.uncategorized),
       ),
-      ...List.generate(app.cats.length, (index) =>
-        DropdownMenuItem<String>(
+      ...List.generate(
+        app.cats.length,
+        (index) => DropdownMenuItem<String>(
           value: app.cats[index],
-          child: Text(app.cats[index])
-        )
+          child: Text(
+            app.cats[index],
+          ),
+        ),
       )
     ];
-    if(list.length != oldLen){
+    if (list.length != oldLen) {
       listKey.currentState?.setState(() {});
     }
     var catSelector = Padding(
@@ -79,131 +84,140 @@ class EditableListState extends State<EditableList>{
           isExpanded: true,
           onChanged: (category) {
             cat = category;
-            setState((){});
+            setState(() {});
           },
-        )
-      )
+        ),
+      ),
     );
     var localization = app.locale;
     Widget mainList = AnimatedList(
-      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      key: listKey,
-      initialItemCount: list.length,
-      padding: const EdgeInsets.only(bottom: 80),
-      itemBuilder: (context, i, anim) {
-        if(list.length <= i) return Container();
-        return SlideTransition(
-          position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
-          child: InheritedEditable(
-            editable: list[i],
-            child: EditableCard(
-              onTap: widget.onTap,
-              onDismiss: () {
-                var tmp = list[i];
-                tmp.trash(app);
-                listKey.currentState?.removeItem(i, (context, animation) => Container());
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      (tmp is Character) ?
-                        app.locale.characterTrashed
-                      : (tmp is Minion) ?
-                        app.locale.minionTrashed
-                      :
-                        app.locale.vehicleTrashed
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        key: listKey,
+        initialItemCount: list.length,
+        padding: const EdgeInsets.only(bottom: 80),
+        itemBuilder: (context, i, anim) {
+          if (list.length <= i) return Container();
+          return SlideTransition(
+            position:
+                Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero)
+                    .animate(anim),
+            child: InheritedEditable(
+              editable: list[i],
+              child: EditableCard(
+                onTap: widget.onTap,
+                onDismiss: () {
+                  var tmp = list[i];
+                  tmp.trash(app);
+                  listKey.currentState?.removeItem(
+                    i,
+                    (context, animation) => Container(),
+                  );
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text((tmp is Character)
+                          ? app.locale.characterTrashed
+                          : (tmp is Minion)
+                              ? app.locale.minionTrashed
+                              : app.locale.vehicleTrashed),
+                      action: SnackBarAction(
+                        label: app.locale.undo,
+                        onPressed: () {
+                          app.add(tmp);
+                          tmp.save(app: app);
+                          list.insert(i, tmp);
+                          listKey.currentState?.insertItem(i);
+                        },
+                      ),
                     ),
-                    action: SnackBarAction(
-                      label: app.locale.undo,
-                      onPressed: (){
-                        app.add(tmp);
-                        tmp.save(app: app);
-                        list.insert(i, tmp);
-                        listKey.currentState?.insertItem(i);
-                      },
-                    )
-                  )
-                );
-              },
-            )
-          )
-        );
-      }
-    );
-    if((app.isMobile || kIsWeb) && app.prefs.googleDrive){
-      mainList = RefreshIndicator(
-        key: refreshKey,
-        onRefresh: () => Future(() async {
-          if(app.syncing) return;
-          var messager = ScaffoldMessenger.of(context);
-          var b = await app.syncRemote(
-            onFull: (){
-              if(app.showFullError){
-                messager.showSnackBar(
-                  SnackBar(
-                    content: Text(app.locale.driveFull),
-                  )
-                );
-                app.showFullError = false;
-                Future.delayed(const Duration(minutes: 5), () => app.showFullError = true);
-              }
-            }
+                  );
+                },
+              ),
+            ),
           );
-          messager.clearSnackBars();
-          if (!b) {
-            messager.showSnackBar(
-              SnackBar(
-                content: Text(localization.syncFail)
-              )
-            );
-          }
-          if(mounted) setState(() {});
-        }),
-        child: mainList
-      );
+        });
+    if ((app.isMobile || kIsWeb) && app.prefs.googleDrive) {
+      mainList = RefreshIndicator(
+          key: refreshKey,
+          onRefresh: () => Future(() async {
+                if (app.syncing) return;
+                var messager = ScaffoldMessenger.of(context);
+                var b = await app.syncRemote(onFull: () {
+                  if (app.showFullError) {
+                    messager.showSnackBar(
+                      SnackBar(
+                        content: Text(app.locale.driveFull),
+                      ),
+                    );
+                    app.showFullError = false;
+                    Future.delayed(const Duration(minutes: 5),
+                        () => app.showFullError = true);
+                  }
+                });
+                messager.clearSnackBars();
+                if (!b) {
+                  messager.showSnackBar(
+                    SnackBar(
+                      content: Text(localization.syncFail),
+                    ),
+                  );
+                }
+                if (mounted) setState(() {});
+              }),
+          child: mainList);
     }
     return FrameContent(
-      fab: widget.onTap == null ? FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: (){
-          if(app.prefs.googleDrive) {
-            if(app.syncing){
-              ScaffoldMessenger.of(context).clearSnackBars();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(app.locale.driveSyncingNotice)
-                )
-              );
-              return;
-            }else if (app.driver == null || !app.driver!.readySync()) {
-              ScaffoldMessenger.of(context).clearSnackBars();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(app.locale.driveDisconnectNotice)
-                )
-              );
-            }
-          }
-          Editable newEd;
-          switch(widget.edType){
-            case const (Character):
-              newEd = Character(name: app.locale.newCharacter, saveOnCreation: true, app: app);
-              break;
-            case const (Minion):
-              newEd = Minion(name: app.locale.newMinion, saveOnCreation: true, app: app);
-              break;
-            default:
-              newEd = Vehicle(name: app.locale.newVehicle, saveOnCreation: true, app: app);
-              break;
-          }
-          app.add(newEd);
-          Navigator.pushNamed(
-            context,
-            "/edit/${newEd.uid}",
-            arguments: newEd
-          );
-        },
-      ) : null,
+      fab: widget.onTap == null
+          ? FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {
+                if (app.prefs.googleDrive) {
+                  if (app.syncing) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(app.locale.driveSyncingNotice),
+                      ),
+                    );
+                    return;
+                  } else if (app.driver == null || !app.driver!.readySync()) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(app.locale.driveDisconnectNotice),
+                      ),
+                    );
+                  }
+                }
+                Editable newEd;
+                switch (widget.edType) {
+                  case const (Character):
+                    newEd = Character(
+                        name: app.locale.newCharacter,
+                        saveOnCreation: true,
+                        app: app);
+                    break;
+                  case const (Minion):
+                    newEd = Minion(
+                        name: app.locale.newMinion,
+                        saveOnCreation: true,
+                        app: app);
+                    break;
+                  default:
+                    newEd = Vehicle(
+                        name: app.locale.newVehicle,
+                        saveOnCreation: true,
+                        app: app);
+                    break;
+                }
+                app.add(newEd);
+                Navigator.pushNamed(context, "/edit/${newEd.uid}",
+                    arguments: newEd);
+              },
+            )
+          : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -214,38 +228,39 @@ class EditableListState extends State<EditableList>{
               child: Row(
                 children: [
                   Expanded(child: catSelector),
-                  if((app.isMobile || kIsWeb) && app.prefs.googleDrive) IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () => refreshKey.currentState?.show()
-                  ),
-                  if(app.prefs.darkstormBackend) IconButton(
-                    icon: const Icon(Icons.download),
-                    onPressed: () async {
-                      if(app.backend?.isAvailable ?? false){
-                        download(listKey);
-                      }else{
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(app.locale.noConnectionStupid)
-                          )
-                        );
-                      }
-                    }
-                  ),
-                  if(widget.onTap != null) IconButton(
-                    icon: const Icon(Icons.tonality),
-                    onPressed: () => DestinyDialog().show(context)
-                  ),
+                  if ((app.isMobile || kIsWeb) && app.prefs.googleDrive)
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: () => refreshKey.currentState?.show(),
+                    ),
+                  if (app.prefs.darkstormBackend)
+                    IconButton(
+                      icon: const Icon(Icons.download),
+                      onPressed: () async {
+                        if (app.backend?.isAvailable ?? false) {
+                          download(listKey);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(app.locale.noConnectionStupid),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  if (widget.onTap != null)
+                    IconButton(
+                      icon: const Icon(Icons.tonality),
+                      onPressed: () => DestinyDialog().show(context),
+                    ),
                 ],
-              )
-            )
-          ),
-          Expanded(
-            child: ClipRect(
-              child: mainList
+              ),
             ),
           ),
-        ]
+          Expanded(
+            child: ClipRect(child: mainList),
+          ),
+        ],
       ),
     );
     // return (widget.onTap == null) ?
@@ -269,85 +284,86 @@ class EditableListState extends State<EditableList>{
     // :
   }
 
-  void download(GlobalKey<AnimatedListState> listKey){
+  void download(GlobalKey<AnimatedListState> listKey) {
     Bottom? bot;
     var app = SW.of(context);
     var scaf = ScaffoldMessenger.of(context);
-    var cont = TextEditingController()
-        ..addListener(() => bot?.updateButtons());
+    var cont = TextEditingController()..addListener(() => bot?.updateButtons());
     bot = Bottom(
       children: (c) => [
         Center(
-          child: Text(
-            app.locale.shareCode,
-            style: Theme.of(context).textTheme.titleLarge
-          )
+          child: Text(app.locale.shareCode,
+              style: Theme.of(context).textTheme.titleLarge),
         ),
-        Container(height: 5,),
+        Container(
+          height: 5,
+        ),
         TextField(
           controller: cont,
         )
       ],
       buttons: (c) => [
         TextButton(
-          onPressed: cont.text.trim().isNotEmpty ? () async {
-            var ed = await app.backend?.downloadProfile(cont.text);
-            if(ed == null){
-              app.nav.pop();
-              scaf.showSnackBar(
-                SnackBar(
-                  content: Text(app.locale.downloadFailed)
-                )
-              );
-            }else{
-              app.add(ed);
-              app.nav.pop();
-              await ed.save(app: app);
-              if(widget.edType == null || widget.edType == ed.runtimeType){
-                listKey.currentState?.insertItem(app.getList(type: widget.edType).length-1);
-              }
-            }
-          } : null,
+          onPressed: cont.text.trim().isNotEmpty
+              ? () async {
+                  var ed = await app.backend?.downloadProfile(cont.text);
+                  if (ed == null) {
+                    app.nav.pop();
+                    scaf.showSnackBar(
+                      SnackBar(
+                        content: Text(app.locale.downloadFailed),
+                      ),
+                    );
+                  } else {
+                    app.add(ed);
+                    app.nav.pop();
+                    await ed.save(app: app);
+                    if (widget.edType == null ||
+                        widget.edType == ed.runtimeType) {
+                      listKey.currentState?.insertItem(
+                          app.getList(type: widget.edType).length - 1);
+                    }
+                  }
+                }
+              : null,
           child: Text(app.locale.download),
         ),
         TextButton(
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-          onPressed: () =>
-            app.nav.pop()
+          onPressed: () => app.nav.pop(),
         )
       ],
     )..show(context);
   }
 }
 
-class EditableCard extends StatelessWidget{
-
+class EditableCard extends StatelessWidget {
   final void Function(Editable)? onTap;
   final void Function() onDismiss;
 
   const EditableCard({this.onTap, required this.onDismiss, super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     var app = SW.of(context);
     return Dismissible(
       key: Key(Editable.of(context).uid),
       confirmDismiss: (_) async {
-        if(!app.prefs.googleDrive) return true;
-        if(app.syncing){
+        if (!app.prefs.googleDrive) return true;
+        if (app.syncing) {
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(app.locale.driveSyncingNotice)
-            )
+              content: Text(app.locale.driveSyncingNotice),
+            ),
           );
           return false;
-        }else if (!app.driver!.readySync()) {
+        } else if (!app.driver!.readySync()) {
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(app.locale.driveDisconnectNotice)
-            )
+              content: Text(app.locale.driveDisconnectNotice),
+            ),
           );
           return false;
         }
@@ -361,14 +377,14 @@ class EditableCard extends StatelessWidget{
         child: InkResponse(
           containedInkWell: true,
           highlightShape: BoxShape.rectangle,
-          onTap: (){
+          onTap: () {
             var ed = Editable.of(context);
-            if(onTap != null){
+            if (onTap != null) {
               onTap!(ed);
-            }else{
+            } else {
               Navigator.of(context).pushNamed(
                 "/edit/${ed.uid}",
-                arguments: ed
+                arguments: ed,
               );
             }
           },
@@ -382,35 +398,36 @@ class EditableCard extends StatelessWidget{
                   tag: onTap != null ? UniqueKey() : Editable.of(context).uid,
                   child: Text(
                     Editable.of(context).name,
-                    style: Theme.of(context).textTheme.headlineSmall
-                  )
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 ),
-                if(onTap != null) Container(height: 10),
-                if(onTap != null) Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    (Editable.of(context) is Character) ?
-                      app.locale.characters
-                    : (Editable.of(context) is Minion) ?
-                      app.locale.minions
-                    :
-                      app.locale.vehicles,
-                    style: Theme.of(context).textTheme.bodySmall
+                if (onTap != null) Container(height: 10),
+                if (onTap != null)
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      (Editable.of(context) is Character)
+                          ? app.locale.characters
+                          : (Editable.of(context) is Minion)
+                              ? app.locale.minions
+                              : app.locale.vehicles,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                if (kIsWeb) Container(height: 10),
+                if (kIsWeb)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: MiniIconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: onDismiss,
+                    ),
                   )
-                ),
-                if(kIsWeb) Container(height: 10),
-                if(kIsWeb) Align(
-                  alignment: Alignment.centerRight,
-                  child: MiniIconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: onDismiss
-                  )
-                )
               ],
-            )
-          )
-        )
-      )
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

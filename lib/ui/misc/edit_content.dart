@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/mini_icon_button.dart';
 
-class EditContent extends StatefulWidget{
-
+class EditContent extends StatefulWidget {
   final GlobalKey<StatefulCard> contentKey;
   final Widget content;
   final bool Function()? defaultEdit;
@@ -11,24 +10,26 @@ class EditContent extends StatefulWidget{
   final List<Widget> Function(BuildContext, bool)? extraButtons;
   final List<Widget> Function(BuildContext)? extraEditButtons;
 
-  const EditContent({super.key,
-    required this.contentKey,
-    required this.content,
-    this.defaultEdit,
-    this.extraButtons, 
-    this.extraEditButtons});
+  const EditContent(
+      {super.key,
+      required this.contentKey,
+      required this.content,
+      this.defaultEdit,
+      this.extraButtons,
+      this.extraEditButtons});
 
   @override
   State<StatefulWidget> createState() => EditContentState();
 }
 
 class EditContentState extends State<EditContent> with StatefulCard {
-
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
   @override
-  bool get defaultEdit => widget.defaultEdit != null ? widget.defaultEdit!() : widget.contentKey.currentState?.defaultEdit ?? false;
+  bool get defaultEdit => widget.defaultEdit != null
+      ? widget.defaultEdit!()
+      : widget.contentKey.currentState?.defaultEdit ?? false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,34 +42,47 @@ class EditContentState extends State<EditContent> with StatefulCard {
         OverflowBar(
           alignment: MainAxisAlignment.end,
           children: [
-            if(widget.extraEditButtons != null) AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, anim) =>
-                ClipRect(
+            if (widget.extraEditButtons != null)
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, anim) => ClipRect(
                   child: SlideTransition(
-                    position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero).animate(anim),
+                    position: Tween<Offset>(
+                            begin: const Offset(1.0, 0), end: Offset.zero)
+                        .animate(anim),
                     child: child,
-                  )
+                  ),
                 ),
-              child: (edit) ? OverflowBar(
-                children: widget.extraEditButtons!(context)
-              ) : Container(),
-            ),
-            if(widget.extraButtons != null) ...widget.extraButtons!(context, edit),
+                child: (edit)
+                    ? OverflowBar(
+                        children: widget.extraEditButtons!(context),
+                      )
+                    : Container(),
+              ),
+            if (widget.extraButtons != null)
+              ...widget.extraButtons!(context, edit),
             Tooltip(
               message: SW.of(context).locale.edit,
               child: MiniIconButton(
                 icon: const Icon(Icons.edit),
-                color: edit ? Theme.of(context).buttonTheme.colorScheme?.onSurface : Theme.of(context).buttonTheme.colorScheme?.onSurface.withOpacity(.24),
+                color: edit
+                    ? Theme.of(context).buttonTheme.colorScheme?.onSurface
+                    : Theme.of(context)
+                        .buttonTheme
+                        .colorScheme
+                        ?.onSurface
+                        .withOpacity(.24),
                 onPressed: () {
-                  widget.contentKey.currentState?.setState(() {
-                    widget.contentKey.currentState?.editing = !edit;
-                  });
+                  widget.contentKey.currentState?.setState(
+                    () {
+                      widget.contentKey.currentState?.editing = !edit;
+                    },
+                  );
                   editing = !edit;
-                }
-              )
+                },
+              ),
             )
-          ]
+          ],
         )
       ],
     );
@@ -86,7 +100,7 @@ mixin StatefulCard<T extends StatefulWidget> on State<T> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(firstBuild) {
+    if (firstBuild) {
       editing = defaultEdit;
       firstBuild = false;
     }

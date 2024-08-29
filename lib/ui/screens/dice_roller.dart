@@ -8,8 +8,7 @@ import 'package:swassistant/dice/sides.dart';
 import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/dice_selector.dart';
 
-class DiceRoller extends StatelessWidget{
-
+class DiceRoller extends StatelessWidget {
   final SWDiceHolder holder = SWDiceHolder();
 
   DiceRoller({super.key});
@@ -21,9 +20,14 @@ class DiceRoller extends StatelessWidget{
     width = MediaQuery.of(context).size.width / rows;
     return FrameContent(
       fab: FloatingActionButton(
-        onPressed: (){
-          holder.getDice(context).roll().showCombinedResults(context, noSuccess: holder.ability == 0 && holder.proficiency == 0
-              && holder.difficulty == 0 && holder.challenge == 0 && holder.boost == 0 && holder.challenge == 0);
+        onPressed: () {
+          holder.getDice(context).roll().showCombinedResults(context,
+              noSuccess: holder.ability == 0 &&
+                  holder.proficiency == 0 &&
+                  holder.difficulty == 0 &&
+                  holder.challenge == 0 &&
+                  holder.boost == 0 &&
+                  holder.challenge == 0);
         },
         child: const Icon(Icons.casino),
       ),
@@ -38,15 +42,11 @@ class DiceRoller extends StatelessWidget{
               alignment: WrapAlignment.spaceEvenly,
               children: List<Widget>.generate(
                 7,
-                (i) =>
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: width),
-                    child: DiceSelector(
-                      holder: holder,
-                      type: i
-                    )
-                  )
-              )
+                (i) => ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: width),
+                  child: DiceSelector(holder: holder, type: i),
+                ),
+              ),
             ),
             Container(height: 10),
             Wrap(
@@ -54,17 +54,16 @@ class DiceRoller extends StatelessWidget{
               children: [
                 _InstantDiceCard(sides: 100, width: width),
                 _InstantDiceCard(sides: 10, width: width)
-              ]
+              ],
             )
-          ]
-        )
-      )
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _InstantDiceCard extends StatefulWidget{
-
+class _InstantDiceCard extends StatefulWidget {
   final int sides;
   final double width;
 
@@ -72,50 +71,56 @@ class _InstantDiceCard extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => _InstantState();
-
 }
 
-class _InstantState extends State<_InstantDiceCard>{
-
+class _InstantState extends State<_InstantDiceCard> {
   int? result;
 
   @override
-  Widget build(BuildContext context) =>
-    ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: widget.width),
-      child: Card(
-        margin: const EdgeInsets.all(4),
-        child: Padding(
-          padding: const EdgeInsets.all(5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                "d${widget.sides}",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge
-              ),
-              Row(
-                children: [
-                  Expanded(child: Text(
-                    result?.toString() ?? "",
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: widget.width),
+        child: Card(
+          margin: const EdgeInsets.all(4),
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text("d${widget.sides}",
                     textAlign: TextAlign.center,
-                  )),
-                  Expanded(child: TextButton(
-                    onPressed: (){
-                      var res = Die(
-                        name: "die",
-                        sides: List<SimpleSide>.generate(widget.sides, (i) => SimpleSide((i+1).toString()))
-                      ).roll();
-                      setState(() => result = int.tryParse(res.toString()));
-                    },
-                    child: Text(SW.of(context).locale.roll)
-                  ))
-                ],
-              )
-            ]
+                    style: Theme.of(context).textTheme.titleLarge),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        result?.toString() ?? "",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () {
+                          var res = Die(
+                            name: "die",
+                            sides: List<SimpleSide>.generate(
+                              widget.sides,
+                              (i) => SimpleSide(
+                                (i + 1).toString(),
+                              ),
+                            ),
+                          ).roll();
+                          setState(
+                            () => result = int.tryParse(res.toString()),
+                          );
+                        },
+                        child: Text(SW.of(context).locale.roll),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
-        )
-      )
-    );
+        ),
+      );
 }

@@ -15,9 +15,10 @@ class SWBackend extends DarkstormBackend {
 
   SWBackend(this.app, String apiKey)
       : super(
-            baseUrl: Uri.parse("https://api.darkstorm.tech"),
-            apiKey: apiKey,
-            internetCheckAddress: Uri.parse("https://darkstorm.tech"));
+          baseUrl: Uri.parse("https://api.darkstorm.tech"),
+          apiKey: apiKey,
+          internetCheckAddress: Uri.parse("https://darkstorm.tech"),
+        );
 
   Future<UploadResponse> uploadProfile(Editable ed) async {
     try {
@@ -26,16 +27,21 @@ class SWBackend extends DarkstormBackend {
         return UploadResponse(statusCode: 413);
       }
       var resp = await post(
-          baseUrl.resolveUri(Uri(path: "/swa/profile", queryParameters: {
-            "type": () {
-              if (ed is Character) {
-                return "character";
-              } else if (ed is Minion) {
-                return "minion";
-              }
-              return "vehicle";
-            }()
-          })),
+          baseUrl.resolveUri(
+            Uri(
+              path: "/swa/profile",
+              queryParameters: {
+                "type": () {
+                  if (ed is Character) {
+                    return "character";
+                  } else if (ed is Minion) {
+                    return "minion";
+                  }
+                  return "vehicle";
+                }()
+              },
+            ),
+          ),
           headers: <String, String>{
             "Content-Type": "application/json",
             "X-API-Key": apiKey
@@ -54,10 +60,13 @@ class SWBackend extends DarkstormBackend {
       if (kDebugMode) {
         print("$e\n$stack");
       } else {
-        app.backend?.crash(Crash(
+        app.backend?.crash(
+          Crash(
             error: e.toString(),
             stack: stack.toString(),
-            version: app.package.version));
+            version: app.package.version,
+          ),
+        );
       }
     }
     return UploadResponse(statusCode: 404);
@@ -66,11 +75,10 @@ class SWBackend extends DarkstormBackend {
   Future<Editable?> downloadProfile(String id) async {
     try {
       var resp = await get(
-          baseUrl.resolveUri(Uri(path: "/profile/$id")),
-          headers: {
-            "X-API-Key": apiKey
-          }
-      );
+          baseUrl.resolveUri(
+            Uri(path: "/profile/$id"),
+          ),
+          headers: {"X-API-Key": apiKey});
       if (resp.statusCode != 200 || resp.body.isEmpty) return null;
       Map<String, dynamic> values = const JsonDecoder().convert(resp.body);
       if (values["uid"] == null) values["uid"] = const Uuid().v4();
@@ -86,10 +94,13 @@ class SWBackend extends DarkstormBackend {
       if (kDebugMode) {
         print("$e\n$stack");
       } else {
-        app.backend?.crash(Crash(
+        app.backend?.crash(
+          Crash(
             error: e.toString(),
             stack: stack.toString(),
-            version: app.package.version));
+            version: app.package.version,
+          ),
+        );
       }
     }
     return null;

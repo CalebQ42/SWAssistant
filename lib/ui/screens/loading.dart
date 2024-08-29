@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
 
-class LoadingScreen extends StatefulWidget{
-
+class LoadingScreen extends StatefulWidget {
   final RouteSettings startingRoute;
   final SW app;
 
-  const LoadingScreen({super.key, required this.startingRoute, required this.app});
+  const LoadingScreen(
+      {super.key, required this.startingRoute, required this.app});
 
   @override
   State<LoadingScreen> createState() => LoadingScreenState();
@@ -31,15 +31,15 @@ class LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     var messager = ScaffoldMessenger.of(context);
-    if(!started){
+    if (!started) {
       started = true;
-      widget.app.postInit(this, messager).then(
-        (_) {
-          if(!_driveFail){
-            widget.app.nav.pushNamedAndRemoveUntil(widget.startingRoute.name ?? "/", (_) => false, arguments: widget.startingRoute.arguments);
-          }
+      widget.app.postInit(this, messager).then((_) {
+        if (!_driveFail) {
+          widget.app.nav.pushNamedAndRemoveUntil(
+              widget.startingRoute.name ?? "/", (_) => false,
+              arguments: widget.startingRoute.arguments);
         }
-      );
+      });
     }
     return FrameContent(
       child: Center(
@@ -47,74 +47,93 @@ class LoadingScreenState extends State<LoadingScreen> {
           padding: const EdgeInsets.all(10),
           child: AnimatedSwitcher(
             duration: widget.app.globalDuration,
-            child: !_driveFail ? Column(
-              key: const Key("loading"),
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(),
-                Container(height: 10),
-                Text(
-                  _loadingText ?? AppLocalizations.of(context)!.loadingDialog,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
-              ],
-            ) :
-            Column(
-              key: const Key("driveFail"),
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.driveError,
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Container(height: 20),
-                Text(
-                  kIsWeb ? AppLocalizations.of(context)!.driveErrorWebSub : AppLocalizations.of(context)!.driveErrorOfflineSub,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-                OverflowBar(
-                  alignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      child: Text(AppLocalizations.of(context)!.retry),
-                      onPressed: () {
-                        driveFail = false;
-                        widget.app.syncRemote(
-                          onFull: (){
-                            if(widget.app.showFullError){
-                              messager.showSnackBar(
-                                SnackBar(
-                                  content: Text(AppLocalizations.of(context)!.driveFull),
-                                )
+            child: !_driveFail
+                ? Column(
+                    key: const Key("loading"),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(),
+                      Container(height: 10),
+                      Text(
+                        _loadingText ??
+                            AppLocalizations.of(context)!.loadingDialog,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      )
+                    ],
+                  )
+                : Column(
+                    key: const Key("driveFail"),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.driveError,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      Container(height: 20),
+                      Text(
+                        kIsWeb
+                            ? AppLocalizations.of(context)!.driveErrorWebSub
+                            : AppLocalizations.of(context)!
+                                .driveErrorOfflineSub,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                      OverflowBar(
+                        alignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            child: Text(AppLocalizations.of(context)!.retry),
+                            onPressed: () {
+                              driveFail = false;
+                              widget.app.syncRemote(
+                                onFull: () {
+                                  if (widget.app.showFullError) {
+                                    messager.showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            AppLocalizations.of(context)!
+                                                .driveFull),
+                                      ),
+                                    );
+                                    widget.app.showFullError = false;
+                                    Future.delayed(
+                                      const Duration(minutes: 5),
+                                      () => widget.app.showFullError = true,
+                                    );
+                                  }
+                                },
+                              ).then(
+                                (value) {
+                                  if (!value) {
+                                    driveFail = true;
+                                  } else {
+                                    widget.app.nav.pushNamedAndRemoveUntil(
+                                      widget.startingRoute.name ?? "/",
+                                      (_) => false,
+                                      arguments: widget.startingRoute.arguments,
+                                    );
+                                  }
+                                },
                               );
-                              widget.app.showFullError = false;
-                              Future.delayed(const Duration(minutes: 5), () => widget.app.showFullError = true);
-                            }
-                          }
-                        ).then(
-                          (value) {
-                            if(!value){
-                              driveFail = true;
-                            }else{
-                              widget.app.nav.pushNamedAndRemoveUntil(widget.startingRoute.name ?? "/", (_) => false, arguments: widget.startingRoute.arguments);
-                            }
-                          }
-                        );
-                      },
-                    ),
-                    TextButton(
-                      child: Text(AppLocalizations.of(context)!.driveContinue),
-                      onPressed: () =>
-                        widget.app.nav.pushNamedAndRemoveUntil(widget.startingRoute.name ?? "/", (_) => false, arguments: widget.startingRoute.arguments)
-                    )
-                  ],
-                )
-              ],
-            ),
-          )
-        )
-      )
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                                AppLocalizations.of(context)!.driveContinue),
+                            onPressed: () =>
+                                widget.app.nav.pushNamedAndRemoveUntil(
+                              widget.startingRoute.name ?? "/",
+                              (_) => false,
+                              arguments: widget.startingRoute.arguments,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+          ),
+        ),
+      ),
     );
   }
 }

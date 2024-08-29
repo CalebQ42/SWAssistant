@@ -8,16 +8,14 @@ import 'package:swassistant/ui/dialogs/character/fp_edit.dart';
 import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
-class ForcePowers extends StatefulWidget{
-
+class ForcePowers extends StatefulWidget {
   const ForcePowers({super.key});
-  
+
   @override
   State<StatefulWidget> createState() => ForcePowerState();
 }
 
-class ForcePowerState extends State<ForcePowers> with StatefulCard{
-
+class ForcePowerState extends State<ForcePowers> with StatefulCard {
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
@@ -30,11 +28,10 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
   Widget build(BuildContext context) {
     var character = Character.of(context);
     if (character == null) throw "Force Powers card used on non Character";
-    if(forceController == null){
+    if (forceController == null) {
       forceController = TextEditingController();
-      forceController!.addListener(() => 
-        character.force = int.tryParse(forceController!.text) ?? 0
-      );
+      forceController!.addListener(
+          () => character.force = int.tryParse(forceController!.text) ?? 0);
     }
     var app = SW.of(context);
     return Padding(
@@ -56,16 +53,17 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
                   controller: forceController,
                   textType: TextInputType.number,
                   defaultSave: true,
-                )
+                ),
               )
             ],
-          ), ...List.generate(
+          ),
+          ...List.generate(
             character.forcePowers.length,
             (index) => InkResponse(
               containedInkWell: true,
               highlightShape: BoxShape.rectangle,
               onTap: () =>
-                SWDiceHolder(force: character.force).showDialog(context),
+                  SWDiceHolder(force: character.force).showDialog(context),
               child: Row(
                 children: [
                   Expanded(
@@ -74,111 +72,125 @@ class ForcePowerState extends State<ForcePowers> with StatefulCard{
                   OverflowBar(
                     children: [
                       IconButton(
-                        constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                        constraints: const BoxConstraints(
+                            maxHeight: 40.0, maxWidth: 40.0),
                         icon: const Icon(Icons.info_outline),
                         splashRadius: 20,
-                        onPressed: () =>
-                          Bottom(
-                            child: (context) =>
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  Container(height: 15),
-                                  Center(
-                                    child: Text(
-                                      character.forcePowers[index].name,
-                                      style: Theme.of(context).textTheme.headlineSmall,
-                                      textAlign: TextAlign.justify,
-                                    )
-                                  ),
-                                  Container(height: 10),
-                                  Text(character.forcePowers[index].desc)
-                                ],
-                              )
-                          ).show(context),
+                        onPressed: () => Bottom(
+                          child: (context) => Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              Container(height: 15),
+                              Center(
+                                child: Text(
+                                  character.forcePowers[index].name,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ),
+                              Container(height: 10),
+                              Text(character.forcePowers[index].desc)
+                            ],
+                          ),
+                        ).show(context),
                       )
-                    ]
+                    ],
                   ),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (child, anim){
-                      var offset = const Offset(1,0);
-                      if(child is Container){
-                        offset = const Offset(-1,0);
+                    transitionBuilder: (child, anim) {
+                      var offset = const Offset(1, 0);
+                      if (child is Container) {
+                        offset = const Offset(-1, 0);
                       }
                       return ClipRect(
                         child: SizeTransition(
                           sizeFactor: anim,
                           axis: Axis.horizontal,
                           child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: offset,
-                              end: Offset.zero
-                            ).animate(anim),
+                            position:
+                                Tween<Offset>(begin: offset, end: Offset.zero)
+                                    .animate(anim),
                             child: child,
-                          )
-                        )
+                          ),
+                        ),
                       );
                     },
-                    child: edit ? OverflowBar(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.delete_forever),
-                          splashRadius: 20,
-                          constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                          onPressed: (){
-                            var temp = ForcePower.from(character.forcePowers[index]);
-                            setState(() => character.forcePowers.removeAt(index));
-                            character.save(context: context);
-                            ScaffoldMessenger.of(context).clearSnackBars();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(app.locale.deletedFP),
-                                action: SnackBarAction(
-                                  label: app.locale.undo,
-                                  onPressed: (){
-                                    setState(() => character.forcePowers.insert(index, temp));
+                    child: edit
+                        ? OverflowBar(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.delete_forever),
+                                splashRadius: 20,
+                                constraints: const BoxConstraints(
+                                    maxHeight: 40.0, maxWidth: 40.0),
+                                onPressed: () {
+                                  var temp = ForcePower.from(
+                                      character.forcePowers[index]);
+                                  setState(
+                                    () => character.forcePowers.removeAt(index),
+                                  );
+                                  character.save(context: context);
+                                  ScaffoldMessenger.of(context)
+                                      .clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(app.locale.deletedFP),
+                                      action: SnackBarAction(
+                                        label: app.locale.undo,
+                                        onPressed: () {
+                                          setState(
+                                            () => character.forcePowers
+                                                .insert(index, temp),
+                                          );
+                                          character.save(context: context);
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                splashRadius: 20,
+                                constraints: const BoxConstraints(
+                                    maxHeight: 40.0, maxWidth: 40.0),
+                                onPressed: () => ForcePowerEditDialog(
+                                  onClose: (forcePower) {
+                                    setState(() => character
+                                        .forcePowers[index] = forcePower);
                                     character.save(context: context);
                                   },
-                                ),
+                                  power: character.forcePowers[index],
+                                ).show(context),
                               )
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          splashRadius: 20,
-                          constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                          onPressed: () =>
-                            ForcePowerEditDialog(
-                              onClose: (forcePower){
-                                setState(() => character.forcePowers[index] = forcePower);
-                                character.save(context: context);
-                              },
-                              power: character.forcePowers[index],
-                            ).show(context)
-                        )
-                      ],
-                    ) : Container(height: 40),
+                            ],
+                          )
+                        : Container(height: 40),
                   )
                 ],
-              )
-            )
-        ), AnimatedSwitcher(
+              ),
+            ),
+          ),
+          AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: edit ? Center(
-              child: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () =>
-                  ForcePowerEditDialog(
-                    onClose: (forcePower){
-                      setState(() => character.forcePowers.add(forcePower));
-                      character.save(context: context);
-                    },
-                  ).show(context)
-              )
-            ) : Container(),
-            transitionBuilder: (wid,anim){
+            child: edit
+                ? Center(
+                    child: IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () => ForcePowerEditDialog(
+                        onClose: (forcePower) {
+                          setState(
+                            () => character.forcePowers.add(forcePower),
+                          );
+                          character.save(context: context);
+                        },
+                      ).show(context),
+                    ),
+                  )
+                : Container(),
+            transitionBuilder: (wid, anim) {
               return SizeTransition(
                 sizeFactor: anim,
                 axisAlignment: -1.0,

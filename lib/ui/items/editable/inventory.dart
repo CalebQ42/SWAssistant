@@ -12,14 +12,13 @@ import 'package:darkstorm_common/ui/bottom.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
 class Inventory extends StatefulWidget {
-
   const Inventory({super.key});
 
   @override
   State<StatefulWidget> createState() => InventoryState();
 }
-class InventoryState extends State<Inventory> with StatefulCard{
 
+class InventoryState extends State<Inventory> with StatefulCard {
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
@@ -36,58 +35,60 @@ class InventoryState extends State<Inventory> with StatefulCard{
     var editable = Editable.of(context);
     var overEncumbered = false;
     var encumTot = 0;
-    if(editable is Character && creditController == null){
-      creditController = TextEditingController(text: editable.credits.toString());
-      creditController?.addListener(() =>
-        editable.credits = int.tryParse(creditController!.text) ?? 0
-      );
+    if (editable is Character && creditController == null) {
+      creditController =
+          TextEditingController(text: editable.credits.toString());
+      creditController?.addListener(
+          () => editable.credits = int.tryParse(creditController!.text) ?? 0);
     }
-    if(editable is Character && encumController == null){
-      encumController = TextEditingController(text: editable.encumCap.toString());
+    if (editable is Character && encumController == null) {
+      encumController =
+          TextEditingController(text: editable.encumCap.toString());
       encumController?.addListener(() {
         editable.encumCap = int.tryParse(encumController!.text) ?? 0;
-        setState((){});
+        setState(() {});
       });
     }
-    if(editable is Vehicle && encumController == null){
-      encumController = TextEditingController(text: editable.encumCap.toString());
+    if (editable is Vehicle && encumController == null) {
+      encumController =
+          TextEditingController(text: editable.encumCap.toString());
       encumController?.addListener(() {
         editable.encumCap = int.tryParse(encumController!.text) ?? 0;
-        setState((){});
+        setState(() {});
       });
     }
-    if(editable is !Minion && editable.inventory.isNotEmpty){
-      if(editable is Character){
-        for(Item item in editable.inventory){
+    if (editable is! Minion && editable.inventory.isNotEmpty) {
+      if (editable is Character) {
+        for (Item item in editable.inventory) {
           encumTot += item.encum;
-          if(encumTot > editable.encumCap){
+          if (encumTot > editable.encumCap) {
             overEncumbered = true;
             break;
           }
         }
-      }else if(editable is Vehicle){
-        for(Item item in editable.inventory){
+      } else if (editable is Vehicle) {
+        for (Item item in editable.inventory) {
           encumTot += item.encum;
-          if(encumTot > editable.encumCap){
+          if (encumTot > editable.encumCap) {
             overEncumbered = true;
             break;
           }
         }
       }
     }
-    if(editable is !Minion && editable.inventory.isNotEmpty){
-      if(editable is Character){
-        for(Weapon weap in editable.weapons){
+    if (editable is! Minion && editable.inventory.isNotEmpty) {
+      if (editable is Character) {
+        for (Weapon weap in editable.weapons) {
           encumTot += weap.encumbrance;
-          if(encumTot > editable.encumCap){
+          if (encumTot > editable.encumCap) {
             overEncumbered = true;
             break;
           }
         }
-      }else if(editable is Vehicle){
-        for(Weapon weap in editable.weapons){
+      } else if (editable is Vehicle) {
+        for (Weapon weap in editable.weapons) {
           encumTot += weap.encumbrance;
-          if(encumTot > editable.encumCap){
+          if (encumTot > editable.encumCap) {
             overEncumbered = true;
             break;
           }
@@ -99,234 +100,271 @@ class InventoryState extends State<Inventory> with StatefulCard{
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
-          if(editable is Character) Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(child: Text(app.locale.credits)),
-              SizedBox(
-                width: 75,
-                height: 25,
-                child: EditingText(
-                  editing: edit,
-                  initialText: editable.credits.toString(),
-                  collapsed: true,
-                  fieldAlign: TextAlign.center,
-                  fieldInsets: const EdgeInsets.all(3),
-                  controller: creditController,
-                  textType: TextInputType.number,
-                  defaultSave: true,
+          if (editable is Character)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Text(app.locale.credits),
+                ),
+                SizedBox(
+                  width: 75,
+                  child: EditingText(
+                    editing: edit,
+                    initialText: editable.credits.toString(),
+                    collapsed: true,
+                    fieldAlign: TextAlign.center,
+                    fieldInsets: const EdgeInsets.all(3),
+                    controller: creditController,
+                    textType: TextInputType.number,
+                    defaultSave: true,
+                  ),
                 )
-              )
-            ],
-          ),
-          if(editable is Character) Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("${app.locale.encum}:"),
-              Container(width: 10),
-              SizedBox(
-                width: 50,
-                height: 25,
-                child: Center(child: Text(encumTot.toString()))
-              ),
-              const Text("/"),
-              SizedBox(
-                width: 50,
-                height: 25,
-                child: EditingText(
-                  editing: edit,
-                  initialText: editable.encumCap.toString(),
-                  collapsed: true,
-                  fieldInsets: const EdgeInsets.all(3),
-                  controller: encumController,
-                  textType: TextInputType.number,
-                  defaultSave: true,
+              ],
+            ),
+          if (editable is Character)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("${app.locale.encum}:"),
+                Container(width: 10),
+                SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: Text(encumTot.toString()),
+                  ),
+                ),
+                const Text("/"),
+                SizedBox(
+                  width: 50,
+                  child: EditingText(
+                    editing: edit,
+                    initialText: editable.encumCap.toString(),
+                    collapsed: true,
+                    fieldInsets: const EdgeInsets.all(3),
+                    controller: encumController,
+                    textType: TextInputType.number,
+                    defaultSave: true,
+                  ),
                 )
-              )
-            ],
-          ),
-          if(editable is Vehicle) Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("${app.locale.encum}:"),
-              Container(width: 10),
-              SizedBox(
-                width: 50,
-                height: 25,
-                child: Center(child: Text(encumTot.toString()))
-              ),
-              const Text("/"),
-              SizedBox(
-                width: 50,
-                height: 25,
-                child: EditingText(
-                  editing: edit,
-                  initialText: editable.encumCap.toString(),
-                  collapsed: true,
-                  fieldInsets: const EdgeInsets.all(3),
-                  controller: encumController,
-                  textType: TextInputType.number,
-                  defaultSave: true,
+              ],
+            ),
+          if (editable is Vehicle)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("${app.locale.encum}:"),
+                Container(width: 10),
+                SizedBox(
+                  width: 50,
+                  child: Center(
+                    child: Text(encumTot.toString()),
+                  ),
+                ),
+                const Text("/"),
+                SizedBox(
+                  width: 50,
+                  child: EditingText(
+                    editing: edit,
+                    initialText: editable.encumCap.toString(),
+                    collapsed: true,
+                    fieldInsets: const EdgeInsets.all(3),
+                    controller: encumController,
+                    textType: TextInputType.number,
+                    defaultSave: true,
+                  ),
                 )
-              )
-            ],
-          ),
-          if(overEncumbered) Text(
-            app.locale.overEncumNotice,
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-            textAlign: TextAlign.center,
-          ), ...List.generate(
+              ],
+            ),
+          if (overEncumbered)
+            Text(
+              app.locale.overEncumNotice,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+              textAlign: TextAlign.center,
+            ),
+          ...List.generate(
             editable.inventory.length,
             (index) => Row(
               children: [
                 Expanded(
-                  child: Text((editable.inventory[index].count != 1 ? "${editable.inventory[index].count} " : "" )
-                    + editable.inventory[index].name),
+                  child: Text((editable.inventory[index].count != 1
+                          ? "${editable.inventory[index].count} "
+                          : "") +
+                      editable.inventory[index].name),
                 ),
                 OverflowBar(
                   children: [
                     IconButton(
-                      constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
+                      constraints:
+                          const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
                       icon: const Icon(Icons.info_outline),
                       splashRadius: 20,
-                      onPressed: () =>
-                        Bottom(
-                          child: (context) =>
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                Container(height: 15),
-                                Center(
-                                  child: Text(
-                                    editable.inventory[index].name,
-                                    style: Theme.of(context).textTheme.headlineSmall,
-                                    textAlign: TextAlign.center,
-                                  )
-                                ),
-                                Container(height: 5,),
-                                Center(
-                                  child: Text(
-                                    "${app.locale.count}: ${editable.inventory[index].count}",
-                                    style: Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                ),
-                                Container(height: 5),
-                                Center(
-                                  child: Text(
-                                    "${app.locale.encum}: ${editable.inventory[index].encum}",
-                                    style: Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                ),
-                                Container(height: 10),
-                                if(editable.inventory[index].desc != "") Text(editable.inventory[index].desc)
-                              ],
-                            )
-                        ).show(context),
+                      onPressed: () => Bottom(
+                        child: (context) => Wrap(
+                          alignment: WrapAlignment.center,
+                          children: [
+                            Container(height: 15),
+                            Center(
+                              child: Text(
+                                editable.inventory[index].name,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                              height: 5,
+                            ),
+                            Center(
+                              child: Text(
+                                "${app.locale.count}: ${editable.inventory[index].count}",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                            Container(height: 5),
+                            Center(
+                              child: Text(
+                                "${app.locale.encum}: ${editable.inventory[index].encum}",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                            Container(height: 10),
+                            if (editable.inventory[index].desc != "")
+                              Text(editable.inventory[index].desc)
+                          ],
+                        ),
+                      ).show(context),
                     )
-                  ]
+                  ],
                 ),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (child, anim){
-                    var offset = const Offset(1,0);
-                    if(child is Container){
-                      offset = const Offset(-1,0);
+                  transitionBuilder: (child, anim) {
+                    var offset = const Offset(1, 0);
+                    if (child is Container) {
+                      offset = const Offset(-1, 0);
                     }
                     return ClipRect(
                       child: SizeTransition(
                         sizeFactor: anim,
                         axis: Axis.horizontal,
                         child: SlideTransition(
-                          position: Tween<Offset>(
-                            begin: offset,
-                            end: Offset.zero
-                          ).animate(anim),
+                          position:
+                              Tween<Offset>(begin: offset, end: Offset.zero)
+                                  .animate(anim),
                           child: child,
-                        )
-                      )
+                        ),
+                      ),
                     );
                   },
-                  child: edit ? OverflowBar(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.delete_forever),
-                        constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                        onPressed: (){
-                          var temp = Item.from(editable.inventory[index]);
-                          if(editable is Character && temp.name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks)){
-                            editable.woundStrainKey.currentState?.setState((){});
-                          }
-                          editable.inventory.removeAt(index);
-                          setState((){});
-                          editable.save(context: context);
-                          ScaffoldMessenger.of(context).clearSnackBars();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(app.locale.deletedItem),
-                              action: SnackBarAction(
-                                label: app.locale.undo,
-                                onPressed: (){
-                                  editable.inventory.insert(index, temp);
-                                  if(editable is Character && temp.name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks)){
-                                    editable.woundStrainKey.currentState?.setState((){});
-                                  }
-                                  setState((){});
-                                  editable.save(context: context);
+                  child: edit
+                      ? OverflowBar(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.delete_forever),
+                              constraints: const BoxConstraints(
+                                  maxHeight: 40.0, maxWidth: 40.0),
+                              onPressed: () {
+                                var temp = Item.from(editable.inventory[index]);
+                                if (editable is Character &&
+                                    temp.name ==
+                                        (editable.useRepair
+                                            ? app.locale.emergencyRepairPatches
+                                            : app.locale.stimpacks)) {
+                                  editable.woundStrainKey.currentState
+                                      ?.setState(() {});
                                 }
-                              ),
+                                editable.inventory.removeAt(index);
+                                setState(() {});
+                                editable.save(context: context);
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(app.locale.deletedItem),
+                                    action: SnackBarAction(
+                                      label: app.locale.undo,
+                                      onPressed: () {
+                                        editable.inventory.insert(index, temp);
+                                        if (editable is Character &&
+                                            temp.name ==
+                                                (editable.useRepair
+                                                    ? app.locale
+                                                        .emergencyRepairPatches
+                                                    : app.locale.stimpacks)) {
+                                          editable.woundStrainKey.currentState
+                                              ?.setState(() {});
+                                        }
+                                        setState(() {});
+                                        editable.save(context: context);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              constraints: const BoxConstraints(
+                                  maxHeight: 40.0, maxWidth: 40.0),
+                              onPressed: () => ItemEditDialog(
+                                it: editable.inventory[index],
+                                editable: editable,
+                                onClose: (item) {
+                                  bool updateWoundStrain = false;
+                                  if (editable is Character &&
+                                      (item.name ==
+                                              (editable.useRepair
+                                                  ? app.locale
+                                                      .emergencyRepairPatches
+                                                  : app.locale.stimpacks) ||
+                                          editable.inventory[index].name ==
+                                              (editable.useRepair
+                                                  ? app.locale
+                                                      .emergencyRepairPatches
+                                                  : app.locale.stimpacks))) {
+                                    updateWoundStrain = true;
+                                  }
+                                  editable.inventory[index] = item;
+                                  if (updateWoundStrain) {
+                                    (editable as Character)
+                                        .woundStrainKey
+                                        .currentState
+                                        ?.setState(() {});
+                                  }
+                                  setState(() {});
+                                  editable.save(context: context);
+                                },
+                              ).show(context),
                             )
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        constraints: const BoxConstraints(maxHeight: 40.0, maxWidth: 40.0),
-                        onPressed: () =>
-                          ItemEditDialog(
-                            it: editable.inventory[index],
-                            editable: editable,
-                            onClose: (item){
-                              bool updateWoundStrain = false;
-                              if(editable is Character && (item.name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks)
-                                || editable.inventory[index].name == (editable.useRepair ? app.locale.emergencyRepairPatches : app.locale.stimpacks))){
-                                updateWoundStrain = true;
-                              }
-                              editable.inventory[index] = item;
-                              if(updateWoundStrain){
-                                (editable as Character).woundStrainKey.currentState?.setState((){});
-                              }
-                              setState((){});
-                              editable.save(context: context);
-                            },
-                          ).show(context)
-                      )
-                    ],
-                  ) : Container(),
+                          ],
+                        )
+                      : Container(),
                 )
               ],
-            )
-          ), AnimatedSwitcher(
+            ),
+          ),
+          AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: edit ? Center(
-              child: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () =>
-                  ItemEditDialog(
-                    editable: editable,
-                    onClose: (item){
-                      editable.inventory.add(item);
-                      setState((){});
-                      editable.save(context: context);
-                    },
-                  ).show(context)
-              )
-            ) : Container(),
-            transitionBuilder: (wid,anim) =>
-              SizeTransition(
-                sizeFactor: anim,
-                axisAlignment: -1.0,
-                child: wid,
-              ),
+            child: edit
+                ? Center(
+                    child: IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () => ItemEditDialog(
+                        editable: editable,
+                        onClose: (item) {
+                          editable.inventory.add(item);
+                          setState(() {});
+                          editable.save(context: context);
+                        },
+                      ).show(context),
+                    ),
+                  )
+                : Container(),
+            transitionBuilder: (wid, anim) => SizeTransition(
+              sizeFactor: anim,
+              axisAlignment: -1.0,
+              child: wid,
+            ),
           )
         ],
       ),

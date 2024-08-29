@@ -1,7 +1,6 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Prefs{
+class Prefs {
   final SharedPreferences prefs;
 
   Prefs(this.prefs);
@@ -41,13 +40,13 @@ class Prefs{
   bool get lightTheme => prefs.getBool("forceLight") ?? false;
   set lightTheme(bool value) {
     prefs.setBool("forceLight", value);
-    if(value && darkTheme) darkTheme = false;
+    if (value && darkTheme) darkTheme = false;
   }
 
   bool get darkTheme => prefs.getBool("forceDark") ?? false;
   set darkTheme(bool value) {
     prefs.setBool("forceDark", value);
-    if(value && lightTheme) lightTheme = false;
+    if (value && lightTheme) lightTheme = false;
   }
 
   bool get amoledTheme => prefs.getBool("amoledTheme") ?? false;
@@ -78,5 +77,4 @@ class Prefs{
 
   bool get subtractMode => prefs.getBool("subtract") ?? true;
   set subtractMode(bool value) => prefs.setBool("subtract", value);
-
 }

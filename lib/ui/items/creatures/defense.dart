@@ -4,8 +4,7 @@ import 'package:swassistant/sw.dart';
 import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
-class Defense extends StatefulWidget{
-
+class Defense extends StatefulWidget {
   const Defense({super.key});
 
   @override
@@ -13,12 +12,13 @@ class Defense extends StatefulWidget{
 }
 
 class DefenseState extends State<Defense> with StatefulCard {
-
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
   @override
-  bool get defaultEdit => Creature.of(context)!.defMelee == 0 && Creature.of(context)!.defRanged == 0;
+  bool get defaultEdit =>
+      Creature.of(context)!.defMelee == 0 &&
+      Creature.of(context)!.defRanged == 0;
 
   TextEditingController? melee;
   TextEditingController? ranged;
@@ -27,7 +27,7 @@ class DefenseState extends State<Defense> with StatefulCard {
   Widget build(BuildContext context) {
     var creature = Creature.of(context);
     if (creature == null) throw "Defense card used on non Creature";
-    if(melee == null){
+    if (melee == null) {
       melee = TextEditingController(text: creature.defMelee.toString());
       melee!.addListener(() {
         creature.defMelee = int.tryParse(melee!.text) ?? 0;
@@ -67,7 +67,7 @@ class DefenseState extends State<Defense> with StatefulCard {
                 controller: ranged,
               )
             ],
-          )
+          ),
         )
       ],
     );

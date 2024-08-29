@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class UpDownStat extends StatefulWidget{
-
+class UpDownStat extends StatefulWidget {
   final void Function() onUpPressed;
   final void Function() onDownPressed;
   final int Function() getValue;
@@ -12,15 +11,23 @@ class UpDownStat extends StatefulWidget{
   final Color? textColor;
   final TextStyle? style;
 
-  const UpDownStat({super.key, required this.onUpPressed, required this.onDownPressed, required this.getValue, this.max, this.getMax, this.min,
-    this.getMin, this.textColor, this.style});
+  const UpDownStat(
+      {super.key,
+      required this.onUpPressed,
+      required this.onDownPressed,
+      required this.getValue,
+      this.max,
+      this.getMax,
+      this.min,
+      this.getMin,
+      this.textColor,
+      this.style});
 
   @override
   State<StatefulWidget> createState() => UpDownStatState();
 }
 
-class UpDownStatState extends State<UpDownStat>{
-
+class UpDownStatState extends State<UpDownStat> {
   bool up = false;
 
   void update() => setState(() {});
@@ -33,14 +40,18 @@ class UpDownStatState extends State<UpDownStat>{
         Expanded(
           child: IconButton(
             icon: Icon(Icons.remove, color: widget.textColor),
-            onPressed: (){
-              if((widget.min == null && widget.getMin == null) || widget.getValue() > (widget.getMin == null ? widget.min! : widget.getMin!())){
+            onPressed: () {
+              if ((widget.min == null && widget.getMin == null) ||
+                  widget.getValue() >
+                      (widget.getMin == null
+                          ? widget.min!
+                          : widget.getMin!())) {
                 up = false;
                 widget.onDownPressed();
-                setState((){});
+                setState(() {});
               }
             },
-          )
+          ),
         ),
         Expanded(
           child: AnimatedSwitcher(
@@ -48,35 +59,45 @@ class UpDownStatState extends State<UpDownStat>{
             child: Text(
               widget.getValue().toString(),
               key: ValueKey(widget.getValue()),
-              style: widget.style ?? Theme.of(context).textTheme.headlineSmall?.copyWith(color: widget.textColor),
+              style: widget.style ??
+                  Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(color: widget.textColor),
             ),
-            transitionBuilder: (wid, anim){
+            transitionBuilder: (wid, anim) {
               Tween<Offset> offset;
-              if((up && wid.key != ValueKey(widget.getValue()))||(!up && wid.key == ValueKey(widget.getValue()))){
-                offset = Tween(begin: const Offset(-1.0,0.0), end: Offset.zero);
-              }else{
-                offset = Tween(begin: const Offset(1.0,0.0), end: Offset.zero);
+              if ((up && wid.key != ValueKey(widget.getValue())) ||
+                  (!up && wid.key == ValueKey(widget.getValue()))) {
+                offset =
+                    Tween(begin: const Offset(-1.0, 0.0), end: Offset.zero);
+              } else {
+                offset = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero);
               }
               return ClipRect(
                 child: SlideTransition(
                   position: offset.animate(anim),
                   child: wid,
-                )
+                ),
               );
             },
-          )
+          ),
         ),
         Expanded(
           child: IconButton(
             icon: Icon(Icons.add, color: widget.textColor),
-            onPressed: (){
-              if((widget.max == null && widget.getMax == null) || widget.getValue() < (widget.getMax == null ? widget.max! : widget.getMax!())){
+            onPressed: () {
+              if ((widget.max == null && widget.getMax == null) ||
+                  widget.getValue() <
+                      (widget.getMax == null
+                          ? widget.max!
+                          : widget.getMax!())) {
                 up = true;
                 widget.onUpPressed();
-                setState((){});
+                setState(() {});
               }
             },
-          )
+          ),
         )
       ],
     );

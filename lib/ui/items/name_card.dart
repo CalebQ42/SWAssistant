@@ -7,22 +7,20 @@ import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 
 class NameCard extends StatefulWidget {
-
   const NameCard({super.key});
-  
+
   @override
   State createState() => NameCardState();
 }
 
 class NameCardState extends State<NameCard> with StatefulCard {
-
   var edit = false;
 
   @override
   get defaultEdit {
-    if(Editable.of(context) is Character){
+    if (Editable.of(context) is Character) {
       return Editable.of(context).name == SW.of(context).locale.newCharacter;
-    }else if(Editable.of(context) is Minion){
+    } else if (Editable.of(context) is Minion) {
       return Editable.of(context).name == SW.of(context).locale.newMinion;
     }
     return Editable.of(context).name == SW.of(context).locale.newVehicle;
@@ -35,9 +33,10 @@ class NameCardState extends State<NameCard> with StatefulCard {
 
   @override
   Widget build(BuildContext context) {
-    if(nameController == null){
+    if (nameController == null) {
       nameController = TextEditingController(text: Editable.of(context).name);
-      nameController!.addListener(() => Editable.of(context).name = nameController!.text);
+      nameController!
+          .addListener(() => Editable.of(context).name = nameController!.text);
     }
     return EditingText(
       editing: edit,

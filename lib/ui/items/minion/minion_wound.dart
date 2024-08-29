@@ -5,16 +5,14 @@ import 'package:swassistant/ui/misc/edit_content.dart';
 import 'package:swassistant/ui/misc/editing_text.dart';
 import 'package:swassistant/ui/misc/up_down.dart';
 
-class MinionWound extends StatefulWidget{
-
+class MinionWound extends StatefulWidget {
   const MinionWound({super.key});
 
   @override
   State<StatefulWidget> createState() => MinionWoundState();
 }
 
-class MinionWoundState extends State<MinionWound> with StatefulCard{
-
+class MinionWoundState extends State<MinionWound> with StatefulCard {
   bool edit = false;
   @override
   set editing(bool b) => setState(() => edit = b);
@@ -28,17 +26,20 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
   Widget build(BuildContext context) {
     var minion = Minion.of(context);
     if (minion == null) throw "MinionWound card used on non Minion";
-    indWoundController ??= TextEditingController(text: minion.woundThreshInd.toString())..addListener(() {
-      var tmp = int.tryParse(indWoundController!.text);
-      if(tmp == null){
-        minion.woundThreshInd = 0;
-      }else{
-        minion.woundThreshInd = tmp;
-      }
-      setState((){});
-    });
+    indWoundController ??=
+        TextEditingController(text: minion.woundThreshInd.toString())
+          ..addListener(() {
+            var tmp = int.tryParse(indWoundController!.text);
+            if (tmp == null) {
+              minion.woundThreshInd = 0;
+            } else {
+              minion.woundThreshInd = tmp;
+            }
+            setState(() {});
+          });
     soakController ??= TextEditingController(text: minion.soak.toString())
-        ..addListener(() => minion.soak = int.tryParse(soakController!.text) ?? 0);
+      ..addListener(
+          () => minion.soak = int.tryParse(soakController!.text) ?? 0);
     var app = SW.of(context);
     var subtractMode = app.prefs.subtractMode;
     return Column(
@@ -49,7 +50,6 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
             Text(app.locale.soak),
             SizedBox(
               width: 50,
-              height: 25,
               child: EditingText(
                 editing: edit,
                 initialText: minion.soak.toString(),
@@ -61,7 +61,7 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
                 defaultSave: true,
               ),
             )
-          ]
+          ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +69,6 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
             Text(app.locale.minWound),
             SizedBox(
               width: 50,
-              height: 25,
               child: EditingText(
                 editing: edit,
                 initialText: minion.woundThreshInd.toString(),
@@ -84,29 +83,30 @@ class MinionWoundState extends State<MinionWound> with StatefulCard{
           ],
         ),
         UpDownStat(
-          onUpPressed: (){
-            if(subtractMode){
-              minion.woundDmg--;
-            }else{
-              minion.woundDmg++;
-            }
-            minion.save(context: context);
-          },
-          onDownPressed: (){
-            if(subtractMode){
-              minion.woundDmg++;
-            }else{
-              minion.woundDmg--;
-            }
-            minion.save(context: context);
-          },
-          getValue: () => subtractMode ? (minion.woundThreshInd * minion.minionNum) - minion.woundDmg : minion.woundDmg,
-          getMax: () => minion.woundThreshInd * minion.minionNum,
-          min: 0
-        ),
-        Container(height:5),
+            onUpPressed: () {
+              if (subtractMode) {
+                minion.woundDmg--;
+              } else {
+                minion.woundDmg++;
+              }
+              minion.save(context: context);
+            },
+            onDownPressed: () {
+              if (subtractMode) {
+                minion.woundDmg++;
+              } else {
+                minion.woundDmg--;
+              }
+              minion.save(context: context);
+            },
+            getValue: () => subtractMode
+                ? (minion.woundThreshInd * minion.minionNum) - minion.woundDmg
+                : minion.woundDmg,
+            getMax: () => minion.woundThreshInd * minion.minionNum,
+            min: 0),
+        Container(height: 5),
         ElevatedButton(
-          onPressed: (){
+          onPressed: () {
             setState(() {
               minion.woundDmg = 0;
               minion.save(context: context);

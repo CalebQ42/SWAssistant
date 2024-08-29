@@ -27,27 +27,30 @@ late SW app;
 
 Future<void> main() async {
   usePathUrlStrategy();
-  runZonedGuarded<Future<void>>(() async =>
-    SW.baseInit().then(
-      (a) {
-        app = a;
-        runApp(TopInherit(
-          resources: a,
-          child: const SWApp()
-        ));
-      }
-    ), (error, stack) async{
-      if(FlutterError.onError != null){
-        FlutterError.onError!(FlutterErrorDetails(exception: error, stack: stack));
-      }else{
-        if(kDebugMode) print("$error\n$stack");
-      }
+  runZonedGuarded<Future<void>>(
+      () async => SW.baseInit().then((a) {
+            app = a;
+            runApp(
+              TopInherit(
+                resources: a,
+                child: const SWApp(),
+              ),
+            );
+          }), (error, stack) async {
+    if (FlutterError.onError != null) {
+      FlutterError.onError!(
+        FlutterErrorDetails(
+          exception: error,
+          stack: stack,
+        ),
+      );
+    } else {
+      if (kDebugMode) print("$error\n$stack");
     }
-  );
+  });
 }
 
-class SWApp extends StatefulWidget{
-
+class SWApp extends StatefulWidget {
   final String? init;
 
   const SWApp({super.key, this.init});
@@ -57,7 +60,6 @@ class SWApp extends StatefulWidget{
 }
 
 class SWAppState extends State<SWApp> {
-
   @override
   Widget build(BuildContext context) {
     app.topLevelUpdate = () => setState(() {});
@@ -69,97 +71,99 @@ class SWAppState extends State<SWApp> {
     );
     var bottomSheetTheme = BottomSheetThemeData(
       shape: const BeveledRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25))
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
+        ),
       ),
       clipBehavior: Clip.antiAlias,
-      constraints: BoxConstraints.loose(const Size.fromWidth(600)),
+      constraints: BoxConstraints.loose(
+        const Size.fromWidth(600),
+      ),
     );
     var fabTheme = const FloatingActionButtonThemeData(
       shape: BeveledRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(25))
-      )
+        borderRadius: BorderRadius.all(
+          Radius.circular(25),
+        ),
+      ),
     );
     return MaterialApp(
-      builder: (c, child) =>
-        Frame(
-          key: app.frameKey,
-          beveled: true,
-          appName: "SWAssistant",
-          navItems: [
-            Nav(
-              icon: const Icon(Icons.contacts),
-              name: AppLocalizations.of(c)!.gmMode,
-              routeName: "/gm"
-            ),
-            Nav(
-              icon: const Icon(Icons.face),
-              name: AppLocalizations.of(c)!.characters,
-              routeName: "/characters",
-            ),
-            Nav(
-              icon: const Icon(Icons.supervisor_account),
-              name: AppLocalizations.of(c)!.minions,
-              routeName: "/minions",
-            ),
-            Nav(
-              icon: const Icon(Icons.motorcycle),
-              name: AppLocalizations.of(c)!.vehicles,
-              routeName: "/vehicles",
-            )
-          ],
-          bottomNavItems: [
-            Nav(
-              icon: const Icon(Icons.settings),
-              name: AppLocalizations.of(c)!.settings,
-              routeName: "/settings"
-            ),
-            Nav(
-              icon: const Icon(Icons.delete),
-              name: AppLocalizations.of(c)!.trash,
-              routeName: "/trash"
-            )
-          ],
-          hideBar: (r) => r.startsWith("/intro") || r.startsWith("/loading"),
-          floatingItem: FloatingNav(
-            title: AppLocalizations.of(c)!.dice,
-            icon: const Icon(Icons.casino_outlined),
-            onTap: () =>
-              SWDiceHolder().showDialog(c, showInstant: true)
+      builder: (c, child) => Frame(
+        key: app.frameKey,
+        beveled: true,
+        appName: "SWAssistant",
+        navItems: [
+          Nav(
+            icon: const Icon(Icons.contacts),
+            name: AppLocalizations.of(c)!.gmMode,
+            routeName: "/gm",
           ),
-          child: child ?? const Text("Something went wrong")
+          Nav(
+            icon: const Icon(Icons.face),
+            name: AppLocalizations.of(c)!.characters,
+            routeName: "/characters",
+          ),
+          Nav(
+            icon: const Icon(Icons.supervisor_account),
+            name: AppLocalizations.of(c)!.minions,
+            routeName: "/minions",
+          ),
+          Nav(
+            icon: const Icon(Icons.motorcycle),
+            name: AppLocalizations.of(c)!.vehicles,
+            routeName: "/vehicles",
+          )
+        ],
+        bottomNavItems: [
+          Nav(
+            icon: const Icon(Icons.settings),
+            name: AppLocalizations.of(c)!.settings,
+            routeName: "/settings",
+          ),
+          Nav(
+            icon: const Icon(Icons.delete),
+            name: AppLocalizations.of(c)!.trash,
+            routeName: "/trash",
+          )
+        ],
+        hideBar: (r) => r.startsWith("/intro") || r.startsWith("/loading"),
+        floatingItem: FloatingNav(
+          title: AppLocalizations.of(c)!.dice,
+          icon: const Icon(Icons.casino_outlined),
+          onTap: () => SWDiceHolder().showDialog(c, showInstant: true),
         ),
+        child: child ?? const Text("Something went wrong"),
+      ),
       navigatorKey: app.navKey,
       title: 'SWAssistant',
-      navigatorObservers: [
-        app.observatory
-      ],
+      navigatorObservers: [app.observatory],
       onGenerateRoute: (settings) {
         Widget? widy;
         RouteSettings? newSettings;
-        if(settings.name == "/intro" || app.prefs.showIntroPages) {
+        if (settings.name == "/intro" || app.prefs.showIntroPages) {
           var intro = Intro(app);
-          if(intro.pages.isNotEmpty){
+          if (intro.pages.isNotEmpty) {
             widy = IntroScreen(
-              pages: Intro(app).pages,
-              onDone: (){
-                app.prefs.showIntro = false;
-                app.prefs.stupidIntro = false;
-                app.nav.pushNamedAndRemoveUntil(settings.name ?? "/", (route) => false);
-              }
-            );
+                pages: Intro(app).pages,
+                onDone: () {
+                  app.prefs.showIntro = false;
+                  app.prefs.stupidIntro = false;
+                  app.nav.pushNamedAndRemoveUntil(
+                      settings.name ?? "/", (route) => false);
+                });
           }
           newSettings = const RouteSettings(name: "/intro");
         }
-        if(widy == null && !app.initialized){
+        if (widy == null && !app.initialized) {
           widy = LoadingScreen(
             startingRoute: settings,
             app: app,
           );
-          newSettings =  const RouteSettings(name: "/loading");
+          newSettings = const RouteSettings(name: "/loading");
         }
-        if(widy == null && settings.name?.startsWith("/edit/") == true){
+        if (widy == null && settings.name?.startsWith("/edit/") == true) {
           Editable? ed;
-          if(settings.arguments != null) {
+          if (settings.arguments != null) {
             ed = settings.arguments as Editable;
           } else {
             ed = app.getEditable(settings.name?.substring(6) ?? "");
@@ -167,18 +171,22 @@ class SWAppState extends State<SWApp> {
           if (ed != null) {
             ed.route = PageRouteBuilder(
               pageBuilder: (context, anim, secondaryAnim) =>
-                EditingEditable(ed!),
+                  EditingEditable(ed!),
               settings: RouteSettings(name: "/edit/${ed.uid}"),
               maintainState: false,
-              transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
+              transitionsBuilder: (context, anim, secondary, child) =>
+                  FadeTransition(opacity: anim, child: child),
             );
             return ed.route;
           } else {
-            widy = EditableList(Character, uidToLoad: settings.name?.substring(6));
+            widy = EditableList(
+              Character,
+              uidToLoad: settings.name?.substring(6),
+            );
           }
         }
-        if(widy == null){
-          switch(settings.name){
+        if (widy == null) {
+          switch (settings.name) {
             case "/gm":
               widy = const GMMode();
               break;
@@ -195,7 +203,8 @@ class SWAppState extends State<SWApp> {
               widy = const TrashList();
               break;
             default:
-              newSettings = RouteSettings(name: "/characters", arguments: settings.arguments);
+              newSettings = RouteSettings(
+                  name: "/characters", arguments: settings.arguments);
               widy ??= const EditableList(Character);
           }
         }
@@ -205,70 +214,70 @@ class SWAppState extends State<SWApp> {
           },
           settings: newSettings ?? settings,
           maintainState: false,
-          transitionsBuilder: (context, anim, secondary, child) => FadeTransition(opacity: anim, child: child)
+          transitionsBuilder: (context, anim, secondary, child) =>
+              FadeTransition(opacity: anim, child: child),
         );
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: (){
-        if(app.prefs.locale == "") return null;
-        try{
-          return AppLocalizations.supportedLocales.firstWhere((element) => element.toLanguageTag() == app.prefs.locale);
-        }catch(e){
+      locale: () {
+        if (app.prefs.locale == "") return null;
+        try {
+          return AppLocalizations.supportedLocales.firstWhere(
+              (element) => element.toLanguageTag() == app.prefs.locale);
+        } catch (e) {
           return null;
         }
       }(),
-      themeMode: app.prefs.lightTheme ?
-        ThemeMode.light : app.prefs.darkTheme ?
-        ThemeMode.dark : ThemeMode.system,
+      themeMode: app.prefs.lightTheme
+          ? ThemeMode.light
+          : app.prefs.darkTheme
+              ? ThemeMode.dark
+              : ThemeMode.system,
       theme: ThemeData.light().copyWith(
-        colorScheme: const ColorScheme.light(
-          primary: Colors.lightBlue,
-          secondary: Colors.redAccent
-        ),
-        primaryColor: Colors.lightBlue,
-        snackBarTheme: snackTheme,
-        inputDecorationTheme: inputTheme,
-        bottomSheetTheme: bottomSheetTheme,
-        floatingActionButtonTheme: fabTheme
-      ),
-      darkTheme: app.prefs.amoledTheme ? 
-        ThemeData.dark().copyWith( //Amoled Theme
-          canvasColor: Colors.black,
-          shadowColor: Colors.grey.shade800,
-          scaffoldBackgroundColor: Colors.black,
-          cardColor: const Color.fromARGB(255, 15, 15, 15),
-          snackBarTheme: snackTheme.copyWith(
-            backgroundColor: const Color.fromARGB(255, 15, 15, 15),
-            actionTextColor: Colors.amberAccent,
-            contentTextStyle: const TextStyle(
-              color: Colors.white
-            ),
-          ),
-          primaryColor: Colors.red,
-          colorScheme: ColorScheme.dark(
-            shadow: Colors.white,
-            primary: Colors.red,
-            secondary: Colors.lightBlueAccent.shade100,
-            surface: const Color.fromARGB(255, 5, 5, 5),
-          ),
-          bottomSheetTheme: bottomSheetTheme.copyWith(
-            backgroundColor: Colors.black,
-          ),
-          floatingActionButtonTheme: fabTheme,
-          inputDecorationTheme: inputTheme
-        ) : ThemeData.dark().copyWith( //Dark Theme
-          primaryColor: Colors.red,
-          colorScheme: ColorScheme.dark(
-            shadow: Colors.white,
-            primary: Colors.red,
-            secondary: Colors.lightBlueAccent.shade100,
-          ),
-          floatingActionButtonTheme: fabTheme,
-          bottomSheetTheme: bottomSheetTheme,
+          colorScheme: const ColorScheme.light(
+              primary: Colors.lightBlue, secondary: Colors.redAccent),
+          primaryColor: Colors.lightBlue,
+          snackBarTheme: snackTheme,
           inputDecorationTheme: inputTheme,
-          snackBarTheme: snackTheme
-        ),
+          bottomSheetTheme: bottomSheetTheme,
+          floatingActionButtonTheme: fabTheme),
+      darkTheme: app.prefs.amoledTheme
+          ? ThemeData.dark().copyWith(
+              //Amoled Theme
+              canvasColor: Colors.black,
+              shadowColor: Colors.grey.shade800,
+              scaffoldBackgroundColor: Colors.black,
+              cardColor: const Color.fromARGB(255, 15, 15, 15),
+              snackBarTheme: snackTheme.copyWith(
+                backgroundColor: const Color.fromARGB(255, 15, 15, 15),
+                actionTextColor: Colors.amberAccent,
+                contentTextStyle: const TextStyle(color: Colors.white),
+              ),
+              primaryColor: Colors.red,
+              colorScheme: ColorScheme.dark(
+                shadow: Colors.white,
+                primary: Colors.red,
+                secondary: Colors.lightBlueAccent.shade100,
+                surface: const Color.fromARGB(255, 5, 5, 5),
+              ),
+              bottomSheetTheme: bottomSheetTheme.copyWith(
+                backgroundColor: Colors.black,
+              ),
+              floatingActionButtonTheme: fabTheme,
+              inputDecorationTheme: inputTheme)
+          : ThemeData.dark().copyWith(
+              //Dark Theme
+              primaryColor: Colors.red,
+              colorScheme: ColorScheme.dark(
+                shadow: Colors.white,
+                primary: Colors.red,
+                secondary: Colors.lightBlueAccent.shade100,
+              ),
+              floatingActionButtonTheme: fabTheme,
+              bottomSheetTheme: bottomSheetTheme,
+              inputDecorationTheme: inputTheme,
+              snackBarTheme: snackTheme),
     );
   }
 }
