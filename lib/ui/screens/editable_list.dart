@@ -242,7 +242,7 @@ class EditableListState extends State<EditableList> {
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(app.locale.noConnectionStupid),
+                              content: Text(app.locale.noConnectionDarkstorm),
                             ),
                           );
                         }

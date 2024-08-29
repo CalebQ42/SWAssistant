@@ -310,7 +310,7 @@ abstract class Editable extends JsonSavable {
                   if (!(app.backend?.isAvailable ?? false)) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(app.locale.noConnectionStupid),
+                        content: Text(app.locale.noConnectionDarkstorm),
                       ),
                     );
                     return;

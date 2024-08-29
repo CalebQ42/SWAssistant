@@ -18,10 +18,10 @@
     "introPage0ManualImportLine2": "2) Select the folder named SWChars",
     "introPage0ManualImportLine3": "3) Long press on one of the files until it goes into multi-select mode, then select all the other files in the folder",
     "introPage0ManualImportLine4": "4) Click the Select Files button.",
-    
-    "introPage1Title": "Stupid Backend",
-    "introPage1StupidExplainationv2": "This app (optionally) uses a backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, logging the app's startup (for user count), and sharing profiles. No sensitive information is collected or stored.",
-    "introStupidExistingUsersv2": "Firebase has been replaced with my custom backend called Stupid Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, logging the app's startup (for user count), and sharing profiles. No sensitive information is collected or stored.",
+
+    "introPage1Title": "Darkstorm Backend",
+    "introPage1DarkstormExplaination": "This app (optionally) uses my custom backend called Darkstorm Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, user counts, and sharing profiles. No sensitive information is collected or stored.",
+    "introDarkstormExistingUsers": "Firebase has been replaced with my custom backend called Darkstorm Backend. It is completely open source and collects zero information other then what's needed. It's used for crash reporting, logging the app's startup (for user count), and sharing profiles. No sensitive information is collected or stored.",
 
     "importSuccess": "Successfully imported {number} profiles.",
     "@importSuccess": {
@@ -158,7 +158,7 @@
     "inventorySaved": "Inventory Saved",
 
     "criticalHits": "Critical Hits",
-    
+
     "basicInfo": "Basic Information",
     "defense": "Defense",
     "weaponPlural": "Weapons",
@@ -335,7 +335,7 @@
     "minNum": "Number of Minions:",
 
     "minWound": "Wound per Minion:",
-    
+
     "hullTrauma": "Hull Trauma",
     "maxTrauma": "Max Hull Trauma",
     "sysStress": "System Stress",
@@ -431,10 +431,10 @@
     "additiveExplaination": "Health starts at 0 and damage increases it",
 
     "colorDice": "Color Dice Roller",
-    "stupid": "Stupid backend",
-    "stupidSub": "Needed for profiles sharing",
-    "stupidCrash": "Crash reporting",
-    "stupidLog": "Stupid startup log",
+    "darkstorm": "Darkstorm backend",
+    "darkstormSub": "Needed for profiles sharing",
+    "darkstormCrash": "Crash reporting",
+    "darkstormCount": "Darkstorm user count",
     "aboutText": "See https://github.com/CalebQ42/SWAssistant for license and other info",
     "ads": "Ads",
     "cloudSave": "Cloud Save (via Google Drive)",
@@ -448,5 +448,5 @@
     "failServer": "Server error",
     "failTimeout": "Timed out",
     "downloadFailed": "Download Failed",
-    "noConnectionStupid": "Can't connect to Stupid"
+    "noConnectionDarkstorm": "Can't connect to Darkstorm backend"
 }

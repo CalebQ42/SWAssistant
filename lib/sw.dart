@@ -130,8 +130,8 @@ class SW with TopResources {
     try {
       String? apiKey;
       var dot = DotEnv();
-      await dot.load(fileName: ".stupid");
-      apiKey = dot.maybeGet("STUPID_KEY");
+      await dot.load(fileName: ".darkstorm");
+      apiKey = dot.maybeGet("DARKSTORM_KEY");
       if (apiKey != null) {
         backend = SWBackend(this, apiKey);
         if (prefs.darkstormCrash) {

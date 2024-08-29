@@ -114,12 +114,9 @@ class SettingsState extends State {
             title: Text(app.locale.amoledTheme),
           ),
           const Divider(),
-          SwitchListTile(
+          UpdatingSwitchTile(
             value: app.prefs.colorDice,
-            onChanged: (b) {
-              app.prefs.colorDice = b;
-              app.topLevelUpdate();
-            },
+            onChanged: (b) => app.prefs.colorDice = b,
             title: Text(app.locale.colorDice),
           ),
           const Divider(),
@@ -260,8 +257,8 @@ class SettingsState extends State {
                 app.backend = null;
               }
             },
-            title: Text(app.locale.stupid),
-            subtitle: Text(app.locale.stupidSub),
+            title: Text(app.locale.darkstorm),
+            subtitle: Text(app.locale.darkstormSub),
           ),
           const Divider(),
           UpdatingSwitchTile(
@@ -271,7 +268,7 @@ class SettingsState extends State {
                     app.prefs.darkstormCount = b;
                   }
                 : null,
-            title: Text(app.locale.stupidLog),
+            title: Text(app.locale.darkstormCount),
           ),
           const Divider(),
           UpdatingSwitchTile(
@@ -295,7 +292,7 @@ class SettingsState extends State {
                     }
                   }
                 : null,
-            title: Text(app.locale.stupidCrash),
+            title: Text(app.locale.darkstormCrash),
           ),
           const Divider(),
           // TextButton(
@@ -313,7 +310,10 @@ class SettingsState extends State {
           // ),
           // const Divider(),
           TextButton(
-            onPressed: () => Navigator.pushNamed(context, "/intro"),
+            onPressed: () {
+              app.prefs.showIntro = true;
+              Navigator.pushNamed(context, "/intro");
+            },
             style: const ButtonStyle(alignment: Alignment.centerLeft),
             child: Padding(
               padding: const EdgeInsets.all(10),

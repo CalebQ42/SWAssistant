@@ -144,7 +144,7 @@ class SWAppState extends State<SWApp> {
           var intro = Intro(app);
           if (intro.pages.isNotEmpty) {
             widy = IntroScreen(
-                pages: Intro(app).pages,
+                pages: intro.pages,
                 onDone: () {
                   app.prefs.showIntro = false;
                   app.prefs.stupidIntro = false;

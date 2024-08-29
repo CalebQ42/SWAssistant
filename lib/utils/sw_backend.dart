@@ -27,26 +27,27 @@ class SWBackend extends DarkstormBackend {
         return UploadResponse(statusCode: 413);
       }
       var resp = await post(
-          baseUrl.resolveUri(
-            Uri(
-              path: "/swa/profile",
-              queryParameters: {
-                "type": () {
-                  if (ed is Character) {
-                    return "character";
-                  } else if (ed is Minion) {
-                    return "minion";
-                  }
-                  return "vehicle";
-                }()
-              },
-            ),
+        baseUrl.resolveUri(
+          Uri(
+            path: "/swa/profile",
+            queryParameters: {
+              "type": () {
+                if (ed is Character) {
+                  return "character";
+                } else if (ed is Minion) {
+                  return "minion";
+                }
+                return "vehicle";
+              }()
+            },
           ),
-          headers: <String, String>{
-            "Content-Type": "application/json",
-            "X-API-Key": apiKey
-          },
-          body: outBod);
+        ),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "X-API-Key": apiKey
+        },
+        body: outBod,
+      );
       var out = UploadResponse(
         statusCode: resp.statusCode,
       );
@@ -76,7 +77,7 @@ class SWBackend extends DarkstormBackend {
     try {
       var resp = await get(
           baseUrl.resolveUri(
-            Uri(path: "/profile/$id"),
+            Uri(path: "/swa/profile/$id"),
           ),
           headers: {"X-API-Key": apiKey});
       if (resp.statusCode != 200 || resp.body.isEmpty) return null;

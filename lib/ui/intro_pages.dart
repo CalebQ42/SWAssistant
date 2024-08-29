@@ -56,15 +56,15 @@ class Intro {
         children: [
           Text(
             app.prefs.showIntro
-                ? AppLocalizations.of(context)!.introPage1StupidExplainationv2
-                : AppLocalizations.of(context)!.introStupidExistingUsersv2,
+                ? AppLocalizations.of(context)!.introPage1DarkstormExplaination
+                : AppLocalizations.of(context)!.introDarkstormExistingUsers,
           ),
         ],
       ),
       items: (c) => [
         UpdatingSwitchTile(
           title: Text(
-            AppLocalizations.of(context)!.stupid,
+            AppLocalizations.of(context)!.darkstorm,
           ),
           value: app.prefs.darkstormBackend,
           onChanged: (b) {
@@ -74,7 +74,7 @@ class Intro {
         ),
         SwitchListTile(
             title: Text(
-              AppLocalizations.of(context)!.stupidLog,
+              AppLocalizations.of(context)!.darkstormCount,
             ),
             value: app.prefs.darkstormCount,
             onChanged: app.prefs.darkstormBackend
@@ -85,7 +85,7 @@ class Intro {
                 : null),
         SwitchListTile(
             title: Text(
-              AppLocalizations.of(context)!.stupidCrash,
+              AppLocalizations.of(context)!.darkstormCrash,
             ),
             value: app.prefs.darkstormCrash,
             onChanged: app.prefs.darkstormBackend
