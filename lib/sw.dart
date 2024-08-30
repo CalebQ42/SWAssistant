@@ -70,6 +70,10 @@ class SW with TopResources {
       app.prefs.newDrive = true;
     }
     if (kDebugMode) app.devMode = true;
+    if (app.prefs.noAnimations) {
+      app.globalDuration = Duration.zero;
+      app.transitionDuration = Duration.zero;
+    }
     if (!kIsWeb) {
       await pathprov.loadLibrary();
       var docDir = await pathprov.getApplicationDocumentsDirectory();

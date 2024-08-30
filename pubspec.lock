@@ -100,10 +100,9 @@ packages:
   darkstorm_common:
     dependency: "direct main"
     description:
-      name: darkstorm_common
-      sha256: "8661f4fe4dbdd454ffa7a29729d516993de7279728057aeb981e1d9004bfb825"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../darkstorm-common"
+      relative: true
+    source: path
     version: "2.0.0"
   dbus:
     dependency: transitive

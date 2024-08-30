@@ -51,15 +51,16 @@ class SkillEditDialog {
           children: [
             Container(height: 15),
             _SkillSelector(skill, bot),
-            Container(height: 10),
-            TextField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              controller: valueController,
-              decoration: InputDecoration(
-                labelText: SW.of(context).locale.value,
+            if (creature is Character) Container(height: 10),
+            if (creature is Character)
+              TextField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                controller: valueController,
+                decoration: InputDecoration(
+                  labelText: SW.of(context).locale.value,
+                ),
               ),
-            ),
             if (creature is Character) Container(height: 10),
             if (creature is Character)
               UpdatingSwitchTile(

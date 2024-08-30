@@ -34,6 +34,7 @@ class _InfoCardState extends State<InfoCard> {
       childrenPadding: const EdgeInsets.all(10),
       expansionAnimationStyle: AnimationStyle(
         duration: app.globalDuration,
+        reverseDuration: app.globalDuration,
       ),
       title: AnimatedAlign(
         curve: Curves.easeOutBack,
