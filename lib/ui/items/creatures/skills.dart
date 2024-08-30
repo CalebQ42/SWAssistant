@@ -47,83 +47,98 @@ class SkillsState extends State<Skills> with StatefulCard {
                   ),
                 ),
               ),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                transitionBuilder: (child, anim) {
-                  var offset = const Offset(1, 0);
-                  if (child is Padding) {
-                    offset = const Offset(-1, 0);
-                  }
-                  return ClipRect(
-                    child: SizeTransition(
-                      sizeFactor: anim,
-                      axis: Axis.horizontal,
+              AnimatedSize(
+                duration: app.globalDuration,
+                child: AnimatedSwitcher(
+                  duration: app.globalDuration,
+                  transitionBuilder: (child, anim) {
+                    return ClipRect(
                       child: SlideTransition(
-                        position: Tween<Offset>(begin: offset, end: Offset.zero)
+                        position: Tween<Offset>(
+                                begin: const Offset(1, 0), end: Offset.zero)
                             .animate(anim),
                         child: child,
                       ),
-                    ),
-                  );
-                },
-                child: !edit && creature is Character
-                    ? Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Text(creature.skills[index].value.toString()),
-                      )
-                    : !edit
-                        ? Container(
-                            height: 40,
-                          )
-                        : OverflowBar(
-                            children: [
-                              IconButton(
-                                splashRadius: 20,
-                                constraints: const BoxConstraints(
-                                    maxHeight: 40.0, maxWidth: 40.0),
-                                icon: const Icon(Icons.delete_forever),
-                                onPressed: () {
-                                  var temp = Skill.from(creature.skills[index]);
-                                  setState(
-                                    () => creature.skills.removeAt(index),
-                                  );
-                                  creature.save(context: context);
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(app.locale.deletedSkill),
-                                      action: SnackBarAction(
-                                        label: app.locale.undo,
-                                        onPressed: () {
-                                          setState(
-                                            () => creature.skills
-                                                .insert(index, temp),
-                                          );
-                                          creature.save(context: context);
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                splashRadius: 20,
-                                constraints: const BoxConstraints(
-                                    maxHeight: 40.0, maxWidth: 40.0),
-                                icon: const Icon(Icons.edit),
-                                onPressed: () => SkillEditDialog(
-                                  creature: creature,
-                                  onClose: (skill) {
+                    );
+                  },
+                  layoutBuilder: (child, oldStack) {
+                    List<Widget> newStack = [];
+                    for (var chil in oldStack) {
+                      newStack.add(
+                        SizedOverflowBox(
+                          size: Size.zero,
+                          child: chil,
+                        ),
+                      );
+                    }
+                    return Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        ...newStack,
+                        child!,
+                      ],
+                    );
+                  },
+                  child: !edit && creature is Character
+                      ? Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(creature.skills[index].value.toString()),
+                        )
+                      : !edit
+                          ? Container(
+                              height: 40,
+                            )
+                          : OverflowBar(
+                              children: [
+                                IconButton(
+                                  splashRadius: 20,
+                                  constraints: const BoxConstraints(
+                                      maxHeight: 40.0, maxWidth: 40.0),
+                                  icon: const Icon(Icons.delete_forever),
+                                  onPressed: () {
+                                    var temp =
+                                        Skill.from(creature.skills[index]);
                                     setState(
-                                        () => creature.skills[index] = skill);
+                                      () => creature.skills.removeAt(index),
+                                    );
                                     creature.save(context: context);
+                                    ScaffoldMessenger.of(context)
+                                        .clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(app.locale.deletedSkill),
+                                        action: SnackBarAction(
+                                          label: app.locale.undo,
+                                          onPressed: () {
+                                            setState(
+                                              () => creature.skills
+                                                  .insert(index, temp),
+                                            );
+                                            creature.save(context: context);
+                                          },
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  sk: creature.skills[index],
-                                ).show(context),
-                              )
-                            ],
-                          ),
+                                ),
+                                IconButton(
+                                  splashRadius: 20,
+                                  constraints: const BoxConstraints(
+                                      maxHeight: 40.0, maxWidth: 40.0),
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () => SkillEditDialog(
+                                    creature: creature,
+                                    onClose: (skill) {
+                                      setState(
+                                          () => creature.skills[index] = skill);
+                                      creature.save(context: context);
+                                    },
+                                    sk: creature.skills[index],
+                                  ).show(context),
+                                )
+                              ],
+                            ),
+                ),
               ),
             ],
           ),
@@ -136,7 +151,7 @@ class SkillsState extends State<Skills> with StatefulCard {
         children: <Widget>[
           Column(children: children),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: app.globalDuration,
             child: edit
                 ? Center(
                     child: IconButton(

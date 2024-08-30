@@ -28,15 +28,17 @@ late SW app;
 Future<void> main() async {
   usePathUrlStrategy();
   runZonedGuarded<Future<void>>(
-      () async => SW.baseInit().then((a) {
-            app = a;
-            runApp(
-              TopInherit(
-                resources: a,
-                child: const SWApp(),
-              ),
-            );
-          }), (error, stack) async {
+      () async => SW.baseInit().then(
+            (a) {
+              app = a;
+              runApp(
+                TopInherit(
+                  resources: a,
+                  child: const SWApp(),
+                ),
+              );
+            },
+          ), (error, stack) async {
     if (FlutterError.onError != null) {
       FlutterError.onError!(
         FlutterErrorDetails(
@@ -144,13 +146,14 @@ class SWAppState extends State<SWApp> {
           var intro = Intro(app);
           if (intro.pages.isNotEmpty) {
             widy = IntroScreen(
-                pages: intro.pages,
-                onDone: () {
-                  app.prefs.showIntro = false;
-                  app.prefs.stupidIntro = false;
-                  app.nav.pushNamedAndRemoveUntil(
-                      settings.name ?? "/", (route) => false);
-                });
+              pages: intro.pages,
+              onDone: () {
+                app.prefs.showIntro = false;
+                app.prefs.stupidIntro = false;
+                app.nav.pushNamedAndRemoveUntil(
+                    settings.name ?? "/", (route) => false);
+              },
+            );
           }
           newSettings = const RouteSettings(name: "/intro");
         }
@@ -209,6 +212,7 @@ class SWAppState extends State<SWApp> {
           }
         }
         return PageRouteBuilder(
+          transitionDuration: SW.of(context).globalDuration,
           pageBuilder: (context, anim, secondaryAnim) {
             return widy!;
           },

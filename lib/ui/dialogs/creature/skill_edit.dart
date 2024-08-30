@@ -51,22 +51,23 @@ class SkillEditDialog {
           children: [
             Container(height: 15),
             _SkillSelector(skill, bot),
+            Container(height: 10),
+            TextField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              controller: valueController,
+              decoration: InputDecoration(
+                labelText: SW.of(context).locale.value,
+              ),
+            ),
             if (creature is Character) Container(height: 10),
             if (creature is Character)
-              TextField(
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                controller: valueController,
-                decoration: InputDecoration(
-                  labelText: SW.of(context).locale.value,
-                ),
+              UpdatingSwitchTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(SW.of(context).locale.career),
+                value: skill.career,
+                onChanged: (b) => skill.career = b,
               ),
-            UpdatingSwitchTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(SW.of(context).locale.career),
-              value: skill.career,
-              onChanged: (b) => skill.career = b,
-            ),
           ],
         ),
       ),
@@ -104,6 +105,7 @@ class _SkillSelectorState extends State<_SkillSelector> {
 
   @override
   Widget build(BuildContext context) {
+    var app = SW.of(context);
     skillsList = Skill.skillsList(context);
     if (widget.skill.name != null &&
         !skillsList.containsKey(widget.skill.name)) {
@@ -113,14 +115,14 @@ class _SkillSelectorState extends State<_SkillSelector> {
       children: [
         InputDecorator(
           decoration: InputDecoration(
-            labelText: SW.of(context).locale.skill,
+            labelText: app.locale.skill,
           ),
           child: DropdownButton<String>(
             isDense: true,
             isExpanded: true,
             onTap: () => FocusScope.of(context).unfocus(),
             onChanged: (value) {
-              if (value != SW.of(context).locale.skills35) {
+              if (value != app.locale.skills35) {
                 manual = false;
                 widget.skill.name = value!;
                 widget.skill.base = skillsList[value]!;
@@ -147,24 +149,30 @@ class _SkillSelectorState extends State<_SkillSelector> {
         ),
         if (manual) Container(height: 10),
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 150),
+          duration: app.globalDuration,
           transitionBuilder: (child, anim) => SizeTransition(
             sizeFactor: anim,
             child: child,
           ),
           child: !manual
               ? Container()
-              : TextField(
-                  textCapitalization: TextCapitalization.words,
-                  onChanged: (value) => widget.skill.name = value,
-                  autofillHints: skillsList.keys,
-                  controller: skillController,
+              : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: TextField(
+                    textCapitalization: TextCapitalization.words,
+                    onChanged: (value) => widget.skill.name = value,
+                    autofillHints: skillsList.keys,
+                    controller: skillController,
+                    decoration: InputDecoration(
+                      labelText: app.locale.skillName,
+                    ),
+                  ),
                 ),
         ),
         Container(height: 10),
         InputDecorator(
           decoration: InputDecoration(
-            labelText: SW.of(context).locale.characteristic,
+            labelText: app.locale.characteristic,
           ),
           child: DropdownButton<int>(
             isDense: true,

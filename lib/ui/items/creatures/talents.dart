@@ -75,7 +75,7 @@ class TalentsState extends State<Talents> with StatefulCard {
                 ],
               ),
               AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
+                duration: app.globalDuration,
                 transitionBuilder: (child, anim) {
                   var offset = const Offset(1, 0);
                   if (child is Container) {
@@ -147,7 +147,7 @@ class TalentsState extends State<Talents> with StatefulCard {
           ),
         )..add(
             AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
+              duration: app.globalDuration,
               child: edit
                   ? Center(
                       child: IconButton(

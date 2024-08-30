@@ -238,7 +238,7 @@ class InventoryState extends State<Inventory> with StatefulCard {
                   ],
                 ),
                 AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: app.globalDuration,
                   transitionBuilder: (child, anim) {
                     var offset = const Offset(1, 0);
                     if (child is Container) {
@@ -344,7 +344,7 @@ class InventoryState extends State<Inventory> with StatefulCard {
             ),
           ),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: app.globalDuration,
             child: edit
                 ? Center(
                     child: IconButton(

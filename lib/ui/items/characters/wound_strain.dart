@@ -97,10 +97,10 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
         Row(
           children: <Widget>[
             Expanded(
-              child: SizedBox(
-                height: 80,
+              child: AnimatedSize(
+                duration: app.globalDuration,
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: app.globalDuration,
                   transitionBuilder: (wid, anim) {
                     Tween<Offset> offset;
                     if (wid is Padding) {
@@ -115,6 +115,24 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                         position: offset.animate(anim),
                         child: Center(child: wid),
                       ),
+                    );
+                  },
+                  layoutBuilder: (child, oldStack) {
+                    List<Widget> newStack = [];
+                    for (var chil in oldStack) {
+                      newStack.add(
+                        SizedOverflowBox(
+                          size: Size.zero,
+                          child: chil,
+                        ),
+                      );
+                    }
+                    return Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        ...newStack,
+                        child!,
+                      ],
                     );
                   },
                   child: !edit
@@ -159,7 +177,10 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                         )
                       : Padding(
                           padding: const EdgeInsets.only(
-                              right: 3.0, left: 3.0, top: 3.0),
+                            right: 3.0,
+                            left: 3.0,
+                            top: 5.0,
+                          ),
                           child: TextField(
                             controller: woundThreshController,
                             keyboardType: TextInputType.number,
@@ -175,10 +196,10 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
               ),
             ),
             Expanded(
-              child: SizedBox(
-                height: 80,
+              child: AnimatedSize(
+                duration: app.globalDuration,
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: app.globalDuration,
                   transitionBuilder: (wid, anim) {
                     Tween<Offset> offset;
                     if (wid is Padding) {
@@ -193,6 +214,24 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                         position: offset.animate(anim),
                         child: Center(child: wid),
                       ),
+                    );
+                  },
+                  layoutBuilder: (child, oldStack) {
+                    List<Widget> newStack = [];
+                    for (var chil in oldStack) {
+                      newStack.add(
+                        SizedOverflowBox(
+                          size: Size.zero,
+                          child: chil,
+                        ),
+                      );
+                    }
+                    return Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        ...newStack,
+                        child!,
+                      ],
                     );
                   },
                   child: !edit
@@ -234,7 +273,10 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                         )
                       : Padding(
                           padding: const EdgeInsets.only(
-                              right: 3.0, left: 3.0, top: 3.0),
+                            right: 3.0,
+                            left: 3.0,
+                            top: 5.0,
+                          ),
                           child: TextField(
                             controller: strainThreshController,
                             keyboardType: TextInputType.number,
@@ -242,7 +284,8 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
                               FilteringTextInputFormatter.digitsOnly
                             ],
                             decoration: InputDecoration(
-                                labelText: app.locale.maxStrain),
+                              labelText: app.locale.maxStrain,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -251,13 +294,13 @@ class WoundStrainState extends State<WoundStrain> with StatefulCard {
             )
           ],
         ),
-        Container(height: 5),
+        Container(height: 10),
         const Divider(),
-        Container(height: 5),
+        Container(height: 10),
         AnimatedSize(
-          duration: const Duration(milliseconds: 300),
+          duration: app.globalDuration,
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: app.globalDuration,
             transitionBuilder: (wid, anim) {
               Tween<Offset> slide;
               if (wid is Text) {

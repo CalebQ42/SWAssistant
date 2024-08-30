@@ -20,16 +20,12 @@ class EditableCardsState extends State<EditableCards> {
   late List<Widget> cards;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    cards = Editable.of(context).cards(context);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    cards = Editable.of(context).cards(context);
     double width = min(
-        GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.height,
-        350);
+      GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.height,
+      350,
+    );
     int rows =
         ((GMModeSize.of(context)?.width ?? MediaQuery.of(context).size.width) /
                 width)
@@ -72,9 +68,10 @@ class EditableCardsState extends State<EditableCards> {
               (i) => ConstrainedBox(
                 key: ValueKey(cards.length - leftovers + i - 1),
                 constraints: BoxConstraints(
-                    maxWidth: (GMModeSize.of(context)?.width ??
-                            MediaQuery.of(context).size.width) /
-                        rows),
+                  maxWidth: (GMModeSize.of(context)?.width ??
+                          MediaQuery.of(context).size.width) /
+                      rows,
+                ),
                 child: cards[cards.length - leftovers + i - 1],
               ),
             ),

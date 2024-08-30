@@ -18,33 +18,34 @@ class EditableNotesState extends State {
   final GlobalKey<AnimatedListState> listy = GlobalKey<AnimatedListState>();
 
   @override
-  Widget build(BuildContext context) => FrameContent(
-        fab: FloatingActionButton(
-          child: const Icon(Icons.note_add),
-          onPressed: () {
-            Editable.of(context).notes.add(Note());
-            listy.currentState
-                ?.insertItem(Editable.of(context).notes.length - 1);
-          },
-        ),
-        child: AnimatedList(
-          physics: const BouncingScrollPhysics(),
-          key: listy,
-          initialItemCount: Editable.of(context).notes.length,
-          itemBuilder: (context, index, anim) {
-            return SlideTransition(
-              position: Tween(begin: const Offset(1.0, 0.0), end: Offset.zero)
-                  .animate(anim),
-              child: NoteCard(
-                key: ValueKey(index),
-                index: index,
-                list: listy,
-              ),
-            );
-          },
-          padding: const EdgeInsets.only(bottom: 75),
-        ),
-      );
+  Widget build(BuildContext context) {
+    return FrameContent(
+      fab: FloatingActionButton(
+        child: const Icon(Icons.note_add),
+        onPressed: () {
+          Editable.of(context).notes.add(Note());
+          listy.currentState?.insertItem(Editable.of(context).notes.length - 1);
+        },
+      ),
+      child: AnimatedList(
+        physics: const BouncingScrollPhysics(),
+        key: listy,
+        initialItemCount: Editable.of(context).notes.length,
+        itemBuilder: (context, index, anim) {
+          return SlideTransition(
+            position: Tween(begin: const Offset(1.0, 0.0), end: Offset.zero)
+                .animate(anim),
+            child: NoteCard(
+              key: ValueKey(index),
+              index: index,
+              list: listy,
+            ),
+          );
+        },
+        padding: const EdgeInsets.only(bottom: 75),
+      ),
+    );
+  }
 }
 
 class NoteCard extends StatefulWidget {

@@ -89,7 +89,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard {
             ],
           ),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: app.globalDuration,
             child: !edit
                 ? Container()
                 : OverflowBar(
@@ -167,7 +167,7 @@ class CritState extends State<CriticalInjuries> with StatefulCard {
         children: [
           Column(children: criticalinjuriesList),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: app.globalDuration,
             transitionBuilder: (wid, anim) {
               return SizeTransition(
                 sizeFactor: anim,

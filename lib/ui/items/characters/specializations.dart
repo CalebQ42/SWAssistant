@@ -34,82 +34,97 @@ class SpecializationsState extends State<Specializations> with StatefulCard {
               Expanded(
                 child: Text(character.specializations[index]),
               ),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                transitionBuilder: (child, anim) {
-                  var offset = const Offset(1, 0);
-                  if ((!edit && child is OverflowBar) ||
-                      (edit && child is Container)) {
-                    offset = const Offset(-1, 0);
-                  }
-                  return ClipRect(
-                    child: SizeTransition(
-                      sizeFactor: anim,
-                      axis: Axis.horizontal,
+              AnimatedSize(
+                duration: app.globalDuration,
+                child: AnimatedSwitcher(
+                  duration: app.globalDuration,
+                  transitionBuilder: (child, anim) {
+                    var offset = const Offset(1, 0);
+                    return ClipRect(
                       child: SlideTransition(
                         position: Tween<Offset>(begin: offset, end: Offset.zero)
                             .animate(anim),
                         child: child,
                       ),
-                    ),
-                  );
-                },
-                child: edit
-                    ? OverflowBar(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.delete_forever),
-                            iconSize: 24.0,
-                            constraints: const BoxConstraints(
-                                maxHeight: 40.0, maxWidth: 40.0),
-                            onPressed: () {
-                              var temp = character.specializations[index];
-                              setState(
-                                () => character.specializations.removeAt(index),
-                              );
-                              character.save(context: context);
-                              ScaffoldMessenger.of(context).clearSnackBars();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content:
-                                      Text(app.locale.deletedSpecialization),
-                                  action: SnackBarAction(
-                                    label: app.locale.undo,
-                                    onPressed: () {
-                                      setState(
-                                        () => character.specializations
-                                            .insert(index, temp),
-                                      );
-                                      character.save(context: context);
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            iconSize: 24.0,
-                            constraints: const BoxConstraints(
-                                maxHeight: 40.0, maxWidth: 40.0),
-                            onPressed: () => SpecializationEditDialog(
-                              onClose: (specialization) {
-                                setState(() => character
-                                    .specializations[index] = specialization);
+                    );
+                  },
+                  layoutBuilder: (child, oldStack) {
+                    List<Widget> newStack = [];
+                    for (var chil in oldStack) {
+                      newStack.add(
+                        SizedOverflowBox(
+                          size: Size.zero,
+                          child: chil,
+                        ),
+                      );
+                    }
+                    return Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        ...newStack,
+                        child!,
+                      ],
+                    );
+                  },
+                  child: edit
+                      ? OverflowBar(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.delete_forever),
+                              iconSize: 24.0,
+                              constraints: const BoxConstraints(
+                                  maxHeight: 40.0, maxWidth: 40.0),
+                              onPressed: () {
+                                var temp = character.specializations[index];
+                                setState(
+                                  () =>
+                                      character.specializations.removeAt(index),
+                                );
                                 character.save(context: context);
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text(app.locale.deletedSpecialization),
+                                    action: SnackBarAction(
+                                      label: app.locale.undo,
+                                      onPressed: () {
+                                        setState(
+                                          () => character.specializations
+                                              .insert(index, temp),
+                                        );
+                                        character.save(context: context);
+                                      },
+                                    ),
+                                  ),
+                                );
                               },
-                              specialization: character.specializations[index],
-                            ).show(context),
-                          )
-                        ],
-                      )
-                    : Container(height: 40),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              iconSize: 24.0,
+                              constraints: const BoxConstraints(
+                                  maxHeight: 40.0, maxWidth: 40.0),
+                              onPressed: () => SpecializationEditDialog(
+                                onClose: (specialization) {
+                                  setState(() => character
+                                      .specializations[index] = specialization);
+                                  character.save(context: context);
+                                },
+                                specialization:
+                                    character.specializations[index],
+                              ).show(context),
+                            )
+                          ],
+                        )
+                      : Container(height: 40),
+                ),
               )
             ],
           ),
         )..add(
             AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
+              duration: app.globalDuration,
               child: edit
                   ? Center(
                       child: IconButton(

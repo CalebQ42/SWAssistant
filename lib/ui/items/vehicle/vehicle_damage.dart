@@ -69,7 +69,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard {
               child: SizedBox(
                 height: 80,
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: app.globalDuration,
                   child: !edit
                       ? Column(
                           children: [
@@ -141,7 +141,7 @@ class VehicleDamageState extends State<VehicleDamage> with StatefulCard {
               child: SizedBox(
                 height: 80,
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: app.globalDuration,
                   child: !edit
                       ? Column(
                           children: [

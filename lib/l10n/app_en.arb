@@ -231,6 +231,8 @@
     "skills34": "Knowledge(Xenology)",
     "skills35": "Other...",
 
+    "skillName": "Skill Name",
+
     "severity": "Severity",
     "severityLevel1": "Easy",
     "severityLevel2": "Average",
@@ -438,6 +440,7 @@
     "aboutText": "See https://github.com/CalebQ42/SWAssistant for license and other info",
     "ads": "Ads",
     "cloudSave": "Cloud Save (via Google Drive)",
+    "disableAnimations": "Disable Animations (For Performance)",
     "showIntro": "Show Intro",
 
     "shareCode": "Share Code",

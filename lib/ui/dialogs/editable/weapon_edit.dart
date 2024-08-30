@@ -181,7 +181,7 @@ class _AmmoState extends State<_WeaponAmmo> {
         children: [
           //Ammo
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: SW.of(context).globalDuration,
             transitionBuilder: (child, anim) {
               return SizeTransition(
                   sizeFactor: anim, axisAlignment: -1, child: child);

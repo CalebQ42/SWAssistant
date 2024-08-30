@@ -298,6 +298,21 @@ class SettingsState extends State {
             title: Text(app.locale.darkstormCrash),
           ),
           const Divider(),
+          UpdatingSwitchTile(
+            value: app.prefs.noAnimations,
+            onChanged: (b) {
+              app.prefs.noAnimations = b;
+              if (b) {
+                app.globalDuration = Duration.zero;
+                app.transitionDuration = Duration.zero;
+              } else {
+                app.globalDuration = const Duration(milliseconds: 300);
+                app.transitionDuration = const Duration(milliseconds: 100);
+              }
+            },
+            title: Text(app.locale.disableAnimations),
+          ),
+          const Divider(),
           // TextButton(
           //   onPressed: () => app.manualImport(context),
           //   style: const ButtonStyle(

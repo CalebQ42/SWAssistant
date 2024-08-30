@@ -33,6 +33,7 @@ class EditContentState extends State<EditContent> with StatefulCard {
 
   @override
   Widget build(BuildContext context) {
+    var app = SW.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -41,28 +42,31 @@ class EditContentState extends State<EditContent> with StatefulCard {
         ),
         OverflowBar(
           alignment: MainAxisAlignment.end,
+          overflowAlignment: OverflowBarAlignment.end,
           children: [
-            if (widget.extraEditButtons != null)
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (child, anim) => ClipRect(
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                            begin: const Offset(1.0, 0), end: Offset.zero)
-                        .animate(anim),
-                    child: child,
-                  ),
-                ),
-                child: (edit)
-                    ? OverflowBar(
-                        children: widget.extraEditButtons!(context),
-                      )
-                    : Container(),
-              ),
+            if (widget.extraEditButtons != null && edit)
+              ...widget.extraEditButtons!(context),
+            // AnimatedSize(
+            //   duration: app.globalDuration,
+            //   child: AnimatedSwitcher(
+            //     duration: app.globalDuration,
+            //     transitionBuilder: (child, anim) => ClipRect(
+            //       child: SlideTransition(
+            //         position: Tween<Offset>(
+            //           begin: const Offset(1.0, 0),
+            //           end: Offset.zero,
+            //         ).animate(anim),
+            //         child: child,
+            //       ),
+            //     ),
+            //     child: (edit)
+            //         ? ,
+            //   ),
+            // ),
             if (widget.extraButtons != null)
               ...widget.extraButtons!(context, edit),
             Tooltip(
-              message: SW.of(context).locale.edit,
+              message: app.locale.edit,
               child: MiniIconButton(
                 icon: const Icon(Icons.edit),
                 color: edit

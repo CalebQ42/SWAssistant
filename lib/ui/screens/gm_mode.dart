@@ -167,19 +167,21 @@ class _GMModeEditorState extends State<_GMModeEditor> {
   }
 
   @override
-  Widget build(BuildContext context) => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: curEdit == null
-            ? Center(
-                child: Text(
-                  SW.of(context).locale.gmModeTap,
-                  textAlign: TextAlign.justify,
-                ),
-              )
-            : EditingEditable(
-                curEdit!,
-                key: stuff,
-                contained: true,
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: SW.of(context).globalDuration,
+      child: curEdit == null
+          ? Center(
+              child: Text(
+                SW.of(context).locale.gmModeTap,
+                textAlign: TextAlign.justify,
               ),
-      );
+            )
+          : EditingEditable(
+              curEdit!,
+              key: stuff,
+              contained: true,
+            ),
+    );
+  }
 }

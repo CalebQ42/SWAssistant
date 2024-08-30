@@ -29,13 +29,6 @@ class Prefs {
   bool get darkstormCrash => prefs.getBool("stupidCrash") ?? true;
   set darkstormCrash(bool value) => prefs.setBool("stupidCrash", value);
 
-  //Firebase (depreciated)
-  // bool get firebase => prefs.getBool("firebase") ?? kIsWeb || Platform.isAndroid || Platform.isIOS;
-  // set firebase(bool value) => prefs.setBool("firebase", value);
-
-  // bool get crashlytics => prefs.getBool("crashlytics") ?? true;
-  // set crashlytics(bool value) => prefs.setBool("crashlytics", value);
-
   //Theme
   bool get lightTheme => prefs.getBool("forceLight") ?? false;
   set lightTheme(bool value) {
@@ -77,4 +70,7 @@ class Prefs {
 
   bool get subtractMode => prefs.getBool("subtract") ?? true;
   set subtractMode(bool value) => prefs.setBool("subtract", value);
+
+  bool get noAnimations => prefs.getBool("noAnimations") ?? false;
+  set noAnimations(bool value) => prefs.setBool("noAnimations", value);
 }

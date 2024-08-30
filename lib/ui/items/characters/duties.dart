@@ -69,7 +69,7 @@ class DutiesState extends State<Duties> with StatefulCard {
                 ],
               ),
               AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
+                duration: app.globalDuration,
                 transitionBuilder: (child, anim) {
                   var offset = const Offset(1, 0);
                   if (child is Padding) {
@@ -144,7 +144,7 @@ class DutiesState extends State<Duties> with StatefulCard {
           ),
         )..add(
             AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
+              duration: app.globalDuration,
               transitionBuilder: (child, anim) => SizeTransition(
                   sizeFactor: anim, axisAlignment: -1.0, child: child),
               child: edit

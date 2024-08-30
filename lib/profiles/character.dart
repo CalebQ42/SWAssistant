@@ -263,101 +263,103 @@ class Character extends Editable with Creature {
   var obliKey = GlobalKey<ObligationsState>();
 
   @override
-  List<EditContent> cardContents(BuildContext context) => [
-        EditContent(
-          key: const Key("info"),
-          contentKey: infoKey,
-          content: CharacterInfo(key: infoKey),
+  List<EditContent> cardContents(BuildContext context) {
+    return [
+      EditContent(
+        key: const Key("info"),
+        contentKey: infoKey,
+        content: CharacterInfo(key: infoKey),
+        defaultEdit: () =>
+            species == "" &&
+            age == 0 &&
+            motivation == "" &&
+            career == "" &&
+            category == "",
+      ),
+      EditContent(
+          key: const Key("wound"),
+          content: WoundStrain(key: woundStrainKey),
+          contentKey: woundStrainKey,
           defaultEdit: () =>
-              species == "" &&
-              age == 0 &&
-              motivation == "" &&
-              career == "" &&
-              category == "",
+              soak == 0 && woundThresh == 0 && strainThresh == 0),
+      EditContent(
+          key: const Key("characteristics"),
+          contentKey: charKey,
+          content: Characteristics(key: charKey),
+          defaultEdit: () => charVals.every((element) => element == 0)),
+      EditContent(
+          key: const Key("skills"),
+          content: Skills(key: skillKey),
+          contentKey: skillKey,
+          defaultEdit: () => skills.isEmpty),
+      EditContent(
+        key: const Key("defense"),
+        contentKey: defKey,
+        content: Defense(key: defKey),
+        defaultEdit: () => defMelee == 0 && defRanged == 0,
+      ),
+      EditContent(
+          key: const Key("weapons"),
+          content: Weapons(key: weaponKey),
+          contentKey: weaponKey,
+          defaultEdit: () => weapons.isEmpty),
+      EditContent(
+          key: const Key("critInj"),
+          content: CriticalInjuries(key: injKey),
+          contentKey: injKey,
+          defaultEdit: () => criticalInjuries.isEmpty),
+      EditContent(
+          key: const Key("special"),
+          content: Specializations(key: specKey),
+          contentKey: specKey,
+          defaultEdit: () => specializations.isEmpty),
+      EditContent(
+          key: const Key("tal"),
+          content: Talents(key: talentKey),
+          contentKey: talentKey,
+          defaultEdit: () => talents.isEmpty),
+      if (!disableForce)
+        EditContent(
+            key: const Key("fp"),
+            content: ForcePowers(key: fpKey),
+            contentKey: fpKey,
+            defaultEdit: () => forcePowers.isEmpty && force == 0),
+      EditContent(
+        key: const Key("xp"),
+        content: XP(key: xpKey),
+        contentKey: xpKey,
+      ),
+      EditContent(
+          key: const Key("inv"),
+          content: Inventory(key: invKey),
+          contentKey: invKey,
+          defaultEdit: () => inventory.isEmpty),
+      if (!disableMorality)
+        EditContent(
+          key: const Key("morality"),
+          content: Morality(key: morKey),
+          contentKey: morKey,
+          defaultEdit: () => morality == 0 && conflict == 0,
         ),
+      if (!disableDuty)
         EditContent(
-            key: const Key("wound"),
-            content: WoundStrain(key: woundStrainKey),
-            contentKey: woundStrainKey,
-            defaultEdit: () =>
-                soak == 0 && woundThresh == 0 && strainThresh == 0),
+            key: const Key("duty"),
+            content: Duties(key: dutyKey),
+            contentKey: dutyKey,
+            defaultEdit: () => duties.isEmpty),
+      if (!disableObligation)
         EditContent(
-            key: const Key("characteristics"),
-            contentKey: charKey,
-            content: Characteristics(key: charKey),
-            defaultEdit: () => charVals.every((element) => element == 0)),
-        EditContent(
-            key: const Key("skills"),
-            content: Skills(key: skillKey),
-            contentKey: skillKey,
-            defaultEdit: () => skills.isEmpty),
-        EditContent(
-          key: const Key("defense"),
-          contentKey: defKey,
-          content: Defense(key: defKey),
-          defaultEdit: () => defMelee == 0 && defRanged == 0,
-        ),
-        EditContent(
-            key: const Key("weapons"),
-            content: Weapons(key: weaponKey),
-            contentKey: weaponKey,
-            defaultEdit: () => weapons.isEmpty),
-        EditContent(
-            key: const Key("critInj"),
-            content: CriticalInjuries(key: injKey),
-            contentKey: injKey,
-            defaultEdit: () => criticalInjuries.isEmpty),
-        EditContent(
-            key: const Key("special"),
-            content: Specializations(key: specKey),
-            contentKey: specKey,
-            defaultEdit: () => specializations.isEmpty),
-        EditContent(
-            key: const Key("tal"),
-            content: Talents(key: talentKey),
-            contentKey: talentKey,
-            defaultEdit: () => talents.isEmpty),
-        if (!disableForce)
-          EditContent(
-              key: const Key("fp"),
-              content: ForcePowers(key: fpKey),
-              contentKey: fpKey,
-              defaultEdit: () => forcePowers.isEmpty && force == 0),
-        EditContent(
-          key: const Key("xp"),
-          content: XP(key: xpKey),
-          contentKey: xpKey,
-        ),
-        EditContent(
-            key: const Key("inv"),
-            content: Inventory(key: invKey),
-            contentKey: invKey,
-            defaultEdit: () => inventory.isEmpty),
-        if (!disableMorality)
-          EditContent(
-            key: const Key("morality"),
-            content: Morality(key: morKey),
-            contentKey: morKey,
-            defaultEdit: () => morality == 0 && conflict == 0,
-          ),
-        if (!disableDuty)
-          EditContent(
-              key: const Key("duty"),
-              content: Duties(key: dutyKey),
-              contentKey: dutyKey,
-              defaultEdit: () => duties.isEmpty),
-        if (!disableObligation)
-          EditContent(
-              key: const Key("obli"),
-              content: Obligations(key: obliKey),
-              contentKey: obliKey,
-              defaultEdit: () => obligations.isEmpty),
-        EditContent(
-            key: const Key("desc"),
-            contentKey: descKey,
-            content: Description(key: descKey),
-            defaultEdit: () => desc == "")
-      ];
+            key: const Key("obli"),
+            content: Obligations(key: obliKey),
+            contentKey: obliKey,
+            defaultEdit: () => obligations.isEmpty),
+      EditContent(
+          key: const Key("desc"),
+          contentKey: descKey,
+          content: Description(key: descKey),
+          defaultEdit: () => desc == "")
+    ];
+  }
 
   static Character? of(BuildContext context) {
     var ed = Editable.of(context);

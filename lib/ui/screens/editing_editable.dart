@@ -35,16 +35,22 @@ class _EditingEditableState extends State<EditingEditable> {
       backgroundColor: Theme.of(context).cardColor,
       items: [
         BottomNavigationBarItem(
-            icon: const Icon(Icons.info), label: app.locale.stats),
+          icon: const Icon(Icons.info),
+          label: app.locale.stats,
+        ),
         BottomNavigationBarItem(
-            icon: const Icon(Icons.note), label: app.locale.notes)
+          icon: const Icon(Icons.note),
+          label: app.locale.notes,
+        )
       ],
       onTap: (value) {
         animating = true;
         pager
-            .animateToPage(value,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOutBack)
+            .animateToPage(
+          value,
+          duration: app.globalDuration * 2,
+          curve: Curves.easeOutBack,
+        )
             .whenComplete(() {
           animating = false;
           setState(() => _index = value);

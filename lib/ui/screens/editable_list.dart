@@ -91,83 +91,88 @@ class EditableListState extends State<EditableList> {
     );
     var localization = app.locale;
     Widget mainList = AnimatedList(
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        key: listKey,
-        initialItemCount: list.length,
-        padding: const EdgeInsets.only(bottom: 80),
-        itemBuilder: (context, i, anim) {
-          if (list.length <= i) return Container();
-          return SlideTransition(
-            position:
-                Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero)
-                    .animate(anim),
-            child: InheritedEditable(
-              editable: list[i],
-              child: EditableCard(
-                onTap: widget.onTap,
-                onDismiss: () {
-                  var tmp = list[i];
-                  tmp.trash(app);
-                  listKey.currentState?.removeItem(
-                    i,
-                    (context, animation) => Container(),
-                  );
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text((tmp is Character)
-                          ? app.locale.characterTrashed
-                          : (tmp is Minion)
-                              ? app.locale.minionTrashed
-                              : app.locale.vehicleTrashed),
-                      action: SnackBarAction(
-                        label: app.locale.undo,
-                        onPressed: () {
-                          app.add(tmp);
-                          tmp.save(app: app);
-                          list.insert(i, tmp);
-                          listKey.currentState?.insertItem(i);
-                        },
-                      ),
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
+      key: listKey,
+      initialItemCount: list.length,
+      padding: const EdgeInsets.only(bottom: 80),
+      itemBuilder: (context, i, anim) {
+        if (list.length <= i) return Container();
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1.0, 0), end: Offset.zero)
+              .animate(anim),
+          child: InheritedEditable(
+            editable: list[i],
+            child: EditableCard(
+              onTap: widget.onTap,
+              onDismiss: () {
+                var tmp = list[i];
+                tmp.trash(app);
+                listKey.currentState?.removeItem(
+                  i,
+                  (context, animation) => Container(),
+                );
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text((tmp is Character)
+                        ? app.locale.characterTrashed
+                        : (tmp is Minion)
+                            ? app.locale.minionTrashed
+                            : app.locale.vehicleTrashed),
+                    action: SnackBarAction(
+                      label: app.locale.undo,
+                      onPressed: () {
+                        app.add(tmp);
+                        tmp.save(app: app);
+                        list.insert(i, tmp);
+                        listKey.currentState?.insertItem(i);
+                      },
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
     if ((app.isMobile || kIsWeb) && app.prefs.googleDrive) {
       mainList = RefreshIndicator(
-          key: refreshKey,
-          onRefresh: () => Future(() async {
-                if (app.syncing) return;
-                var messager =
-                    context.mounted ? ScaffoldMessenger.of(context) : null;
-                var b = await app.syncRemote(onFull: () {
-                  if (app.showFullError) {
-                    messager?.showSnackBar(
-                      SnackBar(
-                        content: Text(app.locale.driveFull),
-                      ),
-                    );
-                    app.showFullError = false;
-                    Future.delayed(const Duration(minutes: 5),
-                        () => app.showFullError = true);
-                  }
-                });
-                messager?.clearSnackBars();
-                if (!b) {
+        key: refreshKey,
+        onRefresh: () => Future(
+          () async {
+            if (app.syncing) return;
+            var messager =
+                context.mounted ? ScaffoldMessenger.of(context) : null;
+            var b = await app.syncRemote(
+              onFull: () {
+                if (app.showFullError) {
                   messager?.showSnackBar(
                     SnackBar(
-                      content: Text(localization.syncFail),
+                      content: Text(app.locale.driveFull),
                     ),
                   );
+                  app.showFullError = false;
+                  Future.delayed(const Duration(minutes: 5),
+                      () => app.showFullError = true);
                 }
-                if (mounted) setState(() {});
-              }),
-          child: mainList);
+              },
+            );
+            messager?.clearSnackBars();
+            if (!b) {
+              messager?.showSnackBar(
+                SnackBar(
+                  content: Text(localization.syncFail),
+                ),
+              );
+            }
+            if (mounted) setState(() {});
+          },
+        ),
+        child: mainList,
+      );
     }
     return FrameContent(
       fab: widget.onTap == null
@@ -214,8 +219,11 @@ class EditableListState extends State<EditableList> {
                     break;
                 }
                 app.add(newEd);
-                Navigator.pushNamed(context, "/edit/${newEd.uid}",
-                    arguments: newEd);
+                Navigator.pushNamed(
+                  context,
+                  "/edit/${newEd.uid}",
+                  arguments: newEd,
+                );
               },
             )
           : null,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/sw.dart';
 
 class AnimatedWidgetSwitcher extends StatefulWidget {
   final int widgetNum;
@@ -27,31 +28,34 @@ class AnimatedWidgetSwitcherState extends State<AnimatedWidgetSwitcher> {
   }
 
   @override
-  Widget build(BuildContext context) => AnimatedSize(
-        duration: const Duration(milliseconds: 300),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: widget.transitionBuilder ??
-              AnimatedSwitcher.defaultTransitionBuilder,
-          layoutBuilder: (child, oldStack) {
-            var newStack = <Widget>[];
-            for (int i = 0; i < oldStack.length; i++) {
-              newStack.add(
-                SizedOverflowBox(
-                  size: Size.zero,
-                  child: oldStack[i],
-                ),
-              );
-            }
-            return Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                ...newStack,
-                child!,
-              ],
+  Widget build(BuildContext context) {
+    var app = SW.of(context);
+    return AnimatedSize(
+      duration: app.globalDuration,
+      child: AnimatedSwitcher(
+        duration: app.globalDuration,
+        transitionBuilder: widget.transitionBuilder ??
+            AnimatedSwitcher.defaultTransitionBuilder,
+        layoutBuilder: (child, oldStack) {
+          var newStack = <Widget>[];
+          for (int i = 0; i < oldStack.length; i++) {
+            newStack.add(
+              SizedOverflowBox(
+                size: Size.zero,
+                child: oldStack[i],
+              ),
             );
-          },
-          child: widget.widgetBuilders[curWid](context),
-        ),
-      );
+          }
+          return Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              ...newStack,
+              child!,
+            ],
+          );
+        },
+        child: widget.widgetBuilders[curWid](context),
+      ),
+    );
+  }
 }

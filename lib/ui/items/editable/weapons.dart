@@ -323,7 +323,7 @@ class WeaponsState extends State<Weapons> with StatefulCard {
               ],
             ),
             AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
+              duration: app.globalDuration,
               child: !edit
                   ? Container(
                       height: 24,
@@ -407,7 +407,7 @@ class WeaponsState extends State<Weapons> with StatefulCard {
         children: [
           Column(children: weaponsList),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: app.globalDuration,
             transitionBuilder: (wid, anim) {
               return SizeTransition(
                 sizeFactor: anim,

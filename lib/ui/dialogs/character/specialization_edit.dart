@@ -22,7 +22,8 @@ class SpecializationEditDialog {
             controller: specCont,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-                labelText: SW.of(context).locale.specialization),
+              labelText: SW.of(context).locale.specialization,
+            ),
           ),
         ],
       ),

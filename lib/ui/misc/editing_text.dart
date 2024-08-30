@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swassistant/profiles/utils/editable.dart';
+import 'package:swassistant/sw.dart';
 
 class EditingText extends StatelessWidget {
   final TextStyle? style;
@@ -121,8 +122,9 @@ class EditingText extends StatelessWidget {
         );
       }
     }
+    var app = SW.of(context);
     var switcher = AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
+      duration: app.globalDuration,
       child: text,
       transitionBuilder: (wid, anim) {
         Tween<Offset> slide;
@@ -155,7 +157,7 @@ class EditingText extends StatelessWidget {
       },
     );
     return AnimatedSize(
-      duration: const Duration(milliseconds: 300),
+      duration: app.globalDuration,
       child: switcher,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swassistant/sw.dart';
 
 class UpDownStat extends StatefulWidget {
   final void Function() onUpPressed;
@@ -55,7 +56,7 @@ class UpDownStatState extends State<UpDownStat> {
         ),
         Expanded(
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 150),
+            duration: SW.of(context).transitionDuration,
             child: Text(
               widget.getValue().toString(),
               key: ValueKey(widget.getValue()),
