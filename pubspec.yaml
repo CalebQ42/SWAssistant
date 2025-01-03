@@ -28,7 +28,7 @@ dependencies:
   googleapis: ^13.2.0
   uuid: ^4.5.1
   flutter_dotenv: ^5.2.1
-  darkstorm_common: ^2.0.1
+  darkstorm_common: ^2.0.2
   flutter_secure_storage: ^9.2.3
   http: ^1.2.2
 

@@ -75,7 +75,7 @@ class EditContentState extends State<EditContent> with StatefulCard {
                         .buttonTheme
                         .colorScheme
                         ?.onSurface
-                        .withOpacity(.24),
+                        .withValues(alpha: .24),
                 onPressed: () {
                   widget.contentKey.currentState?.setState(
                     () {
