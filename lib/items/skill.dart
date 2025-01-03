@@ -50,8 +50,11 @@ class Skill implements JsonSavable {
       );
     } else if (creature is Minion) {
       return SWDiceHolder(
-        ability: (creature.charVals[base!] - creature.minionNum).abs(),
-        proficiency: min(creature.charVals[base!], creature.minionNum),
+        ability:
+            (creature.charVals[base!] - max<int>(creature.minionNum - 1, 0))
+                .abs(),
+        proficiency:
+            min(creature.charVals[base!], max(creature.minionNum - 1, 0)),
       );
     }
     return SWDiceHolder();
