@@ -128,8 +128,8 @@ class _TrashListState extends State<TrashList> {
                                     : app.locale.vehicles,
                             style: Theme.of(context).textTheme.bodySmall),
                       ),
-                      if (kIsWeb) Container(height: 5),
-                      if (kIsWeb)
+                      if (kIsWeb || app.isDesktop) Container(height: 5),
+                      if (kIsWeb || app.isDesktop)
                         OverflowBar(
                           alignment: MainAxisAlignment.end,
                           children: [

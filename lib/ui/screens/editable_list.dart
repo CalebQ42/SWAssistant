@@ -423,8 +423,8 @@ class EditableCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),
-                if (kIsWeb) Container(height: 10),
-                if (kIsWeb)
+                if (kIsWeb || app.isDesktop) Container(height: 10),
+                if (kIsWeb || app.isDesktop)
                   Align(
                     alignment: Alignment.centerRight,
                     child: MiniIconButton(
