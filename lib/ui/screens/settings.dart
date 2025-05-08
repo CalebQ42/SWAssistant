@@ -2,9 +2,7 @@ import 'package:darkstorm_common/backend/backend.dart';
 import 'package:darkstorm_common/ui/frame_content.dart';
 import 'package:darkstorm_common/ui/updating_switch_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:swassistant/sw.dart';
-import 'package:swassistant/ui/dialogs/gplay_donate.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Settings extends StatefulWidget {
@@ -18,8 +16,6 @@ class SettingsState extends State {
   @override
   Widget build(BuildContext context) {
     var app = SW.of(context);
-    var scaf = ScaffoldMessenger.of(context);
-    var loc = app.locale;
     return FrameContent(
       child: ListView(
         physics: const BouncingScrollPhysics(),
@@ -45,46 +41,6 @@ class SettingsState extends State {
               padding: const EdgeInsets.all(10),
               child: Text(
                 app.locale.translate,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ),
-          const Divider(),
-          TextButton(
-            onPressed: () async {
-              if (!app.isMobile) {
-                launchUrlString("https://github.com/sponsors/CalebQ42");
-              } else {
-                if (!await InAppPurchase.instance.isAvailable()) {
-                  scaf.clearSnackBars();
-                  scaf.showSnackBar(
-                    SnackBar(
-                      content: Text(loc.gPlayUnavailable),
-                    ),
-                  );
-                } else {
-                  InAppPurchase.instance.queryProductDetails(
-                    {
-                      "donate1",
-                      "donate5",
-                      "donate10",
-                      "donate20",
-                    },
-                  ).then(
-                    (value) {
-                      if (context.mounted) {
-                        GPlayDonateDialog(value.productDetails).show(context);
-                      }
-                    },
-                  );
-                }
-              }
-            },
-            style: const ButtonStyle(alignment: Alignment.centerLeft),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                app.locale.donate,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),

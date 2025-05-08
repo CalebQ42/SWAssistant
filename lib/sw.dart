@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:darkstorm_common/backend/backend.dart';
 import 'package:darkstorm_common/util/top_resources.dart';
-import 'package:in_app_purchase/in_app_purchase.dart' deferred as inapp;
 import 'package:path_provider/path_provider.dart' deferred as pathprov;
 import 'package:googleapis/drive/v3.dart' as drive;
 
@@ -24,7 +23,7 @@ import 'package:swassistant/utils/sw_backend.dart';
 import 'package:uuid/uuid.dart';
 import 'package:darkstorm_common/drive/driver.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/l10n/app_localizations.dart';
 
 class SW with TopResources {
   final List<Minion> _min = [];
@@ -56,16 +55,6 @@ class SW with TopResources {
   static Future<SW> baseInit() async {
     WidgetsFlutterBinding.ensureInitialized();
     var app = SW(Prefs(await SharedPreferences.getInstance()));
-    if (app.isMobile) {
-      await inapp.loadLibrary();
-      inapp.InAppPurchase.instance.purchaseStream.listen((event) {
-        for (var e in event) {
-          if (e.pendingCompletePurchase) {
-            inapp.InAppPurchase.instance.completePurchase(e);
-          }
-        }
-      });
-    }
     if (!app.prefs.googleDrive || app.prefs.driveFirstLoad) {
       app.prefs.newDrive = true;
     }

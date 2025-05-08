@@ -1,7 +1,7 @@
 import 'package:darkstorm_common/ui/frame_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/l10n/app_localizations.dart';
 import 'package:swassistant/sw.dart';
 
 class LoadingScreen extends StatefulWidget {

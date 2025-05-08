@@ -3,7 +3,7 @@ import 'package:darkstorm_common/ui/updating_switch_tile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:swassistant/l10n/app_localizations.dart';
 
 import 'package:swassistant/sw.dart';
 import 'package:url_launcher/url_launcher_string.dart';
