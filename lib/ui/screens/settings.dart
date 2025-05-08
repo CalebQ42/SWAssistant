@@ -35,7 +35,8 @@ class SettingsState extends State {
           ),
           const Divider(),
           TextButton(
-            onPressed: () => launchUrlString("https://crwd.in/swrpg"),
+            onPressed: () =>
+                launchUrlString("https://crowdin.com/project/swrpg"),
             style: const ButtonStyle(alignment: Alignment.centerLeft),
             child: Padding(
               padding: const EdgeInsets.all(10),
